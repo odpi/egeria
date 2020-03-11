@@ -3,15 +3,16 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.ffdc;
 
 
+import org.odpi.openmetadata.test.unittest.utilities.AuditLogMessageSetTest;
 import org.odpi.openmetadata.test.unittest.utilities.ExceptionMessageSetTest;
 import org.testng.annotations.Test;
 
 
 /**
- * Verify the AssetConsumerErrorCode enum contains unique message ids, non-null names and descriptions and can be
+ * Verify the AssetConsumerAuditCode enum contains unique message ids, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class ErrorCodeTest extends ExceptionMessageSetTest
+public class AuditCodeTest extends AuditLogMessageSetTest
 {
     final static String  messageIdPrefix = "OMAS-ASSET-CONSUMER";
 
@@ -20,9 +21,9 @@ public class ErrorCodeTest extends ExceptionMessageSetTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        for (AssetConsumerErrorCode errorCode : AssetConsumerErrorCode.values())
+        for (AssetConsumerAuditCode auditCode : AssetConsumerAuditCode.values())
         {
-            super.testSingleErrorCodeValue(errorCode, messageIdPrefix);
+            super.testSingleAuditCodeValue(auditCode, messageIdPrefix);
         }
     }
 }

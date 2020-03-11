@@ -8,9 +8,9 @@ import org.odpi.openmetadata.accessservices.assetconsumer.events.NewAssetEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.UpdatedAssetEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +35,8 @@ public class AssetConsumerPublisher
      * @param auditLog log file for the connector.
      * @throws OMAGConfigurationErrorException problems creating the connector for the outTopic
      */
-    public AssetConsumerPublisher(Connection              assetConsumerOutTopic,
-                                  OMRSAuditLog            auditLog) throws OMAGConfigurationErrorException
+    public AssetConsumerPublisher(Connection assetConsumerOutTopic,
+                                  AuditLog   auditLog) throws OMAGConfigurationErrorException
     {
         if (assetConsumerOutTopic != null)
         {
@@ -95,8 +95,8 @@ public class AssetConsumerPublisher
      * @return open metadata topic connector
      * @throws OMAGConfigurationErrorException problems creating the connector for the outTopic
      */
-    private OpenMetadataTopicConnector getTopicConnector(Connection   topicConnection,
-                                                         OMRSAuditLog auditLog) throws OMAGConfigurationErrorException
+    private OpenMetadataTopicConnector getTopicConnector(Connection  topicConnection,
+                                                         AuditLog    auditLog) throws OMAGConfigurationErrorException
     {
         try
         {
@@ -117,15 +117,11 @@ public class AssetConsumerPublisher
 
             log.error("Unable to create topic connector: " + error.toString());
 
-            AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(topicConnection.toString(), error.getClass().getName(), error.getMessage());
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION.getMessageDefinition(topicConnection.toString(),
+                                                                                                                           error.getClass().getName(),
+                                                                                                                           error.getMessage()),
                                                       this.getClass().getName(),
                                                       methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction(),
                                                       error);
         }
     }

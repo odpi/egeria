@@ -50,6 +50,11 @@
             <artifactId>open-connector-framework</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
+
         <!-- Asset Consumer is built on Connected Asset -->
         <dependency>
             <groupId>org.odpi.egeria</groupId>
