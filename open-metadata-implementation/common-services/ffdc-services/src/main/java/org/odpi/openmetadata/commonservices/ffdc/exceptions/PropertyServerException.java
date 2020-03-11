@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ffdc.exceptions;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
 import java.util.Map;
 
 /**
@@ -13,6 +15,77 @@ public class PropertyServerException extends org.odpi.openmetadata.frameworks.co
     private static final long    serialVersionUID = 1L;
 
     /**
+     * This is the typical constructor used for creating an PropertyServerException.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     */
+    public PropertyServerException(ExceptionMessageDefinition messageDefinition,
+                                   String                     className,
+                                   String                     actionDescription)
+    {
+        super(messageDefinition, className, actionDescription);
+    }
+
+
+    /**
+     * This is the typical constructor used for creating an PropertyServerException.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public PropertyServerException(ExceptionMessageDefinition messageDefinition,
+                                   String                     className,
+                                   String                     actionDescription,
+                                   Map<String, Object>        relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, relatedProperties);
+    }
+
+
+    /**
+     * This is the constructor used for creating an PropertyServerException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     */
+    public PropertyServerException(ExceptionMessageDefinition messageDefinition,
+                                   String                     className,
+                                   String                     actionDescription,
+                                   Throwable                  caughtError)
+    {
+        super(messageDefinition, className, actionDescription, caughtError);
+    }
+
+
+    /**
+     * This is the constructor used for creating an PropertyServerException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public PropertyServerException(ExceptionMessageDefinition messageDefinition,
+                                   String                     className,
+                                   String                     actionDescription,
+                                   Throwable                  caughtError,
+                                   Map<String, Object>        relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
+    }
+
+
+    /**
      * This is the typical constructor used for creating an exception.
      *
      * @param httpCode   http response code to use if this exception flows over a rest call
@@ -22,6 +95,7 @@ public class PropertyServerException extends org.odpi.openmetadata.frameworks.co
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
      */
+    @Deprecated
     public PropertyServerException(int    httpCode,
                                    String className,
                                    String actionDescription,
@@ -44,6 +118,7 @@ public class PropertyServerException extends org.odpi.openmetadata.frameworks.co
      * @param userAction   instructions for correcting the error
      * @param relatedProperties properties providing more information about the error
      */
+    @Deprecated
     public PropertyServerException(int                 httpCode,
                                    String              className,
                                    String              actionDescription,
@@ -67,6 +142,7 @@ public class PropertyServerException extends org.odpi.openmetadata.frameworks.co
      * @param userAction   instructions for correcting the error
      * @param caughtError   the error that resulted in this exception.
      */
+    @Deprecated
     public PropertyServerException(int       httpCode,
                                    String    className,
                                    String    actionDescription,
@@ -91,6 +167,7 @@ public class PropertyServerException extends org.odpi.openmetadata.frameworks.co
      * @param caughtError   the error that resulted in this exception.
      * @param relatedProperties properties providing more information about the error
      */
+    @Deprecated
     public PropertyServerException(int                  httpCode,
                                    String               className,
                                    String               actionDescription,
@@ -127,7 +204,7 @@ public class PropertyServerException extends org.odpi.openmetadata.frameworks.co
                 "reportedHTTPCode=" + getReportedHTTPCode() +
                 ", reportingClassName='" + getReportingClassName() + '\'' +
                 ", reportingActionDescription='" + getReportingActionDescription() + '\'' +
-                ", errorMessage='" + getErrorMessage() + '\'' +
+                ", errorMessage='" + getReportedErrorMessage() + '\'' +
                 ", reportedSystemAction='" + getReportedSystemAction() + '\'' +
                 ", reportedUserAction='" + getReportedUserAction() + '\'' +
                 ", reportedCaughtException=" + getReportedCaughtException() +

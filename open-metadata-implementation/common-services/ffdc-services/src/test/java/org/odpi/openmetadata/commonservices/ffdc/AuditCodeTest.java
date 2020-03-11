@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
  * Verify the OMAGCommonAuditCode enum contains unique message ids, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class AuditLogTest extends AuditLogMessageSetTest
+public class AuditCodeTest extends AuditLogMessageSetTest
 {
     /**
      * Validated the values of the enum.

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,6 +97,16 @@ public class NameListResponse extends FFDCResponseBase
     {
         return "NameListResponse{" +
                 "names=" + names +
+                ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                ", actionDescription='" + getActionDescription() + '\'' +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
+                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
+                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
+                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
+                ", exceptionProperties=" + getExceptionProperties() +
                 '}';
     }
 
