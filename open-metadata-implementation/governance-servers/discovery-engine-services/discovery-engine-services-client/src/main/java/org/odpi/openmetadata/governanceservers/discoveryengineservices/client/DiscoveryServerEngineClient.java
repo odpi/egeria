@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DiscoveryEngineClient is a client-side library for calling a specific discovery engine.
+ * DiscoveryEngineClient is a client-side library for calling a specific discovery engine with a discovery server.
  */
 public class DiscoveryEngineClient extends DiscoveryEngine
 {
@@ -180,15 +180,15 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                                       discoveryRequestType,
                                                                       assetGUID);
 
-            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
             return restResult.getGUID();
         }
         catch (PropertyServerException  exception)
         {
-            throw new DiscoveryEngineException(exception.getErrorMessage(), exception);
+            throw new DiscoveryEngineException(exception.getReportedErrorMessage(), exception);
         }
     }
 
@@ -235,13 +235,13 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                                       discoveryEngineName,
                                                                       discoveryRequestType);
 
-            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(restResult);
         }
         catch (PropertyServerException  exception)
         {
-            throw new DiscoveryEngineException(exception.getErrorMessage(), exception);
+            throw new DiscoveryEngineException(exception.getReportedErrorMessage(), exception);
         }
     }
 
@@ -307,16 +307,16 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                                                                            discoveryEngineName,
                                                                                                            discoveryRequestGUID);
 
-            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
             return restResult.getAnalysisReport();
 
         }
         catch (PropertyServerException  exception)
         {
-            throw new DiscoveryEngineException(exception.getErrorMessage(), exception);
+            throw new DiscoveryEngineException(exception.getReportedErrorMessage(), exception);
         }
     }
 
@@ -362,15 +362,15 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                                                          Integer.toString(startingFrom),
                                                                                          Integer.toString(maximumResults));
 
-            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
             return restResult.getAnnotations();
         }
         catch (PropertyServerException  exception)
         {
-            throw new DiscoveryEngineException(exception.getErrorMessage(), exception);
+            throw new DiscoveryEngineException(exception.getReportedErrorMessage(), exception);
         }
     }
 
@@ -419,15 +419,15 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                                                          Integer.toString(startingFrom),
                                                                                          Integer.toString(maximumResults));
 
-            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
             return restResult.getAnnotations();
         }
         catch (PropertyServerException exception)
         {
-            throw new DiscoveryEngineException(exception.getErrorMessage(), exception);
+            throw new DiscoveryEngineException(exception.getReportedErrorMessage(), exception);
         }
     }
 
@@ -471,15 +471,15 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                                                  discoveryRequestGUID,
                                                                                  annotationGUID);
 
-            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
             return restResult.getAnnotation();
         }
         catch (PropertyServerException exception)
         {
-            throw new DiscoveryEngineException(exception.getErrorMessage(), exception);
+            throw new DiscoveryEngineException(exception.getReportedErrorMessage(), exception);
         }
     }
 }

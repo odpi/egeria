@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices.auditlog;
+package org.odpi.openmetadata.adminservices.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
@@ -59,7 +59,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                           "Review the start up messages to ensure that all of the correct services have been started and the " +
                                    "are operating without errors."),
 
-    SERVER_SHUTDOWN_STARTED("OMAG-ADMIN-0004",
+    SERVER_SHUTDOWN_STARTED("OMAG-ADMIN-0005",
                            OMRSAuditLogRecordSeverity.SHUTDOWN,
                            "The {0} server has begun the shutdown process",
                            "The request to stop the server has been issued, either through an explicit command, or because the" +
@@ -67,7 +67,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                     "each of the server's running subsystems.",
                            "Review the shutdown messages to ensure that all of the services are shutting down without errors."),
 
-    SERVER_SHUTDOWN_SUCCESS("OMAG-ADMIN-0004",
+    SERVER_SHUTDOWN_SUCCESS("OMAG-ADMIN-0006",
                            OMRSAuditLogRecordSeverity.SHUTDOWN,
                            "The {0} server has completed shutdown",
                            "The request to shutdown the server has completed.  No REST API calls nor events will be " +
@@ -75,7 +75,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                            "Review the shutdown messages to ensure that all of the subsystems have successfully released the" +
                                     "resources that they were using."),
 
-    SERVER_SHUTDOWN_ERROR("OMAG-ADMIN-0005",
+    SERVER_SHUTDOWN_ERROR("OMAG-ADMIN-0007",
                             OMRSAuditLogRecordSeverity.SHUTDOWN,
                             "The {0} server has detected an {1} exception during server shutdown.  The error message was {2}",
                             "The request to shutdown the server has failed with an exception.  The server is in an " +
@@ -139,10 +139,9 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
 
     BAD_ACCESS_SERVICE_ADMIN_CLASS("OMAG-ADMIN-0016",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The admin services are not able to start the {0} access service because the  {0} whilst initializing the {1} Open Metadata Access " +
-                    "Service " +
-                    "(OMAS); error message is {2}",
-            "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+            "The admin services are not able to start the {0} access service because the admin service class {1} is invalid; error message is {2}",
+            "The admin services was unable to create an instance of the admin service class for the access service during the start up of a " +
+                                           "specific server instance.  The server fails to start.",
             "Review the error message and the other reported failures to determine the cause of the problem.  Once this is resolved, restart the " +
                     "server."),
 
@@ -174,13 +173,13 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
             "The operational admin services are initializing the access service subsystems in a metadata server instance.  " +
                     "These provide specialist task orientated APIs for viewing open metadata.  The view services support " +
                     "a REST API. The view service subsystems are started one at a time.  A fatal error in any of them prevents the server from starting.",
-            "The server's configuration document lists the access services that should be started in this server.  " +
-                    "Verify that the expected access services are started and that they each report that their components are " +
+            "The server's configuration document lists the view services that should be started in this server.  " +
+                    "Verify that the expected view services are started and that they each report that their components are " +
                     "working correctly."),
 
     SKIPPING_VIEW_SERVICE("OMAG-ADMIN-0021",
             OMRSAuditLogRecordSeverity.STARTUP,
-            "The {0} is marked as DISABLED and so will not be started in the {1} server",
+            "The {0} is marked as DISABLED and so will not be started in the {1} view server",
             "The operational admin services will skip the initialization of the view service subsystem " +
                     "in this metadata server because it is marked as disabled in the configuration document.",
             "The server's configuration document lists the view services that should be started in this server.  " +
@@ -218,20 +217,20 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The {0} view service is unable to initialize a new instance; error message is {1}",
             "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
-            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+            "Review the error message and any other reported failures to determine the cause of the problem with the view service.  Once this is " +
+                                          "resolved, restart the view server."),
 
     BAD_VIEW_SERVICE_ADMIN_CLASS("OMAG-ADMIN-0026",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The admin services are not able to start the {0} view service because the  {0} whilst initializing the {1} Open Metadata View " +
-                    "Service " +
-                    "(OMVS); error message is {2}",
-            "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+            "The admin services are not able to start the {0} view service because the admin service class {1} is invalid; error message is {2}",
+            "The admin services are unable to create an instance of the view service's admin class during the start up of a specific server " +
+                                         "instance.  The server fails to start.",
             "Review the error message and the other reported failures to determine the cause of the problem.  Once this is resolved, restart the " +
-                    "server."),
+                    "view server."),
 
     VIEW_SERVICE_FAILURE("OMAG-ADMIN-0027",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The admin services caught an unexpected {0} exception whilst initializing the {1} service. " +
+            "The admin services caught an unexpected {0} exception whilst initializing the {1} service for a view server. " +
                     " The error message is {2}",
             "The admin services detected an error during the start up of a specific view service subsystem.  " +
                     "Its services are not available for the server and so the server failed to start.  Details of the error " +
@@ -241,15 +240,15 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                     "a configuration error, or one of the external resources it needs, such as a topic on the event bus, is not  " +
                     "available. View services may be developed by the Egeria community or a third party.  If the error messages " +
                     "are not sufficient to resolve the problem, raise an issue with the author of the view service to get this " +
-                    "improved.  Once the root cause of the error is resolved, restart the server."),
+                    "improved.  Once the root cause of the error is resolved, restart the view server."),
 
-    NULL_VIEW_SERVICE_ADMIN_CLASS("OMAG-ADMIN-0028 ",
+    NULL_VIEW_SERVICE_ADMIN_CLASS("OMAG-ADMIN-0028",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The OMAG server {0} has been passed a null admin services class name for view service {1}",
             "The system is unable to initialize this view service. The server failed to start.",
             "If the view service should be initialized then set up the appropriate admin services class name " +
                     "in the view service's configuration and restart the server instance. Otherwise, " +
-                    "remove the configuration for this view service and restart the server."),
+                    "remove the configuration for this view service and restart the view server."),
 
 
     STARTING_GOVERNANCE_SERVICES("OMAG-ADMIN-0100",
@@ -257,7 +256,8 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                  "The governance services subsystem for the {0} called {1} is about to start",
                                  "The admin services are about to start the governance services subsystem.  It will begin to initialize, " +
                                          "logging start up messages to confirm that its internal components have successfully initialized.",
-                                 "Review the start up messages as they occur to ensure the correct capability has been initialized."),
+                                 "Review the start up messages as they occur to ensure the correct capability has been initialized in the " +
+                                         "governance server."),
 
     GOVERNANCE_SERVICES_STARTED("OMAG-ADMIN-0101",
                                 OMRSAuditLogRecordSeverity.STARTUP,
@@ -289,56 +289,58 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
               "The {0} Open Metadata Access Service (OMAS) is supporting the access to assets for all governance zones",
               "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
                       "This means it is providing access to all Assets irrespective of the zone(s) they are assigned to.",
-              "No action is required.  This is part of the normal operation of the service."),
+              "No action is required if this access service should be giving access to all assets in the open metadata ecosystem.  " +
+                      "If this scope is too broad then set up a list of zones in the SupportedZones property for this access service."),
 
     SUPPORTED_ZONES("OMAG-ADMIN-0202",
                     OMRSAuditLogRecordSeverity.STARTUP,
                     "The {0} Open Metadata Access Service (OMAS) is supporting the following governance zones: {1}",
                     "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
                             "This means it is only providing access to the Assets from these zone(s).",
-                    "No action is required.  This is part of the normal operation of the service."),
+                    "Verify that these zones are the right set for this service."),
 
     DEFAULT_ZONES("OMAG-ADMIN-0203",
                   OMRSAuditLogRecordSeverity.STARTUP,
                   "The {0} Open Metadata Access Service (OMAS) is using the following governance zones as a default value for new Assets: {1}",
                   "The access service was passed a list of governance zones in the DefaultZones property of the access services options.",
-                  "No action is required.  This is part of the normal operation of the service."),
+                  "Verify that this is the intended value for this service."),
 
     KARMA_POINT_COLLECTION_INCREMENT("OMAG-ADMIN-0204",
                                      OMRSAuditLogRecordSeverity.STARTUP,
                                      "The {0} Open Metadata Access Service (OMAS) is awarding {1} karma point(s) to each person who contributes to open metadata",
                                      "The access service was passed this value in the KarmaPointInterval property of the access service's options.",
-                                     "No action is required.  This is part of the normal operation of the service."),
+                                     "Verify that this interval is correct for your organization."),
 
     NO_KARMA_POINT_COLLECTION("OMAG-ADMIN-0205",
                               OMRSAuditLogRecordSeverity.STARTUP,
                               "The {0} Open Metadata Access Service (OMAS) is not collecting karma points in this server",
                               "The access service can be configured to collect karma points by setting the KarmaPointIncrement property of the access service's options.",
-                              "No action is required.  This is part of the normal operation of the service."),
+                              "Verify that karma points are not required for your organization.  They are intended to reward individuals " +
+                                      "who contribute to the open metadata ecosystem."),
 
     PLATEAU_THRESHOLD("OMAG-ADMIN-0206",
                       OMRSAuditLogRecordSeverity.STARTUP,
                       "The {0} Open Metadata Access Service (OMAS) is using the following threshold for reporting Karma Point Plateaus: {1}",
                       "The access service was passed this value in the KarmaPointThreshold property of the access service's options.",
-                      "No action is required.  This is part of the normal operation of the service."),
+                      "Verify that this threshold is correct for your organization."),
 
     DEFAULT_PLATEAU_THRESHOLD("OMAG-ADMIN-0207",
                               OMRSAuditLogRecordSeverity.STARTUP,
                               "The {0} Open Metadata Access Service (OMAS) is using the default threshold for reporting Karma Point Plateaus: {1}",
                               "This default value can be overridden with the KarmaPointThreshold property of the access service's options.",
-                              "No action is required.  This is part of the normal operation of the service."),
+                              "Verify that this default threshold is correct for your organization."),
 
     BAD_CONFIG_PROPERTY("OMAG-ADMIN-0208",
                         OMRSAuditLogRecordSeverity.ERROR,
                         "The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property",
-                        "The access service has not been passed valid configuration.",
-                        "Correct the configuration and restart the service."),
+                        "The access service has not been passed valid configuration in its option's map.",
+                        "Correct the configuration property and restart the server."),
 
     SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAG-ADMIN-0209",
                                              OMRSAuditLogRecordSeverity.STARTUP,
                                              "The {0} Open Metadata Access Service (OMAS) is registering a listener with the enterprise OMRS Topic for server {1}",
                                              "The OMAS is registering to receive events from the open metadata repositories registered with the cohort.",
-                                             "No action is required.  This is part of the normal operation of the server."),
+                                             "This is part of the normal start up of an access service in a server."),
 
     NO_ENTERPRISE_TOPIC("OMAG-ADMIN-0210",
                         OMRSAuditLogRecordSeverity.ERROR,
@@ -350,8 +352,9 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                         OMRSAuditLogRecordSeverity.EXCEPTION,
                         "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connector.  " +
                                 "The error message was {3}",
-                        "The access service has not been passed valid configuration. The service failed to start.",
-                        "Correct the configuration and restart the service."),
+                        "The access service has not been passed valid configuration. The server where it is configured failed to start.",
+                        "Use the information in the error message to determine the cause of the problem, then correct the failing configuration and" +
+                                " restart the server."),
 
     BAD_TOPIC_CONNECTOR_PROVIDER("OMAG-ADMIN-0212",
                                  OMRSAuditLogRecordSeverity.EXCEPTION,

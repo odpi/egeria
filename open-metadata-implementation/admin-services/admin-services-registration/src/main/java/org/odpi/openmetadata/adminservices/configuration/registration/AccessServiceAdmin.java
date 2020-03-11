@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration.registration;
 
-import org.odpi.openmetadata.adminservices.configuration.auditlog.OMAGAuditCode;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -82,7 +82,6 @@ public abstract class AccessServiceAdmin
                                                  OMRSAuditLog        auditLog) throws OMAGConfigurationErrorException
     {
         final String  methodName = "extractSupportedZones";
-        OMAGAuditCode auditCode;
 
         if (accessServiceOptions == null)
         {
@@ -94,14 +93,7 @@ public abstract class AccessServiceAdmin
 
             if (zoneListObject == null)
             {
-                auditCode = OMAGAuditCode.ALL_ZONES;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(accessServiceFullName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(methodName, OMAGAdminAuditCode.ALL_ZONES.getMessageDefinition(accessServiceFullName));
                 return null;
             }
             else
@@ -111,15 +103,7 @@ public abstract class AccessServiceAdmin
                     @SuppressWarnings("unchecked")
                     List<String> zoneList = (List<String>) zoneListObject;
 
-                    auditCode = OMAGAuditCode.SUPPORTED_ZONES;
-                    auditLog.logRecord(methodName,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(accessServiceFullName, zoneList.toString()),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
-
+                    auditLog.logMessage(methodName, OMAGAdminAuditCode.SUPPORTED_ZONES.getMessageDefinition(accessServiceFullName, zoneList.toString()));
                     return zoneList;
                 }
                 catch (Throwable error)
@@ -153,7 +137,6 @@ public abstract class AccessServiceAdmin
                                                OMRSAuditLog        auditLog) throws OMAGConfigurationErrorException
     {
         final String  methodName = "extractDefaultZones";
-        OMAGAuditCode auditCode;
 
         if (accessServiceOptions == null)
         {
@@ -165,14 +148,7 @@ public abstract class AccessServiceAdmin
 
             if (zoneListObject == null)
             {
-                auditCode = OMAGAuditCode.DEFAULT_ZONES;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(accessServiceFullName, "<null>"),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(methodName, OMAGAdminAuditCode.DEFAULT_ZONES.getMessageDefinition(accessServiceFullName, "<null>"));
                 return null;
             }
             else
@@ -182,15 +158,7 @@ public abstract class AccessServiceAdmin
                     @SuppressWarnings("unchecked")
                     List<String>  zoneList =  (List<String>)zoneListObject;
 
-                    auditCode = OMAGAuditCode.DEFAULT_ZONES;
-                    auditLog.logRecord(methodName,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(accessServiceFullName, zoneList.toString()),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
-
+                    auditLog.logMessage(methodName, OMAGAdminAuditCode.DEFAULT_ZONES.getMessageDefinition(accessServiceFullName, zoneList.toString()));
                     return zoneList;
                 }
                 catch (Throwable error)
@@ -224,7 +192,6 @@ public abstract class AccessServiceAdmin
                                              OMRSAuditLog        auditLog) throws OMAGConfigurationErrorException
     {
         final String  methodName = "extractKarmaPointIncrement";
-        OMAGAuditCode auditCode;
 
         if (accessServiceOptions == null)
         {
@@ -244,14 +211,8 @@ public abstract class AccessServiceAdmin
                 {
                     int increment = Integer.parseInt(incrementObject.toString());
 
-                    auditCode = OMAGAuditCode.KARMA_POINT_COLLECTION_INCREMENT;
-                    auditLog.logRecord(methodName,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(accessServiceFullName, Integer.toString(increment)),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logMessage(methodName, OMAGAdminAuditCode.KARMA_POINT_COLLECTION_INCREMENT.getMessageDefinition(accessServiceFullName,
+                                                                                                                             Integer.toString(increment)));
 
                     return increment;
                 }
@@ -284,14 +245,7 @@ public abstract class AccessServiceAdmin
                                               OMRSAuditLog auditLog,
                                               String       methodName)
     {
-        OMAGAuditCode auditCode = OMAGAuditCode.NO_KARMA_POINT_COLLECTION;
-        auditLog.logRecord(methodName,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(accessServiceFullName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(methodName, OMAGAdminAuditCode.NO_KARMA_POINT_COLLECTION.getMessageDefinition(accessServiceFullName));
 
         return defaultKarmaPointInterval;
     }
@@ -311,7 +265,6 @@ public abstract class AccessServiceAdmin
                                            OMRSAuditLog        auditLog) throws OMAGConfigurationErrorException
     {
         final String  methodName = "extractKarmaPointPlateau";
-        OMAGAuditCode auditCode;
 
         if (accessServiceOptions == null)
         {
@@ -331,14 +284,9 @@ public abstract class AccessServiceAdmin
                 {
                     int plateauThreshold =  Integer.parseInt(plateauThresholdObject.toString());
 
-                    auditCode = OMAGAuditCode.PLATEAU_THRESHOLD;
-                    auditLog.logRecord(methodName,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(accessServiceFullName, Integer.toString(plateauThreshold)),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logMessage(methodName,
+                                        OMAGAdminAuditCode.PLATEAU_THRESHOLD.getMessageDefinition(accessServiceFullName,
+                                                                                                  Integer.toString(plateauThreshold)));
 
                     return plateauThreshold;
                 }
@@ -371,14 +319,9 @@ public abstract class AccessServiceAdmin
                                            OMRSAuditLog auditLog,
                                            String       methodName)
     {
-        OMAGAuditCode auditCode = OMAGAuditCode.DEFAULT_PLATEAU_THRESHOLD;
-        auditLog.logRecord(methodName,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(accessServiceFullName, Integer.toString(defaultKarmaPointThreshold)),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(methodName,
+                            OMAGAdminAuditCode.DEFAULT_PLATEAU_THRESHOLD.getMessageDefinition(accessServiceFullName,
+                                                                                              Integer.toString(defaultKarmaPointThreshold)));
 
         return defaultKarmaPointThreshold;
     }
@@ -403,28 +346,15 @@ public abstract class AccessServiceAdmin
                                         String       methodName,
                                         Throwable    error) throws OMAGConfigurationErrorException
     {
-        OMAGAuditCode auditCode = OMAGAuditCode.BAD_CONFIG_PROPERTY;
-        auditLog.logRecord(methodName,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(accessServiceFullName, propertyValue, propertyName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(methodName, OMAGAdminAuditCode.BAD_CONFIG_PROPERTY.getMessageDefinition(accessServiceFullName, propertyValue, propertyName));
 
-        OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_CONFIG_PROPERTIES;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(accessServiceFullName,
-                                                                                                        propertyValue,
-                                                                                                        propertyName,
-                                                                                                        error.getClass().getName(),
-                                                                                                        error.getMessage());
-
-        throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+        throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.BAD_CONFIG_PROPERTIES.getMessageDefinition(accessServiceFullName,
+                                                                                                                propertyValue,
+                                                                                                                propertyName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                error.getMessage()),
                                                   this.getClass().getName(),
                                                   methodName,
-                                                  errorMessage,
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction(),
                                                   error);
     }
 
@@ -449,42 +379,21 @@ public abstract class AccessServiceAdmin
         final String            actionDescription = "initialize OMAS";
         final String            methodName = "initialize";
 
-        OMAGAuditCode auditCode;
-
         if (omrsTopicConnector != null)
         {
-            auditCode = OMAGAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(accessServiceFullName, serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMAGAdminAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC.getMessageDefinition(accessServiceFullName, serverName));
 
             omrsTopicConnector.registerListener(omrsTopicListener, accessServiceFullName);
         }
         else
         {
-            auditCode = OMAGAuditCode.NO_ENTERPRISE_TOPIC;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(accessServiceFullName, serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, OMAGAdminAuditCode.NO_ENTERPRISE_TOPIC.getMessageDefinition(accessServiceFullName, serverName));
 
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.NO_ENTERPRISE_TOPIC;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(accessServiceFullName,
-                                                                                                                 serverName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.NO_ENTERPRISE_TOPIC.getMessageDefinition(accessServiceFullName,
+                                                                                                                  serverName),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
     }
 
@@ -657,31 +566,19 @@ public abstract class AccessServiceAdmin
             }
             catch (Exception error)
             {
-                OMAGAuditCode auditCode = OMAGAuditCode.BAD_TOPIC_CONNECTOR_PROVIDER;
                 auditLog.logException(methodName,
-                                      auditCode.getLogMessageId(),
-                                      auditCode.getSeverity(),
-                                      auditCode.getFormattedLogMessage(methodName,
-                                                                       accessServiceFullName,
-                                                                       error.getClass().getName(),
-                                                                       error.getMessage()),
-                                      null,
-                                      auditCode.getSystemAction(),
-                                      auditCode.getUserAction(),
+                                      OMAGAdminAuditCode.BAD_TOPIC_CONNECTOR_PROVIDER.getMessageDefinition(methodName,
+                                                                                                           accessServiceFullName,
+                                                                                                           error.getClass().getName(),
+                                                                                                           error.getMessage()),
                                       error);
 
-                OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_TOPIC_CONNECTOR_PROVIDER;
-                String errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(methodName,
-                                                             accessServiceFullName,
-                                                             error.getClass().getName(),
-                                                             error.getMessage());
-                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.BAD_TOPIC_CONNECTOR_PROVIDER.getMessageDefinition(methodName,
+                                                                                                                               accessServiceFullName,
+                                                                                                                               error.getClass().getName(),
+                                                                                                                               error.getMessage()),
                                                           this.getClass().getName(),
-                                                          methodName,
-                                                          errorMessage,
-                                                          errorCode.getSystemAction(),
-                                                          errorCode.getUserAction());
+                                                          methodName);
             }
         }
 
@@ -701,16 +598,11 @@ public abstract class AccessServiceAdmin
                                                           String    fullAccessServiceName,
                                                           Throwable error) throws OMAGConfigurationErrorException
     {
-        OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION;
-
-        throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+        throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(fullAccessServiceName,
+                                                                                                                              error.getClass().getName(),
+                                                                                                                              error.getMessage()),
                                                   this.getClass().getName(),
                                                   actionDescription,
-                                                  errorCode.getFormattedErrorMessage(fullAccessServiceName,
-                                                                                     error.getClass().getName(),
-                                                                                     error.getMessage()),
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction(),
                                                   error);
     }
 
@@ -752,31 +644,19 @@ public abstract class AccessServiceAdmin
         }
         catch (Exception   error)
         {
-            OMAGAuditCode auditCode = OMAGAuditCode.BAD_TOPIC_CONNECTOR;
             auditLog.logException(methodName,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(methodName,
-                                                                   accessServiceFullName,
-                                                                   error.getClass().getName(),
-                                                                   error.getMessage()),
-                                  null,
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
+                                  OMAGAdminAuditCode.BAD_TOPIC_CONNECTOR.getMessageDefinition(methodName,
+                                                                                              accessServiceFullName,
+                                                                                              error.getClass().getName(),
+                                                                                              error.getMessage()),
                                   error);
 
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_TOPIC_CONNECTOR;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(methodName,
-                                                         accessServiceFullName,
-                                                         error.getClass().getName(),
-                                                         error.getMessage());
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.BAD_TOPIC_CONNECTOR.getMessageDefinition(methodName,
+                                                                                                                  accessServiceFullName,
+                                                                                                                  error.getClass().getName(),
+                                                                                                                  error.getMessage()),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
     }
 
