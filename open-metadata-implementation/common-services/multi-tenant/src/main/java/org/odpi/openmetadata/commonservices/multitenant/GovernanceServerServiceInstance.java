@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 /**
  * GovernanceServerServiceInstance caches references to OMRS objects for a specific server.
@@ -28,7 +28,7 @@ public abstract class GovernanceServerServiceInstance extends AuditableServerSer
      */
     public GovernanceServerServiceInstance(String        serverName,
                                            String        serviceName,
-                                           OMRSAuditLog  auditLog,
+                                           AuditLog      auditLog,
                                            String        localServerUserId,
                                            int           maxPageSize,
                                            String        accessServiceRootURL,
@@ -56,7 +56,7 @@ public abstract class GovernanceServerServiceInstance extends AuditableServerSer
      */
     public GovernanceServerServiceInstance(String        serverName,
                                            String        serviceName,
-                                           OMRSAuditLog  auditLog,
+                                           AuditLog      auditLog,
                                            String        localServerUserId,
                                            int           maxPageSize,
                                            String        accessServiceRootURL,
