@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
@@ -26,9 +29,12 @@ import java.util.UUID;
  * To use the ConnectorProviderBase, create a new class that extends the ConnectorProviderBase class
  * and in the constructor call super.setConnectorClassName("your connector's class name");
  */
-public abstract class ConnectorProviderBase extends ConnectorProvider
+public abstract class ConnectorProviderBase extends ConnectorProvider implements AuditLoggingComponent
 {
-    private   String        connectorClassName = null;
+    private String               connectorClassName            = null;
+    private ComponentDescription connectorComponentDescription = null;
+
+    protected AuditLog      auditLog  = null;
     protected ConnectorType connectorTypeBean  = null;
 
     private final int     hashCode = UUID.randomUUID().hashCode();
@@ -83,6 +89,31 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
         log.debug("Connector class name set: " + newConnectorClassName);
 
         connectorClassName = newConnectorClassName;
+    }
+
+
+    /**
+     * Update the component name to use in the creation of the connector's audit log.
+     *
+     * @param connectorComponentDescription   component description.
+     */
+    protected  void setConnectorComponentDescription(ComponentDescription   connectorComponentDescription)
+    {
+        log.debug("Connector audit logging component description: " + connectorComponentDescription.toString());
+
+        this.connectorComponentDescription = connectorComponentDescription;
+    }
+
+
+    /**
+     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
+     * with the correct component description and log destinations.
+     *
+     * @param auditLog audit log object
+     */
+    public void setAuditLog(AuditLog auditLog)
+    {
+        this.auditLog = auditLog;
     }
 
 
@@ -211,6 +242,24 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
 
             connector = (Connector)potentialConnector;
             connector.initialize(guid, connection);
+
+            if (connector instanceof AuditLoggingComponent)
+            {
+                if (auditLog != null)
+                {
+                    if (connectorComponentDescription == null)
+                    {
+                        ((AuditLoggingComponent) connector).setAuditLog(auditLog);
+                    }
+                    else
+                    {
+                        ((AuditLoggingComponent) connector).setAuditLog(auditLog.createNewAuditLog(connectorComponentDescription.getComponentId(),
+                                                                                                   connectorComponentDescription.getComponentName() + ":" + guid,
+                                                                                                   connectorComponentDescription.getComponentType(),
+                                                                                                   connectorComponentDescription.getComponentWikiURL()));
+                    }
+                }
+            }
         }
         catch (ClassNotFoundException classException)
         {

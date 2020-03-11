@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
@@ -25,12 +27,26 @@ public class ConnectorBroker
     private final        int    hashCode = UUID.randomUUID().hashCode();
 
 
+    private AuditLog auditLog = null;
+
+
     /**
      * Typical constructor
      */
     public ConnectorBroker()
     {
         /* Nothing to do */
+    }
+
+
+    /**
+     * Constructor to supply the audit log to all connectors that implement the AuditLoggingConnector interface.
+     *
+     * @param auditLog auditlog to pass on
+     */
+    public ConnectorBroker(AuditLog   auditLog)
+    {
+        this.auditLog = auditLog;
     }
 
 
@@ -334,6 +350,15 @@ public class ConnectorBroker
         ConnectorProvider connectorProvider = this.getConnectorProvider(requestedConnectorType,
                                                                         connectionName,
                                                                         methodName);
+
+        /*
+         * If the connector provider or connector is capable of using an audit log, an audit log is passed to the connector provider if available.
+         */
+        if (connectorProvider instanceof AuditLoggingComponent)
+        {
+            ((AuditLoggingComponent) connectorProvider).setAuditLog(auditLog);
+        }
+
 
         /*
          * At this point we hopefully have a valid connector provider so all that is left to do is call
