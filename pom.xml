@@ -173,6 +173,8 @@
         <jackson-asl.version>1.9.13</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.7.3</snappy.version>
+        <springdoc.version>1.2.33</springdoc.version>
+        <classgraph.version>4.8.53</classgraph.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -202,6 +204,7 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
+        <springdoc-plugin.version>0.2</springdoc-plugin.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -2040,6 +2043,18 @@
                 <scope>runtime</scope>
             </dependency>
 
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.classgraph</groupId>
+                <artifactId>classgraph</artifactId>
+                <version>${classgraph.version}</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -2261,6 +2276,12 @@
                     <groupId>pl.project13.maven</groupId>
                     <artifactId>git-commit-id-plugin</artifactId>
                     <version>4.0.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.springdoc</groupId>
+                    <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                    <version>${springdoc-plugin.version}</version>
                 </plugin>
 
             </plugins>

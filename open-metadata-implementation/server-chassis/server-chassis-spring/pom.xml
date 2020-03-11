@@ -268,6 +268,13 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
+        <!-- Documentation -->
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -282,6 +289,31 @@
                     <execution>
                         <goals>
                             <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>pre-integration-test</id>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>post-integration-test</id>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>generate</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -312,12 +344,16 @@
                                 <ignoredUnusedDeclaredDependency>
                                     org.springframework.boot:spring-boot-starter-data-jpa:*
                                 </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>
+                                    org.springdoc:springdoc-openapi-ui:*
+                                </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
             <!-- Special configuration for dependency checking due to the way spring scans -->
+
 
         </plugins>
     </build>
