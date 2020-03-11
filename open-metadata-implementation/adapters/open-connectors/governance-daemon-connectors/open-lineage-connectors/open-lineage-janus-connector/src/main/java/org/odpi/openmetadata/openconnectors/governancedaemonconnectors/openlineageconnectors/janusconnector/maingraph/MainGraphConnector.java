@@ -12,7 +12,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraphConnectorBase;
-import org.odpi.openmetadata.governanceservers.openlineage.model.*;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
@@ -22,9 +23,14 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_DATAFLOW_WITH_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID;
 
 public class MainGraphConnector extends MainGraphConnectorBase {
 
@@ -73,26 +79,26 @@ public class MainGraphConnector extends MainGraphConnectorBase {
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
-        String edgeLabel;
-        if (includeProcesses)
-            edgeLabel = EDGE_LABEL_DATAFLOW_WITH_PROCESS;
-        else
-            edgeLabel = EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS;
+
+
+        List<String> edgeLabels = new ArrayList<>();
+        edgeLabels.add(EDGE_LABEL_SEMANTIC);
+        edgeLabels.add(includeProcesses ? EDGE_LABEL_DATAFLOW_WITH_PROCESS : EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS);
 
         LineageVerticesAndEdges lineageVerticesAndEdges = null;
 
         switch (scope) {
             case SOURCE_AND_DESTINATION:
-                lineageVerticesAndEdges = helper.sourceAndDestination(edgeLabel, guid);
+                lineageVerticesAndEdges = helper.sourceAndDestination(guid, edgeLabels.toArray(new String[edgeLabels.size()]));
                 break;
             case END_TO_END:
-                lineageVerticesAndEdges = helper.endToEnd(edgeLabel, guid);
+                lineageVerticesAndEdges = helper.endToEnd(guid, edgeLabels.toArray(new String[edgeLabels.size()]));
                 break;
             case ULTIMATE_SOURCE:
-                lineageVerticesAndEdges = helper.ultimateSource(edgeLabel, guid);
+                lineageVerticesAndEdges = helper.ultimateSource(guid, edgeLabels.toArray(new String[edgeLabels.size()]));
                 break;
             case ULTIMATE_DESTINATION:
-                lineageVerticesAndEdges = helper.ultimateDestination(edgeLabel, guid);
+                lineageVerticesAndEdges = helper.ultimateDestination(guid, edgeLabels.toArray(new String[edgeLabels.size()]));
                 break;
             case GLOSSARY:
                 lineageVerticesAndEdges = helper.glossary(guid);
