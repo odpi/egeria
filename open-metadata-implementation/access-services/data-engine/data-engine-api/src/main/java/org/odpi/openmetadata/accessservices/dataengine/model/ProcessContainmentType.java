@@ -9,6 +9,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * ProcessContainmentType describes the type of containment that exists between two processes.
+ * <ul>
+ * <li>OWNED - The parent process owns the child process in the relationship</li>
+ * <li>APPEND - The child process is simply used by the parent</li>
+ * <li>OTHER - None of the above.</li>
+ * </ul>
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
