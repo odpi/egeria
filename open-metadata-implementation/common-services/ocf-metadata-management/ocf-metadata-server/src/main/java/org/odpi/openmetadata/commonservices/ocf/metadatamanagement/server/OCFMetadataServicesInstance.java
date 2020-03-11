@@ -41,15 +41,9 @@ public class OCFMetadataServicesInstance extends OCFOMASServiceInstance
 
         if (repositoryHandler == null)
         {
-            OMAGOCFErrorCode errorCode    = OMAGOCFErrorCode.OMRS_NOT_INITIALIZED;
-            String           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            throw new NewInstanceException(OMAGOCFErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
 
         }
     }
