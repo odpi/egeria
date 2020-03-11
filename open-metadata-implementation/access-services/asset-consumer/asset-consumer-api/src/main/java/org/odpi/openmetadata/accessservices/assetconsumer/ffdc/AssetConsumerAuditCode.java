@@ -66,13 +66,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
 
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(AssetConsumerAuditCode.class);
+    private AuditLogMessageDefinition messageDefinition;
 
 
     /**
@@ -95,11 +89,11 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
                            String                     systemAction,
                            String                     userAction)
     {
-        this.logMessageId = messageId;
-        this.severity = severity;
-        this.logMessage = message;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
+        messageDefinition = new AuditLogMessageDefinition(messageId,
+                                                          severity,
+                                                          message,
+                                                          systemAction,
+                                                          userAction);
     }
 
 
@@ -110,11 +104,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      */
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return new AuditLogMessageDefinition(logMessageId,
-                                             severity,
-                                             logMessage,
-                                             systemAction,
-                                             userAction);
+        return messageDefinition;
     }
 
 
@@ -126,11 +116,6 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      */
     public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
-        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
-                                                                                    severity,
-                                                                                    logMessage,
-                                                                                    systemAction,
-                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -144,13 +129,8 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "OMAGCommonAuditCode{" +
-                "logMessageId='" + logMessageId + '\'' +
-                ", severity=" + severity +
-                ", logMessage='" + logMessage + '\'' +
-                ", systemAction='" + systemAction + '\'' +
-                ", userAction='" + userAction + '\'' +
-                ", messageDefinition=" + getMessageDefinition() +
+        return "AssetConsumerAuditCode{" +
+                "messageDefinition=" + messageDefinition +
                 '}';
     }
 }

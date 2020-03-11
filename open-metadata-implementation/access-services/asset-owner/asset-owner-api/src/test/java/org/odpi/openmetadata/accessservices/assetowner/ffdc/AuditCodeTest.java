@@ -3,16 +3,15 @@
 package org.odpi.openmetadata.accessservices.assetowner.ffdc;
 
 
-import org.odpi.openmetadata.test.unittest.utilities.ExceptionMessageSetTest;
+import org.odpi.openmetadata.test.unittest.utilities.AuditLogMessageSetTest;
 import org.testng.annotations.Test;
 
 
-
 /**
- * Verify the AssetOwnerErrorCode enum contains unique message ids, non-null names and descriptions and can be
+ * Verify the AssetOwnerAuditCode enum contains unique message ids, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class ErrorCodeTest extends ExceptionMessageSetTest
+public class AuditCodeTest extends AuditLogMessageSetTest
 {
     final static String  messageIdPrefix = "OMAS-ASSET-OWNER";
 
@@ -21,9 +20,9 @@ public class ErrorCodeTest extends ExceptionMessageSetTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        for (AssetOwnerErrorCode errorCode : AssetOwnerErrorCode.values())
+        for (AssetOwnerAuditCode auditCode : AssetOwnerAuditCode.values())
         {
-            super.testSingleErrorCodeValue(errorCode, messageIdPrefix);
+            super.testSingleAuditCodeValue(auditCode, messageIdPrefix);
         }
     }
 }
