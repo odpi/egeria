@@ -135,7 +135,7 @@
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.10.3</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
-        <kafka.version>2.4.0</kafka.version>
+        <kafka.version>2.4.1</kafka.version>
         <janus.version>0.4.1</janus.version>
         <gremlin.version>3.4.6</gremlin.version>
         <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
