@@ -180,14 +180,8 @@ public class DiscoveryEngineHandler
          */
         final String actionDescription = "Retrieve all discovery service configuration";
 
-        DiscoveryEngineServicesAuditCode auditCode = DiscoveryEngineServicesAuditCode.CLEARING_ALL_DISCOVERY_SERVICE_CONFIG;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(discoveryEngineName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            DiscoveryEngineServicesAuditCode.CLEARING_ALL_DISCOVERY_SERVICE_CONFIG.getMessageDefinition(discoveryEngineName));
 
         discoveryServiceLookupTable.clear();
 
@@ -223,14 +217,8 @@ public class DiscoveryEngineHandler
             }
         }
 
-        auditCode = DiscoveryEngineServicesAuditCode.FINISHED_ALL_DISCOVERY_SERVICE_CONFIG;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(discoveryEngineName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            DiscoveryEngineServicesAuditCode.FINISHED_ALL_DISCOVERY_SERVICE_CONFIG.getMessageDefinition(discoveryEngineName));
     }
 
 
@@ -561,16 +549,9 @@ public class DiscoveryEngineHandler
     public void terminate()
     {
         final String                     actionDescription = "terminate";
-        DiscoveryEngineServicesAuditCode auditCode;
 
-        auditCode = DiscoveryEngineServicesAuditCode.ENGINE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(discoveryEngineName, serverName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            DiscoveryEngineServicesAuditCode.ENGINE_SHUTDOWN.getMessageDefinition(discoveryEngineName, serverName));
 
         discoveryEngineProperties = null;
         discoveryServiceLookupTable.clear();

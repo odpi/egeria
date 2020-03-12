@@ -17,3 +17,11 @@ that have a CSV tabular format.
 
 * **[data-folder-connector](data-folder-connector)** provides connector to read a data set that is made up of many files
 stored within a data folder.
+
+
+----
+Return to the [data-store-connectors](..) module.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

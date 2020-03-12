@@ -112,7 +112,7 @@ public class RESTClientFactory
         {
             try
             {
-                Class      connectorProviderClass = Class.forName(connectorProviderClassName);
+                Class<?>      connectorProviderClass = Class.forName(connectorProviderClassName);
                 Object     potentialConnectorProvider = connectorProviderClass.newInstance();
 
                 ConnectorProvider connectorProvider = (ConnectorProvider)potentialConnectorProvider;

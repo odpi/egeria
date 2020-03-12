@@ -17,7 +17,7 @@ public class ValidatePatientRecordDiscoveryServiceProvider extends DiscoveryServ
     {
         super();
 
-        Class        connectorClass = ValidatePatientRecordDiscoveryService.class;
+        Class<?>     connectorClass = ValidatePatientRecordDiscoveryService.class;
 
         super.setConnectorClassName(connectorClass.getName());
     }

@@ -7,6 +7,8 @@ package org.odpi.openmetadata.accessservices.assetconsumer.rest;
  */
 public class MockAPIRequestBody extends AssetConsumerOMASAPIRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */

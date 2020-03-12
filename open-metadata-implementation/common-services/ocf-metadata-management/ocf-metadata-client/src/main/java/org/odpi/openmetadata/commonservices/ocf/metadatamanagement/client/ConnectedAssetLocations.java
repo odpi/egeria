@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class ConnectedAssetLocations extends AssetLocations
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;

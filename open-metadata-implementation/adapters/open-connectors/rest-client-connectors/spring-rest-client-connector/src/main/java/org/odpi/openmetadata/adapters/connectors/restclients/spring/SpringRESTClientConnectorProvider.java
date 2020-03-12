@@ -22,7 +22,7 @@ public class SpringRESTClientConnectorProvider extends RESTClientConnectorProvid
      */
     public SpringRESTClientConnectorProvider()
     {
-        Class    connectorClass = SpringRESTClientConnector.class;
+        Class<?>    connectorClass = SpringRESTClientConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

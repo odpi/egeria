@@ -3,11 +3,13 @@
 
 package org.odpi.openmetadata.repositoryservices.auditlog;
 
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+
 /**
  * OMRSAuditingComponent provides identifying and background information about the components writing log records
  * to the OMRS Audit log.  This is to help someone reading the OMRS Audit Log understand the records.
  */
-public enum OMRSAuditingComponent
+public enum OMRSAuditingComponent implements ComponentDescription
 {
     UNKNOWN (0,
              "<Unknown>", "Uninitialized component name", "https://egeria.odpi.org"),
@@ -175,7 +177,7 @@ public enum OMRSAuditingComponent
 
 
     /**
-     * Return the numerical code for this enum.
+     * Return the numerical code for this component.
      *
      * @return int componentId
      */
@@ -203,7 +205,7 @@ public enum OMRSAuditingComponent
      *
      * @return String description
      */
-    public String getComponentDescription()
+    public String getComponentType()
     {
         return componentDescription;
     }

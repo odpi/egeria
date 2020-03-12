@@ -200,6 +200,7 @@ whether this is through local or remote calls.
 The [administration services](../admin-services/README.md) provide
 the ability to configure, start and stop the access services.
 
+----
 Return to [open-metadata-implementation](..).
 
 ----

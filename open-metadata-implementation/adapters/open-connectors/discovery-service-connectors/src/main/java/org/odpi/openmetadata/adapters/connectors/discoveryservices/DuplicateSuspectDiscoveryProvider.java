@@ -21,7 +21,7 @@ public class DuplicateSuspectDiscoveryProvider extends DiscoveryServiceProvider
      */
     public DuplicateSuspectDiscoveryProvider()
     {
-        Class    connectorClass = DuplicateSuspectDiscoveryService.class;
+        Class<?> connectorClass = DuplicateSuspectDiscoveryService.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

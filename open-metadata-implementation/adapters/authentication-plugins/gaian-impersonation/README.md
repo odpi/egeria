@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![InDev](../../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Gaian Impersonation
 
 Ensure class is in classpath
@@ -24,7 +26,8 @@ To use, add the JDBC connection properties
   
   Further review needed. this is a first pass
   proof of concept
-  
+ 
+ ----
  Return to [authentication-plugins](..) module.
  
  ----

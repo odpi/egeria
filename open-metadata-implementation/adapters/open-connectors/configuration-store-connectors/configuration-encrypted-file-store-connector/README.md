@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
+![Released](../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # Encrypted Configuration File Store Connector
 
 The encrypted configuration file store connector supports managing the

@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Data Platform Services
 
 The Data Platform Services support intercommunication from a Data Platform and
