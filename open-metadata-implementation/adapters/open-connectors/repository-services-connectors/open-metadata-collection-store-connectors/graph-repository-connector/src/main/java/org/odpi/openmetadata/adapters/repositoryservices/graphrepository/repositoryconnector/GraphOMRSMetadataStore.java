@@ -1625,9 +1625,9 @@ class GraphOMRSMetadataStore {
                     /*
                      * Treat the match property as a reference to a core property
                      *
-                     * For a core property to be held in a maptchProperties (InstanceProperties) object, the caller will need to have converted from InstanceAuditHeader
+                     * For a core property to be held in a matchProperties (InstanceProperties) object, the caller will need to have converted from InstanceAuditHeader
                      * type declaration to an appropriate 'soft' type. For example a java.lang.String field such as createdBy must have been converted to a primitive with
-                     * primiitve def category of string.
+                     * primitive def category of string.
                      */
 
                     propNameToSearch = PROPERTY_KEY_PREFIX_ENTITY + propName;
@@ -1764,14 +1764,37 @@ class GraphOMRSMetadataStore {
                 }
             }
 
+            /*
+             * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+             * between the match properties and the properties defined on the type (core or type defined). So
+             * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+             * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+             * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+             * be satisfied. For matchCriteria NONE we can assert that the relationship but since we still need to
+             * retrieve the vertex from the graoh (to construct the relationship) it is better to let that case continue.
+             */
+
+
             switch (matchCriteria) {
                 case ALL:
-                    gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    if (propCriteria.isEmpty()) {
+                        g.tx().rollback();
+                        return null;
+                    }
+                    else {
+                        gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    }
                     break;
                 case ANY:
-                    gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    if (propCriteria.isEmpty()) {
+                        g.tx().rollback();
+                        return null;
+                    }
+                    else {
+                        gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    }
                     break;
                 case NONE:
                     DefaultGraphTraversal t = new DefaultGraphTraversal();
@@ -2016,16 +2039,15 @@ class GraphOMRSMetadataStore {
                     /*
                      * Treat the match property as a reference to a core property
                      *
-                     * For a core property to be held in a maptchProperties (InstanceProperties) object, the caller will need to have converted from InstanceAuditHeader
+                     * For a core property to be held in a matchProperties (InstanceProperties) object, the caller will need to have converted from InstanceAuditHeader
                      * type declaration to an appropriate 'soft' type. For example a java.lang.String field such as createdBy must have been converted to a primitive with
-                     * primiitve def category of string.
+                     * primitive def category of string.
                      */
 
                     propNameToSearch = PROPERTY_KEY_PREFIX_RELATIONSHIP + propName;
                     mapping = corePropertyMixedIndexMappings.get(propNameToSearch);
 
-                }
-                else if (typeDefinedPropertyNames.contains(propName)) {
+                } else if (typeDefinedPropertyNames.contains(propName)) {
 
                     /*
                      * Treat the match property as a reference to a type-defined property. Check that it's type matches the TDA.
@@ -2157,14 +2179,37 @@ class GraphOMRSMetadataStore {
                 }
             }
 
+            /*
+             * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+             * between the match properties and the properties defined on the type (core or type defined). So
+             * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+             * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+             * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+             * be satisfied. For matchCriteria NONE we can assert that the relationship but since we still need to
+             * retrieve the vertex from the graoh (to construct the relationship) it is better to let that case continue.
+             */
+
+
             switch (matchCriteria) {
                 case ALL:
-                    gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    if (propCriteria.isEmpty()) {
+                        g.tx().rollback();
+                        return null;
+                    }
+                    else {
+                        gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    }
                     break;
                 case ANY:
-                    gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    if (propCriteria.isEmpty()) {
+                        g.tx().rollback();
+                        return null;
+                    }
+                    else {
+                        gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    }
                     break;
                 case NONE:
                     DefaultGraphTraversal t = new DefaultGraphTraversal();
@@ -2176,17 +2221,18 @@ class GraphOMRSMetadataStore {
                     GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.INVALID_MATCH_CRITERIA;
                     g.tx().rollback();
                     String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                            this.getClass().getName(),
-                            repositoryName);
+                                                                                                             this.getClass().getName(),
+                                                                                                             repositoryName);
 
                     throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                            this.getClass().getName(),
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        errorMessage,
+                                                        errorCode.getSystemAction(),
+                                                        errorCode.getUserAction());
 
             }
+
         }
 
 

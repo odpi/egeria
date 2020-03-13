@@ -23,7 +23,7 @@ import '../token-ajax.js';
 *
 */
 
-class TypeManager extends PolymerElement {
+class RexTypeManager extends PolymerElement {
 
     static get template() {
         return html`
@@ -57,45 +57,47 @@ class TypeManager extends PolymerElement {
     ready() {
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
+        //console.log("rex-type-manager ready complete");
     }
 
 
 
     /*
-     *  Ask the UI Aoplication to retrieve the type information from the named OMAG Server
+     *  Ask the UI Application to retrieve the type information from the named OMAG Server
      */
+
     loadTypes(serverName, serverURLRoot, enterpriseQuery) {
 
-        alert("type-manager cpt: serverName and serverURLRoot fields are "+serverName+" "+serverURLRoot);
+        //alert("type-manager cpt: serverName and serverURLRoot fields are "+serverName+" "+serverURLRoot);
+
         if (this.validate(serverName) && this.validate(serverURLRoot)) {
 
-            if (serverName.length > 0 && serverURLRoot.length > 0) {
-
-                /*
-                 * Requesting new type information but do not clear what was previously loaded.
-                 * It is retained for use during offline mode.
-                 */
-
-                /*
-                 * Format the body for the AJAX query to retrieve the type information from the server
-                 */
-                var serverDetails              = {};
-                serverDetails.serverName       = serverName;
-                serverDetails.serverURLRoot    = serverURLRoot;
-                serverDetails.enterpriseOption =  enterpriseQuery ? "true" : "false";
 
 
-                /*
-                 * Issue the AJAX query
-                 * The userId under which the back-end REST call will be made is retrieved in the UI Application from the HTTP request's session context
-                 */
+            /*
+             * Requesting new type information but do not clear what was previously loaded.
+             * It is retained for use during offline mode.
+             */
 
-                this.$.loadTypeExplorerAjaxId.method ="post";
-                this.$.loadTypeExplorerAjaxId.body = serverDetails;
-                this.$.loadTypeExplorerAjaxId.url = "/api/types/typeExplorer";
-                this.$.loadTypeExplorerAjaxId._go();
+            /*
+             * Format the body for the AJAX query to retrieve the type information from the server
+             */
+            var serverDetails              = {};
+            serverDetails.serverName       = serverName;
+            serverDetails.serverURLRoot    = serverURLRoot;
+            serverDetails.enterpriseOption =  enterpriseQuery ? "true" : "false";
 
-            }
+
+            /*
+             * Issue the AJAX query
+             * The userId under which the back-end REST call will be made is retrieved in the UI Application from the HTTP request's session context
+             */
+
+            this.$.loadTypeExplorerAjaxId.method ="post";
+            this.$.loadTypeExplorerAjaxId.body = serverDetails;
+            this.$.loadTypeExplorerAjaxId.url = "/api/types/rexTypeExplorer";
+            this.$.loadTypeExplorerAjaxId._go();
+
         }
         else {
             alert("Please check serverName and serverURLRoot fields are set - then retry");
@@ -152,6 +154,7 @@ class TypeManager extends PolymerElement {
     }
 
 
+// TODO - rename to make these explicitly about the types
     /*
      * Helper function to retrieve entities from TEX
      */
@@ -195,4 +198,4 @@ class TypeManager extends PolymerElement {
 
 }
 
-window.customElements.define('type-manager', TypeManager);
+window.customElements.define('rex-type-manager', RexTypeManager);

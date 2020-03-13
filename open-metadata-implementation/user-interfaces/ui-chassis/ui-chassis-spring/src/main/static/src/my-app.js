@@ -150,6 +150,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage/[[subviewData.subview]]/[[subrouteData2.guid]]">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
                     <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
+                    <div name="repository-explorer"><a href="[[rootPath]]#/repository-explorer">Repository Explorer</a></div>
                   </iron-selector>
 
                 </app-drawer>
@@ -184,6 +185,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
                     <asset-lineage-view language="[[language]]" name="asset-lineage" guid="[[subrouteData2.guid]]" usecase="[[subviewData.subview]]"></asset-lineage-view>
                     <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
+                    <repository-explorer-view language="[[language]]" name="repository-explorer"></repository-explorer-view>
                     <my-view404 name="view404"></my-view404>
                   </iron-pages>
 
@@ -222,7 +224,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             },
             pages: {
                 type: Array,
-                value: ['asset-search', 'subject-area', 'asset-lineage', 'type-explorer']
+                value: ['asset-search', 'subject-area', 'asset-lineage', 'type-explorer', 'repository-explorer']
             },
             feedback: {
                 type: Object,
@@ -240,6 +242,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     'subject-area': {label: 'Subject Area', href: "/subject-area"},
                     'asset-lineage': {label: 'Asset Lineage', href: "/asset-lineage"},
                     'type-explorer': {label: 'Type Explorer', href: "/type-explorer"},
+                    'repository-explorer': {label: 'Repository Explorer', href: "/repository-explorer"},
                     'ultimateSource': {label: 'Ultimate Source', href: "/ultimateSource"},
                     'ultimateDestination': {label: 'Ultimate Destination', href: "/ultimateDestination"},
                     'endToEnd': {label: 'End To End Lineage', href: "/endToEnd"},
@@ -355,6 +358,9 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 break;
             case 'type-explorer':
                 import('./type-explorer/type-explorer-view.js');
+                break;
+            case 'repository-explorer':
+                import('./repository-explorer/repository-explorer-view.js');
                 break;
             case 'view404':
                 import('./asset-search/my-view404.js');
