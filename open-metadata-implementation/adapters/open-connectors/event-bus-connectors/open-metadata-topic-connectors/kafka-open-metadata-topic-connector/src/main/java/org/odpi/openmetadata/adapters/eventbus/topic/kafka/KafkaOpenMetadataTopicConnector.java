@@ -16,7 +16,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * KafkaOMRSTopicConnector provides a concrete implementation of the OMRSTopicConnector that
  * uses native Apache Kafka as the event/messaging infrastructure.
@@ -38,6 +37,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
     private String       topicName          = null;
     private String       serverId           = null;
+    /* this buffer is for consumed events */
     private List<IncomingEvent> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
 
     private KafkaProducerExecutor executor = null;

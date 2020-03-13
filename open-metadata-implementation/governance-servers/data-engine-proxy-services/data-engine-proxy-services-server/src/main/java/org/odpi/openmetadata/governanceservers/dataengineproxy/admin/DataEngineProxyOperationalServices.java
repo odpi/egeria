@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.dataengineproxy.admin;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineImpl;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -14,6 +15,8 @@ import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngi
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.processor.DataEngineProxyChangePoller;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+
+import java.text.MessageFormat;
 
 /**
  * DataEngineProxyOperationalServices is responsible for controlling the startup and shutdown of
@@ -55,64 +58,37 @@ public class DataEngineProxyOperationalServices {
     public void initialize(DataEngineProxyConfig dataEngineProxyConfig, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
 
         final String methodName = "initialize";
-        final String actionDescription = "initialize";
-
-        DataEngineProxyAuditCode auditCode = DataEngineProxyAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
 
         this.auditLog = auditLog;
+        auditLog.logMessage(methodName, DataEngineProxyAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         if (dataEngineProxyConfig == null) {
-            auditCode = DataEngineProxyAuditCode.NO_CONFIG_DOC;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(localServerName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            AuditLogMessageDefinition error = DataEngineProxyAuditCode.NO_CONFIG_DOC.getMessageDefinition(localServerName);
+            auditLog.logMessage(methodName, error);
             throw new OMAGConfigurationErrorException(500,
                     this.getClass().getName(),
                     methodName,
-                    auditCode.getFormattedLogMessage(localServerName),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+                    MessageFormat.format(error.getMessageTemplate(), error.getMessageParams()),
+                    error.getSystemAction(),
+                    error.getUserAction());
         } else if (dataEngineProxyConfig.getAccessServiceRootURL() == null) {
-            auditCode = DataEngineProxyAuditCode.NO_OMAS_SERVER_URL;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(localServerName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            AuditLogMessageDefinition error = DataEngineProxyAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName);
+            auditLog.logMessage(methodName, error);
             throw new OMAGConfigurationErrorException(500,
                     this.getClass().getName(),
                     methodName,
-                    auditCode.getFormattedLogMessage(localServerName),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+                    MessageFormat.format(error.getMessageTemplate(), error.getMessageParams()),
+                    error.getSystemAction(),
+                    error.getUserAction());
         } else if (dataEngineProxyConfig.getAccessServiceServerName() == null) {
-            auditCode = DataEngineProxyAuditCode.NO_OMAS_SERVER_NAME;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(localServerName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            AuditLogMessageDefinition error = DataEngineProxyAuditCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName);
+            auditLog.logMessage(methodName, error);
             throw new OMAGConfigurationErrorException(500,
                     this.getClass().getName(),
                     methodName,
-                    auditCode.getFormattedLogMessage(localServerName),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+                    MessageFormat.format(error.getMessageTemplate(), error.getMessageParams()),
+                    error.getSystemAction(),
+                    error.getUserAction());
         }
 
         /*
@@ -159,37 +135,16 @@ public class DataEngineProxyOperationalServices {
                 }
                 // TODO: otherwise we likely need to look for and process events
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
-                auditCode = DataEngineProxyAuditCode.ERROR_INITIALIZING_CONNECTION;
-                this.auditLog.logRecord("ChangePoller construction",
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        e.getErrorMessage(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+                this.auditLog.logException(methodName, DataEngineProxyAuditCode.ERROR_INITIALIZING_CONNECTION.getMessageDefinition(), e);
             } finally {
                 changePoller.stop();
             }
         }
 
         if (dataEngineConnector != null && dataEngineConnector.isActive()) {
-            auditCode = DataEngineProxyAuditCode.SERVICE_INITIALIZED;
-            this.auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(dataEngineConnector.getConnection().getConnectorType().getConnectorProviderClassName()),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.SERVICE_INITIALIZED.getMessageDefinition(dataEngineConnector.getConnection().getConnectorType().getConnectorProviderClassName()));
         } else {
-            auditCode = DataEngineProxyAuditCode.NO_CONFIG_DOC;
-            this.auditLog.logRecord(methodName,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.NO_CONFIG_DOC.getMessageDefinition());
         }
 
     }
@@ -210,24 +165,10 @@ public class DataEngineProxyOperationalServices {
             }
             // Disconnect the data engine connector
             dataEngineConnector.disconnect();
-            auditCode = DataEngineProxyAuditCode.SERVICE_SHUTDOWN;
-            auditLog.logRecord(methodName,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(localServerName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            auditLog.logMessage(methodName, DataEngineProxyAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(localServerName));
             return true;
         } catch (Exception e) {
-            auditCode = DataEngineProxyAuditCode.ERROR_SHUTDOWN;
-            auditLog.logRecord(methodName,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            auditLog.logException(methodName, DataEngineProxyAuditCode.ERROR_SHUTDOWN.getMessageDefinition(), e);
             return false;
         }
     }
