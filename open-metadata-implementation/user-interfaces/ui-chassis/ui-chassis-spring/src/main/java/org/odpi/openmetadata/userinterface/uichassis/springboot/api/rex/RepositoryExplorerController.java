@@ -338,7 +338,7 @@ public class RepositoryExplorerController extends SecureController
             /*
              * We do not have an explicit repositoryName here so set repositoryName to serverName
              */
-            Connection connection = factory.getDefaultLocalRepositoryRemoteConnection(serverName, serverName, serverURLRoot);
+            Connection connection = factory.getDefaultLocalRepositoryRemoteConnection(serverName, serverURLRoot);
 
             ConnectorBroker connectorBroker = new ConnectorBroker();
 
