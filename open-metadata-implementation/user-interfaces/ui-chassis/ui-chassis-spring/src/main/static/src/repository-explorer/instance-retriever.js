@@ -158,16 +158,15 @@ class InstanceRetriever extends PolymerElement {
                         <!--This section is used to fetch the input from the input-field and display on the dialog using one-way data binding-->
 
                         <p>
-                        Results from {{searchCategory}} search on server {{serverName}} using expression \"{{searchText}}\"
+                        Results of {{searchCategory}} Search on server {{serverName}} using expression \"{{searchText}}\"
                         <p>
-                        Please select an instance from the list of results.
+                        Please select instances to add to the graph.
                         </p>
 
-                        <!--   Display the following per instance in the search results...
-                          --   1. The type name and label
-                          --   2. A checkbox to include/exclude from the traversal
-                          -->
-
+                        <!--   Display the following per instance in the search results...      -->
+                        <!--   1. The type name and label                                       -->
+                        <!--   2. A checkbox to include/exclude from the traversal              -->
+                        <!--                                                                    -->
 
                         <div id="containerForSearchResults">
                         </div>

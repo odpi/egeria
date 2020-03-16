@@ -49,7 +49,7 @@ class RelationshipSearchResults extends MutableData(PolymerElement) {
             <div style="height:200px; width:700px; overflow:auto;">
                 <div class="row">
                     <div class="column">
-                        <h2>Search found the following instances...</h2>
+                        <b>Relationships</b>
                         <dom-repeat items="{{instances}}">
                             <template>
                                 <div>
