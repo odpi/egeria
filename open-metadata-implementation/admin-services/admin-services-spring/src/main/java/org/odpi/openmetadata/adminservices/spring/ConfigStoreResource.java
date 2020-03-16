@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * ConfigStoreResource provides the API to configure the destination that should be used to manage
+ * ConfigStoreResource provides the API to configure the connector that should be used to manage
  * configuration documents.  The default is to use a file for each configured OMAG server.
  */
 @RestController
@@ -21,7 +21,7 @@ public class ConfigStoreResource
 
 
     /**
-     * Override the default location of the configuration documents.
+     * Override the default implementation or configuration of the configuration document store.
      *
      * @param userId calling user.
      * @param connection connection used to create and configure the connector that interacts with

@@ -9,10 +9,16 @@
     <parent>
         <artifactId>open-metadata-deployment</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <name>Open Metadata Docker Images</name>
     <description>
@@ -22,15 +28,6 @@
     <artifactId>open-metadata-docker</artifactId>
 
     <packaging>pom</packaging>
-    <modules>
-        <module>build-images</module>
-        <module>apache-atlas</module>
-        <module>apache-ranger-admin</module>
-        <module>configure</module>
-        <module>egeria</module>
-        <module>gaian</module>
-        <module>omrs-monitor</module>
-    </modules>
 
     <!-- Default docker registry to use -->
     <properties>
@@ -59,11 +56,13 @@
                             <rules>
                                 <requireProperty>
                                     <property>docker.registry</property>
-                                    <message>You must specify a docker registry to use via '-Ddocker.registry=xxxxx!</message>
+                                    <message>You must specify a docker registry to use via '-Ddocker.registry=xxxxx!
+                                    </message>
                                 </requireProperty>
                                 <requireProperty>
                                     <property>docker.repo</property>
-                                    <message>You must specify a docker repository to use via '-Ddocker.repo=xxxxx!</message>
+                                    <message>You must specify a docker repository to use via '-Ddocker.repo=xxxxx!
+                                    </message>
                                 </requireProperty>
                             </rules>
                             <fail>true</fail>
@@ -73,4 +72,39 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- Set docker.images to 'core' for base images only, 'ext' for only extended images, otherwise all will be built -->
+    <profiles>
+        <profile>
+            <id>extended images</id>
+            <activation>
+                <property>
+                    <name>docker.images</name>
+                    <value>!core</value>
+                </property>
+            </activation>
+            <modules>
+                <module>build-images</module>
+                <module>apache-atlas</module>
+                <module>apache-ranger-admin</module>
+                <module>gaian</module>
+                <module>omrs-monitor</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>core images</id>
+            <activation>
+                <property>
+                    <name>docker.images</name>
+                    <value>!ext</value>
+                </property>
+            </activation>
+            <modules>
+                <module>configure</module>
+                <module>egeria</module>
+                <module>jupyter</module>
+            </modules>
+        </profile>
+    </profiles>
+
 </project>

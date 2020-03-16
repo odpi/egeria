@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +35,6 @@ public class OpenLineageService {
 
     public static final String EDGES_LABEL = "edges";
     public static final String NODES_LABEL = "nodes";
-    public static final String GLOSSARY_TERM = "glossaryTerm";
     private final OpenLineageClient openLineageClient;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
@@ -89,7 +87,8 @@ public class OpenLineageService {
     public Map<String, List> getUltimateDestination(String userId, String guid, boolean includeProcesses) {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "", includeProcesses);
+            response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "",
+                    includeProcesses);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error(e.getErrorMessage(), e);
         }
@@ -123,7 +122,8 @@ public class OpenLineageService {
     public Map<String, List> getSourceAndDestination(String userId, String guid, boolean includeProcesses) {
         LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "", includeProcesses);
+            response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "",
+                    includeProcesses);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error(e.getErrorMessage(), e);
         }
@@ -176,13 +176,6 @@ public class OpenLineageService {
      */
     private Node createNode(LineageVertex currentNode) {
         String displayName = currentNode.getDisplayName();
-        String glossaryTerm = "";
-        if (!CollectionUtils.isEmpty(currentNode.getProperties())) {
-            glossaryTerm = currentNode.getProperties().get(GLOSSARY_TERM);
-        }
-        if (!StringUtils.isEmpty(glossaryTerm)) {
-            displayName = displayName + "\n" + glossaryTerm;
-        }
         Node node = new Node(currentNode.getNodeID(), displayName);
         node.setGroup(currentNode.getNodeType());
         node.setProperties(currentNode.getProperties());

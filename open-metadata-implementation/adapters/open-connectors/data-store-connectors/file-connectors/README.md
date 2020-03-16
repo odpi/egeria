@@ -10,10 +10,18 @@ The File Connectors module contains connectors to different types of data stores
 It has no special knowledge of the format.
 
 * **[avro-file-connector](avro-file-connector)** provides connector to read files
-that have an [Apache Avro](https://avro.apache.org/https://avro.apache.org/) format.
+that have an [Apache Avro](https://avro.apache.org/) format.
 
 * **[csv-file-connector](csv-file-connector)** provides connector to read files
 that have a CSV tabular format.
 
 * **[data-folder-connector](data-folder-connector)** provides connector to read a data set that is made up of many files
 stored within a data folder.
+
+
+----
+Return to the [data-store-connectors](..) module.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

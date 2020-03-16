@@ -11,6 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
  */
 public class EnterpriseOMRSConnection extends ConnectionProperties
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default Constructor that sets up the connector
      */

@@ -16,7 +16,7 @@ public class OMRSTopicProvider extends ConnectorProviderBase
      */
     public OMRSTopicProvider()
     {
-        Class    connectorClass = OMRSTopicConnector.class;
+        Class<OMRSTopicConnector>    connectorClass = OMRSTopicConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
     }

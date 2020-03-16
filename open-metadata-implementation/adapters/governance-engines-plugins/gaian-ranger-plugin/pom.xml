@@ -5,6 +5,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <artifactId>gaian-ranger-plugin</artifactId>
     <name>Ranger Gaian Plugin</name>
     <description>Ranger Gaian Plugin</description>
@@ -12,7 +18,7 @@
 
     <parent>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
         <artifactId>governance-engines-plugins</artifactId>
     </parent>
 
@@ -77,7 +83,7 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <executions>
                     <execution>
-			            <id>assemble></id>
+                        <id>assemble></id>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>

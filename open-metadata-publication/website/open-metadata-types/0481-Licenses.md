@@ -10,7 +10,7 @@ The license will define the permitted uses and other requirements for using the 
 Details of a type of license are described in a **LicenseType**.
 The asset that is licensed is identified with the **License** relationship.
 
-![UML](0481-Licenses.png)
+![UML](0481-Licenses.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

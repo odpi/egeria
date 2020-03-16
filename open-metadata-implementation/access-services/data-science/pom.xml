@@ -10,16 +10,22 @@
     <parent>
         <artifactId>access-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <name>Data Science OMAS</name>
     <description>
         The Data Science Open Metadata Access Service (OMAS) provides APIs and events for tools and applications
         focused on building all types of analytics models such as predictive models
-        and machine learning models.  It provides the ability to define the purpose
+        and machine learning models. It provides the ability to define the purpose
         and requirements for a model, along with lineage and audit information relating
         to the development and validation process associated with the model.
     </description>

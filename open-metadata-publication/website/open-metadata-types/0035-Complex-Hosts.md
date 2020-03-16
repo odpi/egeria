@@ -11,7 +11,7 @@ hosts and for multiple computers to collectively support a single host.
 The complex hosts handle environments where many nodes are acting together as
 a cluster, and where virtualized containers (such as Docker) are being used.
 
-![UML](0035-Complex-Hosts.png)
+![UML](0035-Complex-Hosts.png#pagewidth)
 
 A HostCluster describes a collection of hosts that together are providing a service.
 Clusters are often used to provide horizontal scaling of services.

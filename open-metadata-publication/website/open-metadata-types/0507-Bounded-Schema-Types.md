@@ -9,7 +9,7 @@ Examples include sets and arrays.
 These have been deprecated in favor of representing such information directly
 as part of a [SchemaAttribute](0505-Schema-Attributes.md)'s properties.
 
-![UML](0507-Bounded-Schema-Types.png)
+![UML](0507-Bounded-Schema-Types.png#pagewidth)
 
 Return to [Area 5](Area-5-models.md).
 

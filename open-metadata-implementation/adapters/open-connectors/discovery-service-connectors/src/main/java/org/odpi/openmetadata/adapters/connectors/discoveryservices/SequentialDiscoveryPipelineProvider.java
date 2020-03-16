@@ -21,7 +21,7 @@ public class SequentialDiscoveryPipelineProvider extends DiscoveryServiceProvide
      */
     public SequentialDiscoveryPipelineProvider()
     {
-        Class    connectorClass = SequentialDiscoveryPipelineProvider.class;
+        Class<?> connectorClass = SequentialDiscoveryPipeline.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

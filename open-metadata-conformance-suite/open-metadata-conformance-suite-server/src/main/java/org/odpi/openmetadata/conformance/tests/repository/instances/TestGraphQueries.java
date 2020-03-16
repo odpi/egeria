@@ -436,7 +436,7 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
          */
         EntityDetail connectToEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), entityGUID);
         String connectToEntityTypeName = connectToEntity.getType().getTypeDefName();
-        List<List<String>> possibleRelTypeNames = ((RepositoryConformanceWorkPad) workPad).getEntityRelationshipTypes(connectToEntityTypeName);
+        List<List<String>> possibleRelTypeNames = workPad.getEntityRelationshipTypes(connectToEntityTypeName);
 
         int fanout = 0;
         int endChoice = 1;

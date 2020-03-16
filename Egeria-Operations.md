@@ -32,7 +32,7 @@ There are different roles in the Egeria project.
 ### Egeria project members
 
 Anyone can become a member of the Egeria community by signing up to the [mailing
-list](https://lists.odpi.org/g/odpi-pmc-datagovernance).
+list](https://lists.odpi.org/g/odpi-project-egeria).
 As a member you are able to attend our meetings, just to listen, or to play an active part in the discussion.
 
 When you attend, your name will be recorded in the meeting minutes along with any remarks or suggestions you make.
@@ -217,6 +217,17 @@ branch creation:
 1. After the release promotion is approved, the artifacts will be
    distributed to [Bintray](https://bintray.com/odpi) which will sign
    them and sync them to [Maven Central](https://oss.sonatype.org).
+
+### Release Process Troubleshooting
+
+The Linux Foundation maintains a Knowledge Base (KB) of articles on
+possible issues that may arise during the release process:
+ * [Including a New Package in the Release](https://confluence.linuxfoundation.org/display/ITKB/Including+Bintray+Packages+in+JCenter)
+ * [Fixing Package Corruption](https://confluence.linuxfoundation.org/display/ITKB/Redistribute+Artifacts+to+Bintray)
+ * [Getting Packages Synced to Maven-Central](https://confluence.linuxfoundation.org/display/ITKB/Sync+Artifacts+from+Bintray+to+Maven+Central)
+
+If the KB articles are not able to fix the problem, please open a ticket
+with [Linux Foundation support](https://jira.linuxfoundation.org/servicedesk/customer/portal/2)
 
 ## Conflict resolution and voting
 

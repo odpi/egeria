@@ -689,10 +689,10 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private String addExternalSchemaAttribute(String               userId,
-                                              SchemaAttribute      schemaAttribute,
-                                              String               externalSourceGUID,
-                                              String               externalSourceName) throws InvalidParameterException,
+    public String addExternalSchemaAttribute(String               userId,
+                                             SchemaAttribute      schemaAttribute,
+                                             String               externalSourceGUID,
+                                             String               externalSourceName) throws InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException
     {
@@ -721,9 +721,9 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private String updateSchemaAttribute(String           userId,
-                                         String           existingSchemaAttributeGUID,
-                                         SchemaAttribute  schemaAttribute) throws InvalidParameterException,
+    public String updateSchemaAttribute(String           userId,
+                                        String           existingSchemaAttributeGUID,
+                                        SchemaAttribute  schemaAttribute) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
@@ -1037,12 +1037,12 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private String addExternalSchemaType(String                userId,
-                                         SchemaType            schemaType,
-                                         String                externalSourceGUID,
-                                         String                externalSourceName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException
+    public String addExternalSchemaType(String                userId,
+                                        SchemaType            schemaType,
+                                        String                externalSourceGUID,
+                                        String                externalSourceName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
     {
         final String methodName = "addExternalSchemaType";
 
@@ -1069,9 +1069,9 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private String updateSchemaType(String      userId,
-                                    String      existingSchemaTypeGUID,
-                                    SchemaType  schemaType) throws InvalidParameterException,
+    public String updateSchemaType(String      userId,
+                                   String      existingSchemaTypeGUID,
+                                   SchemaType  schemaType) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {

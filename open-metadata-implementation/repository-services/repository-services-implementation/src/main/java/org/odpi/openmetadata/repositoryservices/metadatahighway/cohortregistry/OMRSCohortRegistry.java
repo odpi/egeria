@@ -373,7 +373,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
             {
                 for (MemberRegistration  remoteMember : remoteRegistrations)
                 {
-                    if (remoteMember != null)
+                    if ((remoteMember != null) && (remoteMember.getRepositoryConnection() != null))
                     {
                         this.registerRemoteConnectionWithConsumer(remoteMember.getMetadataCollectionId(),
                                                                   remoteMember.getMetadataCollectionName(),

@@ -9,9 +9,15 @@
     <parent>
         <artifactId>open-types-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <packaging>pom</packaging>
 
@@ -81,7 +87,8 @@
                                         <!-- generating code here -->
                                         <property name="antDirectory" value="${project.basedir}/../../../../"/>
                                         <echo message="Directory is: ${antDirectory}"/>
-                                        <java classname="org.odpi.openmetadata.fvt.opentypes.generators.OmrsBeanGenerator" fork="true" failonerror="true" dir="${antDirectory}">
+                                        <java classname="org.odpi.openmetadata.fvt.opentypes.generators.OmrsBeanGenerator"
+                                              fork="true" failonerror="true" dir="${antDirectory}">
                                             <classpath>
                                                 <path refid="maven.compile.classpath"/>
                                                 <path refid="maven.plugin.classpath"/>
@@ -119,7 +126,7 @@
                                 </goals>
                             </execution>
                         </executions>
-                        </plugin>
+                    </plugin>
 
                     <plugin>
                         <artifactId>maven-clean-plugin</artifactId>
@@ -137,23 +144,24 @@
 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-dependency-plugin</artifactId>
-                                <executions>
-                                    <execution>
-                                        <phase>test</phase>
-                                    <id>analyze</id>
-                                    <goals>
-                                        <goal>analyze-only</goal>
-                                    </goals>
-                                    <configuration>
-                                        <ignoredUnusedDeclaredDependencies combine.children="append">
-                                            <!-- Code generator is a hidden dependency via antrun - we need it for the build process, so need to declare here -->
-                                            <ignoredUnusedDeclaredDependency>org.odpi.egeria:open-types-test-generator:*</ignoredUnusedDeclaredDependency>
-                                        </ignoredUnusedDeclaredDependencies>
-                                  </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>test</phase>
+                                <id>analyze</id>
+                                <goals>
+                                    <goal>analyze-only</goal>
+                                </goals>
+                                <configuration>
+                                    <ignoredUnusedDeclaredDependencies combine.children="append">
+                                        <!-- Code generator is a hidden dependency via antrun - we need it for the build process, so need to declare here -->
+                                        <ignoredUnusedDeclaredDependency>org.odpi.egeria:open-types-test-generator:*
+                                        </ignoredUnusedDeclaredDependency>
+                                    </ignoredUnusedDeclaredDependencies>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
 
                     <!-- Disable heavy bug checks for generated code. too intensive for build process -->
                     <plugin>

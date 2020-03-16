@@ -1,6 +1,26 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 ---
+
+# Egeria information
+# repomode: supported values are in-memory-repository & local-graph-repository
+# version: This is used for egeria images rather than 'tag' above, which is only used for other images
+egeria:
+  version: 1.6-SNAPSHOT
+  repomode: local-graph-repository
+  user: myuser
+  cohort: coco
+  server: myserver
+
+# Default values used for images
+# 'tag' is only used for images other than connectors/egeria where the version above is used
+imageDefaults:
+  registry: docker.io
+  namespace: odpi
+  tag: latest
+  pullPolicy: Always
+
+
 # Network configuration
 # note that load balancer configuration tends to be cloud-specific
 # So review the templates/loadbalancer* files for any
@@ -46,7 +66,6 @@ service:
     apachezookeeper: 32181
     solr: 30983
     # Set this to address of one of the local nodes - public IP
-    omrsmonitor: 31080
     externalip: 10.10.1.30
     # KAFKA is not exposed externally (issues in chart, complexity)
 
@@ -60,9 +79,6 @@ istio:
   enabled: false
 
 # Options to switch off certain components (not egeria)
-omrsmonitor:
-  enabled: true
-
 ui:
   enabled: true
 
@@ -97,34 +113,13 @@ apachezookeeper:
 debug:
   egeriaJVM: false
 
-# Logging level - affects all spring components by setting LOG_LEVEL_ROOT. Default to no DEBUG - Auditlog only
+# Logging level - affects all spring components by setting LOG_LEVEL_ROOT. 
 logging:
   level: OFF
 
 # Egeria Conformance Test Suite - sets up to run against all Egeria repositories (if enabled=true)
 cts:
   enabled: false
-
-# Connectors information
-# - repo should be either 'snapshot' or 'release'
-#   - when 'snapshot', version should be <version>-SNAPSHOT  (eg. 1.5-SNAPSHOT)
-#   - when 'release', version should be <version>  (eg. 1.3)
-connectors:
-  repo: snapshot
-  version: 1.5-SNAPSHOT
-
-imageDefaults:
-  registry: docker.io
-  namespace: odpi
-  tag: latest
-  pullPolicy: IfNotPresent
-
-# supported values are in-memory-repository & local-graph-repository
-egeria:
-  repomode: local-graph-repository
-  user: myuser
-  cohort: coco
-  server: myserver
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
@@ -140,9 +135,6 @@ image:
 
   configure:
     name: egeria-configure
-
-  omrsmonitor:
-    name: omrsmonitor-egeriavdc
 
   atlas:
     name: apache-atlas

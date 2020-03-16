@@ -10,16 +10,22 @@
     <parent>
         <artifactId>access-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <name>Data Platform OMAS</name>
     <description>
         The Data Platform Open Metadata Access Service (OMAS)
         provides APIs for tools and applications wishing to register
-        new data assets.  It provides the ability to register the host,
+        new data assets. It provides the ability to register the host,
         platform and location of the
         data platform itself along with the data assets it hosts.
     </description>

@@ -5,7 +5,7 @@
 
 Document stores describes a specialist type of server that manages documents and their metadata.
 
-![UML](0221-Document-Stores.png)
+![UML](0221-Document-Stores.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

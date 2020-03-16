@@ -52,7 +52,7 @@ public enum OpenLineageServerAuditCode {
 
     ERROR_OBTAINING_IN_TOPIC_CONNECTOR("OPEN-LINEAGE-0007",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The Open Lineage Services server {0} was unable to obtain an in topic connector with the provided configuration {1}.",
+            "The Open Lineage Services server {0} is unable to obtain an in topic connector with the provided configuration {1}.",
             "The in topic connector could not be obtained.",
             "Review the topic name set by the Open Lineage Services configuration."),
 
@@ -101,7 +101,7 @@ public enum OpenLineageServerAuditCode {
 
     ERROR_INITIALIZING_OLS("OPEN-LINEAGE-SERVICES-0015",
             OMRSAuditLogRecordSeverity.ERROR,
-            "The Open Lineage Services server {0} encountered an unexpected error and could not start. The server configuration was {1}.",
+            "The Open Lineage Services server {0} encountered an unknown error and could not start. The server configuration was {1}.",
             "An unexpected error occurred while initializing the Open Lineage Services.",
             "Please contact an Egeria maintainer about your issue."),
 
@@ -110,8 +110,28 @@ public enum OpenLineageServerAuditCode {
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Event {0} could not be consumed. Error: {1}",
             "The system is unable to process the request.",
-            "Verify the topic configuration.");
+            "Verify the topic configuration."),
 
+
+    ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0017",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage Services server {0} encountered an error while disconnecting the Buffergraph connector",
+            "An error occured while disconnecting the Buffergraph connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    ERROR_DISCONNECTING_MAIN_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0018",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage Services server {0} encountered an error while disconnecting the Maingraph connector",
+            "An error occured while disconnecting the Maingraph connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR("OPEN-LINEAGE-SERVICES-0019",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage Services server {0} encountered an error while disconnecting the In-topic connector",
+            "An error occured while disconnecting the In-topic connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    ;
     private static final Logger log = LoggerFactory.getLogger(OpenLineageServerAuditCode.class);
     private String logMessageId;
     private OMRSAuditLogRecordSeverity severity;

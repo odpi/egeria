@@ -7,6 +7,8 @@ package org.odpi.openmetadata.accessservices.stewardshipaction.rest;
  */
 public class MockAPIResponse extends StewardshipActionOMASAPIResponse
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */

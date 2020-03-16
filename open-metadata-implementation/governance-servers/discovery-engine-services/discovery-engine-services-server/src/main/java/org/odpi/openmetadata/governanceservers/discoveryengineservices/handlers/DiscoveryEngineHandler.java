@@ -3,6 +3,9 @@
 package org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.*;
+import org.odpi.openmetadata.adapters.connectors.discoveryservices.CSVDiscoveryServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.discoveryservices.DuplicateSuspectDiscoveryProvider;
+import org.odpi.openmetadata.adapters.connectors.discoveryservices.SequentialDiscoveryPipelineProvider;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
@@ -34,6 +37,13 @@ public class DiscoveryEngineHandler
     private String                    discoveryEngineGUID         = null;
     private DiscoveryEngineProperties discoveryEngineProperties   = null;
     private DiscoveryServiceCacheMap  discoveryServiceLookupTable = new DiscoveryServiceCacheMap();
+
+    /*
+     * Ensure standard discovery services are available to the discovery engines.
+     */
+    private CSVDiscoveryServiceProvider         csvDiscoveryServiceProvider;
+    private DuplicateSuspectDiscoveryProvider   duplicateSuspectDiscoveryProvider;
+    private SequentialDiscoveryPipelineProvider sequentialDiscoveryPipelineProvider;
 
 
     /**
@@ -170,14 +180,8 @@ public class DiscoveryEngineHandler
          */
         final String actionDescription = "Retrieve all discovery service configuration";
 
-        DiscoveryEngineServicesAuditCode auditCode = DiscoveryEngineServicesAuditCode.CLEARING_ALL_DISCOVERY_SERVICE_CONFIG;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(discoveryEngineName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            DiscoveryEngineServicesAuditCode.CLEARING_ALL_DISCOVERY_SERVICE_CONFIG.getMessageDefinition(discoveryEngineName));
 
         discoveryServiceLookupTable.clear();
 
@@ -213,14 +217,8 @@ public class DiscoveryEngineHandler
             }
         }
 
-        auditCode = DiscoveryEngineServicesAuditCode.FINISHED_ALL_DISCOVERY_SERVICE_CONFIG;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(discoveryEngineName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            DiscoveryEngineServicesAuditCode.FINISHED_ALL_DISCOVERY_SERVICE_CONFIG.getMessageDefinition(discoveryEngineName));
     }
 
 
@@ -551,16 +549,9 @@ public class DiscoveryEngineHandler
     public void terminate()
     {
         final String                     actionDescription = "terminate";
-        DiscoveryEngineServicesAuditCode auditCode;
 
-        auditCode = DiscoveryEngineServicesAuditCode.ENGINE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(discoveryEngineName, serverName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            DiscoveryEngineServicesAuditCode.ENGINE_SHUTDOWN.getMessageDefinition(discoveryEngineName, serverName));
 
         discoveryEngineProperties = null;
         discoveryServiceLookupTable.clear();

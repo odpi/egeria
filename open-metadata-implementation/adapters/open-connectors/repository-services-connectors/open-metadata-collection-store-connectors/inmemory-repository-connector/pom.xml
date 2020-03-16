@@ -10,14 +10,20 @@
     <parent>
         <artifactId>open-metadata-collection-store-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>In-memory Repository Connector</name>
     <description>
-        The in-memory repository connector provides a local repository that is entirely in memory.  Its is useful for
+        The in-memory repository connector provides a local repository that is entirely in memory. Its is useful for
         testing/developing OMASs and demos.
     </description>
 
@@ -28,7 +34,7 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
-         </dependency>
+        </dependency>
 
         <dependency>
             <groupId>org.testng</groupId>

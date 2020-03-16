@@ -6,7 +6,7 @@
 Data class discovery captures the analysis on how close a data field matches the specification
 defined in a data class.
 
-![UML](0625-Data-Class-Discovery.png)
+![UML](0625-Data-Class-Discovery.png#pagewidth)
 
 Return to [Area 6](Area-6-models.md).
 

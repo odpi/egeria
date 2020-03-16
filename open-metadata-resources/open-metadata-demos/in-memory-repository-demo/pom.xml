@@ -7,21 +7,28 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-<parent>
-    <artifactId>open-metadata-demos</artifactId>
-    <groupId>org.odpi.egeria</groupId>
-    <version>1.5-SNAPSHOT</version>
-</parent>
+    <parent>
+        <artifactId>open-metadata-demos</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>1.6-SNAPSHOT</version>
+    </parent>
 
-<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-<name>Cohort demo using the in Memory repository</name>
-<description>
-    Demonstration of two in memory repositories in a cohort, show-casing metadata synchronization using only Egeria code and Kafka.
-</description>
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
-<artifactId>in-memory-repository-demo</artifactId>
+    <name>Cohort demo using the in Memory repository</name>
+    <description>
+        Demonstration of two in memory repositories in a cohort, show-casing metadata synchronization using only Egeria
+        code and Kafka.
+    </description>
 
-<packaging>pom</packaging>
+    <artifactId>in-memory-repository-demo</artifactId>
+
+    <packaging>pom</packaging>
 
 </project>

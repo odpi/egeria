@@ -5,7 +5,7 @@
 
 Graph stores describe a type of data store that has its content organized as a graph.
 
-![UML](0222-Graph-Stores.png)
+![UML](0222-Graph-Stores.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

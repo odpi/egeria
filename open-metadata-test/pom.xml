@@ -9,13 +9,20 @@
     <parent>
         <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>Open Metadata Test Resources</name>
     <description>
-        The open metadata test resources contains Functional Verification Test (FVT) and System Verification Test (SVT) resources.
+        The open metadata test resources contains Functional Verification Test (FVT) and System Verification Test (SVT)
+        resources.
     </description>
 
     <artifactId>open-metadata-test</artifactId>
@@ -30,10 +37,10 @@
                     <!-- temp fix. See issue #2136 -->
                     <name>!skipFVT</name>
                 </property>
-	    </activation>
+            </activation>
             <modules>
                 <module>open-metadata-fvt</module>
-	    </modules>
+            </modules>
         </profile>
     </profiles>
 

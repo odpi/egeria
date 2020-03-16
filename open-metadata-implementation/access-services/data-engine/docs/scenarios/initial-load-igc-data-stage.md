@@ -16,7 +16,7 @@ for more details.
 Request to use is: 
 
 ```
-POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/processes
 ```
 
 `ProcessListResponse` - response containing the guids of the created processes 

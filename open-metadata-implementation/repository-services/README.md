@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![Released](../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # Open Metadata Repository Services (OMRS)
 
 The Open Metadata Repository Services (OMRS) enable metadata repositories to exchange metadata
@@ -88,6 +90,7 @@ support for the peer-to-peer metadata exchange and federation.
 * **[repository-services-spring](repository-services-spring)** uses spring to create the OMRS REST services.
 
 
+Return to [open-metadata-implementation](..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

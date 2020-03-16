@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
+![Released](../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # Encrypted Configuration File Store Connector
 
 The encrypted configuration file store connector supports managing the
@@ -41,6 +43,7 @@ to support other capabilities provided by Tink itself (like the use of
 remote Key Management Services to hold the master key) with some additional
 configuration inputs.
 
+Return to [configuration-store-connectors](..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

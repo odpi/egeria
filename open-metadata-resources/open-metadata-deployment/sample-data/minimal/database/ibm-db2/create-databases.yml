@@ -1,0 +1,35 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: pre-check database catalog status
+  shell: >
+    source ~/.bashrc &&
+    db2 list database directory
+  args:
+    executable: /bin/bash
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
+  become: yes
+  ignore_errors: yes
+  register: __minimal_db2catalog_completion
+  changed_when: False
+
+- name: ensure target directory exists
+  file:
+    path: "{{ egeria_samples_minimal_targets.db_location }}"
+    state: directory
+    mode: 0755
+    owner: "{{ egeria_samples_db_credentials.owner }}"
+    group: "{{ egeria_samples_db_credentials.group }}"
+  become: yes
+
+- name: create databases
+  shell: >
+    source ~/.bashrc &&
+    db2 create database {{ item | upper }} on '{{ egeria_samples_minimal_targets.db_location }}'
+  args:
+    executable: /bin/bash
+  become: yes
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
+  when: __minimal_db2catalog_completion.stdout.find(item) == -1
+  with_items: "{{ egeria_samples_minimal_databases }}"

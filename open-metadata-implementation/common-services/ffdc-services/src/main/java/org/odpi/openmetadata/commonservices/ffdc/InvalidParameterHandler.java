@@ -50,13 +50,11 @@ public class InvalidParameterHandler
      * used in OMAG Clients or OMAG Servers that call other OMAG Servers.
      *
      * @param omagServerPlatformURL url of the server
-     * @param serverName requested server
      * @param methodName  name of the method making the call.
      *
      * @throws InvalidParameterException the server URL or server name are not set
      */
     public void validateOMAGServerPlatformURL(String omagServerPlatformURL,
-                                              String serverName,
                                               String methodName) throws InvalidParameterException
     {
         if (omagServerPlatformURL == null)
@@ -74,6 +72,24 @@ public class InvalidParameterHandler
                                                 errorCode.getUserAction(),
                                                 parameterName);
         }
+    }
+
+
+    /**
+     * Throw an exception if a server URL or  has not been supplied.  It is typically
+     * used in OMAG Clients or OMAG Servers that call other OMAG Servers.
+     *
+     * @param omagServerPlatformURL url of the server
+     * @param serverName requested server
+     * @param methodName  name of the method making the call.
+     *
+     * @throws InvalidParameterException the server URL or server name are not set
+     */
+    public void validateOMAGServerPlatformURL(String omagServerPlatformURL,
+                                              String serverName,
+                                              String methodName) throws InvalidParameterException
+    {
+        this.validateOMAGServerPlatformURL(omagServerPlatformURL, methodName);
 
         if (serverName == null)
         {
@@ -426,6 +442,20 @@ public class InvalidParameterHandler
         if (connection == null)
         {
             OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_CONNECTION_PARAMETER;
+            String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(parameterName, methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                parameterName);
+        }
+
+        if (connection.getConnectorType() == null)
+        {
+            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_CONNECTOR_TYPE_PARAMETER;
             String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(parameterName, methodName);
 
             throw new InvalidParameterException(errorCode.getHTTPErrorCode(),

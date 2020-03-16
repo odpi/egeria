@@ -8,37 +8,43 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <groupId>org.odpi.egeria</groupId>
     <artifactId>subject-area-spring</artifactId>
 
-        <parent>
-            <artifactId>subject-area</artifactId>
+    <parent>
+        <artifactId>subject-area</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>1.6-SNAPSHOT</version>
+    </parent>
+
+    <name>Subject Area OMAS with Spring</name>
+    <description>
+        Spring-based REST API for the Subject Area Open Metadata Access Service (OMAS).
+    </description>
+
+    <dependencies>
+
+        <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <version>1.5-SNAPSHOT</version>
-        </parent>
+            <artifactId>subject-area-server</artifactId>
+        </dependency>
 
-        <name>Subject Area OMAS with Spring</name>
-        <description>
-            Spring-based REST API for the Subject Area Open Metadata Access Service (OMAS).
-        </description>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>subject-area-api</artifactId>
+        </dependency>
 
-        <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
 
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>subject-area-server</artifactId>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>subject-area-api</artifactId>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
-            </dependency>
-
-        </dependencies>
+    </dependencies>
 
 </project>

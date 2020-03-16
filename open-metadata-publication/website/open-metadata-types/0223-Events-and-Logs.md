@@ -3,7 +3,7 @@
 
 # 0223 Events and Logs
 
-![UML](0223-Events-and-Logs.png)
+![UML](0223-Events-and-Logs.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

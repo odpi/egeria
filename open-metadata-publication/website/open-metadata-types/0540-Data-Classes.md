@@ -13,7 +13,7 @@ the specification of a credit card number type that can be used
 by discovery engines to find more information out about
 the data values within an Asset.
 
-![UML](0540-Data-Classes.png)
+![UML](0540-Data-Classes.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).

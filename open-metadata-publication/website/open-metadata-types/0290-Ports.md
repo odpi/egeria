@@ -5,7 +5,7 @@
 
 Ports are used to define the interfaces of Processes.
 
-![UML](0290-Ports.png)
+![UML](0290-Ports.png#pagewidth)
 
 - **PortImplementation** - at the most detailed level, a PortImplementation defines the specific
     interface of a process: for example, its expected inputs or produced outputs.
@@ -15,7 +15,7 @@ Ports are used to define the interfaces of Processes.
     a particular PortAlias delegates to.
 - **ProcessPort** - defines the Port(s) that are used by a given Process as its interface(s).
 
-(See also [Lineage Relationships](0598-Lineage-Relationships.md).)
+(See also [Lineage Relationships](0298-Lineage-Relationships.md).)
 
 Return to [Area 2](Area-2-models.md).
 

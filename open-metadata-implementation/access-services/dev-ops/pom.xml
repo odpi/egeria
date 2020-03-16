@@ -10,15 +10,21 @@
     <parent>
         <artifactId>access-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>DevOps OMAS</name>
     <description>
         The DevOps Open Metadata Access Service (OMAS) provides APIs and events for tools that play a role in a
-        DevOps pipeline.  It enables these tools to query information about the assets it
+        DevOps pipeline. It enables these tools to query information about the assets it
         is deploying, the infrastructure options and any governance actions that need
         to be performed.
     </description>

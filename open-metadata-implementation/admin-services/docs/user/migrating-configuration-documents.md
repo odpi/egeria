@@ -16,7 +16,7 @@ configuration document and a message similar to this is returned:
     "exceptionClassName": "org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException",
     "exceptionErrorMessage": "OMAG-ADMIN-400-022 The configuration document for OMAG server cocoMDS1 is at version V1.0 which is not compatible with this OMAG Server Platform which supports versions [V2.0]",
     "exceptionSystemAction": "The system is unable to configure the local server because it can not read the configuration document.",
-    "exceptionUserAction": "Migrate the configuration document to a compatible version (or delete and recreate it).  See https://egeria.odpi.org/open-metadata-implementation/governance-servers/admin-services/docs/user/migrating-configuration-documents.html"
+    "exceptionUserAction": "Migrate the configuration document to a compatible version (or delete and recreate it).  See https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/migrating-configuration-documents.html"
 }
 ```
 

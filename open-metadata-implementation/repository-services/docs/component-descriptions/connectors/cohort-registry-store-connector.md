@@ -27,6 +27,13 @@ There is one local registration record describing the information sent to
 the other members of the cohort and a list of remote registration records received from
 the other members of the cohort.
 
+A implementations of this type of connector is
+located in the
+[adapters/open-connectors/repository-services-connectors/cohort-registry-store-connectors](../../../../adapters/open-connectors/repository-services-connectors/cohort-registry-store-connectors)
+module.
+
+----
+Return to [repository services connectors](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

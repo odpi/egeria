@@ -9,9 +9,15 @@
     <parent>
         <artifactId>access-services-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <artifactId>subject-area-fvt</artifactId>
     <name>Subject Area OMAS FVT</name>
@@ -41,7 +47,8 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>org.odpi.openmetadata.accessservices.subjectarea.fvt.RunAllFVTNow</mainClass>
+                                    <mainClass>org.odpi.openmetadata.accessservices.subjectarea.fvt.RunAllFVTNow
+                                    </mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>

@@ -7,9 +7,15 @@
     <parent>
         <artifactId>open-lineage-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <name>Open Lineage Janus Connector</name>
     <description>
@@ -79,9 +85,9 @@
         </dependency>
 
         <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <scope>test</scope>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -116,10 +122,14 @@
                         <configuration>
                             <ignoredUnusedDeclaredDependencies combine.children="append">
                                 <!-- Runtime dependencies for janusgraph-->
-                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cql:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-es:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-berkeleyje:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-lucene:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cql:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-es:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-berkeleyje:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-lucene:*
+                                </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>

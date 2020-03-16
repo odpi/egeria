@@ -335,6 +335,53 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
+     * Return the list of type names for all of the subtypes of an entity type.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param superTypeName name of the super type - this value is not included in the result.
+     * @return list of type names (a null means the type is not know or it has no sub types)
+     */
+    public List<String>  getSubTypesOf(String sourceName,
+                                       String superTypeName)
+    {
+        final String  methodName = "getSubTypesOf";
+
+        validateRepositoryContentManager(methodName);
+
+        List<String>  subTypeNames = new ArrayList<>();
+        List<TypeDef> typeDefs = repositoryContentManager.getKnownTypeDefs();
+
+        if (typeDefs != null)
+        {
+            for (TypeDef typeDef : typeDefs)
+            {
+                if (typeDef != null)
+                {
+                    if (! superTypeName.equals(typeDef.getName()))
+                    {
+                        if (repositoryContentManager.isTypeOf(sourceName,
+                                                              typeDef.getName(),
+                                                              superTypeName))
+                        {
+                            subTypeNames.add(typeDef.getName());
+                        }
+                    }
+                }
+            }
+        }
+
+        if (subTypeNames.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return subTypeNames;
+        }
+    }
+
+
+    /**
      * Return the names of all of the properties in the supplied TypeDef and all of its super-types.
      *
      * @param sourceName name of caller.

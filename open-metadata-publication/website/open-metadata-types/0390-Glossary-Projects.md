@@ -5,7 +5,7 @@
 
 A glossary project is used to develop new elements for the glossary.
 
-![UML](0390-Glossary-Projects.png)
+![UML](0390-Glossary-Projects.png#pagewidth)
 
 
 Return to [Area 3](Area-3-models.md).

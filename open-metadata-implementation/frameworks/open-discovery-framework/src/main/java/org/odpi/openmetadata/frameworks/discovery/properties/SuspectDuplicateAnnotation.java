@@ -62,18 +62,27 @@ public class SuspectDuplicateAnnotation extends Annotation
 
 
     /**
-     * Return the list of unique identifiers for the Assets that are identifier as duplicate suspects.
+     * Return the list of unique identifiers for the Assets that are identified as duplicate suspects.
      *
      * @return list of string guids
      */
     public List<String> getDuplicateAnchorGUIDs()
     {
+        if (duplicateAnchorGUIDs == null)
+        {
+            return null;
+        }
+        else if (duplicateAnchorGUIDs.isEmpty())
+        {
+            return null;
+        }
+
         return duplicateAnchorGUIDs;
     }
 
 
     /**
-     * Set up the list of unique identifiers for the Assets that are identifier as duplicate suspects.
+     * Set up the list of unique identifiers for the Assets that are identified as duplicate suspects.
      *
      * @param duplicateAnchorGUIDs list of string guids
      */
@@ -90,6 +99,15 @@ public class SuspectDuplicateAnnotation extends Annotation
      */
     public List<String> getMatchingPropertyNames()
     {
+        if (matchingPropertyNames == null)
+        {
+            return null;
+        }
+        else if (matchingPropertyNames.isEmpty())
+        {
+            return null;
+        }
+
         return matchingPropertyNames;
     }
 
@@ -112,6 +130,15 @@ public class SuspectDuplicateAnnotation extends Annotation
      */
     public List<String> getMatchingClassificationNames()
     {
+        if (matchingClassificationNames == null)
+        {
+            return null;
+        }
+        else if (matchingClassificationNames.isEmpty())
+        {
+            return null;
+        }
+
         return matchingClassificationNames;
     }
 
@@ -134,6 +161,15 @@ public class SuspectDuplicateAnnotation extends Annotation
      */
     public List<String> getMatchingAttachmentGUIDs()
     {
+        if (matchingAttachmentGUIDs == null)
+        {
+            return null;
+        }
+        else if (matchingAttachmentGUIDs.isEmpty())
+        {
+            return null;
+        }
+
         return matchingAttachmentGUIDs;
     }
 
@@ -156,6 +192,15 @@ public class SuspectDuplicateAnnotation extends Annotation
      */
     public List<String> getMatchingRelationshipGUIDs()
     {
+        if (matchingRelationshipGUIDs == null)
+        {
+            return null;
+        }
+        else if (matchingRelationshipGUIDs.isEmpty())
+        {
+            return null;
+        }
+
         return matchingRelationshipGUIDs;
     }
 

@@ -22,3 +22,10 @@ access to data/metadata.
 The **[governance-engines-plugins](governance-engines-plugins)** support plugins to governance engines
 to enable them to use open metadata settings in their validation
 and enforcement decisions and the resulting actions they take.
+
+----
+Return to [open-metadata-implementation](..).
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

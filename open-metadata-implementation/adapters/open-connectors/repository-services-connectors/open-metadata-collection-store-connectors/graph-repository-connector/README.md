@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![Released](../../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # Graph Repository
 
 The Graph Repository provides a local repository that uses a graph store as its persistence store.
@@ -46,3 +48,13 @@ The Graph Repository configures JanusGraph to use the berkeley embedded database
 The supported interface for using the Graph Repository is the MetadataCollection API, and access should only be performed through this interface. In contrast, the schema and indexing used internally by the Graph Repository are subject to change as a result of future improvements to Egeria and should not be relied upon directly.
 
 The repository uses the repository helper for parameter and type validation.
+
+
+
+----
+Return to the [open-metadata-collection-store-connectors](..)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

@@ -1,0 +1,202 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: setup Information Server variables
+  import_role:
+    name: IBM.infosvr
+    tasks_from: setup_vars.yml
+
+- name: setup Information Server certificate
+  import_role:
+    name: IBM.infosvr
+    tasks_from: get_certificate.yml
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: data_file_record
+    conditions:
+      - { property: "data_file.host.name", operator: "=", value: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
+      - { property: "data_file.path", operator: "=", value: "{{ egeria_samples_minimal_targets.files }}" }
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: data_file
+    conditions:
+      - { property: "host.name", operator: "=", value: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
+      - { property: "path", operator: "=", value: "{{ egeria_samples_minimal_targets.files }}" }
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: data_file_folder
+    conditions:
+      - { property: "name", operator: "=", value: "/" }
+      - { property: "host.name", operator: "=", value: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: database_table
+    conditions:
+      - { property: "database_schema.database.name", operator: "=", value: "{{ db_name | upper }}" }
+      - { property: "database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
+  with_items: "{{ egeria_samples_minimal_databases }}"
+  loop_control:
+    loop_var: db_name
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: database_schema
+    conditions:
+      - { property: "database.name", operator: "=", value: "{{ db_name | upper }}" }
+      - { property: "database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
+  with_items: "{{ egeria_samples_minimal_databases }}"
+  loop_control:
+    loop_var: db_name
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: database
+    conditions:
+      - { property: "name", operator: "=", value: "{{ db_name | upper }}" }
+      - { property: "host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
+  with_items: "{{ egeria_samples_minimal_databases }}"
+  loop_control:
+    loop_var: db_name
+
+- name: list OpenIGC bundles
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports.console }}\
+          /ibm/iis/igc-rest/v1/bundles"
+    method: GET
+    user: "{{ ibm_infosvr_user_isadmin }}"
+    password: "{{ ibm_infosvr_upwd_isadmin }}"
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+    timeout: 10
+  register: __egeria_samples_openigc_bundles
+  when: ('ibm_information_server_domain' in group_names)
+
+- name: remove OMRS bundle
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports.console }}\
+          /ibm/iis/igc-rest/v1/bundles/OMRS"
+    method: DELETE
+    user: "{{ ibm_infosvr_user_isadmin }}"
+    password: "{{ ibm_infosvr_upwd_isadmin }}"
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+    timeout: 10
+  when: >
+    ('ibm_information_server_domain' in group_names)
+    and ('OMRS' in __egeria_samples_openigc_bundles.json)
+
+- name: list DataStage projects
+  shell: >
+    source ~/.bashrc &&
+    source dsenv &&
+    ./bin/dsadmin
+    -url https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}
+    -user {{ ibm_infosvr_users.isadmin }} -password {{ ibm_infosvr_upwds.isadmin }}
+    -server {{ groups['ibm_information_server_engine'][0] | upper }}
+    -listprojects
+  args:
+    executable: /bin/bash
+    chdir: "{{ ibm_infosvr_locations.linux }}/Server/DSEngine"
+  become: yes
+  register: __minimal_projects_list
+  changed_when: False
+  when: ('ibm_information_server_engine' in group_names)
+
+- name: remove DataStage project
+  shell: >
+    source ~/.bashrc &&
+    source dsenv &&
+    ./bin/dsadmin
+    -url https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}
+    -user {{ ibm_infosvr_users.isadmin }} -password {{ ibm_infosvr_upwds.isadmin }}
+    -server {{ groups['ibm_information_server_engine'][0] | upper }}
+    -deleteproject minimal
+  args:
+    executable: /bin/bash
+    chdir: "{{ ibm_infosvr_locations.linux }}/Server/DSEngine"
+  become: yes
+  when: >
+    ('ibm_information_server_engine' in group_names)
+    and __minimal_projects_list.stdout.find('minimal') != -1
+
+- name: remove cached files
+  file:
+    path: cache/__ibm_infosvr_cert_root.crt
+    state: absent
+  delegate_to: localhost
+
+- name: list Metadata Asset Manager import areas
+  shell: >
+    {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
+    -u {{ ibm_infosvr_users.isadmin }}
+    -w {{ ibm_infosvr_upwds.isadmin }}
+    -a list
+    --type area
+    -nof
+  args:
+    executable: /bin/bash
+  when: ('ibm_information_server_engine' in group_names)
+  register: __minimal_existing_import_areas
+
+- name: remove Metadata Asset Manager file import area
+  shell: >
+    {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
+    -u {{ ibm_infosvr_users.isadmin }}
+    -w {{ ibm_infosvr_upwds.isadmin }}
+    -n Minimal_SampleFiles
+    -a delete
+    --type area
+  args:
+    executable: /bin/bash
+  when: >
+    ('ibm_information_server_engine' in group_names)
+    and __minimal_existing_import_areas.stdout.find('Minimal_SampleFiles') != -1
+
+- name: remove Metadata Asset Manager database import areas
+  shell: >
+    {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
+    -u {{ ibm_infosvr_users.isadmin }}
+    -w {{ ibm_infosvr_upwds.isadmin }}
+    -n Minimal_{{ item | upper }}
+    -a delete
+    --type area
+  args:
+    executable: /bin/bash
+  when: >
+    ('ibm_information_server_engine' in group_names)
+    and __minimal_existing_import_areas.stdout.find('Minimal_'~item) != -1
+  with_items: "{{ egeria_samples_minimal_databases }}"
+
+- name: remote database catalog status
+  shell: "source ~/.bashrc && db2 list database directory"
+  args:
+    executable: /bin/bash
+  become_user: "{{ ibm_infosvr_users.db2inst1 }}"
+  become: yes
+  ignore_errors: yes
+  register: __minimal_db2catalog_completion
+  changed_when: False
+  when: >
+    ('ibm_information_server_engine' in group_names)
+    and (egeria_samples_minimal_db_type == 'ibm-db2')
+
+- name: uncatalog databases
+  shell: >
+    source ~/.bashrc &&
+    db2 uncatalog database {{ item | upper }}
+  args:
+    executable: /bin/bash
+  become: yes
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
+  when: >
+    ('ibm_information_server_engine' in group_names)
+    and (egeria_samples_minimal_db_type == 'ibm-db2')
+    and __minimal_db2catalog_completion.stdout.find(item) > 0
+  with_items: "{{ egeria_samples_minimal_databases }}"

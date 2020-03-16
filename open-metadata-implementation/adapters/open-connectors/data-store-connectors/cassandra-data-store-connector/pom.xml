@@ -7,13 +7,19 @@
     <parent>
         <artifactId>data-store-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>Cassandra Data Store Connectors</name>
     <description>
-        Cassandra data store connector provides  access to data assets store in
+        Cassandra data store connector provides access to data assets store in
         Apache Cassandra Database.
     </description>
 

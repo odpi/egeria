@@ -3,10 +3,10 @@
 
 # Open Metadata Repository Cohort
 
-An **open metadata repository cohort** is a collection of metadata repositories
+An **open metadata repository cohort** is a collection of [servers](../../admin-services/docs/concepts/cohort-member.md)
 sharing metadata using the **[Open Metadata Repository Services (OMRS)](..)**.
 This sharing is peer-to-peer.  
-Once a metadata repository becomes a member of the cohort, it can share
+Once a server becomes a member of the cohort, it can share
 metadata with, and receive metadata from, any other member.
 
 OMRS needs to be flexible to support different performance and availability requirements.
@@ -21,7 +21,10 @@ linked to all metadata that describes the organization's data resources.
 Thus it makes sense for this metadata to be replicated across the repositories
 within the cohort.
 These copies are called **[reference copies](home-metadata-repositories.md)** of
-the metadata and they are read-only. 
+the metadata and they are read-only.
+The role of the OMRS is to optimize access to metadata across the cohort by using
+a combination of replication and federated queries, driven by the
+the metadata workload from the connected tools.
 
 To join an open metadata repository cohort, a metadata repository must integrate
 with the OMRS module.  The integration involves:

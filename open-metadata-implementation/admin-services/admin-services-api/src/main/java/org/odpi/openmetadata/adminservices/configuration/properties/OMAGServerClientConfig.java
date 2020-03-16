@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * OMAGServerClientConfig provides the properties to configure a server that connects to an
- * OMAG Server.  This is typically used by a Governance Server to retrieve metadata from
+ * OMAG Server.  This is typically used by a Governance or a View Server to retrieve metadata from
  * a metadata server.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -24,15 +24,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DiscoveryEngineServicesConfig.class, name = "DiscoveryEngineServicesConfig"),
-        @JsonSubTypes.Type(value = StewardshipEngineServicesConfig.class, name = "StewardshipEngineServicesConfig")
+        @JsonSubTypes.Type(value = StewardshipEngineServicesConfig.class, name = "StewardshipEngineServicesConfig"),
+        @JsonSubTypes.Type(value = ViewServiceConfig.class, name = "ViewServiceConfig")
 })
 public class OMAGServerClientConfig extends AdminServicesConfigHeader
 {
     private static final long    serialVersionUID = 1L;
 
     /* Properties needed to call the OMAG Server REST APIs */
-    private String omagServerPlatformRootURL = null;
-    private String omagServerName            = null;
+    protected String omagServerPlatformRootURL = null;
+    protected String omagServerName            = null;
 
     /**
      * Default constructor
@@ -59,9 +60,8 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
         }
     }
 
-
     /**
-     * Return the root URL of the access service.
+     * Return the root URL of the OMAG ServerPlatform.
      *
      * @return string root url
      */
@@ -72,7 +72,7 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the root URL of the access service.
+     * Set up the root URL of the OMAG Server Platform.
      *
      * @param omagServerPlatformRootURL string root url
      */
@@ -83,7 +83,7 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the name of the server where the access service resides.
+     * Return the name of the OMAG server.
      *
      * @return string server name
      */
@@ -94,7 +94,7 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the name of the server where the access service resides.
+     * Set up the name of the OMAG server.
      *
      * @param omagServerName string server name
      */

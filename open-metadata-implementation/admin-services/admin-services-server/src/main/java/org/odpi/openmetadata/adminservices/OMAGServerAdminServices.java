@@ -3,20 +3,31 @@
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.configuration.properties.*;
+import org.odpi.openmetadata.adminservices.classifier.ServerTypeClassifier;
+import org.odpi.openmetadata.adminservices.client.ConfigurationManagementClient;
+import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
-import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
-import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,11 +42,61 @@ import java.util.Map;
  */
 public class OMAGServerAdminServices
 {
-    private static final Logger log = LoggerFactory.getLogger(OMAGServerAdminServices.class);
+    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminServices.class),
+                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+
 
     private            OMAGServerAdminStoreServices configStore      = new OMAGServerAdminStoreServices();
     private            OMAGServerErrorHandler       errorHandler     = new OMAGServerErrorHandler();
     private            OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
+
+
+    /**
+     * Return the derived server type that is created from the classification of the server configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return server type classification response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     */
+    public ServerTypeClassificationResponse getServerTypeClassification(String userId,
+                                                                        String serverName)
+    {
+        final String methodName = "getServerTypeClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ServerTypeClassificationResponse response = new ServerTypeClassificationResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            ServerTypeClassifier classifier = new ServerTypeClassifier(serverName, configStore.getServerConfig(userId, serverName, methodName));
+            ServerTypeClassificationSummary summary = new ServerTypeClassificationSummary(classifier.getServerType());
+
+            response.setServerTypeClassification(summary);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
 
     /*
      * =============================================================
@@ -43,7 +104,7 @@ public class OMAGServerAdminServices
      */
 
 
-                                                                                          /**
+    /**
      * Set up the descriptive type of the server.  This value is added to distributed events to
      * make it easier to understand the source of events.  The default value is "Open Metadata and Governance Server".
      *
@@ -60,7 +121,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setServerType";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -71,7 +132,7 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
             {
@@ -110,7 +171,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -133,7 +194,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setOrganizationName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -183,7 +244,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -206,7 +267,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setServerUserId";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -256,7 +317,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -279,7 +340,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setServerPassword";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -329,7 +390,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -352,7 +413,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setMaxPageSize";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -364,7 +425,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            if (maxPageSize > 0)
+            if (maxPageSize >= 0)
             {
                 OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -409,7 +470,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -441,7 +502,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setEventBus";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -453,6 +514,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
+
             /*
              * Retrieve the existing configuration.
              */
@@ -460,9 +522,32 @@ public class OMAGServerAdminServices
 
             EventBusConfig   eventBusConfig = new EventBusConfig();
 
-            eventBusConfig.setConnectorProvider(connectorProvider);
-            eventBusConfig.setTopicURLRoot(topicURLRoot);
-            eventBusConfig.setConfigurationProperties(configurationProperties);
+            if ("".equals(connectorProvider))
+            {
+                eventBusConfig.setConnectorProvider(null);
+            }
+            else
+            {
+                eventBusConfig.setConnectorProvider(connectorProvider);
+            }
+
+            if ("".equals(topicURLRoot))
+            {
+                eventBusConfig.setTopicURLRoot(null);
+            }
+            else
+            {
+                eventBusConfig.setTopicURLRoot(topicURLRoot);
+            }
+
+            if ((configurationProperties == null) || (configurationProperties.isEmpty()))
+            {
+                eventBusConfig.setConfigurationProperties(configurationProperties);
+            }
+            else
+            {
+                eventBusConfig.setConfigurationProperties(configurationProperties);
+            }
 
             List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
@@ -495,7 +580,62 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the current configuration for the event bus.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName local server name.
+     * @return event bus config response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public EventBusConfigResponse getEventBus(String userId, String serverName)
+    {
+        final String methodName = "getEventBus";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        EventBusConfigResponse response = new EventBusConfigResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            /*
+             * Retrieve the existing configuration.
+             */
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (configStore != null)
+            {
+                response.setConfig(serverConfig.getEventBusConfig());
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -518,13 +658,14 @@ public class OMAGServerAdminServices
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
      */
+    @Deprecated
     public VoidResponse setServerURLRoot(String userId,
                                          String serverName,
                                          String url)
     {
         final String methodName = "setServerURLRoot";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -535,7 +676,7 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
             {
@@ -574,7 +715,89 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Set up the root URL for this server that is used to construct full URL paths to calls for
+     * this server's REST interfaces that is used by other members of the cohorts that this server
+     * connects to.
+     *
+     * The default value is "localhost:8080".
+     *
+     * ServerURLRoot is used during the configuration of the local repository.  If called
+     * after the local repository is configured, it has no effect.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param requestBody  String url.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter or
+     * OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public VoidResponse setServerRootURL(String         userId,
+                                         String         serverName,
+                                         URLRequestBody requestBody)
+    {
+        final String methodName = "setServerURLRoot";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateServerName(serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+
+            if (configAuditTrail == null)
+            {
+                configAuditTrail = new ArrayList<>();
+            }
+
+            String urlRoot = null;
+
+            if (requestBody != null)
+            {
+                urlRoot = requestBody.getUrlRoot();
+            }
+
+            if (urlRoot == null)
+            {
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's URL root.");
+            }
+            else
+            {
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's URL root to " + urlRoot + ".");
+            }
+
+            serverConfig.setAuditTrail(configAuditTrail);
+            serverConfig.setLocalServerURL(urlRoot);
+
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -585,16 +808,18 @@ public class OMAGServerAdminServices
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param requestBody null request body
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or null userId parameter.
      */
-    public VoidResponse setDefaultAuditLog(String userId,
-                                           String serverName)
+    public VoidResponse setDefaultAuditLog(String          userId,
+                                           String          serverName,
+                                           NullRequestBody requestBody)
     {
         final String methodName = "setDefaultAuditLog";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -620,12 +845,12 @@ public class OMAGServerAdminServices
             {
                 OMRSConfigurationFactory omrsConfigurationFactory = new OMRSConfigurationFactory();
 
-                repositoryServicesConfig = omrsConfigurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig = omrsConfigurationFactory.getDefaultRepositoryServicesConfig();
             }
             else
             {
                 ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
-                Connection                    defaultAuditLogDestination = configurationFactory.getDefaultAuditLogConnection(serverName);
+                Connection                    defaultAuditLogDestination = configurationFactory.getDefaultAuditLogConnection();
 
                 List<Connection> auditLogDestinations = new ArrayList<>();
 
@@ -655,7 +880,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -677,7 +902,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "addConsoleAuditLogDestination";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -688,7 +913,7 @@ public class OMAGServerAdminServices
 
             ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            this.addAuditLogDestination(userId, serverName, configurationFactory.getConsoleAuditLogConnection(serverName, supportedSeverities));
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getConsoleAuditLogConnection(supportedSeverities));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -703,7 +928,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -725,7 +950,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "addSLF4JAuditLogDestination";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -736,7 +961,7 @@ public class OMAGServerAdminServices
 
             ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            this.addAuditLogDestination(userId, serverName, configurationFactory.getSLF4JAuditLogConnection(serverName, supportedSeverities));
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getSLF4JAuditLogConnection(supportedSeverities));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -751,7 +976,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -773,7 +998,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "addFileAuditLogDestination";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -799,7 +1024,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -821,7 +1046,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "addEventTopicAuditLogDestination";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -856,7 +1081,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -878,7 +1103,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "addStartUpOpenMetadataArchiveFile";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -923,7 +1148,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -935,16 +1160,18 @@ public class OMAGServerAdminServices
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param requestBody null request body
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
-    public VoidResponse setInMemLocalRepository(String userId,
-                                                String serverName)
+    public VoidResponse setInMemLocalRepository(String          userId,
+                                                String          serverName,
+                                                NullRequestBody requestBody)
     {
         final String methodName = "setInMemLocalRepository";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -976,7 +1203,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -987,17 +1214,19 @@ public class OMAGServerAdminServices
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param storageProperties  properties used to configure Egeria Graph DB
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
     public VoidResponse setGraphLocalRepository(String              userId,
-                                                String              serverName)
+                                                String              serverName,
+                                                Map<String, Object> storageProperties)
     {
         final String methodName = "setGraphLocalRepository";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1014,7 +1243,8 @@ public class OMAGServerAdminServices
             this.setLocalRepositoryConfig(userId,
                                           serverName,
                                           configurationFactory.getLocalGraphLocalRepositoryConfig(serverConfig.getLocalServerName(),
-                                                                                                  serverConfig.getLocalServerURL()));
+                                                                                                  serverConfig.getLocalServerURL(),
+                                                                                                  storageProperties));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -1029,14 +1259,67 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
 
 
     /**
-     * Remove all configuration for a local repository.  The default is no local repository.  This call
+     * Set up a read only store as the local repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    public VoidResponse setReadOnlyLocalRepository(String              userId,
+                                                   String              serverName)
+    {
+        final String methodName = "setReadOnlyLocalRepository";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
+
+
+            this.setLocalRepositoryConfig(userId,
+                                          serverName,
+                                          configurationFactory.getReadOnlyLocalRepositoryConfig(serverConfig.getLocalServerName(),
+                                                                                                serverConfig.getLocalServerURL()));
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove all configuration for a local repository.  This is the default setting.  This call
      * can be used to remove subsequent local repository configuration.
      *
      * @param userId  user that is issuing the request.
@@ -1048,35 +1331,7 @@ public class OMAGServerAdminServices
     public VoidResponse setNoRepositoryMode(String userId,
                                             String serverName)
     {
-        final String methodName = "setNoRepositoryMode";
-
-        log.debug("Calling method: " + methodName);
-
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
-
-            this.setLocalRepositoryConfig(userId, serverName, null);
-        }
-        catch (OMAGInvalidParameterException error)
-        {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Throwable  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
-        }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
-        return response;
+        return clearLocalRepositoryConfig(userId, serverName);
     }
 
 
@@ -1096,7 +1351,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setRepositoryProxyConnection";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1132,7 +1387,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1158,7 +1413,7 @@ public class OMAGServerAdminServices
     {
         final String methodName  = "setRepositoryProxyConnection";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1173,8 +1428,7 @@ public class OMAGServerAdminServices
 
             this.setRepositoryProxyConnection(userId,
                                               serverName,
-                                              connectorConfigurationFactory.getRepositoryProxyConnection(serverName,
-                                                                                                         connectorProvider,
+                                              connectorConfigurationFactory.getRepositoryProxyConnection(connectorProvider,
                                                                                                          serverConfig.getLocalServerURL(),
                                                                                                          additionalProperties));
         }
@@ -1191,7 +1445,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1216,7 +1470,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setLocalRepositoryEventMapper";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1278,7 +1532,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1307,7 +1561,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setLocalRepositoryEventMapper";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1320,8 +1574,7 @@ public class OMAGServerAdminServices
 
             this.setLocalRepositoryEventMapper(userId,
                                                serverName,
-                                               connectorConfigurationFactory.getRepositoryEventMapperConnection(serverName,
-                                                                                                                connectorProvider,
+                                               connectorConfigurationFactory.getRepositoryEventMapperConnection(connectorProvider,
                                                                                                                 additionalProperties,
                                                                                                                 eventSource));
         }
@@ -1338,7 +1591,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1360,7 +1613,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "getLocalMetadataCollectionId";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
 
@@ -1419,7 +1672,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1443,7 +1696,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setLocalMetadataCollectionName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1506,7 +1759,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1528,14 +1781,14 @@ public class OMAGServerAdminServices
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
      * OMAGConfigurationErrorException the event bus is not set.
      */
-    public VoidResponse enableCohortRegistration(String               userId,
-                                                 String               serverName,
-                                                 String               cohortName,
-                                                 Map<String, Object>  configurationProperties)
+    public VoidResponse addCohortConfig(String               userId,
+                                        String               serverName,
+                                        String               cohortName,
+                                        Map<String, Object>  configurationProperties)
     {
-        final String methodName = "enableCohortRegistration";
+        final String methodName = "addCohortConfig";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1582,33 +1835,115 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Retrieve the topic name that is used by this server to contact the other members of the
+     * open metadata repository cohort.  Note this name needs to be configured to same
+     * in all members of a cohort.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @return string response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or cohortName parameter.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     */
+    public StringResponse getCohortTopicName(String userId,
+                                             String serverName,
+                                             String cohortName)
+    {
+        final String methodName = "getCohortTopicName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        StringResponse response = new StringResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateCohortName(cohortName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig != null)
+            {
+                CohortConfig currentCohortDetails = errorHandler.validateCohortIsSet(serverName, serverConfig, cohortName, methodName);
+
+                if (currentCohortDetails != null)
+                {
+                    Connection eventTopicConnection = currentCohortDetails.getCohortOMRSTopicConnection();
+
+                    if (eventTopicConnection instanceof VirtualConnection)
+                    {
+                        VirtualConnection virtualConnection = (VirtualConnection)eventTopicConnection;
+                        List<EmbeddedConnection> embeddedConnections = virtualConnection.getEmbeddedConnections();
+                        if ((embeddedConnections != null) && (embeddedConnections.size() == 1))
+                        {
+                            Connection connection = embeddedConnections.get(0).getEmbeddedConnection();
+
+                            if (connection != null)
+                            {
+                                Endpoint endpoint = connection.getEndpoint();
+
+                                if (endpoint != null)
+                                {
+                                    response.setResultString(endpoint.getAddress());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
 
 
     /**
-     * Set up the mode for an open metadata repository cohort.  This is a group of open metadata repositories that
-     * are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.  Each cohort needs
-     * a unique name.  The members of the cohort use a shared topic to exchange registration information and
-     * events related to changes in their supported metadata types and instances.  They are also able to
-     * query each other's metadata directly through REST calls.
+     * Change the topic name that is used by this server to contact the other members of the
+     * open metadata repository cohort.  Note this name needs to be configured to same
+     * in all members of a cohort.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param cohortName  name of the cohort.
+     * @param topicName new topic name
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
+     * OMAGInvalidParameterException invalid serverName or cohortName parameter.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
      */
-    public VoidResponse disableCohortRegistration(String          userId,
-                                                  String          serverName,
-                                                  String          cohortName)
+    public VoidResponse overrideCohortTopicName(String userId,
+                                                String serverName,
+                                                String cohortName,
+                                                String topicName)
     {
-        final String methodName = "setCohortMode";
+        final String methodName = "overrideCohortTopicName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1618,7 +1953,57 @@ public class OMAGServerAdminServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validateCohortName(cohortName, serverName, methodName);
 
-            this.setCohortConfig(userId, serverName, cohortName, null);
+            boolean topicChanged = false;
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig != null)
+            {
+                CohortConfig currentCohortDetails = errorHandler.validateCohortIsSet(serverName, serverConfig, cohortName, methodName);
+
+                if (currentCohortDetails != null)
+                {
+                    Connection eventTopicConnection = currentCohortDetails.getCohortOMRSTopicConnection();
+
+                    if (eventTopicConnection instanceof VirtualConnection)
+                    {
+                        VirtualConnection virtualConnection = (VirtualConnection)eventTopicConnection;
+                        List<EmbeddedConnection> embeddedConnections = virtualConnection.getEmbeddedConnections();
+                        if ((embeddedConnections != null) && (embeddedConnections.size() == 1))
+                        {
+                            EmbeddedConnection embeddedConnection = embeddedConnections.get(0);
+                            Connection connection = embeddedConnection.getEmbeddedConnection();
+
+                            if (connection != null)
+                            {
+                                Endpoint endpoint = connection.getEndpoint();
+
+                                if (endpoint != null)
+                                {
+                                    endpoint.setAddress(topicName);
+                                    connection.setEndpoint(endpoint);
+                                    embeddedConnection.setEmbeddedConnection(connection);
+                                    embeddedConnections = new ArrayList<>();
+                                    embeddedConnections.add(embeddedConnection);
+                                    virtualConnection.setEmbeddedConnections(embeddedConnections);
+                                    currentCohortDetails.setCohortOMRSTopicConnection(virtualConnection);
+
+                                    this.setCohortConfig(userId, serverName, cohortName, currentCohortDetails);
+                                    topicChanged = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (! topicChanged)
+            {
+                errorHandler.logNoCohortTopicChange(cohortName, serverName, methodName);
+            }
+        }
+        catch (OMAGConfigurationErrorException  error)
+        {
+            exceptionHandler.captureConfigurationErrorException(response, error);
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -1633,7 +2018,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1643,94 +2028,6 @@ public class OMAGServerAdminServices
      * =============================================================
      * Configure server - advanced options overriding defaults
      */
-
-
-    /**
-     * Set up the list of audit log destinations.  These destinations are expressed as Connection objects
-     * to the connectors that will handle the audit log records.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param auditLogDestinations list of connection objects
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName.
-     */
-    public VoidResponse setAuditLogDestinations(String                userId,
-                                                String                serverName,
-                                                List<Connection>      auditLogDestinations)
-    {
-        final String methodName = "setAuditLogDestinations";
-
-        log.debug("Calling method: " + methodName);
-
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
-
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-            List<String>  configAuditTrail  = serverConfig.getAuditTrail();
-
-            if (configAuditTrail == null)
-            {
-                configAuditTrail = new ArrayList<>();
-            }
-
-            if (auditLogDestinations == null)
-            {
-                configAuditTrail.add(new Date().toString() + " " + userId + " setting up no audit log destinations.");
-            }
-            else
-            {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated list of audit log destinations.");
-            }
-
-            serverConfig.setAuditTrail(configAuditTrail);
-
-            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
-
-            /*
-             * Set up the local repository config in the open metadata repository services config.
-             */
-            if (repositoryServicesConfig != null)
-            {
-                repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
-            }
-            else if (auditLogDestinations != null)
-            {
-                OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
-
-                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
-                repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
-            }
-
-            /*
-             * Save the open metadata repository services config in the server's config
-             */
-            serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
-            configStore.saveServerConfig(serverName, methodName, serverConfig);
-        }
-        catch (OMAGInvalidParameterException error)
-        {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Throwable  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
-        }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
-        return response;
-    }
-
 
     /**
      * Set up the list of audit log destinations.  These destinations are expressed as Connection objects
@@ -1749,7 +2046,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setAuditLogDestinations";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1774,7 +2071,7 @@ public class OMAGServerAdminServices
                 {
                     OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
 
-                    repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                    repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
                 }
 
                 List<Connection>  auditLogDestinations = repositoryServicesConfig.getAuditLogConnections();
@@ -1815,7 +2112,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1823,6 +2120,145 @@ public class OMAGServerAdminServices
 
     /**
      * Set up the list of audit log destinations.  These destinations are expressed as Connection objects
+     * to the connectors that will handle the audit log records.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param auditLogDestinations list of connection objects
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public VoidResponse setAuditLogDestinations(String                userId,
+                                                String                serverName,
+                                                List<Connection>      auditLogDestinations)
+    {
+        final String methodName = "setAuditLogDestinations";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            List<String>  configAuditTrail  = serverConfig.getAuditTrail();
+
+            if (configAuditTrail == null)
+            {
+                configAuditTrail = new ArrayList<>();
+            }
+
+            if (auditLogDestinations == null)
+            {
+                configAuditTrail.add(new Date().toString() + " " + userId + " setting up no audit log destinations.");
+            }
+            else
+            {
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated list of audit log destinations.");
+            }
+
+            serverConfig.setAuditTrail(configAuditTrail);
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+            /*
+             * Set up the local repository config in the open metadata repository services config.
+             */
+            if (repositoryServicesConfig != null)
+            {
+                repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
+            }
+            else if (auditLogDestinations != null)
+            {
+                OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
+
+                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
+                repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
+            }
+
+            /*
+             * Save the open metadata repository services config in the server's config
+             */
+            serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of audit log destinations.  These destinations are expressed as Connection objects
+     * to the connectors that will handle the audit log records.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return connection list response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public ConnectionListResponse getAuditLogDestinations(String userId,
+                                                          String serverName)
+    {
+        final String methodName = "getAuditLogDestinations";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ConnectionListResponse response = new ConnectionListResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+            if (repositoryServicesConfig != null)
+            {
+                response.setConnections(repositoryServicesConfig.getAuditLogConnections());
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Clear the list of audit log destinations.  These destinations are expressed as Connection objects
      * to the connectors that will handle the audit log records.
      *
      * @param userId  user that is issuing the request.
@@ -1855,7 +2291,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setOpenMetadataArchives";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1896,7 +2332,7 @@ public class OMAGServerAdminServices
             {
                 OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
-                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
                 repositoryServicesConfig.setOpenMetadataArchiveConnections(openMetadataArchives);
             }
 
@@ -1919,9 +2355,77 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Return the list of open metadata archives.  These are open metadata types and instances that are loaded at
+     * repository start up.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return connection list response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public ConnectionListResponse getOpenMetadataArchives(String userId,
+                                                          String serverName)
+    {
+        final String methodName = "getOpenMetadataArchives";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ConnectionListResponse response = new ConnectionListResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+            if (repositoryServicesConfig != null)
+            {
+                response.setConnections(repositoryServicesConfig.getOpenMetadataArchiveConnections());
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Clear the list of open metadata archives for loading at server startup.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public VoidResponse clearOpenMetadataArchives(String userId,
+                                                  String serverName)
+    {
+        return this.setOpenMetadataArchives(userId, serverName, null);
     }
 
 
@@ -1941,7 +2445,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setLocalRepositoryConfig";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1994,7 +2498,7 @@ public class OMAGServerAdminServices
             {
                 OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
-                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
                 repositoryServicesConfig.setLocalRepositoryConfig(localRepositoryConfig);
             }
 
@@ -2017,7 +2521,103 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the configuration for the local repository.  This overrides the current values.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return local repository config response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public LocalRepositoryConfigResponse getLocalRepositoryConfig(String userId,
+                                                                  String serverName)
+    {
+        final String methodName = "setLocalRepositoryConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        LocalRepositoryConfigResponse response = new LocalRepositoryConfigResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+            if (repositoryServicesConfig != null)
+            {
+                response.setConfig(repositoryServicesConfig.getLocalRepositoryConfig());
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove all configuration for a local repository.  The default is no local repository.  This call
+     * can be used to remove subsequent local repository configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    public VoidResponse clearLocalRepositoryConfig(String userId,
+                                                   String serverName)
+    {
+        final String methodName = "clearLocalRepositoryConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            this.setLocalRepositoryConfig(userId, serverName, null);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -2042,7 +2642,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setCohortConfig";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -2131,7 +2731,7 @@ public class OMAGServerAdminServices
             }
             else if (newCohortConfigs != null)
             {
-                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
 
                 repositoryServicesConfig.setCohortConfigList(newCohortConfigs);
             }
@@ -2152,7 +2752,111 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the current configuration for a cohort.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @return cohort config response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
+     * OMAGConfigurationErrorException the event bus is not set.
+     */
+    public CohortConfigResponse getCohortConfig(String userId,
+                                                String serverName,
+                                                String cohortName)
+    {
+        final String methodName = "getCohortConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        CohortConfigResponse response = new CohortConfigResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateCohortName(cohortName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig != null)
+            {
+                response.setConfig(errorHandler.validateCohortIsSet(serverName, serverConfig, cohortName, methodName));
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Set up the mode for an open metadata repository cohort.  This is a group of open metadata repositories that
+     * are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.  Each cohort needs
+     * a unique name.  The members of the cohort use a shared topic to exchange registration information and
+     * events related to changes in their supported metadata types and instances.  They are also able to
+     * query each other's metadata directly through REST calls.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
+     */
+    public VoidResponse clearCohortConfig(String          userId,
+                                          String          serverName,
+                                          String          cohortName)
+    {
+        final String methodName = "clearCohortRegistration";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateCohortName(cohortName, serverName, methodName);
+
+            this.setCohortConfig(userId, serverName, cohortName, null);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -2174,7 +2878,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setOMAGServerConfig";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -2222,7 +2926,7 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -2245,7 +2949,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "deployOMAGServerConfig";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -2285,16 +2989,11 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
 
-
-    /*
-     * =============================================================
-     * Query current configuration
-     */
 
     /**
      * Return the complete set of configuration properties in use by the server.
@@ -2310,7 +3009,7 @@ public class OMAGServerAdminServices
     {
         final String methodName = "getStoredConfiguration";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         OMAGServerConfigResponse response = new OMAGServerConfigResponse();
 
@@ -2334,7 +3033,51 @@ public class OMAGServerAdminServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the configuration for the server.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
+     * @return OMAGServerConfig properties or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public VoidResponse clearOMAGServerConfig(String userId,
+                                              String serverName)
+    {
+        final String methodName = "clearOMAGServerConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            configStore.saveServerConfig(serverName, methodName, null);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }

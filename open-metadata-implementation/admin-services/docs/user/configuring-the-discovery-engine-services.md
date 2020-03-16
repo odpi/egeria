@@ -8,63 +8,50 @@ a [discovery server](../concepts/discovery-server.md).
 
 The configuration for the discovery engine services is made up of 2 parts:
 
-* The location of the open metadata server where the
+* The location of the metadata server or metadata access point where the
   [Discovery Engine Open Metadata Access Service (OMAS)](../../../access-services/discovery-engine) is running.
 
 * The list of discovery engines that should run in this server.  The definition of these discovery
   engines are retrieved from the open metadata server when the discovery server starts up.
 
-The descriptions below describe how to configure the discovery engine services into an OMAG Server.
-In the examples below, the OMAG Server being configured is called `finditDL01`.  It should call
-an open metadata server called `cocoMDS1`.  Both `finditDL01` and `cocoMDS1` happen to be hosted on the same
-OMAG Server platform at `http://localhost:8080`.  
+The descriptions below describe how to configure the discovery engine services into a Discovery Server. 
 
-## Defining the location of the open metadata server
+## Defining the location of the metadata server or metadata access point
 
-The location of the open metadata server is configured using two properties: the server url root of the
-open metadata server's OMAG Server Platform and the name of the server.
-
-This first command sets up the url root of `http://localhost:8080`.
+The location of the metadata server (or metadata access point) is configured using two properties: the server url root of the 
+metadata server's OMAG Server Platform and the name of the metadata server.
+ 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/finditDL01/discovery-server/access-service-root-url
-{ "http://localhost:8080" }
-```
-
-This next command sets up the name of the open metadata server.  In this example
-the open metadata server is called `cocoMDS1`.   
-```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/finditDL01/discovery-server/access-service-server-name
-{ "cocoMDS1" }
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{discoveryServerName}/discovery-server/client-config
+{
+        "class": "OMAGServerClientConfig",
+        "omagserverPlatformRootURL": {MDServerURLRoot},
+        "omagserverName" : "{MDServerName}"
+}
 ```
 
 ## Configure the discovery engines
 
 The following command sets up the list of discovery engines that are to run in the discovery service.
-In this example, the discovery engines are being configured into
-OMAG Server `finditDL01` running on the OMAG Server Platform at URL `http://localhost:8080`
+The list of discovery engines are sent in the request body
     
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/finditDL01/discovery-server/set-discovery-engines
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{discoveryServerName}/discovery-server/set-discovery-engines
 { list of unique names (qualified names) for the discovery engines }
 ```
 
 
-## Removing the configuration for the discovery engine services
+# Removing the configuration for the discovery engine services
 
 The following command removes the configuration for the discovery engine services from an
 OMAG server's configuration document.  This may be used if the discovery engine services have been
-added in error.  In this example, the discovery engine services are removed from
-OMAG Server `finditDL01` running on the OMAG Server Platform at URL `http://localhost:8080`.
-
+added in error.  
 ```
-DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/finditDL01/discovery-server
+DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{discoveryServerName}/discovery-server
 ```
 
-
-## Related topics
-
-In addition to the discovery engine services,
-a discovery server needs to configure at least one [audit log destination](configuring-the-repository-services.md) through the repository services.
+----
+Return to [Configuring the discovery server](../concepts/discovery-server.md#Configuring-the-Discovery-Server).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -10,10 +10,16 @@
     <parent>
         <artifactId>open-metadata-resources</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <name>Open Metadata Samples</name>
     <description>
@@ -25,6 +31,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>access-services-samples</module>
+        <module>admin-services-samples</module>
         <module>open-metadata-security-samples</module>
     </modules>
 

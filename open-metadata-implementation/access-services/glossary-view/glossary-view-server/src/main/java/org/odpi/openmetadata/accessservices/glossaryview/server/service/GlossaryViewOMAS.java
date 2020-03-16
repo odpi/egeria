@@ -63,16 +63,16 @@ public class GlossaryViewOMAS extends OMRSClient {
      * @return entity
      */
     protected GlossaryViewEntityDetailResponse getEntityDetailResponse(String userId, String serverName, String entityGUID,
-                                                                       String entityTypeName, String methodName){
+                                                                       String entityTypeName, String methodName) {
         GlossaryViewEntityDetailResponse response = new GlossaryViewEntityDetailResponse();
 
         try {
             Optional<EntityDetail> entityDetail = getEntityDetail(userId, serverName, entityGUID, entityTypeName, methodName);
             entityDetail.ifPresent(detail -> response.addEntityDetail(entityDetailConverter.apply(detail)));
 
-        }catch (GlossaryViewOmasException ew){
-            prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
-                    ew.getReportedUserAction(), ew.getErrorMessage(), ew.getReportedSystemAction(), ew.getRelatedProperties());
+        }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | GlossaryViewOmasException e){
+            prepare(response, e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
+                    e.getReportedUserAction(), e.getErrorMessage(), e.getReportedSystemAction(), e.getRelatedProperties());
         }
         return response;
     }
@@ -109,9 +109,9 @@ public class GlossaryViewOMAS extends OMRSClient {
                     .filter(effectiveTimePredicate)
                     .map(entityDetailConverter)
                     .collect(Collectors.toList()));
-        }catch (GlossaryViewOmasException ew){
-            prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
-                    ew.getReportedUserAction(), ew.getErrorMessage(), ew.getReportedSystemAction(), ew.getRelatedProperties());
+        }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | GlossaryViewOmasException e){
+            prepare(response, e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
+                    e.getReportedUserAction(), e.getErrorMessage(), e.getReportedSystemAction(), e.getRelatedProperties());
         }
 
         return response;
@@ -153,9 +153,9 @@ public class GlossaryViewOMAS extends OMRSClient {
                                               .filter(effectiveTimePredicate)
                                               .map(entityDetailConverter)
                                               .collect(Collectors.toList()));
-        }catch (GlossaryViewOmasException ew){
-            prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
-                    ew.getReportedUserAction(), ew.getErrorMessage(), ew.getReportedSystemAction(), ew.getRelatedProperties());
+        }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | GlossaryViewOmasException e){
+            prepare(response, e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
+                    e.getReportedUserAction(), e.getErrorMessage(), e.getReportedSystemAction(), e.getRelatedProperties());
         }
 
         return response;
@@ -188,9 +188,9 @@ public class GlossaryViewOMAS extends OMRSClient {
                     .filter(effectiveTimePredicate)
                     .map(entityDetailConverter)
                     .collect(Collectors.toList()));
-        }catch (GlossaryViewOmasException ew){
-            prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
-                    ew.getReportedUserAction(), ew.getErrorMessage(), ew.getReportedSystemAction(), ew.getRelatedProperties());
+        }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | GlossaryViewOmasException e){
+            prepare(response, e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
+                    e.getReportedUserAction(), e.getErrorMessage(), e.getReportedSystemAction(), e.getRelatedProperties());
         }
 
         return response;

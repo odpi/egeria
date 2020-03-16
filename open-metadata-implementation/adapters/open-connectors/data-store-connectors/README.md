@@ -6,11 +6,17 @@
 The Data Store Connectors module contains connectors to different types of data stores.  These connectors implement the
 [Open Connector Framework (OCF)](../../../frameworks/open-connector-framework) **Connector** interface.
 
-* **[avro-file-connector](avro-file-connector)** provides connector to read files
-that have an [Apache Avro](https://avro.apache.org/https://avro.apache.org/) format.
+* **[file-connectors](file-connectors)** provides connector to read files.
 
 * **[gaian-connector](gaian-connector)** provides a JDBC-style connector to the [Gaian](https://github.com/gaiandb/gaiandb) virtualization
 engine.
 
-* **[structured-file-connector](structured-file-connector)** provides connector to read files
-that have a CSV tabular format.
+* **[cassandra-data-store-connector](cassandra-data-store-connector)** provides connector to read data from
+[Apache Cassandra](http://cassandra.apache.org/).
+
+
+Return to [open-connectors](..) module.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

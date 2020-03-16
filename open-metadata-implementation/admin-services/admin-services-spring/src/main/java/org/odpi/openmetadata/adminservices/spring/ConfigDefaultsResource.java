@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
+import org.odpi.openmetadata.adminservices.rest.EventBusConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +24,7 @@ public class ConfigDefaultsResource
     /**
      * Set up the default root URL for this server that is used to construct full URL paths to calls for
      * this server's REST interfaces.  It is a value that is sent to other servers to allow
-     * then to call this server.
+     * them to call this server.
      *
      * The default value is "localhost:8080".
      *
@@ -36,12 +38,39 @@ public class ConfigDefaultsResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
      */
+    @Deprecated
     @PostMapping(path = "/server-url-root")
     public VoidResponse setServerURLRoot(@PathVariable String userId,
                                          @PathVariable String serverName,
                                          @RequestParam String url)
     {
         return adminAPI.setServerURLRoot(userId, serverName, url);
+    }
+
+
+    /**
+     * Set up the default root URL for this server's platform that is used to construct full URL paths to calls for
+     * this server's REST interfaces.  It is a value that is sent to other servers to allow
+     * them to call this server.
+     *
+     * The default value is "http://localhost:8080".
+     *
+     * ServerRootURL is used as a default value during the configuration of the server's subsystems.
+     * If it is updated after a subsystem is configured then the new value is ignored.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param requestBody  String url.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
+     */
+    @PostMapping(path = "/server-url-root-for-caller")
+    public VoidResponse setServerRootURL(@PathVariable String         userId,
+                                         @PathVariable String         serverName,
+                                         @RequestBody  URLRequestBody requestBody)
+    {
+        return adminAPI.setServerRootURL(userId, serverName, requestBody);
     }
 
 
@@ -71,5 +100,23 @@ public class ConfigDefaultsResource
                                     @RequestBody (required = false) Map<String, Object> configurationProperties)
     {
         return adminAPI.setEventBus(userId, serverName, connectorProvider, topicURLRoot, configurationProperties);
+    }
+
+
+    /**
+     * Return the current configuration for the event bus.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName local server name.
+     * @return event bus config response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @GetMapping(path = "/event-bus")
+    public EventBusConfigResponse getEventBus(@PathVariable String userId,
+                                              @PathVariable String serverName)
+    {
+        return adminAPI.getEventBus(userId, serverName);
     }
 }

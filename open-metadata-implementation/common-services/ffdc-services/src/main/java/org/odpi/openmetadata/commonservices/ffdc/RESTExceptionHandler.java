@@ -87,11 +87,11 @@ public class RESTExceptionHandler
 
         if (restResult != null)
         {
-            log.error("FFDC Response: {}", restResult.toString());
             String exceptionClassName = restResult.getExceptionClassName();
 
             if (exceptionClassName != null)
             {
+                log.error("FFDC Response: {}", restResult.toString());
                 if (exceptionClassName.equals(invalidParameterExceptionClassName))
                 {
                     this.throwInvalidParameterException(methodName, restResult);
@@ -108,6 +108,10 @@ public class RESTExceptionHandler
                 {
                     this.throwUnexpectedException(methodName, restResult);
                 }
+            }
+            else
+            {
+                log.debug("FFDC Response: {}", restResult.toString());
             }
         }
     }
@@ -309,8 +313,8 @@ public class RESTExceptionHandler
      * @param restResult  response from the encoded exception from the server.
      * @throws PropertyServerException wrapping exception for the caught exception
      */
-    private void throwUnexpectedException(String           methodName,
-                                          FFDCResponseBase restResult) throws PropertyServerException
+    protected void throwUnexpectedException(String           methodName,
+                                            FFDCResponseBase restResult) throws PropertyServerException
     {
         OMAGCommonErrorCode errorCode = OMAGCommonErrorCode.UNEXPECTED_EXCEPTION;
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(restResult.getExceptionClassName(),

@@ -4,11 +4,15 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStore;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -17,7 +21,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -32,7 +35,8 @@ public class OMAGServerAdminStoreServices
 {
     private static Connection  configurationStoreConnection = null;
 
-    private static final Logger log = LoggerFactory.getLogger(OMAGServerAdminStoreServices.class);
+    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminStoreServices.class),
+                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
     private OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
     private OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();
@@ -50,7 +54,7 @@ public class OMAGServerAdminStoreServices
     {
         final String methodName = "setConfigurationStoreConnection";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -75,7 +79,7 @@ public class OMAGServerAdminStoreServices
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -92,7 +96,7 @@ public class OMAGServerAdminStoreServices
     {
         final String methodName = "getConfigurationStoreConnection";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
 
         ConnectionResponse  response = new ConnectionResponse();
 
@@ -111,7 +115,7 @@ public class OMAGServerAdminStoreServices
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -127,7 +131,7 @@ public class OMAGServerAdminStoreServices
     {
         final String methodName = "clearConfigurationStoreConnection";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -146,7 +150,7 @@ public class OMAGServerAdminStoreServices
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -193,7 +197,13 @@ public class OMAGServerAdminStoreServices
 
             Connector connector = connectorBroker.getConnector(connection);
 
-            return (OMAGServerConfigStore) connector;
+            OMAGServerConfigStore serverConfigStore = (OMAGServerConfigStore) connector;
+
+            serverConfigStore.setServerName(serverName);
+
+            connector.start();
+
+            return serverConfigStore;
         }
         catch (Throwable   error)
         {
@@ -251,6 +261,7 @@ public class OMAGServerAdminStoreServices
 
             serverConfig = new OMAGServerConfig();
             serverConfig.setVersionId(OMAGServerConfig.VERSION_TWO);
+            serverConfig.setLocalServerType(OMAGServerConfig.defaultLocalServerType);
         }
         else
         {
@@ -286,14 +297,16 @@ public class OMAGServerAdminStoreServices
                                                         errorCode.getUserAction());
             }
 
+            validateConfigServerName(serverName, serverConfig.getLocalServerName(), methodName);
+
             try
             {
                 OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
                 securityVerifier.registerSecurityValidator(serverConfig.getLocalServerUserId(),
-                                                                                        serverName,
-                                                                                        null,
-                                                                                        serverConfig.getServerSecurityConnection());
+                                                           serverName,
+                                                           null,
+                                                           serverConfig.getServerSecurityConnection());
 
                 securityVerifier.validateUserAsServerAdmin(userId);
             }
@@ -332,6 +345,7 @@ public class OMAGServerAdminStoreServices
         {
             if (serverConfig != null)
             {
+                validateConfigServerName(serverName, serverConfig.getLocalServerName(), methodName);
                 serverConfigStore.saveServerConfig(serverConfig);
             }
             else
@@ -341,6 +355,37 @@ public class OMAGServerAdminStoreServices
                  */
                 serverConfigStore.removeServerConfig();
             }
+        }
+    }
+
+
+    /**
+     * If there is a mismatch in the server name inside the configuration document and the
+     * requested server name it means there is an error in either the implementation or
+     * configuration of the configuration document store.
+     *
+     * @param serverName  serverName passed on a request
+     * @param configServerName serverName passed in config (should match request name)
+     * @param methodName  method being called
+     * @throws OMAGInvalidParameterException incompatible server names
+     */
+    private void validateConfigServerName(String serverName,
+                                          String configServerName,
+                                          String methodName) throws OMAGInvalidParameterException
+    {
+        if (! serverName.equals(configServerName))
+        {
+            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.INCOMPATIBLE_SERVER_NAMES;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
+                                                                                                            configServerName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                      this.getClass().getName(),
+                                                      methodName,
+                                                      errorMessage,
+                                                      errorCode.getSystemAction(),
+                                                      errorCode.getUserAction());
+
         }
     }
 }

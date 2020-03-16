@@ -9,13 +9,20 @@
     <parent>
         <artifactId>open-metadata-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>OMAS FV and SV Tests</name>
     <description>
-        The open metadata access services test module contains Functional Verification Test (FVT) and System Verification Test (SVT) resources.
+        The open metadata access services test module contains Functional Verification Test (FVT) and System
+        Verification Test (SVT) resources.
     </description>
 
     <artifactId>access-services-fvt</artifactId>

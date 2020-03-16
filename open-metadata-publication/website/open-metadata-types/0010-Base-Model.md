@@ -7,7 +7,7 @@ The base model defines key concepts such as Referenceable, Asset,
 Infrastructure, Process and DataSet.
 
 
-![UML](0010-Base-Model.png)
+![UML](0010-Base-Model.png#pagewidth)
 
 Referenceable is the super type for many of the open metadata entity
 types. A referenceable is something that is important enough to

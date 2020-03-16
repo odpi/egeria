@@ -22,7 +22,7 @@ They are securely stored to protect the assets.
 If they are missing then the security credentials of the current
 user are used with the connection.
 
-![UML](0201-Connectors-and-Connections.png)
+![UML](0201-Connectors-and-Connections.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

@@ -10,10 +10,16 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <name>OMAG Server Platform Chassis for Spring</name>
     <description>
@@ -233,6 +239,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>glossary-author-view-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- Spring for REST APIs -->
 
         <dependency>
@@ -302,9 +314,9 @@
                 </executions>
             </plugin>
 
-           <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-dependency-plugin</artifactId>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>analyze</id>
@@ -314,14 +326,22 @@
                         <configuration>
                             <ignoredUnusedDeclaredDependencies combine.children="append">
                                 <!-- all egeria spring modules are dynamically added -->
-                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:*connector*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:*connector*
+                                </ignoredUnusedDeclaredDependency>
                                 <!-- springfox added for swagger UI -->
-                                <ignoredUnusedDeclaredDependency>io.springfox:springfox-swagger-ui</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>io.springfox:springfox-swagger-ui
+                                </ignoredUnusedDeclaredDependency>
                                 <!-- Spring seems to cause false positives on dependency checker -->
-                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-security:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-data-jpa:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>
+                                    org.springframework.boot:spring-boot-starter-security:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>
+                                    org.springframework.boot:spring-boot-starter-data-jpa:*
+                                </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>

@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-
-import java.text.MessageFormat;
 
 /**
  * The DataEngineProxyAuditCode is used to define the message content for the OMRS Audit Log.
@@ -19,7 +19,7 @@ import java.text.MessageFormat;
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum DataEngineProxyAuditCode {
+public enum DataEngineProxyAuditCode implements AuditLogMessageSet {
 
     SERVICE_INITIALIZING("DATA-ENGINE-PROXY-0001",
             OMRSAuditLogRecordSeverity.INFO,
@@ -66,6 +66,21 @@ public enum DataEngineProxyAuditCode {
             "The Data Engine Proxy is polling for changes since {0}",
             "The local server is looking for changes since the last poll interval.",
             "No action is required.  This is part of the normal operation of the service."),
+    OMAS_CONNECTION_ERROR("DATA-ENGINE-PROXY-0010",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "The Data Engine OMAS client was not successfully initialized",
+            "The system is unable to process anything due to a lack of OMAS connectivity.",
+            "Check your OMAS configuration is correct and the OMAS is running."),
+    USER_NOT_AUTHORIZED("DATA-ENGINE-PROXY-0011",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The user is not authorized for the Data Engine OMAS operation: {0}",
+            "The system is unable to process the operation due to the user not being authorized to do so.",
+            "Check your OMAS configuration and user authorizations."),
+    UNKNOWN_ERROR("DATA-ENGINE-PROXY-0012",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "An unknown error occurred",
+            "The system is unable to process the operation due to an unknown runtime error.",
+            "Check your OMAS configuration and server logs to troubleshoot."),
     ;
 
     private String logMessageId;
@@ -99,52 +114,29 @@ public enum DataEngineProxyAuditCode {
     }
 
     /**
-     * Returns the unique identifier for the error message.
-     *
-     * @return logMessageId
+     * {@inheritDoc}
      */
-    public String getLogMessageId() {
-        return logMessageId;
+    @Override
+    public AuditLogMessageDefinition getMessageDefinition() {
+        return new AuditLogMessageDefinition(logMessageId,
+                severity,
+                logMessage,
+                systemAction,
+                userAction);
     }
 
     /**
-     * Return the severity object for the log
-     * @return severity
+     * {@inheritDoc}
      */
-    public OMRSAuditLogRecordSeverity getSeverity() {
-        return severity;
-    }
-
-    /**
-     * Returns the log message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the logMessage
-     * @return logMessage (formatted with supplied parameters)
-     */
-    public String getFormattedLogMessage(String... params) {
-        MessageFormat mf = new MessageFormat(logMessage);
-        return mf.format(params);
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction String
-     */
-    public String getSystemAction() {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction String
-     */
-    public String getUserAction() {
-        return userAction;
+    @Override
+    public AuditLogMessageDefinition getMessageDefinition(String ...params) {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                severity,
+                logMessage,
+                systemAction,
+                userAction);
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
     }
 
 }

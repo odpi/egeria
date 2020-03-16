@@ -80,9 +80,6 @@ class VisGraph extends PolymerElement {
         type: Object,
         observer: '_optionsChanged',
         value: {
-          // autoResize: true,
-          // height: '100%',
-          // width: '100%',
           nodes: {
             shape: 'box',
             margin: 10
@@ -102,7 +99,7 @@ class VisGraph extends PolymerElement {
             hierarchical: {
               enabled: true,
               levelSeparation: 300,
-              direction: 'horizontal'
+              direction: 'RL'
             }
           },
           physics: false,

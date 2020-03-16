@@ -2,12 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
+
 
 /**
  * The DiscoveryServerAuditCode is used to define the message content for the OMRS Audit Log.
@@ -22,7 +21,7 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum DiscoveryEngineServicesAuditCode
+public enum DiscoveryEngineServicesAuditCode implements AuditLogMessageSet
 {
     SERVER_INITIALIZING("DISCOVERY-ENGINE-SERVICES-0001",
                         OMRSAuditLogRecordSeverity.STARTUP,
@@ -31,7 +30,7 @@ public enum DiscoveryEngineServicesAuditCode
                                  "Within the discovery server are one or more discovery engines that analyze the " +
                                  "content of assets on demand and create annotation metadata. The configuration for the " +
                                 "discovery engines is retrieved from the metadata server and the discovery engines are initialized.",
-                        "No action is required.  This is part of the normal operation of the service."),
+                        "Verify that the start up sequence goes on to initialize the configured discovery engines."),
 
     NO_OMAS_SERVER_URL("DISCOVERY-ENGINE-SERVICES-0002",
                          OMRSAuditLogRecordSeverity.ERROR,
@@ -59,8 +58,7 @@ public enum DiscoveryEngineServicesAuditCode
                         "The discovery server is initializing a discovery engine to analyze the " +
                                 "content of assets on demand and create annotation metadata.  The configuration for this discovery engine is " +
                                 "retrieved from the Discovery Engine OMAS running in the metadata server",
-                        "No action is required.  This is part of the normal operation of the service."),
-
+                        "Verify that this discovery engine successfully retrieves its configuration from the metadata server."),
     SERVER_NOT_AUTHORIZED("DISCOVERY-ENGINE-SERVICES-0007",
                      OMRSAuditLogRecordSeverity.EXCEPTION,
                      "Discovery server {0} is not authorized to retrieve any its configuration from the Discovery Engine " +
@@ -77,7 +75,7 @@ public enum DiscoveryEngineServicesAuditCode
                              "Discovery engine {0} in discovery server {1} is configured to process discovery requests of type {2}",
                              "The discovery engine has successfully retrieved the configuration to run analysis requests for the named discovery " +
                                      "request type.  It is ready to run discovery requests of this type",
-                             "No action is required if this discovery request type is correct for the discovery engine."),
+                             "Verify that this is an appropriate discovery request type for the discovery engine."),
 
     NO_SUPPORTED_REQUEST_TYPES("DISCOVERY-ENGINE-SERVICES-0009",
                                OMRSAuditLogRecordSeverity.ERROR,
@@ -101,7 +99,7 @@ public enum DiscoveryEngineServicesAuditCode
                         OMRSAuditLogRecordSeverity.STARTUP,
                         "The discovery engine {0} in discovery server {1} has initialized",
                         "The discovery engine has completed initialization and is ready to receive discovery requests.",
-                        "No action is required.  This is part of the normal operation of the service."),
+                        "Verify that the discovery engine has been initialized wit the correct list of discovery request types."),
 
     SERVICE_INSTANCE_FAILURE("DISCOVERY-ENGINE-SERVICES-0012",
                              OMRSAuditLogRecordSeverity.ERROR,
@@ -113,43 +111,47 @@ public enum DiscoveryEngineServicesAuditCode
                        OMRSAuditLogRecordSeverity.STARTUP,
                        "The discovery server {0} has initialized",
                        "The discovery server has completed initialization.",
-                       "No action is required.  This is part of the normal operation of the service."),
+                       "Verify that all of the configured discovery engines have successfully started and retrieved their configuration."),
 
     SERVER_SHUTTING_DOWN("DISCOVERY-ENGINE-SERVICES-0014",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
                     "The discovery server {0} is shutting down",
                     "The local administrator has requested shut down of this discovery server.",
-                    "No action is required.  This is part of the normal operation of the service."),
+                    "Verify that this server is no longer needed and the shutdown is expected."),
 
     ENGINE_SHUTDOWN("DISCOVERY-ENGINE-SERVICES-0015",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
                     "The discovery engine {0} in discovery server {1} is shutting down",
                     "The local administrator has requested shut down of this discovery engine.  No more discovery requests will be processed by this engine.",
-                    "No action is required.  This is part of the normal operation of the service."),
+                    "Verify that this shutdown is intended and the discovery engine is no longer needed."),
 
     SERVER_SHUTDOWN("DISCOVERY-ENGINE-SERVICES-0016",
                          OMRSAuditLogRecordSeverity.SHUTDOWN,
                          "The discovery server {0} has completed shutdown",
                          "The local administrator has requested shut down of this discovery server and the operation has completed.",
-                         "No action is required.  This is part of the normal operation of the service."),
+                         "Verify that all configured discovery engines shut down successfully."),
 
     DISCOVERY_SERVICE_STARTING("DISCOVERY-ENGINE-SERVICES-0017",
                     OMRSAuditLogRecordSeverity.STARTUP,
-                    "The discovery service {0} is starting to analyze asset {1} of type {2} in discovery engine {3} (guid={4}); the results will be stored in discovery analysis report {5}",
+                    "The discovery service {0} is starting to analyze asset {1} with discovery request type {2} in discovery engine {3} (guid={4});" +
+                                       " the results will be stored in discovery analysis report {5}",
                     "A new discovery request is being processed.",
-                    "No action is required.  This is part of the normal operation of the service."),
+                    "Verify that the discovery service ran to completion."),
 
     DISCOVERY_SERVICE_FAILED("DISCOVERY-ENGINE-SERVICES-0018",
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    "The discovery service {0} threw an exception of type {1} during the generation of discovery analysis report {2} for asset {3} of type {4} in discovery engine {5} (guid={6}). The error message was {7}",
-                    "A discovery services failed to complete the analysis of .",
-                    "No action is required.  This is part of the normal operation of the service."),
+                    "The discovery service {0} threw an exception of type {1} during the generation of discovery analysis report {2} for asset {3} " +
+                                     "during discovery request type {4} in discovery engine {5} (guid={6}). The error message was {7}",
+                    "A discovery service failed to complete the analysis of an asset.",
+                    "Review the exception to determine the cause of the error."),
 
     DISCOVERY_SERVICE_COMPLETE("DISCOVERY-ENGINE-SERVICES-0019",
                                OMRSAuditLogRecordSeverity.SHUTDOWN,
-                               "The discovery service {0} has completed the analysis of asset {1} of type {2} in {3} milliseconds; results stored in report {4}",
+                               "The discovery service {0} has completed the analysis of asset {1} with discovery request type {2} in {3} " +
+                                       "milliseconds; the results are stored in discovery analysis report {4}",
                                "A discovery request has completed.",
-                               "No action is required.  This is part of the normal operation of the service."),
+                               "It is possible to query the result of the discovery request through the discovery server's discovery engine " +
+                                       "services interface."),
 
     NO_DISCOVERY_ENGINES_STARTED("DISCOVERY-ENGINE-SERVICES-0020",
                          OMRSAuditLogRecordSeverity.ERROR,
@@ -159,7 +161,8 @@ public enum DiscoveryEngineServicesAuditCode
 
     EXC_ON_ERROR_STATUS_UPDATE("DISCOVERY-ENGINE-SERVICES-0021",
                                  OMRSAuditLogRecordSeverity.EXCEPTION,
-                                 "Discovery engine {0} is unable to update failed status for discovery service {1}.  The exception was {2} with error message {3}",
+                                 "Discovery engine {0} is unable to update the status for discovery service {1}.  The exception was {2} with error " +
+                                       "message {3}",
                                  "The server is not able to record the failed result for a discovery request. The discovery report status is not updated.",
                                  "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the discovery request."),
 
@@ -253,8 +256,6 @@ public enum DiscoveryEngineServicesAuditCode
     private String                     systemAction;
     private String                     userAction;
 
-    private static final Logger log = LoggerFactory.getLogger(DiscoveryEngineServicesAuditCode.class);
-
 
     /**
      * The constructor for DiscoveryServerAuditCode expects to be passed one of the enumeration rows defined in
@@ -285,71 +286,34 @@ public enum DiscoveryEngineServicesAuditCode
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
      *
-     * @return logMessageId
+     * @return message definition object.
      */
-    public String getLogMessageId()
+    public AuditLogMessageDefinition getMessageDefinition()
     {
-        return logMessageId;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
     /**
-     * Return the severity of the audit log record.
+     * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
-     * @return OMRSAuditLogRecordSeverity enum
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public OMRSAuditLogRecordSeverity getSeverity()
+    public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
-        return severity;
-    }
-
-    /**
-     * Returns the log message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the logMessage
-     * @return logMessage (formatted with supplied parameters)
-     */
-    public String getFormattedLogMessage(String... params)
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("<== DiscoveryServerAuditCode.getMessage(%s)", Arrays.toString(params)));
-        }
-
-        MessageFormat mf = new MessageFormat(logMessage);
-        String result = mf.format(params);
-
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("==> DiscoveryServerAuditCode.getMessage(%s): %s", Arrays.toString(params), result));
-        }
-
-        return result;
-    }
-
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction String
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction String
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
     }
 }

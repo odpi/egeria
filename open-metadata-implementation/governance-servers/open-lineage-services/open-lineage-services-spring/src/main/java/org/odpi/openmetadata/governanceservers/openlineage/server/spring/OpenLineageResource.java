@@ -3,11 +3,17 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server.spring;
 
 
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryParameters;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageRestServices;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * * The OpenLineageResource provides the server-side interface of the Open Lineage Services governance server.
@@ -34,7 +40,33 @@ public class OpenLineageResource {
             @PathVariable("userId") String userId,
             @PathVariable("guid") String guid,
             @RequestBody LineageQueryParameters params) {
-        return restAPI.lineage(serverName, userId, params.getScope(), guid, params.getDisplayNameMustContain(), params.getIncludeProcesses());
+        return restAPI.lineage(serverName, userId, params.getScope(), guid, params.getDisplayNameMustContain(), params.isIncludeProcesses());
+    }
+
+    /**
+     * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
+     *
+     * @param userId     calling user.
+     * @param serverName name of the server instance to connect to.
+     * @return Voidresponse
+     */
+    @GetMapping(path = "/dump")
+    public VoidResponse dumpGraph(@PathVariable("userId") String userId,
+                                  @PathVariable("serverName") String serverName) {
+        return restAPI.dumpGraph(serverName, userId);
+    }
+
+    /**
+     * Return an entire graph, in GraphSON format.
+     *
+     * @param userId     calling user.
+     * @param serverName name of the server instance to connect to.
+     * @return The queried graph, in graphSON format.
+     */
+    @GetMapping(path = "/export", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public String exportGraph(@PathVariable("userId") String userId,
+                              @PathVariable("serverName") String serverName) {
+        return restAPI.exportMainGraph(serverName, userId);
     }
 
 }

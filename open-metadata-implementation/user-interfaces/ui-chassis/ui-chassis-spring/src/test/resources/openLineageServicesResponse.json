@@ -24,6 +24,14 @@
         "displayName": "p30",
         "guid": "p30",
         "attributes": {}
+      },
+      {
+        "class": "LineageVertex",
+        "nodeID": "gt10",
+        "nodeType": "glossaryTerm",
+        "displayName": "gt10",
+        "guid": "gt10",
+        "attributes": {}
       }
     ]
 }

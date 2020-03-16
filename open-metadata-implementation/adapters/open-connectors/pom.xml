@@ -10,15 +10,21 @@
     <parent>
         <artifactId>adapters</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <name>Open Connectors</name>
     <description>
         Open Connectors are connectors that support the
-        Open Connector Framework (OCF) -  see the open-connector-framework module.
+        Open Connector Framework (OCF) - see the open-connector-framework module.
         This is the principle (preferred) mechanism for supporting pluggable
         components in the open metadata implementation.
     </description>

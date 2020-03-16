@@ -1,23 +1,60 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# OMAG Server Configuration User Guide
+# Egeria Administration User Guide
 
-An **[Open Metadata and Governance (OMAG) Server Platform](../../../../open-metadata-publication/website/omag-server)**
-hosts one or more **[OMAG servers](../concepts/omag-server.md)**, each supporting a variety of open metadata
-and governance capabilities.  These capabilities are implemented as [OMAG Subsystems](../concepts/omag-subsystem.md).
+The Egeria technology principally runs on the [Open Metadata and Governance (OMAG) Server Platform](../concepts/omag-server-platform.md).
+This platform hosts one or more [OMAG Servers](../concepts/omag-server.md), 
+each supporting a variety of open metadata and governance capabilities. 
 
-The subsystems that are enabled in a specific instance of an OMAG Server
-are defined in a JSON **[configuration document](../concepts/configuration-document.md)**.
-When the configuration document is loaded into the OMAG server platform, the OMAG server that is describes
-is started, and the subsystems defined in the configuration document are activated.
+In Figure 1, the OMAG Server Platforms are the blue rounded boxes and the 
+orange circles are the OMAG Servers.
+
+![Figure 1](../../../../open-metadata-publication/website/images/egeria-distributed-operation.png)
+> **Figure 1:** OMAG Server Platforms running in different cloud platforms and/or data centers,
+> each hosting OMAG Servers that are providing specialist integration capability
+> for different tools.
+
+This guide explains how the configure the OMAG Server Platform
+and the different types of OMAG Servers that run on it.
+
+If you are keen to get started right away then these are the links
+to the configuration instructions.
+
+* [Configuring the OMAG Server Platform](configuring-the-omag-server-platform.md)
+* [Configuring an OMAG Server](configuring-an-omag-server.md)
+
+and once you have your OMAG Servers configured:
+
+* [Operating an OMAG Server](operating-omag-server.md)
+
+What follows is more background on the administration services.
+
+## OMAG Subsystems
+
+An OMAG server is a set of configured [OMAG Subsystems](../concepts/omag-subsystem.md)
+supported by the OMAG Server Platform.
+Each subsystem supports a particular type of technology so it can exchange metadata with the
+open metadata ecosystem.  Some technologies are sources of metadata, others just consume metadata
+and then there are technologies that have a two-way exchange of metadata with the open metadata ecosystem.
+
+The OMAG subsystems that are to be enabled in a specific instance of an OMAG Server
+are defined in a **[configuration document](../concepts/configuration-document.md)**.
+When the configuration document is loaded into the OMAG server platform, the OMAG server that it describes
+is started, and the subsystems defined in the configuration document are activated for that server.
 
 In an open metadata landscape, it is anticipated that there may be multiple
 instances of the OMAG Server running in an OMAG Server Platform, each performing a different role.
-The active subsystems of each of these server instances would be defined in a different
-configuration document.
-They could all, however, be loaded into the same OMAG Server Platform, or distributed across
-different OMAG Server Platforms ([more information](../concepts/omag-server-personalities.md)).
+Each of these server instances would have their own configuration document allowing them
+to have different subsystems active.
+
+Figure 2 shows different choices for distributing OMAG Servers on the OMAG Platforms.
+
+![Figure 2](../concepts/omag-server-deployment-choices.png)
+> **Figure 2:** OMAG Server deployment choices.  An OMAG Server may have multiple copies of the
+> same type of OMAG Server on a platform (multi-tenant operation for a cloud service),
+> or different types of OMAG Server on a platform, or a separate platform for each OMAG Server.
+>([more information](../concepts/omag-server.md)).
 
 The configuration document for a specific OMAG server is identified by the server's name.
 This is passed on the URL of every admin services API request along with the user
@@ -36,7 +73,7 @@ The administration services that set up this file all begin with a URL like this
 The **serverName** specified on these calls determines which configuration
 document is used, and hence which of the OMAG server's configuration it is working with.
 
-The OMAG Server Platform starts up without any OMAG servers active.
+The OMAG Server Platform typically starts up without any OMAG servers active.
 Once it is running, it can be used to set up the configuration documents
 that describe the open metadata subsystems needed for each OMAG server instance.
 
@@ -44,61 +81,13 @@ Once the configuration document is in place, the OMAG Server
 can be activated and deactivated multiple times, across multiple
 restarts of the OMAG Server Platform.
 
-## Building a configuration document for an OMAG server
+----
+## Further information
 
-The configuration document for the OMAG Server determines which OMAG subsystems (and hence the types of open
-metadata and governance services) that should be activated in the OMAG Server.
-For example:
-
-* Basic descriptive properties of the server that are used in logging and events
-originating from the server.
-* What type of local repository to use.
-* Whether the Open Metadata Access Services (OMASs) should be started.
-* Which cohorts to connect to.
-
-Each of the configuration commands builds up sections in the configuration document.
-This document is stored in the configuration file after each configuration request so
-it is immediately available for use each time the open metadata services are activated
-in the OMAG Server.
-
-In the descriptions of the configuration commands the following values are used as examples:
-
-* The OMAG server platform is running on the localhost, at port 8080 (ie **http://localhost:8080**).
-* The user id of the administrator is **garygeeke**.
-* The name of the OMAG server (serverName) is **cocoMDS1**.
-
-### Common Configuration Tasks
-
-* [Setting basic properties for an OMAG server](configuring-omag-server-basic-properties.md)
-* Setting up default configuration parameters
-   * [Setting up the default event bus](configuring-event-bus.md)
-   * [Configuring the default local server URL root](configuring-local-server-url.md)
-* [Configuring the Open Metadata Repository Services (OMRS)](configuring-the-repository-services.md)
-* [Configuring the Open Metadata Access Services (OMASs)](configuring-the-access-services.md)
-* [Configuring the Discovery Engine Services](configuring-the-discovery-engine-services.md)
-* [Configuring the Security Sync Services](configuring-the-security-sync-services.md)
-* [Configuring the Stewardship Services](configuring-the-stewardship-services.md)
-
-### Advanced Configuration Topics
-
-* [Migrating configuration documents](migrating-configuration-documents.md)
-* [Configuring the storage mechanism to use for configuration documents](configuring-configuration-file-store.md)
-
-
-## Querying the contents of a configuration document
-
-It is possible to query the configuration document for a specific OMAG server using the following command.
-
-```
-GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration
-```
-
-It is also possible to query the origin of the server supporting the open metadata services.
-For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 1.5-SNAPSHOT)".
-
-```
-GET http://localhost:8080/open-metadata/platform-services/users/garygeeke/servers/cocoMDS1/server-platform-origin
-```
+* [Configuring the OMAG Server Platform](configuring-the-omag-server-platform.md)
+* [Configuring an OMAG Server](configuring-an-omag-server.md)
+* [Operating the OMAG Server](operating-omag-server.md)
+* [Migrating OMAG Server Configuration Documents](migrating-configuration-documents.md)
 
 ## Examples of configuration calls
 
@@ -106,7 +95,8 @@ The postman collection illustrates many of the configuration calls:
 [admin-services-configuration.postman_collection.json](../../admin-services-configuration.postman_collection.json)
 
 
-
+----
+Return to [main page](../../../../index.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

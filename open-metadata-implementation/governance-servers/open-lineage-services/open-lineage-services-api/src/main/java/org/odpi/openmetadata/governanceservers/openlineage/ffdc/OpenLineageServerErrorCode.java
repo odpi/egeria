@@ -76,10 +76,41 @@ public enum OpenLineageServerErrorCode {
             "The Maingraph database connector could not be started.",
             "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
 
+
     ERROR_OBTAINING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-011 ",
-            "The Open Lineage Services server {0} was unable to obtain an in topic connector.",
+            "The Open Lineage Services server {0} is unable to obtain an in topic connector.",
             "The in topic connector could not be obtained.",
             "Review the topic name set by the Open Lineage Services configuration."),
+
+    ERROR_OBTAINING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-012 ",
+            "The Open Lineage Services server {0} is not able to obtain a Buffergraph database connector.",
+            "The Buffergraph database connector could not be obtained.",
+            "Please verify the Buffergraph connection object within the Open Lineage Services configuration."),
+
+    ERROR_OBTAINING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-012 ",
+            "The Open Lineage Services server {0} is not able to obtain a Maingraph database connector.",
+            "The Maingraph database connector could not be obtained.",
+            "Please verify the Maingraph connection object within the Open Lineage Services configuration."),
+
+    ERROR_STARTING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-013 ",
+            "The Open Lineage Services server {0} is unable to start an in topic listener.",
+            "The topic connector could not be started.",
+            "Review the status of the eventbus server and review the topic name set by the Open Lineage Services configuration."),
+
+    ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-014 ",
+            "The Open Lineage Services server {0} encountered an error while disconnecting the Buffergraph connector",
+            "An error occured while while disconnecting the Buffergraph connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    ERROR_DISCONNECTING_MAIN_GRAPH_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-015 ",
+            "The Open Lineage Services server {0} encountered an error while disconnecting the Maingraph connector",
+            "An error occured while disconnecting the Maingraph connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
+
+    ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR(400, "OPEN-LINEAGE-SERVER-400-016 ",
+            "The Open Lineage Services server {0} encountered an error while disconnecting the In-topic connector",
+            "An error occured while disconnecting the In-topic connector",
+            "Please verify that the Open Lineage Services have shut down properly."),
 
     NODE_NOT_FOUND(404, "OPEN-LINEAGE-SERVICES-404-001 ",
             "Error retrieving queried node.",
@@ -104,11 +135,11 @@ public enum OpenLineageServerErrorCode {
             "Query the full end to end lineage of the queried node to identify the problematic data flow cycle."),
 
     ERROR_INITIALIZING_OLS(503, "OPEN-LINEAGE-SERVICES-503-002 ",
-            "The Open Lineage Services server {0} encountered an unexpected error and could not start.",
+            "The Open Lineage Services server {0} encountered an unknown error and could not start.",
             "An unexpected error occurred while initializing the Open Lineage Services.",
             "Please contact an Egeria maintainer about your issue."),
-    ;
 
+    ;
 
 
     private int httpErrorCode;

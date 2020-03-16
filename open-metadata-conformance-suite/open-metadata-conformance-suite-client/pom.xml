@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-conformance-suite</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Conformance Suite Client</name>
@@ -19,6 +19,12 @@
     </description>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <artifactId>open-metadata-conformance-suite-client</artifactId>
 
@@ -55,12 +61,12 @@
         </dependency>
 
         <dependency>
-             <groupId>ch.qos.logback</groupId>
-             <artifactId>logback-classic</artifactId>
-             <scope>compile</scope>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>compile</scope>
         </dependency>
 
-     </dependencies>
+    </dependencies>
 
     <build>
         <plugins>
@@ -74,7 +80,8 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.odpi.openmetadata.conformance.client.OpenMetadataConformanceTestReport</mainClass>
+                            <mainClass>org.odpi.openmetadata.conformance.client.OpenMetadataConformanceTestReport
+                            </mainClass>
                         </manifest>
                     </archive>
                 </configuration>

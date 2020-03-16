@@ -2,17 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * The OCF error code is used to define first failure data capture (FFDC) for errors that occur when working with
@@ -59,7 +55,7 @@ public enum OCFErrorCode
             "Class {0} passed in connection {1} is not a Connector Provider",
             "The system is unable to create the requested connector instance because the Connector Provider's class does not implement org.odpi.openmetadata.ConnectorProvider. ",
             "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
-   INVALID_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-008 ",
+    INVALID_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-008 ",
             "Invalid Connector Provider class {0} passed in connection {1}",
             "The system is unable to create the requested connector instance because the Connector Provider's class is failing to initialize in the JVM.  This has resulted in an exception in the class loader.",
             "Verify that the Connector Provider and Connector jar files are properly configured in the process.  Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
@@ -159,7 +155,7 @@ public enum OCFErrorCode
             "Connector Provider {0} returned a null connector instance for connection {1}",
             "The system detected an error during connector processing and was unable to create a connector.",
             "The root cause of the error is captured in previous reported messages."),
-    NOT_VIRTUAL_CONNECTOR(500,"OCF-CONNECTOR-500-008 ",
+    NOT_VIRTUAL_CONNECTOR(500,"OCF-CONNECTOR-500-012 ",
             "Java class {0} is not a VirtualConnector and so can not support VirtualConnection {1}",
             "The system is unable to create the requested connector instance because the supplied connection is a virtual connection but the connector's class does not implement org.odpi.openmetadata.VirtualConnector. ",
             "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.");
