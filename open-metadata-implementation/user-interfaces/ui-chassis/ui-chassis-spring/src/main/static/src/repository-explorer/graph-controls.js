@@ -138,15 +138,14 @@ class GraphControls extends PolymerElement {
                             <!--This section is used to fetch the input from the input-field and display on the dialog using one-way data binding-->
 
                             <p>
-                            This is the history of traversals since the graph was last cleared.
+                            Summary of traversals since the graph was last cleared.
                             </p>
 
-
-                            <!--   Display 3 things per type included in the pre-traversal stats
-                              --   1. The gen number
-                              --   2. The server and a summary of the query that was performed
-                              --   3. The labels, guids of the entities and relationships returned
-                            -->
+                            <!--   Display 3 things per gen in the traversal history                   -->
+                            <!--   1. The gen number                                                   -->
+                            <!--   2. The server and a summary of the query that was performed         -->
+                            <!--   3. The labels, guids of the entities and relationships returned     -->
+                            <!--                                                                       -->
 
                             <div id="containerForHistory">
                             </div>
