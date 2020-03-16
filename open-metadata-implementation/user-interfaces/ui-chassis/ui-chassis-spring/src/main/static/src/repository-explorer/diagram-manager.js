@@ -10,7 +10,7 @@ import { PolymerElement, html } from "../../node_modules/@polymer/polymer/polyme
 import '../shared-styles.js';
 import '../token-ajax.js';
 
-import './instance-diagram.js';
+import './network-diagram.js';
 
 
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
@@ -144,7 +144,7 @@ class RexDiagramManager extends PolymerElement {
         // You actually don't need to pass the instanceRetriever arg here because the diagram-manager's
         // this.instanceRetriever will bave been set by binding. This is really an event to notify the
         // d-m that the repository-explorer-view is finishing it's ready() and that the instanceRetriever
-        // can be set on the dynamically created instance-diagram (or other diagram) element - it is not
+        // can be set on the dynamically created network-diagram (or other diagram) element - it is not
         // bound using property binding.
 
         //console.log('diagram-manager: notify current diagram that instanceRetriever is set");
@@ -169,7 +169,7 @@ class RexDiagramManager extends PolymerElement {
         // a type to be selected as the focus type.
 
         // Add it to the selector
-        this.addInstanceOption();
+        this.addNetworkOption();
 
         // Clear the area
         var drawingArea = this.$.drawingArea;
@@ -178,7 +178,7 @@ class RexDiagramManager extends PolymerElement {
         }
 
         // ... and automatically select it
-        this.selectedDiagramType = "Instance";
+        this.selectedDiagramType = "Network";
         this.diagramSelected();
 
 
@@ -288,31 +288,31 @@ class RexDiagramManager extends PolymerElement {
     /*
      *  Make inheritance diagram available and selected
      */
-    addInstanceOption() {
+    addNetworkOption() {
 
         // The inheritance diagram will always be the first diagram type made available,
         // so it should be the default value once it is available - i.e. select it automatically.
 
         if (this.polymer) {
 
-            this.selectedDiagramType = "Instance";
-            this.availableDiagramTypes.push("Instance");
+            this.selectedDiagramType = "Network";
+            this.availableDiagramTypes.push("Network");
             var selectorList = this.$.diagramSelectorList;
             var opt = document.createElement('paper-item');
-            opt.value = "Instance";
-            opt.innerHTML = "Instance Diagram";
+            opt.value = "Network";
+            opt.innerHTML = "Network Diagram";
             opt.selected = true;
             selectorList.appendChild(opt);
 
         }
         else {
 
-            this.selectedDiagramType = "Instance";
-            this.availableDiagramTypes.push("Instance");
+            this.selectedDiagramType = "Network";
+            this.availableDiagramTypes.push("Network");
             var diagSelector = this.$.diagramSelector;
             var opt = document.createElement('option');
-            opt.value = "Instance";
-            opt.innerHTML = "Instance";
+            opt.value = "Network";
+            opt.innerHTML = "Network Diagram";
             opt.selected = true;
             diagSelector.appendChild(opt);
 
@@ -345,11 +345,11 @@ class RexDiagramManager extends PolymerElement {
 
         switch(this.selectedDiagramType) {
 
-            case "Instance" :
+            case "Network" :
 
-                var instanceDiagram = document.createElement("instance-diagram");
-                this.$.drawingArea.appendChild(instanceDiagram);
-                this.currentDiagram = instanceDiagram;
+                var networkDiagram = document.createElement("network-diagram");
+                this.$.drawingArea.appendChild(networkDiagram);
+                this.currentDiagram = networkDiagram;
                 break;
 
         }
@@ -360,9 +360,9 @@ class RexDiagramManager extends PolymerElement {
 
         switch(this.selectedDiagramType) {
 
-            case "Instance" :
-                var instanceDiagram = this.$.drawingArea.firstChild;
-                instanceDiagram.update();
+            case "Network" :
+                var networkDiagram = this.$.drawingArea.firstChild;
+                networkDiagram.update();
                 break;
 
         }
@@ -373,9 +373,9 @@ class RexDiagramManager extends PolymerElement {
 
         switch(this.selectedDiagramType) {
 
-            case "Instance" :
-                var instanceDiagram = this.$.drawingArea.firstChild;
-                instanceDiagram.clearGraph();
+            case "Network" :
+                var networkDiagram = this.$.drawingArea.firstChild;
+                networkDiagram.clearGraph();
                 break;
 
         }

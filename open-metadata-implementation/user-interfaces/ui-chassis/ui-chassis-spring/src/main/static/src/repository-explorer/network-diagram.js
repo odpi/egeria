@@ -16,12 +16,15 @@ import '../token-ajax.js';
 
 /**
 *
-* InheritanceDiagram implements a web component for drawing an Entity inheritance diagram
+* NetworkDiagram implements a web component for drawing a network graph of
+* interconnected entities and relationships.
 *
-* This component renders a set of inheritance trees (drawn with the roots to the left)
-* that contain Egeria entity types. Each tree is collapsible and expandabla to hide/
-* show the children of a node. It is possible to click on a type to 'select'
-* it - meaning that type becomes the focus type. The focus type is highlighted.
+* This component visualizes a graph of the relationships and entities selected
+* by the user.
+* It is possible to click on an entity of relationship to 'select' it - meaning
+* that the selected entity or relationship becomes the focus for the next
+* operation and may be highlighted or displayed by other components. In the
+* NetworkDiagram, the focus instance is highlighted.
 *
 * This component uses the D3 force layout by Michael Bostock
 *
@@ -43,7 +46,7 @@ import '../token-ajax.js';
 */
 
 
-class InstanceDiagram extends PolymerElement {
+class NetworkDiagram extends PolymerElement {
 
     static get template() {
         return html`
@@ -93,7 +96,7 @@ class InstanceDiagram extends PolymerElement {
 
                 <div id="ins" style="position:relative; overflow: auto; background-color:#FFFFFF">
                      <p>
-                     Placeholder for instance diagram...
+                     Placeholder for network diagram...
                      </p>
                 </div>
 
@@ -284,20 +287,20 @@ class InstanceDiagram extends PolymerElement {
         /*
          *  To support dynamic theming of colors we need to detect what the primary color has been
          *  set to - this is done via a CSS variable. For most purposes the CSS variable is
-         *  sufficient - but the instance-diagram will dynamically color switch as elements are
+         *  sufficient - but the network-diagram will dynamically color switch as elements are
          *  selected - so we need the primary color accessible at runtime.
          */
         const styles = window.getComputedStyle(this);
         this.egeria_primary_color_string = styles.getPropertyValue('--egeria-primary-color');
-        //console.log("instance-diagram: egeria primary color is "+this.egeria_primary_color_string);
+        //console.log("network-diagram: egeria primary color is "+this.egeria_primary_color_string);
 
-        //console.log("instance-diagram: ready complete");
+        //console.log("network-diagram: ready complete");
 
     }
 
     setInstanceRetriever(instanceRetriever) {
         this.instanceRetriever = instanceRetriever;
-        //console.log("instance-diagram: instanceRetriever set "+this.instanceRetriever);
+        //console.log("network-diagram: instanceRetriever set "+this.instanceRetriever);
     }
 
 
@@ -332,7 +335,7 @@ class InstanceDiagram extends PolymerElement {
         // There is nothing to do here - highlighting will be handled asynchronously and the
         // display of details is not the responsibility of this diagram component.
         // For now just log to console....
-        //console.log("instance-diagram: focus-entity-changed to "+entityGUID);
+        //console.log("network-diagram: focus-entity-changed to "+entityGUID);
     }
 
     inEvtFocusRelationshipChanged(relationshipGUID) {
@@ -340,7 +343,7 @@ class InstanceDiagram extends PolymerElement {
         // There is nothing to do here - highlighting will be handled asynchronously and the
         // display of details is not the responsibility of this diagram component.
         // For now just log to console....
-        //console.log("instance-diagram: focus-relationship-changed to "+relationshipGUID);
+        //console.log("network-diagram: focus-relationship-changed to "+relationshipGUID);
     }
 
 
@@ -362,7 +365,7 @@ class InstanceDiagram extends PolymerElement {
         if (entityDigests != null) {
              for (var e in entityDigests) {
                   var entityDigest = entityDigests[e];
-                  //console.log("instance-diagram: graph-extended processing entity "+entityDigest.label);
+                  //console.log("network-diagram: graph-extended processing entity "+entityDigest.label);
                   var newNode = {};
                   newNode.id = entityDigest.entityGUID;
                   newNode.label = entityDigest.label;
@@ -481,19 +484,19 @@ class InstanceDiagram extends PolymerElement {
 
     outEvtChangeFocusEntity(entityGUID) {
         var customEvent = new CustomEvent('change-focus-entity', { bubbles: true, composed: true,
-                                          detail: {entityGUID: entityGUID, source: "instance-diagram"} });
+                                          detail: {entityGUID: entityGUID, source: "network-diagram"} });
         this.dispatchEvent(customEvent);
     }
 
     outEvtChangeFocusRelationship(relationshipGUID) {
         var customEvent = new CustomEvent('change-focus-relationship', { bubbles: true, composed: true,
-                                            detail: {relationshipGUID: relationshipGUID, source: "instance-diagram"} });
+                                            detail: {relationshipGUID: relationshipGUID, source: "network-diagram"} });
         this.dispatchEvent(customEvent);
     }
 
     outEvtGraphReduced() {
         var customEvent = new CustomEvent('graph-reduced', { bubbles: true, composed: true,
-                                          detail: {source: "instance-diagram"} });
+                                          detail: {source: "network-diagram"} });
         this.dispatchEvent(customEvent);
     }
 
@@ -502,16 +505,16 @@ class InstanceDiagram extends PolymerElement {
      */
     render() {
 
-        //console.log("instance-diagram: render called");
+        //console.log("network-diagram: render called");
 
         // Clear any startup text or previous diagram content
-        //console.log("instance-diagram: clear instance diagram");
-        this.clearInstanceDiagram();
+        //console.log("network-diagram: clear network diagram");
+        this.clearNetworkDiagram();
 
-        //console.log("instance-diagram: initialize diagram");
+        //console.log("network-diagram: initialize diagram");
         this.initialize_diagram();
 
-        //console.log("instance-diagram: update diagram");
+        //console.log("network-diagram: update diagram");
         this.update_diagram();
 
     }
@@ -519,7 +522,7 @@ class InstanceDiagram extends PolymerElement {
      /*
       * This method clears any introductory text or previous rendering of the diagram
       */
-     clearInstanceDiagram() {
+     clearNetworkDiagram() {
 
          var myDiv = this.shadowRoot.querySelector('#ins');
 
@@ -637,7 +640,7 @@ class InstanceDiagram extends PolymerElement {
             perGen = (ymax - ymin) / (this.numberOfGens - 1);
         }
         y = ymin + (d.gen-1) * perGen;
-        //console.log("instance-diagram: placing node from gen "+d.gen+" at y "+y+" (perGen is "+perGen+")")
+        //console.log("network-diagram: placing node from gen "+d.gen+" at y "+y+" (perGen is "+perGen+")")
 
         return y;
 
@@ -672,7 +675,7 @@ class InstanceDiagram extends PolymerElement {
         // So whenever links changes we need to re-generate all the nodes. Or you do select and re-gen of all
         // nodes in the tick function. The former is probably more efficient.
 
-        console.log('instance-diagram: update_diagram');
+        console.log('network-diagram: update_diagram');
 
         // refresh the sim's data
         this.sim.nodes(this.myNodes);  // nodes first - we want the positions to refresh
@@ -714,7 +717,7 @@ class InstanceDiagram extends PolymerElement {
         var canvas = this.$.canvas;
         var context = canvas.getContext("2d");
         // If you want to reveal the canvas you can set display to block - but beware that it will display in line
-        // which displaces other elements - unless you were to locate it at the end of the instance-diagram's DOM.
+        // which displaces other elements - unless you were to locate it at the end of the network-diagram's DOM.
         // canvas.style.display="block";
 
         var image = new Image;
@@ -1017,14 +1020,14 @@ class InstanceDiagram extends PolymerElement {
     // Request to change focus when node clicked
     nodeClicked(guid) {
         // We need to request a focus change...
-        console.log("instance-diagram: node-clicked, id is "+guid);
+        console.log("network-diagram: node-clicked, id is "+guid);
         this.outEvtChangeFocusEntity(guid);
     }
 
     // Request to change focus when edge clicked
     edgeClicked(guid) {
         // We need to request a focus change...
-        console.log("instance-diagram: edge-clicked, id is "+guid);
+        console.log("network-diagram: edge-clicked, id is "+guid);
         this.outEvtChangeFocusRelationship(guid);
     }
 
@@ -1147,4 +1150,4 @@ class InstanceDiagram extends PolymerElement {
 }
 
 
-window.customElements.define('instance-diagram', InstanceDiagram);
+window.customElements.define('network-diagram', NetworkDiagram);

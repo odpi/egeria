@@ -105,7 +105,7 @@ class InstanceRetriever extends PolymerElement {
 
                     <div style="width=100%; height:80px; position:absolute; top:0px; left:0px;">
 
-                        <div style="width:180px; height:50px; position:absolute; top:0px; left:0px;" >
+                        <div style="width:180px; height:50px; position:absolute; top:20px; left:0px;" >
 
                             <paper-input no-label-float
                                 style="width:180px"

@@ -347,6 +347,7 @@ public class RepositoryExplorerController extends SecureController
             OMRSRepositoryConnector  repositoryConnector = (OMRSRepositoryConnector)connector;
 
             repositoryConnector.setRepositoryName(serverName);
+            repositoryConnector.setServerName(serverName);
 
             /*
              * The metadataCollectionId parameter is not used by the REST connector - but it needs to be non-null and

@@ -244,14 +244,14 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
                         Diagram layouts:
                         </b>
                         <p>
-                        There is only one type of diagram in the diagram selector - called 'Instance Diagram'. Other types of diagram may be added later.
-                        The Instance Diagram is a visualization of the traversed graph, in which entities and relationships are drawn as circles and arcs.
+                        There is only one type of diagram in the diagram selector - called 'Network Diagram'. Other types of diagram may be added later.
+                        The Network Diagram is a visualization of the traversed graph, in which entities and relationships are drawn as circles and arcs.
                         Each entity or relationship is labelled according to Rex's built-in labelling scheme, which attempts to find a concise, meaningful
                         and hopefully unique label, based on the properties of the entity or relationship. The GUID (globally unique id) associated with
                         an instance is the best way to identify it, but it is not particularly convenient or memorable. Rex includes the GUID in the details
                         panel and in the traversal history to help to uniquely identify an instance.
                         <p>
-                        There are two layout settings within the Instance Diagram, that can be selected using the radio button in the top-left corner of
+                        There are two layout settings within the Network Diagram, that can be selected using the radio button in the top-left corner of
                         the diagram:
                         <ul>
                         <li>Time-based (default) layout lays objects out starting at the top of the diagram and working vertically downwards with each
@@ -344,7 +344,7 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
         this.theDiagramManager    = this.$.rexDiagramManager;
 
 
-        // Because diagram-manager is dynamically creating a custom element (instance-diagram) prior to us
+        // Because diagram-manager is dynamically creating a custom element (network-diagram) prior to us
         // completing this top level ready function, the diagram manager needs to set the i-r for the i-d
         // and cannot have done so until now....
         this.theDiagramManager.setInstanceRetriever(this.theInstanceRetriever);

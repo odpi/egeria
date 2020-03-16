@@ -94,7 +94,7 @@ class RexConnectionManager extends PolymerElement {
 
                     </div>
 
-                    <div id='statusMsg' style="position:absolute; height:50px; width:100%; top:150px; left:0px; padding:0px;">Please enter server details and press 'Connect'</div>
+                    <div id='statusMsg' style="position:absolute; height:50px; width:100%; top:150px; left:20px; padding:0px;">Please enter server details and press 'Connect'</div>
 
                 </div>
             </body>
