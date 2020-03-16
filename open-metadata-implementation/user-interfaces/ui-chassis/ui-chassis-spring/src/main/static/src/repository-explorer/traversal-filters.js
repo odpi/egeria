@@ -50,9 +50,9 @@ class TraversalFilters extends MutableData(PolymerElement) {
 
             <div style="height:175px; width:700px; overflow: auto">
 
-                <div class="row" style="width:600px;">
+                <div class="row" style="width:700px;">
                     <div class="column">
-                        <h2>Entity Types</h2>
+                        <b>Entity Types</b>
                         <dom-repeat items="{{entityTypes}}">
                             <template>
                                 <div>
@@ -69,7 +69,7 @@ class TraversalFilters extends MutableData(PolymerElement) {
                     </div>
 
                     <div class="column">
-                        <h2>Relationship Types</h2>
+                        <b>Relationship Types</b>
                         <dom-repeat items="{{relationshipTypes}}">
                             <template>
                                 <div>
@@ -86,7 +86,7 @@ class TraversalFilters extends MutableData(PolymerElement) {
                     </div>
 
                     <div class="column">
-                        <h2>Classification Types</h2>
+                        <b>Classification Types</b>
                         <dom-repeat items="{{classificationTypes}}">
                             <template>
                                 <div>
