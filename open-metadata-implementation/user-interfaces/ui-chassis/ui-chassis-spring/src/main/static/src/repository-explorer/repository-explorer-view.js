@@ -357,7 +357,6 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
                         Rex uses a styled set of colors, so it can be re-themed. The important colors are defined as CSS variables in the
                         shared-styles.js file. They are called --egeria-primary-color and --egeria-secondary-color.
                         By setting the egeria-primary-color you can achieve different themes.
-                        <img>
                         </p>
                     </div>
 
