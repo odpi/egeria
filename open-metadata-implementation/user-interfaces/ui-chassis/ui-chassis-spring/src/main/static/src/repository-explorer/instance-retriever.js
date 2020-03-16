@@ -476,7 +476,10 @@ class InstanceRetriever extends PolymerElement {
      */
     inEvtGraphCleared() {
         // Empty the instanceGUID field
-        this.instanceGUID = "";
+        this.instanceGUID = undefined;
+        // Empty the root/focus fields
+        this.selectedCategory = undefined;
+        this.rootInstance = undefined;
         // Empty the graph
         this.gens = [];
         this.guidToGen = {};
@@ -618,8 +621,24 @@ class InstanceRetriever extends PolymerElement {
 
             var numInstancesFound = selectedInstances.length;
 
+            var searchUnique         = false;
+            var searchUniqueCategory = "";
+            var searchUniqueGUID     = "";
             if (numInstancesFound === 1) {
+                searchUnique = true;
+                if (this.searchCategory === "Entity") {
+                    searchUniqueCategory = "Entity";
+                    var instance         = selectedInstances[0];
+                    var searchUniqueGUID = instance.entityGUID;
+                }
+                else {  // searchCategory is "Relationship"
+                    searchUniqueCategory = "Relationship";
+                    var instance         = selectedInstances[0];
+                    var searchUniqueGUID = instance.relationshipGUID;
+                }
+            }
 
+                /*
                 if (this.searchCategory === "Entity") {
                     // Issue a getEntity for the one instance. The get processing will retrieve an entity detail
                     // and construct an entity digest, package them as a traversal and set the focus. It does not
@@ -631,7 +650,7 @@ class InstanceRetriever extends PolymerElement {
                 }
                 else {  // searchCategory is "Relationship"
                     // Issue a getRelationship for the one instance. The get processing will retrieve a relationship
-                    // and construct a reltionship digest, package them as a traversal and set the focus. It does not
+                    // and construct a relationship digest, package them as a traversal and set the focus. It does not
                     // matter if this relationship is already known.
                     this.selectedCategory = "Relationship";
                     var instance = selectedInstances[0];
@@ -640,8 +659,19 @@ class InstanceRetriever extends PolymerElement {
                 }
                 this.doGet();
 
-            }
-            else {
+                */
+
+                 /*
+                  * Remember the instanceGUID - and although we could load it via doGet(),
+                  * instead load the digest and subsequently requrest that it becomes the focus.
+                  * This is preferred because it means the history is accurate - it will show
+                  * that the instance was was by search = rather than the user knowing the GUID.
+                  */
+
+
+
+
+
 
                 // Process the list of entity digests...any that are not already known are added to a traversal that will be added as a new gen.....
                 var rexTraversal             = {};
@@ -748,6 +778,18 @@ class InstanceRetriever extends PolymerElement {
                     this.outEvtGraphExtended();
 
                 }
+            // TODO - alignment above!!
+
+
+            // If the search resulted in a single instance being selected, optimise
+            // the flow by proactively requesting that it becomes the focus instance.
+            if (searchUnique) {
+                  if (searchUniqueCategory === "Entity") {
+                      this.outEvtChangeFocusEntity(searchUniqueGUID);
+                  }
+                  else {
+                      this.outEvtChangeFocusRelationship(searchUniqueGUID);
+                  }
             }
         }
     }
