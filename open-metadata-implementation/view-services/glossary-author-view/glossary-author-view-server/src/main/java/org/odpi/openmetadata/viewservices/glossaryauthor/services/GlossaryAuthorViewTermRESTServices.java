@@ -164,8 +164,9 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
                     pageSize,
                     sequencingOrder,
                     sequencingProperty);
-            TermsResponse glossariesResponse = new TermsResponse();
-            glossariesResponse.setTerms(terms);
+            TermsResponse termsResponse = new TermsResponse();
+            termsResponse.setTerms(terms);
+            response = termsResponse;
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, methodName);
         }

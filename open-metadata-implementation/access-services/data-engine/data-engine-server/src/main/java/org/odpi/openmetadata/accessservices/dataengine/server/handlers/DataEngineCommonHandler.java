@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -13,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.RelationshipDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
@@ -33,6 +36,7 @@ public class DataEngineCommonHandler {
     private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineCommonHandler.class);
+
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -124,6 +128,23 @@ public class DataEngineCommonHandler {
     }
 
     /**
+     * Build an Relationship  object  based on the instance properties of a relationship
+     *
+     * @param entityGUID         unique identifier of entity to update
+     * @param instanceProperties the properties of the relationship
+     *
+     * @return an Relationship object containing the entity properties
+     */
+    protected Relationship buildRelationship(String entityGUID, InstanceProperties instanceProperties) {
+        Relationship relationship = new Relationship();
+
+        relationship.setGUID(entityGUID);
+        relationship.setProperties(instanceProperties);
+
+        return relationship;
+    }
+
+    /**
      * Find out if the entity is already stored in the repository. It uses the fully qualified name to retrieve the entity
      *
      * @param userId        the name of the calling user
@@ -153,31 +174,35 @@ public class DataEngineCommonHandler {
         Optional<EntityDetail> retrievedEntity = Optional.ofNullable(repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
                 CommonMapper.QUALIFIED_NAME_PROPERTY_NAME, properties, entityTypeDef.getGUID(), entityTypeDef.getName(), methodName));
 
-        log.debug("Searching for entity with qualifiedName: {}. Result is {}", qualifiedName, retrievedEntity.map(InstanceHeader::getGUID).orElse(null));
+        log.debug("Searching for entity with qualifiedName: {}. Result is {}", qualifiedName,
+                retrievedEntity.map(InstanceHeader::getGUID).orElse(null));
 
         return retrievedEntity;
     }
 
     /**
-     * Create an external relationship between two entities. Verifies that the relationship is not present before creating it
+     * Create or updates an external relationship between two entities. Verifies that the relationship is not present before creating it. If the
+     * relationship is present, verifies the instanceProperties for the relationship to be updated.
      *
-     * @param userId               the name of the calling user
-     * @param firstGUID            the unique identifier of the entity at first end
-     * @param secondGUID           the unique identifier of the entity at second end
-     * @param relationshipTypeName type name for the relationship to create
-     * @param firstEntityTypeName  type name for the entity at first end
-     * @param externalSourceName   the unique name of the external source
+     * @param userId                 the name of the calling user
+     * @param firstGUID              the unique identifier of the entity at first end
+     * @param secondGUID             the unique identifier of the entity at second end
+     * @param relationshipTypeName   type name for the relationship to create
+     * @param firstEntityTypeName    type name for the entity at first end
+     * @param externalSourceName     the unique name of the external source
+     * @param relationshipProperties the properties for the relationship
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    protected void addExternalRelationshipRelationship(String userId, String firstGUID, String secondGUID, String relationshipTypeName,
-                                                       String firstEntityTypeName, String externalSourceName) throws InvalidParameterException,
-                                                                                                                     UserNotAuthorizedException,
-                                                                                                                     PropertyServerException {
+    protected void createOrUpdateExternalRelationship(String userId, String firstGUID, String secondGUID, String relationshipTypeName,
+                                                      String firstEntityTypeName, String externalSourceName,
+                                                      InstanceProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException {
 
-        final String methodName = "addExternalRelationshipRelationship";
+        final String methodName = "createOrUpdateExternalRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(firstGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
@@ -185,14 +210,21 @@ public class DataEngineCommonHandler {
 
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
 
-        Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, firstGUID, firstEntityTypeName, secondGUID,
-                relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName);
-
-        if (relationship == null) {
+        Optional<Relationship> relationship = Optional.ofNullable(repositoryHandler.getRelationshipBetweenEntities(userId, firstGUID,
+                firstEntityTypeName, secondGUID, relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName));
+        if (!relationship.isPresent()) {
             String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
             repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(), externalSourceGUID, externalSourceName,
-                    firstGUID, secondGUID, null, methodName);
+                    firstGUID, secondGUID, relationshipProperties, methodName);
+        } else {
+            Relationship originalRelationship = relationship.get();
+
+            RelationshipDifferences relationshipDifferences = repositoryHelper.getRelationshipDifferences(originalRelationship,
+                    buildRelationship(originalRelationship.getGUID(), relationshipProperties), true);
+            if (relationshipDifferences.hasInstancePropertiesDifferences()) {
+                repositoryHandler.updateRelationshipProperties(userId, originalRelationship.getGUID(), relationshipProperties, methodName);
+            }
         }
     }
 
@@ -217,5 +249,12 @@ public class DataEngineCommonHandler {
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTypeName);
         repositoryHandler.removeEntity(userId, entityGUID, entityTypeDef.getGUID(), entityTypeDef.getName(), null, null, methodName);
+    }
+
+    protected void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String... params) throws InvalidParameterException {
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(params);
+
+        throw new InvalidParameterException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,
+                errorCode.getSystemAction(), errorCode.getUserAction(), SchemaTypePropertiesMapper.GUID_PROPERTY_NAME);
     }
 }
