@@ -1378,17 +1378,22 @@ class InstanceRetriever extends PolymerElement {
 
                      rexTraversal.relationships   = {};
                      rexTraversal.relationships[relationshipGUID] = this.rootInstance.expRelationship.relationshipDigest;
-
                      rexTraversal.entities        = {};
+
+                      /*
+                       * We need to retrieve the end entity digests from the expRelationship and find out
+                       * whether each end entity is new or known, so they can either keep their gens or be
+                       * assigned the next gen...
+                       */
+
+                     /*
+                      * entityOne
+                      */
                      var entityOneDigest = this.rootInstance.expRelationship.entityOneDigest;
                      var entityOneGUID = entityOneDigest.entityGUID;
-                     /*
-                      * We need to know whether each end entity is new or known so they can keep their gens or be assigned
-                      * next gen...
-                      */
 
                      /*
-                      * Determine whether entity is already known. This could loop through the gens
+                      * Determine whether entityOne is already known. This could loop through the gens
                       * but it is slightly more efficient to use the guidToGen map as a direct index.
                       */
                      var entityOneKnown = false;
@@ -1402,23 +1407,21 @@ class InstanceRetriever extends PolymerElement {
                      }
                      entityOneDigest.gen = e1gen;
 
-                     // Repeat for entity two
+                     /*
+                      * entityTwo
+                      */
                      var entityTwoDigest = this.rootInstance.expRelationship.entityTwoDigest;
                      var entityTwoGUID = entityTwoDigest.entityGUID;
+
+                     /*
+                      * Determine whether entityTwo is already known. This could loop through the gens
+                      * but it is slightly more efficient to use the guidToGen map as a direct index.
+                      */
                      var entityTwoKnown = false;
                      var e2gen;
-                     // Determine whether entity is already known ...   TODO - you could replace this with use of guidToGen map
-                     // Search the existing gens looking for guid
-                     for (var i=0; i< this.gens.length; i++) {
-                         var igen = this.gens[i];
-                         var igenEntities = igen.entities;
-                         if (igenEntities !== undefined) {
-                             if (igenEntities[entityTwoGUID] !== undefined) {
-                                 entityTwoKnown = true;
-                                 e2gen = i+1;
-                                 break;
-                             }
-                         }
+                     if (this.guidToGen[entityTwoGUID] !== undefined) {
+                         entityTwoKnown = true;
+                         e2gen = this.guidToGen[entityTwoGUID];
                      }
                      if (entityTwoKnown === false) {
                          e2gen = this.currentGen;
