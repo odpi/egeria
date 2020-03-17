@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceengine.server;
+package org.odpi.openmetadata.accessservices.governanceengine.server.admin;
 
-import org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 /**
  * GovernanceEngineRegistration registers the access service with the OMAG Server administration services.
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
  * access service in the server and it can be configured and used.
  */
 class GovernanceEngineRegistration {
+
     /**
      * Pass information about this access service to the OMAG Server administration services.
      */
@@ -24,6 +24,7 @@ class GovernanceEngineRegistration {
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                                                                                  ServiceOperationalStatus.ENABLED,
                                                                                  GovernanceEngineAdmin.class.getName());
+
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

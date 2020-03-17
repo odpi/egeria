@@ -43,4 +43,12 @@ public class GovernanceEngineEvent implements Serializable {
     public void setGovernedAsset(GovernedAsset governedAsset) {
         this.governedAsset = governedAsset;
     }
+
+    @Override
+    public String toString() {
+        return "GovernanceEngineEvent{" +
+                "eventType=" + eventType +
+                ", governedAsset=" + governedAsset +
+                '}';
+    }
 }

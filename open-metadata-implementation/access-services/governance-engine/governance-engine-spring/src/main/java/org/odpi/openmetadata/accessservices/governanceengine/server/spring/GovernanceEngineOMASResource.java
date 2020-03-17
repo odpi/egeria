@@ -7,15 +7,9 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governe
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,20 +27,22 @@ public class GovernanceEngineOMASResource {
      * <p>
      * These include the tag associations but not the definitions of those tags
      *
-     * @param userId - String - userId of user making request.
-     * @param type   - the type of the entities that are returned
+     * @param userId      - String - userId of user making request.
+     * @param entityTypes - the type of the entities that are returned
      * @return GovernedAssetComponentList or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.
      * AmbiguousConnectionNameException - there is more than one connection defined for this name.
-     * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
+     * PropertyServerException - there is a problem retrieving information offset the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @GetMapping( path = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
     public GovernedAssetListAPIResponse getGovernedAssets(@PathVariable String serverName,
                                                           @PathVariable String userId,
-                                                          @RequestParam(value = "type", required = false) List<String> type) {
-        return restAPI.getGovernedAssets(serverName, userId, type);
+                                                          @RequestParam(value = "entityTypes", required = false) List<String> entityTypes,
+                                                          @RequestParam(value = "offset", required = false) Integer offset,
+                                                          @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        return restAPI.getGovernedAssets(serverName, userId, entityTypes, offset, pageSize);
     }
 
     /**
@@ -63,7 +59,7 @@ public class GovernanceEngineOMASResource {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @GetMapping( path = "/assets/{assetGuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/assets/{assetGuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GovernedAssetAPIResponse getGovernedAsset(@PathVariable String serverName,
                                                      @PathVariable String userId,
                                                      @PathVariable String assetGuid) {
@@ -79,9 +75,9 @@ public class GovernanceEngineOMASResource {
      * @return the Software Server entity created
      */
     @PostMapping(path = "/software-server-capabilities")
-    public SoftwareServerCapabilityResponse createSoftwareServerCapability(@PathVariable("serverName") String serverName,
-                                                                           @PathVariable("userId") String userId,
-                                                                           @RequestBody SoftwareServerCapabilityRequestBody requestBody) {
+    public StringResponse createSoftwareServerCapability(@PathVariable("serverName") String serverName,
+                                                         @PathVariable("userId") String userId,
+                                                         @RequestBody SoftwareServerCapabilityRequestBody requestBody) {
         return restAPI.createSoftwareServer(serverName, userId, requestBody);
     }
 

@@ -3,25 +3,22 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.auditlog.GovernanceEngineAuditCode;
-import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineServicesInstance;
 import org.odpi.openmetadata.accessservices.governanceengine.server.listeners.GovernanceEngineOMRSTopicListener;
-import org.odpi.openmetadata.accessservices.governanceengine.server.processor.GovernanceEngineEventProcessor;
-import org.odpi.openmetadata.accessservices.governanceengine.server.publisher.GovernanceEnginePublisher;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class GovernanceEngineAdmin extends AccessServiceAdmin
-{
+import java.util.List;
 
+public class GovernanceEngineAdmin extends AccessServiceAdmin {
+
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineAdmin.class);
     private OMRSAuditLog auditLog;
     private GovernanceEngineServicesInstance instance;
     private String serverName;
@@ -29,17 +26,27 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
     /**
      * Initialize the access service.
      *
-     * @param accessServiceConfigurationProperties - specific configuration properties for this access service.
-     * @param enterpriseOMRSTopicConnector         - connector for receiving OMRS Events from the cohorts
-     * @param enterpriseOMRSRepositoryConnector    - connector for querying the cohort repositories
-     * @param auditLog                             - audit log component for logging messages.
-     * @param serverUserName                       - user id to use on OMRS calls where there is no end user.
+     * @param accessServiceConfig               - specific configuration properties for this access service.
+     * @param enterpriseOMRSTopicConnector      - connector for receiving OMRS Events from the cohorts
+     * @param enterpriseOMRSRepositoryConnector - connector for querying the cohort repositories
+     * @param auditLog                          - audit log component for logging messages.
+     * @param serverUserName                    - user id to use on OMRS calls where there is no end user.
      */
-    public synchronized void initialize(AccessServiceConfig accessServiceConfigurationProperties,
-                                        OMRSTopicConnector enterpriseOMRSTopicConnector,
-                                        OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
-                                        OMRSAuditLog auditLog,
-                                        String serverUserName) {
+    /**
+     * Initialize the access service.
+     *
+     * @param accessServiceConfig specific configuration properties for this access service.
+     * @param omrsTopicConnector  connector for receiving OMRS Events from the cohorts
+     * @param repositoryConnector connector for querying the cohort repositories
+     * @param auditLog            audit log component for logging messages.
+     * @param serverUserName      user id to use on OMRS calls where there is no end user.
+     * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
+     */
+    public void initialize(AccessServiceConfig accessServiceConfig,
+                           OMRSTopicConnector omrsTopicConnector,
+                           OMRSRepositoryConnector repositoryConnector,
+                           OMRSAuditLog auditLog,
+                           String serverUserName) throws OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
 
         GovernanceEngineAuditCode auditCode = GovernanceEngineAuditCode.SERVICE_INITIALIZING;
@@ -51,28 +58,36 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
 
+        this.auditLog = auditLog;
+
         try {
-            this.auditLog = auditLog;
-            this.instance = new GovernanceEngineServicesInstance(enterpriseOMRSRepositoryConnector);
+            List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                    accessServiceConfig.getAccessServiceName(),
+                    auditLog);
+
+            this.instance = new GovernanceEngineServicesInstance(repositoryConnector,
+                    supportedZones,
+                    auditLog,
+                    serverUserName, repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
-            OpenMetadataTopicConnector governanceEngineOutputTopic = initializeGovernanceEngineTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-            GovernanceEngineEventProcessor governanceEngineEventProcessor = new GovernanceEngineEventProcessor(enterpriseOMRSRepositoryConnector, governanceEngineOutputTopic);
-
-            GovernanceEnginePublisher governanceEnginePublisher = new GovernanceEnginePublisher(governanceEngineEventProcessor);
-
-            if (enterpriseOMRSTopicConnector != null) {
-                auditCode = GovernanceEngineAuditCode.SERVICE_REGISTERED_WITH_TOPIC;
-                auditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(serverName),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
-
-                GovernanceEngineOMRSTopicListener omrsTopicListener = new GovernanceEngineOMRSTopicListener(governanceEnginePublisher);
-                enterpriseOMRSTopicConnector.registerListener(omrsTopicListener, accessServiceConfigurationProperties.getAccessServiceName());
+            /*
+             * Only set up the listening and event publishing if requested in the config.
+             */
+            if (accessServiceConfig.getAccessServiceOutTopic() != null) {
+                GovernanceEngineOMRSTopicListener omrsTopicListener =
+                        new GovernanceEngineOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
+                                repositoryConnector.getRepositoryHelper(),
+                                repositoryConnector.getRepositoryValidator(),
+                                accessServiceConfig.getAccessServiceName(),
+                                serverName,
+                                supportedZones,
+                                auditLog);
+                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
+                        serverName,
+                        omrsTopicConnector,
+                        omrsTopicListener,
+                        auditLog);
             }
 
             auditCode = GovernanceEngineAuditCode.SERVICE_INITIALIZED;
@@ -80,73 +95,25 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(serverName),
-                    accessServiceConfigurationProperties.toString(),
+                    accessServiceConfig.toString(),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
+        } catch (OMAGConfigurationErrorException error) {
+            throw error;
         } catch (Exception error) {
             auditCode = GovernanceEngineAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logException(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(error.getMessage()),
-                    accessServiceConfigurationProperties.toString(),
+                    auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
+                    accessServiceConfig.toString(),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     error);
-        }
-    }
 
-    /**
-     * Returns the topic created based on connection properties
-     *
-     * @param topicConnection properties of the topic
-     * @return the topic created based on the connection properties
-     */
-    private OpenMetadataTopicConnector initializeGovernanceEngineTopicConnector(Connection topicConnection) {
-        final String actionDescription = "initialize";
-        if (topicConnection != null) {
-            try {
-                return getTopicConnector(topicConnection);
-            } catch (Exception e) {
-                GovernanceEngineAuditCode auditCode = GovernanceEngineAuditCode.ERROR_INITIALIZING_TOPIC_CONNECTION;
-                auditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(topicConnection.toString(), serverName, e.getMessage()),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
-                throw e;
-            }
-
-        }
-        return null;
-    }
-
-    private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection) {
-        try {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
-            Connector connector = connectorBroker.getConnector(topicConnection);
-            OpenMetadataTopicConnector topicConnector = (OpenMetadataTopicConnector) connector;
-
-            topicConnector.setAuditLog(auditLog);
-            topicConnector.start();
-
-            return topicConnector;
-        } catch (Exception error) {
-            String methodName = "getTopicConnector";
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage("getTopicConnector");
-
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
+            super.throwUnexpectedInitializationException(actionDescription,
+                    AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
                     error);
-
         }
     }
 
@@ -154,18 +121,9 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
     /**
      * Shutdown the access service.
      */
-    public synchronized void shutdown() {
+    public void shutdown() {
         final String actionDescription = "shutdown";
         GovernanceEngineAuditCode auditCode;
-
-        auditCode = GovernanceEngineAuditCode.SERVICE_TERMINATING;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(serverName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
 
         if (instance != null) {
             this.instance.shutdown();
@@ -181,5 +139,3 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
                 auditCode.getUserAction());
     }
 }
-
-

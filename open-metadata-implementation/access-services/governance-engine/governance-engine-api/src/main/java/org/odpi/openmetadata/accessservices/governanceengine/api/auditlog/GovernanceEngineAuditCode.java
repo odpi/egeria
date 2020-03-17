@@ -60,9 +60,14 @@ public enum GovernanceEngineAuditCode {
     ERROR_INITIALIZING_TOPIC_CONNECTION("OMAS-GOVERNANCE-ENGINE-0007",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the Governance Engine Open Metadata Access Service (OMAS) topic connection {0} for server instance {1}; " +
-                                                "error message was: {2}",
+                    "error message was: {2}",
             "The connection could not be initialized.",
-            "Review the exception and resolve the configuration. ");
+            "Review the exception and resolve the configuration. "),
+    EVENT_PROCESSING_ERROR("OMAS-GOVERNANCE-ENGINE-0008",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "The Governance Engine Open Metadata Access Service (OMAS) encounter an exception while processing incoming event {0}",
+            "The event could not be processed",
+            "Review the exception to determine the source of the error and correct it.");
 
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineAuditCode.class);
     private String logMessageId;

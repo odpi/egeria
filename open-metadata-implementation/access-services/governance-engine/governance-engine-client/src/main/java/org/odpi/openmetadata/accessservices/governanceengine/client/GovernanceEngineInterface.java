@@ -2,14 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.client;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.ClassificationNotFoundException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.GuidNotFoundException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.MetadataServerException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.TypeNotFoundException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapability;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
 
@@ -28,18 +25,13 @@ import java.util.List;
  */
 public interface GovernanceEngineInterface {
     /**
-     * @param userId         - String - userId of user making request.
-     * @param classification - String - name of base classification type (can be null)
-     * @param type           - String - root type of asset (can be null)
-     * @return AssetTagMap                          - map of classification
-     * @throws InvalidParameterException       - one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException      - the requesting user is not authorized to issue this request.
-     * @throws ClassificationNotFoundException - the classification to scope search is not found
-     * @throws TypeNotFoundException           - the classification to scope search is not found
-     * @throws MetadataServerException         - A failure occurred communicating with the metadata repository
+     * @param userId         - userId of user making request.
+     * @param classification - name of base classification type (can be null)
+     * @param entityTypes    - String - root type of asset (can be null)
+     * @return GovernedAsset - list of the governed assets
      */
-    List<GovernedAsset> getGovernedAssetList(String userId, String classification, String type)
-            throws InvalidParameterException, UserNotAuthorizedException, ClassificationNotFoundException, MetadataServerException, TypeNotFoundException;
+    List<GovernedAsset> getGovernedAssetList(String userId, String classification, List<String> entityTypes, Integer offset, Integer pageSize)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException;
 
     /**
      * @param userId    - String - userId of user making request.
@@ -47,14 +39,14 @@ public interface GovernanceEngineInterface {
      * @return AssetTagMap                  - map of classification
      * @throws InvalidParameterException  - one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     * @throws MetadataServerException    - A failure occurred communicating with the metadata repository
-     * @throws GuidNotFoundException      - the guid is not found
      */
     GovernedAsset getGovernedAsset(String userId, String assetGuid)
-            throws InvalidParameterException, UserNotAuthorizedException, MetadataServerException, GuidNotFoundException;
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException;
 
 
-    SoftwareServerCapability createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws InvalidParameterException, MetadataServerException;
+    String createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException;
 
-    SoftwareServerCapability getSoftwareServerCapabilityByGUID(String userId, String guid) throws InvalidParameterException;
+    SoftwareServerCapability getSoftwareServerCapabilityByGUID(String userId, String guid)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException;
 }

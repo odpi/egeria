@@ -2,27 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
-
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.MetadataServerException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
-import org.odpi.openmetadata.accessservices.governanceengine.server.util.ExceptionHandler;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
 
@@ -54,43 +44,31 @@ import java.util.List;
 public class GovernanceEngineRESTServices {
 
     private static GovernanceEngineInstanceHandler instanceHandler = new GovernanceEngineInstanceHandler();
-    private ExceptionHandler exceptionHandler = new ExceptionHandler();
+    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Returns the list of governed asset
      * <p>
      * These include the tag associations but not the definitions of those tags
      *
-     * @param serverName - name of the server that the request is for
-     * @param userId     - String - userId of user making request.
-     * @param type       types to start query from
-     * @return GovernedAssetComponentList or
-     * InvalidParameterException - one of the parameters is null or invalid.
-     * UnrecognizedConnectionNameException - there is no connection defined for this name.
-     * AmbiguousConnectionNameException - there is more than one connection defined for this name.
-     * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     * @param serverName  - name of the server that the request is for
+     * @param userId      - String - userId of user making request.
+     * @param entityTypes types to start query offset
+     * @return GovernedAssetComponentList
      */
-    public GovernedAssetListAPIResponse getGovernedAssets(String serverName,
-                                                          String userId,
-                                                          List<String> type) {
+    public GovernedAssetListAPIResponse getGovernedAssets(String serverName, String userId, List<String> entityTypes, Integer offset, Integer pageSize) {
+        String methodName = "getGovernedAssets";
+
         GovernedAssetListAPIResponse response = new GovernedAssetListAPIResponse();
-
         try {
-            GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(instanceHandler.getRepositoryConnector(serverName));
-
-            response.setGovernedAssetList(governedAssetHandler.getGovernedAssets(userId, type));
-        } catch (InvalidParameterException error) {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (MetadataServerException error) {
-            exceptionHandler.captureMetadataServerException(response, error);
-        } catch (PropertyServerException error) {
-            exceptionHandler.capturePropertyServerException(response, error);
-        } catch (PagingErrorException | RepositoryErrorException | FunctionNotSupportedException
-                | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
-                | EntityProxyOnlyException | PropertyErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
-                | EntityNotKnownException | TypeErrorException | TypeDefNotKnownException | ClassificationErrorException e) {
-            exceptionHandler.captureOMRSException(response, e);
+            GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(userId, serverName, methodName);
+            response.setGovernedAssetList(governedAssetHandler.getGovernedAssets(userId, entityTypes, offset, pageSize));
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
+            restExceptionHandler.capturePropertyServerException(response, e);
         }
 
         return response;
@@ -112,56 +90,54 @@ public class GovernanceEngineRESTServices {
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GovernedAssetAPIResponse getGovernedAsset(String serverName, String userId, String assetGuid) {
+        String methodName = "getGovernedAsset";
         GovernedAssetAPIResponse response = new GovernedAssetAPIResponse();
 
         try {
-            GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(instanceHandler.getRepositoryConnector(serverName));
+            GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(userId, serverName, methodName);
             response.setAsset(governedAssetHandler.getGovernedAsset(userId, assetGuid));
-        } catch (InvalidParameterException error) {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (MetadataServerException error) {
-            exceptionHandler.captureMetadataServerException(response, error);
-        } catch (PropertyServerException error) {
-            exceptionHandler.capturePropertyServerException(response, error);
-        } catch (PagingErrorException | RepositoryErrorException | FunctionNotSupportedException
-                | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
-                | EntityProxyOnlyException | PropertyErrorException | UserNotAuthorizedException
-                | EntityNotKnownException | TypeErrorException | TypeDefNotKnownException e) {
-            exceptionHandler.captureOMRSException(response, e);
+        } catch (InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
+            restExceptionHandler.capturePropertyServerException(response, e);
         }
 
         return response;
     }
 
-    public SoftwareServerCapabilityResponse createSoftwareServer(String serverName, String userId, SoftwareServerCapabilityRequestBody requestBody) {
-        SoftwareServerCapabilityResponse response = new SoftwareServerCapabilityResponse();
+    public StringResponse createSoftwareServer(String serverName, String userId, SoftwareServerCapabilityRequestBody requestBody) {
+        String methodName = "createSoftwareServer";
 
+        StringResponse response = new StringResponse();
         try {
-            GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(instanceHandler.getRepositoryConnector(serverName));
-            response.setServerCapability(governedAssetHandler.createSoftwareServerCapability(userId, requestBody.getSoftwareServerCapability()));
-        } catch (MetadataServerException e) {
-            exceptionHandler.captureMetadataServerException(response, e);
+            GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(userId, serverName, methodName);
+            response.setResultString(governedAssetHandler.createSoftwareServerCapability(userId, requestBody.getSoftwareServerCapability()));
+        } catch (UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (PropertyServerException e) {
-            exceptionHandler.capturePropertyServerException(response, e);
-        } catch (UserNotAuthorizedException | FunctionNotSupportedException | PropertyErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | ClassificationErrorException | TypeErrorException | RepositoryErrorException | StatusNotSupportedException e) {
-            exceptionHandler.captureOMRSException(response, e);
+            restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
         }
 
         return response;
     }
 
     public SoftwareServerCapabilityResponse getSoftwareServerByGUID(String serverName, String userId, String guid) {
+        String methodName = "getSoftwareServerByGUID";
         SoftwareServerCapabilityResponse response = new SoftwareServerCapabilityResponse();
 
         try {
-            GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(instanceHandler.getRepositoryConnector(serverName));
+            GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(userId, serverName, methodName);
             response.setServerCapability(governedAssetHandler.getSoftwareServerCapabilityByGUID(userId, guid));
-        } catch (MetadataServerException e) {
-            exceptionHandler.captureMetadataServerException(response, e);
+        } catch (InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
+        } catch (UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (PropertyServerException e) {
-            exceptionHandler.capturePropertyServerException(response, e);
-        } catch (EntityProxyOnlyException | UserNotAuthorizedException | RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | EntityNotKnownException e) {
-            exceptionHandler.captureOMRSException(response, e);
+            restExceptionHandler.capturePropertyServerException(response, e);
         }
 
         return response;
