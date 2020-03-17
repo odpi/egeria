@@ -41,7 +41,8 @@ public class KafkaOpenMetadataEventProducer implements Runnable
 
     private String                          localServerId;
     private Properties                      producerProperties;
-    private Producer<String, String>        producer;
+    private Producer<String, String>        producer = null;
+
     private KafkaOpenMetadataTopicConnector connector;
 
     private long    messageSendCount = 0;
@@ -99,6 +100,11 @@ public class KafkaOpenMetadataEventProducer implements Runnable
         boolean                  eventSent = false;
         long                     eventRetryCount = 0;
 
+        if (producer == null)
+        {
+            log.debug("Creating Producer");
+            producer = new KafkaProducer<>(producerProperties);
+        }
         while (!eventSent)
         {
             try
@@ -116,10 +122,14 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                  */
                 log.debug("Kafka had trouble sending event: " + event + "exception message is " + error.getMessage());
 
-                if( !isExceptionRetryable(error)) {
+                if (!isExceptionRetryable(error))
+                {
                     /* kafka thinks this isn't a retryable problem */
                     /* so let the caller try */
-                    log.error("Exception in sendEvent " + error.toString());
+
+                    producer.close();
+                    producer = null;
+
                     KafkaOpenMetadataTopicConnectorErrorCode errorCode = KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT;
                     String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
                             topicName,
@@ -136,6 +146,9 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                 if (eventRetryCount == 10)
                 {
                     /* we've retried now let the caller retry */
+                    producer.close();
+                    producer = null;
+                    log.error("Retryable Exception closed producer ");
                     break;
                 }
                 else
@@ -166,6 +179,10 @@ public class KafkaOpenMetadataEventProducer implements Runnable
             }
             catch (Throwable error)
             {
+
+                producer.close();
+                producer = null;
+                log.debug("Send Events Throwable catch block closed producer");
                 log.error("Exception in sendEvent " + error.toString());
                 KafkaOpenMetadataTopicConnectorErrorCode errorCode = KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT;
                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -179,13 +196,6 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                                                     errorCode.getSystemAction(),
                                                     errorCode.getUserAction(),
                                                     error);
-            }
-            finally
-            {
-                /*
-                 * Producers have a thread and an in memory buffer
-                 */
-                producer.close();
             }
         }
 
@@ -209,8 +219,6 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
 
-
-        this.producer = new KafkaProducer<>(producerProperties);
 
         while (isRunning())
         {
@@ -256,8 +264,12 @@ public class KafkaOpenMetadataEventProducer implements Runnable
             }
         }
 
-        /* producer already closed by exception handler in publishEvent */
-        this.producer = null;
+        /* producer may have already closed by exception handler in publishEvent */
+        if(producer != null) {
+            log.debug("");
+            producer.close();
+            producer = null;
+        }
 
         auditCode = KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_SHUTDOWN;
         auditLog.logRecord(listenerThreadName,
