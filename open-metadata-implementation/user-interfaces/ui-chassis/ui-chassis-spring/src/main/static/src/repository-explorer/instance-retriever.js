@@ -1203,18 +1203,6 @@ class InstanceRetriever extends PolymerElement {
                     entityKnown = true;
                     gen = this.guidToGen[entityGUID];
                 }
-                // Search the existing gens looking for guid   // TODO - clean up
-                //for (var i=0; i< this.gens.length; i++) {
-                //    var igen = this.gens[i];
-                //    var igenEntities = igen.entities;
-                //    if (igenEntities !== undefined) {
-                //        if (igenEntities[entityGUID] !== undefined) {
-                //            entityKnown = true;
-                //            gen = i+1;
-                //            break;
-                //        }
-                //    }
-                //}
                 if (entityKnown === false) {
                     // Advance the currentGen
                     this.advanceCurrentGen();
@@ -1322,20 +1310,10 @@ class InstanceRetriever extends PolymerElement {
                 // Determine whether relationship is already known ...
                 var relationshipKnown = false;
                 var gen;
-                // Search the existing gens looking for guid  // TODO can use guidToGen
-                for (var i=0; i< this.gens.length; i++) {
-                    var igen = this.gens[i];
-                    var igenRelationships = igen.relationships;
-                    if (igenRelationships !== undefined) {
-                        if (igenRelationships[relationshipGUID] !== undefined) {
-                            relationshipKnown = true;
-                            gen = i+1;
-                            break;
-                        }
-                    }
+                if (this.guidToGen[relationshipGUID] !== undefined) {
+                    relationshipKnown = true;
+                    gen = this.guidToGen[relationshipGUID];
                 }
-                console.log("instance-retriever: relationshipGUID search complete");
-
                 if (relationshipKnown === false) {
                     console.log("instance-retriever: relationship is new");
                     // Advance the currentGen
@@ -1471,67 +1449,6 @@ class InstanceRetriever extends PolymerElement {
     }
 
 
-
-// TODO - can be deleted...
-    /*
-     * Observer to handle receipt of packaged instance data response from UI Application
-     */
-    processTraversalResult(newValue,oldValue) {
-        //console.log("_traversalRespChanged invoked");
-        if (newValue !== undefined && newValue !== null) {
-            //console.log("_traversalRespChanged newValue : "+newValue);
-            //console.log("_traversalRespChanged httpStatusCode : "+newValue.httpStatusCode);
-            //console.log("_traversalRespChanged rexTraversal : "+newValue.rexTraversal);
-
-
-            if (newValue.httpStatusCode == 200) {
-                // Success
-
-                /*
-                 * The traversal results should have been formatted by the VS into the form needed by Rex.
-                 * This means that it should have:
-                 *   a map of entityGUID       --> { entityGUID, label, gen }
-                 *   a map of relationshipGUID --> { relationshipGUID, end1GUID, end2GUID, idx, label, gen }
-                 */
-
-                 /*
-                  * For each entity and relationship in the traversal response we need to determine whether it
-                  * is known or new.
-                  * Anything known is dropped from the traversal, which is then pushed to the logically next gen
-                  */
-
-
-
-                var rexTraversal = newValue.rexTraversal;
-                rexTraversal.operation = "traversal";
-
-
-
-                this.processTraversal(rexTraversal);
-
-            }
-
-            else {
-                // Failure
-                console.log("_traversalRespChanged newValue has bad status code");
-                if (newValue.exceptionText) {
-                    alert('Error occurred: ' +newValue.exceptionText);
-                }
-                else {
-                    alert('Error occurred: no exception message given');
-                }
-                // Generate a failure to load event - this will allow the status to be reported
-                var customEvent = new CustomEvent('traversal-not-loaded', { bubbles: true, composed: true, detail: {source: "instance-retriever"}  });
-                this.dispatchEvent(customEvent);
-            }
-        }
-        else {
-            console.log("_traversalRespChanged: newValue was null");
-        }
-    }
-
-
-
     processTraversal(rexTraversal) {
 
         /*
@@ -1620,7 +1537,7 @@ class InstanceRetriever extends PolymerElement {
          */
         var no_entities      = rexTraversal.entities      === undefined || Object.keys(rexTraversal.entities).length      === 0;
         var no_relationships = rexTraversal.relationships === undefined || Object.keys(rexTraversal.relationships).length === 0;
-       
+
         if (no_entities && no_relationships) {
             /*
              * This is not an error - it just means everything in the traversal was already known,
