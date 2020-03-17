@@ -150,8 +150,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage/[[subviewData.subview]]/[[subrouteData2.guid]]">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
                     <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
-                    <div name="about"><a href="[[rootPath]]#/about">About</a></div>
                     <div name="repository-explorer"><a href="[[rootPath]]#/repository-explorer">Repository Explorer</a></div>
+                    <div name="about"><a href="[[rootPath]]#/about">About</a></div>
                   </iron-selector>
 
                 </app-drawer>
@@ -226,7 +226,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             },
             pages: {
                 type: Array,
-                value: ['asset-search', 'subject-area', 'asset-lineage', 'type-explorer','about', 'repository-explorer']
+                value: ['asset-search', 'subject-area', 'asset-lineage', 'type-explorer', 'repository-explorer', 'about' ]
             },
             feedback: {
                 type: Object,
