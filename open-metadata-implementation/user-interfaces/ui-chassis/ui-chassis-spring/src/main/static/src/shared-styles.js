@@ -10,7 +10,7 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
     <style>
         :root{
 
-            --egeria-primary-color: #71ccdc;         /* aqua   */
+               --egeria-primary-color: #71ccdc;      /* aqua   */
             /* --egeria-primary-color: #FF6200; */   /* orange */
             /* --egeria-primary-color: #CC00FF; */   /* purple */
 

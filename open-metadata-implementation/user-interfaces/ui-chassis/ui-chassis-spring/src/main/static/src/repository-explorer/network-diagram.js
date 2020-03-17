@@ -210,12 +210,6 @@ class NetworkDiagram extends PolymerElement {
                 value : []
             },
 
-            // TODO - believed to be redundant
-            //gen : {
-            //    type : Number,
-            //    value : 1
-            //},
-
             /*
              * Properties for handling color themese. These are defined in CSS styles
              * but because nodes and links are dynamically re-colored (on selection for
@@ -251,11 +245,11 @@ class NetworkDiagram extends PolymerElement {
             },
 
             /*
-             * Property for temporary staging of image data
+             * Property for temporary staging of image data TODO - redundant?
              */
-            svgData : {
-                type : Object
-            }
+            //svgDataForImage : {
+            //    type : Object
+            //}
 
         };
     }
@@ -709,9 +703,14 @@ class NetworkDiagram extends PolymerElement {
     }
 
     /*
-     * This function saves the current SVG as a PNG image file.
+     * This function saves the current diagram as a PNG image file.
      */
     saveImage() {
+        var shadowRoot = this.shadowRoot;
+
+        var canvas = this.$.canvas;
+        var context = canvas.getContext("2d");
+        var image = new Image;
 
         var html = this.svg
             .attr("version", 1.1)
@@ -719,28 +718,30 @@ class NetworkDiagram extends PolymerElement {
             .node().parentNode.innerHTML;
 
         var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
-        var img = '<img src="'+imgsrc+'">';
 
-        var svgdata = d3.select(this.shadowRoot.querySelector('#svgdataurl')).html(img);
-        svgdata.html(img);
+        /*
+         * It is possible to render the SVG data but this is only retained for interest..
+         *  var img = '<img src="'+imgsrc+'">';
+         *  var svgDataForImage = d3.select(this.shadowRoot.querySelector('#svgdataurl')).html(img);
+         *  svgDataForImage.html(img);
+         *
+         * Instead, this function renders a (hidden) canvas and uses that to generate a PNG. If desired
+         * the canvas could be revealed - e.g. for user annotation - at this point by setting display to block
+         * i.e. canvas.style.display="block";
+         * However, the canvas will display inline and displace other elements - so be careful where you
+         * locate it, e.g. at the end of the network-diagram's DOM.
+         */
 
-        var canvas = this.$.canvas;
-        var context = canvas.getContext("2d");
-        // If you want to reveal the canvas you can set display to block - but beware that it will display in line
-        // which displaces other elements - unless you were to locate it at the end of the network-diagram's DOM.
-        // canvas.style.display="block";
-
-        var image = new Image;
         image.src = imgsrc;
-        var shadowRoot = this.shadowRoot;
+
         image.onload = function() {
             context.drawImage(image, 0, 0);
-            var canvasdata = canvas.toDataURL("image/png");
-            var pngimg = '<img src="'+canvasdata+'">';
-            d3.select(shadowRoot.querySelector('#pngdataurl')).html(pngimg);
+            var canvasData = canvas.toDataURL("image/png");
+            var pngImage = '<img src="'+canvasData+'">';
+            d3.select(shadowRoot.querySelector('#pngdataurl')).html(pngImage);
             var a = document.createElement("a");
-            a.download = "sample.png";
-            a.href = canvasdata;
+            a.download = "EgeriaRepositoryExplorerImageCapture.png";
+            a.href = canvasData;
             a.click();
         };
 
