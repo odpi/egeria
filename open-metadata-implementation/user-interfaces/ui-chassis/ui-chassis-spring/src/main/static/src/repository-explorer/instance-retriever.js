@@ -1545,33 +1545,26 @@ class InstanceRetriever extends PolymerElement {
         // Notice that the currentGen has NOT been advanced - this will only happen if the traversal
         // contains at least some new information.
 
-        // Process entities...
-        // For anything that is known remove it from the traversal.
-        // Anything new can remain. It should be assigned the next gen.
+        /*
+         * Process entities...
+         * Anything that is known should be removed from the traversal.
+         * Anything new can remain and should be assigned the next gen.
+         */
         var entities = rexTraversal.entities;
         for (var entityGUID in entities) {
-            console.log("Traversal contains entity with GUID : "+entityGUID);
 
-            // Determine whether entity is already known ...   TODO can use guidToGen instead
+            /*
+             * Determine whether entity is already known ...
+             */
             var entityKnown = false;
-            // Search the existing gens looking for guid
-            for (var i=0; i< this.gens.length; i++) {
-                var igen = this.gens[i];
-                var igenEntities = igen.entities;
-                if (igenEntities !== undefined) {
-                    if (igenEntities[entityGUID] !== undefined) {
-                        entityKnown = true;
-                        break;
-                    }
-                }
+            if (this.guidToGen[entityGUID] !== undefined) {
+                entityKnown = true;
             }
             if (entityKnown === true) {
-                console.log("Entity with GUID : "+entityGUID+" is known");
                 // Remove the entity from the traversal
                 delete rexTraversal.entities[entityGUID];
             }
             else {
-                console.log("Entity with GUID : "+entityGUID+" is new");
                 // Update the new entity's gen
                 rexTraversal.entities[entityGUID].gen = gen;
                 this.guidToGen[entityGUID] = gen;
@@ -1586,7 +1579,6 @@ class InstanceRetriever extends PolymerElement {
          */
         var relationships = rexTraversal.relationships;
         for (var relationshipGUID in relationships) {
-            console.log("Traversal contains relationship with GUID : "+relationshipGUID);
 
             /*
              * Determine whether relationship is already known ...
@@ -1596,7 +1588,6 @@ class InstanceRetriever extends PolymerElement {
                 relationshipKnown = true;
             }
             if (relationshipKnown === true) {
-                console.log("Relationship with GUID : "+relationshipGUID+" is known");
                 // Remove the relationship from the traversal
                 delete rexTraversal.relationships[relationshipGUID];
             }
