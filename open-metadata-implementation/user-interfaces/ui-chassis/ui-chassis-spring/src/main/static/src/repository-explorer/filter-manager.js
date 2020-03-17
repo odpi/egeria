@@ -223,7 +223,7 @@ class FilterManager extends PolymerElement {
         this.prepareSelectors();
 
         // Add entity type names to entity type selectors
-        var entities = this.typeManager.getEntities();
+        var entities = this.typeManager.getEntityTypes();
         var entityTypesUnsorted = Object.keys(entities);
         var entityTypesSorted = entityTypesUnsorted.sort();
 
@@ -238,7 +238,7 @@ class FilterManager extends PolymerElement {
         });
 
         // Add relationship type names to relationship type selector
-        var relationships = this.typeManager.getRelationships();
+        var relationships = this.typeManager.getRelationshipTypes();
         var relationshipTypesUnsorted = Object.keys(relationships);
         var relationshipTypesSorted = relationshipTypesUnsorted.sort();
 
@@ -253,7 +253,7 @@ class FilterManager extends PolymerElement {
         });
 
         // Add classification type names to classification type selector
-        var classifications = this.typeManager.getClassifications();
+        var classifications = this.typeManager.getClassificationTypes();
         var classificationTypesUnsorted = Object.keys(classifications);
         var classificationTypesSorted = classificationTypesUnsorted.sort();
 

@@ -638,148 +638,107 @@ class InstanceRetriever extends PolymerElement {
                 }
             }
 
-                /*
+
+
+            // Process the list of entity digests...any that are not already known are added to a traversal that will be added as a new gen.....
+            var rexTraversal             = {};
+            rexTraversal.entities        = {};
+            rexTraversal.relationships   = {};
+            // Set the traversal operation to show how this result was generated - provides informative summary in history
+            if (this.searchCategory === "Entity") {
+                rexTraversal.operation = "entitySearch";
+            }
+            else {
+                rexTraversal.operation = "relationshipSearch";
+            }
+            var serverName = this.serverName;
+            rexTraversal.serverName  = serverName;
+            var searchText = this.searchText;
+            rexTraversal.searchText = searchText;
+
+
+            var newInstancesDiscovered    = false;
+
+            // Do not select any of the search results.
+            // Populate the gen with the digests. No focus change request needed.
+
+            for (var i=0; i< numInstancesFound; i++) {
+                // Do not select any of the search results.
+                // Check which (if any) are not already known and populate a gen with their digests.
+                // No focus change request needed.
+
+                // ... this is what you would do for a single entity detail after a get request...
+                var instance = selectedInstances[i];
                 if (this.searchCategory === "Entity") {
-                    // Issue a getEntity for the one instance. The get processing will retrieve an entity detail
-                    // and construct an entity digest, package them as a traversal and set the focus. It does not
-                    // matter if this entity is already known.
-                    this.selectedCategory = "Entity";
-                    var instance = selectedInstances[0];
                     var entityGUID = instance.entityGUID;
-                    this.instanceGUID = entityGUID;
-                }
-                else {  // searchCategory is "Relationship"
-                    // Issue a getRelationship for the one instance. The get processing will retrieve a relationship
-                    // and construct a relationship digest, package them as a traversal and set the focus. It does not
-                    // matter if this relationship is already known.
-                    this.selectedCategory = "Relationship";
-                    var instance = selectedInstances[0];
-                    var relationshipGUID = instance.relationshipGUID;
-                    this.instanceGUID = relationshipGUID;
-                }
-                this.doGet();
 
-                */
-
-                 /*
-                  * Remember the instanceGUID - and although we could load it via doGet(),
-                  * instead load the digest and subsequently requrest that it becomes the focus.
-                  * This is preferred because it means the history is accurate - it will show
-                  * that the instance was was by search = rather than the user knowing the GUID.
-                  */
-
-
-
-
-
-
-                // Process the list of entity digests...any that are not already known are added to a traversal that will be added as a new gen.....
-                var rexTraversal             = {};
-                rexTraversal.entities        = {};
-                rexTraversal.relationships   = {};
-                // Set the traversal operation to show how this result was generated - provides informative summary in history
-                if (this.searchCategory === "Entity") {
-                    rexTraversal.operation = "entitySearch";
+                    // Determine whether entity is already known ...
+                    var entityKnown = false;
+                    var gen;
+                    // Search the existing gens looking for guid
+                    for (var g=0; g< this.gens.length; g++) {
+                        var igen = this.gens[g];
+                        var igenEntities = igen.entities;
+                        if (igenEntities !== undefined) {
+                            if (igenEntities[entityGUID] !== undefined) {
+                                entityKnown = true;
+                                gen = g+1;
+                                break;
+                            }
+                        }
+                    }
+                    if (entityKnown === false) {
+                        newInstancesDiscovered = true;
+                        // If this is an entity we have not already seen - add it to the traversal which will go to the diagram manager
+                        // gen is not advanced until we have processed all instances in the search result.
+                        gen = this.currentGen + 1;
+                        instance.gen = gen;
+                        rexTraversal.entities[entityGUID] = instance;
+                        this.guidToGen[entityGUID] = gen;
+                    }
                 }
                 else {
-                    rexTraversal.operation = "relationshipSearch";
-                }
-                var serverName = this.serverName;
-                rexTraversal.serverName  = serverName;
-                var searchText = this.searchText;
-                rexTraversal.searchText = searchText;
 
+                    var relationshipGUID = instance.relationshipGUID;
 
-                var newInstancesDiscovered    = false;
-
-                // Do not select any of the search results.
-                // Populate the gen with the digests. No focus change request needed.
-
-                //console.log("i-r: NOT YET HANDLING MULTI-INSTANCE SEARCH RESULTS!!");
-
-                for (var i=0; i< numInstancesFound; i++) {
-
-                    // Do not select any of the search results.
-                    // Check which (if any) are not already known and populate a gen with their digests.
-                    // No focus change request needed.
-
-                    console.log("i-r: seen instance "+selectedInstances[i]);
-
-                    // ... this is what you would do for a single entity detail after a get request...
-                    var instance = selectedInstances[i];
-
-                    if (this.searchCategory === "Entity") {
-                        var entityGUID = instance.entityGUID;
-
-                        // Determine whether entity is already known ...
-                        var entityKnown = false;
-                        var gen;
-                        // Search the existing gens looking for guid
-                        for (var g=0; g< this.gens.length; g++) {
-                            var igen = this.gens[g];
-                            var igenEntities = igen.entities;
-                            if (igenEntities !== undefined) {
-                                if (igenEntities[entityGUID] !== undefined) {
-                                    entityKnown = true;
-                                    gen = g+1;
-                                    break;
-                                }
+                    // Determine whether relationship is already known ...
+                    var relationshipKnown = false;
+                    var gen;
+                    // Search the existing gens looking for guid
+                    for (var g=0; g< this.gens.length; g++) {
+                        var igen = this.gens[g];
+                        var igenRelationships = igen.entities;
+                        if (igenRelationships !== undefined) {
+                            if (igenRelationships[relationshipGUID] !== undefined) {
+                                relationshipKnown = true;
+                                gen = g+1;
+                                break;
                             }
                         }
-                        if (entityKnown === false) {
-                            newInstancesDiscovered = true;
-                            // If this is an entity we have not already seen - add it to the traversal which will go to the diagram manager
-                            // gen is not advanced until we have processed all instances in the search result.
-                            gen = this.currentGen + 1;
-                            instance.gen = gen;
-                            rexTraversal.entities[entityGUID] = instance;
-                            this.guidToGen[entityGUID] = gen;
-                        }
                     }
-                    else {
-
-                        var relationshipGUID = instance.relationshipGUID;
-
-                        // Determine whether relationship is already known ...
-                        var relationshipKnown = false;
-                        var gen;
-                        // Search the existing gens looking for guid
-                        for (var g=0; g< this.gens.length; g++) {
-                            var igen = this.gens[g];
-                            var igenRelationships = igen.entities;
-                            if (igenRelationships !== undefined) {
-                                if (igenRelationships[relationshipGUID] !== undefined) {
-                                    relationshipKnown = true;
-                                    gen = g+1;
-                                    break;
-                                }
-                            }
-                        }
-                        if (relationshipKnown === false) {
-                            newInstancesDiscovered = true;
-                            // If this is an relationship we have not already seen - add it to the traversal which will go to the diagram manager
-                            // gen is not advanced until we have processed all instances in the search result.
-                            gen = this.currentGen + 1;
-                            instance.gen = gen;
-                            rexTraversal.relationships[relationshipGUID] = instance;
-                            this.guidToGen[relationshipGUID] = gen;
-                        }
+                    if (relationshipKnown === false) {
+                        newInstancesDiscovered = true;
+                        // If this is an relationship we have not already seen - add it to the traversal which will go to the diagram manager
+                        // gen is not advanced until we have processed all instances in the search result.
+                        gen = this.currentGen + 1;
+                        instance.gen = gen;
+                        rexTraversal.relationships[relationshipGUID] = instance;
+                        this.guidToGen[relationshipGUID] = gen;
                     }
                 }
+            }
 
-                if (newInstancesDiscovered === true) {
-                    // Advance the currentGen and extend the graph
-                    this.advanceCurrentGen();
+            if (newInstancesDiscovered === true) {
+                // Advance the currentGen and extend the graph
+                this.advanceCurrentGen();
 
-                    // Add the traversal to the sequence of gens in the graph. Then generate the graph-changed event.
-                    this.gens.push(rexTraversal);
+                // Add the traversal to the sequence of gens in the graph. Then generate the graph-changed event.
+                this.gens.push(rexTraversal);
 
-                    //console.log("instance-retriever: generate graph-changed event");
-                    this.outEvtGraphExtended();
+                //console.log("instance-retriever: generate graph-changed event");
+                this.outEvtGraphExtended();
 
-                }
-            // TODO - alignment above!!
-
+            }
 
             // If the search resulted in a single instance being selected, optimise
             // the flow by proactively requesting that it becomes the focus instance.

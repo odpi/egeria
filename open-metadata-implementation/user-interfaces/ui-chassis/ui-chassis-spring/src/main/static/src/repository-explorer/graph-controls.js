@@ -175,7 +175,6 @@ class GraphControls extends PolymerElement {
 
             connectionManager: Object,
 
-            // TODO - not currently used - depth is fixed at 1
             // Depth control to be used for the next query
             //intDepth: {
             //    type   : Number,
@@ -430,8 +429,7 @@ class GraphControls extends PolymerElement {
             body.serverURLRoot    = serverDetails.serverURLRoot;
             body.enterpriseOption = serverDetails.enterpriseQuery;
             body.entityGUID       = instanceGUID;
-            body.depth            = "1";                      //  TODO hard-coded for now...
-
+            body.depth            = "1";  /* deliberately hard-coded */
 
             this.doPreTraversalAjax(body);
 
@@ -527,7 +525,7 @@ class GraphControls extends PolymerElement {
              body.serverURLRoot    = serverDetails.serverURLRoot;
              body.enterpriseOption = serverDetails.enterpriseQuery;
              body.entityGUID       = instanceGUID;
-             body.depth            = 1;                      //  TODO hard-coded for now...
+             body.depth            = 1;    /* deliberately hard-coded */
              body.gen              = currentGen;
              // Set the filter lists...
              body.entityTypeGUIDs          = entityTypeGUIDs;

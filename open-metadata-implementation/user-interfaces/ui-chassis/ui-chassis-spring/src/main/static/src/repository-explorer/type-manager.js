@@ -11,15 +11,16 @@ import '../token-ajax.js';
 
 /**
 *
-* TypeManager is the implementation of a web component for the retrieval and management of type information for the type explorer UI component.
+* RexTypeManager is the implementation of a web component for the retrieval and management of type information for the
+* repository explorer UI component.
 *
+* The RexTypeManager component API has a loadTypes() function, which accepts server connection details and attempts to
+* connect to the server to retrieve type information.
 *
-* The TypeManager component API has a loadTypes() function, which accepts server connection details and attempts to connect to the server
-* to retrieve type information.
-* On success it updates its internal type store; and fires the typesLoaded event.
+* On success it updates its internal type store; and fires the types-loaded event.
 *
-* The TypeManager API also has getter functions for retrieving entity, relationship or classification type names from the loaded type information.
-* The TypeManager API also has getter functions for retrieving detailed entity, relationship or classification type information from the loaded type information.
+* The RexTypeManager API also has getter functions for retrieving entity, relationship or classification type names or
+* detailed entity, relationship or classification type information from the loaded type information.
 *
 */
 
@@ -42,7 +43,7 @@ class RexTypeManager extends PolymerElement {
                 observer: '_loadTypeExplorerRespChanged'    // Observer called  when this property changes
             },
 
-            // TEX - this holds all the extended type information
+            // The tex object - this holds all the extended type information
             tex: {
                 type  : Object,
                 value : undefined
@@ -57,7 +58,6 @@ class RexTypeManager extends PolymerElement {
     ready() {
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
-        //console.log("rex-type-manager ready complete");
     }
 
 
@@ -68,11 +68,7 @@ class RexTypeManager extends PolymerElement {
 
     loadTypes(serverName, serverURLRoot, enterpriseQuery) {
 
-        //alert("type-manager cpt: serverName and serverURLRoot fields are "+serverName+" "+serverURLRoot);
-
         if (this.validate(serverName) && this.validate(serverURLRoot)) {
-
-
 
             /*
              * Requesting new type information but do not clear what was previously loaded.
@@ -154,45 +150,44 @@ class RexTypeManager extends PolymerElement {
     }
 
 
-// TODO - rename to make these explicitly about the types
     /*
-     * Helper function to retrieve entities from TEX
+     * Helper function to retrieve entities from tex
      */
-    getEntities() {
+    getEntityTypes() {
         return this.tex.entities;
     }
 
     /*
-     * Helper function to retrieve relationships from TEX
+     * Helper function to retrieve relationships from tex
      */
-    getRelationships() {
+    getRelationshipTypes() {
         return this.tex.relationships;
     }
 
     /*
-     * Helper function to retrieve classifications from TEX
+     * Helper function to retrieve classifications from tex
      */
-    getClassifications() {
+    getClassificationTypes() {
         return this.tex.classifications;
     }
 
     /*
-     * Helper functions to retrieve specific objects from TEX
+     * Helper functions to retrieve specific objects from tex
      */
 
-    getEntity(typeName) {
+    getEntityType(typeName) {
         return this.tex.entities[typeName];
     }
 
-    getRelationship(typeName) {
+    getRelationshipType(typeName) {
         return this.tex.relationships[typeName];
     }
 
-    getClassification(typeName) {
+    getClassificationType(typeName) {
         return this.tex.classifications[typeName];
     }
 
-    getEnum(typeName) {
+    getEnumType(typeName) {
         return this.tex.enums[typeName];
     }
 

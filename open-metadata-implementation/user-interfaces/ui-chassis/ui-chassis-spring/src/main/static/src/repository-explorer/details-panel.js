@@ -710,7 +710,7 @@ class RexDetailsPanel extends PolymerElement {
         var listnode = document.createElement("ul");
         details.appendChild(listnode);
 
-        var eex = this.typeManager.getEntity(typeName);
+        var eex = this.typeManager.getEntityType(typeName);
 
         // Present a list of all relationships in alpha order, with inherited relationships in italics.
 
@@ -759,7 +759,7 @@ class RexDetailsPanel extends PolymerElement {
         var listnode = document.createElement("ul");
         details.appendChild(listnode);
 
-        var eex = this.typeManager.getEntity(typeName);
+        var eex = this.typeManager.getEntityType(typeName);
 
         // Present a list of all classifications in alpha order, with inherited classifications in italics.
 
@@ -1197,7 +1197,7 @@ class RexDetailsPanel extends PolymerElement {
         var paranode = document.createElement("p");
         paranode.appendChild(textnode);
         details.appendChild(paranode);
-        var cex = this.typeManager.getClassification(typeName);
+        var cex = this.typeManager.getClassificationType(typeName);
         var description = cex.classificationDef.description;
         var textnode = document.createTextNode(description);
         var paranode = document.createElement("p");
@@ -1211,7 +1211,7 @@ class RexDetailsPanel extends PolymerElement {
         var textnode = document.createTextNode("Attributes:");
         details.appendChild(textnode);
 
-        var cex = this.typeManager.getClassification(typeName);
+        var cex = this.typeManager.getClassificationType(typeName);
 
         var attributeEntries = {};
 
@@ -1255,7 +1255,7 @@ class RexDetailsPanel extends PolymerElement {
                 itemnode.appendChild(separatorNode);
 
                 var attrTypeName = attributeEntries[attrName].attributeTypeName;
-                if (this.typeManager.getEnum(attrTypeName) !== undefined) {
+                if (this.typeManager.getEnumType(attrTypeName) !== undefined) {
                     this.appendEnumLink(itemnode, attrTypeName);
                 }
                 else {
@@ -1285,7 +1285,7 @@ class RexDetailsPanel extends PolymerElement {
 
         var validEntityEntries = [];
 
-        var cex = this.typeManager.getClassification(typeName);
+        var cex = this.typeManager.getClassificationType(typeName);
 
         // Local attributes - there are only local attributes - currently...
         var validEntities = cex.classificationDef.validEntityDefs;
@@ -1341,7 +1341,7 @@ class RexDetailsPanel extends PolymerElement {
         var paranode = document.createElement("p");
         paranode.appendChild(textnode);
         details.appendChild(paranode);
-        var eex = this.typeManager.getEnum(typeName);
+        var eex = this.typeManager.getEnumType(typeName);
         var description = eex.description;
         var textnode = document.createTextNode(description);
         var paranode = document.createElement("p");
@@ -1356,7 +1356,7 @@ class RexDetailsPanel extends PolymerElement {
         var listnode = document.createElement("ul");
         details.appendChild(listnode);
         // Find the enum elements...
-        var eex = this.typeManager.getEnum(typeName);
+        var eex = this.typeManager.getEnumType(typeName);
         var elements = eex.elementDefs;
 
         elements.forEach(element => {

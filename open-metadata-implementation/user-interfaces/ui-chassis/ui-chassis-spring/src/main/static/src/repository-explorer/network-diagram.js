@@ -536,75 +536,60 @@ class NetworkDiagram extends PolymerElement {
 
 
 
-     initialize_diagram() {
+    initialize_diagram() {
 
-         var width = this.width;
-         var height = this.height;
+        var width = this.width;
+        var height = this.height;
 
-         this.myNodes = [];
-         this.myLinks = [];
-         this.allNodes = {};
-         this.repositoryToColor = {};
-         this.colorToRepository = {};
-
-         //console.log("initialize_diagram: append SVG");
-
-         this.svg = d3.select(this.shadowRoot.querySelector('#ins'))
-                                           .append("svg")
-                                           .attr('width', width)
-                                           .attr('height', height)
-                                           ;
-
-         //console.log("initialize_diagram: create SIM");
-
-         // For placement of nodes vertically within diagram use the yPlacement function.
-         var yPlacement = this.yPlacement.bind(this);
-         //var ll = this.ll.bind(this);
-         var ls = this.ls.bind(this);
-
-         this.sim = d3.forceSimulation(this.myNodes)
-             .force('horiz', d3.forceX(width/2).strength(0.01))
-             .force('vert', d3.forceY().strength(0.1).y(function(d) {return yPlacement(d);}))
-             .velocityDecay(0.6)
-             .force('repulsion', d3.forceManyBody().strength(-500))
-             .alphaDecay(.0005)
-             .velocityDecay(0.6)
-             .on('tick',this.tick.bind(this))
-             .force('link', d3.forceLink().links(this.myLinks)
-                 .id(this.nodeId)
-                 .distance(this.link_distance)
-                 .strength(function(d) { return ls(d);})) ;
+        this.myNodes = [];
+        this.myLinks = [];
+        this.allNodes = {};
+        this.repositoryToColor = {};
+        this.colorToRepository = {};
 
 
-         // define arrowhead for links
-         this.svg.append("svg:defs").selectAll("marker")
-             .data(["end"])
-             .enter().append("svg:marker")
-             .attr("id", String)
-             .attr("viewBox", "0 -5 10 10")
-             .attr("refX", 25)  // The marker is 10 units long (in x dir) and nodes have radius 15.
-             .attr("refY", 0)
-             .attr("markerWidth", 4)
-             .attr("markerHeight", 4)
-             .style("stroke",this.egeria_primary_color_string)
-             .style("fill",this.egeria_primary_color_string)
-             .attr("orient", "auto")
-             .attr("xoverflow", "visible")
-             .append("svg:path")
-             .attr("d", "M0,-5L10,0L0,5") ;
-     }
+        this.svg = d3.select(this.shadowRoot.querySelector('#ins'))
+            .append("svg")
+            .attr('width', width)
+            .attr('height', height)
+            ;
+
+        // For placement of nodes vertically within diagram use the yPlacement function.
+        var yPlacement = this.yPlacement.bind(this);
+        var ls = this.ls.bind(this);
+
+        this.sim = d3.forceSimulation(this.myNodes)
+            .force('horiz', d3.forceX(width/2).strength(0.01))
+            .force('vert', d3.forceY().strength(0.1).y(function(d) {return yPlacement(d);}))
+            .velocityDecay(0.6)
+            .force('repulsion', d3.forceManyBody().strength(-500))
+            .alphaDecay(.0005)
+            .velocityDecay(0.6)
+            .on('tick',this.tick.bind(this))
+            .force('link', d3.forceLink().links(this.myLinks)
+                .id(this.nodeId)
+                .distance(this.link_distance)
+                .strength(function(d) { return ls(d);})) ;
 
 
-    /*
-     * Experiment with link-specific link-length (ll)
-     */
-    //ll(d) {
-    //    var gen_s = d.source.gen;
-    //    var gen_t = d.target.gen;
-    //    var gen_diff = gen_t - gen_s;
-    //    var mag_diff = Math.max(1,Math.abs(gen_diff));
-    //    return mag_diff * 150;  // TODO - should not be hard-coded - should reuse the calculated perGen from elsewhere....
-    //}
+        // define arrowhead for links
+        this.svg.append("svg:defs").selectAll("marker")
+            .data(["end"])
+            .enter().append("svg:marker")
+            .attr("id", String)
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 25)  // The marker is 10 units long (in x dir) and nodes have radius 15.
+            .attr("refY", 0)
+            .attr("markerWidth", 4)
+            .attr("markerHeight", 4)
+            .style("stroke",this.egeria_primary_color_string)
+            .style("fill",this.egeria_primary_color_string)
+            .attr("orient", "auto")
+            .attr("xoverflow", "visible")
+            .append("svg:path")
+            .attr("d", "M0,-5L10,0L0,5") ;
+    }
+
 
     /*
      * Experiment with link-specific link-strength (ls)
@@ -977,37 +962,44 @@ class NetworkDiagram extends PolymerElement {
 
         if ( d.source.id == d.target.id ) {
 
-            // reflexive link
-            var cp_offset = 0.15 + (d.idx * 0.1);   // Indexing is for separation of multi-links
-            var base_rad = this.link_distance;      // just making the same as link distance - make that formal. TODO
-            var link_rad = base_rad * cp_offset;
+            /*
+             * Reflexive link
+             */
+            var cp_offset = 0.15 + (d.idx * 0.1);   /* Indexing is for separation of multi-links */
+            var base_rad  = this.link_distance;     /* Sets base_rad for innermost link = link_distance for
+                                                     * non-reflexive links; this is subjective but results
+                                                     * in sensible radii for reflexive links
+                                                     */
+            var link_rad  = base_rad * cp_offset;
             path.moveTo(d.source.x,d.source.y);
             path.arc(d.source.x+link_rad,d.source.y,link_rad,Math.PI,0.999*Math.PI);
-            midpoint.x = d.source.x+1.7*link_rad; // Place the label away from the node and its label...
-            midpoint.y = d.source.y-0.7*link_rad;;
+            midpoint.x    = d.source.x+1.7*link_rad;    /* Place the label away from the node and its label... */
+            midpoint.y    = d.source.y-0.7*link_rad;;
         }
         else {
 
-            // non-reflexive link
-            var dx = d.target.x - d.source.x;
-            var dy = d.target.y - d.source.y;
-            var mid = {};
-            mid.x = d.source.x + dx/2.0;
-            mid.y = d.source.y + dy/2.0;
-            var denom = dy > 0 ? Math.max(0.001,dy) : Math.min(-0.001,dy);
-            var gNormal = 1.0 * (dx) / denom;
-            var unit = {};
-            unit.x = Math.sign(dy) * Math.sqrt( 1.0 / (1.0 + gNormal**2) );
-            unit.y = -1.0 * gNormal * unit.x;
-            var mag = this.link_distance ;
-            var cp_offset = 0.2 * (d.idx+1);  // Indexing is for separation of multi-links
-            var cp = {};
-            cp.x = mid.x + cp_offset * mag * unit.x;
-            cp.y = mid.y + cp_offset * mag * unit.y;
+            /*
+             * Non-reflexive link
+             */
+            var dx        = d.target.x - d.source.x;
+            var dy        = d.target.y - d.source.y;
+            var mid       = {};
+            mid.x         = d.source.x + dx/2.0;
+            mid.y         = d.source.y + dy/2.0;
+            var denom     = dy > 0 ? Math.max(0.001,dy) : Math.min(-0.001,dy);
+            var gNormal   = 1.0 * (dx) / denom;
+            var unit      = {};
+            unit.x        = Math.sign(dy) * Math.sqrt( 1.0 / (1.0 + gNormal**2) );
+            unit.y        = -1.0 * gNormal * unit.x;
+            var mag       = this.link_distance ;
+            var cp_offset = 0.2 * (d.idx+1);        /* Indexing is for separation of multi-links */
+            var cp        = {};
+            cp.x          = mid.x + cp_offset * mag * unit.x;
+            cp.y          = mid.y + cp_offset * mag * unit.y;
             path.moveTo(d.source.x,d.source.y);
             path.quadraticCurveTo(cp.x,cp.y,d.target.x,d.target.y);
-            midpoint.x = mid.x + 0.5 * cp_offset * mag * unit.x;
-            midpoint.y = mid.y + 0.5 * cp_offset * mag * unit.y;
+            midpoint.x    = mid.x + 0.5 * cp_offset * mag * unit.x;
+            midpoint.y    = mid.y + 0.5 * cp_offset * mag * unit.y;
         }
 
         returnMap.path = path.toString();
