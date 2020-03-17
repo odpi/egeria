@@ -309,10 +309,6 @@ class NetworkDiagram extends PolymerElement {
             // Can be called during initialisation prior to render and the sim being created. In this case ignore.
             return;
         }
-        //console.log("selectedModeChanged invoked : selectedMode="+ this.selectedMode);
-        //if (newValue !== undefined && newValue !== null) {
-        //    console.log("selectedModeChanged newValue="+ newValue);
-        //}
         if (this.selectedMode === "Temporal") {
             var yPlacement = this.yPlacement.bind(this);
             this.sim.force('vert', d3.forceY().strength(0.1).y(function(d) {return yPlacement(d);}));
@@ -332,7 +328,35 @@ class NetworkDiagram extends PolymerElement {
 
     inEvtFocusEntityChanged(entityGUID) {
         // The focus is now the entity given.
-        // There is nothing to do here - highlighting will be handled asynchronously and the
+        // Highlighting will be handled asynchronously but it is possible that
+        // if the entity was originally loaded as a result of discovering a proxy
+        // attached to a relationship, then its label will have been set using
+        // the restricted set of properties available on the proxy - i.e. just
+        // the unique properties. If this is the case then, now that we have the
+        // full entity detail (it is the focus entity) we can update the label to
+        // the more preferred label derived from the full entity detail.
+        //
+        // TODO update label....
+        var expEntity = this.instanceRetriever.getFocusEntity();
+        if (expEntity !== null) {
+            var entityDigest = expEntity.entityDigest;
+            var label = entityDigest.label;
+            console.log("n-d: focusEntityChanged: entityDigest has label "+label);
+            // TODO update node.......
+            var nodeToUpdate = this.allNodes[entityGUID];
+            var idx = this.myNodes.indexOf(nodeToUpdate);
+            if (idx !== -1) {
+                // Update the node in place in the myNodes array and allNodes map
+                this.myNodes[idx].label = label;
+                this.allNodes[entityGUID].label = label;
+
+                // Finally, update the diagram - this will update the nodes and links
+                // Alternatively you could leave this to tick() but that would make tick() less efficient.
+                this.update_diagram();
+            }
+        }
+
+        // TODO delete below...
         // display of details is not the responsibility of this diagram component.
         // For now just log to console....
         //console.log("network-diagram: focus-entity-changed to "+entityGUID);

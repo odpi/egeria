@@ -302,8 +302,7 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
                         <p>
                         There is currently one type of diagram - called the 'Network Diagram'. Other types of diagram may be added later.
                         The Network Diagram is a visualization of the traversed graph, in which entities and relationships are drawn as circles and arcs.
-                        Each entity or relationship is labelled according to Rex's built-in labelling scheme, which attempts to find a concise, meaningful
-                        and hopefully unique label, based on the properties of the entity or relationship. The GUID (globally unique id) associated with
+                        Each entity or relationship is labelled according to Rex's built-in labelling scheme (see below). The GUID (globally unique id) associated with
                         an instance may be the only way to uniquely identify it, but it is not particularly convenient or memorable. Rex includes the GUID
                         in the details panel and in the traversal history to help to uniquely identify an instance.
                         <p>
@@ -319,6 +318,28 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
                         <eul>
                         <p>
                         You can switch back and forth between the layout options.
+                        </p>
+                        <b>
+                        Labelling of objects:
+                        </b>
+                        <p>
+                        Rex has a built-in labeller that assigns a label to each object (entity or relationship) that is retrieved from the
+                        repository. The labels are used in the diagram and attempts to find a concise, meaningful and hopefully unique label, based on the
+                        properties of the entity or relationship.
+                        <p>
+                        The labelling strategy behaves differently depending on the type of an object. In the default case, it will examine the
+                        instance properties of the object and choose a label based on the following precedence order:
+                        <ul>
+                        <li>displayName - which should have been set with the expectation that it will be used for display purposes
+                        <li>name - which should be easier to read than qualified name
+                        <li>qualifiedName - limited to the last 24 characters as qualified names can be long and the last part is often the best
+                        means of discrimination.
+                        </ul>
+                        <p>
+                        If you retrieve a relationship (from Get or Search), the entities at the ends of the relationship will be assigned
+                        labels based on the information available - which is limited to the unique properties in the EntityProxy. If such
+                        an entity is subsequently selected (by clicking on it) Rex will retrieve the full entity and if it can identify
+                        a better label, it will update the label associated with the entity in both the diagram and in the details panel.
                         </p>
                         <b>
                         Tips for using Rex:
@@ -422,12 +443,12 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
 
         this.addEventListener('entity-not-loaded', function (e) {
             // Generate an alert for the error condition
-            alert( "Event :" + 'entity-not-loaded' + ' from ' + e.detail.source);
+            //alert( "Event :" + 'entity-not-loaded' + ' from ' + e.detail.source);
         });
 
         this.addEventListener('relationship-not-loaded', function (e) {
             // Generate an alert for the error condition
-            alert( "Event :" + 'relationship-not-loaded' + ' from ' + e.detail.source);
+            //alert( "Event :" + 'relationship-not-loaded' + ' from ' + e.detail.source);
         });
 
         this.addEventListener('change-focus-entity', function (e) {

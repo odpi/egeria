@@ -1255,7 +1255,7 @@ class InstanceRetriever extends PolymerElement {
             }
             else {
                  // Failure
-                 console.log("_getEntityDetailRespChanged newValue has bad status code");
+                 //console.log("_getEntityDetailRespChanged newValue has bad status code");
                  if (newValue.exceptionText) {
                      alert('Error occurred: ' +newValue.exceptionText);
                  }
@@ -1263,14 +1263,14 @@ class InstanceRetriever extends PolymerElement {
                      alert('Error occurred: no exception message given');
                  }
                  // Generate a failure to load event - this will allow the status to be reported
-                 console.log("getEntityResp: issue entity-not-loaded");
+                 //console.log("getEntityResp: issue entity-not-loaded");
                  this.outEvtEntityNotLoaded();
-                 console.log("getEntityResp: done entity-not-loaded");
+                 //console.log("getEntityResp: done entity-not-loaded");
             }
         }
-        else {
-            console.log("_getEntityDetailRespChanged newValue was null");
-        }
+        //else {
+        //    console.log("_getEntityDetailRespChanged newValue was null");
+        //}
     }
 
     /*
@@ -1419,7 +1419,7 @@ class InstanceRetriever extends PolymerElement {
                      this.guidToGen[relationshipGUID] = this.currentGen;
 
                      // Generate the graph-changed event.
-                     console.log("instance-retriever: generate graph-extended event");
+                     //console.log("instance-retriever: generate graph-extended event");
                      this.outEvtGraphExtended();
 
                 }
@@ -1431,7 +1431,7 @@ class InstanceRetriever extends PolymerElement {
 
             else {
                  // Failure
-                 console.log("_getRelationshipRespChanged newValue has bad status code");
+                 //console.log("_getRelationshipRespChanged newValue has bad status code");
                  if (newValue.exceptionText) {
                      alert('Error occurred: ' +newValue.exceptionText);
                  }
@@ -1439,13 +1439,12 @@ class InstanceRetriever extends PolymerElement {
                      alert('Error occurred: no exception message given');
                  }
                  // Generate a failure to load event - this will allow the status to be reported
-                 this.outEvtFocusRelationshipNotLoaded();
-
+                 this.outEvtRelationshipNotLoaded();
             }
         }
-        else {
-            console.log("_getRelationshipRespChanged newValue was null");
-        }
+        //else {
+        //    console.log("_getRelationshipRespChanged newValue was null");
+        //}
     }
 
 

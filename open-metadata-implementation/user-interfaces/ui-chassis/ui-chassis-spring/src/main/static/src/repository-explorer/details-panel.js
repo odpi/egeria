@@ -333,7 +333,7 @@ class RexDetailsPanel extends PolymerElement {
 
     entityAddGUID(details, entity) {
         var guid = entity.guid;
-        var textnode = document.createTextNode("GUID :"+guid);
+        var textnode = document.createTextNode("GUID : "+guid);
         var paranode = document.createElement("p");
         paranode.appendChild(textnode);
         details.appendChild(paranode);
@@ -875,7 +875,7 @@ class RexDetailsPanel extends PolymerElement {
     relationshipAddGUID(details, relationship) {
         // GUID - long
         var guid = relationship.guid;
-        var textnode = document.createTextNode("GUID :"+guid);
+        var textnode = document.createTextNode("GUID : "+guid);
         var paranode = document.createElement("p");
         paranode.appendChild(textnode);
         details.appendChild(paranode);

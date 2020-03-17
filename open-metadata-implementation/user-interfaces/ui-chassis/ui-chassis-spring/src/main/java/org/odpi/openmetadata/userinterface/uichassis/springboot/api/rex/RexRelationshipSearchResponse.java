@@ -34,13 +34,13 @@ public class RexRelationshipSearchResponse {
                                          Map<String,RexEntityDigest>         entities,
                                          Map<String,RexRelationshipDigest>   relationships) {
 
-        this.httpStatusCode = statusCode;
-        this.exceptionText  = exceptionText;
-        this.serverName     = serverName;
-        this.searchText     = searchText;
+        this.httpStatusCode   = statusCode;
+        this.exceptionText    = exceptionText;
+        this.serverName       = serverName;
+        this.searchText       = searchText;
         this.searchOperation  = searchOperation;
-        this.entities       = entities;
-        this.relationships  = relationships;
+        this.entities         = entities;
+        this.relationships    = relationships;
     }
 
     public Integer getHttpStatusCode() {
