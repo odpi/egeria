@@ -1620,11 +1620,7 @@ class InstanceRetriever extends PolymerElement {
          */
         var no_entities      = rexTraversal.entities      === undefined || Object.keys(rexTraversal.entities).length      === 0;
         var no_relationships = rexTraversal.relationships === undefined || Object.keys(rexTraversal.relationships).length === 0;
-        // TODO CLEAN UP
-        //if (rexTraversal.entities === undefined || (Object.keys(rexTraversal.entities).length === 0))
-        //    no_entities      = true;
-        //if (rexTraversal.relationships === undefined || (Object.keys(rexTraversal.relationships).length === 0))
-        //    no_relationships = true;
+       
         if (no_entities && no_relationships) {
             /*
              * This is not an error - it just means everything in the traversal was already known,
