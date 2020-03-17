@@ -205,15 +205,11 @@ class InstanceRetriever extends PolymerElement {
             },
 
 
-
-
-
-
-
-            // User-specified entity GUID - using bi-directional databind
-            // This is always the guid of the entity on which the user is focussed - whether they
-            // entered it in the input area or whether they clicked on it in the diagram or
-            // details panel.
+            // User-specified entity GUID
+            // This is used both as the property for the entry input field for when a user
+            // specifies a GUID (to retrieve using the Get button) AND is also used to
+            // store the GUID of the instance that has been selected as the focus - e.g.
+            // because it has clicked on it in the diagram.
 
             instanceGUID: {
                 type               : String,
@@ -478,7 +474,9 @@ class InstanceRetriever extends PolymerElement {
         // Empty the instanceGUID field
         this.instanceGUID = undefined;
         // Empty the root/focus fields
-        this.selectedCategory = undefined;
+        // The selectedCategory property drives the radio buttons for GUID retrieval category
+        // Reset it to its default setting of "Entity" rather than clearing it completely.
+        this.selectedCategory = "Entity";
         this.rootInstance = undefined;
         // Empty the graph
         this.gens = [];
@@ -1175,11 +1173,8 @@ class InstanceRetriever extends PolymerElement {
      * Observer to handle receipt of packaged instance data response from UI Application
      */
     _getEntityDetailRespChanged(newValue,oldValue) {
-        //console.log("_getEntityDetailRespChanged invoked");
+
         if (newValue !== undefined && newValue !== null) {
-            //console.log("_getEntityDetailRespChanged newValue : "+newValue);
-            //console.log("_getEntityDetailRespChanged httpStatusCode : "+newValue.httpStatusCode);
-            //console.log("_getEntityDetailRespChanged expEntityDetail : "+newValue.expandedEntityDetail);
 
             if (newValue.httpStatusCode == 200) {
                 // Success
@@ -1203,24 +1198,27 @@ class InstanceRetriever extends PolymerElement {
                 // Determine whether entity is already known ...
                 var entityKnown = false;
                 var gen;
-                // Search the existing gens looking for guid
-                for (var i=0; i< this.gens.length; i++) {
-                    var igen = this.gens[i];
-                    var igenEntities = igen.entities;
-                    if (igenEntities !== undefined) {
-                        if (igenEntities[entityGUID] !== undefined) {
-                            entityKnown = true;
-                            gen = i+1;
-                            break;
-                        }
-                    }
+                if (this.guidToGen[entityGUID] !== undefined) {
+                    entityKnown = true;
+                    gen = this.guidToGen[entityGUID];
                 }
+                // Search the existing gens looking for guid   // TODO - clean up
+                //for (var i=0; i< this.gens.length; i++) {
+                //    var igen = this.gens[i];
+                //    var igenEntities = igen.entities;
+                //    if (igenEntities !== undefined) {
+                //        if (igenEntities[entityGUID] !== undefined) {
+                //            entityKnown = true;
+                //            gen = i+1;
+                //            break;
+                //        }
+                //    }
+                //}
                 if (entityKnown === false) {
                     // Advance the currentGen
                     this.advanceCurrentGen();
                     gen = this.currentGen;
                 }
-
 
                 // Store the expanded entity into rootInstance, maintain the gen as above.
                 // rootInstance may have been cleared (to undefined) due to deselection of the focus instance.
@@ -1231,8 +1229,6 @@ class InstanceRetriever extends PolymerElement {
                 this.rootInstance.expEntity = newValue.expandedEntityDetail;
                 this.rootInstance.expEntity.entityDigest.gen = gen;
                 this.rootInstance.expRelationship = undefined;
-
-                //this.logRootEntityToConsole();
 
                 // If this is an entity we have not already seen - tell the diagram manager
                 if (entityKnown === false) {
@@ -1255,19 +1251,18 @@ class InstanceRetriever extends PolymerElement {
                     // Record in the traversal object, how this result was generated so we can provide informative summary in history
                     rexTraversal.operation = "getEntity";
 
-                    // Add the traversal to the sequence of gens in the graph. Then generate the graph-changed event.
+                    // Add the traversal to the sequence of gens in the graph.
                     this.gens.push(rexTraversal);
                     this.guidToGen[entityGUID] = this.currentGen;
 
-                    //console.log("instance-retriever: generate graph-changed event");
+                    // Generate the graph-changed event.
                     this.outEvtGraphExtended();
 
                 }
 
-                // Regardless of whether we have seen it before or it is new - this instance is now the focus....
-                console.log("getEntityResp: issue focus-entity-changed");
+                // Regardless of whether we had seen it before or it was new - this instance is now the focus.
                 this.outEvtFocusEntityChanged(entityGUID);
-                console.log("getEntityResp: done focus-entity-changed");
+
             }
             else {
                  // Failure
@@ -1326,7 +1321,7 @@ class InstanceRetriever extends PolymerElement {
                 // Determine whether relationship is already known ...
                 var relationshipKnown = false;
                 var gen;
-                // Search the existing gens looking for guid
+                // Search the existing gens looking for guid  // TODO can use guidToGen
                 for (var i=0; i< this.gens.length; i++) {
                     var igen = this.gens[i];
                     var igenRelationships = igen.relationships;
