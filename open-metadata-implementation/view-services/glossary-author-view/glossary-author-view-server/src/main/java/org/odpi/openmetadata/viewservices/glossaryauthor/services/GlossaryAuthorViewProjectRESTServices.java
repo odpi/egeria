@@ -172,8 +172,9 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
                     pageSize,
                     sequencingOrder,
                     sequencingProperty);
-            ProjectsResponse glossariesResponse = new ProjectsResponse();
-            glossariesResponse.setProjects(projects);
+            ProjectsResponse projectsResponse = new ProjectsResponse();
+            projectsResponse.setProjects(projects);
+            response = projectsResponse;
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, methodName);
         }

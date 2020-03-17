@@ -54,6 +54,10 @@ public enum DataEngineErrorCode {
     PORT_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-006 ",
             "Port with qualifiedName {0} was not found",
             "The system is unable to create a new PortDelegation relation.",
+            "Correct the code in the caller to provide the correct port qualified name."),
+    PROCESS_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-007 ",
+            "Process with qualifiedName {0} was not found",
+            "The system is unable to create a new ProcessHierarchy relation.",
             "Correct the code in the caller to provide the correct port qualified name.");
 
     private int httpErrorCode;
