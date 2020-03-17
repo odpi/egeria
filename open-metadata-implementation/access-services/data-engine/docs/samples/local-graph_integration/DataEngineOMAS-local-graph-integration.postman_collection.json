@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "9d06f0bf-f7c4-4d91-bbae-284de84ca31a",
-		"name": "DataEengine OMAS - local graph integration",
+		"_postman_id": "b00e57e6-50fc-49d2-a901-359ada2ef6a6",
+		"name": "DataEngine OMAS - local graph integration",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -907,6 +907,160 @@
 							"key": "processGuid",
 							"value": "{{processGuid}}"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.7.Create Process with Parent Process",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "503061b9-ea1c-45d2-8733-73993b764318",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"2 total result\", function () {",
+							"    pm.expect(jsonData.guids).to.have.lengthOf(2);",
+							"});",
+							"",
+							"pm.test(\"relatedHTTPCode code is 200\", function () {",
+							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"child-process-qualified-name\",\n      \"displayName\": \"child process display\",\n      \"name\": \"childProcessName\",\n      \"description\": \"desc\",\n      \"owner\": \"test\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done\",\n      \"formula\": \"whateverformula\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"port-impl-qualified-name\",\n          \"displayName\": \"port impl display\",\n          \"type\": \"OUTPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"schema-type-qualified-name\",\n            \"displayName\": \"schema-type-display\",\n            \"author\": \"test\",\n            \"usage\": \"test\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"column-1-qualified-name\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\": \"false\",\n                \"allowsDuplicateValues\": \"true\",\n                \"minCardinality\": \"3\",\n                \"maxCardinality\": \"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"column-2-qualified-name\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"column-1-qualified-name\",\n          \"targetAttribute\": \"column-2-qualified-name\"\n        }\n      ],\n      \"parentProcesses\": [\n        {\n          \"qualifiedName\": \"parent-process-qualified-name\",\n          \"containmentType\": \"OWNED\"\n        }\n      ]\n    },\n    {\n      \"qualifiedName\": \"parent-process-qualified-name\",\n      \"displayName\": \"parentProcess\",\n      \"name\": \"parentProcess\",\n      \"description\": \"desc\",\n      \"owner\": \"test IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done\",\n      \"formula\": \"whateverformula3\",\n      \"portAliases\": [\n        {\n          \"displayName\": \"port-alias-display-name\",\n          \"qualifiedName\": \"port-alias-qualified-name\",\n          \"delegatesTo\": \"port-impl-qualified-name\",\n          \"type\": \"OUTPUT_PORT\"\n        }\n      ]\n    }\n  ],\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.8.Create Process with Parent Process - exception for parent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "36ed7562-92c4-410d-8543-a9133dd5ec7c",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"1 total result\", function () {",
+							"    pm.expect(jsonData.guids).to.have.lengthOf(1);",
+							"});",
+							"",
+							"pm.test(\"relatedHTTPCode code is 400\", function () {",
+							"    pm.expect(jsonData.relatedHTTPCode).to.equal(400);",
+							"});",
+							"",
+							"",
+							"pm.test(\"excption message code is the expected one\", function () {",
+							"    pm.expect(jsonData.exceptionErrorMessage).to.equal(\"OMAS-DATA-ENGINE-400-007 Process with qualifiedName parent-process-qualified-name-nope was not found\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"child-process-qualified-name\",\n      \"displayName\": \"child process display\",\n      \"name\": \"childProcessName\",\n      \"description\": \"desc\",\n      \"owner\": \"test\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done\",\n      \"formula\": \"whateverformula\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"port-impl-qualified-name\",\n          \"displayName\": \"port impl display\",\n          \"type\": \"OUTPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"schema-type-qualified-name\",\n            \"displayName\": \"schema-type-display\",\n            \"author\": \"test\",\n            \"usage\": \"test\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"column-1-qualified-name\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\": \"false\",\n                \"allowsDuplicateValues\": \"true\",\n                \"minCardinality\": \"3\",\n                \"maxCardinality\": \"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"column-2-qualified-name\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"column-1-qualified-name\",\n          \"targetAttribute\": \"column-2-qualified-name\"\n        }\n      ],\n      \"parentProcesses\": [\n        {\n          \"qualifiedName\": \"parent-process-qualified-name-nope\",\n          \"containmentType\": \"OWNED\"\n        }\n      ]\n    },\n    {\n      \"qualifiedName\": \"parent-process-qualified-name\",\n      \"displayName\": \"parentProcess\",\n      \"name\": \"parentProcess\",\n      \"description\": \"desc\",\n      \"owner\": \"test IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done\",\n      \"formula\": \"whateverformula3\",\n      \"portAliases\": [\n        {\n          \"displayName\": \"port-alias-display-name\",\n          \"qualifiedName\": \"port-alias-qualified-name\",\n          \"delegatesTo\": \"port-impl-qualified-name\",\n          \"type\": \"OUTPUT_PORT\"\n        }\n      ]\n    }\n  ],\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
 					]
 				}
 			},

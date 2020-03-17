@@ -4,6 +4,9 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessContainmentType;
+import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ProcessPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ProcessConverter;
@@ -207,8 +210,8 @@ public class ProcessHandler {
                                                                                                                           InvalidParameterException,
                                                                                                                           UserNotAuthorizedException,
                                                                                                                           PropertyServerException {
-        dataEngineCommonHandler.addExternalRelationshipRelationship(userId, processGUID, portGUID, ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, externalSourceName);
+        dataEngineCommonHandler.createOrUpdateExternalRelationship(userId, processGUID, portGUID, ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME,
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, externalSourceName, null);
     }
 
     /**
@@ -292,7 +295,6 @@ public class ProcessHandler {
     private void classifyAsset(String userId, Process process, String processGUID) throws UserNotAuthorizedException,
                                                                                           PropertyServerException,
                                                                                           InvalidParameterException {
-
         final String methodName = "classifyAsset";
 
         ProcessPropertiesBuilder builder = new ProcessPropertiesBuilder(process.getQualifiedName(), process.getName(), process.getDisplayName(),
@@ -309,6 +311,28 @@ public class ProcessHandler {
             InstanceProperties ownerProperties = builder.getOwnerProperties(methodName);
             repositoryHandler.classifyEntity(userId, processGUID, AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
                     AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, ownerProperties, methodName);
+        }
+    }
+
+    public void createOrUpdateProcessHierarchyRelationship(String userId, ParentProcess parentProcess, String processGUID,
+                                                           String externalSourceName) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException {
+        final String methodName = "createOrUpdateProcessHierarchyRelationship";
+
+        ProcessContainmentType processContainmentType = parentProcess.getProcessContainmentType();
+        InstanceProperties relationshipProperties = repositoryHelper.addEnumPropertyToInstance(serviceName, null,
+                ProcessPropertiesMapper.CONTAINMENT_TYPE, processContainmentType.getOrdinal(), processContainmentType.getName(),
+                processContainmentType.getDescription(), methodName);
+
+        Optional<EntityDetail> parentProcessEntity = findProcessEntity(userId, parentProcess.getQualifiedName());
+        if (parentProcessEntity.isPresent()) {
+            dataEngineCommonHandler.createOrUpdateExternalRelationship(userId, parentProcessEntity.get().getGUID(), processGUID,
+                    ProcessPropertiesMapper.PROCESS_HIERARCHY_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME, externalSourceName,
+                    relationshipProperties);
+        } else {
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND, methodName,
+                    parentProcess.getQualifiedName());
         }
     }
 }
