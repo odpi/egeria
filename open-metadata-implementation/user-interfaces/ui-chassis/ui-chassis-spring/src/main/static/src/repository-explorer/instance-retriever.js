@@ -340,7 +340,6 @@ class InstanceRetriever extends PolymerElement {
         this.gens = [];
         this.guidToGen = {};
 
-        //console.log("rex instance-retriever ready complete");
     }
 
 
@@ -349,35 +348,29 @@ class InstanceRetriever extends PolymerElement {
 
     /*
      * There is no need to retrieve the entity whose GUID is given until the user presses the Get! button
-     * But now is a great time to enable the Get! button
+     * For now this function is a no op.
      */
     instanceGUIDChanged() {
-        //if (this.instanceGUID != undefined && this.instanceGUID != "") {
-        //   this.enableGetButton();
-        //}
-        //else {
-        //    this.disableGetButton();
-        //}
     }
 
 
     /*
      * There is no need to search for the instance yet - until the user presses the Search button
+     * For now this function is a no op.
      */
     searchTextChanged() {
-
     }
 
+    /*
+     * For now this function is a no op.
+     */
     selectedCategoryChanged(newValue,oldValue) {
-        if (newValue !== undefined && newValue !== null) {
-
-        }
     }
 
-
-   searchCategoryChanged(newValue,oldValue) {
-        if (newValue !== undefined && newValue !== null) {
-        }
+    /*
+     * For now this function is a no op.
+     */
+    searchCategoryChanged(newValue,oldValue) {
     }
 
 
@@ -602,13 +595,12 @@ class InstanceRetriever extends PolymerElement {
         var selectedInstances = searchResults.getSelectedInstances();
         if (selectedInstances !== undefined && selectedInstances !== null && selectedInstances.length > 0) {
 
-            // If there is one entity (or relationship) it becomes the selected instance - which means
-            // we have to retrieve the entity detail for the details panel.
-            // If there are multiple instances in the search result then Rex does not know which to select
-            // and does not select any - so rootInstance is not set.
-
-            console.log("i-r: Now absorb the resulting instances - you need digests at this point.....");
-
+            /*
+             *  If there is one entity (or relationship) it becomes the selected instance - which means
+             *  we have to retrieve the entity detail for the details panel.
+             *  If there are multiple instances in the search result then Rex does not know which to select
+             *  and does not select any - so rootInstance is not set.
+             */
 
             var numInstancesFound = selectedInstances.length;
 
@@ -1020,7 +1012,10 @@ class InstanceRetriever extends PolymerElement {
      */
     doSearch() {
         if (this.searchText === undefined || this.searchText === null) {
-            console.log("doSearch: cannot proceed because searchText is not set - please type a string and try again");
+
+            alert("Search operation cannot proceed because no search text has been set - please type a string and try again");
+            return;
+
         }
         else {
             var serverDetails = this.connectionManager.getServerDetails();
@@ -1053,7 +1048,7 @@ class InstanceRetriever extends PolymerElement {
                     this.$.searchEntitiesAjaxId._go();
                 }
                 else { // search for relationships...
-                    console.log("i-r: Implement call to relationship search");
+
                     var searchFilter = this.$.filterManager.getSelection();
                     if (searchFilter.typeName === "none") {
                         body.typeName = null;
@@ -1611,10 +1606,8 @@ class InstanceRetriever extends PolymerElement {
 
 
     _relationshipSearchRespChanged(newValue,oldValue) {
-        //console.log("_relationshipSearchRespChanged invoked");
+
         if (newValue !== undefined && newValue !== null) {
-            //console.log("_relationshipSearchRespChanged newValue : "+newValue);
-            //console.log("_relationshipSearchRespChanged httpStatusCode : "+newValue.httpStatusCode);
 
             if (newValue.httpStatusCode == 200) {
                 // Success
@@ -1660,7 +1653,6 @@ class InstanceRetriever extends PolymerElement {
      */
     getLatestGen() {
         var genIdx = this.currentGen - 1;
-        //console.log("instance-retriever retrieving latest gen from position "+genIdx);
         var returnMap = {};
         returnMap.numberOfGens = this.numberOfGens;
         returnMap.currentGen   = this.gens[genIdx];
@@ -1738,11 +1730,10 @@ class InstanceRetriever extends PolymerElement {
     getFocusRelationship() {
         if (this.rootInstance !== undefined) {
             if (this.rootInstance.category === "relationship") {
-                //console.log("instance-retriever: getFocusRelationship has relationship with gen "+this.rootInstance.expRelationship.relationshipDigest.gen);
                 return this.rootInstance.expRelationship;
             }
         }
-        //console.log("getFocusRelationship invoked, but focus is not a relationship");
+        // focus is not a relationship
         return null;
     }
 

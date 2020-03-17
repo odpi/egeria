@@ -180,7 +180,6 @@ class RexConnectionManager extends PolymerElement {
 
     enterpriseQueryChanged() {
         // No action
-        //console.log("enterpriseQuery changed");
     }
 
     // The user has pressed the Connect! button - issue a REST call to the repository server

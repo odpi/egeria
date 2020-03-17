@@ -389,8 +389,6 @@ class NetworkDiagram extends PolymerElement {
         // The focus is now the relationship given.
         // There is nothing to do here - highlighting will be handled asynchronously and the
         // display of details is not the responsibility of this diagram component.
-        // For now just log to console....
-        //console.log("network-diagram: focus-relationship-changed to "+relationshipGUID);
     }
 
 
@@ -414,7 +412,6 @@ class NetworkDiagram extends PolymerElement {
         if (entityDigests != null) {
              for (var e in entityDigests) {
                   var entityDigest = entityDigests[e];
-                  //console.log("network-diagram: graph-extended processing entity "+entityDigest.label);
                   var newNode = {};
                   newNode.id = entityDigest.entityGUID;
                   newNode.label = entityDigest.label;
@@ -602,7 +599,6 @@ class NetworkDiagram extends PolymerElement {
         var yPlacement = this.yPlacement.bind(this);
         var ls = this.ls.bind(this);
         var egeria_primary_color_string = this.egeria_primary_color_string;
-        console.log("n-d initialize: egeria primary color is "+egeria_primary_color_string);
 
         this.sim = d3.forceSimulation(this.nodeArray)
             .force('horiz', d3.forceX(width/2).strength(0.01))
@@ -670,46 +666,25 @@ class NetworkDiagram extends PolymerElement {
             perGen = (ymax - ymin) / (this.numberOfGens - 1);
         }
         y = ymin + (d.gen-1) * perGen;
-        //console.log("network-diagram: placing node from gen "+d.gen+" at y "+y+" (perGen is "+perGen+")")
 
         return y;
-
-    }
-
-
-
-
-    logNodesToConsole() {
-        if (this.nodeArray !== undefined) {
-            this.nodeArray.forEach(node => {
-                console.log("Node -> "+node.id+" x,y -> "+node.x+","+node.y+" label -> "+node.label+" gen -> "+node.gen);
-            });
-        }
-    }
-
-
-    logLinksToConsole() {
-        if (this.linkArray !== undefined) {
-            this.linkArray.forEach(link => {
-                console.log("Link -> "+link.id+" source -> "+link.source+" target -> "+link.target);
-                console.log("Link -> "+link.id+" source.id -> "+link.source.id+" target.id -> "+link.target.id);
-                console.log("Link -> "+link.id+" source.label -> "+link.source.label+" target.label -> "+link.target.label);
-            });
-        }
     }
 
 
 
     update_diagram() {
-        // In order to get the nodes always in front of the links, the nodes need to be re-added to the svg
-        // So whenever links changes we need to re-generate all the nodes. Or you do select and re-gen of all
-        // nodes in the tick function. The former is probably more efficient.
+        /*
+         * In order to get the nodes always in front of the links, the nodes need to be re-added to the svg
+         * So whenever links changes we need to re-generate all the nodes. Or you do select and re-gen of all
+         * nodes in the tick function. The former is probably more efficient.
+         */
 
-        console.log('network-diagram: update_diagram');
-
-        // refresh the sim's data
-        this.sim.nodes(this.nodeArray);  // nodes first - we want the positions to refresh
-        this.sim.force('link').links(this.linkArray);  // update the links
+        /*
+         * Refresh the sim's data
+         * Refresh the odes first - this will cause the positions to refresh. Then refresh the links
+         */
+        this.sim.nodes(this.nodeArray);
+        this.sim.force('link').links(this.linkArray);
 
         this.updateLinks();
         this.updateNodes();
@@ -719,11 +694,16 @@ class NetworkDiagram extends PolymerElement {
 
     }
 
-
+    /*
+     * Generic accessor function for nodes
+     */
     nodeId(d) {
        return d.id;
     }
 
+    /*
+     * Function to retrieve a specified node
+     */
     getNode(id) {
       return ( this.nodeArray.filter(obj => { return obj.id === id  })[0] );
     }
@@ -830,8 +810,6 @@ class NetworkDiagram extends PolymerElement {
 
     updateNodes() {
 
-        //this.logNodesToConsole();
-
         var node_radius = this.node_radius;
         var width       = this.width;
         var height      = this.height;
@@ -913,8 +891,6 @@ class NetworkDiagram extends PolymerElement {
 
     // update the visual rendering of the links
     updateLinks() {
-
-        //this.logLinksToConsole();
 
         var svg = this.svg;
         var path_func = this.path_func.bind(this);
@@ -1054,17 +1030,19 @@ class NetworkDiagram extends PolymerElement {
     }
 
 
-    // Request to change focus when node clicked
+    /*
+     * Issue request to change focus when node clicked
+     */
     nodeClicked(guid) {
-        // We need to request a focus change...
-        console.log("network-diagram: node-clicked, id is "+guid);
+        // Request a focus change...
         this.outEvtChangeFocusEntity(guid);
     }
 
-    // Request to change focus when edge clicked
+    /*
+     * Issue request to change focus when edge clicked
+     */
     edgeClicked(guid) {
-        // We need to request a focus change...
-        console.log("network-diagram: edge-clicked, id is "+guid);
+        // Request a focus change...
         this.outEvtChangeFocusRelationship(guid);
     }
 
@@ -1167,8 +1145,10 @@ class NetworkDiagram extends PolymerElement {
                     }
                 }
                 if (!assigned) {
-                    console.log("Ran out of available colors for repositories!");
+
                     /*
+                     * Ran out of available colors for repositories!
+                     *
                      * Assign a color that we know is not in the possible colors to this
                      * repo and any further ones we discover. Remember this for consistency
                      * - i.e. this repository will use this color for the remainder of this

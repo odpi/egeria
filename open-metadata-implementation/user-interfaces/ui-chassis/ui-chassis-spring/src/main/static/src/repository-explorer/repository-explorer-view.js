@@ -418,22 +418,22 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
         this.theDiagramManager    = this.$.rexDiagramManager;
 
 
-        // Because diagram-manager is dynamically creating a custom element (network-diagram) prior to us
-        // completing this top level ready function, the diagram manager needs to set the i-r for the i-d
-        // and cannot have done so until now....
+        /*
+         *  Because diagram-manager is dynamically creating a custom element (network-diagram) prior to us
+         *  completing this top level ready function, the diagram manager needs to set the i-r for the i-d
+         *  and cannot have done so until now....
+         */
         this.theDiagramManager.setInstanceRetriever(this.theInstanceRetriever);
 
-        //console.log("Repository-explorer-view ready completed");
     }
 
     initialise() {
 
-        //console.log("rex initialise");
+        /*
+         *  This class implements the event listeners that orchestrate via function calls to the child components.
+         *  The events are as follows:
+         */
 
-        // This class implements the event listeners that orchestrate via function calls to the child components.
-        // The events are as follows:
-
-        //console.log("rex add listeners for types-loaded");
         this.addEventListener('types-loaded', function (e) {
             this.$.rexConnectionManager.inEvtTypesLoaded();
             this.$.rexInstanceRetriever.inEvtTypesLoaded();
@@ -445,15 +445,12 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
             this.$.rexConnectionManager.inEvtTypesNotLoaded();
         });
 
-
+        /* This is a no-op - an alert has already been generated in the source component */
         this.addEventListener('entity-not-loaded', function (e) {
-            // Generate an alert for the error condition
-            //alert( "Event :" + 'entity-not-loaded' + ' from ' + e.detail.source);
         });
 
+        /* This is a no-op - an alert has already been generated in the source component */
         this.addEventListener('relationship-not-loaded', function (e) {
-            // Generate an alert for the error condition
-            //alert( "Event :" + 'relationship-not-loaded' + ' from ' + e.detail.source);
         });
 
         this.addEventListener('change-focus-entity', function (e) {

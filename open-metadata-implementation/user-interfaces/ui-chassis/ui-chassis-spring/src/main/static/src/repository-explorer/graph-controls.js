@@ -225,7 +225,6 @@ class GraphControls extends PolymerElement {
         this.preTraversal.relationshipTypes   = {};
         this.preTraversal.classificationTypes = {};
 
-        //console.log("rex graph-controls ready complete");
     }
 
 
