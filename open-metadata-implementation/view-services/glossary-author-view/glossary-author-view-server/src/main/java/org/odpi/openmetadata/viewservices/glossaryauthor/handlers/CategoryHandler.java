@@ -122,10 +122,6 @@ public class CategoryHandler
     /**
      * Update a Category. This means to update the category with any non-null attributes from the supplied category.
      * <p>
-     * If the caller has chosen to incorporate the category name in their Category Categorys or Categories qualified name, renaming the category will cause those
-     * qualified names to mismatch the Category name.
-     * If the caller has chosen to incorporate the category qualifiedName in their Category Categorys or Categories qualified name, changing the qualified name of the category will cause those
-     * qualified names to mismatch the Category name.
      * Status is not updated using this call.
      * The GovernanceAction content if specified replaces what is on the server.
      *

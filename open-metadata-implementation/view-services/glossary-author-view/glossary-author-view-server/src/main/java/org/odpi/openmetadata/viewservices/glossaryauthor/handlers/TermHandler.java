@@ -120,10 +120,6 @@ public class TermHandler
     /**
      * Update a Term. This means to update the term with any non-null attributes from the supplied term.
      * <p>
-     * If the caller has chosen to incorporate the term name in their Term Terms or Categories qualified name, renaming the term will cause those
-     * qualified names to mismatch the Term name.
-     * If the caller has chosen to incorporate the term qualifiedName in their Term Terms or Categories qualified name, changing the qualified name of the term will cause those
-     * qualified names to mismatch the Term name.
      * Status is not updated using this call.
      * The GovernanceAction content if specified replaces what is on the server.
      *
