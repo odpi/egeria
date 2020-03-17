@@ -77,6 +77,12 @@ spec:
               value: "cocoMDS4"
             - name: "OMAS_SERVER_URL"
               value: "http://{{ .Release.Name }}-datalake:8080"
+            - name: "OPEN_LINEAGE_SERVER_URL"
+              value: "http://{{ .Release.Name }}-datalake:8080"
+            - name: "OPEN_LINEAGE_SERVER_NAME"
+              value: "open-lineage"
+            - name: "OPEN_LINEAGE_GRAPH_SOURCE"
+              value: "MAIN"
       restartPolicy: Always
 
 status: {}
