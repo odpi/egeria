@@ -111,138 +111,154 @@ class NetworkDiagram extends PolymerElement {
 
             instanceRetriever: Object,
 
-            // selectedMode allows the user to relax the diagram or enforce temporal ordering.
-            // It is set by the radio buttons at the top of the diagram.
+            /*
+             * selectedMode allows the user to relax the diagram or enforce temporal ordering.
+             * It is set by the radio buttons at the top of the diagram.
+             */
             selectedMode: {
-                type               : String,
-                value              : "Temporal",              // possible values: "Temporal" (default) and "Proximal"
-                observer           : 'selectedModeChanged'    // Observer called when this property changes
+                type          : String,
+                value         : "Temporal",              // possible values: "Temporal" (default) and "Proximal"
+                observer      : 'selectedModeChanged'    // Observer called when this property changes
             },
 
             width : {
-                type : Number,
+                type  : Number,
                 value : 1200
             },
 
             height : {
-                type : Number,
+                type  : Number,
                 value : 1200
             },
 
-            svgData : {
-                type : Object
+            node_radius : {
+               type  : Number,
+               value : 15
             },
 
-             node_radius : {
+            link_distance : {
+                type  : Number,
+                value : 200
+            },
+
+            /* Nodes represent entities. Each node has:
+             *   -  id  - set to the entityGUID because it is unique and used by relationships
+             *   -  x,y positions
+             *   -  label - derived from entity properties
+             */
+            nodeArray : {
+                type  : Array,
+                value : []
+            },
+
+            /*
+             * Links represent relationships. The source and target are the nodes representing the
+             * entities connected by the relationship. Source is always 'entityOne', target is
+             * always 'entityTwo'
+             */
+            linkArray : {
+                type  : Array,
+                value : []
+            },
+
+            /*
+             * Map of entityGuid -> node for all known nodes.
+             * This is needed to be able to efficiently reference a node by GUID, e.g. because
+             * it is referenced by a relationship.
+             */
+            allNodes : {
+                type: Map,
+                value : {}
+            },
+
+            /*
+             * Property for tracking number of gens as graph is extended and reduced.
+             * This property is used for layout calculations - for the inter-gen
+             * spacing for example
+             */
+            numberOfGens : {
                 type : Number,
-                 value : 15
-             },
+                value : 0
+            },
 
-             link_distance : {
-                  type : Number,
-                  value : 200
-             },
+            /*
+             * Anchor for the D3 force simulation
+             */
+            sim : {
+                type : Object,
+                value : null
+            },
 
-             dragging : {
-                 type : Boolean,
-                 value : false
-             },
+            /*
+             * Anchor for top level SVG element
+             */
+            svg : {
+                type : Object,
+                value : []
+            },
 
+            /*
+             * Properties for selected nodes and links
+             */
+            node : {
+                type : Object,
+                value : []
+            },
 
-             // Nodes represent entities. Each node has an
-             // *  id  - set to the entityGUID because it is unique and used by relationships
-             // *  x and y positions
-             // *  label - derived from entity properties
-             myNodes : {
-                 type : Array,
-                 value : []
-             },
+            link : {
+                type : Object,
+                value : []
+            },
 
+            // TODO - believed to be redundant
+            //gen : {
+            //    type : Number,
+            //    value : 1
+            //},
 
+            /*
+             * Properties for handling color themese. These are defined in CSS styles
+             * but because nodes and links are dynamically re-colored (on selection for
+             * example) these are needed as string variables.
+             */
+            egeria_primary_color_string : {
+                type : String,
+                value : ""
+            },
 
-             // Links represent relationships. The source and target are the entityGUIDs (node.id)
-
-
-             myLinks : {
-                 type : Array,
-                 value : []
-             },
-
-             // A map of entityGuid -> node for all known nodes.
-             allNodes : {
-                  type: Map,
-                  value : {}
-             },
-
-             numberOfGens : {
-                 type : Number,
-                 value : 0
-             },
-
-             sim : {
-                 type : Object,
-                 value : null
-             },
-
-             svg : {
-                 type : Object,
-                 value : []
-             },
-
-             node : {
-                 type : Object,
-                 value : []
-             },
-
-             link : {
-                 type : Object,
-                 value : []
-             },
-
-             scrolled : {
-                 type : Boolean,
-                 value : false,
-                 notify : true,
-                 reflectToAttribute : true
-             },
-
-             gen : {
-                 type : Number,
-                 value : 1
-             },
-
-             egeria_primary_color_string : {
+            egeria_text_color_string : {
                  type : String,
-                 value : ""
-             },
+                 value : "#50aaba"
+            },
 
-             egeria_text_color_string : {
-                  type : String,
-                  value : "#50aaba"
-             },
+            /*
+             * As different home repositories are discovered, assign each a 'color'.
+             * For accessibility these are generally not 'colors' but actually a shades of gray.
+             */
+            repositoryToColor : {
+                type : Map,
+                value : {}
+            },
 
-             /*
-              * As we discover different repositories assign them a 'color' which is
-              * actually a shade of gray.
-              */
-             repositoryToColor : {
-                 type : Map,
-                 value : {}
-             },
+            colorToRepository : {
+                type : Map,
+                value : {}
+            },
 
-             colorToRepository : {
-               type : Map,
-               value : {}
-             },
+            possibleColors : {
+                type : Array,
+                value : []
+            },
 
-             possibleColors : {
-                 type : Array,
-                 value : []
-             }
+            /*
+             * Property for temporary staging of image data
+             */
+            svgData : {
+                type : Object
+            }
 
         };
     }
-
 
 
 
@@ -250,18 +266,18 @@ class NetworkDiagram extends PolymerElement {
      * Element is ready
      */
     ready() {
-        // Ensure you call super.ready() first to initialise node hash...
+        // Call super.ready() to initialise node hash...
         super.ready();
 
         // Here's some starter data:
         if (false) {
-        this.myNodes =  [ {id:1, x:100, y:100, label:"alice",   gen:1},
+        this.nodeArray =  [ {id:1, x:100, y:100, label:"alice",   gen:1},
                           {id:2, x:200, y:100, label:"bob",     gen:1},
                           {id:3, x:200, y:200, label:"charlie", gen:1}
-                        ];
+                       ];
 
         // Here's some starter data:
-        this.myLinks =   [ { id:1, source: 1, target: 2, idx: 0, label:"sibling", gen:1 },
+        this.linkArray =   [ { id:1, source: 1, target: 2, idx: 0, label:"sibling", gen:1 },
                            { id:2, source: 1, target: 3, idx: 0, label:"manages", gen:1 },
                            { id:3, source: 1, target: 3, idx: 1, label:"knows",   gen:1 },
                            { id:4, source: 2, target: 2, idx: 0, label:"knows",   gen:1 },
@@ -272,7 +288,7 @@ class NetworkDiagram extends PolymerElement {
 
 
         this.allNodes = {};
-        this.myNodes.forEach(node => {
+        this.nodeArray.forEach(node => {
             this.allNodes[node.id] = node;
         });
         }
@@ -282,7 +298,6 @@ class NetworkDiagram extends PolymerElement {
         this.possibleColors = ['#EEE','#CCC','#AAA','#888','#666','#444','#222',
                                '#0EE','#0CC','#0AA','#088','#066','#044','#022' ];
 
-        this.render();
 
         /*
          *  To support dynamic theming of colors we need to detect what the primary color has been
@@ -292,10 +307,11 @@ class NetworkDiagram extends PolymerElement {
          */
         const styles = window.getComputedStyle(this);
         this.egeria_primary_color_string = styles.getPropertyValue('--egeria-primary-color');
-        //console.log("network-diagram: egeria primary color is "+this.egeria_primary_color_string);
 
-        //console.log("network-diagram: ready complete");
-
+        /*
+         * Finally, render the diagram...
+         */
+        this.render();
     }
 
     setInstanceRetriever(instanceRetriever) {
@@ -326,42 +342,50 @@ class NetworkDiagram extends PolymerElement {
 
     // Input events
 
+    /*
+     * Handle the input event indicating that the focus is now the entity specified.
+     */
     inEvtFocusEntityChanged(entityGUID) {
-        // The focus is now the entity given.
-        // Highlighting will be handled asynchronously but it is possible that
-        // if the entity was originally loaded as a result of discovering a proxy
-        // attached to a relationship, then its label will have been set using
-        // the restricted set of properties available on the proxy - i.e. just
-        // the unique properties. If this is the case then, now that we have the
-        // full entity detail (it is the focus entity) we can update the label to
-        // the more preferred label derived from the full entity detail.
-        //
-        // TODO update label....
+
+        /* The focus is now the entity with the given GUID.
+         * Highlighting will be handled asynchronously but it may be possible
+         * to upgrade the label. This situation occurs if the entity was
+         * originally loaded as a result of discovering a proxy attached to
+         * a relationship, then its label will have been set using the
+         * restricted set of properties available on the proxy - i.e. just
+         * the unique properties. If this is the case then, now that we have the
+         * full entity detail (it is the focus entity) we can update the label to
+         * the more preferred label derived from the full entity detail.
+         */
+
         var expEntity = this.instanceRetriever.getFocusEntity();
         if (expEntity !== null) {
             var entityDigest = expEntity.entityDigest;
             var label = entityDigest.label;
-            console.log("n-d: focusEntityChanged: entityDigest has label "+label);
-            // TODO update node.......
+            /*
+             * Locate the node
+             */
             var nodeToUpdate = this.allNodes[entityGUID];
-            var idx = this.myNodes.indexOf(nodeToUpdate);
+            var idx = this.nodeArray.indexOf(nodeToUpdate);
             if (idx !== -1) {
-                // Update the node in place in the myNodes array and allNodes map
-                this.myNodes[idx].label = label;
+                /*
+                 * Update the node in place in the nodeArray array and allNodes map
+                 */
+                this.nodeArray[idx].label = label;
                 this.allNodes[entityGUID].label = label;
 
-                // Finally, update the diagram - this will update the nodes and links
-                // Alternatively you could leave this to tick() but that would make tick() less efficient.
+                /*
+                 * Finally, update the diagram - this will update the nodes and links
+                 * You could leave this to tick() but that would make tick() less efficient.
+                 */
                 this.update_diagram();
             }
         }
-
-        // TODO delete below...
-        // display of details is not the responsibility of this diagram component.
-        // For now just log to console....
-        //console.log("network-diagram: focus-entity-changed to "+entityGUID);
     }
 
+    /*
+     * Handle the input event indicating that the focus is now the relationship specified.
+     */
     inEvtFocusRelationshipChanged(relationshipGUID) {
         // The focus is now the relationship given.
         // There is nothing to do here - highlighting will be handled asynchronously and the
@@ -371,7 +395,9 @@ class NetworkDiagram extends PolymerElement {
     }
 
 
-
+    /*
+     * Handle the input event indicating that the graph has additional objects.
+     */
     inEvtGraphExtended() {
         // The graph has been added to. We could convey information on the change in the event
         // but for the time being assuming that diagram will ask i-r for the latest gen and
@@ -398,7 +424,7 @@ class NetworkDiagram extends PolymerElement {
                   // Add nodes in the current vertical displacement according to gen
                   newNode.x = this.width/2;
                   newNode.y = this.yPlacement(newNode);
-                  this.myNodes.push(newNode);
+                  this.nodeArray.push(newNode);
                   this.allNodes[newNode.id] = newNode;
              }
         }
@@ -421,10 +447,10 @@ class NetworkDiagram extends PolymerElement {
                     newLink.target.x = newLink.target.x + this.width/4;
                 }
 
-                // Look through existing links (myLinks) to find multi-edges and set idx accordingly
+                // Look through existing links (linkArray) to find multi-edges and set idx accordingly
                 var count = 0;
-                for (var l in this.myLinks) {
-                    var link = this.myLinks[l];
+                for (var l in this.linkArray) {
+                    var link = this.linkArray[l];
                     if (link.source === newLink.source && link.target === newLink.target) {
                         count = count+1;
                     }
@@ -434,7 +460,7 @@ class NetworkDiagram extends PolymerElement {
                 newLink.metadataCollectionName = relationshipDigest.metadataCollectionName;
 
                 // Once the force layout has started we need to specify nodes (not array indexes or ids)
-                this.myLinks.push(newLink);
+                this.linkArray.push(newLink);
             }
         }
 
@@ -461,10 +487,10 @@ class NetworkDiagram extends PolymerElement {
         if (entityDigests != null) {
              for (var e in entityDigests) {
                  var nodeToRemove = this.allNodes[e];
-                  var idx = this.myNodes.indexOf(nodeToRemove);
+                  var idx = this.nodeArray.indexOf(nodeToRemove);
                   if (idx !== -1) {
-                      // Remove node from myNodes array
-                      this.myNodes.splice(idx, 1);
+                      // Remove node from nodeArray array
+                      this.nodeArray.splice(idx, 1);
                   }
                   // Remove node from allNodes map
                   this.allNodes[e] = undefined;
@@ -475,15 +501,15 @@ class NetworkDiagram extends PolymerElement {
             for (var r in relationshipDigests) {
                 //var linkToRemove = this.allNodes[r];
                 var linkFound = false;
-                for (var idx=0; idx<this.myLinks.length; idx++) {
-                    if (this.myLinks[idx].id === r) {
+                for (var idx=0; idx<this.linkArray.length; idx++) {
+                    if (this.linkArray[idx].id === r) {
                         // Note the idx so the link can be removed
                         linkFound = true;
                         break;
                     }
                 }
                 if (linkFound) {
-                    this.myLinks.splice(idx,1);
+                    this.linkArray.splice(idx,1);
                 }
             }
         }
@@ -496,8 +522,8 @@ class NetworkDiagram extends PolymerElement {
 
 
     clearGraph() {
-        this.myNodes = [];
-        this.myLinks = [];
+        this.nodeArray = [];
+        this.linkArray = [];
         this.allNodes = {};
         this.repositoryToColor = {};
         this.colorToRepository = {};
@@ -565,8 +591,8 @@ class NetworkDiagram extends PolymerElement {
         var width = this.width;
         var height = this.height;
 
-        this.myNodes = [];
-        this.myLinks = [];
+        this.nodeArray = [];
+        this.linkArray = [];
         this.allNodes = {};
         this.repositoryToColor = {};
         this.colorToRepository = {};
@@ -581,8 +607,10 @@ class NetworkDiagram extends PolymerElement {
         // For placement of nodes vertically within diagram use the yPlacement function.
         var yPlacement = this.yPlacement.bind(this);
         var ls = this.ls.bind(this);
+        var egeria_primary_color_string = this.egeria_primary_color_string;
+        console.log("n-d initialize: egeria primary color is "+egeria_primary_color_string);
 
-        this.sim = d3.forceSimulation(this.myNodes)
+        this.sim = d3.forceSimulation(this.nodeArray)
             .force('horiz', d3.forceX(width/2).strength(0.01))
             .force('vert', d3.forceY().strength(0.1).y(function(d) {return yPlacement(d);}))
             .velocityDecay(0.6)
@@ -590,13 +618,13 @@ class NetworkDiagram extends PolymerElement {
             .alphaDecay(.0005)
             .velocityDecay(0.6)
             .on('tick',this.tick.bind(this))
-            .force('link', d3.forceLink().links(this.myLinks)
+            .force('link', d3.forceLink().links(this.linkArray)
                 .id(this.nodeId)
                 .distance(this.link_distance)
                 .strength(function(d) { return ls(d);})) ;
 
 
-        // define arrowhead for links
+        // Define arrowhead for links
         this.svg.append("svg:defs").selectAll("marker")
             .data(["end"])
             .enter().append("svg:marker")
@@ -606,10 +634,9 @@ class NetworkDiagram extends PolymerElement {
             .attr("refY", 0)
             .attr("markerWidth", 4)
             .attr("markerHeight", 4)
-            .style("stroke",this.egeria_primary_color_string)
-            .style("fill",this.egeria_primary_color_string)
+            .style("stroke", egeria_primary_color_string)
+            .style("fill", egeria_primary_color_string)
             .attr("orient", "auto")
-            .attr("xoverflow", "visible")
             .append("svg:path")
             .attr("d", "M0,-5L10,0L0,5") ;
     }
@@ -659,8 +686,8 @@ class NetworkDiagram extends PolymerElement {
 
 
     logNodesToConsole() {
-        if (this.myNodes !== undefined) {
-            this.myNodes.forEach(node => {
+        if (this.nodeArray !== undefined) {
+            this.nodeArray.forEach(node => {
                 console.log("Node -> "+node.id+" x,y -> "+node.x+","+node.y+" label -> "+node.label+" gen -> "+node.gen);
             });
         }
@@ -668,8 +695,8 @@ class NetworkDiagram extends PolymerElement {
 
 
     logLinksToConsole() {
-        if (this.myLinks !== undefined) {
-            this.myLinks.forEach(link => {
+        if (this.linkArray !== undefined) {
+            this.linkArray.forEach(link => {
                 console.log("Link -> "+link.id+" source -> "+link.source+" target -> "+link.target);
                 console.log("Link -> "+link.id+" source.id -> "+link.source.id+" target.id -> "+link.target.id);
                 console.log("Link -> "+link.id+" source.label -> "+link.source.label+" target.label -> "+link.target.label);
@@ -687,8 +714,8 @@ class NetworkDiagram extends PolymerElement {
         console.log('network-diagram: update_diagram');
 
         // refresh the sim's data
-        this.sim.nodes(this.myNodes);  // nodes first - we want the positions to refresh
-        this.sim.force('link').links(this.myLinks);  // update the links
+        this.sim.nodes(this.nodeArray);  // nodes first - we want the positions to refresh
+        this.sim.force('link').links(this.linkArray);  // update the links
 
         this.updateLinks();
         this.updateNodes();
@@ -704,7 +731,7 @@ class NetworkDiagram extends PolymerElement {
     }
 
     getNode(id) {
-      return ( this.myNodes.filter(obj => { return obj.id === id  })[0] );
+      return ( this.nodeArray.filter(obj => { return obj.id === id  })[0] );
     }
 
     /*
@@ -823,7 +850,7 @@ class NetworkDiagram extends PolymerElement {
         svg.selectAll(".node").remove()
 
         this.node = svg.selectAll(".node")
-            .data(this.myNodes)
+            .data(this.nodeArray)
 
         this.node.exit().remove();
 
@@ -899,7 +926,7 @@ class NetworkDiagram extends PolymerElement {
         var path_func = this.path_func.bind(this);
 
         this.link = svg.selectAll(".link")
-             .data(this.myLinks)
+             .data(this.linkArray)
              .attr('x1', function(d) { return d.source.x; })
              .attr('y1', function(d) { return d.source.y; })
              .attr('x2', function(d) { return d.target.x; })
@@ -957,7 +984,7 @@ class NetworkDiagram extends PolymerElement {
             // Only place a marker if the link is not reflexive
             .attr("marker-end", function(d) { return (d.source===d.target)?"none":"url(#end)";})
             .on("click", d => { this.edgeClicked(d.id); })   // The edge's id is the relationshipGUID
-                .lower()
+            .lower()
             ;
 
         this.link = this.link.merge(enter_set);

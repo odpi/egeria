@@ -103,10 +103,10 @@ class RelationshipSearchResults extends MutableData(PolymerElement) {
      * Element is ready
      */
     ready() {
-        //console.log("traversal-filters ready invoked");
+
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
-        //console.log("traversal-filters ready complete");
+
     }
 
     instanceCheckboxChanged(e) {

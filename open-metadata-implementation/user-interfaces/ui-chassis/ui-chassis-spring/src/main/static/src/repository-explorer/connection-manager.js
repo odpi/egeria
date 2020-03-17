@@ -148,7 +148,7 @@ class RexConnectionManager extends PolymerElement {
     ready() {
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
-        //console.log("rex connection-manager ready complete");
+
     }
 
 

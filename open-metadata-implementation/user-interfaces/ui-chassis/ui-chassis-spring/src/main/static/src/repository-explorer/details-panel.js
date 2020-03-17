@@ -161,7 +161,6 @@ class RexDetailsPanel extends PolymerElement {
          var expEntity = this.instanceRetriever.getFocusEntity();
          if (expEntity === null) {
              // entity is not known - there is nothing useful to switch to so leave the details panel as is
-             //console.log("details-panel: inEvtFocusEntityChanged but entity is not known - no op ");
              return;
          }
          // The entity is known
@@ -230,7 +229,6 @@ class RexDetailsPanel extends PolymerElement {
         var expRelationship = this.instanceRetriever.getFocusRelationship();
         if (expRelationship === null) {
             // relationship is not known - there is nothing useful to switch to so leave the details panel as is
-            //console.log("details-panel: inEvtFocusRelationshipChanged but relationship is not known - no op ");
             return;
         }
         // The relationship is known
@@ -381,7 +379,6 @@ class RexDetailsPanel extends PolymerElement {
             this.displayProperties(properties, listnode);
         }
         else {
-            //console.log("create empty properties entry");
             var itemnode = document.createElement("li");
             itemnode.innerHTML = "list is empty";
             listnode.append(itemnode);
@@ -401,12 +398,10 @@ class RexDetailsPanel extends PolymerElement {
         details.appendChild(listnode);
 
         var properties = entityProxy.uniqueProperties;
-        //console.log("properties: "+properties);
         if (properties !== undefined) {
             this.displayProperties(properties, listnode);
         }
         else {
-            //console.log("create empty properties entry");
             var itemnode = document.createElement("li");
             itemnode.innerHTML = "list is empty";
             listnode.append(itemnode);
@@ -420,14 +415,11 @@ class RexDetailsPanel extends PolymerElement {
 
         propertyNamesSorted.forEach(propName => {
 
-            //console.log("instance property name "+propName);
-
             var itemnode = document.createElement("li");
             listelement.appendChild(itemnode);
 
             // property category
             var ipCat = props.instanceProperties[propName].instancePropertyCategory;
-            //console.log("Details - instance - properties - category "+ipCat);
 
             // Handle at least the following property categories
             // PRIMITIVE
@@ -437,25 +429,18 @@ class RexDetailsPanel extends PolymerElement {
             switch (ipCat) {
 
                 case "PRIMITIVE" :
-                    //console.log("Primitive...");
                     var ppCat = props.instanceProperties[propName].primitiveDefCategory;
-                    //console.log("Details - instance - properties - prim - cat "+ppCat);
                     var ppvalue = props.instanceProperties[propName].primitiveValue;
-                    //console.log("Details - instance - properties - prim - value "+ppvalue);
                     itemnode.innerHTML = propName + " : " + ppvalue;
                     break;
 
                 case "ENUM" :
-                    //console.log("Enum..");
                     var epOrd = props.instanceProperties[propName].ordinal;
-                    //console.log("Details - instance - properties - enum - ordinal "+epOrd);
                     var epSymName = props.instanceProperties[propName].symbolicName;
-                    //console.log("Details - instance - properties - enum - symbolicName "+epSymName);
                     itemnode.innerHTML = propName + " : " + epSymName;
                     break;
 
                 case "MAP" :
-                    //console.log("Map..");
                     var propMap = props.instanceProperties[propName].mapValues;  // InstanceProperties
                     // recurse -
                     itemnode.innerHTML = propName + " :";
@@ -465,7 +450,6 @@ class RexDetailsPanel extends PolymerElement {
                     break;
 
                 case "ARRAY":
-                     //console.log("Array..");
                      var propArray = props.instanceProperties[propName].arrayValues;  // InstanceProperties
                      // recurse -
                      itemnode.innerHTML = propName + " :";
@@ -475,7 +459,6 @@ class RexDetailsPanel extends PolymerElement {
                      break;
 
                 default:
-                    //console.log("Details - instance - properties - ipCat not yet supported... "+ipCat);
                     var value = "<not supported yet>";
                     itemnode.innerHTML = propName + " : " + value;
                     break;
@@ -521,7 +504,6 @@ class RexDetailsPanel extends PolymerElement {
              });
         }
         else {
-            //console.log("No classifications for entity");
             // Create an explicitly empty list - keep similar formatting to non-empty case
             var listnode = document.createElement("ul");
             details.appendChild(listnode);
@@ -668,7 +650,6 @@ class RexDetailsPanel extends PolymerElement {
             });
         }
         else {
-            //console.log("create empty maintainers entry");
             var itemnode = document.createElement("li");
             itemnode.innerHTML = "list is empty";
             maintainersSubList.append(itemnode);
@@ -928,7 +909,6 @@ class RexDetailsPanel extends PolymerElement {
             this.displayProperties(properties, listnode);
         }
         else {
-            //console.log("create empty properties entry");
             var itemnode = document.createElement("li");
             itemnode.innerHTML = "list is empty";
             listnode.append(itemnode);
@@ -1120,7 +1100,6 @@ class RexDetailsPanel extends PolymerElement {
             });
         }
         else {
-            //console.log("create empty maintainers entry");
             var itemnode = document.createElement("li");
             itemnode.innerHTML = "list is empty";
             maintainersSubList.append(itemnode);

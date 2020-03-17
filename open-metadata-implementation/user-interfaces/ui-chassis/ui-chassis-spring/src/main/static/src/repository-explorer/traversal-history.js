@@ -89,17 +89,13 @@ class TraversalHistory extends PolymerElement {
     }
 
 
-
     /*
      * Element is ready
      */
     ready() {
-        //console.log("traversal-history ready invoked");
-
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
 
-        //console.log("traversal-history ready complete");
     }
 }
 

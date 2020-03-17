@@ -356,9 +356,14 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
                         for a relationship, it may be easier to search for an entity that you believe is connected to the relationship. Alternatively,
                         use another tool to retrieve the relationship GUID and paste that into Rex and use the Get button.
                         <li>
-                        If you find that Rex is running out of screen space, once you have selected the repository server to use and retrieved the first
-                        entity or relationship, consider scrolling them off the top of the window. You may not need to visit the top part of the screen
-                        again, or only infrequently, so try scrolling down till the diagram and controls are at the top of the browser page.
+                        If you are short of screen space, there a couple of things you can do to save space with Rex:
+                        <ul>
+                        <li>One is to click the 'hamburger' menu icon to toggle away the left-hand navigation menu.
+                        <li>iAnother is that, once you have selected the repository server to use and retrieved the first
+                        entity or relationship, you may not need to visit the top part of the screen again, or only infrequently, so
+                        try scrolling until the top edge of the diagram and controls are at the top of the browser page. The controls
+                        have been placed level with the top of the diagram to enable this.
+                        </ul>
                         <li>
                         At any point during an exploration session you can use the History button to display a dialog that lists where the
                         exploration started and what steps have been used, to arrive at the graph that is currently displayed.

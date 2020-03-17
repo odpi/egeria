@@ -102,15 +102,15 @@ class EntitySearchResults extends MutableData(PolymerElement) {
      * Element is ready
      */
     ready() {
-        //console.log("traversal-filters ready invoked");
+
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
-        //console.log("traversal-filters ready complete");
+
     }
 
 
     instanceCheckboxChanged(e) {
-        //console.log("traversal-filters: entityFilterChanged invoked - "+e.target.id+" is "+e.target.checked);
+
         var instance = this.instances.filter(obj => { return obj.entityGUID === e.target.id })[0];
         instance.checked = e.target.checked;
 
