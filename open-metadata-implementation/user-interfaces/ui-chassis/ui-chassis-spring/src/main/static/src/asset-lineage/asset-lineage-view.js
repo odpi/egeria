@@ -30,6 +30,8 @@ class AssetLineageView extends PolymerElement {
           background-color: white;
         }
     </style>
+    
+    <app-route route="{{route}}" pattern="/:usecase/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
       
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
     <vaadin-tabs id ="useCases" selected="[[_getUseCase(usecase)]]" style="left: -20px; color: var(--egeria-primary-color);" >
