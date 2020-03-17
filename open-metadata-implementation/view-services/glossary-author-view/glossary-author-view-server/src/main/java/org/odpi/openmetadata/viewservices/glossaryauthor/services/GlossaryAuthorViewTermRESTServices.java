@@ -16,8 +16,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The GlossaryAuthorViewTermRESTServices provides the org.odpi.openmetadata.viewservices.glossaryauthor.services implementation of the SubjectArea Open Metadata
- * View Service (OMVS). This interface provides view term authoring interfaces for subject area experts to author glossaries.
+ * The GlossaryAuthorViewTermRESTServices provides the org.odpi.openmetadata.viewservices.glossaryauthor.services implementation of the Glossary Author Open Metadata
+ * View Service (OMVS). This interface provides view term authoring interfaces for subject area experts to author terms.
  */
 
 public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {

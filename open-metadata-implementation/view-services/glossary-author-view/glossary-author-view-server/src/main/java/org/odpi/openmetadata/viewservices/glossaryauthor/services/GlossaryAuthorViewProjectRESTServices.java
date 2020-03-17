@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The GlossaryAuthorViewProjectRESTServices provides the org.odpi.openmetadata.viewservices.glossaryauthor.services implementation of the SubjectArea Open Metadata
+ * The GlossaryAuthorViewProjectRESTServices provides the org.odpi.openmetadata.viewservices.glossaryauthor.services implementation of the Glossary Author Open Metadata
  * View Service (OMVS). This interface provides view project authoring interfaces for subject area experts.
  */
 
