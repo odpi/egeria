@@ -230,10 +230,6 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
     /**
      * Update a Category
      * <p>
-     * If the caller has chosen to incorporate the category name in their Category Categories or Categories qualified name, renaming the category will cause those
-     * qualified names to mismatch the Category name.
-     * If the caller has chosen to incorporate the category qualifiedName in their Category Categories or Categories qualified name, changing the qualified name of the category will cause those
-     * qualified names to mismatch the Category name.
      * Status is not updated using this call.
      *
      * @param serverName         name of the local view server.

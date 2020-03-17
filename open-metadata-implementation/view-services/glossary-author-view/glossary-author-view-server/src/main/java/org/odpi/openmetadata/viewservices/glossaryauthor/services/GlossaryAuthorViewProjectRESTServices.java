@@ -238,10 +238,6 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
     /**
      * Update a Project
      * <p>
-     * If the caller has chosen to incorporate the project name in their Project Terms or Categories qualified name, renaming the project will cause those
-     * qualified names to mismatch the Project name.
-     * If the caller has chosen to incorporate the project qualifiedName in their Project Terms or Categories qualified name, changing the qualified name of the project will cause those
-     * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
      * @param serverName         name of the local UI server.
