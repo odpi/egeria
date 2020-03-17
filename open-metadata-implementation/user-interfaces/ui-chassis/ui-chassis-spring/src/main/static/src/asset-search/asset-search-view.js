@@ -35,13 +35,15 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         a {
             color : var(--egeria-primary-color);
             text-decoration: none;
-            cursor: grab;
+            cursor: hand;
         }
       </style>
 
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
       <token-ajax id="tokenAjaxTypes" last-response="{{items}}"></token-ajax>
       
+      <app-route route="{{route}}" pattern="/:usecase/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
+
       <iron-form id="searchForm">
         <form method="get">
             <iron-a11y-keys keys="enter" on-keys-pressed="_search"></iron-a11y-keys>
@@ -131,9 +133,16 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
 
     ready() {
         super.ready();
-        // this.q = this.domHost.queryParams.q;
         this.$.tokenAjaxTypes.url = '/api/assets/types';
         this.$.tokenAjaxTypes._go();
+    }
+
+    _guidChanged(){
+       console.log('guid changed') ;
+    }
+
+    _useCaseChanged(){
+        console.log('usecase changed');
     }
 
     _search() {
