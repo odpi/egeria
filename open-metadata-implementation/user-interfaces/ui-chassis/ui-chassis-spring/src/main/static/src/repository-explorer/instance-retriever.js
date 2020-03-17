@@ -1386,20 +1386,16 @@ class InstanceRetriever extends PolymerElement {
                       * We need to know whether each end entity is new or known so they can keep their gens or be assigned
                       * next gen...
                       */
+
+                     /*
+                      * Determine whether entity is already known. This could loop through the gens
+                      * but it is slightly more efficient to use the guidToGen map as a direct index.
+                      */
                      var entityOneKnown = false;
                      var e1gen;
-                     // Determine whether entity is already known ...
-                     // Search the existing gens looking for guid  TODO - you could replace this with use of guidToGen map
-                     for (var i=0; i< this.gens.length; i++) {
-                          var igen = this.gens[i];
-                          var igenEntities = igen.entities;
-                          if (igenEntities !== undefined) {
-                              if (igenEntities[entityOneGUID] !== undefined) {
-                                  entityOneKnown = true;
-                                  e1gen = i+1;
-                                  break;
-                              }
-                          }
+                     if (this.guidToGen[entityOneGUID] !== undefined) {
+                         entityOneKnown = true;
+                         e1gen = this.guidToGen[entityOneGUID];
                      }
                      if (entityOneKnown === false) {
                          e1gen = this.currentGen;
