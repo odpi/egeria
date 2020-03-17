@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the ODPi Egeria term. */
+/* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.server;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewTermRESTServices;
+import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewCategoryRESTServices;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,33 +14,33 @@ import java.util.Date;
 
 /**
  * The GlossaryAuthorRESTServicesInstance provides the org.odpi.openmetadata.viewervices.glossaryauthor.server implementation of the Glossary Author Open Metadata
- * View Service (OMVS) for terms.  This interface provides term authoring interfaces for subject area experts.
+ * View Service (OMVS) for categories.  This interface provides category authoring interfaces for subject area experts.
  */
 
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}/terms")
+@RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}/categories")
 
-public class GlossaryAuthorViewTermRESTResource {
+public class GlossaryAuthorViewCategoryRESTResource {
 
-    private GlossaryAuthorViewTermRESTServices restAPI = new GlossaryAuthorViewTermRESTServices();
+    private GlossaryAuthorViewCategoryRESTServices restAPI = new GlossaryAuthorViewCategoryRESTServices();
 
 
     /**
      * Default constructor
      */
-    public GlossaryAuthorViewTermRESTResource() {
+    public GlossaryAuthorViewCategoryRESTResource() {
     }
 
 
     /**
-     * Create a Term.
+     * Create a Category.
      * <p>
-     * Terms with the same name can be confusing. Best practise is to create terms that have unique names.
-     * This Create call does not police that Term names are unique. So it is possible to create terms with the same name as each other.
+     * Categorys with the same name can be confusing. Best practise is to create categories that have unique names.
+     * This Create call does not police that Category names are unique. So it is possible to create categories with the same name as each other.
      *
      * @param serverName   name of the local server.
-     * @param suppliedTerm Term to create.
-     * @return response, when successful contains the created term.
+     * @param suppliedCategory Category to create.
+     * @return response, when successful contains the created category.
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -52,18 +52,18 @@ public class GlossaryAuthorViewTermRESTResource {
      * </ul>
      */
     @PostMapping()
-    public SubjectAreaOMASAPIResponse createTerm(@PathVariable String serverName, @PathVariable String userId,
-                                                 @RequestBody Term suppliedTerm) {
-        return restAPI.createTerm(serverName, userId, suppliedTerm);
+    public SubjectAreaOMASAPIResponse createCategory(@PathVariable String serverName, @PathVariable String userId,
+                                                 @RequestBody Category suppliedCategory) {
+        return restAPI.createCategory(serverName, userId, suppliedCategory);
 
     }
 
     /**
-     * Get a term.
+     * Get a category.
      *
      * @param serverName local UI server name
-     * @param guid       guid of the term to get
-     * @return response which when successful contains the term with the requested guid
+     * @param guid       guid of the category to get
+     * @return response which when successful contains the category with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
@@ -75,24 +75,24 @@ public class GlossaryAuthorViewTermRESTResource {
      * </ul>
      */
     @GetMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse getTerm(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid) {
-        return restAPI.getTerm(serverName, userId, guid);
+    public SubjectAreaOMASAPIResponse getCategory(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid) {
+        return restAPI.getCategory(serverName, userId, guid);
 
     }
 
     /**
-     * Find Term
+     * Find Category
      *
      * @param serverName         local UI server name
-     * @param searchCriteria     String expression matching Term property values .
-     * @param asOfTime           the terms returned as they were at this time. null indicates at the current time.
+     * @param searchCriteria     String expression matching Category property values .
+     * @param asOfTime           the categories returned as they were at this time. null indicates at the current time.
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
      *                           0 means there is no limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return A list of terms meeting the search Criteria
+     * @return A list of categories meeting the search Criteria
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -102,7 +102,7 @@ public class GlossaryAuthorViewTermRESTResource {
      * </ul>
      */
     @GetMapping()
-    public SubjectAreaOMASAPIResponse findTerm(
+    public SubjectAreaOMASAPIResponse findCategory(
             @PathVariable String serverName, @PathVariable String userId,
             @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
             @RequestParam(value = "asOfTime", required = false) Date asOfTime,
@@ -111,14 +111,14 @@ public class GlossaryAuthorViewTermRESTResource {
             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
             @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
                                               ) {
-        return restAPI.findTerm(serverName, userId, asOfTime, searchCriteria, offset, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.findCategory(serverName, userId, asOfTime, searchCriteria, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
-     * Get Term relationships
+     * Get Category relationships
      *
      * @param serverName         local UI server name
-     * @param guid               guid of the term to get
+     * @param guid               guid of the category to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -126,7 +126,7 @@ public class GlossaryAuthorViewTermRESTResource {
      *                           0 means there is not limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return a response which when successful contains the term relationships
+     * @return a response which when successful contains the category relationships
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -136,7 +136,7 @@ public class GlossaryAuthorViewTermRESTResource {
      * </ul>
      */
     @GetMapping(path = "/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse getTermRelationships(
+    public SubjectAreaOMASAPIResponse getCategoryRelationships(
             @PathVariable String serverName, @PathVariable String userId,
             @PathVariable String guid,
             @RequestParam(value = "asOfTime", required = false) Date asOfTime,
@@ -146,7 +146,7 @@ public class GlossaryAuthorViewTermRESTResource {
             @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
 
                                                           ) {
-        return restAPI.getTermRelationships(serverName,
+        return restAPI.getCategoryRelationships(serverName,
                                             userId,
                                             guid,
                                             asOfTime,
@@ -158,15 +158,15 @@ public class GlossaryAuthorViewTermRESTResource {
     }
 
     /**
-     * Update a Term
+     * Update a Category
      * <p>
      * Status is not updated using this call.
      *
      * @param serverName   local UI server name
-     * @param guid         guid of the term to update
-     * @param suppliedTerm term to update
+     * @param guid         guid of the category to update
+     * @param suppliedCategory category to update
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return a response which when successful contains the updated term
+     * @return a response which when successful contains the updated category
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -177,32 +177,32 @@ public class GlossaryAuthorViewTermRESTResource {
      * </ul>
      */
     @PutMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse updateTerm(
+    public SubjectAreaOMASAPIResponse updateCategory(
             @PathVariable String serverName, @PathVariable String userId,
             @PathVariable String guid,
-            @RequestBody Term suppliedTerm,
+            @RequestBody Category suppliedCategory,
             @RequestParam(value = "isReplace", required = false) Boolean isReplace) {
 
-        return restAPI.updateTerm(serverName, userId, guid, suppliedTerm, isReplace);
+        return restAPI.updateCategory(serverName, userId, guid, suppliedCategory, isReplace);
 
 
     }
 
     /**
-     * Delete a Term instance
+     * Delete a Category instance
      * <p>
-     * The deletion of a term is only allowed if there is no term content (i.e. no terms or categories).
+     * The deletion of a category is only allowed if there is no category content (i.e. no categories or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
      * is optional. Soft delete is the default.
      * <p>
-     * A soft delete means that the term instance will exist in a deleted state in the repository after the delete operation. This means
+     * A soft delete means that the category instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
-     * A hard delete means that the term will not exist after the operation.
+     * A hard delete means that the category will not exist after the operation.
      * when not successful the following Exceptions can occur
      *
      * @param serverName local UI server name
-     * @param guid       guid of the term to be deleted.
+     * @param guid       guid of the category to be deleted.
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
@@ -212,26 +212,26 @@ public class GlossaryAuthorViewTermRESTResource {
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
+     * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
+     * <li> GUIDNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String serverName, @PathVariable String userId,
+    public SubjectAreaOMASAPIResponse deleteCategory(@PathVariable String serverName, @PathVariable String userId,
                                                  @PathVariable String guid,
                                                  @RequestParam(value = "isPurge", required = false) Boolean isPurge,
                                                  HttpServletRequest request) {
-        return restAPI.deleteTerm(serverName, userId, guid, isPurge);
+        return restAPI.deleteCategory(serverName, userId, guid, isPurge);
     }
 
     /**
-     * Restore a Term
+     * Restore a Category
      * <p>
-     * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * Restore allows the deleted Category to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param serverName local UI server name
-     * @param guid       guid of the term to restore
-     * @return response which when successful contains the restored term
+     * @param guid       guid of the category to restore
+     * @return response which when successful contains the restored category
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -242,10 +242,10 @@ public class GlossaryAuthorViewTermRESTResource {
      * </ul>
      */
     @PostMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse restoreTerm(@PathVariable String serverName, @PathVariable String userId,
+    public SubjectAreaOMASAPIResponse restoreCategory(@PathVariable String serverName, @PathVariable String userId,
                                                   @PathVariable String guid,
                                                   HttpServletRequest request) {
-        return restAPI.restoreTerm(serverName, userId, guid);
+        return restAPI.restoreCategory(serverName, userId, guid);
 
     }
 }
