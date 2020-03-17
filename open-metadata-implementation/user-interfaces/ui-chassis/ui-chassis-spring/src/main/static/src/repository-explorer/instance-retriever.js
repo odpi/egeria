@@ -471,9 +471,10 @@ class InstanceRetriever extends PolymerElement {
      * This function will clear the whole graph, and the selected instance.
      */
     inEvtGraphCleared() {
-        // Empty the instanceGUID field
-        this.instanceGUID = undefined;
+
+
         // Empty the root/focus fields
+        this.instanceGUID = undefined;
         // The selectedCategory property drives the radio buttons for GUID retrieval category
         // Reset it to its default setting of "Entity" rather than clearing it completely.
         this.selectedCategory = "Entity";
@@ -1533,12 +1534,26 @@ class InstanceRetriever extends PolymerElement {
 
     processTraversal(rexTraversal) {
 
-        // Assume for now that the traversal contains new information; if so it will be added to
-        // the next gen, calculated below. If nothing new is learned from the traversal then we
-        // will not update the current gen.
+        /*
+         * The traversal results should have been formatted by the VS into the form needed by Rex.
+         * This means that it should have:
+         *   a map of entityGUID       --> { entityGUID, label, gen }
+         *   a map of relationshipGUID --> { relationshipGUID, end1GUID, end2GUID, idx, label, gen }
+         *
+         * For each entity and relationship in the traversal response we need to determine whether it
+         * is known or new. Anything known is dropped from the traversal, which is then pushed to the
+         * logically next gen
+         */
+
+
+
+        /* Assume initially that the traversal contains new information; if so it will be added to
+         * the next gen, calculated below. If nothing new is learned from the traversal then we
+         * will not update the current gen.
+         * Notice that the currentGen is NOT advanced at this stage - this will only happen if the
+         * traversal contains new metadata objects.
+         */
         var gen = this.currentGen + 1;
-        // Notice that the currentGen has NOT been advanced - this will only happen if the traversal
-        // contains at least some new information.
 
         /*
          * Process entities...
@@ -1595,36 +1610,42 @@ class InstanceRetriever extends PolymerElement {
         }
 
 
-        // If there is anything new still in the traversal,
-        // * each new instance has been assigned (above) the next gen; advance the value of currentGen.
-        // * push the traversal into the appropriate position in gens
-        // * generate a graph-changed event
-        // Else
-        // * display a message saying that nothing new was learned.
-        var no_entities = false;
-        var no_relationships = false;
-        if ( rexTraversal.entities === undefined || (Object.keys(rexTraversal.entities).length === 0))
-            no_entities = true;
-        if ( rexTraversal.relationships === undefined || (Object.keys(rexTraversal.relationships).length === 0))
-            no_relationships = true;
-
+        /*
+         * If there is anything new still in the traversal,
+         *   -  each new instance has been assigned (above) the next gen; advance the value of currentGen.
+         *   -  push the traversal into the appropriate position in gens
+         *   -  generate a graph-changed event
+         * else
+         *   -  display a message saying that nothing new was learned.
+         */
+        var no_entities      = rexTraversal.entities      === undefined || Object.keys(rexTraversal.entities).length      === 0;
+        var no_relationships = rexTraversal.relationships === undefined || Object.keys(rexTraversal.relationships).length === 0;
+        // TODO CLEAN UP
+        //if (rexTraversal.entities === undefined || (Object.keys(rexTraversal.entities).length === 0))
+        //    no_entities      = true;
+        //if (rexTraversal.relationships === undefined || (Object.keys(rexTraversal.relationships).length === 0))
+        //    no_relationships = true;
         if (no_entities && no_relationships) {
-
-            // This is not an error - it just means everything in the traversal was already known,
-            // which can happen.
-            // However, it is desirable to advise the user that nothing new was returned, which should explain why
-            // there will be no visible change to the display.
+            /*
+             * This is not an error - it just means everything in the traversal was already known,
+             * which can happen.
+             * However, it is desirable to advise the user that nothing new was returned, which should explain why
+             * there will be no visible change to the display.
+             */
             alert("No additional objects were returned in the traversal");
-
         }
 
         else {
 
-            console.log("Traversal contains new instances - adding to new gen");
-            // Advance the currentGen
+            /*
+             * Because the traversal contains new information, advance the currentGen
+             */
             this.advanceCurrentGen();
-            // Add the traversal to the sequence of gens in the graph. Then generate the graph-changed event.
-            // For what it's worth - set the gen at the traversal level (the contained objects already have gen set)
+            /*
+             * Add the traversal to the sequence of gens in the graph. Then generate the graph-changed event.
+             * For what it's worth - set the gen at the traversal level (the contained objects already have
+             * gen set)
+             */
             rexTraversal.gen = gen;
             this.gens.push(rexTraversal);
 
