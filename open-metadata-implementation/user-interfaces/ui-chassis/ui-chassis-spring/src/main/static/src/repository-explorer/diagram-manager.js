@@ -147,7 +147,6 @@ class RexDiagramManager extends PolymerElement {
         // can be set on the dynamically created network-diagram (or other diagram) element - it is not
         // bound using property binding.
 
-        //console.log('diagram-manager: notify current diagram that instanceRetriever is set");
         this.currentDiagram.setInstanceRetriever(this.instanceRetriever);
     }
 
@@ -159,8 +158,6 @@ class RexDiagramManager extends PolymerElement {
      *  initialiseDiagramArea - ome time on first data load
      */
     initialiseDiagramArea() {
-
-        //console.log("diagram-manager: initialiseDiagramArea invoked");
 
         // Clear down the selector - removing either preliminary text or diagram types from earlier load
         this.clearDiagramSelector();
@@ -188,7 +185,6 @@ class RexDiagramManager extends PolymerElement {
      *  Inbound event: graph-cleared
      */
     inEvtGraphCleared(e) {
-        //console.log("diagram-manager: graph-cleared event received: clear graph");
         this.clearSelectedDiagram();
     }
 

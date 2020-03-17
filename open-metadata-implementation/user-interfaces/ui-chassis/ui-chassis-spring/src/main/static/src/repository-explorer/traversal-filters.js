@@ -160,14 +160,11 @@ class TraversalFilters extends MutableData(PolymerElement) {
      * Element is ready
      */
     ready() {
-        //console.log("traversal-filters ready invoked");
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
-        //console.log("traversal-filters ready complete");
     }
 
     entityFilterChanged(e) {
-        //console.log("traversal-filters: entityFilterChanged invoked - "+e.target.id+" is "+e.target.checked);
         var entityType = this.entityTypes.filter(obj => { return obj.name === e.target.id  })[0];
         entityType.checked = e.target.checked;
     }
@@ -181,7 +178,6 @@ class TraversalFilters extends MutableData(PolymerElement) {
     }
 
     relationshipFilterChanged(e) {
-        //console.log("traversal-filters: relationshipFilterChanged invoked - "+e.target.id+" is "+e.target.checked);
         var relationshipType = this.relationshipTypes.filter(obj => { return obj.name === e.target.id  })[0];
         relationshipType.checked = e.target.checked;
     }
@@ -195,7 +191,6 @@ class TraversalFilters extends MutableData(PolymerElement) {
     }
 
     classificationFilterChanged(e) {
-        //console.log("traversal-filters: classificationFilterChanged invoked - "+e.target.id+" is "+e.target.checked);
         var classificationType = this.classificationTypes.filter(obj => { return obj.name === e.target.id  })[0];
         classificationType.checked = e.target.checked;
     }
@@ -225,7 +220,6 @@ class TraversalFilters extends MutableData(PolymerElement) {
          */
 
         for (var etype in this.entityTypes) {
-            //console.log("set entity type: ",this.entityTypes[etype].name);
             var newEntity = {}
             Object.assign(newEntity,this.entityTypes[etype]);
             newEntity.checked = checked;
@@ -233,7 +227,6 @@ class TraversalFilters extends MutableData(PolymerElement) {
         }
 
         for (var rtype in this.relationshipTypes) {
-            //console.log("set relationship type: ",this.relationshipTypes[rtype].name);
             var newRelationship = {}
             Object.assign(newRelationship,this.relationshipTypes[rtype]);
             newRelationship.checked = checked;
@@ -241,7 +234,6 @@ class TraversalFilters extends MutableData(PolymerElement) {
         }
 
         for (var ctype in this.classificationTypes) {
-            //console.log("set classification type: ",this.classificationTypes[ctype].name);
             var newClassification = {}
             Object.assign(newClassification,this.classificationTypes[ctype]);
             newClassification.checked = checked;

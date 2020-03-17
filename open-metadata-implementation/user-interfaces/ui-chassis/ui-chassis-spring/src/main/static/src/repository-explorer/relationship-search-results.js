@@ -110,7 +110,6 @@ class RelationshipSearchResults extends MutableData(PolymerElement) {
     }
 
     instanceCheckboxChanged(e) {
-        //console.log("traversal-filters: entityFilterChanged invoked - "+e.target.id+" is "+e.target.checked);
         var instance = this.instances.filter(obj => { return obj.relationshipGUID === e.target.id })[0];
         instance.checked = e.target.checked;
     }

@@ -259,7 +259,6 @@ class GraphControls extends PolymerElement {
          * Opportunity to update the traversal count
          */
         this.currentGen = this.instanceRetriever.getCurrentGen();
-        //console.log("g-c: bumping currentGen to "+this.currentGen)
     }
 
     inEvtGraphCleared() {
@@ -267,7 +266,6 @@ class GraphControls extends PolymerElement {
          * Opportunity to update the traversal count
          */
         this.currentGen = this.instanceRetriever.getCurrentGen();
-        //console.log("g-c: clearing currentGen to "+this.currentGen)
     }
 
     inEvtGraphReduced() {
@@ -275,7 +273,6 @@ class GraphControls extends PolymerElement {
          * Opportunity to update the traversal count
          */
         this.currentGen = this.instanceRetriever.getCurrentGen();
-        //console.log("g-c: reducing currentGen to "+this.currentGen)
     }
 
      outEvtPreTraversalLoaded() {
@@ -305,7 +302,6 @@ class GraphControls extends PolymerElement {
         // Get the user's selected filters from the traversal-filters element..
         var containerForTraversalFilters = this.$.containerForTraversalFilters;
         var traversalFilters             = containerForTraversalFilters.firstChild;
-        //console.log("traversalFilters is "+traversalFilters);
 
         // Process entity type filters...
         var entityTypeGUIDs = [];
@@ -460,12 +456,11 @@ class GraphControls extends PolymerElement {
      */
     doUndo() {
 
-        //console.log("graph-controls: undo function needs implementation!");
         this.outEvtUndo();
     }
 
     outEvtUndo() {
-        //console.log("graph-controls: generate graph-cleared event");
+
         var customEvent = new CustomEvent('undo',
                                              { bubbles: true, composed: true,
                                                detail: {source: "graph-controls"} } );
@@ -473,7 +468,7 @@ class GraphControls extends PolymerElement {
     }
 
     outEvtGraphCleared() {
-        //console.log("graph-controls: generate graph-cleared event");
+
         var customEvent = new CustomEvent('graph-cleared',
                                              { bubbles: true, composed: true,
                                                detail: {source: "graph-controls"} } );
@@ -570,10 +565,8 @@ class GraphControls extends PolymerElement {
      * Observer to handle receipt of packaged instance data response from UI Application
      */
     _preTraversalRespChanged(newValue,oldValue) {
-        //console.log("_preTraversalRespChanged invoked");
+
         if (newValue !== undefined && newValue !== null) {
-            //console.log("_preTraversalRespChanged httpStatusCode : "+newValue.httpStatusCode);
-            //console.log("_preTraversalRespChanged stats : "+newValue.rexPreTraversal);
 
             if (newValue.httpStatusCode == 200) {
                 // Success
@@ -600,11 +593,8 @@ class GraphControls extends PolymerElement {
                     var entityInstanceCounts = rexPreTraversal.entityInstanceCounts;
                     if (entityInstanceCounts != null) {
                         for (var typeName in entityInstanceCounts) {
-                            //console.log("_preTraversalRespChanged: typeName "+typeName);
                             var count = entityInstanceCounts[typeName].count;
-                            //console.log("_preTraversalRespChanged: count "+count);
                             var typeGUID = entityInstanceCounts[typeName].typeGUID;
-                            //console.log("_preTraversalRespChanged: typeGUID "+typeGUID);
                             // Stash the typeName, typeGUID (and count) in this.preTraversal for later access
                             this.preTraversal.entityTypes.push( { 'name' : typeName  , 'guid' : typeGUID , 'count' : count , 'checked' : false });
                         }
@@ -616,11 +606,8 @@ class GraphControls extends PolymerElement {
                     var relationshipInstanceCounts = rexPreTraversal.relationshipInstanceCounts;
                     if (relationshipInstanceCounts != null) {
                         for (var typeName in relationshipInstanceCounts) {
-                            //console.log("_preTraversalRespChanged: typeName "+typeName);
                             var count = relationshipInstanceCounts[typeName].count;
-                            //console.log("_preTraversalRespChanged: count "+count);
                             var typeGUID = relationshipInstanceCounts[typeName].typeGUID;
-                            //console.log("_preTraversalRespChanged: typeGUID "+typeGUID);
                             // Stash the typeName, typeGUID (and count) in this.preTraversal for later access
                             this.preTraversal.relationshipTypes.push( { 'name' : typeName, 'guid' : typeGUID  , 'count' : count , 'checked' : false });
                         }
@@ -632,11 +619,8 @@ class GraphControls extends PolymerElement {
                     var classificationInstanceCounts = rexPreTraversal.classificationInstanceCounts;
                     if (classificationInstanceCounts != null) {
                         for (var typeName in classificationInstanceCounts) {
-                            //console.log("_preTraversalRespChanged: typeName "+typeName);
                             var count = classificationInstanceCounts[typeName].count;
-                            //console.log("_preTraversalRespChanged: count "+count);
                             var typeGUID = classificationInstanceCounts[typeName].typeGUID;
-                            //console.log("_preTraversalRespChanged: typeGUID "+typeGUID);
                             // Stash the typeName, typeGUID (and count) in this.preTraversal for later access
                             this.preTraversal.classificationTypes.push( { 'name' : typeName, 'guid' : null  , 'count' : count , 'checked' : false });
                         }
@@ -651,7 +635,6 @@ class GraphControls extends PolymerElement {
             else {
 
                 // Failure
-                console.log("_preTraversalRespChanged newValue has bad status code");
                 if (newValue.exceptionText) {
                     alert('Error occurred: ' +newValue.exceptionText);
                 }
@@ -663,9 +646,6 @@ class GraphControls extends PolymerElement {
                    bubbles: true, composed: true, detail: {source: "graph-controls"}  });
                 this.dispatchEvent(customEvent);
             }
-        }
-        else {
-            console.log("_preTraversalRespChanged: newValue was null");
         }
     }
 
@@ -707,11 +687,8 @@ class GraphControls extends PolymerElement {
      * Observer to handle receipt of packaged instance data response from UI Application
      */
     _traversalRespChanged(newValue,oldValue) {
-        //console.log("graph-controls: _traversalRespChanged invoked");
+
         if (newValue !== undefined && newValue !== null) {
-            //console.log("graph-controls: _traversalRespChanged newValue : "+newValue);
-            //console.log("graph-controls: _traversalRespChanged httpStatusCode : "+newValue.httpStatusCode);
-            //console.log("graph-controls: _traversalRespChanged rexTraversal : "+newValue.rexTraversal);
 
             if (newValue.httpStatusCode == 200) {
                 // Success
@@ -723,7 +700,6 @@ class GraphControls extends PolymerElement {
             else {
 
                 // Failure
-                //console.log("graph-controls: _traversalRespChanged newValue has bad status code");
                 if (newValue.exceptionText) {
                     alert('Error occurred: ' +newValue.exceptionText);
                 }
@@ -735,11 +711,7 @@ class GraphControls extends PolymerElement {
                 this.dispatchEvent(customEvent);
             }
         }
-        else {
-            //console.log("graph-controls: _traversalRespChanged: newValue was null");
-        }
     }
-
 
 }
 

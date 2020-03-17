@@ -369,17 +369,14 @@ class InstanceRetriever extends PolymerElement {
     }
 
     selectedCategoryChanged(newValue,oldValue) {
-        //console.log("selectedCategoryChanged invoked : selectedCategory="+ this.selectedCategory);
         if (newValue !== undefined && newValue !== null) {
-            //console.log("selectedCategoryChanged newValue="+ newValue);
+
         }
     }
 
 
    searchCategoryChanged(newValue,oldValue) {
-        //console.log("searchCategoryChanged invoked : searchCategory="+ this.searchCategory);
         if (newValue !== undefined && newValue !== null) {
-            //console.log("searchCategoryChanged newValue="+ newValue);
         }
     }
 
@@ -559,13 +556,11 @@ class InstanceRetriever extends PolymerElement {
         var relsToUndo =  genToUndo.relationships;
         if (entsToUndo !== undefined && entsToUndo.length >0) {
             entsToUndo.forEach(function(ent) {
-                //console.log("i-r: removing entity "+ent);
                 this.guidToGen.delete(ent);
             });
         }
         if (relsToUndo !== undefined && relsToUndo.length >0) {
             relsToUndo.forEach(function(rel) {
-                //console.log("i-r: removing relationship "+rel);
                 this.guidToGen.delete(rel);
             });
         }
@@ -586,10 +581,7 @@ class InstanceRetriever extends PolymerElement {
              // Generate focus changed event
              this.outEvtFocusEntityCleared();
         }
-        /*
-         * Finally fire the graph-reduced event
-         */
-        //this.outEvtGraphReduced();
+
     }
 
 
@@ -603,7 +595,7 @@ class InstanceRetriever extends PolymerElement {
         // Get the user's selected instances from the search-results element..
         var containerForSearchResults = this.$.containerForSearchResults;
         var searchResults = containerForSearchResults.firstChild;
-        //console.log("searchResults is "+searchResults);
+
 
         // Process results...
         var selectedInstances = undefined;
@@ -638,12 +630,18 @@ class InstanceRetriever extends PolymerElement {
             }
 
 
-
-            // Process the list of entity digests...any that are not already known are added to a traversal that will be added as a new gen.....
+            /*
+             *  Process the list of entity digests...any that are not already known
+             *  are added to a traversal that will be added as a new gen.....
+             */
             var rexTraversal             = {};
             rexTraversal.entities        = {};
             rexTraversal.relationships   = {};
-            // Set the traversal operation to show how this result was generated - provides informative summary in history
+
+            /*
+             *  Set the traversal operation to show how this result was generated -
+             *  provides informative summary in history
+             */
             if (this.searchCategory === "Entity") {
                 rexTraversal.operation = "entitySearch";
             }
@@ -658,34 +656,44 @@ class InstanceRetriever extends PolymerElement {
 
             var newInstancesDiscovered    = false;
 
-            // Do not select any of the search results.
-            // Populate the gen with the digests. No focus change request needed.
+            /*
+             *  Do not select any of the search results.
+             *  Populate the gen with the digests. No focus change request needed.
+             */
 
             for (var i=0; i< numInstancesFound; i++) {
-                // Do not select any of the search results.
-                // Check which (if any) are not already known and populate a gen with their digests.
-                // No focus change request needed.
+                /*
+                 *  Do not select any of the search results.
+                 *  Check which (if any) are not already known and populate a gen with their digests.
+                 *  No focus change request needed.
+                 */
 
-                // ... this is what you would do for a single entity detail after a get request...
                 var instance = selectedInstances[i];
                 if (this.searchCategory === "Entity") {
                     var entityGUID = instance.entityGUID;
 
-                    // Determine whether entity is already known ...
+                    /*
+                     * Determine whether entity is already known ...
+                     */
                     var entityKnown = false;
                     var gen;
-                    // Search the existing gens looking for guid
-                    for (var g=0; g< this.gens.length; g++) {
-                        var igen = this.gens[g];
-                        var igenEntities = igen.entities;
-                        if (igenEntities !== undefined) {
-                            if (igenEntities[entityGUID] !== undefined) {
-                                entityKnown = true;
-                                gen = g+1;
-                                break;
-                            }
-                        }
+                    if (this.guidToGen[entityGUID] !== undefined) {
+                        entityKnown = true;
+                        gen = this.guidToGen[entityGUID];
                     }
+                    // TODO - clean up
+                    // Search the existing gens looking for guid
+                    //for (var g=0; g< this.gens.length; g++) {
+                    //    var igen = this.gens[g];
+                    //    var igenEntities = igen.entities;
+                    //    if (igenEntities !== undefined) {
+                    //        if (igenEntities[entityGUID] !== undefined) {
+                    //            entityKnown = true;
+                    //            gen = g+1;
+                    //            break;
+                    //        }
+                    //    }
+                    //}
                     if (entityKnown === false) {
                         newInstancesDiscovered = true;
                         // If this is an entity we have not already seen - add it to the traversal which will go to the diagram manager
@@ -700,21 +708,28 @@ class InstanceRetriever extends PolymerElement {
 
                     var relationshipGUID = instance.relationshipGUID;
 
-                    // Determine whether relationship is already known ...
+                    /*
+                     * Determine whether relationship is already known ...
+                     */
                     var relationshipKnown = false;
                     var gen;
-                    // Search the existing gens looking for guid
-                    for (var g=0; g< this.gens.length; g++) {
-                        var igen = this.gens[g];
-                        var igenRelationships = igen.entities;
-                        if (igenRelationships !== undefined) {
-                            if (igenRelationships[relationshipGUID] !== undefined) {
-                                relationshipKnown = true;
-                                gen = g+1;
-                                break;
-                            }
-                        }
+                    if (this.guidToGen[relationshipGUID] !== undefined) {
+                        relationshipKnown = true;
+                        gen = this.guidToGen[relationshipGUID];
                     }
+                    // TODO - clean up
+                    // Search the existing gens looking for guid
+                    //for (var g=0; g< this.gens.length; g++) {
+                    //    var igen = this.gens[g];
+                    //    var igenRelationships = igen.entities;
+                    //    if (igenRelationships !== undefined) {
+                    //        if (igenRelationships[relationshipGUID] !== undefined) {
+                    //            relationshipKnown = true;
+                    //            gen = g+1;
+                    //            break;
+                    //        }
+                    //    }
+                    //}
                     if (relationshipKnown === false) {
                         newInstancesDiscovered = true;
                         // If this is an relationship we have not already seen - add it to the traversal which will go to the diagram manager
@@ -734,7 +749,6 @@ class InstanceRetriever extends PolymerElement {
                 // Add the traversal to the sequence of gens in the graph. Then generate the graph-changed event.
                 this.gens.push(rexTraversal);
 
-                //console.log("instance-retriever: generate graph-changed event");
                 this.outEvtGraphExtended();
 
             }
@@ -742,12 +756,12 @@ class InstanceRetriever extends PolymerElement {
             // If the search resulted in a single instance being selected, optimise
             // the flow by proactively requesting that it becomes the focus instance.
             if (searchUnique) {
-                  if (searchUniqueCategory === "Entity") {
-                      this.outEvtChangeFocusEntity(searchUniqueGUID);
-                  }
-                  else {
-                      this.outEvtChangeFocusRelationship(searchUniqueGUID);
-                  }
+                if (searchUniqueCategory === "Entity") {
+                    this.outEvtChangeFocusEntity(searchUniqueGUID);
+                }
+                else {
+                    this.outEvtChangeFocusRelationship(searchUniqueGUID);
+                }
             }
         }
     }
@@ -912,12 +926,13 @@ class InstanceRetriever extends PolymerElement {
                     break;
 
                 default:
-                    // Put message to console and add error message to gen so this is noticed in history.
-                    console.log("instance-retriever: found a gen result with no operation type");
+                    /*
+                     *  Found a gen result with no operation type.
+                     *  Put message to console and add error message to gen so this is noticed in history.
+                     */
                     querySummary = "Operation not recognised!";
                     break;
             }
-            //console.log("traversal-history: querySummary is "+querySummary);
 
             /*
              *  Build the instances section
@@ -926,14 +941,12 @@ class InstanceRetriever extends PolymerElement {
              var instanceList = [];
              var entities = genContent.entities;
              for (var guid in entities) {
-                 //console.log("showHistory: guid "+guid);
                  var ent = entities[guid];
                  instanceList.push( { "category" : "Entity" , "label" : ent.label , "guid" : ent.entityGUID } );
              }
 
              var relationships = genContent.relationships;
              for (var guid in relationships) {
-                 //console.log("showHistory: guid "+guid);
                  var rel = relationships[guid];
                  instanceList.push( { "category" : "Relationship" , "label" : rel.label , "guid" : rel.relationshipGUID } );
              }
@@ -951,13 +964,18 @@ class InstanceRetriever extends PolymerElement {
 
 
     doGet() {
+
         if (this.instanceGUID === undefined || this.instanceGUID === null) {
-            console.log("doGet: cannot proceed because instanceGUID is not set - please provide a GUID and try again");
+
+            alert("Get operation cannot proceed because no GUID has been set - please provide a GUID and try again");
+            return;
+
         }
         else {
+
             var serverDetails = this.connectionManager.getServerDetails();
             if (this.validate(serverDetails.serverName) && this.validate(serverDetails.serverURLRoot)) {
-                //console.log("doGet - server details are valid");
+
                 var body = {};
                 body.serverName       = serverDetails.serverName;
                 body.serverURLRoot    = serverDetails.serverURLRoot;
@@ -1255,7 +1273,6 @@ class InstanceRetriever extends PolymerElement {
             }
             else {
                  // Failure
-                 //console.log("_getEntityDetailRespChanged newValue has bad status code");
                  if (newValue.exceptionText) {
                      alert('Error occurred: ' +newValue.exceptionText);
                  }
@@ -1263,50 +1280,42 @@ class InstanceRetriever extends PolymerElement {
                      alert('Error occurred: no exception message given');
                  }
                  // Generate a failure to load event - this will allow the status to be reported
-                 //console.log("getEntityResp: issue entity-not-loaded");
                  this.outEvtEntityNotLoaded();
-                 //console.log("getEntityResp: done entity-not-loaded");
             }
         }
-        //else {
-        //    console.log("_getEntityDetailRespChanged newValue was null");
-        //}
     }
 
     /*
      * Observer to handle receipt of packaged instance data response from UI Application
      */
     _getRelationshipRespChanged(newValue,oldValue) {
-        //console.log("_getRelationshipRespChanged invoked");
-        if (newValue !== undefined && newValue !== null) {
-            //console.log("_getRelationshipRespChanged newValue : "+newValue);
-            console.log("_getRelationshipRespChanged httpStatusCode : "+newValue.httpStatusCode);
-            console.log("_getRelationshipRespChanged expRelationship : "+newValue.expandedRelationship);
 
+        if (newValue !== undefined && newValue !== null) {
 
             if (newValue.httpStatusCode == 200) {
                 // Success
 
-                // Determine whether this is a relationship we already have in the diagram (in the gens)
-                // or whether it is new to this exploration. If it is new we need to assign it to the
-                // current gen and tell the diagram manager - so we pick the relationship digest from the
-                // expanded relationship and wrap it in a traversal and issue a graph-changed event.
-                // Similarly for the end entities - if the relationship was known we must already know the
-                // entities - but if the relationship is new we need to check for the entities and either
-                // assign them the next gen or allow them to retain their existing gens.
-                // If the relationship was not new we need to update the relationship digest to retain the original gen.
-                // This is so the gen remains as it was so that the relationship retains its location in the
-                // user's exploration.
-                // Whether it was already known or not we save the most recent information into the
-                // root instance - the relationship content may have changed in the repo.
-                // Whether new or known the focus is not this relationship so we issue a focus-relationship-changed
-                // event.
+                /*
+                 *  Determine whether this is a relationship we already have in the diagram (in the gens)
+                 *  or whether it is new to this exploration. If it is new we need to assign it to the
+                 *  current gen and tell the diagram manager - so we pick the relationship digest from the
+                 *  expanded relationship and wrap it in a traversal and issue a graph-changed event.
+                 *  Similarly for the end entities - if the relationship was known we must already know the
+                 *  entities - but if the relationship is new we need to check for the entities and either
+                 *  assign them the next gen or allow them to retain their existing gens.
+                 *  If the relationship was not new we need to update the relationship digest to retain the original gen.
+                 *  This is so the gen remains as it was so that the relationship retains its location in the
+                 *  user's exploration.
+                 *  Whether it was already known or not we save the most recent information into the
+                 *  root instance - the relationship content may have changed in the repo.
+                 *  Whether new or known the focus is not this relationship so we issue a focus-relationship-changed
+                 *  event.
+                 */
 
                 var serverName = newValue.expandedRelationship.serverName;
 
                 var relationshipGUID = newValue.expandedRelationship.relationshipDigest.relationshipGUID;
 
-                console.log("instance-retriever: relationshipGUID is "+relationshipGUID);
                 // Determine whether relationship is already known ...
                 var relationshipKnown = false;
                 var gen;
@@ -1315,7 +1324,7 @@ class InstanceRetriever extends PolymerElement {
                     gen = this.guidToGen[relationshipGUID];
                 }
                 if (relationshipKnown === false) {
-                    console.log("instance-retriever: relationship is new");
+                    // Relationship is new
                     // Advance the currentGen
                     this.advanceCurrentGen();
                     gen = this.currentGen;
@@ -1419,7 +1428,6 @@ class InstanceRetriever extends PolymerElement {
                      this.guidToGen[relationshipGUID] = this.currentGen;
 
                      // Generate the graph-changed event.
-                     //console.log("instance-retriever: generate graph-extended event");
                      this.outEvtGraphExtended();
 
                 }
@@ -1431,7 +1439,6 @@ class InstanceRetriever extends PolymerElement {
 
             else {
                  // Failure
-                 //console.log("_getRelationshipRespChanged newValue has bad status code");
                  if (newValue.exceptionText) {
                      alert('Error occurred: ' +newValue.exceptionText);
                  }
@@ -1442,9 +1449,6 @@ class InstanceRetriever extends PolymerElement {
                  this.outEvtRelationshipNotLoaded();
             }
         }
-        //else {
-        //    console.log("_getRelationshipRespChanged newValue was null");
-        //}
     }
 
 
@@ -1518,7 +1522,7 @@ class InstanceRetriever extends PolymerElement {
                 delete rexTraversal.relationships[relationshipGUID];
             }
             else {
-                console.log("Relationship with GUID : "+relationshipGUID+" is new");
+                // Relationship is new.
                 // Update the new relationship's gen
                 rexTraversal.relationships[relationshipGUID].gen = gen;
                 this.guidToGen[relationshipGUID] = gen;
@@ -1568,14 +1572,10 @@ class InstanceRetriever extends PolymerElement {
 
 
 
-
-
-
     _entitySearchRespChanged(newValue,oldValue) {
-        //console.log("_entitySearchRespChanged invoked");
+
         if (newValue !== undefined && newValue !== null) {
-            //console.log("_entitySearchRespChanged newValue : "+newValue);
-            //console.log("_entitySearchRespChanged httpStatusCode : "+newValue.httpStatusCode);
+
 
             if (newValue.httpStatusCode == 200) {
                 // Success

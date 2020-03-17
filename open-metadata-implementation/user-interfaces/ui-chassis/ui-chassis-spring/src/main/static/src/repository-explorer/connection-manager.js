@@ -206,12 +206,10 @@ class RexConnectionManager extends PolymerElement {
     }
 
     getServerDetails() {
-        //console.log("connection-manager: getServerDetails")
         var serverDetails = {};
         serverDetails.serverName       = this.serverName;
         serverDetails.serverURLRoot    = this.serverURLRoot;
         serverDetails.enterpriseOption = this.enterpriseQuery;
-        //console.log("connection-manager: serverDetails: " + serverDetails);
         return serverDetails;
     }
 

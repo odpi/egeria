@@ -135,7 +135,6 @@ class FilterManager extends PolymerElement {
     ready() {
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
-        //console.log("rex filter-manager ready complete - my typeManager is set to "+this.typeManager);
     }
 
 
@@ -151,7 +150,6 @@ class FilterManager extends PolymerElement {
      *  Inbound event: types-loaded
      */
     inEvtTypesLoaded() {
-        //console.log("FilterManager seen inEvtTypesLoaded")
         this.populateSelectors();
     }
 
@@ -169,12 +167,10 @@ class FilterManager extends PolymerElement {
     entitySelectorHandler(e) {
         if (polymer) {
             var typeName = e.target.selectedItem.value;
-            //console.log("Entity type selected : "+typeName);
             this.changeTypeSelected("Entity", typeName);
         }
         else {
             var typeName = e.target.value;
-            //console.log("Entity type selected : "+typeName);
             this.changeTypeSelected("Entity", typeName);
         }
     }
@@ -182,12 +178,10 @@ class FilterManager extends PolymerElement {
     relationshipSelectorHandler(e) {
         if (polymer) {
             var typeName = e.target.selectedItem.value;
-            //console.log("Relationship type selected : "+typeName);
             this.changeTypeSelected("Relationship", typeName);
         }
         else {
             var typeName = e.target.value;
-            //console.log("Relationship type selected : "+typeName);
             this.changeTypeSelected("Relationship", typeName);
         }
     }
@@ -195,12 +189,10 @@ class FilterManager extends PolymerElement {
     classificationSelectorHandler(e) {
         if (polymer) {
             var typeName = e.target.selectedItem.value;
-            //console.log("Classification type selected : "+typeName);
             this.changeTypeSelected("Classification", typeName);
         }
         else {
             var typeName = e.target.value;
-            //console.log("Classification type selected : "+typeName);
             this.changeTypeSelected("Classification", typeName);
         }
     }

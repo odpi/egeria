@@ -316,7 +316,6 @@ class NetworkDiagram extends PolymerElement {
 
     setInstanceRetriever(instanceRetriever) {
         this.instanceRetriever = instanceRetriever;
-        //console.log("network-diagram: instanceRetriever set "+this.instanceRetriever);
     }
 
 
@@ -555,16 +554,11 @@ class NetworkDiagram extends PolymerElement {
      */
     render() {
 
-        //console.log("network-diagram: render called");
-
         // Clear any startup text or previous diagram content
-        //console.log("network-diagram: clear network diagram");
         this.clearNetworkDiagram();
 
-        //console.log("network-diagram: initialize diagram");
         this.initialize_diagram();
 
-        //console.log("network-diagram: update diagram");
         this.update_diagram();
 
     }
