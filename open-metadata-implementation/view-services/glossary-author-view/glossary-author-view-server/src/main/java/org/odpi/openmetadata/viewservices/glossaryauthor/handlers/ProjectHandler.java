@@ -138,10 +138,6 @@ public class ProjectHandler {
     /**
      * Replace a Project. This means to override all the existing attributes with the supplied attributes.
      * <p>
-     * If the caller has chosen to incorporate the Project name in their Project Terms or Categories qualified name, renaming the Project will cause those
-     * qualified names to mismatch the Project name.
-     * If the caller has chosen to incorporate the Project qualifiedName in their Project Terms or Categories qualified name, changing the qualified name of the Project will cause those
-     * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
      * @param userId          userId under which the request is performed
@@ -163,10 +159,6 @@ public class ProjectHandler {
     /**
      * Update a Project. This means to update the Project with any non-null attributes from the supplied Project.
      * <p>
-     * If the caller has chosen to incorporate the Project name in their Project Terms or Categories qualified name, renaming the Project will cause those
-     * qualified names to mismatch the Project name.
-     * If the caller has chosen to incorporate the Project qualifiedName in their Project Terms or Categories qualified name, changing the qualified name of the Project will cause those
-     * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
      * @param userId          userId under which the request is performed
