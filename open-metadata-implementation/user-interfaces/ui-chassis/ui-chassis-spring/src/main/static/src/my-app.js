@@ -126,14 +126,9 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path query-params="{{queryParams}}"></app-location>
 
-      <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subview}}"></app-route>
-      
-      <app-route route="{{subview}}" pattern="[[rootPath]]:subview" data="{{subviewData}}" tail="{{subroute2}}"></app-route>
-      
-      <app-route route="{{subroute2}}" pattern="[[rootPath]]:guid" data="{{subrouteData2}}"></app-route>
+      <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{tail}}"></app-route>
        
-       
-       <toast-feedback duration="0"></toast-feedback> 
+      <toast-feedback duration="0"></toast-feedback> 
        
         <template is="dom-if" if="[[!token]]"  restamp="true">
             <login-view id="loginView" token="{{token}}"></login-view>
@@ -147,9 +142,9 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <iron-selector selected="[[page]]" attr-for-selected="name"
                         class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
                     <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset Search</a></div>
-                    <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage/[[subviewData.subview]]/[[subrouteData2.guid]]">Asset Lineage</a></div>
+                    <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
-                    <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
+                    <div name="type-explorer"><a href="[[rootPath]]#/type-explorer>Type Explorer</a></div>
                     <div name="about"><a href="[[rootPath]]#/about">About</a></div>
                   </iron-selector>
 
@@ -180,11 +175,12 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <div class="breadcrumb">
                      <bread-crumb id="breadcrumb" items="[[crumbs]]"></bread-crumb>
                   </div>
+                  
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
-                    <asset-search-view language="[[language]]" name="asset-search"></asset-search-view>
+                    <asset-search-view language="[[language]]" name="asset-search" route="{{tail}}"></asset-search-view>
                     <about-view language="[[language]]" name="about"></about-view>
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
-                    <asset-lineage-view language="[[language]]" name="asset-lineage" guid="[[subrouteData2.guid]]" usecase="[[subviewData.subview]]"></asset-lineage-view>
+                    <asset-lineage-view language="[[language]]" name="asset-lineage" ></asset-lineage-view>
                     <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
                     <my-view404 name="view404"></my-view404>
                   </iron-pages>
@@ -204,24 +200,16 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 reflectToAttribute: true,
                 observer: '_pageChanged',
             },
-            guid: {
-                type: String,
-                reflectToAttribute: true
-            },
+            // guid: {
+            //     type: String,
+            //     reflectToAttribute: true
+            // },
             token: {
                 type: Object,
                 notify: true,
                 observer: '_tokenChanged'
             },
             routeData: Object,
-            subview: {
-                type: String,
-                reflectToAttribute: true
-            },
-            subroute2: {
-                type: String,
-                reflectToAttribute: true
-            },
             pages: {
                 type: Array,
                 value: ['asset-search', 'subject-area', 'asset-lineage', 'type-explorer','about']
