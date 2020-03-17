@@ -543,7 +543,7 @@ class GraphControls extends PolymerElement {
 
      /*
       * The pre-traversal is a visit to the VS to get the types of relationship and neighboring entity adjacent to
-      * the focus entity - note that this says nothing about higher depths - that is to be implemented TODO
+      * the focus entity.
       * The pre-traversal results in a traversalStats object that is displayed, the filters/depth adjusted (not yet)
       * and the user can finally submit the request.
       */

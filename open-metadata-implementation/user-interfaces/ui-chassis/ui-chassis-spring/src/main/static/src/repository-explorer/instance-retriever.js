@@ -1579,25 +1579,21 @@ class InstanceRetriever extends PolymerElement {
         }
 
 
-        // Process relationships...
-        // For anything that is known remove it from the traversal.   TODO can use guidToGen instead
-        // Anything new can remain. It should be assigned the next gen.
+        /*
+         * Process relationships...
+         * Anything that is known should be removed from the traversal.
+         * Anything new can remain and should be assigned the next gen.
+         */
         var relationships = rexTraversal.relationships;
         for (var relationshipGUID in relationships) {
             console.log("Traversal contains relationship with GUID : "+relationshipGUID);
 
-            // Determine whether relationship is already known ...
+            /*
+             * Determine whether relationship is already known ...
+             */
             var relationshipKnown = false;
-            // Search the existing gens looking for guid
-            for (var i=0; i< this.gens.length; i++) {
-                var igen = this.gens[i];
-                var igenRelationships = igen.relationships;
-                if (igenRelationships !== undefined) {
-                    if (igenRelationships[relationshipGUID] !== undefined) {
-                        relationshipKnown = true;
-                        break;
-                    }
-                }
+            if (this.guidToGen[relationshipGUID] !== undefined) {
+                relationshipKnown = true;
             }
             if (relationshipKnown === true) {
                 console.log("Relationship with GUID : "+relationshipGUID+" is known");
@@ -1762,7 +1758,6 @@ class InstanceRetriever extends PolymerElement {
      */
     getAllGens() {
         var genIdx = this.currentGen - 1;
-        //console.log("instance-retriever retrieving all gens up to position "+genIdx);  // TODO - remove me
         var returnMap = {};
         returnMap.numberOfGens = this.numberOfGens;
         returnMap.allGens   = this.gens;
@@ -1770,24 +1765,31 @@ class InstanceRetriever extends PolymerElement {
    }
 
 
-
+    /*
+     * This function should be the only way that the currentGen and numberOfGens properties are updated
+     */
     advanceCurrentGen() {
         this.currentGen = this.currentGen + 1;
         this.numberOfGens = this.currentGen;
-        // We know we have data so enable the clear button, whether first gen or later.
-        //this.enableClearButton();
     }
 
-
+    /*
+     * Return the current value of instanceGUID
+     */
     getInstanceGUID() {
         return this.instanceGUID;
     }
 
+    /*
+     * Return the current value of currentGen
+     */
     getCurrentGen() {
         return this.currentGen;
     }
 
-
+    /*
+     * Return the category of the current focus, if set
+     */
     getFocusInstanceCategory() {
         if (this.selectedCategory === undefined) {
           return null;
@@ -1802,11 +1804,10 @@ class InstanceRetriever extends PolymerElement {
     getFocusEntity() {
         if (this.rootInstance !== undefined) {
             if (this.rootInstance.category === "entity") {
-                //console.log("instance-retriever: getFocusEntity has entity with gen "+this.rootInstance.expEntity.entityDigest.gen);
                 return this.rootInstance.expEntity;
             }
         }
-        //console.log("getFocusEntity invoked, but no focus or not an entity");
+        /* No focus set */
         return null;
     }
 
