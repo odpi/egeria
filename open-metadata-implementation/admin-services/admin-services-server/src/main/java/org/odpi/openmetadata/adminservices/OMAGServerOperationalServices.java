@@ -627,6 +627,7 @@ public class OMAGServerOperationalServices
      * @param activatedServiceList list of services (subsystems) running in the server
      * @throws OMAGConfigurationErrorException problem with the configuration
      */
+    @SuppressWarnings(value = "deprecation")
     private void initializeAccessServices(OMAGOperationalServicesInstance instance,
                                           List<AccessServiceConfig>       accessServiceConfigList,
                                           OMRSOperationalServices         operationalRepositoryServices,
@@ -677,6 +678,10 @@ public class OMAGServerOperationalServices
                                                                                 accessServiceConfig.getAccessServiceDescription(),
                                                                                 accessServiceConfig.getAccessServiceWiki());
 
+                            /*
+                             * We will switch to the new version of this method once all access services have move from using OMRSAuditLog to
+                             * AuditLog.  The default implementation of this method delegates to the new version of the method so
+                             */
                             accessServiceAdmin.initialize(accessServiceConfig,
                                                           enterpriseTopicConnector,
                                                           operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(accessServiceConfig.getAccessServiceFullName()),

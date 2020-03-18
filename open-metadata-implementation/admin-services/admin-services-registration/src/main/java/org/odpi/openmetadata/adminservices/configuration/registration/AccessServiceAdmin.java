@@ -6,13 +6,14 @@ import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
-import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -55,11 +56,38 @@ public abstract class AccessServiceAdmin
      * @param serverUserName  user id to use on OMRS calls where there is no end user.
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
-    public abstract void initialize(AccessServiceConfig     accessServiceConfigurationProperties,
-                                    OMRSTopicConnector      enterpriseOMRSTopicConnector,
-                                    OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
-                                    OMRSAuditLog            auditLog,
-                                    String                  serverUserName) throws OMAGConfigurationErrorException;
+    @Deprecated
+    public void initialize(AccessServiceConfig     accessServiceConfigurationProperties,
+                           OMRSTopicConnector      enterpriseOMRSTopicConnector,
+                           OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
+                           OMRSAuditLog            auditLog,
+                           String                  serverUserName) throws OMAGConfigurationErrorException
+    {
+        this.initialize(accessServiceConfigurationProperties,
+                        enterpriseOMRSTopicConnector,
+                        enterpriseOMRSRepositoryConnector,
+                        (AuditLog)auditLog,
+                        serverUserName);
+    }
+
+
+    /**
+     * Initialize the access service.
+     *
+     * @param accessServiceConfigurationProperties  specific configuration properties for this access service.
+     * @param enterpriseOMRSTopicConnector  connector for receiving OMRS Events from the cohorts
+     * @param enterpriseOMRSRepositoryConnector  connector for querying the cohort repositories
+     * @param auditLog  audit log component for logging messages.
+     * @param serverUserName  user id to use on OMRS calls where there is no end user.
+     * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
+     */
+    public void initialize(AccessServiceConfig     accessServiceConfigurationProperties,
+                           OMRSTopicConnector      enterpriseOMRSTopicConnector,
+                           OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
+                           AuditLog                auditLog,
+                           String                  serverUserName) throws OMAGConfigurationErrorException
+    {
+    }
 
 
     /**
@@ -79,7 +107,7 @@ public abstract class AccessServiceAdmin
      */
     protected List<String> extractSupportedZones(Map<String, Object> accessServiceOptions,
                                                  String              accessServiceFullName,
-                                                 OMRSAuditLog        auditLog) throws OMAGConfigurationErrorException
+                                                 AuditLog            auditLog) throws OMAGConfigurationErrorException
     {
         final String  methodName = "extractSupportedZones";
 
@@ -134,7 +162,7 @@ public abstract class AccessServiceAdmin
      */
     protected List<String> extractDefaultZones(Map<String, Object> accessServiceOptions,
                                                String              accessServiceFullName,
-                                               OMRSAuditLog        auditLog) throws OMAGConfigurationErrorException
+                                               AuditLog            auditLog) throws OMAGConfigurationErrorException
     {
         final String  methodName = "extractDefaultZones";
 
@@ -189,7 +217,7 @@ public abstract class AccessServiceAdmin
      */
     protected int extractKarmaPointIncrement(Map<String, Object> accessServiceOptions,
                                              String              accessServiceFullName,
-                                             OMRSAuditLog        auditLog) throws OMAGConfigurationErrorException
+                                             AuditLog            auditLog) throws OMAGConfigurationErrorException
     {
         final String  methodName = "extractKarmaPointIncrement";
 
@@ -242,7 +270,7 @@ public abstract class AccessServiceAdmin
      * @return default value
      */
     private int useDefaultKarmaPointIncrement(String       accessServiceFullName,
-                                              OMRSAuditLog auditLog,
+                                              AuditLog     auditLog,
                                               String       methodName)
     {
         auditLog.logMessage(methodName, OMAGAdminAuditCode.NO_KARMA_POINT_COLLECTION.getMessageDefinition(accessServiceFullName));
@@ -262,7 +290,7 @@ public abstract class AccessServiceAdmin
      */
     protected int extractKarmaPointPlateau(Map<String, Object> accessServiceOptions,
                                            String              accessServiceFullName,
-                                           OMRSAuditLog        auditLog) throws OMAGConfigurationErrorException
+                                           AuditLog            auditLog) throws OMAGConfigurationErrorException
     {
         final String  methodName = "extractKarmaPointPlateau";
 
@@ -316,7 +344,7 @@ public abstract class AccessServiceAdmin
      * @return default value
      */
     private int useDefaultPlateauThreshold(String       accessServiceFullName,
-                                           OMRSAuditLog auditLog,
+                                           AuditLog     auditLog,
                                            String       methodName)
     {
         auditLog.logMessage(methodName,
@@ -342,7 +370,7 @@ public abstract class AccessServiceAdmin
     private void logBadConfigProperties(String       accessServiceFullName,
                                         String       propertyName,
                                         String       propertyValue,
-                                        OMRSAuditLog auditLog,
+                                        AuditLog     auditLog,
                                         String       methodName,
                                         Throwable    error) throws OMAGConfigurationErrorException
     {
@@ -374,7 +402,7 @@ public abstract class AccessServiceAdmin
                                                String              serverName,
                                                OMRSTopicConnector  omrsTopicConnector,
                                                OMRSTopicListener   omrsTopicListener,
-                                               OMRSAuditLog        auditLog) throws OMAGConfigurationErrorException
+                                               AuditLog            auditLog) throws OMAGConfigurationErrorException
     {
         final String            actionDescription = "initialize OMAS";
         final String            methodName = "initialize";
@@ -433,7 +461,7 @@ public abstract class AccessServiceAdmin
      */
     protected OpenMetadataTopicConnector getInTopicEventBusConnector(Connection   inTopicConnection,
                                                                      String       accessServiceFullName,
-                                                                     OMRSAuditLog parentAuditLog) throws OMAGConfigurationErrorException
+                                                                     AuditLog     parentAuditLog) throws OMAGConfigurationErrorException
     {
         final String  methodName = "getInTopicConnector";
 
@@ -455,7 +483,7 @@ public abstract class AccessServiceAdmin
      */
     protected OpenMetadataTopicConnector getOutTopicEventBusConnector(Connection   outTopicEventBusConnection,
                                                                       String       accessServiceName,
-                                                                      OMRSAuditLog parentAuditLog) throws OMAGConfigurationErrorException
+                                                                      AuditLog     parentAuditLog) throws OMAGConfigurationErrorException
     {
         final String  methodName = "getOutTopicConnector";
 
@@ -480,7 +508,7 @@ public abstract class AccessServiceAdmin
     protected Connection getOutTopicConnection(Connection   outTopicEventBusConnection,
                                                String       accessServiceFullName,
                                                String       accessServiceConnectorProviderClassName,
-                                               OMRSAuditLog auditLog) throws OMAGConfigurationErrorException
+                                               AuditLog     auditLog) throws OMAGConfigurationErrorException
     {
         final String methodName = "getOutTopicConnection";
         final String connectionDescription = "OMRS default cohort topic connection.";
@@ -536,7 +564,7 @@ public abstract class AccessServiceAdmin
      */
     private ConnectorType   getConnectorType(String       accessServiceFullName,
                                              String       connectorProviderClassName,
-                                             OMRSAuditLog auditLog,
+                                             AuditLog     auditLog,
                                              String       methodName) throws OMAGConfigurationErrorException
     {
         ConnectorType  connectorType = null;
@@ -622,7 +650,7 @@ public abstract class AccessServiceAdmin
     @SuppressWarnings("unchecked")
     public <T>T getTopicConnector(Connection   topicConnection,
                                   Class<T>     topicConnectorClass,
-                                  OMRSAuditLog auditLog,
+                                  AuditLog     auditLog,
                                   String       accessServiceFullName,
                                   String       methodName) throws OMAGConfigurationErrorException
     {
@@ -631,9 +659,9 @@ public abstract class AccessServiceAdmin
             ConnectorBroker connectorBroker = new ConnectorBroker();
             Connector       connector       = connectorBroker.getConnector(topicConnection);
 
-            if (connector instanceof AuditableConnector)
+            if (connector instanceof AuditLoggingComponent)
             {
-                AuditableConnector topicConnector = (AuditableConnector)connector;
+                AuditLoggingComponent topicConnector = (AuditLoggingComponent)connector;
 
                 topicConnector.setAuditLog(auditLog);
             }
@@ -671,7 +699,7 @@ public abstract class AccessServiceAdmin
      * @throws OMAGConfigurationErrorException problem creating connector
      */
     private OpenMetadataTopicConnector getTopicConnector(Connection   topicConnection,
-                                                         OMRSAuditLog auditLog,
+                                                         AuditLog     auditLog,
                                                          String       accessServiceFullName,
                                                          String       methodName) throws OMAGConfigurationErrorException
     {

@@ -12,6 +12,8 @@ import org.testng.annotations.Test;
  */
 public class ErrorCodeTest extends ExceptionMessageSetTest
 {
+    final static String  messageIdPrefix = "OMAG-ADMIN";
+
     /**
      * Validated the values of the enum.
      */
@@ -19,7 +21,7 @@ public class ErrorCodeTest extends ExceptionMessageSetTest
     {
         for (OMAGAdminErrorCode errorCode : OMAGAdminErrorCode.values())
         {
-            super.testSingleErrorCodeValue(errorCode, "OMAG-ADMIN");
+            super.testSingleErrorCodeValue(errorCode, messageIdPrefix);
         }
     }
 }

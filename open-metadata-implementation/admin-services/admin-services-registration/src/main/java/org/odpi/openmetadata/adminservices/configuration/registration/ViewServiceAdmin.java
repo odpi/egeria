@@ -30,11 +30,11 @@ public abstract class ViewServiceAdmin
      * @param maxPageSize                        maximum page size. 0 means unlimited
      * @throws OMAGConfigurationErrorException   invalid parameters in the configuration properties.
      */
-    public abstract void initialize(String serverName,
+    public abstract void initialize(String            serverName,
                                     ViewServiceConfig viewServiceConfigurationProperties,
-                                    AuditLog auditLog,
-                                    String serverUserName,
-                                    int maxPageSize) throws OMAGConfigurationErrorException;
+                                    AuditLog          auditLog,
+                                    String            serverUserName,
+                                    int               maxPageSize) throws OMAGConfigurationErrorException;
 
 
     /**
