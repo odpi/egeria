@@ -234,19 +234,14 @@ public class GovernanceOfficerHandler
                         {
                             governanceDomain = GovernanceDomain.OTHER;
                         }
-                        GovernanceProgramErrorCode errorCode = GovernanceProgramErrorCode.MULTIPLE_INCUMBENTS_FOR_GOVERNANCE_OFFICER;
-                        String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(governanceDomain.getName(),
-                                                                                                                                     governanceOfficer.getGUID(),
-                                                                                                                                     governanceOfficer.getAppointmentId(),
-                                                                                                                                     governanceOfficer.getAppointmentContext(),
-                                                                                                                                     Integer.toString(currentIncumbents.size()));
 
-                        throw new GovernanceAppointeeNotUniqueException(errorCode.getHTTPErrorCode(),
+                        throw new GovernanceAppointeeNotUniqueException(GovernanceProgramErrorCode.MULTIPLE_INCUMBENTS_FOR_GOVERNANCE_OFFICER.getMessageDefinition(governanceDomain.getName(),
+                                                                                                                                                                   governanceOfficer.getGUID(),
+                                                                                                                                                                   governanceOfficer.getAppointmentId(),
+                                                                                                                                                                   governanceOfficer.getAppointmentContext(),
+                                                                                                                                                                   Integer.toString(currentIncumbents.size())),
                                                                         this.getClass().getName(),
                                                                         methodName,
-                                                                        errorMessage,
-                                                                        errorCode.getSystemAction(),
-                                                                        errorCode.getUserAction(),
                                                                         currentIncumbents);
                     }
                     governanceOfficer.setPredecessors(this.getPredecessors(relationships, now, userId));
@@ -725,28 +720,16 @@ public class GovernanceOfficerHandler
 
         if (governanceOfficerEntities == null)
         {
-            GovernanceProgramErrorCode errorCode = GovernanceProgramErrorCode.GOVERNANCE_OFFICER_NOT_FOUND_BY_APPOINTMENT_ID;
-            String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(appointmentId);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(GovernanceProgramErrorCode.GOVERNANCE_OFFICER_NOT_FOUND_BY_APPOINTMENT_ID.getMessageDefinition(appointmentId),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 appointmentId);
         }
         else if (governanceOfficerEntities.size() != 1)
         {
-            GovernanceProgramErrorCode errorCode = GovernanceProgramErrorCode.DUPLICATE_GOVERNANCE_OFFICER_FOR_APPOINTMENT_ID;
-            String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(appointmentId);
-
-            throw new AppointmentIdNotUniqueException(errorCode.getHTTPErrorCode(),
+            throw new AppointmentIdNotUniqueException(GovernanceProgramErrorCode.DUPLICATE_GOVERNANCE_OFFICER_FOR_APPOINTMENT_ID.getMessageDefinition(appointmentId),
                                                       this.getClass().getName(),
                                                       methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction(),
                                                       governanceOfficerEntities);
         }
         else
@@ -972,31 +955,18 @@ public class GovernanceOfficerHandler
                 }
                 catch (Throwable   error)
                 {
-                    GovernanceProgramErrorCode errorCode = GovernanceProgramErrorCode.FREE_ROLE_FOR_APPOINTMENT_FAILED;
-                    String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getMessage());
-
-                    throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                    throw new PropertyServerException(GovernanceProgramErrorCode.FREE_ROLE_FOR_APPOINTMENT_FAILED.getMessageDefinition(error.getMessage()),
                                                       this.getClass().getName(),
                                                       methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction(),
                                                       error);
                 }
             }
             else
             {
-                GovernanceProgramErrorCode errorCode = GovernanceProgramErrorCode.NO_PROFILE_FOR_GOVERNANCE_POST;
-                String                     errorMessage = errorCode.getErrorMessageId()
-                                                        + errorCode.getFormattedErrorMessage(governanceOfficerGUID,
-                                                                                             governanceOfficer.getAppointee().getGUID());
-
-                throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                throw new PropertyServerException(GovernanceProgramErrorCode.NO_PROFILE_FOR_GOVERNANCE_POST.getMessageDefinition(governanceOfficerGUID,
+                                                                                                                                 governanceOfficer.getAppointee().getGUID()),
                                                   this.getClass().getName(),
-                                                  methodName,
-                                                  errorMessage,
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction());
+                                                  methodName);
             }
         }
 
@@ -1049,17 +1019,10 @@ public class GovernanceOfficerHandler
 
         if ((governancePosts == null) || (governancePosts.isEmpty()))
         {
-            GovernanceProgramErrorCode errorCode = GovernanceProgramErrorCode.PROFILE_NOT_LINKED_TO_GOVERNANCE_OFFICER;
-            String                     errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(profileGUID,
-                                                         governanceOfficerGUID);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(GovernanceProgramErrorCode.PROFILE_NOT_LINKED_TO_GOVERNANCE_OFFICER.getMessageDefinition(profileGUID,
+                                                                                                                                         governanceOfficerGUID),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 profileGUIDParameterName);
         }
 
@@ -1106,33 +1069,19 @@ public class GovernanceOfficerHandler
                 }
                 else
                 {
-                    GovernanceProgramErrorCode errorCode = GovernanceProgramErrorCode.INVALID_GOVERNANCE_POST_RELATIONSHIP;
-                    String                     errorMessage = errorCode.getErrorMessageId()
-                            + errorCode.getFormattedErrorMessage(governancePost.toString());
-
-                    throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                    throw new PropertyServerException(GovernanceProgramErrorCode.INVALID_GOVERNANCE_POST_RELATIONSHIP.getMessageDefinition(governancePost.toString()),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
                 }
             }
         }
 
         if (relievedPost == null)
         {
-            GovernanceProgramErrorCode errorCode = GovernanceProgramErrorCode.PROFILE_NOT_LINKED_TO_GOVERNANCE_OFFICER;
-            String                     errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(profileGUID,
-                                                         governanceOfficerGUID);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(GovernanceProgramErrorCode.PROFILE_NOT_LINKED_TO_GOVERNANCE_OFFICER.getMessageDefinition(profileGUID,
+                                                                                                                                         governanceOfficerGUID),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 profileGUIDParameterName);
         }
         else
