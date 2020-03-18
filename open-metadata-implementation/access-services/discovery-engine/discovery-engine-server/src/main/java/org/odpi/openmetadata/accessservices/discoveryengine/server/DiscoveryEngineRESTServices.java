@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.server;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.auditlog.DiscoveryEngineAuditCode;
+import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineAuditCode;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -11,13 +11,13 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.Asse
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.AnnotationHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.DiscoveryAnalysisReportHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.LoggerFactory;
 
 
@@ -66,7 +66,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
         GUIDListResponse response = new GUIDListResponse();
 
         try
@@ -124,7 +124,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
         GUIDListResponse response = new GUIDListResponse();
 
         try
@@ -186,7 +186,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
         GUIDListResponse response = new GUIDListResponse();
 
         try
@@ -249,7 +249,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
         GUIDListResponse response = new GUIDListResponse();
 
         try
@@ -310,7 +310,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
         GUIDListResponse response = new GUIDListResponse();
 
         try
@@ -371,21 +371,14 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DiscoveryEngineAuditCode auditCode = DiscoveryEngineAuditCode.ASSET_AUDIT_LOG;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(assetGUID, discoveryService, message),
-                               serverName,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName, DiscoveryEngineAuditCode.ASSET_AUDIT_LOG.getMessageDefinition(assetGUID, discoveryService, message));
         }
         catch (InvalidParameterException error)
         {
@@ -432,7 +425,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
         GUIDResponse response = new GUIDResponse();
 
         try
@@ -508,7 +501,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
         VoidResponse response = new VoidResponse();
 
         try
@@ -569,7 +562,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog                    auditLog = null;
+        AuditLog                        auditLog = null;
         DiscoveryAnalysisReportResponse response = new DiscoveryAnalysisReportResponse();
 
         try
@@ -624,7 +617,7 @@ public class DiscoveryEngineRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         NameListResponse response = new NameListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -660,7 +653,7 @@ public class DiscoveryEngineRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         StringMapResponse response = new StringMapResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog          auditLog = null;
 
         try
         {
@@ -708,7 +701,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog           auditLog = null;
+        AuditLog               auditLog = null;
         AnnotationListResponse response = new AnnotationListResponse();
         AnnotationStatus       status   = null;
 
@@ -779,7 +772,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog           auditLog = null;
+        AuditLog               auditLog = null;
         AnnotationListResponse response = new AnnotationListResponse();
 
         try
@@ -844,7 +837,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog           auditLog = null;
+        AuditLog               auditLog = null;
         AnnotationListResponse response = new AnnotationListResponse();
 
         try
@@ -906,7 +899,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog       auditLog = null;
+        AuditLog           auditLog = null;
         AnnotationResponse response = new AnnotationResponse();
 
         try
@@ -966,7 +959,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
         GUIDResponse response = new GUIDResponse();
 
         try
@@ -1032,7 +1025,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog       auditLog = null;
+        AuditLog     auditLog = null;
         GUIDResponse response = new GUIDResponse();
 
         try
@@ -1093,7 +1086,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog       auditLog = null;
+        AuditLog     auditLog = null;
         VoidResponse response = new VoidResponse();
 
         try
@@ -1151,7 +1144,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
         VoidResponse response = new VoidResponse();
 
         try
