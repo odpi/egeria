@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * The project handler is initialised with a SubjectAreaProject, that contains the server the call should be sent to.
- * The handler exposes methods for project functionality for the subject area view
+ * The handler exposes methods for project functionality for the glossary author view
  */
 public class ProjectHandler {
     private static final Logger log = LoggerFactory.getLogger(ProjectHandler.class);

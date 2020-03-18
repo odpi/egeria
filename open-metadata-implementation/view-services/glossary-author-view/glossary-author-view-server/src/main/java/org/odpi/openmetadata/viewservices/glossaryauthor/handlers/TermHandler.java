@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * The term handler is initialised with a SubjectAreaTerm, that contains the server the call should be sent to.
- * The handler exposes methods for term functionality for the subject area view  
+ * The handler exposes methods for term functionality for the glossary author view
  */
 public class TermHandler
 {

@@ -12,7 +12,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
  * It is also responsible for registering itself in the instance map.
  */
 
-public class GlossaryauthorViewServicesInstance extends OMVSServiceInstance
+public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
 {
     /**
      * Set up the objects for the Glossary Author view service
@@ -23,7 +23,7 @@ public class GlossaryauthorViewServicesInstance extends OMVSServiceInstance
      * @param metadataServerName  metadata server name
      * @param metadataServerURL metadata server URL
      */
-    public GlossaryauthorViewServicesInstance(String serverName,
+    public GlossaryAuthorViewServicesInstance(String serverName,
                                               OMRSAuditLog auditLog,
                                               String       localServerUserId,
                                               int          maxPageSize,
