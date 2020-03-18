@@ -174,7 +174,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/categories/{guid}")
-    public SubjectAreaOMASAPIResponse updateCategory(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid, Category suppliedCategory, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateCategory(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid, @RequestBody Category suppliedCategory, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateCategory(serverName, userId,guid,suppliedCategory,isReplace);
     }
     /**
