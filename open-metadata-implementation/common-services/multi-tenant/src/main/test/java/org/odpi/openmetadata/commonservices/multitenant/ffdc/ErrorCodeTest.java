@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant.ffdc;
 
-import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.test.unittest.utilities.ExceptionMessageSetTest;
 import org.testng.annotations.Test;
 
