@@ -185,6 +185,7 @@ public class FileException extends ConnectorCheckedException
      * @param caughtError the error that resulted in this exception.
      * @param fileName name of the invalid parameter if known
      */
+    @Deprecated
     public FileException(int       httpCode,
                          String    className,
                          String    actionDescription,
@@ -224,7 +225,7 @@ public class FileException extends ConnectorCheckedException
                 ", reportedHTTPCode=" + getReportedHTTPCode() +
                 ", reportingClassName='" + getReportingClassName() + '\'' +
                 ", reportingActionDescription='" + getReportingActionDescription() + '\'' +
-                ", errorMessage='" + getErrorMessage() + '\'' +
+                ", errorMessage='" + getReportedErrorMessage() + '\'' +
                 ", reportedErrorMessageId='" + getReportedErrorMessageId() + '\'' +
                 ", reportedErrorMessageParameters=" + Arrays.toString(getReportedErrorMessageParameters()) +
                 ", reportedSystemAction='" + getReportedSystemAction() + '\'' +

@@ -4,11 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The CSVFileConnectorErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
