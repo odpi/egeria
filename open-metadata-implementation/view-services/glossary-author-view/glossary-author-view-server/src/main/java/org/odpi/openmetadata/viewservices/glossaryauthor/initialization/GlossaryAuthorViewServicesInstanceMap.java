@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.initialization;
 
-import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryauthorViewServicesInstance;
+import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewServicesInstance;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class GlossaryAuthorViewServicesInstanceMap
 {
-    private static  Map<String, GlossaryauthorViewServicesInstance>   instanceMap = new HashMap<>();
+    private static  Map<String, GlossaryAuthorViewServicesInstance>   instanceMap = new HashMap<>();
 
 
     /**
@@ -24,7 +24,7 @@ public class GlossaryAuthorViewServicesInstanceMap
      * @param instance instance object
      */
     static public synchronized void  setNewInstanceForJVM(String                         serverName,
-                                                   GlossaryauthorViewServicesInstance instance)
+                                                   GlossaryAuthorViewServicesInstance instance)
     {
         instanceMap.put(serverName, instance);
     }
@@ -36,9 +36,9 @@ public class GlossaryAuthorViewServicesInstanceMap
      * @param serverName name of the server
      * @return OMRSRepositoryServicesInstance object
      */
-    private static synchronized GlossaryauthorViewServicesInstance getInstanceForJVM(String    serverName)
+    private static synchronized GlossaryAuthorViewServicesInstance getInstanceForJVM(String    serverName)
     {
-        GlossaryauthorViewServicesInstance instance = instanceMap.get(serverName);
+        GlossaryAuthorViewServicesInstance instance = instanceMap.get(serverName);
 
         return instance;
     }
@@ -67,7 +67,7 @@ public class GlossaryAuthorViewServicesInstanceMap
      * @param serverName name of the server
      * @return OMRSRepositoryServicesInstance object
      */
-    public GlossaryauthorViewServicesInstance getInstance(String    serverName)
+    public GlossaryAuthorViewServicesInstance getInstance(String    serverName)
     {
         return GlossaryAuthorViewServicesInstanceMap.getInstanceForJVM(serverName);
     }

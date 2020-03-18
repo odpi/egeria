@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
 
 /**
  * The glossary handler provide methods to provide business glossary terms for lineage.
@@ -30,7 +30,7 @@ public class GlossaryHandler {
     private RepositoryHandler repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
     private AssetContext graph = new AssetContext();
-    private CommonHandler commonHandler;
+    private HandlerHelper handlerHelper;
 
     /**
      * Construct the discovery engine configuration handler caching the objects
@@ -43,7 +43,7 @@ public class GlossaryHandler {
     public GlossaryHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper, RepositoryHandler repositoryHandler) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
-        this.commonHandler = new CommonHandler(invalidParameterHandler, repositoryHelper, repositoryHandler);
+        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler);
     }
 
 
@@ -89,7 +89,7 @@ public class GlossaryHandler {
     private void getGlossary(String userId, String assetGuid, String typeDefName) throws OCFCheckedExceptionBase {
         final String methodName = "getGlossary";
 
-        String typeGuid = commonHandler.getTypeName(userId, SEMANTIC_ASSIGNMENT);
+        String typeGuid = handlerHelper.getTypeName(userId, SEMANTIC_ASSIGNMENT);
         List<Relationship> semanticAssignments = repositoryHandler.getRelationshipsByType(userId,
                 assetGuid,
                 typeDefName,
@@ -123,7 +123,7 @@ public class GlossaryHandler {
                     GLOSSARY_TERM,
                     methodName);
 
-            entityDetails.add(commonHandler.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph, false));
+            entityDetails.add(handlerHelper.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph, false));
         }
     }
 
