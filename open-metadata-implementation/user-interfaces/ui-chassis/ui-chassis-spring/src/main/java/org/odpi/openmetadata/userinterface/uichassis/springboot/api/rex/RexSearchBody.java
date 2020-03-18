@@ -23,7 +23,7 @@ public class RexSearchBody {
     private String                    serverName;                    // must be non-null
     private String                    serverURLRoot;                 // must be non-null
     private String                    searchText;                    // must be non-null
-    private Boolean                   enterpriseOption;              // TODO - not currently used
+    private Boolean                   enterpriseOption;
     private String                    typeName;                      // filter by type, or null
     private Integer                   gen;                           // indicator of the current gen of the traversal
 

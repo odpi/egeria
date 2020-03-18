@@ -3,8 +3,6 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api.rex;
 
 
-
-
 import org.odpi.openmetadata.repositoryservices.clients.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -50,7 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// TODO _ remove large commented blocks
+
 /**
  * The RepositoryExplorerController provides the server-side implementation
  * of the RepositoryExplorer UI-component (aka Rex)
@@ -281,7 +279,7 @@ public class RepositoryExplorerController extends SecureController
      * @throws InvalidParameterException
      */
     private EnterpriseRepositoryServicesClient getEnterpriseRepositoryServicesClient(String serverName,
-                                                                                String serverURLRoot)
+                                                                                     String serverURLRoot)
         throws
             InvalidParameterException
     {
@@ -569,7 +567,7 @@ public class RepositoryExplorerController extends SecureController
                         String relLabel = this.chooseLabelForRelationship(relationship);
                         String end1GUID = relationship.getEntityOneProxy().getGUID();
                         String end2GUID = relationship.getEntityTwoProxy().getGUID();
-                        int idx = 0;  // TODO - need to spot matching relationships and inc indx.....
+                        int idx = 0;
 
                         RexRelationshipDigest rrd = new RexRelationshipDigest(relGUID, relLabel, end1GUID, end2GUID, idx,
                                                                               gen, relationship.getMetadataCollectionName());
@@ -627,15 +625,15 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (TypeErrorException e) {
 
-            exceptionMessage = "There was a problem with Type information - please check and retry";  // TODO - needs work
+            exceptionMessage = "There was a problem with Type information - please check and retry";
         }
         catch (PropertyErrorException e) {
 
-            exceptionMessage = "There was a problem with Property information - please check and retry";  // TODO - needs work
+            exceptionMessage = "There was a problem with Property information - please check and retry";
         }
         catch (FunctionNotSupportedException e) {
 
-            exceptionMessage = "The UI tried to use an unsupported function";  // TODO - needs work
+            exceptionMessage = "The UI tried to use an unsupported function";
         }
         // For any of the above exceptions, incorporate the exception message into a response object
         rexTraversalResponse = new RexTraversalResponse(400, exceptionMessage, null);
@@ -657,7 +655,6 @@ public class RepositoryExplorerController extends SecureController
 
 
         // Find the effective typeName - this is the highest supertype of the instance type
-        // TODO this does not yet have the ability to look for more specialized labels at more specific types (lower in the hierarchy). That needs a strategy.
         String instanceTypeName = null;
 
         InstanceType instanceType = entityDetail.getType();
@@ -734,7 +731,6 @@ public class RepositoryExplorerController extends SecureController
                 break;
 
             default:
-                // TODO - throughout this labeller method (and the others for proxy and relationship) you can refactor the predicates to be lighter-weight...
                 // Anything that is left should be a Referenceable.
                 // If it has a displayName use that.
                 // Else if it has a name use that.
@@ -762,7 +758,6 @@ public class RepositoryExplorerController extends SecureController
 
                     int lengthQN = fullQN.length();
                     if (lengthQN > TRUNCATED_STRING_LENGTH) {
-                        // TODO - consider tokenizing and taking meaningful segment(s)
                         String tailQN = "..." + fullQN.substring(lengthQN-TRUNCATED_STRING_LENGTH, lengthQN);
                         label = tailQN;
                     } else {
@@ -789,7 +784,6 @@ public class RepositoryExplorerController extends SecureController
 
 
         // Find the effective typeName - this is the highest supertype of the instance type
-        // TODO this does not yet have the ability to look for more specialized labels at more specific types (lower in the hierarchy). That needs a strategy.
         String instanceTypeName = null;
 
         InstanceType instanceType = entityProxy.getType();
@@ -888,7 +882,6 @@ public class RepositoryExplorerController extends SecureController
 
                     int lengthQN = fullQN.length();
                     if (lengthQN > TRUNCATED_STRING_LENGTH) {
-                        // TODO - consider tokenizing and taking meaningful segment(s)
                         String tailQN = "..." + fullQN.substring(lengthQN-TRUNCATED_STRING_LENGTH, lengthQN);
                         label = tailQN;
                     } else {
@@ -939,7 +932,6 @@ public class RepositoryExplorerController extends SecureController
     // If set to null then no filtering is performed - the typeGUID lists are set to null
     // If set to a list of string values then those types are allowed.
     // Returns - a completed RexTraversal or null
-    // TODO - may want to remove the depth 0 entity only part of this - you should never hit a traversal with depth 0.
     private InstanceGraph getTraversal(String         userId,
                                       String         serverName,
                                       String         serverURLRoot,
@@ -963,8 +955,6 @@ public class RepositoryExplorerController extends SecureController
 
         String methodName = "getTraversal";
 
-
-        // TODO - add status filters
 
         // If no entityGUID is specified or depth is not positive, there is no point in continuing...
         if (entityGUID == null || depth < 0 ) {
@@ -1005,7 +995,7 @@ public class RepositoryExplorerController extends SecureController
                         entityGUID,
                         entityTypeGUIDs,
                         relationshipTypeGUIDs,
-                        null,   // TODO List< InstanceStatus > limitResultsByStatus,
+                        null,
                         classificationNames,
                         null,
                         depth);
@@ -1470,7 +1460,7 @@ public class RepositoryExplorerController extends SecureController
         catch (Exception e) {
             exceptionMessage = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
             // For any of the above exceptions, incorporate the exception message into a response object
-            response = new RexSearchResponse(400, exceptionMessage, null, null, searchCategory, null, null));
+            response = new RexSearchResponse(400, exceptionMessage, null, null, searchCategory, null, null);
             return response;
         }
 
@@ -1531,19 +1521,19 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (TypeErrorException e) {
 
-            exceptionMessage = "There was a problem with Type information - please check and retry";  // TODO - needs work
+            exceptionMessage = "There was a problem with Type information - please check and retry";
         }
         catch (PropertyErrorException e) {
 
-            exceptionMessage = "There was a problem with Property information - please check and retry";  // TODO - needs work
+            exceptionMessage = "There was a problem with Property information - please check and retry";
         }
         catch (PagingErrorException e) {
 
-            exceptionMessage = "There was a problem with Paging - please check and retry";  // TODO - needs work
+            exceptionMessage = "There was a problem with Paging - please check and retry";
         }
         catch (FunctionNotSupportedException e) {
 
-            exceptionMessage = "The UI tried to use an unsupported function";  // TODO - needs work
+            exceptionMessage = "The UI tried to use an unsupported function";
         }
         // For any of the above exceptions, incorporate the exception message into a response object
         response = new RexSearchResponse(400, exceptionMessage, serverName, searchText, searchCategory, null, null);
@@ -1579,7 +1569,7 @@ public class RepositoryExplorerController extends SecureController
             // We have a problem - the searchText has not been specified.
             // In either case we cannot do a query...
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_GUID;   // TODO - correct error code please!!
+            OMRSErrorCode errorCode = OMRSErrorCode.NO_SEARCH_CRITERIA;
 
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(searchText, methodName, serverName);
 
@@ -1679,7 +1669,7 @@ public class RepositoryExplorerController extends SecureController
         catch (Exception e) {
             exceptionMessage = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
             // For any of the above exceptions, incorporate the exception message into a response object
-            response = new RexSearchResponse(400, exceptionMessage, null, null, searchCategory, null, null));
+            response = new RexSearchResponse(400, exceptionMessage, null, null, searchCategory, null, null);
             return response;
         }
 
@@ -1745,19 +1735,19 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (TypeErrorException e) {
 
-            exceptionMessage = "There was a problem with Type information - please check and retry";  // TODO - needs work
+            exceptionMessage = "There was a problem with Type information - please check and retry";
         }
         catch (PropertyErrorException e) {
 
-            exceptionMessage = "There was a problem with Property information - please check and retry";  // TODO - needs work
+            exceptionMessage = "There was a problem with Property information - please check and retry";
         }
         catch (PagingErrorException e) {
 
-            exceptionMessage = "There was a problem with Paging - please check and retry";  // TODO - needs work
+            exceptionMessage = "There was a problem with Paging - please check and retry";
         }
         catch (FunctionNotSupportedException e) {
 
-            exceptionMessage = "The UI tried to use an unsupported function";  // TODO - needs work
+            exceptionMessage = "The UI tried to use an unsupported function";
         }
         // For any of the above exceptions, incorporate the exception message into a response object
         response = new RexSearchResponse(400, exceptionMessage, serverName, searchText, searchCategory, null, null);
@@ -1791,7 +1781,7 @@ public class RepositoryExplorerController extends SecureController
             // We have a problem - the searchText has not been specified.
             // In either case we cannot do a query...
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_GUID;   // TODO - correct error code please!!
+            OMRSErrorCode errorCode = OMRSErrorCode.NO_SEARCH_CRITERIA;
 
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(searchText, methodName, serverName);
 

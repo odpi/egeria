@@ -23,8 +23,7 @@ public class RexRelationshipRequestBody {
     private String                    serverName;                    // must be non-null
     private String                    serverURLRoot;                 // must be non-null
     private String                    relationshipGUID;              // must be non-null, GUID of root of traversal
-    private Boolean                   enterpriseOption;              // TODO - not currently used
-
+    private Boolean                   enterpriseOption;
     private Integer                   gen;                           // indicator of the current gen of the traversal
 
 

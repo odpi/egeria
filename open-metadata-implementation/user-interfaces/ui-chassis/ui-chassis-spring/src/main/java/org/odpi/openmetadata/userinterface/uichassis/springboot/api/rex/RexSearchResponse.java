@@ -5,7 +5,6 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api.rex;
 
 
-import java.util.List;
 import java.util.Map;
 
 public class RexSearchResponse {

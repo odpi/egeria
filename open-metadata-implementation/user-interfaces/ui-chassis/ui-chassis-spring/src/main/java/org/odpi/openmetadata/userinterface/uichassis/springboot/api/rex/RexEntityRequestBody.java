@@ -25,11 +25,7 @@ public class RexEntityRequestBody {
     private String                    serverName;                    // must be non-null
     private String                    serverURLRoot;                 // must be non-null
     private String                    entityGUID;                    // must be non-null, GUID of root of traversal
-    private Boolean                   enterpriseOption;              // TODO - not currently used
-    //private List<String>              entityTypeGUIDs;               // a list of type guids or null
-    //private List<String>              relationshipTypeGUIDs;         // a list of type guids or null
-    //private List<String>              classificationNames;           // a list of names or null
-    //private Integer                   depth;                         // the depth of traversal
+    private Boolean                   enterpriseOption;
     private Integer                   gen;                           // indicator of the current gen of the traversal
 
 
@@ -49,14 +45,6 @@ public class RexEntityRequestBody {
 
     public Boolean getEnterpriseOption() { return enterpriseOption; }
 
-    //public List<String> getEntityTypeGUIDs() { return entityTypeGUIDs; }
-
-    //public List<String> getRelationshipTypeGUIDs() { return relationshipTypeGUIDs;  }
-
-    //public List<String> getClassificationNames() { return classificationNames;  }
-
-    //public Integer getDepth() { return depth; }
-
     public Integer getGen() { return gen; }
 
     // ---
@@ -67,14 +55,6 @@ public class RexEntityRequestBody {
     public void setEntityGUID(String entityGUID) { this.entityGUID = entityGUID; }
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
-
-    //public void setEntityTypeGUIDs(List<String> entityTypeGUIDs) { this.entityTypeGUIDs = entityTypeGUIDs; }
-
-    //public void setRelationshipTypeGUIDs(List<String> relationshipTypeGUIDs) {  this.relationshipTypeGUIDs = relationshipTypeGUIDs;  }
-
-    //public void setClassificationNames(List<String> classificationNames) {  this.classificationNames = classificationNames; }
-
-    //public void setDepth(Integer depth) { this.depth = depth; }
 
     public void setGen(Integer gen) { this.gen = gen; }
 
@@ -89,11 +69,7 @@ public class RexEntityRequestBody {
                 ", serverName=" + serverName +
                 ", serverURLRoot=" + serverURLRoot +
                 ", entityGUID=" + entityGUID +
-                //", depth=" + depth +
                 ", enterpriseOption=" + enterpriseOption +
-                //", entityTypeGUIDs=" + entityTypeGUIDs +
-                //", relationshipTypeGUIDs=" + relationshipTypeGUIDs +
-                //", classificationNames=" + classificationNames +
                 ", gen=" + gen +
                 '}';
     }

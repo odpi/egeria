@@ -5,10 +5,8 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.rex;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
-import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -27,7 +25,7 @@ public class RexTraversalRequestBody {
     private String                    serverName;                    // must be non-null
     private String                    serverURLRoot;                 // must be non-null
     private String                    entityGUID;                    // must be non-null, GUID of root of traversal
-    private Boolean                   enterpriseOption;              // TODO - not currently used
+    private Boolean                   enterpriseOption;
     private List<String>              entityTypeGUIDs;               // a list of type guids or null
     private List<String>              relationshipTypeGUIDs;         // a list of type guids or null
     private List<String>              classificationNames;           // a list of names or null
@@ -65,7 +63,7 @@ public class RexTraversalRequestBody {
 
     public Integer getGen() { return gen; }
 
-    // ---
+
     public void setServerName(String serverName) { this.serverName = serverName; }
 
     public void setServerURLRoot(String serverURLRoot) { this.serverURLRoot = serverURLRoot; }

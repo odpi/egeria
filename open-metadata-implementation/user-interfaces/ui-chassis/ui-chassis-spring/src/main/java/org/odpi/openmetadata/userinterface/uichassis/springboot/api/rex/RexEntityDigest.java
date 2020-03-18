@@ -19,14 +19,12 @@ public class RexEntityDigest {
     private String  label;
     private Integer gen;
     private String  metadataCollectionName;
-    //private String  serverName;
 
     public RexEntityDigest(String entityGUID, String label, Integer gen, String metadataCollectionName) {
        this.entityGUID = entityGUID;
        this.label = label;
        this.gen = gen;
        this.metadataCollectionName = metadataCollectionName;  /* The name of the metadataCollection that is home to the entity */
-       //this.serverName = serverName;                          /* The name of the repository server that returned the entity    */
     }
 
     /*
@@ -37,13 +35,11 @@ public class RexEntityDigest {
     public String  getLabel() { return label; }
     public Integer getGen() { return gen; }
     public String  getMetadataCollectionName() { return metadataCollectionName; }
-    //public String  getServerName() { return serverName; }
 
     public void setEntityGUID(String entityGUID) { this.entityGUID = entityGUID; }
     public void setLabel(String label) { this.label = label; }
     public void setGen(Integer gen) { this.gen = gen; }
     public void setMetadataCollectionName(String metadataCollectionName) { this.metadataCollectionName = metadataCollectionName; }
-    //public void seServerName(String serverName) { this.serverName = serverName; }
 
 
 
@@ -55,7 +51,6 @@ public class RexEntityDigest {
                 ", label=" + label +
                 ", gen=" + gen +
                 ", metadataCollectionName=" + metadataCollectionName +
-                //", serverName=" + serverName +
                 '}';
     }
 

@@ -5,18 +5,17 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api.rex;
 
 
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
 public class RexEntityDetailResponse {
 
-    private Integer       httpStatusCode;
-    private String        exceptionText;
+    private Integer                  httpStatusCode;
+    private String                   exceptionText;
     private RexExpandedEntityDetail  expandedEntityDetail;
 
     public RexEntityDetailResponse(Integer statusCode, String exceptionText, RexExpandedEntityDetail expandedEntityDetail) {
 
-        this.httpStatusCode = statusCode;
-        this.exceptionText = exceptionText;
+        this.httpStatusCode       = statusCode;
+        this.exceptionText        = exceptionText;
         this.expandedEntityDetail = expandedEntityDetail;
     }
 

@@ -763,6 +763,15 @@ class InstanceRetriever extends PolymerElement {
                 this.outEvtGraphExtended();
 
             }
+            else {
+              /*
+               * This is not an error - it just means everything in the search was already known,
+               * which can happen.
+               * However, it is desirable to advise the user that nothing new was returned, which should explain why
+               * there will be no visible change to the display.
+               */
+               alert("No new objects were added by the search");
+            }
 
             // If the search resulted in a single instance being selected, optimise
             // the flow by proactively requesting that it becomes the focus instance.

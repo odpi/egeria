@@ -5,8 +5,6 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api.rex;
 
 
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-
 public class RexRelationshipResponse {
 
     private Integer       httpStatusCode;
@@ -15,10 +13,10 @@ public class RexRelationshipResponse {
 
     public RexRelationshipResponse(Integer statusCode, String exceptionText, RexExpandedRelationship expandedRelationship) {
 
-        this.httpStatusCode = statusCode;
-        this.exceptionText = exceptionText;
+        this.httpStatusCode       = statusCode;
+        this.exceptionText        = exceptionText;
         this.expandedRelationship = expandedRelationship;
-        //this.relationship = relationship;
+
     }
 
     public Integer getHttpStatusCode() {

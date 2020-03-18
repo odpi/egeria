@@ -5,7 +5,6 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.rex;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 
 import java.util.List;
 import java.util.Map;
@@ -30,8 +29,6 @@ public class RexTraversal {
     // The settings of these parameters are stored in the RexTraversal.
 
 
-    //private InstanceGraph        subGraph;
-    //private int                  rootIndex;
     // Fields that describe the query that was performed:
     private String               entityGUID;               // must be non-null
     private List<String>         entityTypeNames;          // a list of type names or null
