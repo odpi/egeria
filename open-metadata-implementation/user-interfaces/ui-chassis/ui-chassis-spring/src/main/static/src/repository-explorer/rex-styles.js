@@ -37,10 +37,6 @@ $_documentContainer.innerHTML = `<dom-module id="rex-styles">
 
            .vl { border-left: 1px solid black; }
 
-
-
-
-
            paper-dropdown-menu {
                width     : 300px;
                height    : 50px;
@@ -91,10 +87,6 @@ $_documentContainer.innerHTML = `<dom-module id="rex-styles">
                /* which is why this code is not being used currently. It is kept in case you want to use it.                    */
                /* box-shadow: 0 0 0 4px darken(--egeria-primary-color, 50%);                                                    */
            }
-
-
-
-
 
 
        </style>

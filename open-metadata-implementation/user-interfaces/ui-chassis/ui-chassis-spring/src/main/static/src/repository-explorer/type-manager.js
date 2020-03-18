@@ -66,7 +66,7 @@ class RexTypeManager extends PolymerElement {
      *  Ask the UI Application to retrieve the type information from the named OMAG Server
      */
 
-    loadTypes(serverName, serverURLRoot, enterpriseQuery) {
+    loadTypes(serverName, serverURLRoot, enterpriseOption) {
 
         if (this.validate(serverName) && this.validate(serverURLRoot)) {
 
@@ -81,7 +81,7 @@ class RexTypeManager extends PolymerElement {
             var serverDetails              = {};
             serverDetails.serverName       = serverName;
             serverDetails.serverURLRoot    = serverURLRoot;
-            serverDetails.enterpriseOption =  enterpriseQuery ? "true" : "false";
+            serverDetails.enterpriseOption = enterpriseOption ? "true" : "false";
 
 
             /*

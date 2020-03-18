@@ -499,7 +499,7 @@ class RexDetailsPanel extends PolymerElement {
                 var itemnode = document.createElement("li");
                 itemnode.innerHTML = clsName;
                 // Append a collapsible section that shows the classification properties and origin....
-                // TODO include classification props and origin
+                // TODO It would be good to include classification props and origin
                 listnode.appendChild(itemnode);
              });
         }

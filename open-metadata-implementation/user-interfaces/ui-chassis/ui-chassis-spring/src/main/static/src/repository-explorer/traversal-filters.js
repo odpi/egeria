@@ -48,7 +48,7 @@ class TraversalFilters extends MutableData(PolymerElement) {
             </style>
 
 
-            <div style="height:175px; width:700px; overflow: auto">
+            <div style="height:150px; width:700px; overflow: auto">
 
                 <div class="row" style="width:700px;">
                     <div class="column">

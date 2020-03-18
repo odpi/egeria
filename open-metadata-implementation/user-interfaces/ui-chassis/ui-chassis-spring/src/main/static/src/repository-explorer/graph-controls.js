@@ -99,25 +99,26 @@ class GraphControls extends PolymerElement {
 
                 <!--Traversal Filters dialog - initially hidden and made visible when pre-traversal stats are received. -->
                 <div>
-                        <paper-dialog id="traversalFiltersDialog" style=" height:450px; width:800px; ">
+                        <paper-dialog id="traversalFiltersDialog" style=" height:500px; width:800px; ">
 
                             <p>
-                            If you wish to restrict the traversal to specific types, please select the types to include.
-                            If none of the types in a category (column) are selected the traversal will include all the types listed.
-                            </p>
+                            To restrict the traversal to specific types, set the traversal filters below.
                             <p>
-                            To traverse a relationship to a neighboring entity, enable both the relationship type and neighboring entity type.
-                            This allows selective filtering of neighboring entity types even if they are reached via relationships of the same
-                            type.
+                            For each category (column):
+                            <ul style="padding: 0px 40px;">
+                            <li>If NO types are checked, there is no filtering for the category. All types are permitted.
+                            <li>If ANY (or all) types are checked, the traversal will be restricted to the checked types.
+                            </ul>
+                            <p>
+                            A neighboring entity can be reached if its entity type is permitted, it has one or more of any
+                            required classifications and the connecting relationship type is permitted.
                             </p>
-
 
                             <!--   Display 3 things per type included in the pre-traversal stats
                               --   1. The type category and name
                               --   2. The count of instances of this type
                               --   3. A checkbox to include/exclude from the traversal
                               -->
-
 
                             <div id="containerForTraversalFilters">
                             </div>
@@ -376,7 +377,7 @@ class GraphControls extends PolymerElement {
 
     doPreTraversal() {
 
-        var focusGUID        = this.instanceRetriever.getFocusGUID();
+        var focusGUID     = this.instanceRetriever.getFocusGUID();
         var focusCategory = this.instanceRetriever.getFocusCategory();
 
         if (focusCategory !== 'Entity') {
@@ -394,7 +395,7 @@ class GraphControls extends PolymerElement {
             var body = {};
             body.serverName       = serverDetails.serverName;
             body.serverURLRoot    = serverDetails.serverURLRoot;
-            body.enterpriseOption = serverDetails.enterpriseQuery;
+            body.enterpriseOption = serverDetails.enterpriseOption;
             body.entityGUID       = focusGUID;
             body.depth            = "1";  /* deliberately hard-coded */
 
@@ -468,9 +469,9 @@ class GraphControls extends PolymerElement {
       */
      doTraversal(entityTypeGUIDs, relationshipTypeGUIDs, classificationNames) {
 
-         var focusGUID        = this.instanceRetriever.getFocusGUID();
-         var focusCategory = this.instanceRetriever.getFocusCategory();
-         var currentGen       = this.instanceRetriever.getCurrentGen();
+         var focusGUID      = this.instanceRetriever.getFocusGUID();
+         var focusCategory  = this.instanceRetriever.getFocusCategory();
+         var currentGen     = this.instanceRetriever.getCurrentGen();
 
          if (focusCategory !== 'Entity') {
              alert("Cannot explore from a relationship - please select an entity");
@@ -488,7 +489,7 @@ class GraphControls extends PolymerElement {
              var body = {};
              body.serverName       = serverDetails.serverName;
              body.serverURLRoot    = serverDetails.serverURLRoot;
-             body.enterpriseOption = serverDetails.enterpriseQuery;
+             body.enterpriseOption = serverDetails.enterpriseOption;
              body.entityGUID       = focusGUID;
              body.depth            = 1;    /* deliberately hard-coded */
              body.gen              = currentGen;
@@ -545,7 +546,7 @@ class GraphControls extends PolymerElement {
                 else {
 
                     // Unpack the RexPreTraversal fields
-                    // private String                    entityGUID;                    // must be non-null
+                    //    private String                    entityGUID;                    // must be non-null
                     //    private Map<String,RexTypeStats>  entityInstanceCounts;          // a list of type guids or null
                     //    private Map<String,RexTypeStats>  relationshipInstanceCounts;    // a list of type guids or null
                     //    private Map<String,RexTypeStats>  classificationInstanceCounts;  // a list of names or null

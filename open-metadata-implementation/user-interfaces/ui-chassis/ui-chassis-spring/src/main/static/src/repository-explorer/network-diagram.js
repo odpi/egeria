@@ -1055,30 +1055,13 @@ class NetworkDiagram extends PolymerElement {
      *  should be visually highlighted).
      */
     highlighted(d) {
-        var selectedGUID = null;
-        var focusCat = this.instanceRetriever.getFocusCategory();
 
-        switch (focusCat) {
-
-        case "Entity":
-            var selectedEntity = this.instanceRetriever.getFocusEntity();
-            if (selectedEntity !== null) {
-                selectedGUID = selectedEntity.entityDetail.guid;
-            }
-            break;
-
-        case "Relationship":
-            var selectedRelationship = this.instanceRetriever.getFocusRelationship();
-            if (selectedRelationship !== null) {
-                selectedGUID = selectedRelationship.relationship.guid;
-            }
-            break;
+        var focusGUID = this.instanceRetriever.getFocusGUID();
+        if (focusGUID !== undefined) {
+            if (d.id === focusGUID)
+                return true;
         }
-
-        if (d.id === selectedGUID)
-            return true;
-        else
-            return false;
+        return false;
     }
 
 
@@ -1088,39 +1071,11 @@ class NetworkDiagram extends PolymerElement {
      *  The selected node always appears in egeria-primary-color.
      */
     nodeColor(d) {
-        var selectedGUID = null;
-
-        var focusCat = this.instanceRetriever.getFocusCategory();
-        switch (focusCat) {
-
-            case "Entity":
-                var selectedEntity = this.instanceRetriever.getFocusEntity();
-                if (selectedEntity !== null) {
-                    selectedGUID = selectedEntity.entityDetail.guid;
-                }
-                break;
-
-            case "Relationship":
-                var selectedRelationship = this.instanceRetriever.getFocusRelationship();
-                if (selectedRelationship !== null) {
-                    selectedGUID = selectedRelationship.relationship.guid;
-                }
-                break;
-        }
-
-
-
-        var selectedEntity;
-
-        var selectedEntity = this.instanceRetriever.getFocusEntity();
-        if (selectedEntity !== null) {
-            selectedGUID = selectedEntity.entityDetail.guid;
-        }
 
         /*
-         * If instance is the current focus paint it in egeria primary color
+         * If instance is the current focus, paint it in egeria primary color
          */
-        if (d.id === selectedGUID) {
+        if (this.highlighted(d)) {
             return this.egeria_primary_color_string;
         }
         else {

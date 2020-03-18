@@ -561,6 +561,68 @@ class InstanceRetriever extends PolymerElement {
     }
 
 
+    outEvtGraphExtended() {
+        var customEvent = new CustomEvent('graph-extended',
+            { bubbles: true, composed: true,
+              detail: {source: "instance-retriever"} } );
+        this.dispatchEvent(customEvent);
+    }
+
+    outEvtGraphReduced() {
+        var customEvent = new CustomEvent('graph-reduced',
+            { bubbles: true, composed: true,
+              detail: {source: "instance-retriever"} } );
+        this.dispatchEvent(customEvent);
+    }
+
+    outEvtGraphBeingReduced() {
+        var customEvent = new CustomEvent('graph-being-reduced',
+            { bubbles: true, composed: true,
+              detail: {source: "instance-retriever"} } );
+        this.dispatchEvent(customEvent);
+    }
+
+    outEvtFocusEntityChanged(entityGUID) {
+        var customEvent = new CustomEvent('focus-entity-changed',
+            { bubbles: true, composed: true,
+              detail: { guid : entityGUID , source: "instance-retriever"} });
+        this.dispatchEvent(customEvent);
+    }
+
+    outEvtFocusEntityCleared() {
+        var customEvent = new CustomEvent('focus-entity-cleared',
+            { bubbles: true, composed: true,
+              detail: { source: "instance-retriever"} });
+        this.dispatchEvent(customEvent);
+    }
+
+    outEvtEntityNotLoaded() {
+        var customEvent = new CustomEvent('entity-not-loaded',
+            { bubbles: true, composed: true,
+              detail: { source: "instance-retriever"} });
+        this.dispatchEvent(customEvent);
+    }
+
+    outEvtFocusRelationshipChanged(relationshipGUID) {
+        var customEvent = new CustomEvent('focus-relationship-changed',
+            { bubbles: true, composed: true,
+              detail: { guid : relationshipGUID , source: "instance-retriever"} });
+        this.dispatchEvent(customEvent);
+    }
+
+    outEvtFocusRelationshipCleared() {
+        var customEvent = new CustomEvent('focus-relationship-cleared',
+            { bubbles: true, composed: true,
+              detail: { source: "instance-retriever"}  });
+        this.dispatchEvent(customEvent);
+    }
+
+    outEvtRelationshipNotLoaded() {
+        var customEvent = new CustomEvent('relationship-not-loaded',
+             { bubbles: true, composed: true,
+               detail: { source: "instance-retriever"} });
+        this.dispatchEvent(customEvent);
+    }
 
    /*
     * This function is called on submit of the search results dialog. It needs to access the selected instances
@@ -1029,87 +1091,6 @@ class InstanceRetriever extends PolymerElement {
         }
     }
 
-    outEvtGraphExtended() {
-        var customEvent = new CustomEvent('graph-extended',
-            { bubbles: true, composed: true,
-              detail: {source: "instance-retriever"} } );
-        this.dispatchEvent(customEvent);
-    }
-
-    outEvtGraphReduced() {
-        var customEvent = new CustomEvent('graph-reduced',
-            { bubbles: true, composed: true,
-              detail: {source: "instance-retriever"} } );
-        this.dispatchEvent(customEvent);
-    }
-
-    outEvtGraphBeingReduced() {
-        var customEvent = new CustomEvent('graph-being-reduced',
-             { bubbles: true, composed: true,
-               detail: {source: "instance-retriever"} } );
-        this.dispatchEvent(customEvent);
-    }
-
-
-    outEvtFocusEntityChanged(entityGUID) {
-        var customEvent = new CustomEvent('focus-entity-changed',
-            { bubbles: true, composed: true,
-              detail: { guid : entityGUID , source: "instance-retriever"} });
-        this.dispatchEvent(customEvent);
-    }
-
-    outEvtFocusEntityCleared() {
-        var customEvent = new CustomEvent('focus-entity-cleared',
-                                  { bubbles: true,
-                                    composed: true,
-                                    detail: {
-                                        source: "instance-retriever"}
-                                  });
-        this.dispatchEvent(customEvent);
-    }
-
-
-    outEvtEntityNotLoaded() {
-        var customEvent = new CustomEvent('entity-not-loaded',
-                                                 { bubbles: true,
-                                                   composed: true,
-                                                   detail: {
-                                                       source: "instance-retriever"}
-                                                 } );
-        this.dispatchEvent(customEvent);
-    }
-
-
-    outEvtFocusRelationshipChanged(relationshipGUID) {
-        var customEvent = new CustomEvent('focus-relationship-changed',
-                                { bubbles: true,
-                                  composed: true,
-                                  detail: {
-                                      guid : relationshipGUID ,
-                                      source: "instance-retriever"}
-                                });
-        this.dispatchEvent(customEvent);
-    }
-
-    outEvtFocusRelationshipCleared() {
-        var customEvent = new CustomEvent('focus-relationship-cleared',
-                                { bubbles: true,
-                                  composed: true,
-                                  detail: {
-                                      source: "instance-retriever"}
-                                });
-        this.dispatchEvent(customEvent);
-    }
-
-    outEvtRelationshipNotLoaded() {
-        var customEvent = new CustomEvent('relationship-not-loaded',
-                                { bubbles: true,
-                                  composed: true,
-                                  detail: {
-                                      source: "instance-retriever"}
-                                });
-        this.dispatchEvent(customEvent);
-    }
 
      /*
       * The pre-traversal asks the view-service to get the types of relationship and neighboring entity adjacent to

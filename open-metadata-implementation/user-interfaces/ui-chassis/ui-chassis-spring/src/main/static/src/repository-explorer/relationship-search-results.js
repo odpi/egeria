@@ -122,10 +122,6 @@ class RelationshipSearchResults extends MutableData(PolymerElement) {
         return this.selectedInstances;
     }
 
-
-
-
-
     checkAll() {
         this.changeAll(true);
     }

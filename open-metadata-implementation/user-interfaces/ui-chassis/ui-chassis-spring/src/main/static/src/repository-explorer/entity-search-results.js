@@ -92,8 +92,6 @@ class EntitySearchResults extends MutableData(PolymerElement) {
                  value : undefined
             }
 
-
-
         };
     }
 

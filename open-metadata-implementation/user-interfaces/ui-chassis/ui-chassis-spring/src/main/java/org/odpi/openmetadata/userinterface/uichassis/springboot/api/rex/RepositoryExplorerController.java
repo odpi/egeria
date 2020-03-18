@@ -3,12 +3,8 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api.rex;
 
 
-import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+
+
 import org.odpi.openmetadata.repositoryservices.clients.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -27,7 +23,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
@@ -99,10 +95,6 @@ public class RepositoryExplorerController extends SecureController
      *   enterpriseOption is a string "true" or "false" indicating whether to include results from the cohorts to which the server belongs
      */
 
-    // TODO - this is artificially qualified as rexTypeExplorer for now - it should really (eventually) be
-    // refactored so that there is ONE controller for both tex and rex - or rex should be using the tex
-    // REST api....for now keep them separate.
-    //
     @PostMapping( path = "/api/types/rexTypeExplorer")
     public TypeExplorerResponse rexTypeExplorer(@RequestBody Map<String,String> body, HttpServletRequest request)
     {
@@ -122,8 +114,6 @@ public class RepositoryExplorerController extends SecureController
 
         try {
 
-            // TODO - decide when to delete old method ...
-            //TypeExplorer tex = this.getTypeExplorer(userId, serverName, serverURLRoot, enterpriseOption);
             TypeExplorer tex = this.getTypeExplorer(userId, serverName, serverURLRoot, enterpriseOption);
 
             if (tex != null) {
@@ -136,11 +126,6 @@ public class RepositoryExplorerController extends SecureController
             }
             return texResp;
         }
-        //catch (ConnectionCheckedException | ConnectorCheckedException e)
-        // {
-        //
-        //    exceptionMessage = "Connector error occurred, please check the server name and URL root parameters";
-        //}
         catch (UserNotAuthorizedException e) {
 
             exceptionMessage = "Sorry - this username was not authorized to perform the request";
@@ -162,79 +147,6 @@ public class RepositoryExplorerController extends SecureController
     }
 
 
-/*
-
-    private TypeExplorer getTypeExplorerOld(String  userId,
-                                         String  serverName,
-                                         String  serverURLRoot,
-                                         boolean enterpriseOption)
-        throws
-            ConnectionCheckedException,
-            ConnectorCheckedException,
-            UserNotAuthorizedException,
-            RepositoryErrorException,
-            InvalidParameterException
-    {
-
-        try {
-
-            this.getMetadataCollection(userId, serverName, serverURLRoot, enterpriseOption);
-
-            TypeExplorer tex = new TypeExplorer();
-
-            TypeDefGallery typeDefGallery = metadataCollection.getAllTypes(userId);
-
-            List<TypeDef> typeDefs = typeDefGallery.getTypeDefs();
-            for (TypeDef typeDef : typeDefs) {
-                TypeDefCategory tdCat = typeDef.getCategory();
-                switch (tdCat) {
-                    case ENTITY_DEF:
-                        EntityExplorer eex = new EntityExplorer((EntityDef) typeDef);
-                        tex.addEntityExplorer(typeDef.getName(), eex);
-                        break;
-                    case RELATIONSHIP_DEF:
-                        RelationshipExplorer rex = new RelationshipExplorer((RelationshipDef) typeDef);
-                        tex.addRelationshipExplorer(typeDef.getName(), rex);
-                        break;
-                    case CLASSIFICATION_DEF:
-                        ClassificationExplorer cex = new ClassificationExplorer((ClassificationDef) typeDef);
-                        tex.addClassificationExplorer(typeDef.getName(), cex);
-                        break;
-                    default:
-                        // Ignore this typeDef and continue with next
-                        break;
-                }
-            }
-
-            // Include EnumDefs in the TEX
-            List<AttributeTypeDef> attributeTypeDefs = typeDefGallery.getAttributeTypeDefs();
-            for (AttributeTypeDef attributeTypeDef : attributeTypeDefs) {
-                AttributeTypeDefCategory tdCat = attributeTypeDef.getCategory();
-                switch (tdCat) {
-                    case ENUM_DEF:
-                        tex.addEnumExplorer(attributeTypeDef.getName(), (EnumDef)attributeTypeDef);
-                        break;
-                    default:
-                        // Ignore this AttributeTypeDef and continue with next
-                        break;
-                }
-            }
-
-            // All typeDefs processed, resolve linkages and return the TEX object
-            tex.resolve();
-            return tex;
-
-        }
-        catch (ConnectionCheckedException |
-               ConnectorCheckedException  |
-               UserNotAuthorizedException |
-               RepositoryErrorException   |
-               InvalidParameterException e ) {
-            throw e;
-        }
-
-    }
-*/
 
 
 
@@ -251,10 +163,16 @@ public class RepositoryExplorerController extends SecureController
         try {
 
             /*
-             *  TODO : Either here on in called method (which will need to be more general) switch based
+             *  Switch between local and enterprise services clients depending
              *  on enterprise option...
              */
-            LocalRepositoryServicesClient repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
+            MetadataCollectionServicesClient repositoryServicesClient;
+            if (!enterpriseOption) {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
+            }
+            else {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+            }
 
             TypeExplorer tex = new TypeExplorer();
 
@@ -342,6 +260,38 @@ public class RepositoryExplorerController extends SecureController
         return client;
     }
 
+    /**
+     * getEnterpriseRepositoryServicesClient
+     *
+     * This method will get the above client object, which then provides access to all the methods of the
+     * MetadataCollection interface. This client is used when the enterprise option is set, and will
+     * perform federation.
+     *
+     * @param serverName
+     * @param serverURLRoot
+     * @throws InvalidParameterException
+     */
+    private EnterpriseRepositoryServicesClient getEnterpriseRepositoryServicesClient(String serverName,
+                                                                                String serverURLRoot)
+        throws
+            InvalidParameterException
+    {
+        /*
+         * The serverName is used as the repositoryName
+         * The serverURLRoot is used as part of the restURLRoot, along with the serverName
+         */
+
+        /*
+         * The only exception thrown by the CTOR is InvalidParameterException, and this is not caught
+         * here because we want to surface it to the REST API that called this method so that the
+         * exception can be wrapped and a suitable indication sent in the REST Response.
+         */
+        String restURLRoot = serverURLRoot + "/servers/" + serverName;
+        EnterpriseRepositoryServicesClient client = new EnterpriseRepositoryServicesClient(serverName, restURLRoot);
+
+        return client;
+    }
+
     /*
      * This method retrieves the stats affecting a proposed traversal of an instance sub-graph starting from an entity.
      * The response is packaged in a RexPreTraversal object which contains types and counts for relationships and
@@ -367,7 +317,7 @@ public class RepositoryExplorerController extends SecureController
         // If a filter typeGUID was not selected in the UI then it will not appear in the body.
         String serverName               = body.getServerName();
         String serverURLRoot            = body.getServerURLRoot();
-        Boolean enterpriseOption        = false;    // TODO not used for now
+        Boolean enterpriseOption        = body.getEnterpriseOption();
 
         String entityGUID               = body.getEntityGUID();
         Integer depth                   = body.getDepth();
@@ -472,10 +422,6 @@ public class RepositoryExplorerController extends SecureController
             }
             return rexPreTraversalResponse;
         }
-        catch (ConnectionCheckedException | ConnectorCheckedException e) {
-
-            exceptionMessage = "Connector error occurred, please check the server name and URL root parameters";
-        }
         catch (UserNotAuthorizedException e) {
 
             exceptionMessage = "Sorry - this username was not authorized to perform the request";
@@ -490,11 +436,11 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (EntityNotKnownException e) {
 
-            exceptionMessage = "The system could not find an entity with the GUID specified - please check the GUID ad try again";
+            exceptionMessage = "The system could not find an entity with the GUID specified - please check the GUID and try again";
         }
         catch (EntityProxyOnlyException e) {
 
-            exceptionMessage = "The system could only find an entity proxy using the GUID specified - please check the GUID ad try again";
+            exceptionMessage = "The system could only find an entity proxy using the GUID specified - please check the GUID and try again";
         }
         catch (TypeErrorException e) {
 
@@ -524,7 +470,7 @@ public class RepositoryExplorerController extends SecureController
         // If a filter typeGUID was not selected in the UI then it will not appear in the body.
         String serverName                 = body.getServerName();
         String serverURLRoot              = body.getServerURLRoot();
-        Boolean enterpriseOption          = false;   // TODO not used for now
+        Boolean enterpriseOption          = body.getEnterpriseOption();  // TODO check this works (boolean)
 
         String entityGUID                 = body.getEntityGUID();
         Integer gen                       = body.getGen();
@@ -635,11 +581,6 @@ public class RepositoryExplorerController extends SecureController
             }
             return rexTraversalResponse;
         }
-
-        catch (ConnectionCheckedException | ConnectorCheckedException e) {
-
-            exceptionMessage = "Connector error occurred, please check the server name and URL root parameters";
-        }
         catch (UserNotAuthorizedException e) {
 
             exceptionMessage = "Sorry - this username was not authorized to perform the request";
@@ -654,11 +595,11 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (EntityNotKnownException e) {
 
-            exceptionMessage = "The system could not find an entity with the GUID specified - please check the GUID ad try again";
+            exceptionMessage = "The system could not find an entity with the GUID specified - please check the GUID and try again";
         }
         catch (EntityProxyOnlyException e) {
 
-            exceptionMessage = "The system could only find an entity proxy using the GUID specified - please check the GUID ad try again";
+            exceptionMessage = "The system could only find an entity proxy using the GUID specified - please check the GUID and try again";
         }
         catch (TypeErrorException e) {
 
@@ -986,8 +927,6 @@ public class RepositoryExplorerController extends SecureController
                                       Integer        depth
                                       )
             throws
-            ConnectionCheckedException,
-            ConnectorCheckedException,
             UserNotAuthorizedException,
             RepositoryErrorException,
             InvalidParameterException,
@@ -1024,24 +963,16 @@ public class RepositoryExplorerController extends SecureController
         try {
 
             /*
-             *  TODO : Either here on in called method (which will need to be more general) switch based
+             *  Switch between local and enterprise services clients depending
              *  on enterprise option...
              */
-            LocalRepositoryServicesClient repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-
-           /* this.getMetadataCollection(userId, serverName, serverURLRoot, enterpriseOption);
-
-            if (depth >0) {
-
-                InstanceGraph instGraph = metadataCollection.getEntityNeighborhood(
-                        userId,
-                        entityGUID,
-                        entityTypeGUIDs,
-                        relationshipTypeGUIDs,
-                        null,   // TODO List< InstanceStatus > limitResultsByStatus,
-                        classificationNames,
-                        null,
-                        depth);*/
+            MetadataCollectionServicesClient repositoryServicesClient;
+            if (!enterpriseOption) {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
+            }
+            else {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+            }
 
             if (depth >0) {
 
@@ -1171,10 +1102,6 @@ public class RepositoryExplorerController extends SecureController
 
             return response;
         }
-        catch (ConnectionCheckedException | ConnectorCheckedException e) {
-
-            exceptionMessage = "Connector error occurred, please check the server name and URL root parameters";
-        }
         catch (UserNotAuthorizedException e) {
 
             exceptionMessage = "Sorry - this username was not authorized to perform the request";
@@ -1189,11 +1116,11 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (EntityNotKnownException e) {
 
-            exceptionMessage = "The system could not find an entity with the GUID specified - please check the GUID ad try again";
+            exceptionMessage = "The system could not find an entity with the GUID specified - please check the GUID and try again";
         }
         catch (EntityProxyOnlyException e) {
 
-            exceptionMessage = "The system could only find an entity proxy using the GUID specified - please check the GUID ad try again";
+            exceptionMessage = "The system could only find an entity proxy using the GUID specified - please check the GUID and try again";
         }
 
         // For any of the above exceptions, incorporate the exception message into a response object
@@ -1211,8 +1138,6 @@ public class RepositoryExplorerController extends SecureController
                                            boolean  enterpriseOption,
                                            String   entityGUID)
     throws
-    ConnectionCheckedException,
-    ConnectorCheckedException,
     UserNotAuthorizedException,
     RepositoryErrorException,
     InvalidParameterException,
@@ -1243,14 +1168,17 @@ public class RepositoryExplorerController extends SecureController
 
         try {
 
-            //this.getMetadataCollection(userId, serverName, serverURLRoot, enterpriseOption);
-
             /*
-             *  TODO : Either here on in called method (which will need to be more general) switch based
+             *  Switch between local and enterprise services clients depending
              *  on enterprise option...
              */
-            LocalRepositoryServicesClient repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-
+            MetadataCollectionServicesClient repositoryServicesClient;
+            if (!enterpriseOption) {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
+            }
+            else {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+            }
 
             EntityDetail entityDetail = repositoryServicesClient.getEntityDetail(
                     userId,
@@ -1348,10 +1276,6 @@ public class RepositoryExplorerController extends SecureController
 
             return response;
         }
-        catch (ConnectionCheckedException | ConnectorCheckedException e) {
-
-            exceptionMessage = "Connector error occurred, please check the server name and URL root parameters";
-        }
         catch (UserNotAuthorizedException e) {
 
             exceptionMessage = "Sorry - this username was not authorized to perform the request";
@@ -1366,7 +1290,7 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (RelationshipNotKnownException e) {
 
-            exceptionMessage = "The system could not find an relationship with the GUID specified - please check the GUID ad try again";
+            exceptionMessage = "The system could not find an relationship with the GUID specified - please check the GUID and try again";
         }
 
         // For any of the above exceptions, incorporate the exception message into a response object
@@ -1384,8 +1308,6 @@ public class RepositoryExplorerController extends SecureController
                                          boolean  enterpriseOption,
                                          String   relationshipGUID)
     throws
-    ConnectionCheckedException,
-    ConnectorCheckedException,
     UserNotAuthorizedException,
     RepositoryErrorException,
     InvalidParameterException,
@@ -1415,14 +1337,17 @@ public class RepositoryExplorerController extends SecureController
 
         try {
 
-            //this.getMetadataCollection(userId, serverName, serverURLRoot, enterpriseOption);
-
             /*
-             *  TODO : Either here on in called method (which will need to be more general) switch based
+             *  Switch between local and enterprise services clients depending
              *  on enterprise option...
              */
-            LocalRepositoryServicesClient repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-
+            MetadataCollectionServicesClient repositoryServicesClient;
+            if (!enterpriseOption) {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
+            }
+            else {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+            }
 
             Relationship relationship = repositoryServicesClient.getRelationship(
                     userId,
@@ -1528,10 +1453,6 @@ public class RepositoryExplorerController extends SecureController
 
             return response;
         }
-        catch (ConnectionCheckedException | ConnectorCheckedException e) {
-
-            exceptionMessage = "Connector error occurred, please check the server name and URL root parameters";
-        }
         catch (UserNotAuthorizedException e) {
 
             exceptionMessage = "Sorry - this username was not authorized to perform the request";
@@ -1576,9 +1497,6 @@ public class RepositoryExplorerController extends SecureController
                                             String   searchText,
                                             String   entityTypeGUID)
     throws
-            // TODO - check exception list
-    ConnectionCheckedException,
-    ConnectorCheckedException,
     UserNotAuthorizedException,
     RepositoryErrorException,
     InvalidParameterException,
@@ -1612,13 +1530,17 @@ public class RepositoryExplorerController extends SecureController
 
         try {
 
-            //this.getMetadataCollection(userId, serverName, serverURLRoot, enterpriseOption);
-
             /*
-             *  TODO : Either here on in called method (which will need to be more general) switch based
+             *  Switch between local and enterprise services clients depending
              *  on enterprise option...
              */
-            LocalRepositoryServicesClient repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
+            MetadataCollectionServicesClient repositoryServicesClient;
+            if (!enterpriseOption) {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
+            }
+            else {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+            }
 
 
             List<EntityDetail> entityList = repositoryServicesClient.findEntitiesByPropertyValue(
@@ -1731,10 +1653,6 @@ public class RepositoryExplorerController extends SecureController
 
             return response;
         }
-        catch (ConnectionCheckedException | ConnectorCheckedException e) {
-
-            exceptionMessage = "Connector error occurred, please check the server name and URL root parameters";
-        }
         catch (UserNotAuthorizedException e) {
 
             exceptionMessage = "Sorry - this username was not authorized to perform the request";
@@ -1779,9 +1697,6 @@ public class RepositoryExplorerController extends SecureController
                                                  String   searchText,
                                                  String   relationshipTypeGUID)
     throws
-    // TODO - check exception list
-            ConnectionCheckedException,
-            ConnectorCheckedException,
             UserNotAuthorizedException,
             RepositoryErrorException,
             InvalidParameterException,
@@ -1813,14 +1728,17 @@ public class RepositoryExplorerController extends SecureController
 
         try {
 
-            //this.getMetadataCollection(userId, serverName, serverURLRoot, enterpriseOption);
-
             /*
-             *  TODO : Either here on in called method (which will need to be more general) switch based
+             *  Switch between local and enterprise services clients depending
              *  on enterprise option...
              */
-            LocalRepositoryServicesClient repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-
+            MetadataCollectionServicesClient repositoryServicesClient;
+            if (!enterpriseOption) {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
+            }
+            else {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+            }
 
             List<Relationship> relationshipList = repositoryServicesClient.findRelationshipsByPropertyValue(
                     userId,

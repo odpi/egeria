@@ -82,11 +82,11 @@ class RexConnectionManager extends PolymerElement {
                                 Connect
                             </paper-button>
 
-                            <paper-checkbox disabled
+                            <paper-checkbox
                                 style="padding:10px;"
-                                id="enterpriseQuery"
-                                checked="{{enterpriseQuery}}"
-                                on-change="enterpriseQueryChanged">
+                                id="enterpriseOption"
+                                checked="{{enterpriseOption}}"
+                                on-change="enterpriseOptionChanged">
                                 Enterprise
                             </paper-checkbox>
 
@@ -108,7 +108,7 @@ class RexConnectionManager extends PolymerElement {
             //  user-specified serverName - using bi-directional databind
             serverName: {
                 type               : String,
-                value              : "Schema_Server",  // TODO remove default
+                value              : "",
                 notify             : true,
                 reflectToAttribute : true
             },
@@ -116,13 +116,13 @@ class RexConnectionManager extends PolymerElement {
             //  user-specified serverURLRoot
             serverURLRoot: {
                 type               : String,
-                value              : "http://localhost:8088",  // TODO remove default
+                value              : "",
                 notify             : true,
                 reflectToAttribute : true
             },
 
             //  user-specified enterprise scope option (true | false)
-            enterpriseQuery: {
+            enterpriseOption: {
                 type               : Boolean,
                 value              : false,
                 notify             : true,
@@ -178,7 +178,7 @@ class RexConnectionManager extends PolymerElement {
         // No action
     }
 
-    enterpriseQueryChanged() {
+    enterpriseOptionChanged() {
         // No action
     }
 
@@ -208,7 +208,7 @@ class RexConnectionManager extends PolymerElement {
         var serverDetails = {};
         serverDetails.serverName       = this.serverName;
         serverDetails.serverURLRoot    = this.serverURLRoot;
-        serverDetails.enterpriseOption = this.enterpriseQuery;
+        serverDetails.enterpriseOption = this.enterpriseOption;
         return serverDetails;
     }
 
