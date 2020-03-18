@@ -85,11 +85,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-metadata-ut</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <scope>test</scope>
