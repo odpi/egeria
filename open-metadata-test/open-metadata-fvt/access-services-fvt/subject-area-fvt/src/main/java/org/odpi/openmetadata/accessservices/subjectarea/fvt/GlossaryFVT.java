@@ -62,6 +62,12 @@ public class GlossaryFVT
 
     public void run() throws SubjectAreaCheckedExceptionBase
     {
+        List<Glossary> initialGlossaryState = findGlossaries(null);
+        int initialGlossaryCount = 0;
+        if (initialGlossaryState !=null && initialGlossaryState.size()>0) {
+            initialGlossaryCount = initialGlossaryState.size();
+        }
+
         System.out.println("Create a glossary");
         Glossary glossary = createGlossary(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME);
         FVTUtils.validateNode(glossary);
@@ -69,8 +75,8 @@ public class GlossaryFVT
         FVTUtils.validateNode(glossary2);
 
         List<Glossary> results = findGlossaries(null);
-        if (results.size() !=2 ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 2 back on the find got " +results.size(), "", "");
+        if (results.size() !=initialGlossaryCount+2 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected " + initialGlossaryCount+2 + " back on the find got " +results.size(), "", "");
         }
         Glossary glossaryForUpdate = new Glossary();
         glossaryForUpdate.setName(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME3);
