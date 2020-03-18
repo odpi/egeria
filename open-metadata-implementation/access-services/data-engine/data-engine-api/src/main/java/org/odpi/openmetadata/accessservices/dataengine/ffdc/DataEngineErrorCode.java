@@ -54,7 +54,15 @@ public enum DataEngineErrorCode {
     PORT_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-006 ",
             "Port with qualifiedName {0} was not found",
             "The system is unable to create a new PortDelegation relation.",
-            "Correct the code in the caller to provide the correct port qualified name.");
+            "Correct the code in the caller to provide the correct port qualified name."),
+
+    NULL_TOPIC_CONNECTOR(400, "OMAS-DATA-ENGINE-400-007",
+                         "Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize",
+                         "The local server will not connect to the cohort.",
+                         "The connection to the connector is configured in the server configuration.  " +
+                                 "Review previous error messages to determine the precise error in the " +
+                                 "start up configuration. " +
+                                 "Correct the configuration and reconnect the server to the cohort. ");
 
     private int httpErrorCode;
     private String errorMessageId;
