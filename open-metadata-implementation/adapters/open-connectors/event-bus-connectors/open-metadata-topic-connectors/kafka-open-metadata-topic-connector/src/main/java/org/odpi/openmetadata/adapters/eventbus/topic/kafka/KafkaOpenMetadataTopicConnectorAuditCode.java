@@ -2,27 +2,24 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
- * The KafkaOpenMetadataTopicConnectorAuditCode is used to define the message content for the OMRS Audit Log.
+ * The KafkaOpenMetadataTopicConnectorAuditCode is used to define the message content for the Audit Log.
  *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
  *     <li>Severity - is this an event, decision, action, error or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
- *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
  *     <li>SystemAction - describes the result of the situation</li>
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum KafkaOpenMetadataTopicConnectorAuditCode
+public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageSet
 {
     SERVICE_INITIALIZING("OCF-KAFKA-TOPIC-CONNECTOR-0001",
               OMRSAuditLogRecordSeverity.STARTUP,
@@ -107,28 +104,22 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
 
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnectorAuditCode.class);
+    private AuditLogMessageDefinition messageDefinition;
 
 
     /**
-     * The constructor for AssetConsumerAuditCode expects to be passed one of the enumeration rows defined in
-     * AssetConsumerAuditCode above.   For example:
+     * The constructor for KafkaOpenMetadataTopicConnectorAuditCode expects to be passed one of the enumeration rows defined in
+     * KafkaOpenMetadataTopicConnectorAuditCode above.   For example:
      *
-     *     KafkaOpenMetadataTopicConnectorAuditCode   auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING;
+     *     KafkaOpenMetadataTopicConnectorAuditCode   auditCode = DerbyViewConnectorAuditCode.KafkaOpenMetadataTopicConnectorAuditCode;
      *
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
-     * @param severity - severity of the message
-     * @param message - text for the message
-     * @param systemAction - description of the action taken by the system when the condition happened
-     * @param userAction - instructions for resolving the situation, if any
+     * @param messageId unique Id for the message
+     * @param severity severity of the message
+     * @param message text for the message
+     * @param systemAction description of the action taken by the system when the condition happened
+     * @param userAction instructions for resolving the situation, if any
      */
     KafkaOpenMetadataTopicConnectorAuditCode(String                     messageId,
                                              OMRSAuditLogRecordSeverity severity,
@@ -136,79 +127,34 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
                                              String                     systemAction,
                                              String                     userAction)
     {
-        this.logMessageId = messageId;
-        this.severity = severity;
-        this.logMessage = message;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
+        messageDefinition = new AuditLogMessageDefinition(messageId,
+                                                          severity,
+                                                          message,
+                                                          systemAction,
+                                                          userAction);
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
      *
-     * @return logMessageId
+     * @return message definition object.
      */
-    public String getLogMessageId()
+    public AuditLogMessageDefinition getMessageDefinition()
     {
-        return logMessageId;
+        return messageDefinition;
     }
 
 
     /**
-     * Return the severity of the audit log record.
+     * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
-     * @return OMRSAuditLogRecordSeverity enum
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public OMRSAuditLogRecordSeverity getSeverity()
+    public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
-        return severity;
-    }
-
-    /**
-     * Returns the log message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params strings that plug into the placeholders in the logMessage
-     * @return logMessage (formatted with supplied parameters)
-     */
-    public String getFormattedLogMessage(String... params)
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("<== Kafka Connector Audit Code.getMessage(%s)", Arrays.toString(params)));
-        }
-
-        MessageFormat mf = new MessageFormat(logMessage);
-        String result = mf.format(params);
-
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("==> Kafka Connector Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
-        }
-
-        return result;
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction String
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction String
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
     }
 }

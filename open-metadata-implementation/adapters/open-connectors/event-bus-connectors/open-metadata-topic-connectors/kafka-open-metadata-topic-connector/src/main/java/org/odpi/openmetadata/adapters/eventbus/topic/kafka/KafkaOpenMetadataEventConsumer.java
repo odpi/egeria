@@ -19,7 +19,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,15 +31,14 @@ import org.slf4j.LoggerFactory;
  */
 public class KafkaOpenMetadataEventConsumer implements Runnable
 {
-    private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataEventConsumer.class);
+    private static final Logger log      = LoggerFactory.getLogger(KafkaOpenMetadataEventConsumer.class);
 
-    private OMRSAuditLog auditLog;
+    private AuditLog auditLog;
 
     private final long recoverySleepTimeSec; 
-    private final long pollTimeout; ;
+    private final long pollTimeout;
     private final long maxQueueSize;
 
-    private				 KafkaOpenMetadataEventConsumerConfiguration config;
     private              KafkaConsumer<String, String>   consumer;
     private              String                          topicToSubscribe;
     private              String                          localServerId;
@@ -82,7 +81,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                                    KafkaOpenMetadataEventConsumerConfiguration config,
                                    Properties                                  kafkaConsumerProperties,
                                    KafkaOpenMetadataTopicConnector             connector,
-                                   OMRSAuditLog                                auditLog)
+                                   AuditLog                                    auditLog)
     {
         this.auditLog = auditLog;
         this.consumer = new KafkaConsumer<>(kafkaConsumerProperties);
@@ -92,16 +91,11 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         this.localServerId = localServerId;
 
         final String           actionDescription = "initialize";
-        KafkaOpenMetadataTopicConnectorAuditCode auditCode;
 
-        auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_CONSUMER_PROPERTIES;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(Integer.toString(kafkaConsumerProperties.size()), topicName),
-                           kafkaConsumerProperties.toString(),
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_CONSUMER_PROPERTIES.getMessageDefinition
+                                    (Integer.toString(kafkaConsumerProperties.size()), topicName),
+                            kafkaConsumerProperties.toString());
         
         maxMsBetweenPolls = new KafkaConfigurationWrapper(kafkaConsumerProperties).getMaxPollIntervalMs();
         this.recoverySleepTimeSec = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.RECOVERY_SLEEP_TIME);
@@ -113,6 +107,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         long messageTimeoutMins = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.CONSUMER_EVENT_PROCESSING_TIMEOUT_MINS);
         this.messageProcessingTimeoutMs = messageTimeoutMins < 0 ? messageTimeoutMins : TimeUnit.MILLISECONDS.convert(messageTimeoutMins, TimeUnit.MINUTES);
     }
+
 
     private static boolean getBooleanProperty(Properties p, String name, boolean defaultValue) {
         String value = p.getProperty(name);
@@ -198,16 +193,12 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
                             if (auditLog != null)
                             {
-                                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_DISTRIBUTING_EVENT;
-                                auditLog.logRecord(actionDescription,
-                                                   auditCode.getLogMessageId(),
-                                                   auditCode.getSeverity(),
-                                                   auditCode.getFormattedLogMessage(topicToSubscribe,
-                                                                                    error.getClass().getName(), json,
-                                                                                    error.getMessage()),
-                                                   null,
-                                                   auditCode.getSystemAction(),
-                                                   auditCode.getUserAction());
+                                auditLog.logException(actionDescription,
+                                                      KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_DISTRIBUTING_EVENT.getMessageDefinition
+                                                            (topicToSubscribe,
+                                                             error.getClass().getName(), json,
+                                                             error.getMessage()),
+                                                      error);
                             }
                         }
                     }
@@ -240,15 +231,11 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
                 if (auditLog != null)
                 {
-                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_RECEIVING_EVENT;
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(topicToSubscribe, error.getClass().getName(),
-                                                                        error.getMessage()),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logException(actionDescription,
+                                          KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_RECEIVING_EVENT.getMessageDefinition(topicToSubscribe,
+                                                                                                                                  error.getClass().getName(),
+                                                                                                                                  error.getMessage()),
+                                          error);
                 }
                 recoverAfterError();
             }
