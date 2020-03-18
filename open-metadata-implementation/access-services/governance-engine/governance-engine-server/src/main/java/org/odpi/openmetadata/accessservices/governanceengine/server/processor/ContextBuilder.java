@@ -25,7 +25,7 @@ public class ContextBuilder {
     public Context buildContextForColumn(String userID, String assetId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "buildContextForColumn";
         EntityDetail column = repositoryHandler.getEntityByGUID(userID, assetId, "guid", RELATIONAL_COLUMN, methodName);
-        if (isRelationalColumn(column)) {
+        if (column != null && isRelationalColumn(column)) {
             return getDatabaseContextForColumn(userID, column);
         }
         return null;
@@ -75,6 +75,9 @@ public class ContextBuilder {
     }
 
     private boolean isRelationalColumn(EntityDetail entityDetail) {
-        return entityDetail.getType().getTypeDefName().equals(RELATIONAL_COLUMN);
+        if (entityDetail.getType() != null && entityDetail.getType().getTypeDefName() != null) {
+            return entityDetail.getType().getTypeDefName().equals(RELATIONAL_COLUMN);
+        }
+        return false;
     }
 }

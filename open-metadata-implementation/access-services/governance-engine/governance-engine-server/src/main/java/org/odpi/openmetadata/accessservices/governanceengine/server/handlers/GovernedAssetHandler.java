@@ -79,6 +79,7 @@ public class GovernedAssetHandler {
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
 
         String methodName = "getGovernedAssets";
+        invalidParameterHandler.validateUserId(userId, methodName);
 
         List<EntityDetail> response = new ArrayList<>();
 
@@ -98,6 +99,9 @@ public class GovernedAssetHandler {
 
     public GovernedAsset getGovernedAsset(String userId, String assedID)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        String methodName = "getGovernedAsset";
+        invalidParameterHandler.validateUserId(userId, methodName);
+
         EntityDetail entityDetailsByGUID = getEntityDetailsByGUID(userId, assedID, null);
 
         if (containsGovernedClassification(entityDetailsByGUID)) {
@@ -108,12 +112,14 @@ public class GovernedAssetHandler {
     }
 
     public boolean containsGovernedClassification(EntityDetail entityDetail) {
-        if (entityDetail.getClassifications() == null || entityDetail.getClassifications().isEmpty()) {
+        if (CollectionUtils.isEmpty(entityDetail.getClassifications())) {
             return false;
         }
 
         for (Classification classification : entityDetail.getClassifications()) {
-            if (isGovernedClassification(classification.getType().getTypeDefName())) {
+            if (classification.getType() != null &&
+                    classification.getType().getTypeDefName() != null &&
+                    isGovernedClassification(classification.getType().getTypeDefName())) {
                 return true;
             }
         }
@@ -129,10 +135,11 @@ public class GovernedAssetHandler {
         return repositoryHelper.isTypeOf(GOVERNANCE_ENGINE, entityType.getTypeDefName(), SCHEMA_ATTRIBUTE);
     }
 
-    public String createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws UserNotAuthorizedException, PropertyServerException {
+    public String createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+        String methodName = "createSoftwareServerCapability";
+        invalidParameterHandler.validateUserId(userId, methodName);
 
         InstanceProperties initialProperties = getSoftwareServerCapabilityProperties(softwareServerCapability);
-        String methodName = "createSoftwareServerCapability";
 
         return repositoryHandler.createEntity(userId,
                 SOFTWARE_SERVER_CAPABILITY_GUID,
@@ -146,23 +153,26 @@ public class GovernedAssetHandler {
 
     public SoftwareServerCapability getSoftwareServerCapabilityByGUID(String userId, String guid)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        String methodName = "getSoftwareServerCapabilityByGUID";
+        invalidParameterHandler.validateUserId(userId, methodName);
 
         EntityDetail entityDetailsByGUID = getEntityDetailsByGUID(userId, guid, SOFTWARE_SERVER_CAPABILITY);
         if (entityDetailsByGUID == null) {
             return null;
         }
 
-        return convertSoftwareServerCapabilitity(entityDetailsByGUID);
+        return convertSoftwareServerCapability(entityDetailsByGUID);
     }
 
     public GovernedAsset convertGovernedAsset(String userID, EntityDetail entity)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        String methodName = "convertGovernedAsset";
         GovernedAsset governedAsset = new GovernedAsset();
 
         governedAsset.setGuid(entity.getGUID());
         governedAsset.setType(entity.getType().getTypeDefName());
-        governedAsset.setFullQualifiedName(getResourceValue(entity, QUALIFIED_NAME));
-        governedAsset.setName(getResourceValue(entity, DISPLAY_NAME));
+        governedAsset.setFullQualifiedName(repositoryHelper.getStringProperty(GOVERNANCE_ENGINE, QUALIFIED_NAME, entity.getProperties(), methodName));
+        governedAsset.setName(repositoryHelper.getStringProperty(GOVERNANCE_ENGINE, DISPLAY_NAME, entity.getProperties(), methodName));
         governedAsset.setContext(buildContext(userID, entity));
 
         if (entity.getClassifications() != null && !entity.getClassifications().isEmpty()) {
@@ -239,19 +249,7 @@ public class GovernedAssetHandler {
         return repositoryHandler.getEntityByGUID(userId, guid, "guid", entityType, methodName);
     }
 
-    private String getResourceValue(EntityDetail entityDetail, String propertyName) {
-        InstanceProperties instanceProperties = entityDetail.getProperties();
-
-        if (instanceProperties.getPropertyValue(propertyName) instanceof PrimitivePropertyValue) {
-            PrimitivePropertyValue value = (PrimitivePropertyValue) instanceProperties.getPropertyValue(propertyName);
-            if (value != null && value.getPrimitiveValue() instanceof String) {
-                return (String) value.getPrimitiveValue();
-            }
-        }
-        return null;
-    }
-
-    private SoftwareServerCapability convertSoftwareServerCapabilitity(EntityDetail entityDetail) {
+    private SoftwareServerCapability convertSoftwareServerCapability(EntityDetail entityDetail) {
         InstanceProperties properties = entityDetail.getProperties();
 
         SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
