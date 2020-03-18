@@ -83,7 +83,7 @@ public class GovernanceEngineOMASResource {
 
 
     /**
-     * Fetch the Software Server Capability entity by global identifier
+     * Returns the Software Server Capability entity by global identifier
      *
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user

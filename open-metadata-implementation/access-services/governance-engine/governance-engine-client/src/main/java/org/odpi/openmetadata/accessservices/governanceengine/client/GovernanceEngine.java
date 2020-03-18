@@ -63,12 +63,12 @@ public class GovernanceEngine extends FFDCRESTClient implements GovernanceEngine
         invalidParameterHandler.validatePaging(offset, pageSize, methodName);
 
         GovernedAssetListResponse response = callGetRESTCall(methodName, GovernedAssetListResponse.class,
-                serverPlatformURLRoot + BASE_PATH + GOVERNED_ASSETS_LISTS, serverName, userId, classification, entityTypes);
+                serverPlatformURLRoot + BASE_PATH + GOVERNED_ASSETS_LISTS, serverName, userId, classification, entityTypes, offset, pageSize);
 
-        if (response != null && CollectionUtils.isEmpty(response.getGovernedAssetList())) {
+        detectExceptions(methodName, response);
+        if (response != null && !CollectionUtils.isEmpty(response.getGovernedAssetList())) {
             return response.getGovernedAssetList();
         }
-        detectExceptions(methodName, response);
 
         return Collections.emptyList();
     }
@@ -97,7 +97,7 @@ public class GovernanceEngine extends FFDCRESTClient implements GovernanceEngine
      * {@inheritDoc}
      */
     @Override
-    public String createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability)
+    public String createSoftwareServerCapability(String userId, SoftwareServerCapabilityRequestBody softwareServerCapability)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         final String methodName = "createSoftwareServerCapability";
         log.debug("Calling method: {}", methodName);
@@ -105,7 +105,8 @@ public class GovernanceEngine extends FFDCRESTClient implements GovernanceEngine
         invalidParameterHandler.validateUserId(methodName, userId);
 
         StringResponse response = callPostRESTCall(methodName, StringResponse.class,
-                serverPlatformURLRoot + BASE_PATH + CREATE_SOFTWARE_SERVER, softwareServerCapability, serverName, userId);
+                serverPlatformURLRoot + BASE_PATH + CREATE_SOFTWARE_SERVER,
+                softwareServerCapability, serverName, userId);
 
         restExceptionHandler.detectAndThrowInvalidParameterException(methodName, response);
         restExceptionHandler.detectAndThrowPropertyServerException(methodName, response);
