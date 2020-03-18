@@ -308,6 +308,8 @@ public class RepositoryExplorerController extends SecureController
         }
 
     }
+
+
     /**
      * getLocalRepositoryServicesClient
      *
@@ -339,142 +341,6 @@ public class RepositoryExplorerController extends SecureController
 
         return client;
     }
-
-
-
-/*    private void getMetadataCollection(String  userId,
-                                       String  serverName,
-                                       String  serverURLRoot,
-                                       boolean enterpriseOption)
-        throws
-            ConnectionCheckedException,
-            ConnectorCheckedException,
-            RepositoryErrorException
-
-    {
-
-        // TODO - act on the Enterprise Option once it is supported.
-
-        OMRSRepositoryConnector repositoryConnector;
-        try {
-
-            repositoryConnector = this.getRepositoryConnector(serverName, serverURLRoot);
-
-        }
-        catch (ConnectionCheckedException | ConnectorCheckedException e) {
-            throw e;
-        }
-
-        if (repositoryConnector != null)  {
-
-            try {
-
-                metadataCollection = repositoryConnector.getMetadataCollection();
-                metadataCollectionId = metadataCollection.getMetadataCollectionId(userId);
-
-            }
-            catch (RepositoryErrorException exception) {
-
-                String tokens[] = exception.getErrorMessage().split(" on its REST API after it registered with the cohort");
-
-                if (tokens.length > 0) {
-                    String frontOfMessageTokens[] = tokens[0].split("returned a metadata collection identifier of ");
-
-                    if (frontOfMessageTokens.length > 1) {
-                        metadataCollectionId = frontOfMessageTokens[1];
-                        repositoryConnector.setMetadataCollectionId(metadataCollectionId);
-                        try {
-                            metadataCollection = repositoryConnector.getMetadataCollection();
-
-                        }
-                        catch (RepositoryErrorException e) {
-                            throw e;
-                        }
-                    }
-                }
-            }
-        }
-
-        *//*
-         * Perform integrity checks on metadataCollection
-         *//*
-        try {
-
-            boolean error = false;
-            if (metadataCollectionId == null) {
-                error = true;
-            }
-            else if (!(metadataCollectionId.equals(metadataCollection.getMetadataCollectionId(userId)))) {
-                error = true;
-            }
-
-            if (!error) {
-                // Successfully located metadataCollection and id matches
-                return;
-            }
-            else {
-                final String methodName = "getMetadataCollection";
-
-                OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
-                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
-            }
-
-        }
-        catch (RepositoryErrorException e) {
-            throw e;
-        }
-
-    }
-
-
-    private OMRSRepositoryConnector getRepositoryConnector(String serverName, String serverURLRoot)
-
-            throws
-            ConnectionCheckedException,
-            ConnectorCheckedException
-    {
-        try
-        {
-            ConnectorConfigurationFactory factory = new ConnectorConfigurationFactory();
-
-            *//*
-             * We do not have an explicit repositoryName here so set repositoryName to serverName
-             *//*
-            Connection connection = factory.getDefaultLocalRepositoryRemoteConnection(serverName, serverURLRoot);
-
-            ConnectorBroker connectorBroker = new ConnectorBroker();
-
-            Connector connector = connectorBroker.getConnector(connection);
-
-            OMRSRepositoryConnector  repositoryConnector = (OMRSRepositoryConnector)connector;
-
-            repositoryConnector.setRepositoryName(serverName);
-            repositoryConnector.setServerName(serverName);
-
-            *//*
-             * The metadataCollectionId parameter is not used by the REST connector - but it needs to be non-null and
-             * preferably informative so it is meaningful in any error messages and audit log entries.
-             *//*
-
-            repositoryConnector.setMetadataCollectionId("Metadata Collection for repository "+serverName);
-
-            repositoryConnector.start();
-
-            return repositoryConnector;
-
-        }
-        catch (ConnectionCheckedException | ConnectorCheckedException e)
-        {
-            throw e;
-        }
-    }*/
 
     /*
      * This method retrieves the stats affecting a proposed traversal of an instance sub-graph starting from an entity.

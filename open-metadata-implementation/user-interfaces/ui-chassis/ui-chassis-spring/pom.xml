@@ -142,12 +142,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>connector-configuration-factory</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
         </dependency>
 
