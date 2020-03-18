@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
- * The GlossaryAuthorRESTServicesInstance provides the org.odpi.openmetadata.viewervices.glossaryauthor.server  implementation of the Glossary Author Open Metadata
+ * The GlossaryAuthorRESTServicesInstance provides the org.odpi.openmetadata.viewservices.glossaryauthor.server  implementation of the Glossary Author Open Metadata
  * View Service (OMVS) for projects.  This interface provides project authoring interfaces for subject area experts.
  */
 

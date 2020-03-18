@@ -162,7 +162,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
-     * @return the created term HASA relationship
+     * @return the updated term HASA relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -196,7 +196,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
-     * @return the created term HASA relationship
+     * @return the replaced term HASA relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -417,7 +417,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      * @param userId               userId under which the request is performed
      * @param termRelatedTerm the RelatedTerm relationship
-     * @return the created term RelatedTerm relationship
+     * @return the updated term RelatedTerm relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -3047,13 +3047,13 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         return gotTermISATypeOFRelationship;
     }
     /**
-     * Update a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
+     * Update a isATypeOf relationship, which is defines an inheritance relationship between two spine objects.
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
-     * @param TermISATypeOFRelationship the TermISATypeOFRelationship relationship
-     * @return  TermISATypeOFRelationship updated TermISATypeOFRelationship
+     * @param isATypeOf the isATypeOf relationship
+     * @return  isATypeOf updated isATypeOf
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -3064,7 +3064,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    public TermISATypeOFRelationship updateTermISATypeOFRelationship(String userId, TermISATypeOFRelationship TermISATypeOFRelationship)  throws InvalidParameterException,
+    public TermISATypeOFRelationship updateTermISATypeOFRelationship(String userId, TermISATypeOFRelationship isATypeOf)  throws InvalidParameterException,
                                                                                                                                                                                             MetadataServerUncontactableException,
                                                                                                                                                                                             UserNotAuthorizedException,
                                                                                                                                                                                             UnexpectedResponseException,
@@ -3073,7 +3073,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
-            requestBody = mapper.writeValueAsString(TermISATypeOFRelationship);
+            requestBody = mapper.writeValueAsString(isATypeOf);
         } catch (JsonProcessingException error) {
             RestCaller.throwJsonParseError(className,methodName,error);
         }
@@ -3085,13 +3085,13 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         return updatedTermISATypeOFRelationship;
     }
     /**
-     * Replace an TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
+     * Replace an isATypeOf relationship, which is defines an inheritance relationship between two spine objects.
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
-     * @param TermISATypeOFRelationship the TermISATypeOFRelationship relationship
-     * @return  TermISATypeOFRelationship replaced TermISATypeOFRelationship
+     * @param isATypeOf the isATypeOf relationship
+     * @return  isATypeOf replaced isATypeOf
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -3101,7 +3101,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermISATypeOFRelationship replaceTermISATypeOFRelationship(String userId, TermISATypeOFRelationship TermISATypeOFRelationship)  throws InvalidParameterException,
+    public TermISATypeOFRelationship replaceTermISATypeOFRelationship(String userId, TermISATypeOFRelationship isATypeOf)  throws InvalidParameterException,
                                                                                                                                                                                              MetadataServerUncontactableException,
                                                                                                                                                                                              UserNotAuthorizedException,
                                                                                                                                                                                              UnexpectedResponseException,
@@ -3110,7 +3110,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
-            requestBody = mapper.writeValueAsString(TermISATypeOFRelationship);
+            requestBody = mapper.writeValueAsString(isATypeOf);
         } catch (JsonProcessingException error) {
             RestCaller.throwJsonParseError(className,methodName,error);
         }
@@ -3391,7 +3391,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      * @param userId               userId under which the request is performed
      * @param termCategorizationRelationship the term categorization relationship
-     * @return the created term categorization relationship
+     * @return the updated term categorization relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -3432,7 +3432,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      * @param userId               userId under which the request is performed
      * @param termCategorizationRelationship the term categorization relationship
-     * @return the created term categorization relationship
+     * @return the replaced term categorization relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -3673,7 +3673,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      * @param userId               userId under which the request is performed
      * @param termCategorizationRelationship the term anchor relationship
-     * @return the created term anchor relationship
+     * @return the replaced term anchor relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -3906,6 +3906,50 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         }
         return gotCategoryAnchorRelationship;
     }
+    /**
+     * Update a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categories to be owned by a glossary.
+     * <p>
+     *
+     *
+     * @param userId               userId under which the request is performed
+     * @param termCategorizationRelationship the Category Anchor relationship
+     * @return the updated Category Anchor relationship
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public CategoryAnchorRelationship updateCategoryAnchorRelationship(String userId, CategoryAnchorRelationship termCategorizationRelationship) throws InvalidParameterException,
+                                                                                                                                                         UserNotAuthorizedException,
+                                                                                                                                                         MetadataServerUncontactableException,
+                                                                                                                                                         UnexpectedResponseException,
+                                                                                                                                                         UnrecognizedGUIDException
+    {
+        final String methodName = "updateCategoryAnchorRelationship";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        InputValidator.validateUserIdNotNull(className, methodName, userId);
+
+        String urlTemplate = this.omasServerURL + BASE_RELATIONSHIPS_CATEGORY_ANCHOR_URL;
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = null;
+        try {
+            requestBody = mapper.writeValueAsString(termCategorizationRelationship);
+        } catch (JsonProcessingException error) {
+            RestCaller.throwJsonParseError(className, methodName, error);
+        }
+        SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_CATEGORY_ANCHOR_URL,requestBody,false);
+        CategoryAnchorRelationship updatedCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return  updatedCategoryAnchorRelationship;
+    }
 
     /**
      * Replace a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categories to be owned by a glossary.
@@ -3914,7 +3958,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      * @param userId               userId under which the request is performed
      * @param termCategorizationRelationship the Category Anchor relationship
-     * @return the created Category Anchor relationship
+     * @return the replaced Category Anchor relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -4182,7 +4226,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      *
      * @param userId               userId under which the request is performed
-     * @param ProjectScopeRelationship the ProjectScope relationship
+     * @param projectScopeRelationship the ProjectScope relationship
      * @return replaced ProjectScope relationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -4193,16 +4237,16 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public ProjectScopeRelationship replaceProjectScopeRelationship(String userId, ProjectScopeRelationship ProjectScopeRelationship)  throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException {
+    public ProjectScopeRelationship replaceProjectScopeRelationship(String userId, ProjectScopeRelationship projectScopeRelationship) throws InvalidParameterException,
+                                                                                                                                             MetadataServerUncontactableException,
+                                                                                                                                             UserNotAuthorizedException,
+                                                                                                                                             UnexpectedResponseException,
+                                                                                                                                             UnrecognizedGUIDException {
         final String methodName = "updateProjectScopeRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
-            requestBody = mapper.writeValueAsString(ProjectScopeRelationship);
+            requestBody = mapper.writeValueAsString(projectScopeRelationship);
         } catch (JsonProcessingException error) {
             RestCaller.throwJsonParseError(className,methodName,error);
         }
