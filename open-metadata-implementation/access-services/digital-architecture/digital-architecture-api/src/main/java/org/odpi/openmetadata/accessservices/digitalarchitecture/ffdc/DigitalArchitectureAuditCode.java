@@ -1,13 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.digitalarchitecture.auditlog;
+package org.odpi.openmetadata.accessservices.digitalarchitecture.ffdc;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The DigitalArchitectureAuditCode is used to define the message content for the OMRS Audit Log.
@@ -22,25 +20,25 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum DigitalArchitectureAuditCode
+public enum DigitalArchitectureAuditCode implements AuditLogMessageSet
 {
     SERVICE_INITIALIZING("OMAS-DIGITAL-ARCHITECTURE-0001",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The Digital Architecture Open Metadata Access Service (OMAS) is initializing a new server instance",
              "The local server has started up a new instance of the Digital Architecture OMAS.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "No action is needed if this service is required.  This is part of the configured operation of the server."),
 
     SERVICE_INITIALIZED("OMAS-DIGITAL-ARCHITECTURE-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The Digital Architecture Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
              "The access service has completed initialization of a new instance.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "Verify that there were no errors reported as the service started."),
 
     SERVICE_SHUTDOWN("OMAS-DIGITAL-ARCHITECTURE-0004",
              OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Digital Architecture Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local administrator has requested shut down of an Digital Architecture OMAS instance.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "Verify that all resources have been released."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-DIGITAL-ARCHITECTURE-0005",
              OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -51,13 +49,7 @@ public enum DigitalArchitectureAuditCode
 
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(DigitalArchitectureAuditCode.class);
+    AuditLogMessageDefinition messageDefinition;
 
 
     /**
@@ -75,85 +67,39 @@ public enum DigitalArchitectureAuditCode
      * @param userAction - instructions for resolving the situation, if any
      */
     DigitalArchitectureAuditCode(String                     messageId,
-                                 OMRSAuditLogRecordSeverity severity,
-                                 String                     message,
-                                 String                     systemAction,
-                                 String                     userAction)
+                               OMRSAuditLogRecordSeverity severity,
+                               String                     message,
+                               String                     systemAction,
+                               String                     userAction)
     {
-        this.logMessageId = messageId;
-        this.severity = severity;
-        this.logMessage = message;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
+        messageDefinition = new AuditLogMessageDefinition(messageId,
+                                                          severity,
+                                                          message,
+                                                          systemAction,
+                                                          userAction);
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
      *
-     * @return logMessageId
+     * @return message definition object.
      */
-    public String getLogMessageId()
+    public AuditLogMessageDefinition getMessageDefinition()
     {
-        return logMessageId;
+        return messageDefinition;
     }
 
 
     /**
-     * Return the severity of the audit log record.
+     * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
-     * @return OMRSAuditLogRecordSeverity enum
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public OMRSAuditLogRecordSeverity getSeverity()
+    public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
-        return severity;
-    }
-
-    /**
-     * Returns the log message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the logMessage
-     * @return logMessage (formatted with supplied parameters)
-     */
-    public String getFormattedLogMessage(String... params)
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("<== DigitalArchitecture Audit Code.getMessage(%s)", Arrays.toString(params)));
-        }
-
-        MessageFormat mf = new MessageFormat(logMessage);
-        String result = mf.format(params);
-
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("==> DigitalArchitecture Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
-        }
-
-        return result;
-    }
-
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction String
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction String
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
     }
 }

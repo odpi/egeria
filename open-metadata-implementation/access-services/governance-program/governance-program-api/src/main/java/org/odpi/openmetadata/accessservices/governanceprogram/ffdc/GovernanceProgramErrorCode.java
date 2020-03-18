@@ -99,10 +99,10 @@ public enum GovernanceProgramErrorCode implements ExceptionMessageSet
     private ExceptionMessageDefinition messageDefinition;
 
     /**
-     * The constructor for DiscoveryEngineErrorCode expects to be passed one of the enumeration rows defined in
-     * DiscoveryEngineErrorCode above.   For example:
+     * The constructor for GovernanceProgramErrorCode expects to be passed one of the enumeration rows defined in
+     * GovernanceProgramErrorCode above.   For example:
      *
-     *     DiscoveryEngineErrorCode   errorCode = DiscoveryEngineErrorCode.SERVER_NOT_AVAILABLE;
+     *     GovernanceProgramErrorCode   errorCode = GovernanceProgramErrorCode.SERVER_NOT_AVAILABLE;
      *
      * This will expand out to the 5 parameters shown below.
      *
@@ -154,7 +154,7 @@ public enum GovernanceProgramErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "DiscoveryEngineErrorCode{" +
+        return "GovernanceProgramErrorCode{" +
                 "messageDefinition=" + messageDefinition +
                 '}';
     }

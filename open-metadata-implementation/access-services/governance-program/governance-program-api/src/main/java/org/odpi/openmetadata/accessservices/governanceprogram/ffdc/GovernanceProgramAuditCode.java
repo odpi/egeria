@@ -55,7 +55,7 @@ public enum GovernanceProgramAuditCode implements AuditLogMessageSet
 
     /**
      * The constructor for GovernanceProgramAuditCode expects to be passed one of the enumeration rows defined in
-     * DiscoveryEngineAuditCode above.   For example:
+     * GovernanceProgramAuditCode above.   For example:
      *
      *     GovernanceProgramAuditCode   auditCode = GovernanceProgramAuditCode.SERVER_NOT_AVAILABLE;
      *
