@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAssetResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAssetListResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.SoftwareServerCapabilityResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;

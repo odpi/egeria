@@ -9,8 +9,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
 
 import java.util.ArrayList;

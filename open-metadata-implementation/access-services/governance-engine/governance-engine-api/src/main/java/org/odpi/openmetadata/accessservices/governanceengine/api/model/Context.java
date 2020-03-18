@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceengine.api.objects;
+package org.odpi.openmetadata.accessservices.governanceengine.api.model;
 
 import java.io.Serializable;
 import java.util.Objects;

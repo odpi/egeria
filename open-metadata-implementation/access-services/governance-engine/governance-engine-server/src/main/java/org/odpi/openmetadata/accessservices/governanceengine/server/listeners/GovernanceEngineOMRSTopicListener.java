@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server.listeners;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.auditlog.GovernanceEngineAuditCode;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.api.events.GovernanceEngineEvent;
 import org.odpi.openmetadata.accessservices.governanceengine.api.events.GovernanceEngineEventType;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAsset;
 import org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.server.publisher.GovernanceEnginePublisher;
@@ -60,6 +60,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
      *
      * @param instanceEvent event to unpack
      */
+    @Override
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent) {
 
         if (instanceEvent == null) {

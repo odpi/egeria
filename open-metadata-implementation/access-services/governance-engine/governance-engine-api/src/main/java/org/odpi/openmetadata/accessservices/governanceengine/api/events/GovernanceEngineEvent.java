@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.api.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAsset;
 
 import java.io.Serializable;
 

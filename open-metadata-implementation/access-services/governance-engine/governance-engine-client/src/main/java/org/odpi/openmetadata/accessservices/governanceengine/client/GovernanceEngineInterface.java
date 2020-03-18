@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.client;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAsset;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.SoftwareServerCapability;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

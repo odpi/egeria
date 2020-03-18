@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server.admin;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.auditlog.GovernanceEngineAuditCode;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.server.listeners.GovernanceEngineOMRSTopicListener;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
@@ -18,7 +18,6 @@ import java.util.List;
 
 public class GovernanceEngineAdmin extends AccessServiceAdmin {
 
-    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineAdmin.class);
     private OMRSAuditLog auditLog;
     private GovernanceEngineServicesInstance instance;
     private String serverName;

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceengine.api.auditlog;
+package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.slf4j.Logger;
@@ -57,12 +57,14 @@ public enum GovernanceEngineAuditCode {
             "The Governance Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+
     ERROR_INITIALIZING_TOPIC_CONNECTION("OMAS-GOVERNANCE-ENGINE-0007",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the Governance Engine Open Metadata Access Service (OMAS) topic connection {0} for server instance {1}; " +
                     "error message was: {2}",
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
+
     EVENT_PROCESSING_ERROR("OMAS-GOVERNANCE-ENGINE-0008",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Governance Engine Open Metadata Access Service (OMAS) encounter an exception while processing incoming event {0}",

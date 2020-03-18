@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Context;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassification;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.Context;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernanceClassification;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAsset;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.governanceengine.server.processor.ContextBuilder;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
