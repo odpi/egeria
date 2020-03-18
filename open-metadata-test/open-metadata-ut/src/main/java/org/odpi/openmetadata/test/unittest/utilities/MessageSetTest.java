@@ -114,22 +114,26 @@ abstract class MessageSetTest
                                            String            messageIdPrefix,
                                            String...         messageParameters)
     {
-        assertNotNull(messageDefinition.getMessageId());
-        assertNotNull(messageDefinition.getMessageTemplate());
-        assertNotNull(messageDefinition.getSystemAction());
-        assertNotNull(messageDefinition.getUserAction());
+        assertNotNull(messageDefinition.getMessageId(), "Message definition "+messageDefinition.toString()+" has null messageId");
+        assertNotNull(messageDefinition.getMessageTemplate(), "Message definition "+messageDefinition.toString()+" has null messageTemplate");
+        assertNotNull(messageDefinition.getSystemAction(), "Message definition "+messageDefinition.toString()+" has null system action");
+        assertNotNull(messageDefinition.getUserAction(), "Message definition "+messageDefinition.toString()+" has null user action");
 
-        assertNotEquals("", messageDefinition.getMessageId());
-        assertNotEquals("", messageDefinition.getMessageTemplate());
-        assertNotEquals("", messageDefinition.getSystemAction());
-        assertNotEquals("", messageDefinition.getUserAction());
+        assertNotEquals("", messageDefinition.getMessageId(), "Message definition "+messageDefinition.toString()+" has empty messageId");
+        assertNotEquals("", messageDefinition.getMessageTemplate(), "Message definition "+messageDefinition.toString()+" has empty message template");
+        assertNotEquals("", messageDefinition.getSystemAction(), "Message definition "+messageDefinition.toString()+" has empty system action");
+        assertNotEquals("", messageDefinition.getUserAction(), "Message definition "+messageDefinition.toString()+" has empty user action");
 
-        assertTrue(isUniqueOrdinal(messageDefinition.getMessageId()));
-        assertTrue(isUniqueMessageTemplate(messageDefinition.getMessageTemplate()));
-        assertTrue(isUniqueSystemAction(messageDefinition.getSystemAction()));
-        assertTrue(isUniqueUserAction(messageDefinition.getUserAction()));
-        assertTrue(messageDefinition.getMessageId().startsWith(messageIdPrefix));
-        assertFalse(messageDefinition.getMessageId().endsWith(" "));
+        assertTrue(isUniqueOrdinal(messageDefinition.getMessageId()), "Message definition "+messageDefinition.toString()+" does not have a unique messageId");
+        assertTrue(isUniqueMessageTemplate(messageDefinition.getMessageTemplate()), "Message definition "+messageDefinition.toString()+" does not have a " +
+                "unique messageTemplate");
+        assertTrue(isUniqueSystemAction(messageDefinition.getSystemAction()), "Message definition "+messageDefinition.toString()+" does not have a unique " +
+                "system action");
+        assertTrue(isUniqueUserAction(messageDefinition.getUserAction()), "Message definition "+messageDefinition.toString()+" does not have a unique user " +
+                "action");
+        assertTrue(messageDefinition.getMessageId().startsWith(messageIdPrefix), "Message definition "+messageDefinition.toString()+" does not start with the " +
+                "correct message prefix: "+messageIdPrefix);
+        assertFalse(messageDefinition.getMessageId().endsWith(" "), "Message definition "+messageDefinition.toString()+" has a space at the end of its messageId");
 
         if (messageParameters.length == 0)
         {
