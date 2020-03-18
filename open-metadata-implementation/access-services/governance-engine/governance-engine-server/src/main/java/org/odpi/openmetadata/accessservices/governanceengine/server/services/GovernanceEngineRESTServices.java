@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceengine.server;
+package org.odpi.openmetadata.accessservices.governanceengine.server.services;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAssetResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAssetListResponse;

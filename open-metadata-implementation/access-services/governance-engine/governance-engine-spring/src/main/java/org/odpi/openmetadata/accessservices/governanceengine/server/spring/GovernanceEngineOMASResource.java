@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedA
 import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAssetListResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.model.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.api.model.SoftwareServerCapabilityResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
+import org.odpi.openmetadata.accessservices.governanceengine.server.services.GovernanceEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
