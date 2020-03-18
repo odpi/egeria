@@ -44,7 +44,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
 
 
     /**
-     * This is the typical constructor used for creating an OCFCheckedException.
+     * This is the typical constructor used for creating an exception.
      *
      * @param messageDefinition  content of the message
      * @param className   name of class reporting error
@@ -59,7 +59,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
 
 
     /**
-     * This is the typical constructor used for creating an OCFCheckedException.
+     * This is the typical constructor used for creating an exception.
      * The properties allow additional information to be associated with the exception.
      *
      * @param messageDefinition  content of the message
@@ -91,7 +91,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
 
 
     /**
-     * This is the constructor used for creating an OCFCheckedException when an unexpected error has been caught.
+     * This is the constructor used for creating an exception when an unexpected error has been caught.
      * The properties allow additional information to be associated with the exception.
      *
      * @param messageDefinition  content of the message
@@ -109,7 +109,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
 
 
     /**
-     * This is the constructor used for creating an OCFCheckedException when an unexpected error has been caught.
+     * This is the constructor used for creating an exception when an unexpected error has been caught.
      * The properties allow additional information to be associated with the exception.
      *
      * @param messageDefinition  content of the message
@@ -461,6 +461,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
     {
         return reportedErrorMessage;
     }
+
 
     /**
      * Return the formal message identifier for the error message.  This is incorporated in the error message.
