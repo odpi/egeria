@@ -3,16 +3,17 @@
 
 package org.odpi.openmetadata.adapters.connectors.discoveryservices;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryPipeline;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
+
 
 /**
  * AuditableDiscoveryPipeline is a base class for discovery pipelines that wish to use the audit log.
  */
-public abstract class AuditableDiscoveryPipeline extends DiscoveryPipeline implements AuditableConnector
+public abstract class AuditableDiscoveryPipeline extends DiscoveryPipeline implements AuditLoggingComponent
 {
-    protected OMRSAuditLog  auditLog = null;
+    protected AuditLog  auditLog = null;
 
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
@@ -20,7 +21,7 @@ public abstract class AuditableDiscoveryPipeline extends DiscoveryPipeline imple
      *
      * @param auditLog audit log object
      */
-    public void setAuditLog(OMRSAuditLog auditLog)
+    public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
     }
