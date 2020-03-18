@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * DiscoveryEngineClient is a client-side library for calling a specific discovery engine with a discovery server.
  */
-public class DiscoveryEngineClient extends DiscoveryEngine
+public class DiscoveryServerEngineClient extends DiscoveryEngine
 {
     private String        serverName;               /* Initialized in constructor */
     private String        serverPlatformRootURL;    /* Initialized in constructor */
@@ -45,9 +45,9 @@ public class DiscoveryEngineClient extends DiscoveryEngine
      * @param discoveryEngineName the unique name of the discovery engine.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public DiscoveryEngineClient(String serverPlatformRootURL,
-                                 String serverName,
-                                 String discoveryEngineName) throws InvalidParameterException
+    public DiscoveryServerEngineClient(String serverPlatformRootURL,
+                                       String serverName,
+                                       String discoveryEngineName) throws InvalidParameterException
     {
         this.serverPlatformRootURL = serverPlatformRootURL;
         this.serverName            = serverName;
@@ -67,11 +67,11 @@ public class DiscoveryEngineClient extends DiscoveryEngine
      * @param password password for the HTTP request
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public DiscoveryEngineClient(String serverPlatformRootURL,
-                                 String serverName,
-                                 String discoveryEngineName,
-                                 String userId,
-                                 String password) throws InvalidParameterException
+    public DiscoveryServerEngineClient(String serverPlatformRootURL,
+                                       String serverName,
+                                       String discoveryEngineName,
+                                       String userId,
+                                       String password) throws InvalidParameterException
     {
         this.serverPlatformRootURL = serverPlatformRootURL;
         this.serverName            = serverName;

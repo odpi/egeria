@@ -95,16 +95,10 @@ public class DiscoveryServerInstance extends GovernanceServerServiceInstance
 
         if (instance == null)
         {
-            DiscoveryEngineServicesErrorCode errorCode = DiscoveryEngineServicesErrorCode.UNKNOWN_DISCOVERY_ENGINE;
-            String                   errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                                       discoveryEngineName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(DiscoveryEngineServicesErrorCode.UNKNOWN_DISCOVERY_ENGINE.getMessageDefinition(serverName,
+                                                                                                                               discoveryEngineName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 guidParameterName);
         }
 

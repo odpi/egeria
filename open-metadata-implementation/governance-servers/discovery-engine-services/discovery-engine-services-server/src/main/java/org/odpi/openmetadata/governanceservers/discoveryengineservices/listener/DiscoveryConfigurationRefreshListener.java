@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.api.DiscoveryEngineE
 import org.odpi.openmetadata.accessservices.discoveryengine.events.DiscoveryEngineConfigurationEvent;
 import org.odpi.openmetadata.accessservices.discoveryengine.events.DiscoveryEngineEvent;
 import org.odpi.openmetadata.accessservices.discoveryengine.events.DiscoveryServiceConfigurationEvent;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog.DiscoveryEngineServicesAuditCode;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryEngineHandler;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 

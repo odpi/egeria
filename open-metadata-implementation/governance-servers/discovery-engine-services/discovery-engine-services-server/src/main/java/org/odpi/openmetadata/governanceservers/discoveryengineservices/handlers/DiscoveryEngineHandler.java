@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.client.*;
 import org.odpi.openmetadata.adapters.connectors.discoveryservices.CSVDiscoveryServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.discoveryservices.DuplicateSuspectDiscoveryProvider;
 import org.odpi.openmetadata.adapters.connectors.discoveryservices.SequentialDiscoveryPipelineProvider;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog.DiscoveryEngineServicesAuditCode;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.discovery.*;
@@ -140,18 +140,11 @@ public class DiscoveryEngineHandler
 
         if (discoveryEngineProperties == null)
         {
-            DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.UNKNOWN_DISCOVERY_ENGINE_CONFIG;
-            String                           errorMessage = errorCode.getErrorMessageId()
-                                                          + errorCode.getFormattedErrorMessage(discoveryEngineName,
-                                                                                               configurationClient.getConfigurationServerName(),
-                                                                                               serverName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(DiscoveryEngineServicesErrorCode.UNKNOWN_DISCOVERY_ENGINE_CONFIG.getMessageDefinition(discoveryEngineName,
+                                                                                                                                    configurationClient.getConfigurationServerName(),
+                                                                                                                                    serverName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
         else
         {
@@ -568,16 +561,10 @@ public class DiscoveryEngineHandler
     {
         if (discoveryEngineProperties == null)
         {
-            DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.DISCOVERY_ENGINE_NOT_INITIALIZED;
-            String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                                               discoveryEngineName);
-
-            throw new DiscoveryEngineException(errorCode.getHTTPErrorCode(),
+            throw new DiscoveryEngineException(DiscoveryEngineServicesErrorCode.DISCOVERY_ENGINE_NOT_INITIALIZED.getMessageDefinition(serverName,
+                                                                                                                                      discoveryEngineName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
     }
 
@@ -677,17 +664,11 @@ public class DiscoveryEngineHandler
             }
             else
             {
-                DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NULL_DISCOVERY_SERVICE;
-                String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                                                   discoveryEngineName,
-                                                                                                                                   discoveryServerName);
-
-                throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                throw new PropertyServerException(DiscoveryEngineServicesErrorCode.NULL_DISCOVERY_SERVICE.getMessageDefinition(methodName,
+                                                                                                                               discoveryEngineName,
+                                                                                                                               discoveryServerName),
                                                    this.getClass().getName(),
-                                                   methodName,
-                                                   errorMessage,
-                                                   errorCode.getSystemAction(),
-                                                   errorCode.getUserAction());
+                                                   methodName);
             }
         }
 

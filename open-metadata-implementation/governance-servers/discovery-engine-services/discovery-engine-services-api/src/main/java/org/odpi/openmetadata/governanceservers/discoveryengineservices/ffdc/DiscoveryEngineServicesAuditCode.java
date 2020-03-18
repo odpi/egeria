@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog;
+package org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
@@ -9,7 +9,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 
 /**
- * The DiscoveryServerAuditCode is used to define the message content for the OMRS Audit Log.
+ * The DiscoveryEngineServicesAuditCode is used to define the message content for the OMRS Audit Log.
  *
  * The 5 fields in the enum are:
  * <ul>
@@ -250,18 +250,16 @@ public enum DiscoveryEngineServicesAuditCode implements AuditLogMessageSet
 
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
+
+    AuditLogMessageDefinition messageDefinition;
+
 
 
     /**
-     * The constructor for DiscoveryServerAuditCode expects to be passed one of the enumeration rows defined in
-     * AssetConsumerAuditCode above.   For example:
+     * The constructor for DiscoveryEngineServicesAuditCode expects to be passed one of the enumeration rows defined in
+     * DiscoveryEngineServicesAuditCode above.   For example:
      *
-     *     DiscoveryServerAuditCode   auditCode = DiscoveryServerAuditCode.SERVER_SHUTDOWN;
+     *     DiscoveryEngineServicesAuditCode   auditCode = DiscoveryEngineServicesAuditCode.SERVER_SHUTDOWN;
      *
      * This will expand out to the 4 parameters shown below.
      *
@@ -277,11 +275,11 @@ public enum DiscoveryEngineServicesAuditCode implements AuditLogMessageSet
                                      String                     systemAction,
                                      String                     userAction)
     {
-        this.logMessageId = messageId;
-        this.severity = severity;
-        this.logMessage = message;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
+        messageDefinition = new AuditLogMessageDefinition(messageId,
+                                                          severity,
+                                                          message,
+                                                          systemAction,
+                                                          userAction);
     }
 
 
@@ -292,11 +290,7 @@ public enum DiscoveryEngineServicesAuditCode implements AuditLogMessageSet
      */
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return new AuditLogMessageDefinition(logMessageId,
-                                             severity,
-                                             logMessage,
-                                             systemAction,
-                                             userAction);
+        return messageDefinition;
     }
 
 
@@ -308,12 +302,21 @@ public enum DiscoveryEngineServicesAuditCode implements AuditLogMessageSet
      */
     public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
-        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
-                                                                                    severity,
-                                                                                    logMessage,
-                                                                                    systemAction,
-                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "DiscoveryEngineServicesAuditCode{" +
+                "messageDefinition=" + messageDefinition +
+                '}';
     }
 }

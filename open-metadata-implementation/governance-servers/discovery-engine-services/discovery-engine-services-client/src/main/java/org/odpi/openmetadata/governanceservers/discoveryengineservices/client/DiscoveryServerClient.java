@@ -89,9 +89,9 @@ public class DiscoveryServerClient
                                                                                                    serverName,
                                                                                                    userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
 
         return restResult.getDiscoveryEngineSummaries();
     }
@@ -130,9 +130,9 @@ public class DiscoveryServerClient
                                                                      userId,
                                                                      discoveryEngineName);
 
-            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(restResult);
         }
         catch (PropertyServerException exception)
         {
