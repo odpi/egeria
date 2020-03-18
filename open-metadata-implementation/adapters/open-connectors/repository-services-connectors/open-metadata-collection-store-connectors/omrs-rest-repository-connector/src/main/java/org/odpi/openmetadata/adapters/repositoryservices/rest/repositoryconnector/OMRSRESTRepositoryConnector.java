@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -78,30 +77,12 @@ public class OMRSRESTRepositoryConnector extends OMRSRepositoryConnector
             {
                 final String methodName = "getMetadataCollection";
 
-                OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
-                String errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(super.serverName);
-
-                throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(super.serverName),
                                                   this.getClass().getName(),
-                                                  methodName,
-                                                  errorMessage,
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction());
+                                                  methodName);
             }
         }
 
         return metadataCollection;
     }
-
-
-    /**
-     * Free up any resources held since the connector is no longer needed.
-     *
-     * @throws ConnectorCheckedException there is a problem disconnecting the connector.
-     */
-    public void disconnect() throws ConnectorCheckedException
-    {
-    }
-
 }
