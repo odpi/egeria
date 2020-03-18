@@ -62,7 +62,7 @@ public class GovernanceEngine extends FFDCRESTClient implements GovernanceEngine
         invalidParameterHandler.validateUserId(methodName, userId);
         invalidParameterHandler.validatePaging(offset, pageSize, methodName);
 
-        GovernedAssetListAPIResponse response = callGetRESTCall(methodName, GovernedAssetListAPIResponse.class,
+        GovernedAssetListResponse response = callGetRESTCall(methodName, GovernedAssetListResponse.class,
                 serverPlatformURLRoot + BASE_PATH + GOVERNED_ASSETS_LISTS, serverName, userId, classification, entityTypes);
 
         if (response != null && CollectionUtils.isEmpty(response.getGovernedAssetList())) {
@@ -85,7 +85,7 @@ public class GovernanceEngine extends FFDCRESTClient implements GovernanceEngine
         invalidParameterHandler.validateUserId(methodName, userId);
         invalidParameterHandler.validateGUID(assetGuid, "guid", methodName);
 
-        GovernedAssetAPIResponse response = callGetRESTCall(methodName, GovernedAssetAPIResponse.class,
+        GovernedAssetResponse response = callGetRESTCall(methodName, GovernedAssetResponse.class,
                 serverPlatformURLRoot + BASE_PATH + GOVERNED_ASSET, serverName, userId, assetGuid);
 
         detectExceptions(methodName, response);
@@ -134,7 +134,7 @@ public class GovernanceEngine extends FFDCRESTClient implements GovernanceEngine
         return response.getServerCapability();
     }
 
-    private void detectExceptions(String methodName, GovernanceEngineOMASAPIResponse response)
+    private void detectExceptions(String methodName, GovernanceEngineOMASResponse response)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         restExceptionHandler.detectAndThrowInvalidParameterException(methodName, response);
         restExceptionHandler.detectAndThrowPropertyServerException(methodName, response);

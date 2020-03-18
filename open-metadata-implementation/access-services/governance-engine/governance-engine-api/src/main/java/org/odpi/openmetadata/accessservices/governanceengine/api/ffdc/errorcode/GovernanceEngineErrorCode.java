@@ -31,14 +31,6 @@ public enum GovernanceEngineErrorCode {
             "The OMAS Server URL is empty or null",
             "The system is unable to connect to the Access Services Server to retrieve metadata objects.",
             "Ensure a valid OMAS Server URL is passed to the GovernanceEngineClient when it is created."),
-    BAD_USER_ID(400, "OMAS-GOVERNANCE-ENGINE-400-002 ",
-            "The user identifier (user id) passed on the {0} operation is empty or null",
-            "The system is unable to process the request without a user id.",
-            "Correct the code in the caller to provide the user id."),
-    EMPTY_USER_ID(400, "OMAS-GOVERNANCE-ENGINE-400-003 ",
-            "The user identifier (user id) passed on the {0} operation is empty or null",
-            "The system is unable to process the request without a user id.",
-            "Correct the code in the caller to provide the user id."),
     NULL_GUID(400, "OMAS-GOVERNANCE-ENGINE-400-004 ",
             "The unique identifier (guid) passed on the {0} parameter of the {1} operation is null",
             "The system is unable to process the request without a guid.",
@@ -73,27 +65,14 @@ public enum GovernanceEngineErrorCode {
             "The system is unable to connect to the open metadata property handlers.",
             "Check that the handlers where the Asset Consumer OMAS is running initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
-    NO_METADATA_COLLECTION(404, "OMAS-GOVERNANCE-ENGINE-404-004 ",
-            "The metadata Collection could not be accessed in {0}",
-            "The system is unable to access the metadata collection",
-            "Check that theopen metadata handlers URL is correct.  Retry the request when the connection is available in the OMAS Service"),
-    CLIENT_SIDE_REST_API_ERROR(503, "OMAS-GOVERNANCE-ENGINE-503-002 ",
+     CLIENT_SIDE_REST_API_ERROR(503, "OMAS-GOVERNANCE-ENGINE-503-002 ",
             "A client-side exception was received from API call {0} to repository {1}.  The error message was {2}",
             "The handlers has issued a call to the open metadata access service REST API in a remote handlers and has received an exception from the local client libraries.",
             "Look for errors in the local handlers's console to understand and correct the source of the error."),
     SERVICE_NOT_INITIALIZED(503, "OMAS-GOVERNANCE-ENGINE-503-003 ",
             "The access service has not been initialized for server {0} and can not support REST API call {1}",
             "The handlers has received a call to one of its Open Metadata Access Services but is unable to process it because the access service is not active.",
-            "If the handlers is supposed to have this access service activated, correct the handlers configuration and restart the handlers."),
-    METADATA_QUERY_ERROR(503, "OMAS-GOVERNANCE-ENGINE-503-004 ",
-            "An exception occurred retrieving metadatain {0}",
-            "This is likely to be a coding error",
-            "Report this as a bug."),
-    GUID_NOT_FOUND_ERROR(404, "OMAS-GOVERNANCE-ENGINE-404-005 ",
-            "The guid {0} for {1} could not be found",
-            "The item could not be returned as it does not exist",
-            "Check the guid being requested");
-
+            "If the handlers is supposed to have this access service activated, correct the handlers configuration and restart the handlers.");
 
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineErrorCode.class);
     private int httpErrorCode;

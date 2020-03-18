@@ -29,9 +29,6 @@ import static org.odpi.openmetadata.accessservices.governanceengine.server.util.
  */
 public class GovernedAssetHandler {
 
-    private Map<String, String> knownTypeDefs = new HashMap<>();
-
-
     private final String serviceName;
     private final String serverName;
     private final RepositoryHandler repositoryHandler;

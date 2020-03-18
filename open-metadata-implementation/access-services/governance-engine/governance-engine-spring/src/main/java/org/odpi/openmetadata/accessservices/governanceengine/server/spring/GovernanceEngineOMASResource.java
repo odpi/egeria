@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetAPIResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
@@ -37,11 +37,11 @@ public class GovernanceEngineOMASResource {
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @GetMapping(path = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
-    public GovernedAssetListAPIResponse getGovernedAssets(@PathVariable String serverName,
-                                                          @PathVariable String userId,
-                                                          @RequestParam(value = "entityTypes", required = false) List<String> entityTypes,
-                                                          @RequestParam(value = "offset", required = false) Integer offset,
-                                                          @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+    public GovernedAssetListResponse getGovernedAssets(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @RequestParam(value = "entityTypes", required = false) List<String> entityTypes,
+                                                       @RequestParam(value = "offset", required = false) Integer offset,
+                                                       @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         return restAPI.getGovernedAssets(serverName, userId, entityTypes, offset, pageSize);
     }
 
@@ -60,9 +60,9 @@ public class GovernanceEngineOMASResource {
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @GetMapping(path = "/assets/{assetGuid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public GovernedAssetAPIResponse getGovernedAsset(@PathVariable String serverName,
-                                                     @PathVariable String userId,
-                                                     @PathVariable String assetGuid) {
+    public GovernedAssetResponse getGovernedAsset(@PathVariable String serverName,
+                                                  @PathVariable String userId,
+                                                  @PathVariable String assetGuid) {
         return restAPI.getGovernedAsset(serverName, userId, assetGuid);
     }
 

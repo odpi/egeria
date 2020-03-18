@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetAPIResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineInstanceHandler;
@@ -56,10 +56,10 @@ public class GovernanceEngineRESTServices {
      * @param entityTypes types to start query offset
      * @return GovernedAssetComponentList
      */
-    public GovernedAssetListAPIResponse getGovernedAssets(String serverName, String userId, List<String> entityTypes, Integer offset, Integer pageSize) {
+    public GovernedAssetListResponse getGovernedAssets(String serverName, String userId, List<String> entityTypes, Integer offset, Integer pageSize) {
         String methodName = "getGovernedAssets";
 
-        GovernedAssetListAPIResponse response = new GovernedAssetListAPIResponse();
+        GovernedAssetListResponse response = new GovernedAssetListResponse();
         try {
             GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(userId, serverName, methodName);
             response.setGovernedAssetList(governedAssetHandler.getGovernedAssets(userId, entityTypes, offset, pageSize));
@@ -89,9 +89,9 @@ public class GovernanceEngineRESTServices {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GovernedAssetAPIResponse getGovernedAsset(String serverName, String userId, String assetGuid) {
+    public GovernedAssetResponse getGovernedAsset(String serverName, String userId, String assetGuid) {
         String methodName = "getGovernedAsset";
-        GovernedAssetAPIResponse response = new GovernedAssetAPIResponse();
+        GovernedAssetResponse response = new GovernedAssetResponse();
 
         try {
             GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(userId, serverName, methodName);

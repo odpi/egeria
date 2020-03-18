@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.api.objects;
 
 import java.io.Serializable;
 
-public class SoftwareServerCapabilityResponse extends GovernanceEngineOMASAPIResponse implements Serializable {
+public class SoftwareServerCapabilityResponse extends GovernanceEngineOMASResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

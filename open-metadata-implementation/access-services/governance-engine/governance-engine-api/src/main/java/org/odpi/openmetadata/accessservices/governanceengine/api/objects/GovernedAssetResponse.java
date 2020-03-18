@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
-import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,27 +18,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GovernedAssetListAPIResponse extends GovernanceEngineOMASAPIResponse implements Serializable {
+public class GovernedAssetResponse extends GovernanceEngineOMASResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private List<GovernedAsset> assetList;
+    private GovernedAsset asset;
 
     /**
      * Return the Connection object.
      *
      * @return connection
      */
-    public List<GovernedAsset> getGovernedAssetList() {
-        return assetList;
+    public GovernedAsset getAsset() {
+        return asset;
     }
 
     /**
      * Set up the Connection object.
      *
-     * @param assetList - TagMap object
+     * @param asset - TagMap object
      */
-    public void setGovernedAssetList(List<GovernedAsset> assetList) {
-        this.assetList = assetList;
+    public void setAsset(GovernedAsset asset) {
+        this.asset = asset;
     }
+
 
 }
