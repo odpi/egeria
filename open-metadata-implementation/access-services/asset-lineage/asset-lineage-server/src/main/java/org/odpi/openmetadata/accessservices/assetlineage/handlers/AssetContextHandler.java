@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
 
 /**
  * The Asset Context handler provides methods to build graph context for assets that has been created.
@@ -34,14 +34,12 @@ public class AssetContextHandler {
 
     private final RepositoryHandler repositoryHandler;
     private final InvalidParameterHandler invalidParameterHandler;
-    private final CommonHandler commonHandler;
+    private final HandlerHelper handlerHelper;
     private final List<String> supportedZones;
 
     private AssetContext graph;
 
     /**
-     * Construct the discovery engine configuration handler caching the objects
-     * needed to operate within a single server instance.
      *
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
@@ -54,7 +52,7 @@ public class AssetContextHandler {
                                List<String> supportedZones) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
-        this.commonHandler = new CommonHandler(invalidParameterHandler, repositoryHelper, repositoryHandler);
+        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler);
         this.supportedZones = supportedZones;
     }
 
@@ -89,7 +87,7 @@ public class AssetContextHandler {
 
         invalidParameterHandler.validateAssetInSupportedZone(guid,
                 GUID_PARAMETER,
-                commonHandler.getAssetZoneMembership(entityDetail.get().getClassifications()),
+                handlerHelper.getAssetZoneMembership(entityDetail.get().getClassifications()),
                 supportedZones,
                 ASSET_LINEAGE_OMAS,
                 methodName);
@@ -129,7 +127,7 @@ public class AssetContextHandler {
 
     private List<EntityDetail> buildGraphByRelationshipType(String userId, EntityDetail startEntity,
                                                             String relationshipType, String typeDefName, boolean changeDirection) throws OCFCheckedExceptionBase {
-        List<Relationship> relationships = commonHandler.getRelationshipsByType(userId, startEntity.getGUID(), relationshipType, typeDefName);
+        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipType, typeDefName);
 
         if (startEntity.getType().getTypeDefName().equals(FILE_FOLDER)) {
             relationships = relationships.stream().filter(relationship ->
@@ -139,7 +137,7 @@ public class AssetContextHandler {
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
 
-            EntityDetail endEntity = commonHandler.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph, changeDirection);
+            EntityDetail endEntity = handlerHelper.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph, changeDirection);
             if (endEntity == null) return Collections.emptyList();
 
             entityDetails.add(endEntity);

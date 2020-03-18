@@ -69,8 +69,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
-            Project createdProject = handler.createProject(userId,
-                    suppliedProject);
+            Project createdProject = handler.createProject(userId, suppliedProject);
             response = new ProjectResponse(createdProject);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, methodName);

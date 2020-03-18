@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * The category handler is initialised with a SubjectAreaCategory, that contains the server the call should be sent to.
- * The handler exposes methods for category functionality for the subject area view  
+ * The handler exposes methods for category functionality for the glossary author view
  */
 public class CategoryHandler
 {
