@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * The glossary handler is initialised with a SubjectAreaGlossary, that contains the server the call should be sent to.
- * The handler exposes methods for glossary functionality for the subject area view  
+ * The handler exposes methods for glossary functionality for the glossary author view
  */
 public class GlossaryHandler
 {

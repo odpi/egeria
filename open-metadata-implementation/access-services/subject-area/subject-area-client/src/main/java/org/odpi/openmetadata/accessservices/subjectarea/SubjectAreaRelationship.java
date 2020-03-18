@@ -64,7 +64,7 @@ public interface SubjectAreaRelationship
      *
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
-     * @return the created term HASA relationship
+     * @return the updated term HASA relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -83,7 +83,7 @@ public interface SubjectAreaRelationship
      *
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
-     * @return the created term HASA relationship
+     * @return the replaced term HASA relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -232,7 +232,7 @@ public interface SubjectAreaRelationship
      *
      * @param userId               userId under which the request is performed
      * @param termRelatedTerm the RelatedTerm relationship
-     * @return the created term RelatedTerm relationship
+     * @return the updated term RelatedTerm relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -1939,7 +1939,7 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId               userId under which the request is performed
-     * @param TermISATypeOFRelationship the TermISATypeOFRelationship relationship
+     * @param isATypeOf            the TermISATypeOFRelationship relationship
      * @return  TermISATypeOFRelationship updated TermISATypeOFRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -1950,19 +1950,19 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermISATypeOFRelationship updateTermISATypeOFRelationship(String userId, TermISATypeOFRelationship TermISATypeOFRelationship)  throws InvalidParameterException,
+    TermISATypeOFRelationship updateTermISATypeOFRelationship(String userId, TermISATypeOFRelationship isATypeOf)  throws InvalidParameterException,
                                                                                                                                                                                             MetadataServerUncontactableException,
                                                                                                                                                                                             UserNotAuthorizedException,
                                                                                                                                                                                             UnexpectedResponseException,
                                                                                                                                                                                             UnrecognizedGUIDException ;
     /**
-     * Replace an TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
+     * Replace an isATypeOf relationship, which is defines an inheritance relationship between two spine objects.
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
-     * @param TermISATypeOFRelationship the TermISATypeOFRelationship relationship
-     * @return  TermISATypeOFRelationship replaced TermISATypeOFRelationship
+     * @param isATypeOf the isATypeOf relationship
+     * @return  isATypeOf replaced isATypeOf
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -1972,7 +1972,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermISATypeOFRelationship replaceTermISATypeOFRelationship(String userId, TermISATypeOFRelationship TermISATypeOFRelationship)  throws InvalidParameterException,
+    TermISATypeOFRelationship replaceTermISATypeOFRelationship(String userId, TermISATypeOFRelationship isATypeOf)  throws InvalidParameterException,
                                                                                                                                                                                              MetadataServerUncontactableException,
                                                                                                                                                                                              UserNotAuthorizedException,
                                                                                                                                                                                              UnexpectedResponseException,
@@ -2112,7 +2112,7 @@ public interface SubjectAreaRelationship
      *
      * @param userId               userId under which the request is performed
      * @param termCategorizationRelationship the term categorization relationship
-     * @return the created term categorization relationship
+     * @return the updated term categorization relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -2131,7 +2131,7 @@ public interface SubjectAreaRelationship
      *
      * @param userId               userId under which the request is performed
      * @param termCategorizationRelationship the term categorization relationship
-     * @return the created term categorization relationship
+     * @return the replaced term categorization relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -2427,15 +2427,38 @@ public interface SubjectAreaRelationship
             UnexpectedResponseException,
             UnrecognizedGUIDException
     ;
-
     /**
-     * Replace a Category Anhor Relationship.
+     *Update a Category Anchor Relationship.
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
      * @param categoryAnchorRelationship the category anchor relationship
-     * @return the created category anchor relationship
+     * @return the updated category anchor relationship
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    CategoryAnchorRelationship updateCategoryAnchorRelationship(String userId, CategoryAnchorRelationship categoryAnchorRelationship) throws InvalidParameterException,
+                                                                                                                                              UserNotAuthorizedException,
+                                                                                                                                              MetadataServerUncontactableException,
+                                                                                                                                              UnexpectedResponseException,
+                                                                                                                                              UnrecognizedGUIDException
+    ;
+
+    /**
+     * Replace a Category Anchor Relationship.
+     * <p>
+     *
+     *
+     * @param userId               userId under which the request is performed
+     * @param categoryAnchorRelationship the category anchor relationship
+     * @return the replaced category anchor relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -2596,7 +2619,7 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId               userId under which the request is performed
-     * @param ProjectScopeRelationship the ProjectScope relationship
+     * @param projectScopeRelationship the ProjectScope relationship
      * @return replaced ProjectScope relationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -2607,7 +2630,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    ProjectScopeRelationship replaceProjectScopeRelationship(String userId, ProjectScopeRelationship ProjectScopeRelationship)  throws InvalidParameterException,
+    ProjectScopeRelationship replaceProjectScopeRelationship(String userId, ProjectScopeRelationship projectScopeRelationship)  throws InvalidParameterException,
             MetadataServerUncontactableException,
             UserNotAuthorizedException,
             UnexpectedResponseException,
