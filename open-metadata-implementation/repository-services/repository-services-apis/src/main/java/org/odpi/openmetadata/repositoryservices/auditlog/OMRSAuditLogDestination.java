@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.auditlog;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogDestination;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecordOriginator;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogReportingComponent;
@@ -13,23 +15,19 @@ import org.slf4j.LoggerFactory;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * OMRSAuditLogDestination provides information needed to log records to the configured audit log destinations
  * for a specific server instance.
  */
-public class OMRSAuditLogDestination
+public class OMRSAuditLogDestination extends AuditLogDestination
 {
-    private final OMRSAuditLogRecordOriginator originator     = new OMRSAuditLogRecordOriginator();
+    private final OMRSAuditLogRecordOriginator omrsOriginator = new OMRSAuditLogRecordOriginator();
     private       List<OMRSAuditLogStore>      auditLogStores = null;
 
-    private static final Logger log = LoggerFactory.getLogger(OMRSAuditLog.class);
-
-    public OMRSAuditLogDestination(List<OMRSAuditLogStore> auditLogStores)
-    {
-        this.auditLogStores = auditLogStores;
-    }
+    private static final Logger log = LoggerFactory.getLogger(OMRSAuditLogDestination.class);
 
 
     /**
@@ -46,9 +44,25 @@ public class OMRSAuditLogDestination
                                    String                  localOrganizationName,
                                    List<OMRSAuditLogStore> auditLogStores)
     {
-        this.originator.setServerName(localServerName);
-        this.originator.setServerType(localServerType);
-        this.originator.setOrganizationName(localOrganizationName);
+        super();
+
+        /*
+         * These are the strategic values
+         */
+        if (super.originatorProperties == null)
+        {
+            super.originatorProperties = new HashMap<>();
+        }
+        super.originatorProperties.put(OMRSAuditLogRecordOriginator.SERVER_NAME_PROPERTY, localServerName);
+        super.originatorProperties.put(OMRSAuditLogRecordOriginator.SERVER_TYPE_PROPERTY, localServerType);
+        super.originatorProperties.put(OMRSAuditLogRecordOriginator.ORGANIZATION_NAME_PROPERTY, localOrganizationName);
+
+        /*
+         * These are set up for backward compatibility
+         */
+        this.omrsOriginator.setServerName(localServerName);
+        this.omrsOriginator.setServerType(localServerType);
+        this.omrsOriginator.setOrganizationName(localOrganizationName);
 
         if (auditLogStores != null)
         {
@@ -64,7 +78,19 @@ public class OMRSAuditLogDestination
      */
     public void setLocalMetadataCollectionId(String              localMetadataCollectionId)
     {
-        this.originator.setMetadataCollectionId(localMetadataCollectionId);
+        super.originatorProperties.put(OMRSAuditLogRecordOriginator.METADATA_COLLECTION_ID_PROPERTY, localMetadataCollectionId);
+        this.omrsOriginator.setMetadataCollectionId(localMetadataCollectionId);
+    }
+
+
+    /**
+     * Return the originator to the audit log to help build the log record.
+     *
+     * @return record originator object.
+     */
+    OMRSAuditLogRecordOriginator getOriginator()
+    {
+        return omrsOriginator;
     }
 
 
@@ -72,155 +98,25 @@ public class OMRSAuditLogDestination
      * Log an audit log record for an event, decision, error, or exception detected by the
      * open metadata services.
      *
-     * @param reportingComponent component that sent the log record
-     * @param actionDescription description of the activity creating the audit log record
-     * @param logMessageId id for the audit log record
-     * @param severity is this an event, decision, error or exception?
-     * @param logMessage description of the audit log record including specific resources involved
-     * @param additionalInformation additional data to help resolve issues of verify behavior
-     * @param systemAction the related action taken by the OMRS.
-     * @param userAction details of any action that an administrator needs to take.
+     * @param logRecord the log record
      */
-    public void logRecord(OMRSAuditLogReportingComponent reportingComponent,
-                          String                         actionDescription,
-                          String                         logMessageId,
-                          OMRSAuditLogRecordSeverity     severity,
-                          String                         logMessage,
-                          String                         additionalInformation,
-                          String                         systemAction,
-                          String                         userAction)
+    public void addLogRecord(AuditLogRecord logRecord)
     {
-        this.storeLogRecord(reportingComponent,
-                            actionDescription,
-                            logMessageId,
-                            severity,
-                            logMessage,
-                            additionalInformation,
-                            systemAction,
-                            userAction,
-                            null,
-                            null,
-                            null);
+        this.addLogRecord(new OMRSAuditLogRecord(logRecord));
     }
 
 
     /**
-     * Log details of an unexpected exception detected by the open metadata modules.
+     * Log an audit log record for an event, decision, error, or exception detected by the
+     * open metadata services.
      *
-     * @param reportingComponent component that sent the log record
-     * @param actionDescription description of the activity in progress when the error occurred
-     * @param logMessageId id for the type of exception caught
-     * @param severity severity of the error
-     * @param logMessage description of the exception including specific resources involved
-     * @param additionalInformation additional data to help resolve issues of verify behavior
-     * @param systemAction the action taken by the OMRS in response to the error.
-     * @param userAction details of any action that an administrator needs to take.
-     * @param caughtException the original exception.
+     * @param logRecord the log record
      */
-    public void logException(OMRSAuditLogReportingComponent reportingComponent,
-                             String                         actionDescription,
-                             String                         logMessageId,
-                             OMRSAuditLogRecordSeverity     severity,
-                             String                         logMessage,
-                             String                         additionalInformation,
-                             String                         systemAction,
-                             String                         userAction,
-                             Throwable                      caughtException)
-    {
-        String exceptionClassName = null;
-        String exceptionMessage = null;
-        String exceptionStackTrace = null;
-
-        if (caughtException != null)
-        {
-            exceptionClassName = caughtException.getClass().getName();
-            exceptionMessage = caughtException.getMessage();
-
-            StringWriter stackTrace = new StringWriter();
-            caughtException.printStackTrace(new PrintWriter(stackTrace));
-
-            exceptionStackTrace = stackTrace.toString();
-        }
-
-        this.storeLogRecord(reportingComponent,
-                            actionDescription,
-                            logMessageId,
-                            severity,
-                            logMessage,
-                            additionalInformation,
-                            systemAction,
-                            userAction,
-                            exceptionClassName,
-                            exceptionMessage,
-                            exceptionStackTrace);
-    }
-
-
-    /**
-     * Log details of an unexpected exception detected by the open metadata modules.
-     *
-     * @param reportingComponent component that sent the log record
-     * @param actionDescription description of the activity in progress when the error occurred
-     * @param logMessageId id for the type of exception caught
-     * @param severity severity of the error
-     * @param logMessage description of the exception including specific resources involved
-     * @param additionalInformation additional data to help resolve issues of verify behavior
-     * @param systemAction the action taken by the OMRS in response to the error.
-     * @param userAction details of any action that an administrator needs to take.
-     * @param exceptionClassName class name of an exception that is associated with the log record.
-     * @param exceptionMessage message from an exception that is associated with the log record.
-     * @param exceptionStackTrace stack trace from an exception that is associated with the log record.
-     */
-    private void storeLogRecord(OMRSAuditLogReportingComponent reportingComponent,
-                                String                         actionDescription,
-                                String                         logMessageId,
-                                OMRSAuditLogRecordSeverity     severity,
-                                String                         logMessage,
-                                String                         additionalInformation,
-                                String                         systemAction,
-                                String                         userAction,
-                                String                         exceptionClassName,
-                                String                         exceptionMessage,
-                                String                         exceptionStackTrace)
+    void addLogRecord(OMRSAuditLogRecord logRecord)
     {
         if (auditLogStores != null)
         {
-            if (severity == null)
-            {
-                severity = OMRSAuditLogRecordSeverity.UNKNOWN;
-            }
-
-            List<String> additionalInformationArray = new ArrayList<>();
-
-            if (actionDescription != null)
-            {
-                additionalInformationArray.add(actionDescription);
-            }
-
-            if (additionalInformation != null)
-            {
-                additionalInformationArray.add(additionalInformation);
-            }
-
-            if (additionalInformationArray.isEmpty())
-            {
-                additionalInformationArray = null;
-            }
-
-            OMRSAuditLogRecord logRecord = new OMRSAuditLogRecord(originator,
-                                                                  reportingComponent,
-                                                                  severity.getName(),
-                                                                  logMessageId,
-                                                                  logMessage,
-                                                                  additionalInformationArray,
-                                                                  systemAction,
-                                                                  userAction);
-
-            logRecord.setExceptionClassName(exceptionClassName);
-            logRecord.setExceptionMessage(exceptionMessage);
-            logRecord.setExceptionStackTrace(exceptionStackTrace);
-
-            for (OMRSAuditLogStore  auditLogStore : auditLogStores)
+            for (OMRSAuditLogStore auditLogStore : auditLogStores)
             {
                 if (auditLogStore != null)
                 {
@@ -235,5 +131,44 @@ public class OMRSAuditLogDestination
                 }
             }
         }
+    }
+
+
+    /**
+     * Return information about the audit log stores configured for this server.
+     *
+     * @return report
+     */
+    OMRSAuditLogDestinationsReport getDestinationsReport()
+    {
+        OMRSAuditLogDestinationsReport report = null;
+
+        if (auditLogStores != null)
+        {
+            report = new OMRSAuditLogDestinationsReport();
+
+            List<OMRSAuditLogStoreReport>  storeReportList = new ArrayList<>();
+
+            for (OMRSAuditLogStore auditLogStore : auditLogStores)
+            {
+                if (auditLogStore != null)
+                {
+                    OMRSAuditLogStoreReport auditLogStoreReport = new OMRSAuditLogStoreReport();
+
+                    auditLogStoreReport.setDestinationName(auditLogStore.getDestinationName());
+                    auditLogStoreReport.setSupportedSeverities((auditLogStore.getSupportedSeverities()));
+                    auditLogStoreReport.setImplementationClass(auditLogStore.getClass().getName());
+
+                    storeReportList.add(auditLogStoreReport);
+                }
+            }
+
+            if (! storeReportList.isEmpty())
+            {
+                report.setLogStoreReports(storeReportList);
+            }
+        }
+
+        return report;
     }
 }

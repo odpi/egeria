@@ -4,7 +4,7 @@
 # Repository Services Connectors
 
 The repository-services-connectors contains connector implementations for
-each type of connector supported by the Open Metadata Repository Services (OMRS).
+each type of connector [supported by the Open Metadata Repository Services (OMRS)](../../../repository-services/docs/component-descriptions/connectors).
 These connectors enable the OMRS to be adapted to many different platforms.
 
 * **[audit-log-connectors](audit-log-connectors)** supports different destinations for 
@@ -25,6 +25,7 @@ The **[connector-configuration-factory](../connector-configuration-factory)** se
 up connections to the default implementations
 of each type of repository services connector.
 
+----
 Return to [open-connectors](..) module.
 
 ----

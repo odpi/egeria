@@ -100,6 +100,8 @@ public class RepositoryRelatedEntitiesIterator
      * Return the next relationship.  It returns null if nothing left to retrieve.
      *
      * @return relationship or null
+     * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
+     * @throws PropertyServerException there is a problem in the repository
      */
     public EntityDetail  getNext() throws UserNotAuthorizedException,
                                           PropertyServerException

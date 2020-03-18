@@ -18,7 +18,7 @@ public class DropFootWeeklyMeasurementsDiscoveryServiceProvider extends Discover
     {
         super();
 
-        Class        connectorClass = DropFootWeeklyMeasurementsDiscoveryService.class;
+        Class<?>     connectorClass = DropFootWeeklyMeasurementsDiscoveryService.class;
 
         super.setConnectorClassName(connectorClass.getName());
     }

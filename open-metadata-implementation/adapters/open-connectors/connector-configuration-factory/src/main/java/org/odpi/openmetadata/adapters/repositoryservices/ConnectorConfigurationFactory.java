@@ -24,15 +24,13 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorClassName;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -83,13 +81,25 @@ public class ConnectorConfigurationFactory
 
     /**
      * Return the connection for the default audit log.
-     * By default, the Audit log written to stdout.
+     * By default, the Audit Log written to stdout.
      *
      * @return OCF Connection used to create the default audit logger
      */
     public Connection getDefaultAuditLogConnection()
     {
-        return getConsoleAuditLogConnection(null);
+        List<OMRSAuditLogRecordSeverity> supportedSeverityDefinitions = Arrays.asList(OMRSAuditLogRecordSeverity.values());
+        List<String>                     supportedSeverities = new ArrayList<>();
+
+        for (OMRSAuditLogRecordSeverity severityDefinition : supportedSeverityDefinitions)
+        {
+            if ((! OMRSAuditLogRecordSeverity.TRACE.equals(severityDefinition)) &&
+                (! OMRSAuditLogRecordSeverity.PERFMON.equals(severityDefinition)))
+            {
+                supportedSeverities.add(severityDefinition.getName());
+            }
+        }
+
+        return getConsoleAuditLogConnection(supportedSeverities);
     }
 
 
@@ -121,8 +131,11 @@ public class ConnectorConfigurationFactory
      */
     public Connection getConsoleAuditLogConnection(List<String> supportedSeverities)
     {
+        final String destinationName = "Console";
+
         Connection connection = new Connection();
 
+        connection.setDisplayName(destinationName);
         connection.setConnectorType(getConnectorType(ConsoleAuditLogStoreProvider.class.getName()));
 
         setSupportedAuditLogSeverities(supportedSeverities, connection);
@@ -142,6 +155,8 @@ public class ConnectorConfigurationFactory
     public Connection getFileBasedAuditLogConnection(String       localServerName,
                                                      List<String> supportedSeverities)
     {
+        final String destinationName = "Files";
+
         String endpointAddress = "omag.server." + localServerName + ".auditlog";
 
         Endpoint endpoint = new Endpoint();
@@ -150,6 +165,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
 
+        connection.setDisplayName(destinationName + " in " + endpointAddress);
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(FileBasedAuditLogStoreProvider.class.getName()));
 
@@ -168,8 +184,11 @@ public class ConnectorConfigurationFactory
      */
     public Connection getSLF4JAuditLogConnection(List<String> supportedSeverities)
     {
+        final String destinationName = "SLF4J";
+
         Connection connection = new Connection();
 
+        connection.setDisplayName(destinationName);
         connection.setConnectorType(getConnectorType(SLF4JAuditLogStoreProvider.class.getName()));
 
         setSupportedAuditLogSeverities(supportedSeverities, connection);
@@ -197,10 +216,12 @@ public class ConnectorConfigurationFactory
                                                       String              serverId,
                                                       Map<String, Object> eventBusConfigurationProperties)
     {
+        final String destinationName = "EventTopic";
         String topicName = defaultTopicRootName + localServerName + ".auditlog";
 
         VirtualConnection connection = new VirtualConnection();
 
+        connection.setDisplayName(destinationName + " " + topicName);
         connection.setConnectorType(getConnectorType(EventTopicAuditLogStoreProvider.class.getName()));
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection(localServerName + " Audit Log Event Topic Destination",
                                                                         null,

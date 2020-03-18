@@ -31,6 +31,7 @@ are specialized OCF connectors, making the OCF the
 only plug-in mechanism in the open metadata and governance
 technology.
 
+----
 Return to [open-metadata-implementation](..).
 
 ----

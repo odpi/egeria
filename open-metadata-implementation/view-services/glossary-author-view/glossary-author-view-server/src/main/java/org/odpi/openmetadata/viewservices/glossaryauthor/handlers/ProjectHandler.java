@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * The project handler is initialised with a SubjectAreaProject, that contains the server the call should be sent to.
- * The handler exposes methods for project functionality for the subject area view
+ * The handler exposes methods for project functionality for the glossary author view
  */
 public class ProjectHandler {
     private static final Logger log = LoggerFactory.getLogger(ProjectHandler.class);
@@ -138,10 +138,6 @@ public class ProjectHandler {
     /**
      * Replace a Project. This means to override all the existing attributes with the supplied attributes.
      * <p>
-     * If the caller has chosen to incorporate the Project name in their Project Terms or Categories qualified name, renaming the Project will cause those
-     * qualified names to mismatch the Project name.
-     * If the caller has chosen to incorporate the Project qualifiedName in their Project Terms or Categories qualified name, changing the qualified name of the Project will cause those
-     * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
      * @param userId          userId under which the request is performed
@@ -163,10 +159,6 @@ public class ProjectHandler {
     /**
      * Update a Project. This means to update the Project with any non-null attributes from the supplied Project.
      * <p>
-     * If the caller has chosen to incorporate the Project name in their Project Terms or Categories qualified name, renaming the Project will cause those
-     * qualified names to mismatch the Project name.
-     * If the caller has chosen to incorporate the Project qualifiedName in their Project Terms or Categories qualified name, changing the qualified name of the Project will cause those
-     * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
      * @param userId          userId under which the request is performed

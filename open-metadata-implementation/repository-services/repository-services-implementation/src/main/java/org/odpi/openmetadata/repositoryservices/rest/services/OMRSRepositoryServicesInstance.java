@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.metadatahighway.OMRSMetadataHigh
  */
 public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
 {
+    private OMRSAuditLog                 masterAuditLog;
     private OMRSMetadataCollection       localMetadataCollection;
     private OMRSMetadataCollection       enterpriseMetadataCollection;
     private OMRSMetadataHighwayManager   metadataHighwayManager;
@@ -26,6 +27,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
      * is null when a REST calls is received, the request is rejected.
      *
      * @param localServerName name of this server
+     * @param masterAuditLog audit log at the top of the tree
      * @param localRepositoryConnector link to the repository responsible for servicing the REST calls to the local repository.
      * @param enterpriseRepositoryConnector link to the repository responsible for servicing the REST calls to the enterprise.
      * @param metadataHighwayManager manager of the cohort managers
@@ -35,6 +37,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
      * @param maxPageSize max number of results to return on single request.
      */
     public OMRSRepositoryServicesInstance(String                       localServerName,
+                                          OMRSAuditLog                 masterAuditLog,
                                           OMRSRepositoryConnector      localRepositoryConnector,
                                           OMRSRepositoryConnector      enterpriseRepositoryConnector,
                                           OMRSMetadataHighwayManager   metadataHighwayManager,
@@ -45,6 +48,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
     {
         super(localServerName, serviceName, maxPageSize);
 
+        this.masterAuditLog = masterAuditLog;
         this.auditLog = auditLog;
         this.localServerURL = localServerURL;
         this.metadataHighwayManager = metadataHighwayManager;
@@ -66,6 +70,17 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
         {
             this.enterpriseMetadataCollection = null;
         }
+    }
+
+
+    /**
+     * Return the master audit log for audit log services.
+     *
+     * @return audit log at the top of the tree
+     */
+    public OMRSAuditLog getMasterAuditLog()
+    {
+        return masterAuditLog;
     }
 
 

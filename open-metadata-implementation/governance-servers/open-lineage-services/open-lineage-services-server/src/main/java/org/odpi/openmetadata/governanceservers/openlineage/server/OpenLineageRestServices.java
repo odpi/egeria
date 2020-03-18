@@ -21,10 +21,11 @@ public class OpenLineageRestServices {
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
 
-    public LineageResponse lineage(String serverName, String userId, Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) {
+    public LineageResponse lineage(String serverName, String userId, Scope scope, String guid, String displayNameMustContain,
+                                   boolean includeProcesses) {
         LineageResponse response = new LineageResponse();
         final String methodName = "OpenLineageRestServices.lineage";
-        final String debugMessage = "Open Lineage Services: An exception occurred during a lineage HTTP request";
+        final String debugMessage = "An exception occurred during a lineage HTTP request";
         try {
             OpenLineageHandler openLineageHandler = instanceHandler.getOpenLineageHandler(userId,
                     serverName,
@@ -42,9 +43,9 @@ public class OpenLineageRestServices {
         } catch (OpenLineageException e) {
             openLineageExceptionHandler.captureOpenLineageException(response, e);
             log.debug(debugMessage, e);
-        }catch (Throwable e) {
+        }catch (Exception e) {
             openLineageExceptionHandler.captureThrowable(response, e, methodName);
-            log.debug("Open Lineage Services: An exception occurred during a lineage HTTP request", e);
+            log.debug(debugMessage, e);
         }
         return response;
     }

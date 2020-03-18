@@ -87,7 +87,7 @@ class TokenAjax extends PolymerElement {
 
     _go(){
         this.$.storage.reload();
-        console.log('going with token:'+this.token);
+        console.debug('_go with token:'+this.token);
         if( typeof this.token !== 'undefined'){
             this.$.ajax.headers['content-type'] = 'application/json';
             this.$.ajax.headers['x-auth-token'] = this.token;
@@ -98,7 +98,7 @@ class TokenAjax extends PolymerElement {
     }
 
     _tokenUpdated(){
-        console.log(this.id + ' -- token updated with:'+this.token)
+        console.debug(this.id + ' -- token updated with:'+this.token)
         this.$.ajax.headers['x-auth-token'] = this.token;
     }
 

@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![TechPreview](../../../../../../open-metadata-publication/website/images/egeria-content-status-tech-preview.png#pagewidth)
+
 # Avro File Connector
 
 The Avro file connector provides access to an Avro file that has been
@@ -17,6 +19,9 @@ from its catalog entry.
 
 The javadoc for Apache Avro is published [here](https://avro.apache.org/docs/current/api/java/index.html))
 
+
+----
+Return to the [file-connectors](..) module.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

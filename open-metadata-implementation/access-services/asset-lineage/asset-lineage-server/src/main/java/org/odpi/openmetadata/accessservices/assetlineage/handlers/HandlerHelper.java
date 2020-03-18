@@ -6,7 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
-import org.odpi.openmetadata.accessservices.assetlineage.util.Constants;
+import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -19,8 +19,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,9 +29,8 @@ import java.util.Optional;
 /**
  * The common handler provide common methods that is generic and reusable for other handlers.
  */
-public class CommonHandler {
+public class HandlerHelper {
 
-    private static final Logger log = LoggerFactory.getLogger(CommonHandler.class);
     private static final String GUID_PARAMETER = "guid";
     private static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     private static final String ZONE_MEMBERSHIP = "zoneMembership";
@@ -43,14 +40,12 @@ public class CommonHandler {
     private InvalidParameterHandler invalidParameterHandler;
 
     /**
-     * Construct the discovery engine configuration handler caching the objects
-     * needed to operate within a single server instance.
      *
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
      */
-    public CommonHandler(InvalidParameterHandler invalidParameterHandler,
+    public HandlerHelper(InvalidParameterHandler invalidParameterHandler,
                          OMRSRepositoryHelper repositoryHelper,
                          RepositoryHandler repositoryHandler) {
         this.invalidParameterHandler = invalidParameterHandler;
@@ -192,12 +187,12 @@ public class CommonHandler {
         }
 
 
-        GraphContext edge = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
+        GraphContext graphContext = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
 
-        if (graph.getEdges().stream().noneMatch(e -> e.getRelationshipGuid().equals(edge.getRelationshipGuid()))) {
+        if (graph.getGraphContexts().stream().noneMatch(e -> e.getRelationshipGuid().equals(graphContext.getRelationshipGuid()))) {
             graph.addVertex(startVertex);
             graph.addVertex(endVertex);
-            graph.addEdge(edge);
+            graph.addGraphContext(graphContext);
         }
 
         return endEntity;
@@ -219,7 +214,7 @@ public class CommonHandler {
                 .filter(classification -> classification.getName().equals(ASSET_ZONE_MEMBERSHIP)).findFirst();
 
         if (assetZoneMembership.isPresent()) {
-            List<String> zoneMembership = repositoryHelper.getStringArrayProperty(Constants.ASSET_LINEAGE_OMAS, ZONE_MEMBERSHIP,
+            List<String> zoneMembership = repositoryHelper.getStringArrayProperty(AssetLineageConstants.ASSET_LINEAGE_OMAS, ZONE_MEMBERSHIP,
                     assetZoneMembership.get().getProperties(), methodName);
 
             if (CollectionUtils.isNotEmpty(zoneMembership)) {

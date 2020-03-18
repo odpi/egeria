@@ -116,7 +116,10 @@ spec:
             - "-c"
             - >
                 cd /opt/egeria/connectors &&
-                wget ${IBMIGC_CONNECTOR_URL}
+                wget ${EGERIA_ARTIFACTORY_RELEASE}/${IBMIGC_CONNECTOR_URL_PATH}/${EGERIA_VERSION}/egeria-connector-ibm-information-server-package-${EGERIA_VERSION}-jar-with-dependencies.jar && touch RELEASE;
+                if [ $? -ne 0 ]; then wget ${EGERIA_ARTIFACTORY_STAGING}/${IBMIGC_CONNECTOR_URL_PATH}/${EGERIA_VERSION}/egeria-connector-ibm-information-server-package-${EGERIA_VERSION}-jar-with-dependencies.jar && touch STAGING; fi;
+                if [ $? -ne 0 ]; then wget ${EGERIA_ARTIFACTORY_SNAPSHOT}/${IBMIGC_CONNECTOR_URL_PATH}/${EGERIA_VERSION}/egeria-connector-ibm-information-server-package-${EGERIA_VERSION}-jar-with-dependencies.jar && touch SNAPSHOT; fi;
+                if [ $? -ne 0 ]; then wget ${EGERIA_ARTIFACTORY_SNAPSHOT}/${IBMIGC_CONNECTOR_URL_PATH}/${EGERIA_VERSION}-SNAPSHOT/egeria-connector-ibm-information-server-package-${EGERIA_VERSION}-SNAPSHOT-jar-with-dependencies.jar && touch SNAPSHOT; fi
           volumeMounts:
             - mountPath: /opt/egeria/connectors
               name: egeria-igc-connector-volume

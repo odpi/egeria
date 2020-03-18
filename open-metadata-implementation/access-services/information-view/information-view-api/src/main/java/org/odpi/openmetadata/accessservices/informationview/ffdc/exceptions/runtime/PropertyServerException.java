@@ -6,6 +6,9 @@ package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.run
  * property server.
  */
 public class PropertyServerException extends InformationViewExceptionBase {
+
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating a PropertyServerException.
      *

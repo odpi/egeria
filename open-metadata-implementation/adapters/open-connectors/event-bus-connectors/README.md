@@ -11,6 +11,8 @@ and repository-service-connectors.
 the base Open Metadata Topic used for asynchronous event passing between members of
 the open metadata ecosystem.
 
+
+----
 Return to [open-connectors](..) module.
 
 

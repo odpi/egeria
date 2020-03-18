@@ -34,7 +34,7 @@ public enum CommunityProfileAuditCode
                                  "It can receive a feed of the latest user, organizational and profile information through " +
                                  "a feed from another system and will publish significant events such as whenever an individual " +
                                  "reaches a karma point plateau.",
-             "No action is required if this service is .  This is part of the normal operation of the service."),
+             "No action is required if this service is required."),
 
     SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-COMMUNITY-PROFILE-0002",
              OMRSAuditLogRecordSeverity.STARTUP,
