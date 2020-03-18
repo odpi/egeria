@@ -371,48 +371,20 @@ class GraphControls extends PolymerElement {
     _historyDismissHandler() {
         // This function is called from the history dialog and is a NO OP - there
         // is no action to take on dismiss.
-
     }
-
-
-    doGet() {
-
-        if (this.instanceGUID === undefined || this.instanceGUID === null) {
-            alert("Cannot explore cannot proceed because instanceGUID is not set - please provide a GUID first");
-            return;
-        }
-
-        var serverDetails = this.connectionManager.getServerDetails();
-        if (this.validate(serverDetails.serverName) && this.validate(serverDetails.serverURLRoot)) {
-            var body = {};
-            body.serverName       = serverDetails.serverName;
-            body.serverURLRoot    = serverDetails.serverURLRoot;
-            body.enterpriseOption = serverDetails.enterpriseOption;
-            if (this.selectedCategory === 'Entity') {
-                body.entityGUID = this.instanceGUID;
-                this.getEntityFromRepo(body);
-            }
-            else {
-                body.relationshipGUID = this.instanceGUID;
-                this.getRelationshipFromRepo(body);
-            }
-        }
-    }
-
-
 
 
     doPreTraversal() {
 
-        var instanceGUID     = this.instanceRetriever.getInstanceGUID();
-        var selectedCategory = this.instanceRetriever.getFocusInstanceCategory();
+        var focusGUID        = this.instanceRetriever.getFocusGUID();
+        var focusCategory = this.instanceRetriever.getFocusCategory();
 
-        if (selectedCategory !== 'Entity') {
+        if (focusCategory !== 'Entity') {
             alert("Cannot explore from a relationship - please select an entity");
             return;
         }
 
-        if (instanceGUID === undefined || instanceGUID === null) {
+        if (focusGUID === undefined || focusGUID === null) {
             alert("Cannot explore cannot proceed because there is no focus instance - please load or select an entity first");
             return;
         }
@@ -423,7 +395,7 @@ class GraphControls extends PolymerElement {
             body.serverName       = serverDetails.serverName;
             body.serverURLRoot    = serverDetails.serverURLRoot;
             body.enterpriseOption = serverDetails.enterpriseQuery;
-            body.entityGUID       = instanceGUID;
+            body.entityGUID       = focusGUID;
             body.depth            = "1";  /* deliberately hard-coded */
 
             this.doPreTraversalAjax(body);
@@ -440,7 +412,6 @@ class GraphControls extends PolymerElement {
          * Delegate this to the instance-retriever
          */
          this.outEvtGraphCleared();
-
     }
 
 
@@ -461,16 +432,16 @@ class GraphControls extends PolymerElement {
     outEvtUndo() {
 
         var customEvent = new CustomEvent('undo',
-                                             { bubbles: true, composed: true,
-                                               detail: {source: "graph-controls"} } );
+            { bubbles: true, composed: true,
+              detail: {source: "graph-controls"} } );
         this.dispatchEvent(customEvent);
     }
 
     outEvtGraphCleared() {
 
         var customEvent = new CustomEvent('graph-cleared',
-                                             { bubbles: true, composed: true,
-                                               detail: {source: "graph-controls"} } );
+            { bubbles: true, composed: true,
+              detail: {source: "graph-controls"} } );
         this.dispatchEvent(customEvent);
     }
 
@@ -497,16 +468,16 @@ class GraphControls extends PolymerElement {
       */
      doTraversal(entityTypeGUIDs, relationshipTypeGUIDs, classificationNames) {
 
-         var instanceGUID     = this.instanceRetriever.getInstanceGUID();
-         var selectedCategory = this.instanceRetriever.getFocusInstanceCategory();
+         var focusGUID        = this.instanceRetriever.getFocusGUID();
+         var focusCategory = this.instanceRetriever.getFocusCategory();
          var currentGen       = this.instanceRetriever.getCurrentGen();
 
-         if (selectedCategory !== 'Entity') {
+         if (focusCategory !== 'Entity') {
              alert("Cannot explore from a relationship - please select an entity");
              return;
          }
 
-         if (instanceGUID === undefined || instanceGUID === null) {
+         if (focusGUID === undefined || focusGUID === null) {
              alert("Cannot explore cannot proceed because there is no focus instance - please load or select an entity first");
              return;
          }
@@ -518,7 +489,7 @@ class GraphControls extends PolymerElement {
              body.serverName       = serverDetails.serverName;
              body.serverURLRoot    = serverDetails.serverURLRoot;
              body.enterpriseOption = serverDetails.enterpriseQuery;
-             body.entityGUID       = instanceGUID;
+             body.entityGUID       = focusGUID;
              body.depth            = 1;    /* deliberately hard-coded */
              body.gen              = currentGen;
              // Set the filter lists...
@@ -530,10 +501,6 @@ class GraphControls extends PolymerElement {
 
          }
      }
-
-    // TODO - need to reconcile selectedCategory, instanceGUID and rootInstance - the first two are input fields
-    // TODO - and the last should be the focus instance; which when changed should update the input fields but
-    // TODO - not vice versa - input fields chaneg then we do a retrieve then the focus instance catches up.
 
      /*
       * The pre-traversal is a visit to the VS to get the types of relationship and neighboring entity adjacent to

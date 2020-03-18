@@ -68,12 +68,12 @@ class InstanceRetriever extends PolymerElement {
                                 id = 'entityGUIDInput'
                                 class='user-input'
                                 label = "Instance GUID"
-                                value={{instanceGUID}}
-                                on-change="instanceGUIDChanged">
+                                value={{getInstanceGUID}}
+                                on-change="focusGUIDChanged">
                         </paper-input>
 
                         <div style="width:180px; text-align:left; padding:0 10px;">
-                                <paper-radio-group  id="instance-guid-category-group"  selected="{{selectedCategory}}">
+                                <paper-radio-group  id="focus-category-group"  selected="{{getInstanceCategory}}">
                                     <paper-radio-button name="Entity" selected style="padding:3px;">Entity</paper-radio-button>
                                     <paper-radio-button name="Relationship" style="padding:3px;">Relationship</paper-radio-button>
                                 </paper-radio-group>
@@ -204,14 +204,32 @@ class InstanceRetriever extends PolymerElement {
                 value : ""
             },
 
+            /*
+             * The focusInstance object is used to store:
+             *  - the GUID that a user has input in preparation for a Get and
+             *    which is updated to reflect changes in focus (post-retrieval)
+             *  - the category the user has selected in preparation for a Get
+             *    and which is updated to reflect changes in focus (post-retrieval)
+             *  - the expanded instance that is retrieved - this will be either in:
+             *    - expEntity which contains a EntityDetail and EntityDigest
+             *    or in
+             *    - expRelationship which contains a Relationship and RelationshipDigest
+             *
+             * The instance-retriever provides functions for itself and other
+             * components to retrieve the focusGUID, the focusCategory
+             */
+            focusInstance: {
+                type               : Object,
+                value              : {},
+                notify             : true,
+                reflectToAttribute : true
+            },
+
 
             // User-specified entity GUID
-            // This is used both as the property for the entry input field for when a user
-            // specifies a GUID (to retrieve using the Get button) AND is also used to
-            // store the GUID of the instance that has been selected as the focus - e.g.
-            // because it has clicked on it in the diagram.
-
-            instanceGUID: {
+            // This is the property for the entry input field for when a user
+            // specifies a GUID (to retrieve using the Get button)
+            getInstanceGUID: {
                 type               : String,
                 value              : "",
                 notify             : true,
@@ -219,13 +237,13 @@ class InstanceRetriever extends PolymerElement {
             },
 
 
-            // TODO - rename - this should only relate to GIUD retrieval - but is I think being used for focus cat as well. separate.
-            // selectedCategory tells us whether instanceGUID refers to an entity or relationship.
+
+            // getInstanceCategory tells us whether instanceGUID refers to an entity or relationship.
             // It is set by the radio buttons next to the GUID input field.
-            selectedCategory: {
+            getInstanceCategory: {
                 type               : String,
                 value              : "Entity",
-                observer           : 'selectedCategoryChanged'    // Observer called when this property changes
+                observer           : 'getInstanceCategoryChanged'    // Observer called when this property changes
             },
 
 
@@ -325,12 +343,9 @@ class InstanceRetriever extends PolymerElement {
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
 
-        this.instanceGUIDCategory = "Entity";
-
-        // TODO - consider renaming this to focusInstance - but only after all previous focus refs have been removed...
-        // rootInstance stores expEntity or expRelationship - TODO see comments above for (disused) property
-        this.rootInstance = {};
-
+        this.focusInstance = {};
+        this.focusInstance.GUID = "";
+        this.focusInstance.category = "Entity";
 
         this.preTraversal                     = {};
         this.preTraversal.entityTypes         = {};
@@ -350,21 +365,20 @@ class InstanceRetriever extends PolymerElement {
      * There is no need to retrieve the entity whose GUID is given until the user presses the Get! button
      * For now this function is a no op.
      */
-    instanceGUIDChanged() {
+    focusGUIDChanged() {
     }
 
+    /*
+     * For now this function is a no op.
+     */
+    getInstanceCategoryChanged(newValue,oldValue) {
+    }
 
     /*
      * There is no need to search for the instance yet - until the user presses the Search button
      * For now this function is a no op.
      */
     searchTextChanged() {
-    }
-
-    /*
-     * For now this function is a no op.
-     */
-    selectedCategoryChanged(newValue,oldValue) {
     }
 
     /*
@@ -394,16 +408,17 @@ class InstanceRetriever extends PolymerElement {
         /*
          * If the currently selected entity has been clicked - then deselect it.
          */
-        if (entityGUID === this.instanceGUID) {
-            this.instanceGUID = undefined;
-            this.selectedCategory = undefined;
-            this.rootInstance = undefined;
+        if (entityGUID === this.focusInstance.GUID) {
+            this.focusInstance.GUID            = undefined;
+            this.focusInstance.category        = undefined;
+            this.focusInstance.expEntity       = undefined;
+            this.focusInstance.expRelationship = undefined;
             // Generate focus changed event
             this.outEvtFocusEntityCleared();
         }
         else {
-            this.instanceGUID = entityGUID;
-            this.selectedCategory = "Entity";
+            this.getInstanceGUID = entityGUID;
+            this.getInstanceCategory = "Entity";
             this.doGet();
         }
     }
@@ -416,44 +431,52 @@ class InstanceRetriever extends PolymerElement {
         /*
          * If the currently selected entity has been clicked - then deselect it.
          */
-        if (relationshipGUID === this.instanceGUID) {
-            this.instanceGUID = undefined;
-            this.selectedCategory = undefined;
-            this.rootInstance = undefined;
+        if (relationshipGUID === this.focusInstance.GUID) {
+            this.focusInstance.GUID            = undefined;
+            this.focusInstance.category        = undefined;
+            this.focusInstance.expEntity       = undefined;
+            this.focusInstance.expRelationship = undefined;
             // Generate focus changed event
             this.outEvtFocusRelationshipCleared();
         }
         else {
-            this.instanceGUID = relationshipGUID;
-            this.selectedCategory = "Relationship";
+            this.getInstanceGUID = relationshipGUID;
+            this.getInstanceCategory = "Relationship";
             this.doGet();
         }
     }
 
     /*
-     * This may seem odd since the i-r is the source of this event - but it is appropriate that the last thing
-     * that happens as a result of an entity focus change is to ensure the explore button is enabled.
+     * Set the input fields to show the new focus settings
      */
     inEvtFocusEntityChanged(entityGUID) {
-        //this.enableExploreButton();
+        this.getInstanceGUID     = this.focusInstance.GUID;
+        this.getInstanceCategory = this.focusInstance.category;
+
     }
 
     /*
-     * This may seem odd since the i-r is the source of this event - but it is appropriate that if anything
-     * further actions are needed on completion of event processing by the other components that the i-r gets
-     * the last word. For an entity focus change it will enable the explore button. For relationship focus
-     * change there is currently nothing that needs doing.
+     * Set the input fields to show the new focus settings
      */
     inEvtFocusRelationshipChanged(relationshipGUID) {
-        // NO OP
+        this.getInstanceGUID     = this.focusInstance.GUID;
+        this.getInstanceCategory = this.focusInstance.category;
     }
 
+    /*
+     * Reset input fields to defaults.
+     */
     inEvtFocusEntityCleared() {
-
+        this.getInstanceGUID = "";
+        this.getInstanceCategory = "Entity";
     }
 
+    /*
+     * Reset input fields to defaults.
+     */
     inEvtFocusRelationshipCleared() {
-
+        this.getInstanceGUID = "";
+        this.getInstanceCategory = "Entity";
     }
 
 
@@ -462,13 +485,17 @@ class InstanceRetriever extends PolymerElement {
      */
     inEvtGraphCleared() {
 
+        // Reset the focusInstance
+        this.focusInstance = {};
+        this.focusInstance.GUID = "";
+        this.focusInstance.category = "Entity";
 
-        // Empty the root/focus fields
-        this.instanceGUID = undefined;
-        // The selectedCategory property drives the radio buttons for GUID retrieval category
-        // Reset it to its default setting of "Entity" rather than clearing it completely.
-        this.selectedCategory = "Entity";
-        this.rootInstance = undefined;
+        /*
+         * Reset input fields to defaults.
+         */
+        this.getInstanceGUID = "";
+        this.getInstanceCategory = "Entity";
+
         // Empty the graph
         this.gens = [];
         this.guidToGen = {};
@@ -477,60 +504,12 @@ class InstanceRetriever extends PolymerElement {
     }
 
 
-    /*
-     * This function will undo the last operation on the graph, by removing the most recent gen
-     */
-    inEvtUndo() {
-        /*
-         *  This function needs to parse the current (latest) gen and remove all the guidToGen entries relating
-         *  to GUIDs in that gen. It then needs to pop the gen from the list of gens, and reduce numberOfGens
-         *  When all done, fire a graph-reduced event.
-         */
-        var latestIdx = this.currentGen - 1;
-        var genToUndo = this.gens[latestIdx];
-
-        var entsToUndo = genToUndo.entities;
-        var relsToUndo =  genToUndo.relationships;
-        if (entsToUndo !== undefined && entsToUndo.length >0) {
-            entsToUndo.forEach(function(ent) {
-                this.guidToGen.delete(ent);
-            });
-        }
-        if (relsToUndo !== undefined && relsToUndo.length >0) {
-            relsToUndo.forEach(function(rel) {
-                this.guidToGen.delete(rel);
-            });
-        }
-
-        this.gens.pop();
-        this.currentGen = this.currentGen - 1;
-        this.numberOfGens = this.numberOfGens -1;
-
-        /*
-          *  Leave nothing selected...
-          *  We could refine this to test whether the selected instance is still valid (still in the graph)
-          *  and if so leave it selected.
-          */
-         if (guidToGen[this.instanceGUID] === undefined) {
-             this.instanceGUID = undefined;
-             this.selectedCategory = undefined;
-             this.rootInstance = undefined;
-             // Generate focus changed event
-             this.outEvtFocusEntityCleared();
-        }
-        /*
-         * Finally fire the graph-reduced event
-         */
-        this.outEvtGraphReduced();
-    }
-
-
 
     /*
-     * This function will undo the last operation on the graph, by removing the most recent gen
-     * This is a 2-phase operation - it highlights the gen to be removed, fires an event that can be
-     * caught and processed by other components and when it sees the event from the diagram the 2nd phase
-     * completes the removal.
+     * This function will undo the most recent operation on the graph, by removing the most recent gen.
+     * This is a 2-phase operation - the first phase fires an event to other components that
+     * need to take action while the gen is still available. The second phase is triggered by receipt
+     * of a graph-reduced event from the diagram and actually removes the gen.
      */
     inEvtUndoPhaseOne() {
         this.outEvtGraphBeingReduced();
@@ -547,15 +526,15 @@ class InstanceRetriever extends PolymerElement {
 
         var entsToUndo = genToUndo.entities;
         var relsToUndo =  genToUndo.relationships;
-        if (entsToUndo !== undefined && entsToUndo.length >0) {
-            entsToUndo.forEach(function(ent) {
-                this.guidToGen.delete(ent);
-            });
+        if (entsToUndo !== undefined && Object.keys(entsToUndo).length > 0) {
+           for (var guid in entsToUndo) {
+                this.guidToGen[guid] = undefined;
+            }
         }
-        if (relsToUndo !== undefined && relsToUndo.length >0) {
-            relsToUndo.forEach(function(rel) {
-                this.guidToGen.delete(rel);
-            });
+        if (relsToUndo !== undefined && Object.keys(relsToUndo).length > 0) {
+            for (var guid in relsToUndo) {
+                this.guidToGen[guid] = undefined;
+            }
         }
 
         this.gens.pop();
@@ -564,15 +543,19 @@ class InstanceRetriever extends PolymerElement {
 
         /*
           *  Leave nothing selected...
-          *  We could refine this to test whether the selected instance is still valid (still in the graph)
+          *  Test whether the selected instance is still valid (still in the graph)
           *  and if so leave it selected.
           */
-         if (this.guidToGen[this.instanceGUID] === undefined) {
-             this.instanceGUID = undefined;
-             this.selectedCategory = undefined;
-             this.rootInstance = undefined;
-             // Generate focus changed event
-             this.outEvtFocusEntityCleared();
+        if (this.guidToGen[this.focusInstance.GUID] === undefined) {
+            this.focusInstance.GUID            = undefined;
+            // The selectedCategory property drives the radio buttons for GUID retrieval category
+            // Reset it to its default setting of "Entity" rather than clearing it completely.
+            this.focusInstance.category        = "Entity";
+            this.focusInstance.expEntity       = undefined;
+            this.focusInstance.expRelationship = undefined;
+
+            // Generate focus changed event
+            this.outEvtFocusEntityCleared();
         }
 
     }
@@ -673,19 +656,6 @@ class InstanceRetriever extends PolymerElement {
                         entityKnown = true;
                         gen = this.guidToGen[entityGUID];
                     }
-                    // TODO - clean up
-                    // Search the existing gens looking for guid
-                    //for (var g=0; g< this.gens.length; g++) {
-                    //    var igen = this.gens[g];
-                    //    var igenEntities = igen.entities;
-                    //    if (igenEntities !== undefined) {
-                    //        if (igenEntities[entityGUID] !== undefined) {
-                    //            entityKnown = true;
-                    //            gen = g+1;
-                    //            break;
-                    //        }
-                    //    }
-                    //}
                     if (entityKnown === false) {
                         newInstancesDiscovered = true;
                         // If this is an entity we have not already seen - add it to the traversal which will go to the diagram manager
@@ -709,19 +679,6 @@ class InstanceRetriever extends PolymerElement {
                         relationshipKnown = true;
                         gen = this.guidToGen[relationshipGUID];
                     }
-                    // TODO - clean up
-                    // Search the existing gens looking for guid
-                    //for (var g=0; g< this.gens.length; g++) {
-                    //    var igen = this.gens[g];
-                    //    var igenRelationships = igen.entities;
-                    //    if (igenRelationships !== undefined) {
-                    //        if (igenRelationships[relationshipGUID] !== undefined) {
-                    //            relationshipKnown = true;
-                    //            gen = g+1;
-                    //            break;
-                    //        }
-                    //    }
-                    //}
                     if (relationshipKnown === false) {
                         newInstancesDiscovered = true;
                         // If this is an relationship we have not already seen - add it to the traversal which will go to the diagram manager
@@ -759,8 +716,9 @@ class InstanceRetriever extends PolymerElement {
     }
 
     outEvtChangeFocusEntity(entityGUID) {
-        var customEvent = new CustomEvent('change-focus-entity', { bubbles: true, composed: true,
-                                         detail: {entityGUID: entityGUID, source: "instance-retriever"} });
+        var customEvent = new CustomEvent('change-focus-entity',
+            { bubbles: true, composed: true,
+              detail: {entityGUID: entityGUID, source: "instance-retriever"} });
         this.dispatchEvent(customEvent);
     }
 
@@ -769,15 +727,6 @@ class InstanceRetriever extends PolymerElement {
      * Launch a dialog box with the history including list of gen, query and results
      */
     getHistoryList() {
-
-        // Clear any existing history from the dialog - we want to build a new one from the template...
-       // var containerForHistory = this.$.containerForHistory;
-       // while (containerForHistory.firstChild) {
-       //     containerForHistory.removeChild(containerForHistory.firstChild);
-       // }
-
-        // Now add the latest history to the container....
-       // var traversalHistory = document.createElement("traversal-history");
 
         // Build a history as a list of gens with summaries...
         var historyList = [];
@@ -957,12 +906,24 @@ class InstanceRetriever extends PolymerElement {
 
     doGet() {
 
-        if (this.instanceGUID === undefined || this.instanceGUID === null) {
+        /*
+         * Harvest the current values of getInstanceGUID and getInstanceCategory - user input fields
+         */
+
+        if (this.getInstanceGUID === undefined || this.getInstanceGUID === null) {
 
             alert("Get operation cannot proceed because no GUID has been set - please provide a GUID and try again");
             return;
 
         }
+
+        if (this.getInstanceCategory !== "Entity" && this.getInstanceCategory !== "Relationship") {
+
+            alert("Get operation cannot proceed because no category has been selected - please select one and try again");
+            return;
+
+        }
+
         else {
 
             var serverDetails = this.connectionManager.getServerDetails();
@@ -972,12 +933,12 @@ class InstanceRetriever extends PolymerElement {
                 body.serverName       = serverDetails.serverName;
                 body.serverURLRoot    = serverDetails.serverURLRoot;
                 body.enterpriseOption = serverDetails.enterpriseOption;
-                if (this.selectedCategory === 'Entity') {
-                    body.entityGUID = this.instanceGUID;
+                if (this.getInstanceCategory === 'Entity') {
+                    body.entityGUID = this.getInstanceGUID;
                     this.getEntityFromRepo(body);
                 }
                 else {
-                    body.relationshipGUID = this.instanceGUID;
+                    body.relationshipGUID = this.getInstanceGUID;
                     this.getRelationshipFromRepo(body);
                 }
             }
@@ -1092,12 +1053,8 @@ class InstanceRetriever extends PolymerElement {
 
     outEvtFocusEntityChanged(entityGUID) {
         var customEvent = new CustomEvent('focus-entity-changed',
-                                  { bubbles: true,
-                                    composed: true,
-                                    detail: {
-                                        guid : entityGUID ,
-                                        source: "instance-retriever"}
-                                  });
+            { bubbles: true, composed: true,
+              detail: { guid : entityGUID , source: "instance-retriever"} });
         this.dispatchEvent(customEvent);
     }
 
@@ -1168,15 +1125,9 @@ class InstanceRetriever extends PolymerElement {
          this.$.getPreTraversalAjaxId._go();
      }
 
-
-
-
-    // TODO - need to reconcile selectedCategory, instanceGUID and rootInstance - the first two are input fields
-    // TODO - and the last should be the focus instance; which when changed should update the input fields but
-    // TODO - not vice versa - input fields chaneg then we do a retrieve then the focus instance catches up.
-
-
-
+    /*
+     * Function to validate that a parameter is considered 'valid' - see predicates
+     */
     validate(parameter) {
         if (parameter === undefined || parameter === null || parameter === "" || parameter.length <= 0)
             return false;
@@ -1193,17 +1144,19 @@ class InstanceRetriever extends PolymerElement {
             if (newValue.httpStatusCode == 200) {
                 // Success
 
-                // Determine whether this is an entity we already have in the diagram (in the gens)
-                // or whether it is new to this exploration. If it is new we need to assign it to the
-                // current gen and tell the diagram manager - so we pick the entity digest from the
-                // expanded entity and wrap it in a traversal and issue a graph-changed event.
-                // If it was not new we need to update the entity digest to retain the original gen.
-                // This is so the gen remains as it was so that the entity retains its location in the
-                // user's exploration.
-                // Whether it was already known or not we save the most recent information into the
-                // root instance - the entity content may have changed in the repo.
-                // Whether new or known the focus is not this entity so we issue a focus-entity-changed
-                // event.
+                /*
+                 * Determine whether this is an entity we already have in the diagram (in the gens)
+                 * or whether it is new to this exploration. If it is new we need to assign it to the
+                 * current gen and tell the diagram manager - so we pick the entity digest from the
+                 * expanded entity and wrap it in a traversal and issue a graph-changed event.
+                 * If it was not new we need to update the entity digest to retain the original gen.
+                 * This is so the gen remains as it was so that the entity retains its location in the
+                 * user's exploration.
+                 * Whether it was already known or not we save the most recent information into the
+                 * root instance - the entity content may have changed in the repo.
+                 * Whether new or known the focus is not this entity so we issue a focus-entity-changed
+                 * event.
+                 */
 
                 var serverName = newValue.expandedEntityDetail.serverName;
 
@@ -1224,13 +1177,12 @@ class InstanceRetriever extends PolymerElement {
 
                 // Store the expanded entity into rootInstance, maintain the gen as above.
                 // rootInstance may have been cleared (to undefined) due to deselection of the focus instance.
-                if (this.rootInstance === undefined) {
-                    this.rootInstance = {};
-                }
-                this.rootInstance.category = "entity";
-                this.rootInstance.expEntity = newValue.expandedEntityDetail;
-                this.rootInstance.expEntity.entityDigest.gen = gen;
-                this.rootInstance.expRelationship = undefined;
+
+                this.focusInstance.GUID = entityGUID;
+                this.focusInstance.category = "Entity";
+                this.focusInstance.expEntity = newValue.expandedEntityDetail;
+                this.focusInstance.expEntity.entityDigest.gen = gen;
+                this.focusInstance.expRelationship = undefined;
 
                 // If this is an entity we have not already seen - tell the diagram manager
                 if (entityKnown === false) {
@@ -1247,7 +1199,7 @@ class InstanceRetriever extends PolymerElement {
                     var rexTraversal                  = {};
                     rexTraversal.entities             = {};
                     rexTraversal.relationships        = {};
-                    rexTraversal.entities[entityGUID] = this.rootInstance.expEntity.entityDigest;
+                    rexTraversal.entities[entityGUID] = this.focusInstance.expEntity.entityDigest;
                     rexTraversal.serverName           = serverName;
 
                     // Record in the traversal object, how this result was generated so we can provide informative summary in history
@@ -1326,17 +1278,12 @@ class InstanceRetriever extends PolymerElement {
                 }
 
 
-                // Store the expanded relationship into rootInstance, maintain the gen as above.
-                // rootInstance may have been cleared (to undefined) due to deselection of the focus instance.
-                if (this.rootInstance === undefined) {
-                    this.rootInstance = {};
-                }
-                this.rootInstance.category = "relationship";
-                this.rootInstance.expRelationship = newValue.expandedRelationship;
-                this.rootInstance.expRelationship.relationshipDigest.gen = gen;
-                this.rootInstance.expEntity = undefined;
-
-                //this.logRootRelationshipToConsole();
+                // Store the expanded relationship into focusInstance, using the gen from above.
+                this.focusInstance.GUID = relationshipGUID;
+                this.focusInstance.category = "relationship";
+                this.focusInstance.expRelationship = newValue.expandedRelationship;
+                this.focusInstance.expRelationship.relationshipDigest.gen = gen;
+                this.focusInstance.expEntity = undefined;
 
                 // If this is a relationship we have not already seen - tell the diagram manager
                 if (relationshipKnown === false) {
@@ -1355,7 +1302,7 @@ class InstanceRetriever extends PolymerElement {
                      rexTraversal.operation = "getRelationship";
 
                      rexTraversal.relationships   = {};
-                     rexTraversal.relationships[relationshipGUID] = this.rootInstance.expRelationship.relationshipDigest;
+                     rexTraversal.relationships[relationshipGUID] = this.focusInstance.expRelationship.relationshipDigest;
                      rexTraversal.entities        = {};
 
                       /*
@@ -1367,7 +1314,7 @@ class InstanceRetriever extends PolymerElement {
                      /*
                       * entityOne
                       */
-                     var entityOneDigest = this.rootInstance.expRelationship.entityOneDigest;
+                     var entityOneDigest = this.focusInstance.expRelationship.entityOneDigest;
                      var entityOneGUID = entityOneDigest.entityGUID;
 
                      /*
@@ -1388,7 +1335,7 @@ class InstanceRetriever extends PolymerElement {
                      /*
                       * entityTwo
                       */
-                     var entityTwoDigest = this.rootInstance.expRelationship.entityTwoDigest;
+                     var entityTwoDigest = this.focusInstance.expRelationship.entityTwoDigest;
                      var entityTwoGUID = entityTwoDigest.entityGUID;
 
                      /*
@@ -1687,8 +1634,8 @@ class InstanceRetriever extends PolymerElement {
     /*
      * Return the current value of instanceGUID
      */
-    getInstanceGUID() {
-        return this.instanceGUID;
+    getFocusGUID() {
+        return this.focusInstance.GUID;
     }
 
     /*
@@ -1701,11 +1648,8 @@ class InstanceRetriever extends PolymerElement {
     /*
      * Return the category of the current focus, if set
      */
-    getFocusInstanceCategory() {
-        if (this.selectedCategory === undefined) {
-          return null;
-        }
-        return this.selectedCategory;
+    getFocusCategory() {
+        return this.focusInstance.category;
     }
 
     /*
@@ -1713,12 +1657,10 @@ class InstanceRetriever extends PolymerElement {
      * The returned object is the expanded entity - consisting of the entityDetail and entityDigest.
      */
     getFocusEntity() {
-        if (this.rootInstance !== undefined) {
-            if (this.rootInstance.category === "entity") {
-                return this.rootInstance.expEntity;
-            }
+        if (this.focusInstance.category === "Entity") {
+            return this.focusInstance.expEntity;
         }
-        /* No focus set */
+        /* If there is a focus it is not an entity */
         return null;
     }
 
@@ -1728,12 +1670,10 @@ class InstanceRetriever extends PolymerElement {
      * The returned object is the expanded relationship - consisting of the relationship and relationshipDigest.
      */
     getFocusRelationship() {
-        if (this.rootInstance !== undefined) {
-            if (this.rootInstance.category === "relationship") {
-                return this.rootInstance.expRelationship;
-            }
+        if (this.focusInstance.category === "Relationship") {
+            return this.focusInstance.expRelationship;
         }
-        // focus is not a relationship
+        // If there is a focus it is not a relationship
         return null;
     }
 

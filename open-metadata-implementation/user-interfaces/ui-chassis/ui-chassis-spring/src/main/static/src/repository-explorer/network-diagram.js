@@ -245,11 +245,13 @@ class NetworkDiagram extends PolymerElement {
             },
 
             /*
-             * Property for temporary staging of image data TODO - redundant?
+             * Property that cam be used for temporary staging of image data
+             * Not currently used:
+             *  svgDataForImage : {
+             *      type : Object
+             *  }
              */
-            //svgDataForImage : {
-            //    type : Object
-            //}
+
 
         };
     }
@@ -1054,7 +1056,7 @@ class NetworkDiagram extends PolymerElement {
      */
     highlighted(d) {
         var selectedGUID = null;
-        var focusCat = this.instanceRetriever.getFocusInstanceCategory();
+        var focusCat = this.instanceRetriever.getFocusCategory();
 
         switch (focusCat) {
 
@@ -1088,7 +1090,7 @@ class NetworkDiagram extends PolymerElement {
     nodeColor(d) {
         var selectedGUID = null;
 
-        var focusCat = this.instanceRetriever.getFocusInstanceCategory();
+        var focusCat = this.instanceRetriever.getFocusCategory();
         switch (focusCat) {
 
             case "Entity":

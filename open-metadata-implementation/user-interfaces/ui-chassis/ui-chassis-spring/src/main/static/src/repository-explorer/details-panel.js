@@ -916,7 +916,7 @@ class RexDetailsPanel extends PolymerElement {
     }
 
 
-    // For each entity proxy we want to see the instanceGUID, version, status, properties, typeName, metadataCollectionId, metadataCollectionName
+    // For each entity proxy we want to see GUID, version, status, properties, typeName, metadataCollectionId, metadataCollectionName
     // If the user wants to see entity control information they can click on the entity.
     // properties are under uniqueProperties.instanceProperties
     relationshipAddEnds(details, relationship) {
