@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 
@@ -23,52 +24,73 @@ public class Converter {
      */
     public LineageEntity createLineageEntity(EntityDetail entityDetail) {
         LineageEntity lineageEntity = new LineageEntity();
-        lineageEntity.setGuid(entityDetail.getGUID());
-        lineageEntity.setCreatedBy(entityDetail.getCreatedBy());
-        lineageEntity.setCreateTime(entityDetail.getCreateTime());
-        lineageEntity.setTypeDefName(entityDetail.getType().getTypeDefName());
-        lineageEntity.setUpdatedBy(entityDetail.getUpdatedBy());
-        lineageEntity.setUpdateTime(entityDetail.getUpdateTime());
-        lineageEntity.setVersion(entityDetail.getVersion());
-        lineageEntity.setProperties(getMapProperties(entityDetail.getProperties()));
+        setInstanceHeaderProperties(entityDetail, lineageEntity);
+        lineageEntity.setProperties(instancePropertiesToMap(entityDetail.getProperties()));
         return lineageEntity;
     }
 
+
     /**
-     * Gets map properties.
+     * Creates the lineage relationship.
+     *
+     * @param relationship the relationship details
+     * @return the lineage relationship
+     */
+    public LineageRelationship createLineageRelationship(Relationship relationship) {
+        LineageRelationship lineageRelationship = new LineageRelationship();
+        setInstanceHeaderProperties(relationship, lineageRelationship);
+        lineageRelationship.setProperties(instancePropertiesToMap(relationship.getProperties()));
+
+        lineageRelationship.setFirstEndGUID(relationship.getEntityTwoProxy().getGUID());
+        lineageRelationship.setSecondEndGUID(relationship.getEntityTwoProxy().getGUID());
+
+        return lineageRelationship;
+    }
+    /**
+     * Retrieve the properties from an InstanceProperties object and return them as a map
      *
      * @param properties the properties
      * @return the map properties
      */
-    public Map<String, String> getMapProperties(InstanceProperties properties) {
+    public Map<String, String> instancePropertiesToMap(InstanceProperties properties) {
         Map<String, String> attributes = new HashMap<>();
 
-        if(properties == null) {return  attributes;}
+        if (properties == null)
+            return attributes;
 
         Map<String, InstancePropertyValue> instanceProperties = properties.getInstanceProperties();
-        if(instanceProperties == null ) {return attributes;}
+
+        if (instanceProperties == null)
+            return attributes;
 
         for (Map.Entry<String, InstancePropertyValue> property : instanceProperties.entrySet()) {
 
-            if (property.getValue() == null) {return  attributes;}
+            if (property.getValue() == null)
+                continue;
 
-            String propertyValue = getStringForPropertyValue(property.getValue());
-            if (!propertyValue.equals("")) {
+            String propertyValue = propertyValueToString(property.getValue());
+            if (propertyValue.equals(""))
+                continue;
 
-                if (property.getKey().equals("name")) {
-                    attributes.put("displayName", propertyValue);
-                    }
-                else {
-                    attributes.put(property.getKey(), propertyValue);
-                    }
-                }
-            }
-
+            if (property.getKey().equals("name"))
+                attributes.put("displayName", propertyValue);
+            else
+                attributes.put(property.getKey(), propertyValue);
+        }
         return attributes;
     }
 
-    private String getStringForPropertyValue(InstancePropertyValue ipv) {
+    private void setInstanceHeaderProperties(InstanceHeader instanceHeader, LineageEntity lineageEntity) {
+        lineageEntity.setGuid(instanceHeader.getGUID());
+        lineageEntity.setCreatedBy(instanceHeader.getCreatedBy());
+        lineageEntity.setCreateTime(instanceHeader.getCreateTime());
+        lineageEntity.setTypeDefName(instanceHeader.getType().getTypeDefName());
+        lineageEntity.setUpdatedBy(instanceHeader.getUpdatedBy());
+        lineageEntity.setUpdateTime(instanceHeader.getUpdateTime());
+        lineageEntity.setVersion(instanceHeader.getVersion());
+    }
 
+    private String propertyValueToString(InstancePropertyValue ipv) {
         if (ipv instanceof PrimitivePropertyValue) {
             PrimitiveDefCategory primtype =
                     ((PrimitivePropertyValue) ipv).getPrimitiveDefCategory();
@@ -99,8 +121,7 @@ public class Converter {
         } else {
             if (ipv instanceof EnumPropertyValue) {
                 return ((EnumPropertyValue) ipv).getSymbolicName();
-            }
-            else {
+            } else {
                 return "";
             }
         }

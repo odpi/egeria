@@ -63,7 +63,8 @@ public class OpenLineageServiceTest {
     @DisplayName("Ultimate Source")
     public void testUltimateSource() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.ULTIMATE_SOURCE), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.ULTIMATE_SOURCE), eq(guid), eq(""), eq(true)))
+                    .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
@@ -75,7 +76,8 @@ public class OpenLineageServiceTest {
     @DisplayName("End To End")
     public void testEndToEnd() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.END_TO_END), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.END_TO_END), eq(guid), eq(""), eq(true)))
+                    .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
@@ -88,7 +90,8 @@ public class OpenLineageServiceTest {
     @DisplayName("Ultimate Destination")
     public void testUltimateDestination() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.ULTIMATE_DESTINATION), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.ULTIMATE_DESTINATION), eq(guid), eq(""), eq(true)))
+                    .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
@@ -100,7 +103,8 @@ public class OpenLineageServiceTest {
     @DisplayName("Source and Destination")
     public void testSourceAndDestination() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.SOURCE_AND_DESTINATION), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.SOURCE_AND_DESTINATION), eq(guid), eq(""), eq(true)))
+                    .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
@@ -112,7 +116,8 @@ public class OpenLineageServiceTest {
     @DisplayName("GlossaryLineage")
     public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.GLOSSARY), eq(guid), eq(""), eq(true))).thenReturn(lineageVerticesAndEdges);
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.GLOSSARY), eq(guid), eq(""), eq(true)))
+                    .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
@@ -128,7 +133,7 @@ public class OpenLineageServiceTest {
         List nodes = ultimateSource.get("nodes");
         assertNotNull("List of nodes is null", nodes);
         List<String> nodesIds = (List)nodes.stream().map(e -> ((Node) e).getId()).collect(Collectors.toList());
-        assertEquals("Response should contain 3 nodes", 3, nodes.size());
+        assertEquals("Response should contain 4 nodes", 4, nodes.size());
         assertTrue("Response doesn't contain all nodes", nodesIds.containsAll(Arrays.asList("p0","p30", "p2")));
     }
 }

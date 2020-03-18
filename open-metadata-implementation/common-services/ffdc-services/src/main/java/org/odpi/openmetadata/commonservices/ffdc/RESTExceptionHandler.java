@@ -87,11 +87,11 @@ public class RESTExceptionHandler
 
         if (restResult != null)
         {
-            log.error("FFDC Response: {}", restResult.toString());
             String exceptionClassName = restResult.getExceptionClassName();
 
             if (exceptionClassName != null)
             {
+                log.error("FFDC Response: {}", restResult.toString());
                 if (exceptionClassName.equals(invalidParameterExceptionClassName))
                 {
                     this.throwInvalidParameterException(methodName, restResult);
@@ -108,6 +108,10 @@ public class RESTExceptionHandler
                 {
                     this.throwUnexpectedException(methodName, restResult);
                 }
+            }
+            else
+            {
+                log.debug("FFDC Response: {}", restResult.toString());
             }
         }
     }

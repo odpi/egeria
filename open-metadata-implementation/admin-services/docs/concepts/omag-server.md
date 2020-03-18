@@ -21,7 +21,7 @@ type of technology is integrated appropriately for its needs.
 The types of OMAG Server are shown in Figure 1. The hierarchy groups
 similar types of server together.
 
-![Figure 1](types-of-omag-servers.png)
+![Figure 1](types-of-omag-servers.png#pagewidth)
 
 More detail about each type of OMAG Server can be found by following the links below:
 * [Cohort Member](cohort-member.md) - able to exchange metadata through an open metadata repository cohort
@@ -63,7 +63,7 @@ they receive with the governance servers and view servers that connect to it.
 The governance servers connect out to external tools, engines and platforms.
 
 
-![Figure 2](omag-server-ecosystem.png)
+![Figure 2](omag-server-ecosystem.png#pagewidth)
 
 
 ## Further Information

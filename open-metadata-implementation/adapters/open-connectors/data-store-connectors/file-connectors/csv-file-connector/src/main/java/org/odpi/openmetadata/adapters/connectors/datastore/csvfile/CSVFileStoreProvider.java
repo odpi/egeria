@@ -29,7 +29,7 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
      */
     public CSVFileStoreProvider()
     {
-        Class    connectorClass = CSVFileStoreConnector.class;
+        Class<?>    connectorClass = CSVFileStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

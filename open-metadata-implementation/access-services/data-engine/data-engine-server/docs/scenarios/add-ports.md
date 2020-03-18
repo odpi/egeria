@@ -9,7 +9,7 @@ Add existing ports to processes. Creates the ProcessPort relationship for all po
 POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/processes/{processGUID}/ports
 
 {
-	"ports":["port1Guid", "port2Guid"],
+	"ports":["port1QualifiedName", "port2QualifiedName"],
 	"externalSourceName": "dataEngine"
 }
 ```

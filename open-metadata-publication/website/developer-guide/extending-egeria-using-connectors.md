@@ -110,7 +110,7 @@ public class XXXStoreProvider extends ConnectorProviderBase
      */
     public BasicFileStoreProvider()
     {
-        Class    connectorClass = XXXStoreConnector.class;
+        Class<?> connectorClass = XXXStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

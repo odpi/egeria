@@ -1,7 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Data Engine Open Metadata Access Service (OMAS)
+
 The Data Engine OMAS provides APIs and events for data movement/processing engines to record the changes made to the data landscape. 
 
 It provides the ability to register the data engine itself along with the lineage details of the ETL transformations. 
@@ -28,6 +31,9 @@ This includes the Java API, beans and REST API structures.
 * [User Documentation](docs/user)
 * [Design Documentation](docs/design)
 
+
+----
+Return to the [access-services](..) module.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

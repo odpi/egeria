@@ -5,15 +5,13 @@ package org.odpi.openmetadata.accessservices.assetlineage.util;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public final class Constants {
+public final class AssetLineageConstants {
 
-    private Constants() {}
+    private AssetLineageConstants() {}
 
+    public static final String LINEAGE_CLASSIFICATION_TYPES_KEY = "LineageClassificationTypes";
     public static final String ASSET_LINEAGE_OMAS = "AssetLineageOmas";
     public static final String REFERENCEABLE = "Referenceable";
     public static final String GUID_PARAMETER = "guid";
@@ -58,19 +56,21 @@ public final class Constants {
     public static final String NESTED_FILE = "NestedFile";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";
 
-    //Classification Types
-    public static final String CLASSIFIED_ENTITY = "ClassifiedEntity";
-    public static final String CLASSIFIED_ENTITY_GUID = "b04047c5-50fc-4010-a07a-544bead159dc";
-    public static final String TYPE_EMBEDDED_ATTRIBUTE = "TypeEmbeddedAttribute";
+    public static final String CLASSIFICATION_NAME_CONFIDENTIALITY = "Confidentiality";
+    public static final String CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
+    public static final String CLASSIFICATION_NAME_SUBJECT_AREA = "SubjectArea";
+    public static final String CLASSIFICATION_NAME_ASSET_OWNERSHIP = "AssetOwnership";
 
-    private static final List<String> qualifiedLineageClassifications = new ArrayList<>();
+    private static final List<String> defaultLineageClassifications = new ArrayList<>();
 
     static {
-        qualifiedLineageClassifications.add(TYPE_EMBEDDED_ATTRIBUTE);
+        defaultLineageClassifications.add(CLASSIFICATION_NAME_CONFIDENTIALITY);
+        defaultLineageClassifications.add(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
+        defaultLineageClassifications.add(CLASSIFICATION_NAME_SUBJECT_AREA);
+        defaultLineageClassifications.add(CLASSIFICATION_NAME_ASSET_OWNERSHIP);
     }
 
-    public static final ImmutableList<String> immutableQualifiedLineageClassifications = ImmutableList.copyOf(qualifiedLineageClassifications);
-
+    public static final ImmutableList<String> immutableDefaultLineageClassifications = ImmutableList.copyOf(defaultLineageClassifications);
 
     // Map of entities to relationship types
     private static final Map<String, String> processRelationshipsTypes = new HashMap<>();
@@ -96,4 +96,8 @@ public final class Constants {
     }
 
     public static final ImmutableList<String> immutableValidLineageEntityEvents = ImmutableList.copyOf(validLineageEntityEvents);
+
+    public static final ImmutableList<String> immutableValidLineageRelationshipTypes = ImmutableList.copyOf(Arrays.asList(SCHEMA_ATTRIBUTE,
+            ATTRIBUTE_FOR_SCHEMA, COMPLEX_SCHEMA_TYPE, ASSET_SCHEMA_TYPE, CONNECTION_TO_ASSET, CONNECTION_ENDPOINT, DATA_CONTENT_FOR_DATA_SET,
+            SEMANTIC_ASSIGNMENT, PORT_DELEGATION, PROCESS_PORT, LINEAGE_MAPPING, PORT_SCHEMA, NESTED_FILE, FOLDER_HIERARCHY));
 }

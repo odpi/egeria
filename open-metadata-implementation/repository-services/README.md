@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![Released](../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # Open Metadata Repository Services (OMRS)
 
 The Open Metadata Repository Services (OMRS) enable metadata repositories to exchange metadata

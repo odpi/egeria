@@ -46,7 +46,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/has-as")
-    public SubjectAreaOMASAPIResponse createTermHASARelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermHASARelationship termHASARelationship)
+    public SubjectAreaOMASAPIResponse createTermHASARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermHASARelationship termHASARelationship)
     {
         return restAPI.createTermHASARelationship(serverName, userId,termHASARelationship);
     }
@@ -66,7 +66,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse getTermHASARelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getTermHASARelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getTermHASARelationship(serverName, userId,guid);
     }
     /**
@@ -89,7 +89,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/has-as")
-    public SubjectAreaOMASAPIResponse updateTermHASARelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermHASARelationship termHASARelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTermHASARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermHASARelationship termHASARelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermHASARelationship(serverName, userId,termHASARelationship,isReplace);
     }
 
@@ -113,7 +113,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse deleteTermHASARelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteTermHASARelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -140,7 +140,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse restoreTermHASARelationship(@PathVariable String serverName,@PathVariable  String userId,@PathVariable  String guid)
+    public SubjectAreaOMASAPIResponse restoreTermHASARelationship(@PathVariable String serverName, @PathVariable  String userId, @PathVariable  String guid)
     {
         return restAPI.restoreTermHASARelationship(serverName, userId,guid);
     }
@@ -162,7 +162,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/related-terms")
-    public SubjectAreaOMASAPIResponse createRelatedTerm(@PathVariable String serverName,@PathVariable String userId,@RequestBody RelatedTerm relatedTermRelationshipRelationship)
+    public SubjectAreaOMASAPIResponse createRelatedTerm(@PathVariable String serverName, @PathVariable String userId, @RequestBody RelatedTerm relatedTermRelationshipRelationship)
     {
         return restAPI.createRelatedTerm(serverName, userId, relatedTermRelationshipRelationship);
     }
@@ -182,7 +182,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/related-terms/{guid}")
-    public SubjectAreaOMASAPIResponse getRelatedTerm(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getRelatedTerm(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getRelatedTerm(serverName, userId,guid);
     }
     /**
@@ -205,7 +205,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/related-terms")
-    public SubjectAreaOMASAPIResponse updateRelatedTerm(@PathVariable String serverName,@PathVariable String userId,@RequestBody RelatedTerm relatedTermRelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateRelatedTerm(@PathVariable String serverName, @PathVariable String userId, @RequestBody RelatedTerm relatedTermRelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateRelatedTerm(serverName, userId,relatedTermRelationship,isReplace);
     }
     /**
@@ -228,7 +228,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/related-terms/{guid}")
-    public SubjectAreaOMASAPIResponse deleteRelatedTerm(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteRelatedTerm(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -255,7 +255,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/related-terms/{guid}")
-    public SubjectAreaOMASAPIResponse restoreRelatedTerm(@PathVariable String serverName,@PathVariable  String userId,@PathVariable  String guid)
+    public SubjectAreaOMASAPIResponse restoreRelatedTerm(@PathVariable String serverName, @PathVariable  String userId, @PathVariable  String guid)
     {
         return restAPI.restoreRelatedTerm(serverName, userId,guid);
     }
@@ -279,7 +279,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/synonyms")
-    public SubjectAreaOMASAPIResponse createSynonym(@PathVariable String serverName,@PathVariable String userId,@RequestBody Synonym synonym)
+    public SubjectAreaOMASAPIResponse createSynonym(@PathVariable String serverName, @PathVariable String userId, @RequestBody Synonym synonym)
     {
         return restAPI.createSynonym(serverName, userId,synonym);
     }
@@ -299,7 +299,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/synonyms/{guid}")
-    public SubjectAreaOMASAPIResponse getSynonymRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getSynonymRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getSynonymRelationship(serverName, userId,guid);
     }
     /**
@@ -322,7 +322,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/synonyms")
-    public SubjectAreaOMASAPIResponse updateSynonymRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody Synonym synonym,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateSynonymRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody Synonym synonym,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateSynonymRelationship(serverName, userId,synonym,isReplace);
     }
     /**
@@ -345,7 +345,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/synonyms/{guid}")
-    public SubjectAreaOMASAPIResponse deleteSynonymRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteSynonymRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -395,7 +395,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/antonyms")
-    public SubjectAreaOMASAPIResponse createAntonym(@PathVariable String serverName,@PathVariable String userId, @RequestBody Antonym antonym)
+    public SubjectAreaOMASAPIResponse createAntonym(@PathVariable String serverName, @PathVariable String userId, @RequestBody Antonym antonym)
     {
         return restAPI.createAntonym(serverName, userId,antonym);
     }
@@ -415,7 +415,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/antonyms/{guid}")
-    public SubjectAreaOMASAPIResponse getAntonymRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getAntonymRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getAntonymRelationship(serverName, userId,guid);
     }
     /**
@@ -438,7 +438,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/antonyms")
-    public SubjectAreaOMASAPIResponse updateAntonymRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody Antonym antonym,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateAntonymRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody Antonym antonym,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateAntonymRelationship(serverName, userId,antonym,isReplace);
     }
     /**
@@ -461,7 +461,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/antonyms/{guid}")
-    public SubjectAreaOMASAPIResponse deleteAntonymRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteAntonymRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -510,7 +510,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/translations")
-    public SubjectAreaOMASAPIResponse createTranslation(@PathVariable String serverName,@PathVariable String userId, @RequestBody Translation  translation)
+    public SubjectAreaOMASAPIResponse createTranslation(@PathVariable String serverName, @PathVariable String userId, @RequestBody Translation  translation)
     {
         return restAPI.createTranslation(serverName, userId,translation);
     }
@@ -531,7 +531,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/translations/{guid}")
-    public SubjectAreaOMASAPIResponse getTranslationRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getTranslationRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getTranslationRelationship(serverName, userId,guid);
     }
 
@@ -555,7 +555,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/translations")
-    public SubjectAreaOMASAPIResponse updateTranslationRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody Translation translation,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTranslationRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody Translation translation,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTranslationRelationship(serverName, userId,translation,isReplace);
     }
 
@@ -579,7 +579,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/translations/{guid}")
-    public SubjectAreaOMASAPIResponse deleteTranslationRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteTranslationRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -628,7 +628,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/used-in-contexts")
-    public SubjectAreaOMASAPIResponse createusedInContext(@PathVariable String serverName,@PathVariable String userId, @RequestBody UsedInContext  usedInContext)
+    public SubjectAreaOMASAPIResponse createusedInContext(@PathVariable String serverName, @PathVariable String userId, @RequestBody UsedInContext  usedInContext)
     {
         return restAPI.createUsedInContext(serverName, userId,usedInContext);
     }
@@ -648,7 +648,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/used-in-contexts/{guid}")
-    public SubjectAreaOMASAPIResponse getUsedInContextRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getUsedInContextRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getUsedInContextRelationship(serverName, userId,guid);
     }
     /**
@@ -671,7 +671,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/used-in-contexts")
-    public SubjectAreaOMASAPIResponse updateUsedInContextRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody UsedInContext usedInContext,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateUsedInContextRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody UsedInContext usedInContext,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateUsedInContextRelationship(serverName, userId,usedInContext,isReplace);
     }
 
@@ -695,7 +695,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/used-in-contexts/{guid}")
-    public SubjectAreaOMASAPIResponse deleteUsedInContextRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteUsedInContextRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -745,7 +745,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/preferred-terms")
-    public SubjectAreaOMASAPIResponse createpreferredTerm(@PathVariable String serverName,@PathVariable String userId, @RequestBody PreferredTerm  preferredTerm)
+    public SubjectAreaOMASAPIResponse createpreferredTerm(@PathVariable String serverName, @PathVariable String userId, @RequestBody PreferredTerm  preferredTerm)
     {
         return restAPI.createPreferredTerm(serverName, userId,preferredTerm);
     }
@@ -766,7 +766,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/preferred-terms/{guid}")
-    public SubjectAreaOMASAPIResponse getPreferredTermRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getPreferredTermRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getPreferredTermRelationship(serverName, userId,guid);
     }
 
@@ -791,7 +791,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/preferred-terms")
-    public SubjectAreaOMASAPIResponse updatePreferredTermRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody PreferredTerm preferredTerm,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updatePreferredTermRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody PreferredTerm preferredTerm,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updatePreferredTermRelationship(serverName, userId,preferredTerm,isReplace);
     }
 
@@ -815,7 +815,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/preferred-terms/{guid}")
-    public SubjectAreaOMASAPIResponse deletePreferredTermRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deletePreferredTermRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -866,7 +866,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/valid-values")
-    public SubjectAreaOMASAPIResponse createvalidValue(@PathVariable String serverName,@PathVariable String userId, @RequestBody ValidValue  validValue)
+    public SubjectAreaOMASAPIResponse createvalidValue(@PathVariable String serverName, @PathVariable String userId, @RequestBody ValidValue  validValue)
     {
         return restAPI.createValidValue(serverName, userId,validValue);
     }
@@ -887,7 +887,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/valid-values/{guid}")
-    public SubjectAreaOMASAPIResponse getValidValueRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getValidValueRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getValidValueRelationship(serverName, userId,guid);
     }
 
@@ -911,7 +911,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/valid-values")
-    public SubjectAreaOMASAPIResponse updateValidValueRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ValidValue validValue,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateValidValueRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody ValidValue validValue,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateValidValueRelationship(serverName, userId,validValue,isReplace);
     }
 
@@ -936,7 +936,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/valid-values/{guid}")
-    public SubjectAreaOMASAPIResponse deleteValidValueRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteValidValueRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -986,7 +986,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/replacement-terms")
-    public SubjectAreaOMASAPIResponse createreplacementTerm(@PathVariable String serverName,@PathVariable String userId, @RequestBody ReplacementTerm  replacementTerm)
+    public SubjectAreaOMASAPIResponse createreplacementTerm(@PathVariable String serverName, @PathVariable String userId, @RequestBody ReplacementTerm  replacementTerm)
     {
         return restAPI.createReplacementTerm(serverName, userId,replacementTerm);
     }
@@ -1007,7 +1007,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/replacement-terms/{guid}")
-    public SubjectAreaOMASAPIResponse getReplacementTermRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getReplacementTermRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getReplacementTerm(serverName, userId,guid);
     }
 
@@ -1031,7 +1031,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/replacement-terms")
-    public SubjectAreaOMASAPIResponse updateReplacementTermRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ReplacementTerm replacementTerm,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateReplacementTermRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody ReplacementTerm replacementTerm,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateReplacementTerm
                 (serverName, userId,replacementTerm,isReplace);
     }
@@ -1056,7 +1056,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/replacement-terms/{guid}")
-    public SubjectAreaOMASAPIResponse deleteReplacementTermRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteReplacementTermRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -1106,7 +1106,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/typed-bys")
-    public SubjectAreaOMASAPIResponse createtermTYPEDBYRelationship(@PathVariable String serverName,@PathVariable String userId, @RequestBody TermTYPEDBYRelationship  termTYPEDBYRelationship)
+    public SubjectAreaOMASAPIResponse createtermTYPEDBYRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermTYPEDBYRelationship  termTYPEDBYRelationship)
     {
         return restAPI.createTermTYPEDBYRelationship(serverName, userId,termTYPEDBYRelationship);
     }
@@ -1127,7 +1127,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/typed-bys/{guid}")
-    public SubjectAreaOMASAPIResponse getTYPEDBYRelationshipRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getTYPEDBYRelationshipRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getTermTYPEDBYRelationship(serverName, userId,guid);
     }
 
@@ -1151,7 +1151,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/typed-bys")
-    public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermTYPEDBYRelationship termTYPEDBYRelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermTYPEDBYRelationship termTYPEDBYRelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermTYPEDBYRelationship(serverName, userId,termTYPEDBYRelationship,isReplace);
     }
 
@@ -1175,7 +1175,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/typed-bys/{guid}")
-    public SubjectAreaOMASAPIResponse deleteTypedByRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteTypedByRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -1225,7 +1225,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/is-as")
-    public SubjectAreaOMASAPIResponse createiSARelationship(@PathVariable String serverName,@PathVariable String userId, @RequestBody ISARelationship  iSARelationship)
+    public SubjectAreaOMASAPIResponse createiSARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody ISARelationship  iSARelationship)
     {
         return restAPI.createISARelationship(serverName, userId,iSARelationship);
     }
@@ -1246,7 +1246,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse getISARelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getISARelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getISARelationship(serverName, userId,guid);
     }
 
@@ -1270,7 +1270,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/is-as")
-    public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ISARelationship isa,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody ISARelationship isa,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateISARelationship(serverName, userId,isa,isReplace);
     }
     /**
@@ -1293,7 +1293,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse deleteTermISARelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteTermISARelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -1344,7 +1344,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/is-a-type-ofs")
-    public SubjectAreaOMASAPIResponse createtermISATypeOFRelationship(@PathVariable String serverName,@PathVariable String userId, @RequestBody TermISATypeOFRelationship  termISATypeOFRelationship)
+    public SubjectAreaOMASAPIResponse createtermISATypeOFRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermISATypeOFRelationship  termISATypeOFRelationship)
     {
         return restAPI.createTermISATypeOFRelationship(serverName, userId,termISATypeOFRelationship);
     }
@@ -1365,7 +1365,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse getTermISATypeOFRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getTermISATypeOFRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getTermISATypeOFRelationship(serverName, userId,guid);
     }
 
@@ -1389,7 +1389,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/is-a-type-ofs")
-    public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermISATypeOFRelationship isatypeof,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermISATypeOFRelationship isatypeof,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermISATypeOFRelationship(serverName, userId,isatypeof,isReplace);
     }
 
@@ -1414,7 +1414,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse deleteTermIsaTypeOfRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteTermIsaTypeOfRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -1469,7 +1469,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/term-categorizations")
-    public SubjectAreaOMASAPIResponse createTermCategorization(@PathVariable String serverName,@PathVariable String userId, @RequestBody TermCategorizationRelationship  termCategorizationRelationship)
+    public SubjectAreaOMASAPIResponse createTermCategorization(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermCategorizationRelationship  termCategorizationRelationship)
     {
         return  restAPI.createTermCategorizationRelationship(serverName, userId, termCategorizationRelationship);
     }
@@ -1490,7 +1490,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/term-categorizations/{guid}")
-    public SubjectAreaOMASAPIResponse getTermCategorizationRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getTermCategorizationRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getTermCategorizationRelationship(serverName, userId,guid);
     }
 
@@ -1514,7 +1514,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/term-categorizations")
-    public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermCategorizationRelationship isatypeof,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermCategorizationRelationship isatypeof,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermCategorizationRelationship(serverName, userId,isatypeof,isReplace);
     }
 
@@ -1539,7 +1539,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/term-categorizations/{guid}")
-    public SubjectAreaOMASAPIResponse deleteTermCategorizationRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteTermCategorizationRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -1592,7 +1592,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/term-anchor")
-    public SubjectAreaOMASAPIResponse createTermAnchor(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermAnchorRelationship  termAnchorRelationship)
+    public SubjectAreaOMASAPIResponse createTermAnchor(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermAnchorRelationship  termAnchorRelationship)
     {
         return restAPI.createTermAnchorRelationship(serverName, userId, termAnchorRelationship);
     }
@@ -1613,7 +1613,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/term-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse getTermAnchorRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getTermAnchorRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getTermAnchorRelationship(serverName, userId, guid);
 
     }
@@ -1639,7 +1639,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/term-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse deleteTermAnchorRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid, @RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteTermAnchorRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid, @RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         return restAPI.deleteTermAnchorRelationship(serverName, userId, guid,isPurge);
     }
     /**
@@ -1708,7 +1708,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/category-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse getCategoryAnchorRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getCategoryAnchorRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getCategoryAnchorRelationship(serverName, userId, guid);
     }
 
@@ -1732,7 +1732,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/category-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse deleteCategoryAnchorRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid, @RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteCategoryAnchorRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid, @RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         return restAPI.deleteCategoryAnchorRelationship(serverName, userId, guid,isPurge);
     }
     /**
@@ -1778,7 +1778,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/project-scopes")
-    public SubjectAreaOMASAPIResponse createProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ProjectScopeRelationship projectScope)
+    public SubjectAreaOMASAPIResponse createProjectScopeRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody ProjectScopeRelationship projectScope)
     {
         return restAPI.createProjectScopeRelationship(serverName, userId,projectScope);
     }
@@ -1798,7 +1798,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/project-scopes/{guid}")
-    public SubjectAreaOMASAPIResponse getProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getProjectScopeRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getProjectScopeRelationship(serverName, userId,guid);
     }
     /**
@@ -1821,7 +1821,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/project-scopes")
-    public SubjectAreaOMASAPIResponse updateProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ProjectScopeRelationship projectScope,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateProjectScopeRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody ProjectScopeRelationship projectScope,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateProjectScopeRelationship(serverName, userId,projectScope,isReplace);
     }
     /**
@@ -1844,7 +1844,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/project-scopes/{guid}")
-    public SubjectAreaOMASAPIResponse deleteProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteProjectScopeRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
@@ -1888,7 +1888,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/relationships/semantic-assignments/{guid}")
-    public SubjectAreaOMASAPIResponse getSemanticAssignmentRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+    public SubjectAreaOMASAPIResponse getSemanticAssignmentRelationship(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid)  {
         return restAPI.getSemanticAssignmentRelationship(serverName, userId,guid);
     }
 }

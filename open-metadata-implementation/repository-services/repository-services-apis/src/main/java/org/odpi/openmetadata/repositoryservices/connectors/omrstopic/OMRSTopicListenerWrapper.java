@@ -21,6 +21,8 @@ import java.io.StringWriter;
  */
 public class OMRSTopicListenerWrapper implements OMRSTopicListener
 {
+    private final String THREAD_NAME_DESCRIPTION = " OMRSTopicListener";
+
     private OMRSTopicListener  realListener;
     private OMRSAuditLog       auditLog;
     private String             serviceName = "<Unknown Service>";
@@ -98,6 +100,10 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
     {
         final String methodName = "processRegistryEvent";
 
+        String currentThreadName = Thread.currentThread().getName();
+
+        Thread.currentThread().setName(serviceName + THREAD_NAME_DESCRIPTION);
+
         try
         {
             realListener.processRegistryEvent(event);
@@ -106,6 +112,8 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
         {
             logUnhandledException(event.toString(), error, methodName);
         }
+
+        Thread.currentThread().setName(currentThreadName);
     }
 
 
@@ -118,6 +126,10 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
     {
         final String methodName = "processTypeDefEvent";
 
+        String currentThreadName = Thread.currentThread().getName();
+
+        Thread.currentThread().setName(serviceName + THREAD_NAME_DESCRIPTION);
+
         try
         {
             realListener.processTypeDefEvent(event);
@@ -126,6 +138,8 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
         {
             logUnhandledException(event.toString(), error, methodName);
         }
+
+        Thread.currentThread().setName(currentThreadName);
     }
 
 
@@ -138,6 +152,10 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
     {
         final String methodName = "processInstanceEvent";
 
+        String currentThreadName = Thread.currentThread().getName();
+
+        Thread.currentThread().setName(serviceName + THREAD_NAME_DESCRIPTION);
+
         try
         {
             realListener.processInstanceEvent(event);
@@ -146,5 +164,7 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
         {
             logUnhandledException(event.toString(), error, methodName);
         }
+
+        Thread.currentThread().setName(currentThreadName);
     }
 }

@@ -26,6 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               })
 public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     private String       displayName        = null;
     private String       description        = null;
     private String       fullPath           = null;

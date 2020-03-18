@@ -8,6 +8,8 @@ package org.odpi.openmetadata.accessservices.assetconsumer.events;
  */
 public class MockAccessServiceEventHeader extends AssetConsumerEvent
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */

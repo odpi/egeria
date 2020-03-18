@@ -5,15 +5,18 @@ package org.odpi.openmetadata.accessservices.assetlineage.outtopic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypesRetriever;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -47,12 +50,13 @@ public class AssetLineagePublisher {
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
      *
+     * @param repositoryHelper  provides utilities for manipulating the repository services objects
+     * @param outTopicConnector connection to the out topic
      * @param serverName        name of the user of the server instance
      * @param serverUserName    name of this server instance
-     * @param repositoryHelper
-     * @param outTopicConnector connection to the out topic
      */
-    public AssetLineagePublisher(String serverName, String serverUserName, OMRSRepositoryHelper repositoryHelper, OpenMetadataTopicConnector outTopicConnector)
+    public AssetLineagePublisher(OMRSRepositoryHelper repositoryHelper, OpenMetadataTopicConnector outTopicConnector,
+                                 String serverName, String serverUserName)
             throws OCFCheckedExceptionBase {
         String methodName = "AssetLineagePublisher";
         this.outTopicConnector = outTopicConnector;
@@ -91,11 +95,11 @@ public class AssetLineagePublisher {
     }
 
     public void publishClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
-        Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.getAssetContextByClassification(
-                serverUserName,
-                entityDetail);
-        if (classificationContext == null || classificationContext.isEmpty())
+        Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.buildClassificationContext(entityDetail);
+        if (MapUtils.isEmpty(classificationContext)) {
+            log.debug("No lineage classifications were found for the entity {} ", entityDetail.getGUID());
             return;
+        }
         LineageEvent event = new LineageEvent();
         event.setAssetContext(classificationContext);
         event.setAssetLineageEventType(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT);
@@ -104,15 +108,35 @@ public class AssetLineagePublisher {
 
 
     /**
+     * Publishes a {@link LineageRelationshipEvent} containing a {@link LineageRelationship}
+     *
+     * @param lineageRelationship the LineageRelationship to be published
+     * @param eventType           the type on the event
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
+    public void publishLineageRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
+            ConnectorCheckedException,
+            JsonProcessingException {
+
+        LineageRelationshipEvent event = new LineageRelationshipEvent();
+        event.setLineageRelationship(lineageRelationship);
+        event.setAssetLineageEventType(eventType);
+        publishEvent(event);
+    }
+
+    /**
      * Output a new asset event.
      *
      * @param event event to send
      */
     public void publishEvent(AssetLineageEventHeader event) throws JsonProcessingException, ConnectorCheckedException {
-        if (outTopicConnector != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            outTopicConnector.sendEvent(objectMapper.writeValueAsString(event));
-        }
+        if (outTopicConnector == null)
+            return;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        outTopicConnector.sendEvent(objectMapper.writeValueAsString(event));
+        log.debug("Asset Lineage OMAS has published an event of type {} ", event.getAssetLineageEventType());
     }
 }
 

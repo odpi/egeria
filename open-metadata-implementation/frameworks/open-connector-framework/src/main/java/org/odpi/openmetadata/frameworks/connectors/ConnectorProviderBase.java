@@ -218,7 +218,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
          */
         try
         {
-            Class      connectorClass = Class.forName(connectorClassName);
+            Class<?>   connectorClass = Class.forName(connectorClassName);
             Object     potentialConnector = connectorClass.newInstance();
 
             connector = (Connector)potentialConnector;

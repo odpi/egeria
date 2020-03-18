@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Data Platform Open Metadata Access Service (OMAS)
 
 The Data Platform OMAS provides APIs for tools and applications wishing to register
@@ -26,3 +28,12 @@ The module structure for the Data Platform OMAS is as follows:
 * [data-platform-api](data-platform-api) supports the common Java classes that are used both by the client and the server.
 * [data-platform-server](data-platform-server) supports in implementation of the access service and its related event management.
 * [data-platform-spring](data-platform-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
+
+
+----
+Return to the [access-services](..) module.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+

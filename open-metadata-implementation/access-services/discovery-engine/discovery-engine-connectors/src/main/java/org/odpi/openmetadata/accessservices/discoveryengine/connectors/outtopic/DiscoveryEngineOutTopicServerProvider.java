@@ -26,7 +26,7 @@ public class DiscoveryEngineOutTopicServerProvider extends ConnectorProviderBase
      */
     public DiscoveryEngineOutTopicServerProvider()
     {
-        Class    connectorClass = DiscoveryEngineOutTopicServerConnector.class;
+        Class<?> connectorClass = DiscoveryEngineOutTopicServerConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 
