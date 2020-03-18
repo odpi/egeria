@@ -35,7 +35,6 @@ public class RelationshipHandler {
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
      * @return the created term HASA relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -58,7 +57,6 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermHASARelationship relationship to get
      * @return TermHASARelationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -76,13 +74,12 @@ public class RelationshipHandler {
     }
 
     /**
-     * Update a Term HASA Relationship.
+     * Update a Term HASA Relationship. A relationship between a spine object and a spine attribute.
      * <p>
      *
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
      * @return the updated term HASA relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -102,7 +99,6 @@ public class RelationshipHandler {
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
      * @return the replaced term HASA relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -120,14 +116,14 @@ public class RelationshipHandler {
     }
 
     /**
-     * Delete a Term HASA Relationship. A relationship between a spine object and a spine attribute.     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
+     * Delete a Term HASA Relationship. A relationship between a spine object and a spine attribute.
+     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermHASARelationship relationship to delete
      * @return Deleted TermHASARelationship
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -155,8 +151,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermHASARelationship relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -176,15 +170,13 @@ public class RelationshipHandler {
     }
 
     /**
-     * Restore a has a relationship
+     * Restore a Term HASA Relationship. A relationship between a spine object and a spine attribute.
      * <p>
      * Restore allows the deleted has a relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the has a relationship to delete
-     * @return response which when successful contains the restored has a relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored has a relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -209,7 +201,6 @@ public class RelationshipHandler {
      * @param userId                  unique identifier for requesting user, under which the request is performed
      * @param relatedTermRelationship the RelatedTerm relationship
      * @return the created RelatedTerm relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -232,7 +223,6 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the RelatedTerm relationship to get
      * @return RelatedTerm
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -256,7 +246,6 @@ public class RelationshipHandler {
      * @param userId          userId under which the request is performed
      * @param termRelatedTerm the RelatedTerm relationship
      * @return the updated term RelatedTerm relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -276,7 +265,6 @@ public class RelationshipHandler {
      * @param userId          userId under which the request is performed
      * @param termRelatedTerm the replacement related term relationship
      * @return ReplacementTerm replaced related Term relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -300,9 +288,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the related term relationship to restore
-     * @return response which when successful contains the restored related term relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored related term relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -326,9 +312,8 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the RelatedTerm relationship to delete
-     * @return deleted RelatedTerm
+     * @return deleted RelatedTerm relationship
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -356,8 +341,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the RelatedTerm relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -383,9 +366,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the related term relationship to delete
-     * @return response which when successful contains the restored related term relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored related term relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -410,7 +391,6 @@ public class RelationshipHandler {
      * @param userId  userId under which the request is performed
      * @param synonym the Synonym relationship
      * @return the created Synonym relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -427,9 +407,8 @@ public class RelationshipHandler {
      * Get a synonym relationship. A link between glossary terms that have the same meaning.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the Synonym relationship to get
      * @return Synonym
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -453,7 +432,6 @@ public class RelationshipHandler {
      * @param userId  userId under which the request is performed
      * @param synonym the Synonym relationship
      * @return updated Synonym relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -471,13 +449,12 @@ public class RelationshipHandler {
     }
 
     /**
-     * Replace a Synonym relationship which is a link between glossary terms that have the same meaning
+     * Replace a Synonym relationship, which is a link between glossary terms that have the same meaning
      * <p>
      *
      * @param userId  userId under which the request is performed
      * @param synonym the Synonym relationship
      * @return replaced synonym relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -500,10 +477,9 @@ public class RelationshipHandler {
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
-     * @return deleted Synonym
+     * @param guid   guid of the synonym relationship to delete
+     * @return deleted Synonym relationship
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -531,8 +507,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Synonym relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -557,10 +531,8 @@ public class RelationshipHandler {
      * Restore allows the deleted Synonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Synonym relationship to delete
-     * @return response which when successful contains the restored Synonym relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @param guid   guid of the Synonym relationship to restore
+     * @return the restored Synonym relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -585,7 +557,6 @@ public class RelationshipHandler {
      * @param userId  userId under which the request is performed
      * @param antonym the Antonym relationship
      * @return the created antonym relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -602,9 +573,8 @@ public class RelationshipHandler {
      * Get a antonym relationship. A link between glossary terms that have the opposite meaning.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
-     * @return Antonym
-     * Exceptions returned by the server
+     * @param guid   guid of the Anonym relationship to get
+     * @return Antonym relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -627,7 +597,6 @@ public class RelationshipHandler {
      * @param userId  userId under which the request is performed
      * @param antonym the Antonym relationship
      * @return Antonym updated antonym
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -651,7 +620,6 @@ public class RelationshipHandler {
      * @param userId  userId under which the request is performed
      * @param antonym the antonym relationship
      * @return Antonym replaced antonym
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -674,10 +642,9 @@ public class RelationshipHandler {
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the Antonym relationship to delete
      * @return deleted Antonym
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -705,8 +672,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Antonym relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -732,9 +697,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Antonym relationship to delete
-     * @return response which when successful contains the restored Antonym relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored Antonym relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -759,7 +722,6 @@ public class RelationshipHandler {
      * @param userId      userId under which the request is performed
      * @param translation the Translation relationship
      * @return the created translation relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -780,9 +742,8 @@ public class RelationshipHandler {
      * Get a translation relationship, which is link between glossary terms that provide different natural language translation of the same concept.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the Translation relationship to get
      * @return Translation
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -806,7 +767,6 @@ public class RelationshipHandler {
      * @param userId      userId under which the request is performed
      * @param translation the Translation relationship
      * @return Translation updated translation
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -830,7 +790,6 @@ public class RelationshipHandler {
      * @param userId      userId under which the request is performed
      * @param translation the translation relationship
      * @return Translation replaced translation
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -853,10 +812,9 @@ public class RelationshipHandler {
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the Translation relationship to delete
      * @return deleted Translation
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -884,8 +842,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Translation relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -911,9 +867,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Translation relationship to delete
-     * @return response which when successful contains the restored Translation relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored Translation relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -938,7 +892,6 @@ public class RelationshipHandler {
      * @param userId        userId under which the request is performed
      * @param usedInContext the UsedInContext relationship
      * @return the created usedInContext relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -959,9 +912,8 @@ public class RelationshipHandler {
      * Get a usedInContext relationship, which is link between glossary terms where on describes the context where the other one is valid to use.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the UsedInContext relationship to get
      * @return UsedInContext
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -985,7 +937,6 @@ public class RelationshipHandler {
      * @param userId        userId under which the request is performed
      * @param usedInContext the UsedInContext relationship
      * @return UsedInContext updated usedInContext
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1009,7 +960,6 @@ public class RelationshipHandler {
      * @param userId        userId under which the request is performed
      * @param usedInContext the usedInContext relationship
      * @return UsedInContext replaced usedInContext
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1032,10 +982,9 @@ public class RelationshipHandler {
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the UsedInContext relationship to delete
      * @return deleted UsedInContext
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -1063,8 +1012,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the UsedInContext relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -1090,9 +1037,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Used in context relationship to delete
-     * @return response which when successful contains the restored Used in context relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored Used in context relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1117,7 +1062,6 @@ public class RelationshipHandler {
      * @param userId        userId under which the request is performed
      * @param preferredTerm the PreferredTerm relationship
      * @return the created preferredTerm relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1134,9 +1078,8 @@ public class RelationshipHandler {
      * Get a preferredTerm relationship, which is link to an alternative term that the organization prefer is used.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the PreferredTerm relationship to get
      * @return PreferredTerm
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -1156,7 +1099,6 @@ public class RelationshipHandler {
      * @param userId        userId under which the request is performed
      * @param preferredTerm the PreferredTerm relationship
      * @return PreferredTerm updated preferredTerm
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1180,7 +1122,6 @@ public class RelationshipHandler {
      * @param userId        userId under which the request is performed
      * @param preferredTerm the preferredTerm relationship
      * @return PreferredTerm replaced preferredTerm
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1203,10 +1144,9 @@ public class RelationshipHandler {
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the PreferredTerm relationship to delete
      * @return deleted PreferredTerm
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -1234,8 +1174,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the PreferredTerm relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -1261,9 +1199,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the preferred term relationship to delete
-     * @return response which when successful contains the restored preferred term relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored preferred term relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1288,7 +1224,6 @@ public class RelationshipHandler {
      * @param userId     userId under which the request is performed
      * @param validValue the ValidValue relationship
      * @return the created validValue relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1309,9 +1244,8 @@ public class RelationshipHandler {
      * Get a validValue relationship, which is link between glossary terms where one defines one of the data values for the another.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the ValidValue relationship to get
      * @return ValidValue
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -1335,7 +1269,6 @@ public class RelationshipHandler {
      * @param userId     userId under which the request is performed
      * @param validValue the ValidValue relationship
      * @return ValidValue updated validValue
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1359,7 +1292,6 @@ public class RelationshipHandler {
      * @param userId     userId under which the request is performed
      * @param validValue the validValue relationship
      * @return ValidValue replaced validValue
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1382,10 +1314,9 @@ public class RelationshipHandler {
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the ValidValue relationship to delete
      * @return deleted ValidValue
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -1413,8 +1344,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ValidValue relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -1440,9 +1369,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the valid value relationship to delete
-     * @return response which when successful contains the restored valid value relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored valid value relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1467,7 +1394,6 @@ public class RelationshipHandler {
      * @param userId          userId under which the request is performed
      * @param replacementTerm the ReplacementTerm relationship
      * @return the created replacementTerm relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1484,9 +1410,8 @@ public class RelationshipHandler {
      * Get a replacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the ReplacementTerm relationship to get
      * @return ReplacementTerm
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -1510,7 +1435,6 @@ public class RelationshipHandler {
      * @param userId          userId under which the request is performed
      * @param replacementTerm the ReplacementTerm relationship
      * @return ReplacementTerm updated replacementTerm
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1534,7 +1458,6 @@ public class RelationshipHandler {
      * @param userId          userId under which the request is performed
      * @param replacementTerm the replacementTerm relationship
      * @return ReplacementTerm replaced replacementTerm
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1557,10 +1480,9 @@ public class RelationshipHandler {
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the ReplacementTerm relationship to delete
      * @return deleted ReplacementTerm
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -1588,8 +1510,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ReplacementTerm relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -1615,9 +1535,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the replacement term relationship to delete
-     * @return response which when successful contains the restored replacement term relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored replacement term relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1642,7 +1560,6 @@ public class RelationshipHandler {
      * @param userId                  userId under which the request is performed
      * @param termTYPEDBYRelationship the TermTYPEDBYRelationship relationship
      * @return the created termTYPEDBYRelationship relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1659,9 +1576,8 @@ public class RelationshipHandler {
      * Get a termTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the termTYPEDBYRelationship relationship to get
      * @return TermTYPEDBYRelationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -1685,7 +1601,6 @@ public class RelationshipHandler {
      * @param userId                  userId under which the request is performed
      * @param termTYPEDBYRelationship the TermTYPEDBYRelationship relationship
      * @return TermTYPEDBYRelationship updated termTYPEDBYRelationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1709,7 +1624,6 @@ public class RelationshipHandler {
      * @param userId                  userId under which the request is performed
      * @param termTYPEDBYRelationship the termTYPEDBYRelationship relationship
      * @return TermTYPEDBYRelationship replaced termTYPEDBYRelationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1732,10 +1646,9 @@ public class RelationshipHandler {
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the termTYPEDBYRelationship relationship to delete
      * @return deleted TermTYPEDBYRelationship
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -1763,8 +1676,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermTYPEDBYRelationship relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -1790,9 +1701,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the typed by relationship to delete
-     * @return response which when successful contains the restored typed by relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored typed by relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1817,7 +1726,6 @@ public class RelationshipHandler {
      * @param userId userId under which the request is performed
      * @param isa    the Isa relationship
      * @return the created isa relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1834,9 +1742,8 @@ public class RelationshipHandler {
      * Get a isa relationship, which is link between a more general glossary term and a more specific definition.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the isa relationship to get
      * @return Isa
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -1860,7 +1767,6 @@ public class RelationshipHandler {
      * @param userId userId under which the request is performed
      * @param isa    the Isa relationship
      * @return Isa updated isa
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1884,7 +1790,6 @@ public class RelationshipHandler {
      * @param userId userId under which the request is performed
      * @param isa    the isa relationship
      * @return Isa replaced isa
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1907,10 +1812,9 @@ public class RelationshipHandler {
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the isa relationship to delete
      * @return deleted Isa
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -1938,8 +1842,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Isa relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -1965,9 +1867,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the is a relationship to delete
-     * @return response which when successful contains the restored is a relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored is a relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -1992,7 +1892,6 @@ public class RelationshipHandler {
      * @param userId    userId under which the request is performed
      * @param isATypeOf the TermISATypeOFRelationship relationship
      * @return the created TermISATypeOFRelationship relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2009,9 +1908,8 @@ public class RelationshipHandler {
      * Get a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the TermISATypeOFRelationship relationship to get
      * @return TermISATypeOFRelationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -2035,7 +1933,6 @@ public class RelationshipHandler {
      * @param userId    userId under which the request is performed
      * @param isATypeOf the TermISATypeOFRelationship relationship
      * @return TermISATypeOFRelationship updated TermISATypeOFRelationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2059,7 +1956,6 @@ public class RelationshipHandler {
      * @param userId    userId under which the request is performed
      * @param isATypeOf the TermISATypeOFRelationship relationship
      * @return TermISATypeOFRelationship replaced TermISATypeOFRelationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2082,10 +1978,9 @@ public class RelationshipHandler {
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the TermISATypeOFRelationship relationship to delete
      * @return deleted TermISATypeOFRelationship
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -2113,8 +2008,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermISATypeOFRelationship relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -2140,9 +2033,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the is a type of relationship to delete
-     * @return response which when successful contains the restored is a type of relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored is a type of relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2167,7 +2058,6 @@ public class RelationshipHandler {
      * @param userId                         userId under which the request is performed
      * @param termCategorizationRelationship the term categorization relationship
      * @return the created term categorization relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2190,7 +2080,6 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermCategorizationRelationship relationship to get
      * @return TermCategorizationRelationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -2214,7 +2103,6 @@ public class RelationshipHandler {
      * @param userId                         userId under which the request is performed
      * @param termCategorizationRelationship the term categorization relationship
      * @return the updated term categorization relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2234,7 +2122,6 @@ public class RelationshipHandler {
      * @param userId                         userId under which the request is performed
      * @param termCategorizationRelationship the term categorization relationship
      * @return the replaced term categorization relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2259,7 +2146,6 @@ public class RelationshipHandler {
      * @param guid   guid of the TermCategorizationRelationship relationship to delete
      * @return Deleted TermCategorizationRelationship
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -2287,8 +2173,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermCategorizationRelationship relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -2314,9 +2198,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Term Categorization relationship to delete
-     * @return response which when successful contains the restored has a relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored has a relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2344,7 +2226,6 @@ public class RelationshipHandler {
      * @param userId                 userId under which the request is performed
      * @param termAnchorRelationship the TermAnchor relationship
      * @return the created TermAnchor relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2367,7 +2248,6 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermAnchorRelationship relationship to get
      * @return TermAnchorRelationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -2391,7 +2271,6 @@ public class RelationshipHandler {
      * @param userId                 userId under which the request is performed
      * @param termAnchorRelationship the TermAnchor relationship
      * @return the updated TermAnchor relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2401,10 +2280,10 @@ public class RelationshipHandler {
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
     public TermAnchorRelationship updateTermAnchorRelationship(String userId, TermAnchorRelationship termAnchorRelationship) throws InvalidParameterException,
-                                                                                                                                     UserNotAuthorizedException,
-                                                                                                                                     MetadataServerUncontactableException,
-                                                                                                                                     UnexpectedResponseException,
-                                                                                                                                     UnrecognizedGUIDException {
+                                                                                                                                    UserNotAuthorizedException,
+                                                                                                                                    MetadataServerUncontactableException,
+                                                                                                                                    UnexpectedResponseException,
+                                                                                                                                    UnrecognizedGUIDException {
         return subjectAreaRelationship.replaceTermAnchorRelationship(userId, termAnchorRelationship);
     }
 
@@ -2415,7 +2294,6 @@ public class RelationshipHandler {
      * @param userId                 userId under which the request is performed
      * @param termAnchorRelationship the TermAnchor relationship
      * @return the updated TermAnchor relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2440,7 +2318,6 @@ public class RelationshipHandler {
      * @param guid   guid of the TermAnchorRelationship relationship to delete
      * @return Deleted TermAnchorRelationship
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -2468,8 +2345,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermAnchorRelationship relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -2495,9 +2370,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Term Anchor relationship to delete
-     * @return response which when successful contains the restored Term Anchor relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored Term Anchor relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2523,7 +2396,6 @@ public class RelationshipHandler {
      * @param userId                     userId under which the request is performed
      * @param categoryAnchorRelationship the category anchor relationship
      * @return the created term categorization relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2546,7 +2418,6 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the CategoryAnchorRelationship relationship to get
      * @return CategoryAnchorRelationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -2570,7 +2441,6 @@ public class RelationshipHandler {
      * @param userId                     userId under which the request is performed
      * @param categoryAnchorRelationship the category anchor relationship
      * @return the updated category anchor relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2580,10 +2450,10 @@ public class RelationshipHandler {
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
     public CategoryAnchorRelationship updateCategoryAnchorRelationship(String userId, CategoryAnchorRelationship categoryAnchorRelationship) throws InvalidParameterException,
-                                                                                                                                                     UserNotAuthorizedException,
-                                                                                                                                                     MetadataServerUncontactableException,
-                                                                                                                                                     UnexpectedResponseException,
-                                                                                                                                                     UnrecognizedGUIDException {
+                                                                                                                                                    UserNotAuthorizedException,
+                                                                                                                                                    MetadataServerUncontactableException,
+                                                                                                                                                    UnexpectedResponseException,
+                                                                                                                                                    UnrecognizedGUIDException {
         return subjectAreaRelationship.updateCategoryAnchorRelationship(userId, categoryAnchorRelationship);
     }
 
@@ -2594,7 +2464,6 @@ public class RelationshipHandler {
      * @param userId                     userId under which the request is performed
      * @param categoryAnchorRelationship the category anchor relationship
      * @return the replaced category anchor relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2619,7 +2488,6 @@ public class RelationshipHandler {
      * @param guid   guid of the CategoryAnchorRelationship relationship to delete
      * @return Deleted CategoryAnchorRelationship
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -2647,8 +2515,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the CategoryAnchorRelationship relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -2674,9 +2540,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Category Anchor relationship to delete
-     * @return response which when successful contains the restored category anchor relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored category anchor relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2700,7 +2564,6 @@ public class RelationshipHandler {
      * @param userId       userId under which the request is performed
      * @param projectScope the ProjectScope relationship
      * @return the created ProjectScope relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2717,9 +2580,8 @@ public class RelationshipHandler {
      * Get a ProjectScope relationship. A link between the project content and the project.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the ProjectScope relationship to get
      * @return ProjectScope
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -2743,7 +2605,6 @@ public class RelationshipHandler {
      * @param userId                   userId under which the request is performed
      * @param projectScopeRelationship the ProjectScope relationship
      * @return updated ProjectScope relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2767,7 +2628,6 @@ public class RelationshipHandler {
      * @param userId                   userId under which the request is performed
      * @param projectScopeRelationship the ProjectScope relationship
      * @return replaced ProjectScope relationship
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2790,10 +2650,9 @@ public class RelationshipHandler {
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the ProjectScope relationship to delete
      * @return deleted ProjectScope
      * <p>
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -2822,8 +2681,6 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ProjectScope relationship to delete
-     *               when not successful the following Exception responses can occur
-     *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
@@ -2849,9 +2706,7 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ProjectScope relationship to restore
-     * @return response which when successful contains the restored ProjectScope relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
+     * @return the restored ProjectScope relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -2875,7 +2730,6 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the SemanticAssignment relationship to get
      * @return the SemanticAssignment relationship with the requested guid
-     * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
