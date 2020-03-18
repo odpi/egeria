@@ -14,7 +14,7 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Virualizer API for Processing Event</name>
+    <name>Virtualizer API for Processing Event</name>
     <description>
         The API will facilitate virtualizer to process the event that is picked up for view creation.
     </description>
@@ -42,23 +42,28 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
-            <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-api</artifactId>
-            <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-platform-api</artifactId>
-            <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
-            <scope>compile</scope>
         </dependency>
+
     </dependencies>
 
 
