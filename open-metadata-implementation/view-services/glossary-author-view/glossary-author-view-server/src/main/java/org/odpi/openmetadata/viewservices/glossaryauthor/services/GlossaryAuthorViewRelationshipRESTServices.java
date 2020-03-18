@@ -6,7 +6,7 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.RelationshipHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +51,10 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      */
     public SubjectAreaOMASAPIResponse createTermHASARelationship(String serverName, String userId, TermHASARelationship termHASARelationship)
     {
-        String restAPIName = "createTermHASARelationship";
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        String                     restAPIName = "createTermHASARelationship";
+        RESTCallToken              token       = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse response    = null;
+        AuditLog                   auditLog    = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -93,7 +93,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getTermHASARelationship";
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
          SubjectAreaOMASAPIResponse response = null;
-         OMRSAuditLog auditLog = null;
+         AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
          try {
@@ -133,7 +133,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateTermHASARelationship";
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
          SubjectAreaOMASAPIResponse response = null;
-         OMRSAuditLog auditLog = null;
+         AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
          try {
@@ -179,7 +179,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
          SubjectAreaOMASAPIResponse response = null;
-         OMRSAuditLog auditLog = null;
+         AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
          try {
@@ -223,7 +223,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreTermHASARelationship";
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
          SubjectAreaOMASAPIResponse response = null;
-         OMRSAuditLog auditLog = null;
+         AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
          try {
@@ -261,7 +261,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createRelatedTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -300,7 +300,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getRelatedTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -340,7 +340,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateRelatedTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -386,7 +386,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -430,7 +430,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreRelatedTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -469,7 +469,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createSynonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -508,7 +508,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getSynonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -548,7 +548,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateSynonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -594,7 +594,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -638,7 +638,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreSynonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -677,7 +677,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createAntonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -716,7 +716,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getAntonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -756,7 +756,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateAntonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -802,7 +802,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -846,7 +846,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreAntonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -885,7 +885,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createTranslation";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -924,7 +924,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getTranslation";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -964,7 +964,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateTranslation";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1010,7 +1010,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1054,7 +1054,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreTranslation";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1093,7 +1093,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createUsedInContext";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1132,7 +1132,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getUsedInContext";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1172,7 +1172,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateUsedInContext";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1218,7 +1218,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1262,7 +1262,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreUsedInContext";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1301,7 +1301,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createPreferredTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1340,7 +1340,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getPreferredTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1380,7 +1380,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updatePreferredTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1426,7 +1426,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1470,7 +1470,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restorePreferredTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1509,7 +1509,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createValidValue";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1548,7 +1548,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getValidValue";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1588,7 +1588,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateValidValue";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1634,7 +1634,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1678,7 +1678,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreValidValue";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1717,7 +1717,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createReplacementTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1756,7 +1756,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getReplacementTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1796,7 +1796,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateReplacementTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1842,7 +1842,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1886,7 +1886,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreReplacementTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1925,7 +1925,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createTermTYPEDBYRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -1964,7 +1964,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getTermTYPEDBYRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2004,7 +2004,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateTermTYPEDBYRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2050,7 +2050,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2094,7 +2094,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreTermTYPEDBYRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2133,7 +2133,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createIsaRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2172,7 +2172,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getISARelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2212,7 +2212,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateISARelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2258,7 +2258,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2302,7 +2302,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreISARelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2341,7 +2341,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createTermISATypeOFRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2380,7 +2380,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getTermISATypeOFRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2420,7 +2420,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateTermISATypeOFRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2466,7 +2466,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2510,7 +2510,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreTermISATypeOFRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2549,7 +2549,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createTermCategorization";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2588,7 +2588,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getTermCategorization";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2628,7 +2628,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateTermCategorization";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2674,7 +2674,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2718,7 +2718,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreTermCategorization";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2761,7 +2761,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createTermAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2800,7 +2800,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getTermAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2839,7 +2839,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateTermAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2885,7 +2885,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2929,7 +2929,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreTermAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -2972,7 +2972,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createCategoryAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -3011,7 +3011,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getCategoryAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -3051,7 +3051,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateCategoryAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -3097,7 +3097,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -3141,7 +3141,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreCategoryAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -3179,7 +3179,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "createProjectScope";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -3218,7 +3218,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "getProjectScope";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -3258,7 +3258,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "updateProjectScope";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -3304,7 +3304,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -3348,7 +3348,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         String restAPIName = "restoreProjectScope";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
@@ -3383,7 +3383,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
          String restAPIName = "getSemanticAssignmentRelationship";
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
          SubjectAreaOMASAPIResponse response = null;
-         OMRSAuditLog auditLog = null;
+         AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
          try {
