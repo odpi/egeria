@@ -33,13 +33,13 @@ public class GovernanceOfficerHandler
     private static final String governanceOfficerTypeGUID               = "578a3510-9ad3-45fe-8ada-e4e9572c37c8";
     private static final String governanceOfficerTypeName               = "GovernanceOfficer";
     private static final String appointmentIdPropertyName               = "qualifiedName";
-    private static final String titlePropertyName                       = "title";
+    private static final String titlePropertyName                       = "name";
     private static final String appointmentContextPropertyName          = "scope";
     private static final String governanceDomainPropertyName            = "domain";
     private static final String additionalPropertiesName                = "additionalProperties";
 
-    private static final String governancePostTypeGUID                  = "4c4d1d0c-a9fc-4305-8b71-4e691c0f9ae0";
-    private static final String governancePostTypeName                  = "GovernancePost";
+    private static final String governancePostTypeGUID                  = "4a316abe-bcce-4d11-ad5a-4bfb4079b80b";
+    private static final String governancePostTypeName                  = "PersonRoleAppointment";
 
 
     /*
@@ -342,9 +342,9 @@ public class GovernanceOfficerHandler
                     {
                         String   personalProfileGUID = null;
 
-                        if (governancePost.getEntityTwoProxy() != null)
+                        if (governancePost.getEntityOneProxy() != null)
                         {
-                            personalProfileGUID = governancePost.getEntityTwoProxy().getGUID();
+                            personalProfileGUID = governancePost.getEntityOneProxy().getGUID();
                         }
 
 
@@ -974,7 +974,7 @@ public class GovernanceOfficerHandler
         properties.setEffectiveFromTime(startDate);
         properties.setEffectiveToTime(endDate);
 
-        repositoryHandler.createRelationship(userId, governancePostTypeGUID,  governanceOfficerGUID, profileGUID, properties,methodName);
+        repositoryHandler.createRelationship(userId, governancePostTypeGUID,  profileGUID, governanceOfficerGUID, properties, methodName);
     }
 
 

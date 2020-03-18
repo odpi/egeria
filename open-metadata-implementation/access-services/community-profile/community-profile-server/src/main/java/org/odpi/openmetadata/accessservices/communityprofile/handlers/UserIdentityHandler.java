@@ -428,7 +428,7 @@ public class UserIdentityHandler
                         EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
                                                                                 entityProxy.getGUID(),
                                                                                 entityProxyName,
-                                                                                PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME,
+                                                                                UserIdentityMapper.USER_IDENTITY_TYPE_NAME,
                                                                                 methodName);
                         UserIdentityConverter converter = new UserIdentityConverter(entity,
                                                                                     repositoryHelper,
