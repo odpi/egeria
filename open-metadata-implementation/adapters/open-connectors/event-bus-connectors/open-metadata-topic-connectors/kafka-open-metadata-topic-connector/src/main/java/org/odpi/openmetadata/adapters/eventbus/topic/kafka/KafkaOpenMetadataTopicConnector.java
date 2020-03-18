@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.*;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
@@ -14,7 +15,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Inc
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /**
  * KafkaOMRSTopicConnector provides a concrete implementation of the OMRSTopicConnector that
@@ -37,7 +37,33 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
     private String       topicName          = null;
     private String       serverId           = null;
+    /* this buffer is for consumed events */
     private List<IncomingEvent> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
+
+    private KafkaProducerExecutor executor = null;
+
+    final String                   threadHeader = "Kafka-";
+    Thread                         consumerThread;
+    Thread                         producerThread;
+
+
+    /* mock up a a SingleThreadProducer with an overided afterExecute */
+    private class KafkaProducerExecutor extends ThreadPoolExecutor {
+        KafkaProducerExecutor() {
+            super(1, 1, Long.MAX_VALUE, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<>(1));
+        }
+
+        @Override
+        public void afterExecute(Runnable r, Throwable t) {
+            super.afterExecute(r, t);
+
+            /* we don't care why the thread ended , we just restart it */
+            /* The thread will log on exit and on restart already, so no need to let anyone know */
+            producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, KafkaOpenMetadataTopicConnector.this, auditLog);
+            producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
+            executor.execute(producerThread);
+        }
+    }
     /**
      * Constructor sets up the default properties for the producer and consumer.  Any properties passed through
      * the connection's additional properties will override these values.  For most environments,
@@ -185,9 +211,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      */
     public void start() throws ConnectorCheckedException
     {
-        final String                   threadHeader = "Kafka-";
-        Thread                         consumerThread;
-        Thread                         producerThread;
 
         this.initializeTopic();
         
@@ -198,7 +221,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, this, auditLog);
         producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
-        producerThread.start();
+        executor = new KafkaProducerExecutor();
+        executor.execute(producerThread);
 
         super.start();
     }

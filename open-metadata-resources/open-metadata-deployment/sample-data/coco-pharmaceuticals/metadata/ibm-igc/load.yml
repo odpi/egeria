@@ -273,7 +273,41 @@
             - { property: "assigned_to_terms.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
           is: 54
 
-- name: get dstage1 lineage details
+- name: list DataStage projects
+  shell: >
+    source ~/.bashrc &&
+    source dsenv &&
+    ./bin/dsadmin
+    -url https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}
+    -user {{ ibm_infosvr_users.isadmin }} -password {{ ibm_infosvr_upwds.isadmin }}
+    -server {{ groups['ibm_information_server_engine'][0] | upper }}
+    -listprojects
+  args:
+    executable: /bin/bash
+    chdir: "{{ ibm_infosvr_locations.linux }}/Server/DSEngine"
+  become: yes
+  register: __cocopharma_projects_list
+  changed_when: False
+  when: ('ibm_information_server_engine' in group_names)
+
+- name: create a new DataStage project
+  shell: >
+    source ~/.bashrc &&
+    source dsenv &&
+    ./bin/dsadmin
+    -url https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}
+    -user {{ ibm_infosvr_users.isadmin }} -password {{ ibm_infosvr_upwds.isadmin }}
+    -server {{ groups['ibm_information_server_engine'][0] | upper }}
+    -createproject cocopharma
+  args:
+    executable: /bin/bash
+    chdir: "{{ ibm_infosvr_locations.linux }}/Server/DSEngine"
+  become: yes
+  when: >
+    ('ibm_information_server_engine' in group_names)
+    and __cocopharma_projects_list.stdout.find('cocopharma') == -1
+
+- name: get cocopharma lineage details
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}\
           /ibm/iis/igc-rest/v1/search/"
@@ -286,7 +320,7 @@
         "types": ["transformation_project"],
         "where": {
           "conditions": [{
-            "value": "dstage1", "property": "name", "operator": "="
+            "value": "cocopharma", "property": "name", "operator": "="
           }],
           "operator":"and"
         }
@@ -297,33 +331,33 @@
     headers:
       Content-Type: "application/json"
   changed_when: False
-  register: __cocopharma_dstage1_lineage
+  register: __cocopharma_lineage
+  when: ('ibm_information_server_engine' in group_names)
 
-- name: enable lineage on dstage1
+- name: enable lineage on cocopharma
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}\
-            /ibm/iis/igc-rest/v1/assets/{{ __cocopharma_dstage1_lineage.json['items'][0]._id }}/include_for_lineage"
+            /ibm/iis/igc-rest/v1/assets/{{ __cocopharma_lineage.json['items'][0]._id }}/include_for_lineage"
     method: PUT
-    user: "{{ ibm_infosvr_users.isadmin }}"
-    password: "{{ ibm_infosvr_upwds.isadmin }}"
     body: '"setToTrue"'
     body_format: json
     validate_certs: no
     status_code: 200
     headers:
       Content-Type: "application/json"
-  when: __cocopharma_dstage1_lineage.json['items'][0].include_for_lineage == "setToFalse"
+      Cookie: "{{ __cocopharma_lineage.set_cookie }}"
+  when: ('ibm_information_server_engine' in group_names) and __cocopharma_lineage.json['items'][0].include_for_lineage == "setToFalse"
 
 - import_role: name=IBM.infosvr-import-export
   vars:
     ingest:
       datastage:
         - from: "metadata/ibm-igc/ds_tabledefs_{{ egeria_samples_cocopharma_db_type }}.isx"
-          into_project: dstage1
+          into_project: cocopharma
           with_options:
             overwrite: True
         - from: "metadata/ibm-igc/ds_jobs_{{ egeria_samples_cocopharma_db_type }}.isx"
-          into_project: dstage1
+          into_project: cocopharma
           with_options:
             overwrite: True
 
@@ -436,14 +470,13 @@
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/search/"
     method: POST
-    user: "{{ ibm_infosvr_users.isadmin }}"
-    password: "{{ ibm_infosvr_upwds.isadmin }}"
     body: '{"properties":["principal_id"],"types":["user"],"pageSize":"1000"}'
     body_format: json
     validate_certs: no
     status_code: 200
     headers:
       Content-Type: "application/json"
+      Cookie: "{{ __cocopharma_lineage.set_cookie }}"
   changed_when: False
   register: __cocopharma_existing_users_rids
   when: ('ibm_information_server_engine' in group_names)
@@ -452,8 +485,6 @@
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/administration/stewards"
     method: POST
-    user: "{{ ibm_infosvr_users.isadmin }}"
-    password: "{{ ibm_infosvr_upwds.isadmin }}"
     body: >
       {"id":"{{ __cocopharma_existing_users_rids.json | json_query("items[?principal_id=='" + item.username + "']._id") | first }}"}
     body_format: json
@@ -461,10 +492,20 @@
     status_code: 200
     headers:
       Content-Type: "application/json"
+      Cookie: "{{ __cocopharma_lineage.set_cookie }}"
   with_items: "{{ egeria_samples_cocopharma_users }}"
   when: ('ibm_information_server_engine' in group_names) and egeria_samples_cocopharma_users is defined
   loop_control:
     label: "{{ item.username }}"
+
+- name: close session
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/logout/"
+    method: GET
+    validate_certs: no
+    headers:
+      Cookie: "{{ __cocopharma_lineage.set_cookie }}"
+  when: ('ibm_information_server_engine' in group_names)
 
 - name: discover database sources
   include_role:

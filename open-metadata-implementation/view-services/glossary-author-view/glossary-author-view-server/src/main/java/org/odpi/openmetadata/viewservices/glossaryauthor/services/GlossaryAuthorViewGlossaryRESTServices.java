@@ -174,6 +174,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
                     sequencingProperty);
             GlossariesResponse glossariesResponse = new GlossariesResponse();
             glossariesResponse.setGlossaries(glossaries);
+            response = glossariesResponse;
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, methodName);
         }

@@ -65,8 +65,6 @@ public class DataEngineProxyChangePoller implements Runnable {
         this.dataEngineOMASClient = dataEngineOMASClient;
         this.auditLog = auditLog;
 
-        DataEngineProxyAuditCode auditCode;
-
         // Retrieve the base information from the connector
         if (connector != null) {
             try {
@@ -74,24 +72,9 @@ public class DataEngineProxyChangePoller implements Runnable {
                 dataEngineOMASClient.createExternalDataEngine(userId, dataEngineDetails);
                 dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getQualifiedName());
             } catch (InvalidParameterException | PropertyServerException e) {
-                auditCode = DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR;
-                this.auditLog.logException(methodName,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        e.getErrorMessage(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction(),
-                        e);
+                this.auditLog.logException(methodName, DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR.getMessageDefinition(), e);
             } catch (UserNotAuthorizedException e) {
-                auditCode = DataEngineProxyAuditCode.USER_NOT_AUTHORIZED;
-                this.auditLog.logRecord(methodName,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage("setup external data engine"),
-                        e.getErrorMessage(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+                this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.USER_NOT_AUTHORIZED.getMessageDefinition("setup external data engine"));
             }
         }
 
@@ -114,14 +97,7 @@ public class DataEngineProxyChangePoller implements Runnable {
 
                 ensureSourceNameIsSet();
 
-                DataEngineProxyAuditCode auditCode = DataEngineProxyAuditCode.POLLING;
-                this.auditLog.logRecord(methodName,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(changesLastSynced == null ? "(all changes)" : changesLastSynced.toString()),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+                this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING.getMessageDefinition(changesLastSynced == null ? "(all changes)" : changesLastSynced.toString()));
 
                 // Send the changes, and ordering here is important
                 upsertSchemaTypes(changesLastSynced, changesCutoff);
@@ -137,34 +113,11 @@ public class DataEngineProxyChangePoller implements Runnable {
                 Thread.sleep(dataEngineProxyConfig.getPollIntervalInSeconds() * 1000L);
 
             } catch (InvalidParameterException | PropertyServerException e) {
-                DataEngineProxyAuditCode auditCode = DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR;
-                this.auditLog.logException(methodName,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        e.getErrorMessage(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction(),
-                        e);
+                this.auditLog.logException(methodName, DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR.getMessageDefinition(), e);
             } catch (UserNotAuthorizedException e) {
-                DataEngineProxyAuditCode auditCode = DataEngineProxyAuditCode.USER_NOT_AUTHORIZED;
-                this.auditLog.logRecord(methodName,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage("send changes"),
-                        e.getErrorMessage(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+                this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.USER_NOT_AUTHORIZED.getMessageDefinition("send changes"));
             } catch (Exception e) {
-                DataEngineProxyAuditCode auditCode = DataEngineProxyAuditCode.UNKNOWN_ERROR;
-                this.auditLog.logException(methodName,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction(),
-                        e);
+                this.auditLog.logException(methodName, DataEngineProxyAuditCode.UNKNOWN_ERROR.getMessageDefinition(), e);
             }
         }
 
