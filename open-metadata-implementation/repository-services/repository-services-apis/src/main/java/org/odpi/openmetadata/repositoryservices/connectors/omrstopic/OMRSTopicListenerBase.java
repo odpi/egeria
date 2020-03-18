@@ -2,17 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.events.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Date;
 
 /**
@@ -25,8 +23,8 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
 
     private final String   UNKNOWN_EVENT_INSERT = "<Unknown Value>";
 
-    protected String       serviceName;
-    protected OMRSAuditLog auditLog = null;
+    protected String   serviceName;
+    protected AuditLog auditLog = null;
 
 
     /**
@@ -47,7 +45,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param auditLog logging destination
      */
     public OMRSTopicListenerBase(String       serviceName,
-                                 OMRSAuditLog auditLog)
+                                 AuditLog     auditLog)
     {
         this.serviceName = serviceName;
         this.auditLog    = auditLog;
@@ -68,21 +66,11 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
     {
         if (auditLog != null)
         {
-            StringWriter stackTrace = new StringWriter();
-            error.printStackTrace(new PrintWriter(stackTrace));
-
-            OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_SERVICE_LISTENER;
-
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(serviceName,
-                                                                   error.getClass().getName(),
-                                                                   error.getMessage(),
-                                                                   stackTrace.toString()),
+                                  OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_SERVICE_LISTENER.getMessageDefinition(serviceName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                error.getMessage()),
                                   event,
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
                                   error);
         }
     }
@@ -161,20 +149,13 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                 eventOrgName = originatorOrganizationName;
             }
 
-            OMRSAuditCode auditCode = OMRSAuditCode.BAD_EVENT_INSTANCE;
-
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(eventSourceName,
-                                                                eventServerName,
-                                                                eventServerType,
-                                                                eventOrgName,
-                                                                eventMetadataCollectionId,
-                                                                eventInstanceString),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.BAD_EVENT_INSTANCE.getMessageDefinition(eventSourceName,
+                                                                                      eventServerName,
+                                                                                      eventServerType,
+                                                                                      eventOrgName,
+                                                                                      eventMetadataCollectionId,
+                                                                                      eventInstanceString));
         }
 
         return instanceTypeName;
@@ -393,6 +374,8 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                                                                       typeDefEvent.getOriginalAttributeTypeDef(),
                                                                       typeDefEvent.getAttributeTypeDef());
 
+                        break;
+
                     case TYPEDEF_ERROR_EVENT:
                         OMRSTypeDefEventErrorCode errorCode = typeDefEvent.getErrorCode();
 
@@ -422,6 +405,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                                                                               typeDefEvent.getOtherMetadataCollectionId(),
                                                                               typeDefEvent.getOtherAttributeTypeDef(),
                                                                               typeDefEvent.getErrorMessage());
+                                    break;
 
                                 case TYPEDEF_PATCH_MISMATCH:
                                     this.processTypeDefPatchMismatchEvent(serviceName,

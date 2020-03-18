@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.archivemanager;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.*;
@@ -37,7 +37,7 @@ public class OMRSArchiveManager
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private OMRSAuditLog auditLog;
+    private AuditLog auditLog;
 
     /**
      * Constructor to save the initial list of open metadata archives from the server startup configuration.
@@ -47,7 +47,7 @@ public class OMRSArchiveManager
      * @param auditLog audit log for this component.
      */
     public OMRSArchiveManager(List<OpenMetadataArchiveStoreConnector>    startUpOpenMetadataArchives,
-                              OMRSAuditLog                               auditLog)
+                              AuditLog                                   auditLog)
     {
         this.auditLog = auditLog;
 
@@ -166,14 +166,7 @@ public class OMRSArchiveManager
             {
                 final String     actionDescription = "Process Open Metadata Archive";
 
-                OMRSAuditCode auditCode = OMRSAuditCode.EMPTY_ARCHIVE;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(archiveSource),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(actionDescription, OMRSAuditCode.EMPTY_ARCHIVE.getMessageDefinition(archiveSource));
             }
             else
             {
@@ -197,21 +190,13 @@ public class OMRSArchiveManager
                                             OMRSTypeDefEventProcessorInterface    typeDefProcessor,
                                             OMRSInstanceEventProcessorInterface   instanceProcessor)
     {
-        OMRSAuditCode    auditCode;
         final String     actionDescription = "Process Open Metadata Archive";
 
         OpenMetadataArchiveProperties archiveProperties = archiveContent.getArchiveProperties();
 
         if (archiveProperties != null)
         {
-            auditCode = OMRSAuditCode.PROCESSING_ARCHIVE;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(archiveProperties.getArchiveName()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, OMRSAuditCode.PROCESSING_ARCHIVE.getMessageDefinition(archiveProperties.getArchiveName()));
 
 
             OpenMetadataArchiveTypeStore     archiveTypeStore     = archiveContent.getArchiveTypeStore();
@@ -231,27 +216,14 @@ public class OMRSArchiveManager
                 instanceCount = this.processInstanceStore(archiveProperties, archiveInstanceStore, instanceProcessor);
             }
 
-            auditCode = OMRSAuditCode.COMPLETED_ARCHIVE;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(Integer.toString(typeCount),
-                                                                Integer.toString(instanceCount),
-                                                                archiveProperties.getArchiveName()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.COMPLETED_ARCHIVE.getMessageDefinition(Integer.toString(typeCount),
+                                                                                     Integer.toString(instanceCount),
+                                                                                     archiveProperties.getArchiveName()));
         }
         else
         {
-            auditCode = OMRSAuditCode.NULL_PROPERTIES_IN_ARCHIVE;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(archiveSource),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_PROPERTIES_IN_ARCHIVE.getMessageDefinition(archiveSource));
         }
     }
 

@@ -235,17 +235,10 @@ public class ExceptionAccumulatorBase
     {
         if (anotherException != null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.UNEXPECTED_EXCEPTION_FROM_COHORT;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     anotherException.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION_FROM_COHORT.getMessageDefinition(methodName,
+                                                                                                                   anotherException.getMessage()),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
     }
 
