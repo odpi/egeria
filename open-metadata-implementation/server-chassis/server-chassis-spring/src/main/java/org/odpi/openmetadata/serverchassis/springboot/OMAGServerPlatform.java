@@ -2,6 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serverchassis.springboot;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
 import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.http.HttpHelper;
@@ -17,15 +22,30 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.*;
+import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-
 import java.util.*;
+
 
 @SpringBootApplication
 @ComponentScan({"org.odpi.openmetadata.*"})
+
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Egeria",
+                version = "1.6-SNAPSHOT",
+                description = "Egeria Open Metadata",
+                license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0"),
+                contact = @Contact(url = "https://egeria.odpi.org", name = "ODPi", email = "odpi-project-egeria@lists.odpi.org")
+        ),
+
+        externalDocs = @ExternalDocumentation(description = "OMAG Server Platform documentation", url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/")
+        )
+
+
 @Configuration
 public class OMAGServerPlatform
 {

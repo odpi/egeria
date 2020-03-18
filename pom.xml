@@ -175,6 +175,7 @@
         <snappy.version>1.1.7.3</snappy.version>
         <springdoc.version>1.2.33</springdoc.version>
         <classgraph.version>4.8.53</classgraph.version>
+        <swagger.version>2.1.1</swagger.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -2054,6 +2055,12 @@
                 <artifactId>classgraph</artifactId>
                 <version>${classgraph.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger.version}</version>
+        </dependency>
 
         </dependencies>
 
