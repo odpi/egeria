@@ -11,6 +11,8 @@ import org.testng.annotations.Test;
  */
 public class AuditCodeTest extends AuditLogMessageSetTest
 {
+    final static String  messageIdPrefix = "OMAG-COMMON";
+
     /**
      * Validated the values of the enum.
      */
@@ -18,7 +20,7 @@ public class AuditCodeTest extends AuditLogMessageSetTest
     {
         for (OMAGCommonAuditCode auditCode : OMAGCommonAuditCode.values())
         {
-            testSingleAuditCodeValue(auditCode, "OMAG-COMMON");
+            testSingleAuditCodeValue(auditCode, messageIdPrefix);
         }
     }
 }

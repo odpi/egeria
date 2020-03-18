@@ -135,6 +135,51 @@ public class RESTExceptionHandler
     /**
      * Throw an InvalidParameterException if it is encoded in the REST response.
      *
+     * @param methodName  calling method.
+     * @param restResult  response from the rest call.  This generated in the remote server.
+     *
+     * @throws InvalidParameterException encoded exception from the server
+     */
+    @Deprecated
+    public void detectAndThrowInvalidParameterException(String methodName, FFDCResponseBase restResult) throws InvalidParameterException
+    {
+        this.detectAndThrowInvalidParameterException(restResult);
+    }
+
+
+    /**
+     * Throw an UserNotAuthorizedException if it is encoded in the REST response.
+     *
+     * @param methodName  calling method.
+     * @param restResult  response from the rest call.  This generated in the remote server.
+     *
+     * @throws UserNotAuthorizedException encoded exception from the server
+     */
+    @Deprecated
+    public void detectAndThrowUserNotAuthorizedException(String methodName, FFDCResponseBase restResult) throws UserNotAuthorizedException
+    {
+        this.detectAndThrowUserNotAuthorizedException(restResult);
+    }
+
+
+    /**
+     * Throw an PropertyServerException if it is encoded in the REST response.
+     *
+     * @param methodName  calling method.
+     * @param restResult  response from the rest call.  This generated in the remote server.
+     *
+     * @throws PropertyServerException encoded exception from the server
+     */
+    @Deprecated
+    public void detectAndThrowPropertyServerException(String methodName, FFDCResponseBase restResult) throws PropertyServerException
+    {
+        this.detectAndThrowPropertyServerException(restResult);
+    }
+
+
+    /**
+     * Throw an InvalidParameterException if it is encoded in the REST response.
+     *
      * @param restResult  response from the rest call.  This generated in the remote server.
      *
      * @throws InvalidParameterException encoded exception from the server
