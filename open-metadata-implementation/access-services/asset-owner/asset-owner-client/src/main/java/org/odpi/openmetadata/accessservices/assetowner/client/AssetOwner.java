@@ -850,7 +850,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         }
         catch (ConnectionCheckedException error)
         {
-            throw new InvalidParameterException(error.getErrorMessage(), error, "connection to asset " + assetGUID);
+            throw new InvalidParameterException(error.getReportedErrorMessage(), error, "connection to asset " + assetGUID);
         }
         catch (ConnectorCheckedException  error)
         {
