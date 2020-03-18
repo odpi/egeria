@@ -81,7 +81,7 @@ class RexTypeManager extends PolymerElement {
             var serverDetails              = {};
             serverDetails.serverName       = serverName;
             serverDetails.serverURLRoot    = serverURLRoot;
-            serverDetails.enterpriseOption = enterpriseOption ? "true" : "false";
+            serverDetails.enterpriseOption = enterpriseOption;
 
 
             /*

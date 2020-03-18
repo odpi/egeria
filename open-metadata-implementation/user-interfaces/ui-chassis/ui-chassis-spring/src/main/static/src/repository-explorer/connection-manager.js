@@ -19,7 +19,7 @@ import '../token-ajax.js';
 * It should present to the user 5 controls for:
 *   * server name        - a string
 *   * server URL Root    - a string
-*   * enterprise scope   - a boolean
+*   * enterprise option  - a boolean
 *   * a Load! button     - a button to initiate a connection using the displayed settings
 *   * status             - a string - displays if a load failure occurs
 *
@@ -121,7 +121,7 @@ class RexConnectionManager extends PolymerElement {
                 reflectToAttribute : true
             },
 
-            //  user-specified enterprise scope option (true | false)
+            //  user-specified enterprise option (true | false)
             enterpriseOption: {
                 type               : Boolean,
                 value              : false,
@@ -190,7 +190,7 @@ class RexConnectionManager extends PolymerElement {
     //
     doConnect() {
         var typeManager = this.typeManager;
-        typeManager.loadTypes(this.serverName, this.serverURLRoot, this.enterpriseScope);
+        typeManager.loadTypes(this.serverName, this.serverURLRoot, this.enterpriseOption);
     }
 
 

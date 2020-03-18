@@ -441,7 +441,7 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
 
         this.addEventListener('types-not-loaded', function (e) {
             // Generate an alert for the error condition
-            alert( "Event :" + 'types-not-loaded' + ' from ' + e.detail.source);
+            //alert( "Event :" + 'types-not-loaded' + ' from ' + e.detail.source);
             this.$.rexConnectionManager.inEvtTypesNotLoaded();
         });
 

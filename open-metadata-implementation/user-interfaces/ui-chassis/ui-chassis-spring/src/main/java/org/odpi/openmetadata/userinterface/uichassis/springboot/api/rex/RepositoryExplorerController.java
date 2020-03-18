@@ -96,21 +96,30 @@ public class RepositoryExplorerController extends SecureController
      */
 
     @PostMapping( path = "/api/types/rexTypeExplorer")
-    public TypeExplorerResponse rexTypeExplorer(@RequestBody Map<String,String> body, HttpServletRequest request)
+    public TypeExplorerResponse rexTypeExplorer(@RequestBody RexTypesRequestBody body, HttpServletRequest request)
     {
-
-        String serverName        = body.get("serverName");
-        String serverURLRoot     = body.get("serverURLRoot");
-        boolean enterpriseOption        = false;
-        if (body.get("enterpriseOption") != null)
-            enterpriseOption            = body.get("enterpriseOption").equals("true");
-
-
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-
         // Look up types in server and construct TEX
         TypeExplorerResponse texResp;
         String exceptionMessage;
+
+        String serverName;
+        String serverURLRoot;
+        boolean enterpriseOption;
+
+        try {
+            serverName       = body.getServerName();
+            serverURLRoot    = body.getServerURLRoot();
+            enterpriseOption = body.getEnterpriseOption();
+        }
+        catch (Exception e) {
+            exceptionMessage = "The request body used in the request to /api/types/rexTypeExplorer contained an invalid parameter or was missing a parameter. Please check the client code.";
+            // For any of the above exceptions, incorporate the exception message into a response object
+            texResp = new TypeExplorerResponse(400, exceptionMessage, null);
+            return texResp;
+        }
+
+
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         try {
 
@@ -300,27 +309,31 @@ public class RepositoryExplorerController extends SecureController
     @PostMapping(path = "/api/instances/rex-pre-traversal")
     public RexPreTraversalResponse rexPreTraversal(@RequestBody RexTraversalRequestBody body, HttpServletRequest request)
     {
-
-        /*
-         * This may change so that we actually always do the traversal - as in the method below - and return
-         * the stats - and then when the user says 'this is the subgraph I want' we filter here in the VS in
-         * memory and return the subgraph - so we may wire the pre-traverse to the traversal API and wire
-         * the traverse to a post-traversal filtering method (which is purely local to the VS). Make sense?? TODO
-         * This is because the VS is always going to ask the MDC to explore the whole (unfiltered) neighborhood
-         * so we may as well get it over with. We just don't want to burden the browser/user session with a whole
-         * lot of bulked out results if they are being more selective....
-         * Rather than implementing in memory in the VS - we could just go again to the backend - refine later if needed.
-         * In fact you HAVE to do that because you have no session state in the mid-tier. TODO - update comment!!
-         */
-
+        // Look up types in server and construct TEX
+        RexPreTraversalResponse rexPreTraversalResponse;
+        String exceptionMessage;
 
         // If a filter typeGUID was not selected in the UI then it will not appear in the body.
-        String serverName               = body.getServerName();
-        String serverURLRoot            = body.getServerURLRoot();
-        Boolean enterpriseOption        = body.getEnterpriseOption();
 
-        String entityGUID               = body.getEntityGUID();
-        Integer depth                   = body.getDepth();
+        String serverName;
+        String serverURLRoot;
+        boolean enterpriseOption;
+        String entityGUID;
+        Integer depth;
+
+        try {
+            serverName          = body.getServerName();
+            serverURLRoot       = body.getServerURLRoot();
+            enterpriseOption    = body.getEnterpriseOption();
+            entityGUID          = body.getEntityGUID();
+            depth               = body.getDepth();
+        }
+        catch (Exception e) {
+            exceptionMessage = "The request body used in the request to /api/instances/rex-pre-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+            // For any of the above exceptions, incorporate the exception message into a response object
+            rexPreTraversalResponse = new RexPreTraversalResponse(400, exceptionMessage, null);
+            return rexPreTraversalResponse;
+        }
 
         // Pre-traversal the filters are always empty
         List<String> entityTypeGUIDs           = null;
@@ -330,9 +343,6 @@ public class RepositoryExplorerController extends SecureController
 
         String userId = getUser(request);
 
-        // Look up types in server and construct TEX
-        RexPreTraversalResponse rexPreTraversalResponse;
-        String exceptionMessage;
 
 
         // No need for a gen on a preTraversal so set up dummy value;
@@ -444,15 +454,15 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (TypeErrorException e) {
 
-            exceptionMessage = "There was a problem with Type information - please check and retry";  // TODO - needs work
+            exceptionMessage = "There was a problem with Type information - please check and retry";
         }
         catch (PropertyErrorException e) {
 
-            exceptionMessage = "There was a problem with Property information - please check and retry";  // TODO - needs work
+            exceptionMessage = "There was a problem with Property information - please check and retry";
         }
         catch (FunctionNotSupportedException e) {
 
-            exceptionMessage = "The UI tried to use an unsupported function";  // TODO - needs work
+            exceptionMessage = "The UI tried to use an unsupported function";
         }
         // For any of the above exceptions, incorporate the exception message into a response object
         rexPreTraversalResponse = new RexPreTraversalResponse(400, exceptionMessage, null);
@@ -465,26 +475,40 @@ public class RepositoryExplorerController extends SecureController
     public RexTraversalResponse rexTraversal(@RequestBody RexTraversalRequestBody body, HttpServletRequest request)
     {
 
-
-
-        // If a filter typeGUID was not selected in the UI then it will not appear in the body.
-        String serverName                 = body.getServerName();
-        String serverURLRoot              = body.getServerURLRoot();
-        Boolean enterpriseOption          = body.getEnterpriseOption();  // TODO check this works (boolean)
-
-        String entityGUID                 = body.getEntityGUID();
-        Integer gen                       = body.getGen();
-        Integer depth                     = body.getDepth();
-
-        List<String> entityTypeGUIDs       = body.getEntityTypeGUIDs();
-        List<String> relationshipTypeGUIDs = body.getRelationshipTypeGUIDs();
-        List<String> classificationNames   = body.getClassificationNames();
-
-        String userId = getUser(request);
-
-        // Look up types in server and construct TEX
         RexTraversalResponse rexTraversalResponse;
         String exceptionMessage;
+
+        String serverName;
+        String serverURLRoot;
+        boolean enterpriseOption;
+        String entityGUID;
+        Integer depth;
+        Integer gen;
+        List<String> entityTypeGUIDs;
+        List<String> relationshipTypeGUIDs;
+        List<String> classificationNames;
+
+        try {
+            serverName          = body.getServerName();
+            serverURLRoot       = body.getServerURLRoot();
+            enterpriseOption    = body.getEnterpriseOption();
+            entityGUID          = body.getEntityGUID();
+            depth               = body.getDepth();
+            gen                 = body.getGen();
+            entityTypeGUIDs       = body.getEntityTypeGUIDs();
+            relationshipTypeGUIDs = body.getRelationshipTypeGUIDs();
+            classificationNames   = body.getClassificationNames();
+        }
+        catch (Exception e) {
+            exceptionMessage = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+            // For any of the above exceptions, incorporate the exception message into a response object
+            rexTraversalResponse = new RexTraversalResponse(400, exceptionMessage, null);
+            return rexTraversalResponse;
+        }
+
+        // If a filter typeGUID was not selected in the UI then it will not appear in the body.
+
+        String userId = getUser(request);
 
         TypeDefGallery typeDefGallery = null;
 
@@ -1065,18 +1089,31 @@ public class RepositoryExplorerController extends SecureController
      *  the request body.
      */
     @PostMapping( path = "/api/instances/entity")
-    //@RequestMapping(method = RequestMethod.GET, path = "/api/instances/entity")
     public RexEntityDetailResponse getEntityDetail(@RequestBody  RexEntityRequestBody   body,
                                                    HttpServletRequest                  request)
     {
 
-        String serverName               = body.getServerName();
-        String serverURLRoot            = body.getServerURLRoot();
-        Boolean enterpriseOption        = body.getEnterpriseOption();
-        String entityGUID               = body.getEntityGUID();
-
         RexEntityDetailResponse response;
         String exceptionMessage;
+
+        String serverName;
+        String serverURLRoot;
+        boolean enterpriseOption;
+        String entityGUID;
+
+        try {
+            serverName          = body.getServerName();
+            serverURLRoot       = body.getServerURLRoot();
+            enterpriseOption    = body.getEnterpriseOption();
+            entityGUID          = body.getEntityGUID();
+        }
+        catch (Exception e) {
+            exceptionMessage = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+            // For any of the above exceptions, incorporate the exception message into a response object
+            response = new RexEntityDetailResponse(400, exceptionMessage, null);
+            return response;
+        }
+
 
         String userId = getUser(request);
 
@@ -1232,14 +1269,27 @@ public class RepositoryExplorerController extends SecureController
                                                    HttpServletRequest                         request)
     {
 
-
-        String serverName               = body.getServerName();
-        String serverURLRoot            = body.getServerURLRoot();
-        boolean enterpriseOption        = body.getEnterpriseOption();
-        String relationshipGUID         = body.getRelationshipGUID();
-
         RexRelationshipResponse response;
         String exceptionMessage;
+
+        String serverName;
+        String serverURLRoot;
+        boolean enterpriseOption;
+        String relationshipGUID;
+
+        try {
+            serverName          = body.getServerName();
+            serverURLRoot       = body.getServerURLRoot();
+            enterpriseOption    = body.getEnterpriseOption();
+            relationshipGUID    = body.getRelationshipGUID();
+        }
+        catch (Exception e) {
+            exceptionMessage = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+            // For any of the above exceptions, incorporate the exception message into a response object
+            response = new RexRelationshipResponse(400, exceptionMessage, null);
+            return response;
+        }
+
 
         String userId = getUser(request);
 
@@ -1399,19 +1449,33 @@ public class RepositoryExplorerController extends SecureController
     public RexSearchResponse entitySearch(@RequestBody  RexSearchBody   body,
                                           HttpServletRequest            request)
     {
-
-
-        String serverName               = body.getServerName();
-        String serverURLRoot            = body.getServerURLRoot();
-        Boolean enterpriseOption        = body.getEnterpriseOption();
-        String entityTypeName           = body.getTypeName();
-        String searchText               = body.getSearchText();
+        RexSearchResponse response;
+        String exceptionMessage;
 
         String searchCategory = "Entity";
 
+        String serverName;
+        String serverURLRoot;
+        boolean enterpriseOption;
+        String entityTypeName;
+        String searchText;
 
-        RexSearchResponse response;
-        String exceptionMessage;
+        try {
+            serverName          = body.getServerName();
+            serverURLRoot       = body.getServerURLRoot();
+            enterpriseOption    = body.getEnterpriseOption();
+            entityTypeName      = body.getTypeName();
+            searchText          = body.getSearchText();
+        }
+        catch (Exception e) {
+            exceptionMessage = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+            // For any of the above exceptions, incorporate the exception message into a response object
+            response = new RexSearchResponse(400, exceptionMessage, null, null, searchCategory, null, null));
+            return response;
+        }
+
+
+
 
         String userId = getUser(request);
 
@@ -1594,17 +1658,31 @@ public class RepositoryExplorerController extends SecureController
                                                 HttpServletRequest             request)
     {
 
-        String serverName               = body.getServerName();
-        String serverURLRoot            = body.getServerURLRoot();
-        Boolean enterpriseOption        = body.getEnterpriseOption();
-        String relationshipTypeName     = body.getTypeName();
-        String searchText               = body.getSearchText();
+        RexSearchResponse response;
+        String exceptionMessage;
 
         String searchCategory = "Relationship";
 
+        String serverName;
+        String serverURLRoot;
+        boolean enterpriseOption;
+        String relationshipTypeName;
+        String searchText;
 
-        RexSearchResponse response;
-        String exceptionMessage;
+        try {
+            serverName             = body.getServerName();
+            serverURLRoot          = body.getServerURLRoot();
+            enterpriseOption       = body.getEnterpriseOption();
+            relationshipTypeName   = body.getTypeName();
+            searchText             = body.getSearchText();
+        }
+        catch (Exception e) {
+            exceptionMessage = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+            // For any of the above exceptions, incorporate the exception message into a response object
+            response = new RexSearchResponse(400, exceptionMessage, null, null, searchCategory, null, null));
+            return response;
+        }
+
 
         String userId = getUser(request);
 
