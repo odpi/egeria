@@ -1303,8 +1303,8 @@ public class OMRSAPIHelper {
         } catch (RepositoryErrorException e)
         {
             // check to see if the method is not implemented. in this case do not error.
-            String method_not_implemented_msg_id = OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getErrorMessageId();
-            if (!e.getErrorMessage().startsWith(method_not_implemented_msg_id)) {
+            String method_not_implemented_msg_id = OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition().getMessageId();
+            if (!e.getReportedErrorMessage().startsWith(method_not_implemented_msg_id)) {
                response =  this.errorHandler.handleRepositoryError(e, restAPIName, serverName, serviceName);
             }
         } catch (TypeErrorException e)
