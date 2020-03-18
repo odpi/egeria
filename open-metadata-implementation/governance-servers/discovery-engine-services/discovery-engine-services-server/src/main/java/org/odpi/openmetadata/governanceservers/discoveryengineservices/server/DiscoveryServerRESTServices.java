@@ -547,7 +547,7 @@ public class DiscoveryServerRESTServices
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(PropertyServerException.class.getName());
-        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionErrorMessage(error.getReportedErrorMessage());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
     }

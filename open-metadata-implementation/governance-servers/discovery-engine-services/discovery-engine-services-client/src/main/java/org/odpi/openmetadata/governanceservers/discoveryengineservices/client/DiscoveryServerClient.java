@@ -136,7 +136,7 @@ public class DiscoveryServerClient
         }
         catch (PropertyServerException exception)
         {
-            throw new DiscoveryEngineException(exception.getErrorMessage(), exception);
+            throw new DiscoveryEngineException(exception.getReportedErrorMessage(), exception);
         }
     }
 }

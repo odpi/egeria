@@ -8,12 +8,12 @@ import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryEng
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryConfigurationRefreshHandler;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryEngineHandler;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +34,7 @@ public class DiscoveryServerOperationalServices
     private int                     maxPageSize;                   /* Initialized in constructor */
 
     private DiscoveryServerInstance discoveryServerInstance = null;
-    private OMRSAuditLog            auditLog                = null;
+    private AuditLog                auditLog                = null;
 
 
     /**
@@ -69,7 +69,7 @@ public class DiscoveryServerOperationalServices
      * or the requested discovery engines are not recognized or are not configured properly.
      */
     public void initialize(DiscoveryEngineServicesConfig discoveryEngineServicesConfig,
-                           OMRSAuditLog                  auditLog) throws OMAGConfigurationErrorException
+                           AuditLog                      auditLog) throws OMAGConfigurationErrorException
     {
         final String             actionDescription = "initialize";
         final String             methodName = "initialize";
