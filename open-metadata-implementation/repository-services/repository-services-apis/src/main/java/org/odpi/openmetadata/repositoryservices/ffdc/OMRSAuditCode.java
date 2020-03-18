@@ -3,11 +3,9 @@
 
 package org.odpi.openmetadata.repositoryservices.auditlog;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The OMRSAuditCode is used to define the message content for the OMRS Audit Log.
@@ -22,7 +20,7 @@ import java.util.Arrays;
  *     <li>User Action: describes how a user should correct the situation</li>
  * </ul>
  */
-public enum OMRSAuditCode
+public enum OMRSAuditCode implements AuditLogMessageSet
 {
     OMRS_INITIALIZING("OMRS-AUDIT-0001",
                       OMRSAuditLogRecordSeverity.STARTUP,
@@ -934,13 +932,15 @@ public enum OMRSAuditCode
                                    OMRSAuditLogRecordSeverity.ACTION,
                                    "Version {0} of the instance {1} from server {2} has a new metadata collection id of {3}.  Its original metadata collection id was {4}",
                                    "The local server has received an event from another member of the open metadata repository cohort containing different header information .",
-                                   "Validate and correct the instance in the originator.  Monitor events from all members of the cohort to ensure all copies are corrected."),
+                                   "Validate and, if necessary, correct the home of the instance in the originator.  Monitor events from all " +
+                                 "members of the cohort to ensure all copies are consistent."),
 
     NEW_TYPE_INFORMATION("OMRS-AUDIT-8004",
                                    OMRSAuditLogRecordSeverity.ACTION,
                                    "Version {0} of the instance {1} from server {2} and metadata collection {3} has a new type of {4} ({5}).  Previous type was {6} ({7})",
                                    "The local server has received an event from another member of the open metadata repository cohort containing suspicious information.  The local server has enacted conflict processing.",
-                                   "Validate and correct the instance in the originator.  Monitor events from all members of the cohort to ensure all copies are corrected."),
+                                   "Validate and, if necessary, correct the type of the instance in the originator.  Monitor events from all " +
+                                 "members of the cohort to ensure all copies are updated."),
 
     PROCESS_INSTANCE_GUID_CONFLICT("OMRS-AUDIT-8005",
                                    OMRSAuditLogRecordSeverity.ACTION,
@@ -952,13 +952,24 @@ public enum OMRSAuditCode
                            OMRSAuditLogRecordSeverity.EVENT,
                            "Processing incoming event of type {0} for instance {1} from: {2}",
                            "The local server has processed an event from another member of the metadata repository.",
-                           "No action required.  This message is for information only."),
+                           "This message is for audit purposes only.  If a record of incoming event is needed, ensure " +
+                                   "these types of events are routed to a permanent store"),
+
+    INVALID_INSTANCES("OMRS-AUDIT-8007",
+                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      "An invalid instance was found in a batch of reference instances send by a remote member of the cohort. " +
+                              "The exception was {0} with message {1}",
+                      "The instances that appear earlier in the batch have been processed.  However the server will not process any more " +
+                              "of the batch in case there are other problems with it.",
+                      "Review the instances from the event (passed as additional information on this log message) to determine the source of " +
+                              "the error and its resolution."),
 
     NULL_OMRS_EVENT_RECEIVED("OMRS-AUDIT-9002",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                       "Unable to process a received event from topic {0} because its content is null",
                       "The system is unable to process an incoming event.",
-                      "This may be caused by an internal logic error or the receipt of an incompatible OMRSEvent"),
+                      "This may be caused by an internal logic error or the receipt of an incompatible OMRSEvent, " +
+                                     "possibly from a later version of the OMRS protocol"),
 
     SEND_TYPEDEF_EVENT_ERROR("OMRS-AUDIT-9003",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -966,15 +977,16 @@ public enum OMRSAuditCode
                       "The local server is unable to properly manage TypeDef events for the metadata " +
                                       "repository cohort. The cause of the error is recorded in the accompanying exception.",
                       "Review the exception and resolve the issue it documents.  " +
-                                      "Then disconnect and reconnect this server to the cohort."),
+                                      "Then restart this server and it will send out its type information to the cohort."),
 
     SEND_INSTANCE_EVENT_ERROR("OMRS-AUDIT-9005",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
                         "Unable to send or receive a metadata instance event for cohort {0} due to an error in the OMRS Topic Connector",
                         "The local server is unable to properly manage the replication of metadata instances for " +
                                 "the metadata repository cohort. The cause of the error is recorded in the accompanying exception.",
-                        "Review the exception and resolve the issue it documents. " +
-                                      "Then disconnect and reconnect this server to the cohort."),
+                        "Review the exception and resolve the issue it documents. This often includes correcting the " +
+                                      "configuration document for the server.  Once this is done, restart the server and it will " +
+                                      "reconnect to the cohort."),
 
     NULL_REGISTRY_PROCESSOR("OMRS-AUDIT-9006",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -988,21 +1000,25 @@ public enum OMRSAuditCode
                        "Unable to send or receive a TypeDef event because the event processor is null",
                        "The local server is unable to properly manage the exchange of TypeDefs for the metadata " +
                                "repository cohort.",
-                       "This is an internal logic error.  Raise a Git Issue, including the audit log, to get this fixed."),
+                       "This is an internal logic error.  " +
+                                   "Raise a Git Issue, including the audit log, to get the exchange to TypeDefs fixed."),
 
     NULL_INSTANCE_PROCESSOR("OMRS-AUDIT-9008",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
                         "Unable to send or receive a metadata instance event because the event processor is null",
                         "The local server is unable to properly manage the replication of metadata instances for " +
                                 "the metadata repository cohort.",
-                        "This is an internal logic error.  Raise a Git Issue, including the audit log, to get this fixed."),
+                        "This is an internal logic error.  " +
+                                    "Raise a Git Issue, including the audit log, to get the initialization of the instance " +
+                                    "processor fixed."),
 
     NULL_OMRS_CONFIG("OMRS-AUDIT-9009",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
                             "Unable to initialize part of the Open Metadata Repository Service (OMRS) because the configuration is null",
                             "The local server is unable to properly manage the replication of metadata instances for " +
                                     "the metadata repository cohort.",
-                            "This is an internal logic error.  Raise a Git Issue, including the audit log, to get this fixed."),
+                            "This is an internal logic error.  " +
+                             "Raise a Git Issue, including the audit log, to get the admin services fixed."),
 
     SENT_UNKNOWN_EVENT("OMRS-AUDIT-9010",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -1015,19 +1031,19 @@ public enum OMRSAuditCode
                        OMRSAuditLogRecordSeverity.EXCEPTION,
                        "An incoming event of type {0} from {1} ({2}) generated an exception with message {3}",
                        "The contents of the event were not accepted by the local repository.",
-                       "Review the exception and resolve the issue it documents."),
+                       "Review the exception and resolve the issue that the local repository detected."),
 
     ENTERPRISE_TOPIC_DISCONNECT_ERROR("OMRS-AUDIT-9012",
                        OMRSAuditLogRecordSeverity.EXCEPTION,
                        "Disconnecting from the enterprise topic connector generated an exception with message {0}",
                        "The server may not have disconnected from the topic cleanly.",
-                       "Review the exception and resolve the issue it documents."),
+                       "Review the exception and resolve any issues wit the topic listener that it documents."),
 
     ENTERPRISE_CONNECTOR_DISCONNECT_ERROR("OMRS-AUDIT-9013",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
                         "Disconnecting of the enterprise connector manager generated an exception with message {0}",
                         "The server may not have disconnected from all repositories cleanly.",
-                        "Review the exception and resolve the issue it documents."),
+                        "Review the exception and resolve any issue with the enterprise connectors or enterprise connector manager it documents."),
 
     UNEXPECTED_EXCEPTION("OMRS-AUDIT-9014",
                          OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -1044,15 +1060,15 @@ public enum OMRSAuditCode
 
     UNEXPECTED_EXCEPTION_FROM_SERVICE_LISTENER("OMRS-AUDIT-9016",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
-                        "The topic listener for the {0} service caught an unexpected exception {1} with message {2}; the stack trace was {3}",
+                        "The topic listener for the {0} service caught an unexpected exception {1} with message {2}",
                         "The contents of the event were not accepted by the topic listener.",
                         "Review the exception and resolve the issue that it documents."),
 
     UNHANDLED_EXCEPTION_FROM_SERVICE_LISTENER("OMRS-AUDIT-9017",
                        OMRSAuditLogRecordSeverity.EXCEPTION,
-                       "The topic listener for the {0} service threw an unexpected exception {1} with message {2}; the stack trace was {3}",
+                       "The topic listener for the {0} service threw an unexpected exception {1} with message {2}",
                        "The contents of the event were not accepted by the topic listener.",
-                       "Review the exception and resolve the issue that it documents."),
+                       "Review the exception and resolve the issue with the event that it documents."),
 
     UNEXPECTED_EXCEPTION_FROM_TYPE_PROCESSING("OMRS-AUDIT-9018",
                         OMRSAuditLogRecordSeverity.ERROR,
@@ -1066,33 +1082,28 @@ public enum OMRSAuditCode
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                       "The type definition event processor for the {0} service caught an unexpected exception {1} with message {2}",
                      "The contents of the type were not accepted by the topic listener.",
-                      "Review the exception and resolve the issue that it documents.")
+                      "Review the exception and resolve the issue with the type that it documents.")
 
 
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
+    AuditLogMessageDefinition messageDefinition;
 
-    private static final Logger log = LoggerFactory.getLogger(OMRSAuditCode.class);
 
 
     /**
      * The constructor for OMRSAuditCode expects to be passed one of the enumeration rows defined in
      * OMRSAuditCode above.   For example:
      *
-     *     OMRSAuditCode   auditCode = OMRSAuditCode.SERVER_NOT_AVAILABLE;
+     *     OMRSAuditCode   auditCode = OMRSAuditCode.SERVER_SHUTDOWN;
      *
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId unique Id for the message
-     * @param severity severity of the message
-     * @param message text for the message
-     * @param systemAction description of the action taken by the system when the condition happened
-     * @param userAction instructions for resolving the situation, if any
+     * @param messageId - unique Id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
      */
     OMRSAuditCode(String                     messageId,
                   OMRSAuditLogRecordSeverity severity,
@@ -1100,80 +1111,40 @@ public enum OMRSAuditCode
                   String                     systemAction,
                   String                     userAction)
     {
-        this.logMessageId = messageId;
-        this.severity = severity;
-        this.logMessage = message;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
+        messageDefinition = new AuditLogMessageDefinition(messageId,
+                                                          severity,
+                                                          message,
+                                                          systemAction,
+                                                          userAction);
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
      *
-     * @return logMessageId
+     * @return message definition object.
      */
-    public String getLogMessageId()
+    public AuditLogMessageDefinition getMessageDefinition()
     {
-        return logMessageId;
+        return messageDefinition;
     }
 
 
     /**
-     * Return the severity of the audit log record.
+     * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
-     * @return OMRSAuditLogRecordSeverity enum
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public OMRSAuditLogRecordSeverity getSeverity()
+    public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
-        return severity;
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
     }
 
 
     /**
-     * Returns the log message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params strings that plug into the placeholders in the logMessage
-     * @return logMessage (formatted with supplied parameters)
-     */
-    public String getFormattedLogMessage(String... params)
-    {
-        log.debug(String.format("<== OMRS Audit Code.getMessage(%s)", Arrays.toString(params)));
-
-        MessageFormat mf = new MessageFormat(logMessage);
-        String result = mf.format(params);
-
-        log.debug(String.format("==> OMRS Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
-
-        return result;
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction String
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction String
-     */
-    public String getUserAction()
-    {
-        return userAction;
-    }
-
-
-    /**
-     * toString, JSON-style
+     * toString() JSON-style
      *
      * @return string description
      */
@@ -1181,11 +1152,7 @@ public enum OMRSAuditCode
     public String toString()
     {
         return "OMRSAuditCode{" +
-                "logMessageId='" + logMessageId + '\'' +
-                ", severity=" + severity +
-                ", logMessage='" + logMessage + '\'' +
-                ", systemAction='" + systemAction + '\'' +
-                ", userAction='" + userAction + '\'' +
+                "messageDefinition=" + messageDefinition +
                 '}';
     }
 }

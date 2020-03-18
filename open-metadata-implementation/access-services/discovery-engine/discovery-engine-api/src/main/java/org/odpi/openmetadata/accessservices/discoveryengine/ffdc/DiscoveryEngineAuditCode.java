@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.auditlog;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +24,7 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum DiscoveryEngineAuditCode
+public enum DiscoveryEngineAuditCode implements AuditLogMessageSet
 {
     SERVICE_INITIALIZING("OMAS-DISCOVERY-ENGINE-0001",
              OMRSAuditLogRecordSeverity.STARTUP,
@@ -138,13 +140,7 @@ public enum DiscoveryEngineAuditCode
             "Review the message to ensure no action is required.")
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(DiscoveryEngineAuditCode.class);
+    AuditLogMessageDefinition messageDefinition;
 
 
     /**
@@ -167,80 +163,33 @@ public enum DiscoveryEngineAuditCode
                              String                     systemAction,
                              String                     userAction)
     {
-        this.logMessageId = messageId;
-        this.severity = severity;
-        this.logMessage = message;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
+        messageDefinition =new AuditLogMessageDefinition(messageId,
+                                                         severity,
+                                                         message,
+                                                         systemAction,
+                                                         userAction);
+    }
+
+    /**
+     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
+     *
+     * @return message definition object.
+     */
+    public AuditLogMessageDefinition getMessageDefinition()
+    {
+        return messageDefinition;
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
-     * @return logMessageId
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public String getLogMessageId()
+    public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
-        return logMessageId;
-    }
-
-
-    /**
-     * Return the severity of the audit log record.
-     *
-     * @return OMRSAuditLogRecordSeverity enum
-     */
-    public OMRSAuditLogRecordSeverity getSeverity()
-    {
-        return severity;
-    }
-
-    /**
-     * Returns the log message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the logMessage
-     * @return logMessage (formatted with supplied parameters)
-     */
-    public String getFormattedLogMessage(String... params)
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("<== DiscoveryEngine Audit Code.getMessage(%s)", Arrays.toString(params)));
-        }
-
-        MessageFormat mf = new MessageFormat(logMessage);
-        String result = mf.format(params);
-
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("==> DiscoveryEngine Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
-        }
-
-        return result;
-    }
-
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction String
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction String
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
     }
 }
