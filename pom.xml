@@ -128,7 +128,7 @@
         <junit.jupiter.version>5.6.0</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
-        <mockito.version>3.3.0</mockito.version>
+        <mockito.version>3.3.3</mockito.version>
         <testng.version>7.1.0</testng.version>
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.30</slf4j.version>
@@ -179,7 +179,7 @@
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
-        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-shade.version>3.2.2</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
@@ -187,7 +187,7 @@
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.13.0</maven-pmd.version>
         <owasp.version>5.3.1</owasp.version>
-        <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
+        <spotbugs-maven.version>4.0.0</spotbugs-maven.version>
         <spotbugs.version>4.0.0</spotbugs.version>
         <maven-download.version>1.5.0</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>

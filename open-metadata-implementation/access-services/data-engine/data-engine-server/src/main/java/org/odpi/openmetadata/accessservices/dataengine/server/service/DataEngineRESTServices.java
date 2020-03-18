@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.service;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
@@ -27,7 +28,6 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHa
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -300,9 +300,9 @@ public class DataEngineRESTServices {
      *
      * @return the unique identifier (guid) of the created port alias
      *
-     * @throws InvalidParameterException the bean properties are invalid
+     * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
+     * @throws PropertyServerException    problem accessing the property server
      */
     public String createOrUpdatePortAliasWithDelegation(String userId, String serverName, PortAlias portAlias, String externalSourceName) throws
                                                                                                                                           InvalidParameterException,
@@ -343,9 +343,9 @@ public class DataEngineRESTServices {
      *
      * @return the unique identifier (guid) of the created port alias
      *
-     * @throws InvalidParameterException the bean properties are invalid
+     * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
+     * @throws PropertyServerException    problem accessing the property server
      */
     public String createOrUpdatePortImplementationWithSchemaType(String userId, String serverName, PortImplementation portImplementation,
                                                                  String externalSourceName) throws InvalidParameterException,
@@ -389,9 +389,9 @@ public class DataEngineRESTServices {
      *
      * @return he unique identifier (guid) of the created external data engine
      *
-     * @throws InvalidParameterException the bean properties are invalid
+     * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
+     * @throws PropertyServerException    problem accessing the property server
      */
     public String createExternalDataEngine(String userId, String serverName, SoftwareServerCapability softwareServerCapability) throws
                                                                                                                                 InvalidParameterException,
@@ -419,9 +419,9 @@ public class DataEngineRESTServices {
      * @param portQualifiedNames the list of qualified names for the port entities
      * @param externalSourceName the unique name of the external source
      *
-     * @throws InvalidParameterException the bean properties are invalid
+     * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
+     * @throws PropertyServerException    problem accessing the property server
      */
     public void addPortsToProcess(String userId, String serverName, String processGUID, List<String> portQualifiedNames, String externalSourceName) throws
                                                                                                                                                     InvalidParameterException,
@@ -456,9 +456,9 @@ public class DataEngineRESTServices {
      *                           parallel processing
      * @param externalSourceName the unique name of the external source
      *
-     * @throws InvalidParameterException the bean properties are invalid
+     * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
+     * @throws PropertyServerException    problem accessing the property server
      */
     public void addLineageMappings(String userId, String serverName, List<LineageMapping> lineageMappings, FFDCResponseBase response,
                                    String externalSourceName) throws InvalidParameterException,
@@ -497,10 +497,9 @@ public class DataEngineRESTServices {
      * @return a list unique identifiers (GUIDs) of the created/updated processes
      */
     public ProcessListResponse createOrUpdateProcesses(String userId, String serverName, List<Process> processes, String externalSourceName) {
-        Predicate<? super Process> hasPortImplementationsPredicate =
-                process -> CollectionUtils.isNotEmpty(process.getPortImplementations());
-        Map<Boolean, List<Process>> partitionedProcesses =
-                processes.parallelStream().collect(partitioningBy(hasPortImplementationsPredicate));
+
+        Predicate<? super Process> hasPortImplementationsPredicate = process -> CollectionUtils.isNotEmpty(process.getPortImplementations());
+        Map<Boolean, List<Process>> partitionedProcesses = processes.parallelStream().collect(partitioningBy(hasPortImplementationsPredicate));
 
         List<GUIDResponse> createdProcesses = new ArrayList<>();
         List<GUIDResponse> failedProcesses = new ArrayList<>();
@@ -508,7 +507,12 @@ public class DataEngineRESTServices {
         {
             GUIDResponse guidResponse = createOrUpdateProcess(userId, serverName, process, externalSourceName);
             if (guidResponse.getRelatedHTTPCode() == HttpStatus.OK.value()) {
-                updateProcessStatus(userId, serverName, guidResponse, InstanceStatus.ACTIVE);
+                String processGUID = guidResponse.getGUID();
+                process.setGUID(processGUID);
+                VoidResponse updateStatusResponse = updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE);
+                if (updateStatusResponse.getRelatedHTTPCode() != 200) {
+                    captureException(updateStatusResponse, guidResponse);
+                }
                 createdProcesses.add(guidResponse);
             } else {
                 failedProcesses.add(guidResponse);
@@ -516,13 +520,14 @@ public class DataEngineRESTServices {
         };
 
         partitionedProcesses.get(Boolean.TRUE).parallelStream().forEach(processConsumer);
-        // processes that have port aliases can not be processed in parallel, as multiple processes can define
-        // the same port alias
+        // processes that have port aliases can not be processed in parallel, as multiple processes can define the same port alias
         partitionedProcesses.get(Boolean.FALSE).forEach(processConsumer);
 
         ProcessListResponse response = new ProcessListResponse();
         response.setGUIDs(createdProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList()));
         handleFailedProcesses(response, failedProcesses);
+
+        addProcessHierarchyRelationships(userId, serverName, processes, response, externalSourceName);
 
         return response;
     }
@@ -642,24 +647,25 @@ public class DataEngineRESTServices {
         failedProcesses.parallelStream().forEach(guidResponse -> captureException(guidResponse, response));
     }
 
-    private void captureException(FFDCResponseBase guidResponse, GUIDListResponse response) {
-        response.setExceptionErrorMessage(guidResponse.getExceptionErrorMessage());
-        response.setExceptionClassName(guidResponse.getExceptionClassName());
-        response.setExceptionSystemAction(guidResponse.getExceptionSystemAction());
-        response.setExceptionUserAction(guidResponse.getExceptionUserAction());
-        response.setRelatedHTTPCode(guidResponse.getRelatedHTTPCode());
-        response.setExceptionProperties(guidResponse.getExceptionProperties());
+    private void captureException(FFDCResponseBase initialResponse, FFDCResponseBase response) {
+        response.setExceptionErrorMessage(initialResponse.getExceptionErrorMessage());
+        response.setExceptionClassName(initialResponse.getExceptionClassName());
+        response.setExceptionSystemAction(initialResponse.getExceptionSystemAction());
+        response.setExceptionUserAction(initialResponse.getExceptionUserAction());
+        response.setRelatedHTTPCode(initialResponse.getRelatedHTTPCode());
+        response.setExceptionProperties(initialResponse.getExceptionProperties());
     }
 
-    private void updateProcessStatus(String userId, String serverName, GUIDResponse response, InstanceStatus instanceStatus) {
+    private VoidResponse updateProcessStatus(String userId, String serverName, String processGUID, InstanceStatus instanceStatus) {
         final String methodName = "updateProcessStatus";
 
         log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
+        VoidResponse response = new VoidResponse();
         try {
             ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-            processHandler.updateProcessStatus(userId, response.getGUID(), instanceStatus);
+            processHandler.updateProcessStatus(userId, processGUID, instanceStatus);
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -669,6 +675,8 @@ public class DataEngineRESTServices {
         }
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
+
+        return response;
     }
 
     /**
@@ -742,6 +750,43 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    private void addProcessHierarchyRelationships(String userId, String serverName, List<Process> processes, ProcessListResponse response,
+                                                  String externalSourceName) {
+        final String methodName = "addProcessHierarchyRelationships";
+
+        ArrayList<String> failedGUIDS = new ArrayList<>();
+
+        // add the ProcessHierarchy relationships only for successfully created processes
+        processes.parallelStream().filter(process -> response.getGUIDs().contains(process.getGUID())).forEach(process -> {
+            List<ParentProcess> parentProcesses = process.getParentProcesses();
+            String processGUID = process.getGUID();
+            if (CollectionUtils.isNotEmpty(parentProcesses)) {
+                try {
+                    ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+                    for (ParentProcess parentProcess : parentProcesses) {
+                        processHandler.createOrUpdateProcessHierarchyRelationship(userId, parentProcess, processGUID, externalSourceName);
+                    }
+                } catch (InvalidParameterException error) {
+                    restExceptionHandler.captureInvalidParameterException(response, error);
+                } catch (PropertyServerException error) {
+                    restExceptionHandler.capturePropertyServerException(response, error);
+                } catch (UserNotAuthorizedException error) {
+                    restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                }
+            }
+            // failed to create a processHierarchy relationship, set the status of the process back to DRAFT and add the processGUID
+            // to the list of failed processes
+            if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
+                updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT);
+                failedGUIDS.add(processGUID);
+            }
+        });
+
+        // update the ProcessListResponse to reflect the updated status for the created/failed processes
+        response.getGUIDs().removeAll(failedGUIDS);
+        response.getFailedGUIDs().addAll(failedGUIDS);
+    }
+
     private void addProcessPortRelationships(String userId, String serverName, String processGUID, Set<String> portGUIDs, GUIDResponse response,
                                              String externalSourceName) throws InvalidParameterException, PropertyServerException,
                                                                                UserNotAuthorizedException {
@@ -781,8 +826,7 @@ public class DataEngineRESTServices {
         Set<String> oldPortGUIDs = processHandler.getPortsForProcess(userId, processGUID, portTypeName);
 
         // delete ports that are not in the process payload anymore
-        List<String> obsoletePorts =
-                oldPortGUIDs.parallelStream().collect(partitioningBy(newPortGUIDs::contains)).get(Boolean.FALSE);
+        List<String> obsoletePorts = oldPortGUIDs.parallelStream().collect(partitioningBy(newPortGUIDs::contains)).get(Boolean.FALSE);
         obsoletePorts.parallelStream().forEach(portGUID -> {
             try {
                 portHandler.removePort(userId, portGUID, portTypeName);
@@ -836,9 +880,7 @@ public class DataEngineRESTServices {
         Set<String> portAliasGUIDs = new HashSet<>();
 
         if (CollectionUtils.isNotEmpty(portAliases)) {
-
-            portAliases.parallelStream().forEach(portAlias ->
-            {
+            portAliases.parallelStream().forEach(portAlias -> {
                 try {
                     portAliasGUIDs.add(createOrUpdatePortAliasWithDelegation(userId, serverName, portAlias, externalSourceName));
                 } catch (InvalidParameterException error) {

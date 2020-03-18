@@ -48,6 +48,7 @@ services:
             - ctsPlatformURL=http://dev:8080
             - factoryPlatformURL=http://factory:8080
             - eventBusURLroot=kafka:9092
+            - uiExternalURL=https://localhost:18443
         command: start.sh jupyter lab --LabApp.token='' --NotebookApp.iopub_data_rate_limit=1.0e10
         ports:
             - '18888:8888'
@@ -105,6 +106,9 @@ services:
         environment:
             - OMAS_SERVER_URL=http://datalake:8080
             - OMAS_SERVER_NAME=cocoMDS4
+            - OPEN_LINEAGE_SERVER_URL=http://datalake:8080
+            - OPEN_LINEAGE_SERVER_NAME=open-lineage
+            - OPEN_LINEAGE_GRAPH_SOURCE=MAIN
         ports:
             - '18443:8443'
         networks:
