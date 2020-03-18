@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.auditlog;
+package org.odpi.openmetadata.accessservices.communityprofile.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
@@ -38,23 +38,18 @@ public enum CommunityProfileAuditCode implements AuditLogMessageSet
                                  "reaches a karma point plateau.",
              "No action is required if this service is required."),
 
-    SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-COMMUNITY-PROFILE-0002",
-             OMRSAuditLogRecordSeverity.STARTUP,
-             "The Community Profile Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
-             "The Community Profile OMAS is registering to receive events from the connected open metadata repositories.",
-             "No action is required.  This is part of the normal operation of the server."),
-
-    SERVICE_INITIALIZED("OMAS-COMMUNITY-PROFILE-0003",
+    SERVICE_INITIALIZED("OMAS-COMMUNITY-PROFILE-0002",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The Community Profile Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
              "The access service has completed initialization of a new instance.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "Verify that he service started successfully.  You should see the start up of both the in topic and out topic " +
+                                "as well as information about the karma point threshold that is in operation."),
 
-    SERVICE_SHUTDOWN("OMAS-COMMUNITY-PROFILE-0004",
+    SERVICE_SHUTDOWN("OMAS-COMMUNITY-PROFILE-0003",
              OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Community Profile Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local server has requested shut down of an Community Profile OMAS instance.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "No action is required if shutdown was requested."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-COMMUNITY-PROFILE-0005",
              OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -66,25 +61,27 @@ public enum CommunityProfileAuditCode implements AuditLogMessageSet
              OMRSAuditLogRecordSeverity.EVENT,
              "The Community Profile Open Metadata Access Service (OMAS) has sent an event of type {0} on its out topic.  Event subject is {1}",
              "The Community Profile OMAS has detected a situation that results in an outbound event.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "This message is for capturing a record of all of the events send on the out topic.  If a permanent record is needed " +
+                           "of these events, then ensure there is an audit log destination that sends log records to permanent storage."),
 
     INBOUND_EVENT("OMAS-COMMUNITY-PROFILE-0007",
              OMRSAuditLogRecordSeverity.EVENT,
              "The Community Profile Open Metadata Access Service (OMAS) has received an event of type {0} on its in topic.  Event subject is {1}",
              "The Community Profile OMAS has detected an incoming event.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "This message is for capturing a record of all of the events received on the in topic.  If a permanent record is needed " +
+                          "of these events, then ensure there is an audit log destination that sends log records to permanent storage."),
 
     KARMA_PLATEAU_AWARD("OMAS-COMMUNITY-PROFILE-0008",
              OMRSAuditLogRecordSeverity.INFO,
             "{0} has reached a new karma point plateau of {1} with {2} karma points",
-            "The Community Profile OMAS has detected an incoming event.",
-            "No action is required.  This is part of the normal operation of the service."),
+            "The Community Profile OMAS has detected a contribution by an individual that takes them to the next plateau.",
+            "This information is also sent on the out topic and could result in additional recognition for the individual."),
 
     KARMA_POINT_EXCEPTION("OMAS-COMMUNITY-PROFILE-0009",
              OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to award karma points to {0} due to exception {1}.  The error message from the exception was {2}",
             "The system detected an exception whilst attempting to award karma points.  No karma points were awarded.",
-            "Investigate and correct the source of the error.  Once fixed, karma points will be awarded."),
+            "Investigate and correct the source of the error.  Once fixed, karma points will be awarded for new activity."),
 
     OUTBOUND_EVENT_EXCEPTION("OMAS-COMMUNITY-PROFILE-0010",
             OMRSAuditLogRecordSeverity.EXCEPTION,
