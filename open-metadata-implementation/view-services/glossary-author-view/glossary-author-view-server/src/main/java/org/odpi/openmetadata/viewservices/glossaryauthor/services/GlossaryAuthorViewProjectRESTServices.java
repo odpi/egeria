@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.ProjectHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The GlossaryAuthorViewProjectRESTServices provides the org.odpi.openmetadata.viewservices.glossaryauthor.services implementation of the SubjectArea Open Metadata
+ * The GlossaryAuthorViewProjectRESTServices provides the org.odpi.openmetadata.viewservices.glossaryauthor.services implementation of the Glossary Author Open Metadata
  * View Service (OMVS). This interface provides view project authoring interfaces for subject area experts.
  */
 
@@ -63,14 +63,13 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
-            Project createdProject = handler.createProject(userId,
-                    suppliedProject);
+            Project createdProject = handler.createProject(userId, suppliedProject);
             response = new ProjectResponse(createdProject);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, methodName);
@@ -104,7 +103,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
@@ -154,7 +153,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
@@ -172,8 +171,9 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
                     pageSize,
                     sequencingOrder,
                     sequencingProperty);
-            ProjectsResponse glossariesResponse = new ProjectsResponse();
-            glossariesResponse.setProjects(projects);
+            ProjectsResponse projectsResponse = new ProjectsResponse();
+            projectsResponse.setProjects(projects);
+            response = projectsResponse;
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, methodName);
         }
@@ -219,7 +219,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
@@ -237,10 +237,6 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
     /**
      * Update a Project
      * <p>
-     * If the caller has chosen to incorporate the project name in their Project Terms or Categories qualified name, renaming the project will cause those
-     * qualified names to mismatch the Project name.
-     * If the caller has chosen to incorporate the project qualifiedName in their Project Terms or Categories qualified name, changing the qualified name of the project will cause those
-     * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
      * @param serverName         name of the local UI server.
@@ -270,7 +266,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
@@ -335,7 +331,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
@@ -388,7 +384,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied project - the calling layer should not allow this.
         try {

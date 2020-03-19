@@ -33,6 +33,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>rest-client-factory</artifactId>
         </dependency>
 

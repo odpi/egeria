@@ -12,7 +12,7 @@ reporting, tracking, etc) as well as some common techniques we can apply to addr
 - Weekly call to triage identified vulnerabilities from various sources
     - [Sonar scans](https://sonarcloud.io/organizations/odpi/projects)
     - [Nexus IQ scans](https://nexus-iq.wl.linuxfoundation.org)
-    - Any third party inputs (ie. from consumers) -- fed in via [private mailing list]()
+    - Any third party inputs (ie. from consumers) -- which can be sent to us at [egeria-security@odpi.org](mailto:egeria-security@odpi.org)
 - Work can then begin on resolving them, with two potential options (depending on complexity):
     - Quick to resolve: create an issue when we believe we have a fix, and link the PR with the fix to the issue
     - For any we cannot quickly resolve, we will use [GitHub's security advisories](https://github.com/odpi/egeria/security/advisories)

@@ -7,7 +7,7 @@ import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInsta
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.AnnotationHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.DataFieldHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.DiscoveryAnalysisReportHandler;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class ODFOMASServiceInstance extends OCFOMASServiceInstance
                                   OMRSRepositoryConnector repositoryConnector,
                                   List<String>            supportedZones,
                                   List<String>            defaultZones,
-                                  OMRSAuditLog            auditLog,
+                                  AuditLog                auditLog,
                                   String                  localServerUserId,
                                   int                     maxPageSize) throws NewInstanceException
     {

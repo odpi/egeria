@@ -5,6 +5,7 @@
 package org.odpi.openmetadata.accessservices.securityofficer.server.admin.admin;
 
 import org.odpi.openmetadata.accessservices.securityofficer.api.auditlog.SecurityOfficerAuditCode;
+import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.errorcode.SecurityOfficerErrorCode;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.listener.SecurityOfficerOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.processor.SecurityOfficerEventProcessor;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.publisher.SecurityOfficerPublisher;
@@ -18,7 +19,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 
 public class SecurityOfficerAdmin extends AccessServiceAdmin
@@ -136,12 +136,13 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
 
             return topicConnector;
         } catch (Exception error) {
-            String methodName = "getTopicConnector";
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
+            final String methodName = "getTopicConnector";
+            SecurityOfficerErrorCode errorCode =
+                    SecurityOfficerErrorCode.NULL_TOPIC_CONNECTOR;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage("getTopicConnector");
 
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSConfigErrorException(errorCode.getHttpErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,

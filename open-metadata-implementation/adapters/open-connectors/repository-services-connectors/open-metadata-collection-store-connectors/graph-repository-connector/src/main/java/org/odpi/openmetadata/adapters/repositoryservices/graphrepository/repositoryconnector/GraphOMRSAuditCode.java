@@ -3,12 +3,9 @@
 
 package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 
 
@@ -27,129 +24,94 @@ import java.util.Arrays;
  */
 
 
-public enum GraphOMRSAuditCode {
+public enum GraphOMRSAuditCode implements AuditLogMessageSet
+{
 
     GRAPH_REPOSITORY_CREATED("OMRS-GRAPH-REPOSITORY-0001",
             OMRSAuditLogRecordSeverity.INFO,
             "The OMRS Graph Repository has been created.",
-            "The local server has created and initialized the Local OMRS Graph Repository database.",
-            "No action is required. This is part of the normal operation of the Graph Repository."),
+            "The local server has created and initialized a new Local OMRS Graph Repository database.",
+            "This repository will be used as the local repository for this server. Verify that this is the first time that " +
+                                     "the server is being started with the graph repository.  If it has not then shut down the server " +
+                                     "immediately and track down why the server is not finding its repository.  It may be a configuration " +
+                                     "change or the contents of the repository have been removed.  Once the repository has been restored, " +
+                                     "restart the server and you should see OMRS-GRAPH-REPOSITORY-0003 at start up rather than this message."),
+
     GRAPH_REPOSITORY_HAS_DIFFERENT_METADATA_COLLECTION_ID("OMRS-GRAPH-REPOSITORY-0002",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The OMRS Graph Database contains a metadataCollectionId that does not match the repository's metadataCollectionId.",
-            "The graph database is for a different metadata repository. Cannot proceed.",
-            "Check whether the repository has been reconfigured with a different metadataCollectionId. If necessary, update the repository connection configuration to match the metadataCollectionId for the database."),
+            "The OMRS Graph Database {0} contains a metadataCollectionId {1} that does not match the repository's metadataCollectionId {2}.",
+            "The graph database is for a different metadata repository. Cannot proceed with initialization of the graph repository.",
+            "The likely cause of this error is either that the configuration document for the server has been deleted and recreated, " +
+                                                                  "causing a new metadata collection id to be generated or there are two servers " +
+                                                                  "with the same name." +
+                                                                  "Check whether the repository has been " +
+                                                                  "reconfigured" +
+                                                                  " with a different metadataCollectionId. " +
+                                                                  "Update the repository connection " +
+                                                                  "configuration in the server's configuration " +
+                                                                  "document to match the " +
+                                                                  "metadataCollectionId for the database.  " +
+                                                                  "Otherwise rename this server so that it has a unique name and restart it."),
+
     GRAPH_REPOSITORY_OPENED("OMRS-GRAPH-REPOSITORY-0003",
             OMRSAuditLogRecordSeverity.INFO,
             "The OMRS Graph Repository has been opened.",
             "The local server has created and initialized the Local OMRS Graph Repository database.",
-            "No action is required. This is part of the normal operation of the Graph Repository."),
+            "No action is required. The existing graph repository has been opened and validated successfully."),
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(GraphOMRSAuditCode.class);
+    AuditLogMessageDefinition messageDefinition;
 
 
     /**
-     * The constructor for OMRSAuditCode expects to be passed one of the enumeration rows defined in
-     * OMRSAuditCode above.   For example:
+     * The constructor for GraphOMRSAuditCode expects to be passed one of the enumeration rows defined in
+     * GraphOMRSAuditCode above.   For example:
      *
-     *     OMRSAuditCode   auditCode = OMRSAuditCode.SERVER_NOT_AVAILABLE;
+     *     GraphOMRSAuditCode   auditCode = GraphOMRSAuditCode.SERVER_NOT_AVAILABLE;
      *
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
-     * @param severity - severity of the message
-     * @param message - text for the message
-     * @param systemAction - description of the action taken by the system when the condition happened
-     * @param userAction - instructions for resolving the situation, if any
+     * @param messageId unique Id for the message
+     * @param severity severity of the message
+     * @param message text for the message
+     * @param systemAction description of the action taken by the system when the condition happened
+     * @param userAction instructions for resolving the situation, if any
      */
-    GraphOMRSAuditCode(  String                     messageId,
-                         OMRSAuditLogRecordSeverity severity,
-                         String                     message,
-                         String                     systemAction,
-                         String                     userAction)
+    GraphOMRSAuditCode(String                     messageId,
+                       OMRSAuditLogRecordSeverity severity,
+                       String                     message,
+                       String                     systemAction,
+                       String                     userAction)
     {
-        this.logMessageId = messageId;
-        this.severity = severity;
-        this.logMessage = message;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
+        messageDefinition = new AuditLogMessageDefinition(messageId,
+                                                          severity,
+                                                          message,
+                                                          systemAction,
+                                                          userAction);
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
      *
-     * @return logMessageId
+     * @return message definition object.
      */
-    public String getLogMessageId()
+    public AuditLogMessageDefinition getMessageDefinition()
     {
-        return logMessageId;
+        return messageDefinition;
     }
 
 
     /**
-     * Return the severity of the audit log record.
+     * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
-     * @return OMRSAuditLogRecordSeverity enum
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public OMRSAuditLogRecordSeverity getSeverity()
+    public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
-        return severity;
-    }
-
-    /**
-     * Returns the log message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the logMessage
-     * @return logMessage (formatted with supplied parameters)
-     */
-    public String getFormattedLogMessage(String... params)
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("<== OMRS Audit Code.getMessage(%s)", Arrays.toString(params)));
-        }
-
-        MessageFormat mf = new MessageFormat(logMessage);
-        String result = mf.format(params);
-
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("==> OMRS Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
-        }
-
-        return result;
-    }
-
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction String
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction String
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
     }
 }
 

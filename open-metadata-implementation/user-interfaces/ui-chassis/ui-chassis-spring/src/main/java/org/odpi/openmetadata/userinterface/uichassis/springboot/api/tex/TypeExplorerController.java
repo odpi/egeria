@@ -303,15 +303,10 @@ public class TypeExplorerController extends SecureController
             else {
                 final String methodName = "getMetadataCollection";
 
-                OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
-                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                // todo Should not use OMRSErrorCode - create an error code file for TEX
+                throw new RepositoryErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(serverName),
                         this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName);
             }
 
         }

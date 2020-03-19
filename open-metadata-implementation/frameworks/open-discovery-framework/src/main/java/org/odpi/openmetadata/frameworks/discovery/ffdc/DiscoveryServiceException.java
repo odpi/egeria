@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.discovery.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
 /**
@@ -13,48 +14,46 @@ public class DiscoveryServiceException extends ConnectorCheckedException
     private static final long serialVersionUID = 1L;
 
     /**
-     * This is the typical constructor for creating the exception.  It captures the essential details
-     * about the error, where it occurred and how to fix it.
+     * This is the typical constructor used for creating a DiscoveryServiceException.
      *
-     * @param httpCode code to use across a REST interface
+     * @param messageDefinition content of message
      * @param className name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
      */
-    public DiscoveryServiceException( int    httpCode,
-                                     String className,
-                                     String actionDescription,
-                                     String errorMessage,
-                                     String systemAction,
-                                     String userAction)
+    public DiscoveryServiceException(ExceptionMessageDefinition messageDefinition,
+                                     String                     className,
+                                     String                     actionDescription)
     {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
+        super(messageDefinition, className, actionDescription);
     }
 
 
     /**
-     * This constructor is used when an unexpected exception has been caught that needs to be wrapped in a
-     * ConnectorCheckedException in order to add the essential details about the error, where it occurred and
-     * how to fix it.
+     * This is the constructor used for creating a DiscoveryServiceException in response to a previous exception.
      *
-     * @param httpCode code to use across a REST interface
+     * @param messageDefinition content of message
      * @param className name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param caughtError the exception/error that caused this exception to be raised
+     * @param caughtError   the error that resulted in this exception.
      */
-    public DiscoveryServiceException(int       httpCode,
-                                     String    className,
-                                     String    actionDescription,
-                                     String    errorMessage,
-                                     String    systemAction,
-                                     String    userAction,
-                                     Throwable caughtError)
+    public DiscoveryServiceException(ExceptionMessageDefinition messageDefinition,
+                                     String                     className,
+                                     String                     actionDescription,
+                                     Throwable                  caughtError)
     {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+        super(messageDefinition, className, actionDescription, caughtError);
+    }
+
+
+    /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param errorMessage associated message
+     * @param template   object to copy
+     */
+    public DiscoveryServiceException(String                    errorMessage,
+                                     ConnectorCheckedException template)
+    {
+        super(errorMessage, template);
     }
 }

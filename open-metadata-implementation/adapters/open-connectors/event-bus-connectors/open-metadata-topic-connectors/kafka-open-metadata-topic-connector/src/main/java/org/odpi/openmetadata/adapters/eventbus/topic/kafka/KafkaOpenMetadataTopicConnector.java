@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 {
-    public static final String ENABLE_AUTO_COMMIT_PROPERTY = "enable.auto.commit";
+    static final String ENABLE_AUTO_COMMIT_PROPERTY = "enable.auto.commit";
 
     private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnector.class);
 
@@ -99,7 +99,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     private void initializeTopic()
     {
         final String           actionDescription = "initialize";
-        KafkaOpenMetadataTopicConnectorAuditCode auditCode;
 
         super.initialize(connectorInstanceId, connectionProperties);
 
@@ -123,28 +122,16 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
                 if (auditLog != null)
                 {
-                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING;
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(topicName, serverId),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logMessage(actionDescription,
+                                        KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING.getMessageDefinition(topicName, serverId));
                 }
             }
             else
             {
                 if (auditLog != null)
                 {
-                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.NULL_ADDITIONAL_PROPERTIES;
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(topicName),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logMessage(actionDescription,
+                                        KafkaOpenMetadataTopicConnectorAuditCode.NULL_ADDITIONAL_PROPERTIES.getMessageDefinition(topicName));
                 }
             }
         }
@@ -152,14 +139,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         {
             if (auditLog != null)
             {
-                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.NO_TOPIC_NAME;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(actionDescription,
+                                    KafkaOpenMetadataTopicConnectorAuditCode.NO_TOPIC_NAME.getMessageDefinition());
             }
         }
     }
@@ -176,8 +157,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     private void  initializeKafkaProperties(Map<String, Object> configurationProperties)
     {
         final String                             actionDescription = "initializeKafkaProperties";
-        KafkaOpenMetadataTopicConnectorAuditCode auditCode;
-        Map<String, Object>   propertiesMap;
 
         try
         {
@@ -194,14 +173,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         }
         catch (Throwable   error)
         {
-            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_CONFIG_PROPERTIES;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(topicName, error.getClass().getName(), error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_CONFIG_PROPERTIES.getMessageDefinition(topicName,
+                                                                                                                                error.getClass().getName(),
+                                                                                                                                error.getMessage()));
         }
     }
 
@@ -313,21 +288,13 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     public void disconnect() throws ConnectorCheckedException
     {
         final String           actionDescription = "disconnect";
-        KafkaOpenMetadataTopicConnectorAuditCode auditCode;
 
         consumer.safeCloseConsumer();
         producer.safeCloseProducer();
 
         super.disconnect();
 
-        auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(topicName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(topicName));
     }
     
     /**

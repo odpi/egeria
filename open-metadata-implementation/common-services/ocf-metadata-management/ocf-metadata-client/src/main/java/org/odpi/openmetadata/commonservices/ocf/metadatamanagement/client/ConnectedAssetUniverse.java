@@ -462,9 +462,9 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                          assetGUID,
                                                          connectionGUID);
 
-            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(restResult);
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException error)
         {
@@ -520,9 +520,9 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                          userId,
                                                          assetGUID);
 
-            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(restResult);
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException error)
         {

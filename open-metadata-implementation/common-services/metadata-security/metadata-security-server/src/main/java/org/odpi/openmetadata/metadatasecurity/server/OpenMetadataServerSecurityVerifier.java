@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.server;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -17,7 +18,6 @@ import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurity
 import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider;
 import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityConnector;
 import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
@@ -41,7 +41,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 {
     private OpenMetadataServerSecurityConnector connector   = null;
 
-    // Todo remove - temporary workaround to being connectors into class path
+    // Todo remove - temporary workaround to bring connectors into class path
     private CocoPharmaServerSecurityConnector   demoObject1 = null;
     private CocoPharmaServerSecurityProvider    demoObject2 = null;
     private CocoPharmaPlatformSecurityConnector demoObject3 = null;
@@ -67,7 +67,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      */
     synchronized public  void registerSecurityValidator(String       localServerUserId,
                                                         String       serverName,
-                                                        OMRSAuditLog auditLog,
+                                                        AuditLog     auditLog,
                                                         Connection   connection) throws InvalidParameterException
     {
         try
@@ -79,7 +79,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         }
         catch (InvalidParameterException error)
         {
-            throw new InvalidParameterException(error.getErrorMessage(), error);
+            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
         }
     }
 
@@ -96,7 +96,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      */
     private   OpenMetadataServerSecurityConnector getServerSecurityConnector(String       localServerUserId,
                                                                              String       serverName,
-                                                                             OMRSAuditLog auditLog,
+                                                                             AuditLog     auditLog,
                                                                              Connection   connection) throws InvalidParameterException
     {
         final String methodName = "getServerSecurityConnector";
@@ -122,18 +122,11 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                 /*
                  * The assumption is that any exceptions creating the new connector are down to a bad connection
                  */
-                OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.BAD_SERVER_SECURITY_CONNECTION;
-                String                        errorMessage = errorCode.getErrorMessageId()
-                                                           + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                error.getMessage(),
-                                                                                                connection.toString());
-
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                throw new InvalidParameterException(OpenMetadataSecurityErrorCode.BAD_SERVER_SECURITY_CONNECTION.getMessageDefinition(serverName,
+                                                                                                                                      error.getMessage(),
+                                                                                                                                      connection.toString()),
                                                     OpenMetadataPlatformSecurityVerifier.class.getName(),
                                                     methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction(),
                                                     error,
                                                     "connection");
             }

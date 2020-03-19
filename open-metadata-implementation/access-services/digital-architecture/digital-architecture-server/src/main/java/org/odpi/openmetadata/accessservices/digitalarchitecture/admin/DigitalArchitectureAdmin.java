@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.admin;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.auditlog.DigitalArchitectureAuditCode;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.ffdc.DigitalArchitectureAuditCode;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.listener.DigitalArchitectureOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.server.DigitalArchitectureServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -21,9 +21,9 @@ import java.util.List;
  */
 public class DigitalArchitectureAdmin extends AccessServiceAdmin
 {
-    private OMRSAuditLog                         auditLog            = null;
-    private DigitalArchitectureServicesInstance  instance            = null;
-    private String                               serverName          = null;
+    private AuditLog                            auditLog   = null;
+    private DigitalArchitectureServicesInstance instance   = null;
+    private String                              serverName = null;
 
     /**
      * Default constructor
@@ -46,20 +46,12 @@ public class DigitalArchitectureAdmin extends AccessServiceAdmin
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      omrsTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog            auditLog,
+                           AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
-        final String                 actionDescription = "initialize";
-        DigitalArchitectureAuditCode auditCode;
+        final String  actionDescription = "initialize";
 
-        auditCode = DigitalArchitectureAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DigitalArchitectureAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         this.auditLog = auditLog;
 
@@ -70,10 +62,10 @@ public class DigitalArchitectureAdmin extends AccessServiceAdmin
                                                                       auditLog);
 
             this.instance = new DigitalArchitectureServicesInstance(repositoryConnector,
-                                                              supportedZones,
-                                                              auditLog,
-                                                              serverUserName,
-                                                              repositoryConnector.getMaxPageSize());
+                                                                    supportedZones,
+                                                                    auditLog,
+                                                                    serverUserName,
+                                                                    repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
             /*
@@ -84,11 +76,11 @@ public class DigitalArchitectureAdmin extends AccessServiceAdmin
                 DigitalArchitectureOMRSTopicListener omrsTopicListener;
 
                 omrsTopicListener = new DigitalArchitectureOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                           repositoryConnector.getRepositoryHelper(),
-                                                                           repositoryConnector.getRepositoryValidator(),
-                                                                           accessServiceConfig.getAccessServiceName(),
-                                                                           supportedZones,
-                                                                           auditLog);
+                                                                             repositoryConnector.getRepositoryHelper(),
+                                                                             repositoryConnector.getRepositoryValidator(),
+                                                                             accessServiceConfig.getAccessServiceName(),
+                                                                             supportedZones,
+                                                                             auditLog);
                 super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
                                                   serverName,
                                                   omrsTopicConnector,
@@ -96,14 +88,9 @@ public class DigitalArchitectureAdmin extends AccessServiceAdmin
                                                   auditLog);
             }
 
-            auditCode = DigitalArchitectureAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(serverName),
-                               accessServiceConfig.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                DigitalArchitectureAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                accessServiceConfig.toString());
         }
         catch (OMAGConfigurationErrorException error)
         {
@@ -111,14 +98,9 @@ public class DigitalArchitectureAdmin extends AccessServiceAdmin
         }
         catch (Throwable error)
         {
-            auditCode = DigitalArchitectureAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  DigitalArchitectureAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
                                   accessServiceConfig.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
                                   error);
 
             super.throwUnexpectedInitializationException(actionDescription,
@@ -134,20 +116,12 @@ public class DigitalArchitectureAdmin extends AccessServiceAdmin
     public void shutdown()
     {
         final String                  actionDescription = "shutdown";
-        DigitalArchitectureAuditCode  auditCode;
 
         if (instance != null)
         {
             this.instance.shutdown();
         }
 
-        auditCode = DigitalArchitectureAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(serverName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DigitalArchitectureAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
     }
 }

@@ -20,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.RelationshipDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -29,6 +30,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -50,6 +53,7 @@ class DataEngineCommonHandlerTest {
     private static final String SECOND_GUID = "secondGUID";
     private static final String RELATIONSHIP_TYPE_NAME = "relationshipTypeName";
     private static final String RELATIONSHIP_TYPE_GUID = "relationshipTypeGUID";
+    private static final String RELATIONSHIP_GUID = "relationshipGUID";
 
     @Mock
     private RepositoryHandler repositoryHandler;
@@ -163,13 +167,13 @@ class DataEngineCommonHandlerTest {
     }
 
     @Test
-    void addExternalRelationshipRelationship() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        final String methodName = "addExternalRelationshipRelationship";
+    void createOrUpdateExternalRelationship() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        final String methodName = "createOrUpdateExternalRelationship";
 
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
 
-        dataEngineCommonHandler.addExternalRelationshipRelationship(USER, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataEngineCommonHandler.createOrUpdateExternalRelationship(USER, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(repositoryHandler, times(1)).createExternalRelationship(USER, RELATIONSHIP_TYPE_GUID,
@@ -177,22 +181,29 @@ class DataEngineCommonHandlerTest {
     }
 
     @Test
-    void addExternalRelationshipRelationship_existingRelationship() throws InvalidParameterException, PropertyServerException,
-                                                                           UserNotAuthorizedException {
-        final String methodName = "addExternalRelationshipRelationship";
+    void createOrUpdateExternalRelationship_existingRelationship() throws InvalidParameterException, PropertyServerException,
+                                                                          UserNotAuthorizedException {
+        final String methodName = "createOrUpdateExternalRelationship";
 
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
 
-        dataEngineCommonHandler.addExternalRelationshipRelationship(USER, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-
         Relationship mockedRelationship = mock(Relationship.class);
-        when(repositoryHandler.getRelationshipBetweenEntities(USER, GUID, ENTITY_TYPE_NAME, FIRST_GUID,
-                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, methodName)).thenReturn(mockedRelationship);
+        when(mockedRelationship.getGUID()).thenReturn(RELATIONSHIP_GUID);
+        when(repositoryHandler.getRelationshipBetweenEntities(USER, FIRST_GUID, ENTITY_TYPE_NAME, SECOND_GUID, RELATIONSHIP_TYPE_GUID,
+                RELATIONSHIP_TYPE_NAME, methodName)).thenReturn(mockedRelationship);
+
+        RelationshipDifferences mockedDifferences = mock(RelationshipDifferences.class);
+        when(mockedDifferences.hasInstancePropertiesDifferences()).thenReturn(true);
+
+        when(repositoryHelper.getRelationshipDifferences(any(), any(), anyBoolean())).thenReturn(mockedDifferences);
+
+        dataEngineCommonHandler.createOrUpdateExternalRelationship(USER, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(repositoryHandler, times(1)).createExternalRelationship(USER, RELATIONSHIP_TYPE_GUID,
+        verify(repositoryHandler, times(0)).createExternalRelationship(USER, RELATIONSHIP_TYPE_GUID,
                 EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, FIRST_GUID, SECOND_GUID, null, methodName);
+        verify(repositoryHandler, times(1)).updateRelationshipProperties(USER, RELATIONSHIP_GUID, null, methodName);
     }
 
     @Test

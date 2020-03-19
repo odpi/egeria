@@ -3,11 +3,9 @@
 package org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 
 /**
@@ -29,27 +27,20 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a user should correct the error</li>
  * </ul>
  */
-public enum DocStoreErrorCode
+public enum DocStoreErrorCode implements ExceptionMessageSet
 {
     INIT_ERROR(400, "ENCRYPTED-DOC-STORE-400-001 ",
             "Unable to initialize encryption library configuration.; exception was {0} with message {1}",
             "The system is unable to create the requested configuration document store because the encryption libraries are not available.",
             "Ensure the libraries are on the class path. Then retry the request.");
 
-    private int    httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(DocStoreErrorCode.class);
-
+    private ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for DocStoreErrorCode expects to be passed one of the enumeration rows defined in
      * DocStoreErrorCode above.   For example:
      *
-     *     DocStoreErrorCode   errorCode = DocStoreErrorCode.UNKNOWN_ENDPOINT;
+     *     DocStoreErrorCode   errorCode = DocStoreErrorCode.SERVER_NOT_AVAILABLE;
      *
      * This will expand out to the 5 parameters shown below.
      *
@@ -61,67 +52,48 @@ public enum DocStoreErrorCode
      */
     DocStoreErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.httpErrorCode = httpErrorCode;
-        this.errorMessageId = errorMessageId;
-        this.errorMessage = errorMessage;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
-    }
-
-
-    public int getHTTPErrorCode()
-    {
-        return httpErrorCode;
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                errorMessageId,
+                                                                errorMessage,
+                                                                systemAction,
+                                                                userAction);
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
      *
-     * @return errorMessageId
+     * @return message definition object.
      */
-    public String getErrorMessageId()
+    public ExceptionMessageDefinition getMessageDefinition()
     {
-        return errorMessageId;
+        return messageDefinition;
     }
 
 
     /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
-     * @param params   strings that plug into the placeholders in the errorMessage
-     * @return errorMessage (formatted with supplied parameters)
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public String getFormattedErrorMessage(String... params)
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
-        MessageFormat mf = new MessageFormat(errorMessage);
-        String result = mf.format(params);
+        messageDefinition.setMessageParameters(params);
 
-        log.debug(String.format("DocStoreErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-
-        return result;
+        return messageDefinition;
     }
 
-
     /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
+     * toString() JSON-style
      *
-     * @return systemAction
+     * @return string description
      */
-    public String getSystemAction()
+    @Override
+    public String toString()
     {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        return "DocStoreErrorCode{" +
+                "messageDefinition=" + messageDefinition +
+                '}';
     }
 }

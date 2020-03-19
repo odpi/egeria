@@ -149,21 +149,30 @@
       Content-Type: "application/json"
   changed_when: False
   register: __minimal_lineage
+  when: ('ibm_information_server_domain' in group_names)
 
 - name: enable lineage on minimal
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}\
             /ibm/iis/igc-rest/v1/assets/{{ __minimal_lineage.json['items'][0]._id }}/include_for_lineage"
     method: PUT
-    user: "{{ ibm_infosvr_users.isadmin }}"
-    password: "{{ ibm_infosvr_upwds.isadmin }}"
     body: '"setToTrue"'
     body_format: json
     validate_certs: no
     status_code: 200
     headers:
       Content-Type: "application/json"
-  when: __minimal_lineage.json['items'][0].include_for_lineage == "setToFalse"
+      Cookie: "{{ __minimal_lineage.set_cookie }}"
+  when: ('ibm_information_server_domain' in group_names) and __minimal_lineage.json['items'][0].include_for_lineage == "setToFalse"
+
+- name: close session
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/logout/"
+    method: GET
+    validate_certs: no
+    headers:
+      Cookie: "{{ __minimal_lineage.set_cookie }}"
+  when: ('ibm_information_server_domain' in group_names)
 
 - import_role: name=IBM.infosvr-import-export
   vars:

@@ -25,8 +25,8 @@ public class OMRSMetadataHighwayRESTServices
 {
     private static final String  serviceName  = CommonServicesDescription.REPOSITORY_SERVICES.getServiceName();
 
-    private static final OMRSRESTExceptionHandler exceptionHandler = new OMRSRESTExceptionHandler();
     private static final OMRSRepositoryServicesInstanceHandler instanceHandler = new OMRSRepositoryServicesInstanceHandler(serviceName);
+    private static final OMRSRESTExceptionHandler exceptionHandler = new OMRSRESTExceptionHandler(instanceHandler);
 
     private static final Logger log = LoggerFactory.getLogger(OMRSMetadataHighwayRESTServices.class);
 
@@ -74,7 +74,7 @@ public class OMRSMetadataHighwayRESTServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            exceptionHandler.captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -120,7 +120,7 @@ public class OMRSMetadataHighwayRESTServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            exceptionHandler.captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -168,7 +168,7 @@ public class OMRSMetadataHighwayRESTServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            exceptionHandler.captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -215,7 +215,7 @@ public class OMRSMetadataHighwayRESTServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            exceptionHandler.captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -230,10 +230,10 @@ public class OMRSMetadataHighwayRESTServices
      * @param userId name of the calling user.
      * @param serverName name of the server associated with the request.
      * @param methodName method being called
+     * @return OMRSMetadataCollection object for the local repository
      * @throws InvalidParameterException unknown servername
      * @throws UserNotAuthorizedException unsupported userId
      * @throws RepositoryErrorException null local repository
-     * @return OMRSMetadataCollection object for the local repository
      */
     private OMRSMetadataHighwayManager getMetadataHighway(String userId,
                                                           String serverName,
@@ -258,17 +258,9 @@ public class OMRSMetadataHighwayRESTServices
          */
         if (metadataHighwayManager == null)
         {
-                OMRSErrorCode errorCode = OMRSErrorCode.NO_METADATA_HIGHWAY;
-                String errorMessage = errorCode.getErrorMessageId()
-                                              + errorCode.getFormattedErrorMessage(methodName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                                   this.getClass().getName(),
-                                                   methodName,
-                                                   errorMessage,
-                                                   errorCode.getSystemAction(),
-                                                   errorCode.getUserAction());
-
+            throw new RepositoryErrorException(OMRSErrorCode.NO_METADATA_HIGHWAY.getMessageDefinition(methodName),
+                                               this.getClass().getName(),
+                                               methodName);
         }
 
         return metadataHighwayManager;

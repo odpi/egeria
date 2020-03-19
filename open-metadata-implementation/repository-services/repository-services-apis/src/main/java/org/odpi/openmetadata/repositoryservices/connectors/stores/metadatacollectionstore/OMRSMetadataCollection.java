@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSEventProcessingContext;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -50,6 +53,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownEx
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -104,7 +109,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
  * @see OMRSEventProcessingContext for more details.
  * 
  */
-public abstract class OMRSMetadataCollection
+public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 {
     static final private String       defaultRepositoryName = "Open Metadata Repository";
 
@@ -114,6 +119,9 @@ public abstract class OMRSMetadataCollection
     protected OMRSRepositoryValidator repositoryValidator    = null;                   /* Initialized in constructor */
     protected OMRSRepositoryConnector parentConnector        = null;                   /* Initialized in constructor */
     protected String                  repositoryName         = defaultRepositoryName;  /* Initialized in constructor */
+    protected AuditLog                auditLog               = null;
+
+    private static final Logger log = LoggerFactory.getLogger(OMRSMetadataCollection.class);
 
     /**
      * Constructor to save the metadata collection id.
@@ -129,16 +137,9 @@ public abstract class OMRSMetadataCollection
         {
             String            actionDescription = "OMRS Metadata Collection Constructor";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION_ID;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(defaultRepositoryName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION_ID.getMessageDefinition(defaultRepositoryName),
                                               this.getClass().getName(),
-                                              actionDescription,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              actionDescription);
 
         }
     }
@@ -166,16 +167,9 @@ public abstract class OMRSMetadataCollection
         {
             String            actionDescription = "OMRS Metadata Collection Constructor";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION_ID;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(repositoryName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION_ID.getMessageDefinition(repositoryName),
                                               this.getClass().getName(),
-                                              actionDescription,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              actionDescription);
 
         }
 
@@ -193,6 +187,18 @@ public abstract class OMRSMetadataCollection
 
 
     /**
+     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
+     * with the correct component description and log destinations.
+     *
+     * @param auditLog audit log object
+     */
+    public void setAuditLog(AuditLog auditLog)
+    {
+        this.auditLog = auditLog;
+    }
+
+
+    /**
      * Verify that a metadata collection is operating with a parent connector.  This should always be the case but
      * if the metadata collection is being consumed in an unorthodox manner then this exception will catch it.
      *
@@ -203,44 +209,23 @@ public abstract class OMRSMetadataCollection
     {
         if (parentConnector == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_REPOSITORY_CONNECTOR_FOR_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(methodName, repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NO_REPOSITORY_CONNECTOR_FOR_COLLECTION.getMessageDefinition(methodName, repositoryName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
 
         if (repositoryValidator == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_REPOSITORY_VALIDATOR_FOR_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(methodName, repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NO_REPOSITORY_VALIDATOR_FOR_COLLECTION.getMessageDefinition(methodName, repositoryName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
 
         if (repositoryHelper == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_REPOSITORY_HELPER_FOR_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(methodName, repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NO_REPOSITORY_HELPER_FOR_COLLECTION.getMessageDefinition(methodName, repositoryName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
     }
 
@@ -1458,18 +1443,11 @@ public abstract class OMRSMetadataCollection
     {
         final String  methodName = "addExternalEntity";
 
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 this.getClass().getName(),
-                                                                                                 repositoryName);
-
-        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+       throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                         this.getClass().getName(),
+                                                                                                         repositoryName),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
     }
 
 
@@ -1815,18 +1793,11 @@ public abstract class OMRSMetadataCollection
     {
         final String  methodName = "addExternalRelationship";
 
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 this.getClass().getName(),
-                                                                                                 repositoryName);
-
-        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+        throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                          this.getClass().getName(),
+                                                                                                          repositoryName),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
     }
 
 
@@ -2129,18 +2100,11 @@ public abstract class OMRSMetadataCollection
     {
         final String  methodName = "reHomeEntity";
 
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 this.getClass().getName(),
-                                                                                                 repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+        throw new RepositoryErrorException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                     this.getClass().getName(),
+                                                                                                     repositoryName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
     }
 
 
@@ -2290,18 +2254,11 @@ public abstract class OMRSMetadataCollection
     {
         final String  methodName = "reHomeRelationship";
 
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 this.getClass().getName(),
-                                                                                                 repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+        throw new RepositoryErrorException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                     this.getClass().getName(),
+                                                                                                     repositoryName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
     }
 
 
@@ -2764,6 +2721,8 @@ public abstract class OMRSMetadataCollection
                                                                               FunctionNotSupportedException,
                                                                               UserNotAuthorizedException
     {
+        final String methodName = "saveInstanceReferenceCopies";
+
         /*
          * Work through the entities and then the relationships, skipping any instance that has the
          * local home metadata collection id.
@@ -2794,13 +2753,37 @@ public abstract class OMRSMetadataCollection
                     }
                 }
             }
-            catch (HomeEntityException  exception)
+            catch (HomeEntityException exception)
             {
+                log.error("Default saveInstanceReferenceCopies received invalid entity", exception);
 
+                if (auditLog != null)
+                {
+                    auditLog.logException(methodName, OMRSAuditCode.INVALID_INSTANCES.getMessageDefinition(exception.getClass().getName(),
+                                                                                                           exception.getReportedErrorMessage()),
+                                          exception);
+                }
+
+                throw new InvalidEntityException(OMRSErrorCode.INVALID_INSTANCES.getMessageDefinition(exception.getClass().getName(),
+                                                                                                      exception.getReportedErrorMessage()),
+                                              this.getClass().getName(),
+                                              methodName);
             }
             catch (HomeRelationshipException exception)
             {
+                log.error("Default saveInstanceReferenceCopies received invalid relationship", exception);
 
+                if (auditLog != null)
+                {
+                    auditLog.logException(methodName, OMRSAuditCode.INVALID_INSTANCES.getMessageDefinition(exception.getClass().getName(),
+                                                                                                           exception.getReportedErrorMessage()),
+                                          exception);
+                }
+
+                throw new InvalidRelationshipException(OMRSErrorCode.INVALID_INSTANCES.getMessageDefinition(exception.getClass().getName(),
+                                                                                                            exception.getReportedErrorMessage()),
+                                                       this.getClass().getName(),
+                                                       methodName);
             }
         }
     }

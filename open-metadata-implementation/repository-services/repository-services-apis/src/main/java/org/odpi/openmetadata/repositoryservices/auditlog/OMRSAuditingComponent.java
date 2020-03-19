@@ -144,9 +144,33 @@ public enum OMRSAuditingComponent implements ComponentDescription
              "https://egeria.odpi.org/open-metadata-implementation/access-services/docs/concepts/client-server/in-topic.html"),
 
     ENTERPRISE_TOPIC_LISTENER(26,
-             "Open Metadata Access Service (OMAS) In Topic",
-             "Receives events from the open metadata repository cohorts that this server is registered with.",
-             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/omrs-event-topic.html")
+             "Enterprise Topic Listener",
+             "Receives events from the open metadata repository cohorts that this server is registered with and distributes " +
+                                      "them to the Open Metadata Access Services (OMASs).",
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/omrs-event-topic.html"),
+
+    REPOSITORY_CONNECTOR(27,
+             "OMRS Repository Connector",
+             "Maps open metadata calls to a metadata repository.",
+             "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/repository-connector.html"),
+
+    GRAPH_REPOSITORY_CONNECTOR(28,
+             "Local Graph OMRS Repository Connector",
+             "Native open metadata connector that maps open metadata calls to a JanusGraph based metadata repository.",
+             "https://egeria.odpi.org/open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection" +
+                                       "-store-connectors/graph-repository-connector/"),
+
+    INMEM_REPOSITORY_CONNECTOR(29,
+             "In Memory OMRS Repository Connector",
+             "Native open metadata connector that maps open metadata calls to a set of in memory hash maps - demo use only.",
+             "https://egeria.odpi.org/open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection" +
+                                       "-store-connectors/inmemory-repository-connector/"),
+
+    READ_ONLY_REPOSITORY_CONNECTOR(30,
+             "Read Only OMRS Repository Connector",
+             "Native open metadata connector that maps open metadata calls to an in memory cache.",
+             "https://egeria.odpi.org/open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection" +
+                                           "-store-connectors/readonly-repository-connector/"),
     ;
 
 

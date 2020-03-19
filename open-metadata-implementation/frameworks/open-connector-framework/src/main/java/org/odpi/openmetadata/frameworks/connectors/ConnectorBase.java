@@ -6,13 +6,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -249,9 +247,9 @@ public abstract class ConnectorBase extends Connector
      * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
      * connection in order to supply them to the Connector implementation.
      */
-    protected class ProtectedConnection extends ConnectionProperties
+    protected static class ProtectedConnection extends ConnectionProperties
     {
-        protected ProtectedConnection(ConnectionProperties templateConnection)
+        ProtectedConnection(ConnectionProperties templateConnection)
         {
             super(templateConnection);
         }

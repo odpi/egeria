@@ -95,7 +95,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         Map<String, Object>  requestBody = additionalProperties;
@@ -137,7 +137,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         StringResponse response = restClient.callStringGetRESTCall(methodName,
@@ -177,7 +177,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -219,7 +219,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -253,7 +253,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidDeleteRESTCall(methodName,
@@ -292,7 +292,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -325,7 +325,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -385,7 +385,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,

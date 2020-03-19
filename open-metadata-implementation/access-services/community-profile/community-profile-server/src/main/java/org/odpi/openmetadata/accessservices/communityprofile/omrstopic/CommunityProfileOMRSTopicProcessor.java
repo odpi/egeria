@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.omrstopic;
 
-import org.odpi.openmetadata.accessservices.communityprofile.auditlog.CommunityProfileAuditCode;
+import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.handlers.ContributionRecordHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.handlers.PersonalProfileHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.handlers.UserIdentityHandler;
@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityP
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -65,7 +65,7 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                               int                               karmaPointIncrement,
                                               String                            serviceName,
                                               String                            serverUserId,
-                                              OMRSAuditLog                      auditLog,
+                                              AuditLog                          auditLog,
                                               OMRSRepositoryHelper              repositoryHelper,
                                               CommunityProfileServicesInstance  instance)
     {
@@ -75,7 +75,7 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
 
         publisher = new CommunityProfileOutTopicProcessor(communityProfileOutTopic,
                                                           instance.getInvalidParameterHandler(),
-                                                          auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_TOPIC_LISTENER));
+                                                          auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC));
 
         this.karmaPointIncrement        = karmaPointIncrement;
 
@@ -132,17 +132,10 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
 
                         if (contributionRecord.getKarmaPointPlateau() > currentPlateau)
                         {
-                            CommunityProfileAuditCode auditCode = CommunityProfileAuditCode.KARMA_PLATEAU_AWARD;
-
-                            auditLog.logRecord(methodName,
-                                               auditCode.getLogMessageId(),
-                                               auditCode.getSeverity(),
-                                               auditCode.getFormattedLogMessage(contributingUserId,
-                                                                                Integer.toString(contributionRecord.getKarmaPointPlateau()),
-                                                                                Integer.toString(contributionRecord.getKarmaPoints())),
-                                               null,
-                                               auditCode.getSystemAction(),
-                                               auditCode.getUserAction());
+                            auditLog.logMessage(methodName,
+                                                CommunityProfileAuditCode.KARMA_PLATEAU_AWARD.getMessageDefinition(contributingUserId,
+                                                                                                                   Integer.toString(contributionRecord.getKarmaPointPlateau()),
+                                                                                                                   Integer.toString(contributionRecord.getKarmaPoints())));
 
                             publisher.sendKarmaPointPlateauEvent(personalProfile,
                                                                  contributingUserId,
@@ -153,15 +146,10 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                 }
                 catch (Throwable  error)
                 {
-                    CommunityProfileAuditCode auditCode = CommunityProfileAuditCode.KARMA_POINT_EXCEPTION;
-
                     auditLog.logException(methodName,
-                                          auditCode.getLogMessageId(),
-                                          auditCode.getSeverity(),
-                                          auditCode.getFormattedLogMessage(contributingUserId, error.getClass().getName(), error.getMessage()),
-                                          null,
-                                          auditCode.getSystemAction(),
-                                          auditCode.getUserAction(),
+                                          CommunityProfileAuditCode.KARMA_POINT_EXCEPTION.getMessageDefinition(contributingUserId,
+                                                                                                               error.getClass().getName(),
+                                                                                                               error.getMessage()),
                                           error);
                 }
             }
@@ -225,15 +213,11 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
             }
             catch (Throwable error)
             {
-                CommunityProfileAuditCode auditCode = CommunityProfileAuditCode.OUTBOUND_EVENT_EXCEPTION;
-
                 auditLog.logException(methodName,
-                                      auditCode.getLogMessageId(),
-                                      auditCode.getSeverity(),
-                                      auditCode.getFormattedLogMessage(entity.getGUID(), instanceTypeName, error.getClass().getName(), error.getMessage()),
-                                      null,
-                                      auditCode.getSystemAction(),
-                                      auditCode.getUserAction(),
+                                      CommunityProfileAuditCode.OUTBOUND_EVENT_EXCEPTION.getMessageDefinition(entity.getGUID(),
+                                                                                                              instanceTypeName,
+                                                                                                              error.getClass().getName(),
+                                                                                                              error.getMessage()),
                                       error);
             }
         }

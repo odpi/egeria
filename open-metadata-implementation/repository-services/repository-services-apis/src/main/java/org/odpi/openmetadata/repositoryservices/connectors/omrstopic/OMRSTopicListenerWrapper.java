@@ -3,14 +3,12 @@
 
 package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 /**
  * OMRSTopicListenerWrapper is a class that wraps a real OMRSTopicListener when it registers with the
@@ -24,7 +22,7 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
     private final String THREAD_NAME_DESCRIPTION = " OMRSTopicListener";
 
     private OMRSTopicListener  realListener;
-    private OMRSAuditLog       auditLog;
+    private AuditLog           auditLog;
     private String             serviceName = "<Unknown Service>";
 
 
@@ -37,7 +35,7 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
      */
     OMRSTopicListenerWrapper(OMRSTopicListener  realListener,
                              String             serviceName,
-                             OMRSAuditLog       auditLog)
+                             AuditLog           auditLog)
     {
         this.realListener = realListener;
         this.serviceName = serviceName;
@@ -53,7 +51,7 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
      */
     @Deprecated
     OMRSTopicListenerWrapper(OMRSTopicListener  realListener,
-                             OMRSAuditLog       auditLog)
+                             AuditLog           auditLog)
     {
         this.realListener = realListener;
         this.auditLog = auditLog;
@@ -64,29 +62,16 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
      * Log an audit log message to record an unexpected exception.  We should never see this message.
      * It indicates a logic error in the service that threw the exception.
      *
-     * @param event string version of the event
      * @param error exception
      * @param methodName calling activity
      */
-    private void logUnhandledException(String     event,
-                                       Throwable  error,
+    private void logUnhandledException(Throwable  error,
                                        String     methodName)
     {
-        StringWriter stackTrace = new StringWriter();
-        error.printStackTrace(new PrintWriter(stackTrace));
-
-        OMRSAuditCode auditCode = OMRSAuditCode.UNHANDLED_EXCEPTION_FROM_SERVICE_LISTENER;
-
         auditLog.logException(methodName,
-                              auditCode.getLogMessageId(),
-                              auditCode.getSeverity(),
-                              auditCode.getFormattedLogMessage(serviceName,
-                                                               error.getClass().getName(),
-                                                               error.getMessage(),
-                                                               stackTrace.toString()),
-                              event,
-                              auditCode.getSystemAction(),
-                              auditCode.getUserAction(),
+                              OMRSAuditCode.UNHANDLED_EXCEPTION_FROM_SERVICE_LISTENER.getMessageDefinition(serviceName,
+                                                                                                           error.getClass().getName(),
+                                                                                                           error.getMessage()),
                               error);
     }
 
@@ -110,7 +95,7 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
         }
         catch (Throwable  error)
         {
-            logUnhandledException(event.toString(), error, methodName);
+            logUnhandledException(error, methodName);
         }
 
         Thread.currentThread().setName(currentThreadName);
@@ -136,7 +121,7 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
         }
         catch (Throwable  error)
         {
-            logUnhandledException(event.toString(), error, methodName);
+            logUnhandledException(error, methodName);
         }
 
         Thread.currentThread().setName(currentThreadName);
@@ -162,7 +147,7 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
         }
         catch (Throwable  error)
         {
-            logUnhandledException(event.toString(), error, methodName);
+            logUnhandledException(error, methodName);
         }
 
         Thread.currentThread().setName(currentThreadName);

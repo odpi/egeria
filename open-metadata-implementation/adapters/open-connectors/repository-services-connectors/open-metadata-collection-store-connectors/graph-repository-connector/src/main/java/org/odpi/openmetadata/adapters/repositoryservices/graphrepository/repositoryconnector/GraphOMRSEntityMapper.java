@@ -22,8 +22,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -50,9 +48,9 @@ public class GraphOMRSEntityMapper {
     private OMRSRepositoryHelper            repositoryHelper;
     private GraphOMRSClassificationMapper   classificationMapper;
 
-    public GraphOMRSEntityMapper(String               metadataCollectionId,
-                                 String               repositoryName,
-                                 OMRSRepositoryHelper repositoryHelper) {
+    GraphOMRSEntityMapper(String               metadataCollectionId,
+                          String               repositoryName,
+                          OMRSRepositoryHelper repositoryHelper) {
 
         this.metadataCollectionId   = metadataCollectionId;
         this.repositoryName         = repositoryName;
@@ -74,7 +72,7 @@ public class GraphOMRSEntityMapper {
 
     /*
      * method to add/set property on vertex.
-     * qualfiiedPropName is the non-prefixed name - qualified by typename if a TDA; or simple core property name
+     * qualifiedPropName is the non-prefixed name - qualified by typename if a TDA; or simple core property name
      */
     private void addProperty(Vertex vertex, String propertyName, String qualifiedPropName, InstancePropertyValue ipv) {
         InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
@@ -88,7 +86,7 @@ public class GraphOMRSEntityMapper {
                 removeProperty(vertex, qualifiedPropName);
             }
         } else {
-            log.debug("{} non-primitive instance property {}", propertyName);
+            log.debug("non-primitive instance property {}", propertyName);
         }
     }
 
@@ -119,7 +117,7 @@ public class GraphOMRSEntityMapper {
 
     // Inbound methods - i.e. writing to store
 
-    public void mapEntityDetailToVertex(EntityDetail entity, Vertex vertex)
+    void mapEntityDetailToVertex(EntityDetail entity, Vertex vertex)
             throws RepositoryErrorException
     {
         final String methodName = "mapEntityDetailToVertex";
@@ -140,16 +138,11 @@ public class GraphOMRSEntityMapper {
                 vertex.property("instanceProperties", jsonString);
             } catch (Throwable exc) {
                 log.error("{} Caught exception from entity mapper", methodName);
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                                   this.getClass().getName(),
+                                                                                                                   repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, exc);
             }
 
             // Secondly add primitive properties to support searches
@@ -186,7 +179,7 @@ public class GraphOMRSEntityMapper {
 
 
 
-    public void mapEntityProxyToVertex(EntityProxy entity, Vertex vertex)
+    void mapEntityProxyToVertex(EntityProxy entity, Vertex vertex)
             throws RepositoryErrorException
     {
         final String methodName = "mapEntityProxyToVertex";
@@ -206,16 +199,11 @@ public class GraphOMRSEntityMapper {
                 vertex.property("instanceProperties", jsonString);
             } catch (Throwable exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                                   this.getClass().getName(),
+                                                                                                                   repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, exc);
             }
 
             // Secondly write all primitive properties as-is to support searches
@@ -255,7 +243,7 @@ public class GraphOMRSEntityMapper {
     // Classifications are saved in the graph as separate vertices that are linked to the entity using Classifier edges.
     // There are no classification details stored in the EntitySummary (or its corresponding vertex).
 
-    public void mapEntitySummaryToVertex(EntitySummary entity, Vertex vertex)
+    private void mapEntitySummaryToVertex(EntitySummary entity, Vertex vertex)
             throws RepositoryErrorException
     {
         String methodName = "mapEntitySummaryToVertex";
@@ -293,16 +281,11 @@ public class GraphOMRSEntityMapper {
 
         if (missingAttribute) {
             log.error("{} entity is missing core attribute {}", methodName, missingAttributeName);
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+            throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                               this.getClass().getName(),
+                                                                                                               repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName);
         }
 
         // Version always accepted as-is
@@ -396,16 +379,12 @@ public class GraphOMRSEntityMapper {
             }
             catch (Throwable exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
-                        this.getClass().getName(),
-                        repositoryName);
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                                   this.getClass().getName(),
+                                                                                                                   repositoryName),
                         this.getClass().getName(),
                         methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        exc);
             }
         }
         else {
@@ -434,16 +413,11 @@ public class GraphOMRSEntityMapper {
             }
             catch (Throwable exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                                   this.getClass().getName(),
+                                                                                                                   repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, exc);
             }
         }
         else {
@@ -459,7 +433,7 @@ public class GraphOMRSEntityMapper {
 
 
 
-    public void mapVertexToEntityDetail(Vertex vertex, EntityDetail entity)
+    void mapVertexToEntityDetail(Vertex vertex, EntityDetail entity)
             throws
             RepositoryErrorException,
             EntityProxyOnlyException
@@ -470,20 +444,13 @@ public class GraphOMRSEntityMapper {
         Boolean isProxy = ((Boolean) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_IS_PROXY));
         if (isProxy) {
 
-            log.error("{} an EntityProxy cannot be retrieved as an EntityDetail {}", methodName);
+            log.error("{} an EntityProxy cannot be retrieved as an EntityDetail {}", methodName, entity.getGUID());
 
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROXY_ONLY;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+            throw new EntityProxyOnlyException(GraphOMRSErrorCode.ENTITY_PROXY_ONLY.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                         this.getClass().getName(),
+                                                                                                         repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-
-            throw new EntityProxyOnlyException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName);
         }
 
 
@@ -500,16 +467,11 @@ public class GraphOMRSEntityMapper {
                 entity.setProperties(instanceProperties);
             } catch (Throwable exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                                   this.getClass().getName(),
+                                                                                                                   repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, exc);
             }
         }
 
@@ -517,7 +479,7 @@ public class GraphOMRSEntityMapper {
 
 
     // This method is not concerned with how the proxy flag is set - it will render the vertex as a proxy whether it was created as such or as an EntityDetail
-    public void mapVertexToEntityProxy(Vertex vertex, EntityProxy entity)
+    void mapVertexToEntityProxy(Vertex vertex, EntityProxy entity)
             throws RepositoryErrorException
     {
         String methodName = "mapVertexToEntityProxy";
@@ -537,17 +499,12 @@ public class GraphOMRSEntityMapper {
         }
         catch (Exception e) {
             log.error("{} caught exception {}", methodName, e.getMessage());
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_TYPE_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(type.getTypeDefName(), methodName,
-                    this.getClass().getName(),
-                    repositoryName);
 
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_TYPE_ERROR.getMessageDefinition(type.getTypeDefName(), methodName,
+                                                                                                         this.getClass().getName(),
+                                                                                                         repositoryName),
                     this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName, e);
         }
 
         // properties
@@ -590,26 +547,21 @@ public class GraphOMRSEntityMapper {
 
             } catch (Throwable exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                                   this.getClass().getName(),
+                                                                                                                   repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, exc);
             }
         }
         else {
-            log.debug("{} vertex has no instance properties {}", methodName);
+            log.debug("{} vertex has no instance properties", methodName);
         }
 
     }
 
 
-    public void mapVertexToEntitySummary(Vertex vertex, EntitySummary entity)
+    void mapVertexToEntitySummary(Vertex vertex, EntitySummary entity)
             throws RepositoryErrorException
     {
         String methodName = "mapVertexToEntitySummary";
@@ -637,18 +589,12 @@ public class GraphOMRSEntityMapper {
 
         } catch (TypeErrorException e) {
             log.error("{} caught exception {}", methodName, e.getMessage());
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+            throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                               this.getClass().getName(),
+                                                                                                               repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName, e);
         }
 
         Integer provenanceOrdinal = (Integer) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_PROVENANCE_TYPE);
@@ -673,16 +619,11 @@ public class GraphOMRSEntityMapper {
                 entity.setMaintainedBy(maintainedByList);
             } catch (Throwable exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                                   this.getClass().getName(),
+                                                                                                                   repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, exc);
             }
         }
 
@@ -699,16 +640,11 @@ public class GraphOMRSEntityMapper {
                 entity.setMappingProperties(mappingPropertiesMap);
             } catch (Throwable exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                                   this.getClass().getName(),
+                                                                                                                   repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, exc);
             }
         }
 
@@ -734,7 +670,7 @@ public class GraphOMRSEntityMapper {
 
 
 
-    public Boolean isProxy(Vertex vertex) {
+    Boolean isProxy(Vertex vertex) {
         Boolean isProxy;
         isProxy = (Boolean) getVertexProperty(vertex, PROPERTY_KEY_ENTITY_IS_PROXY);
         return isProxy;
@@ -744,21 +680,17 @@ public class GraphOMRSEntityMapper {
         vertex.property(PROPERTY_KEY_ENTITY_IS_PROXY, true);
     }
 
-    public void clearProxy(Vertex vertex) {
+    void clearProxy(Vertex vertex) {
         vertex.property(PROPERTY_KEY_ENTITY_IS_PROXY, false);
     }
 
 
-    public String getEntityGUID(Vertex vertex) {
-        String guid = null;
-        guid = (String) getVertexProperty(vertex, PROPERTY_KEY_ENTITY_GUID);
-        return guid;
+    String getEntityGUID(Vertex vertex) {
+        return  (String) getVertexProperty(vertex, PROPERTY_KEY_ENTITY_GUID);
     }
 
-    public String getEntityMetadataCollectionId(Vertex vertex) {
-        String metadataCollectionId = null;
-        metadataCollectionId = (String) getVertexProperty(vertex, PROPERTY_KEY_ENTITY_METADATACOLLECTION_ID);
-        return metadataCollectionId;
+    String getEntityMetadataCollectionId(Vertex vertex) {
+        return (String) getVertexProperty(vertex, PROPERTY_KEY_ENTITY_METADATACOLLECTION_ID);
     }
 
 

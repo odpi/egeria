@@ -59,6 +59,13 @@ public enum GovernanceEngineErrorCode {
             "The text field value passed on the {0} parameter of the {1} operation is null",
             "The system is unable to process the request without this text field value.",
             "Correct the code in the caller to provide the name."),
+    NULL_TOPIC_CONNECTOR(400, "OMAS-GOVERNANCEENGINE-400-012",
+                         "Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize",
+                         "The local server will not connect to the cohort.",
+                         "The connection to the connector is configured in the server configuration.  " +
+                                 "Review previous error messages to determine the precise error in the " +
+                                 "start up configuration. " +
+                                 "Correct the configuration and reconnect the server to the cohort. "),
     OMRS_NOT_INITIALIZED(404, "OMAS-GOVERNANCEENGINE-404-001 ",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to the open metadata property handlers.",

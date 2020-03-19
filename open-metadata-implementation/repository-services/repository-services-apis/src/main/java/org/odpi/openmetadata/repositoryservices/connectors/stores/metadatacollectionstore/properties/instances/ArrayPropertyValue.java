@@ -143,18 +143,11 @@ public class ArrayPropertyValue extends InstancePropertyValue
             /*
              * Throw runtime exception to show the caller they are not using the array correctly.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.ARRAY_OUT_OF_BOUNDS;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(this.getClass().getSimpleName(),
-                                                         Integer.toString(elementNumber),
-                                                         Integer.toString(arrayCount));
-
-            throw new OMRSRuntimeException(errorCode.getHTTPErrorCode(),
+            throw new OMRSRuntimeException(OMRSErrorCode.ARRAY_OUT_OF_BOUNDS.getMessageDefinition(this.getClass().getSimpleName(),
+                                                                                                  Integer.toString(elementNumber),
+                                                                                                  Integer.toString(arrayCount)),
                                            this.getClass().getName(),
-                                           "setArrayValue",
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           "setArrayValue");
         }
     }
 

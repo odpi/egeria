@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceZone;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -94,10 +95,14 @@ public class ZoneListResponse extends GAFOMASAPIResponse
     public String toString()
     {
         return "ZoneListResponse{" +
-                "governanceZones='" + getGovernanceZones() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
+                "governanceZones=" + governanceZones +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                ", actionDescription='" + getActionDescription() + '\'' +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
                 ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
                 ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
                 ", exceptionProperties=" + getExceptionProperties() +
