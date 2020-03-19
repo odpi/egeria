@@ -87,7 +87,7 @@ class TokenAjax extends PolymerElement {
 
     _go(){
         this.$.storage.reload();
-        console.debug('_go with token:'+this.token);
+        //console.debug('_go with token:'+this.token);
         if( typeof this.token !== 'undefined'){
             this.$.ajax.headers['content-type'] = 'application/json';
             this.$.ajax.headers['x-auth-token'] = this.token;
@@ -129,11 +129,11 @@ class TokenAjax extends PolymerElement {
     }
 
     _onLoadingChanged(){
-        console.debug('cn-loading changed... ' + this.loading);
+        //console.debug('cn-loading changed... ' + this.loading);
     }
 
     _loadingChanged(loading){
-        console.debug('loading changed... ' + this.loading);
+        //console.debug('loading changed... ' + this.loading);
         if(this.loading){
             this.$.backdrop.open();
         }else{
