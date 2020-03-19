@@ -22,7 +22,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
+
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
@@ -110,6 +110,7 @@ public class RepositoryExplorerController extends SecureController
             enterpriseOption = body.getEnterpriseOption();
         }
         catch (Exception e) {
+
             exceptionMessage = "The request body used in the request to /api/types/rexTypeExplorer contained an invalid parameter or was missing a parameter. Please check the client code.";
             // For any of the above exceptions, incorporate the exception message into a response object
             texResp = new TypeExplorerResponse(400, exceptionMessage, null);
@@ -366,31 +367,37 @@ public class RepositoryExplorerController extends SecureController
                 if (entities != null) {
                     for (EntityDetail ent : entities) {
                         // Process entity type information
-                        InstanceType instanceType = ent.getType();
-                        String typeGUID = instanceType.getTypeDefGUID();
-                        String typeName = instanceType.getTypeDefName();
-                        if (entityCountsByType.get(typeName) == null) {
-                            // First sight of an instance of this type
-                            RexTypeStats stats = new RexTypeStats(typeGUID, 1);
-                            entityCountsByType.put(typeName, stats);
-                        } else {
-                            // Add to the count of instances of this type
-                            Integer existingCount = entityCountsByType.get(typeName).getCount();
-                            entityCountsByType.get(typeName).setCount(existingCount + 1);
-                        }
-                        // Process entity classification information
-                        List<Classification> classifications = ent.getClassifications();
-                        if (classifications != null) {
-                            for (Classification classification : classifications) {
-                                String classificationName = classification.getName();
-                                if (classificationCountsByType.get(classificationName) == null) {
-                                    // First sight of an instance of this type
-                                    RexTypeStats stats = new RexTypeStats(null, 1);
-                                    classificationCountsByType.put(classificationName, stats);
-                                } else {
-                                    // Add to the count of instances of this type
-                                    Integer existingCount = classificationCountsByType.get(classificationName).getCount();
-                                    classificationCountsByType.get(classificationName).setCount(existingCount + 1);
+                        /* Skip the entity that the traversal started from.
+                         * Counting the starting entity will distort the counts
+                         */
+                        if (! ent.getGUID().equals(entityGUID)) {
+
+                            InstanceType instanceType = ent.getType();
+                            String typeGUID = instanceType.getTypeDefGUID();
+                            String typeName = instanceType.getTypeDefName();
+                            if (entityCountsByType.get(typeName) == null) {
+                                // First sight of an instance of this type
+                                RexTypeStats stats = new RexTypeStats(typeGUID, 1);
+                                entityCountsByType.put(typeName, stats);
+                            } else {
+                                // Add to the count of instances of this type
+                                Integer existingCount = entityCountsByType.get(typeName).getCount();
+                                entityCountsByType.get(typeName).setCount(existingCount + 1);
+                            }
+                            // Process entity classification information
+                            List<Classification> classifications = ent.getClassifications();
+                            if (classifications != null) {
+                                for (Classification classification : classifications) {
+                                    String classificationName = classification.getName();
+                                    if (classificationCountsByType.get(classificationName) == null) {
+                                        // First sight of an instance of this type
+                                        RexTypeStats stats = new RexTypeStats(null, 1);
+                                        classificationCountsByType.put(classificationName, stats);
+                                    } else {
+                                        // Add to the count of instances of this type
+                                        Integer existingCount = classificationCountsByType.get(classificationName).getCount();
+                                        classificationCountsByType.get(classificationName).setCount(existingCount + 1);
+                                    }
                                 }
                             }
                         }
@@ -957,22 +964,32 @@ public class RepositoryExplorerController extends SecureController
 
 
         // If no entityGUID is specified or depth is not positive, there is no point in continuing...
-        if (entityGUID == null || depth < 0 ) {
-            // We have a problem - the entityGUID has not been specified or the depth is negative.
+
+        if (entityGUID == null) {
+            // We have a problem - the entityGUID has not been specified.
+            // We cannot do a query...
+
+            final String parameterName = "entityGUID";
+
+            throw new InvalidParameterException(RexErrorCode.NO_GUID.getMessageDefinition(entityGUID, methodName, serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
+        }
+
+        if (depth < 0 ) {
+            // We have a problem - the depth is negative.
             // In either case we cannot do a query...
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_GUID;
+            final String parameterName = "depth";
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, serverName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            throw new InvalidParameterException(RexErrorCode.INVALID_VALUE.getMessageDefinition(depth.toString(), methodName, serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
 
         }
+
 
         try {
 
@@ -1037,16 +1054,13 @@ public class RepositoryExplorerController extends SecureController
                 else {
                     // Entity could not be found - should have already had an exception but just to be sure...
 
-                    OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                    final String parameterName = "entityGUID";
 
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, serverName);
+                    throw new InvalidParameterException(RexErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, serverName),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        parameterName);
 
-                    throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                            this.getClass().getName(),
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
                 }
             }
         }
@@ -1180,16 +1194,24 @@ public class RepositoryExplorerController extends SecureController
             // We have a problem - the entityGUID has not been specified .
             // In either case we cannot do a query...
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_GUID;
+            final String parameterName = "entityGUID";
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, serverName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(RexErrorCode.NO_GUID.getMessageDefinition(entityGUID, methodName, serverName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                parameterName);
+
+        }
+
+        if (entityGUID == "trouble-at-mill") {
+            // If a stupid entityGUID is specified, there is no point in continuing...
+
+            final String parameterName = "entityGUID";
+
+            throw new InvalidParameterException(RexErrorCode.TROUBLE_AT_MILL.getMessageDefinition(entityGUID, methodName, serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
 
         }
 
@@ -1219,16 +1241,13 @@ public class RepositoryExplorerController extends SecureController
 
                 // Entity could not be found - should have already had an exception but just to be sure...
 
-                OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                final String parameterName = "entityGUID";
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, serverName);
+                throw new InvalidParameterException(RexErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, serverName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
 
-                throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                                                  this.getClass().getName(),
-                                                  methodName,
-                                                  errorMessage,
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction());
             }
         }
         catch ( UserNotAuthorizedException |
@@ -1362,16 +1381,12 @@ public class RepositoryExplorerController extends SecureController
             // We have a problem - the relationshipGUID has not been specified .
             // In either case we cannot do a query...
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_GUID;
+            final String parameterName = "relationshipGUID";
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationshipGUID, methodName, serverName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(RexErrorCode.NO_GUID.getMessageDefinition(relationshipGUID, methodName, serverName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                parameterName);
 
         }
 
@@ -1399,18 +1414,14 @@ public class RepositoryExplorerController extends SecureController
 
             } else {
 
-                // Entity could not be found - should have already had an exception but just to be sure...
+                // Relationship could not be found - should have already had an exception but just to be sure...
 
-                OMRSErrorCode errorCode = OMRSErrorCode.RELATIONSHIP_NOT_KNOWN;
+                final String parameterName = "relationshipGUID";
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationshipGUID, methodName, serverName);
-
-                throw new RelationshipNotKnownException(errorCode.getHTTPErrorCode(),
-                                                  this.getClass().getName(),
-                                                  methodName,
-                                                  errorMessage,
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction());
+                throw new InvalidParameterException(RexErrorCode.RELATIONSHIP_NOT_KNOWN.getMessageDefinition(relationshipGUID, methodName, serverName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
             }
         }
         catch ( UserNotAuthorizedException |
@@ -1567,19 +1578,14 @@ public class RepositoryExplorerController extends SecureController
         if (searchText == null) {
             // If no searchText is specified, there is no point in continuing...
             // We have a problem - the searchText has not been specified.
-            // In either case we cannot do a query...
+            // We cannot do a query...
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_SEARCH_CRITERIA;
+            final String parameterName = "searchText";
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(searchText, methodName, serverName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(RexErrorCode.INVALID_VALUE.getMessageDefinition(searchText, methodName, serverName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
-
+                                                parameterName);
         }
 
         try {
@@ -1777,21 +1783,17 @@ public class RepositoryExplorerController extends SecureController
         String methodName = "findRelationships";
 
         if (searchText == null) {
+
             // If no searchText is specified, there is no point in continuing...
             // We have a problem - the searchText has not been specified.
-            // In either case we cannot do a query...
+            // We cannot do a query...
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_SEARCH_CRITERIA;
+            final String parameterName = "searchText";
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(searchText, methodName, serverName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(RexErrorCode.INVALID_VALUE.getMessageDefinition(searchText, methodName, serverName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
-
+                                                parameterName);
         }
 
         try {
