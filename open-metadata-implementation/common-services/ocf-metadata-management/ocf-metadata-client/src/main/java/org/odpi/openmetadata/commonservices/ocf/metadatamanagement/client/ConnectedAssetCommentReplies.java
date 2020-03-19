@@ -148,9 +148,9 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
                                                                              cacheStartPointer,
                                                                              maximumSize);
 
-            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(restResult);
 
             List<CommentResponse> Responses = restResult.getList();
             if ((Responses == null) || (Responses.isEmpty()))

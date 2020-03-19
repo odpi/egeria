@@ -1436,6 +1436,14 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-ut</artifactId>
+                <scope>test</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>platform-services-api</artifactId>

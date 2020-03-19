@@ -6,6 +6,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
@@ -28,21 +29,103 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
 
     private static final String  serviceURLName = "discovery-engine";
 
+
     /**
-     * Constructor sets up the key parameters for accessing the asset store.
+     * Create a client-side object for calling a discovery engine within a discovery server.
      *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
-     * @param restClient client for calling REST APIs
-     * @throws InvalidParameterException unable to initialize the client due to bad parameters
+     * @param serverPlatformRootURL the root url of the platform where the discovery engine is running.
+     * @param serverName the name of the discovery server where the discovery engine is running
+     * @param restClient pre-built client
+     * @param auditLog logging destination
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     public DiscoveryEngineClient(String        serverName,
                                  String        serverPlatformRootURL,
-                                 ODFRESTClient restClient) throws InvalidParameterException
+                                 ODFRESTClient restClient,
+                                 AuditLog      auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+
+        this.restClient = restClient;
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     *
+     * @throws InvalidParameterException null URL or server name
+     */
+    public DiscoveryEngineClient(String   serverName,
+                                 String   serverPlatformRootURL,
+                                 AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+
+        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL, auditLog);
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @throws InvalidParameterException null URL or server name
+     */
+    public DiscoveryEngineClient(String serverName,
+                                 String serverPlatformRootURL) throws InvalidParameterException
     {
         super(serverName, serverPlatformRootURL);
 
-        this.restClient = restClient;
+        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param auditLog logging destination
+     * @throws InvalidParameterException null URL or server name
+     */
+    public DiscoveryEngineClient(String     serverName,
+                                 String     serverPlatformRootURL,
+                                 String     userId,
+                                 String     password,
+                                 AuditLog   auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+
+        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL, userId, password, auditLog);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @throws InvalidParameterException null URL or server name
+     */
+    public DiscoveryEngineClient(String     serverName,
+                                 String     serverPlatformRootURL,
+                                 String     userId,
+                                 String     password) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL);
+
+        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL, userId, password);
     }
 
 

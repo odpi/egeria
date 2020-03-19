@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.control.FederationControl;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.control.ParallelFederationControl;
@@ -61,7 +61,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      */
     private EnterpriseOMRSRepositoryConnector enterpriseParentConnector;
     private String                            localMetadataCollectionId;
-    private OMRSAuditLog                      auditLog;
+    private AuditLog                          auditLog;
 
 
     /**
@@ -82,7 +82,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                      OMRSRepositoryValidator           repositoryValidator,
                                      String                            metadataCollectionId,
                                      String                            localMetadataCollectionId,
-                                     OMRSAuditLog                      auditLog)
+                                     AuditLog                          auditLog)
     {
         /*
          * The metadata collection Id is the unique identifier for the metadata collection.  It is managed by the super class.
@@ -4049,15 +4049,9 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
              * with no metadata collection are tested for in the OMRSEnterpriseConnectorManager so something
              * else has gone wrong.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_ENTERPRISE_METADATA_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NULL_ENTERPRISE_METADATA_COLLECTION.getMessageDefinition(),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
     }
 
@@ -4070,16 +4064,9 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      */
     private void throwNotEnterpriseFunction(String methodName) throws FunctionNotSupportedException
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.ENTERPRISE_NOT_SUPPORTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+        throw new FunctionNotSupportedException(OMRSErrorCode.ENTERPRISE_NOT_SUPPORTED.getMessageDefinition(methodName),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
     }
 
 
@@ -4201,17 +4188,10 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     {
         if (exception != null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.UNEXPECTED_EXCEPTION_FROM_COHORT;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     exception.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+            throw new RepositoryErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION_FROM_COHORT.getMessageDefinition(methodName,
+                                                                                                                   exception.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName);
         }
     }
 

@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.devops.ffdc.DevOpsErrorCode;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class DevOpsServicesInstance extends OCFOMASServiceInstance
      */
     public DevOpsServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                   List<String>            supportedZones,
-                                  OMRSAuditLog            auditLog,
+                                  AuditLog                auditLog,
                                   String                  localServerUserId,
                                   int                     maxPageSize) throws NewInstanceException
     {
@@ -53,15 +53,9 @@ public class DevOpsServicesInstance extends OCFOMASServiceInstance
         }
         else
         {
-            DevOpsErrorCode errorCode    = DevOpsErrorCode.OMRS_NOT_INITIALIZED;
-            String          errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            throw new NewInstanceException(DevOpsErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
 
         }
     }

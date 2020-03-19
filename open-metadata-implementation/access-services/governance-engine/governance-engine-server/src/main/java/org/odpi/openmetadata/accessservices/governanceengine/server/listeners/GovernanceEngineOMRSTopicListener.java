@@ -2,20 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server.listeners;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.api.events.GovernanceEngineEvent;
 import org.odpi.openmetadata.accessservices.governanceengine.api.events.GovernanceEngineEventType;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAsset;
 import org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.server.publisher.GovernanceEnginePublisher;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
@@ -39,20 +38,20 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
     private List<String> supportedZones;
     private GovernanceEnginePublisher publisher;
 
-    public GovernanceEngineOMRSTopicListener(Connection assetConsumerOutTopic,
+    public GovernanceEngineOMRSTopicListener(OpenMetadataTopicConnector openMetadataTopicConnector,
                                              OMRSRepositoryHelper repositoryHelper,
                                              OMRSRepositoryValidator repositoryValidator,
                                              String componentName,
                                              String serverName,
                                              List<String> supportedZones,
-                                             OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
+                                             AuditLog auditLog) {
         super(componentName, auditLog);
         this.repositoryHelper = repositoryHelper;
         this.repositoryValidator = repositoryValidator;
         this.componentName = componentName;
         this.serverName = serverName;
         this.supportedZones = supportedZones;
-        publisher = new GovernanceEnginePublisher(assetConsumerOutTopic, auditLog);
+        publisher = new GovernanceEnginePublisher(openMetadataTopicConnector, auditLog);
     }
 
     /**
@@ -208,14 +207,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
     }
 
     private void logExceptionToAudit(OMRSInstanceEvent instanceEvent, Throwable e) {
-        GovernanceEngineAuditCode auditCode = GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR;
-        auditLog.logException("Governance Engine OMAS is processing an OMRSTopic event.",
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(instanceEvent.toString()),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction(),
-                e);
+        auditLog.logMessage("Governance Engine OMAS is processing an OMRSTopic event.",
+                GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition());
     }
 }

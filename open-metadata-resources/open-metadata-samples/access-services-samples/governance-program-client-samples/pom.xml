@@ -41,6 +41,16 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>community-profile-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>community-profile-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
         </dependency>
 

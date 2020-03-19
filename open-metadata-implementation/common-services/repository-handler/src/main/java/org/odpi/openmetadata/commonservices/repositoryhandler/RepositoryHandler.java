@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -25,7 +25,7 @@ public class RepositoryHandler
     private RepositoryErrorHandler errorHandler;
     private OMRSMetadataCollection metadataCollection;
     private int                    maxPageSize;
-    private OMRSAuditLog           auditLog;
+    private AuditLog               auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(RepositoryHandler.class);
 
@@ -38,7 +38,7 @@ public class RepositoryHandler
      * @param metadataCollection  access to the repository content.
      * @param maxPageSize maximum number of instances that can be returned on a single call
      */
-    public RepositoryHandler(OMRSAuditLog            auditLog,
+    public RepositoryHandler(AuditLog                auditLog,
                              RepositoryErrorHandler  errorHandler,
                              OMRSMetadataCollection  metadataCollection,
                              int                     maxPageSize)
@@ -934,18 +934,12 @@ public class RepositoryHandler
         try
         {
             metadataCollection.purgeEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
-            RepositoryHandlerAuditCode auditCode = RepositoryHandlerAuditCode.ENTITY_PURGED;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(obsoleteEntityGUID,
-                                                                entityTypeName,
-                                                                entityTypeGUID,
-                                                                methodName,
-                                                                metadataCollection.getMetadataCollectionId(userId)),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                RepositoryHandlerAuditCode.ENTITY_PURGED.getMessageDefinition(obsoleteEntityGUID,
+                                                                                              entityTypeName,
+                                                                                              entityTypeGUID,
+                                                                                              methodName,
+                                                                                              metadataCollection.getMetadataCollectionId(userId)));
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -2665,18 +2659,12 @@ public class RepositoryHandler
                                                  relationshipTypeName,
                                                  relationshipGUID);
 
-            RepositoryHandlerAuditCode auditCode = RepositoryHandlerAuditCode.RELATIONSHIP_PURGED;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(relationshipGUID,
-                                                                relationshipTypeName,
-                                                                relationshipTypeGUID,
-                                                                methodName,
-                                                                metadataCollection.getMetadataCollectionId(userId)),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                RepositoryHandlerAuditCode.RELATIONSHIP_PURGED.getMessageDefinition(relationshipGUID,
+                                                                                                    relationshipTypeName,
+                                                                                                    relationshipTypeGUID,
+                                                                                                    methodName,
+                                                                                                    metadataCollection.getMetadataCollectionId(userId)));
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {

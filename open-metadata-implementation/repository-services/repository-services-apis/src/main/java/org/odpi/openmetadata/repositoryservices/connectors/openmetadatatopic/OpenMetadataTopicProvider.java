@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
 
 /**
@@ -21,5 +22,7 @@ public abstract class OpenMetadataTopicProvider extends ConnectorProviderBase
         Class<OpenMetadataTopicConnector> connectorClass = OpenMetadataTopicConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorComponentDescription(OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR);
+
     }
 }

@@ -5,8 +5,7 @@ package org.odpi.openmetadata.commonservices.multitenant;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
-import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
@@ -47,7 +46,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                                OMRSRepositoryConnector repositoryConnector,
                                List<String>            supportedZones,
                                List<String>            defaultZones,
-                               OMRSAuditLog            auditLog) throws NewInstanceException
+                               AuditLog                auditLog) throws NewInstanceException
     {
         this(serviceName, repositoryConnector, supportedZones, defaultZones, auditLog, null, 500);
     }
@@ -64,7 +63,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
     @Deprecated
     public OMASServiceInstance(String                  serviceName,
                                OMRSRepositoryConnector repositoryConnector,
-                               OMRSAuditLog            auditLog) throws NewInstanceException
+                               AuditLog                auditLog) throws NewInstanceException
     {
         this( serviceName, repositoryConnector, null, null, auditLog, null, 500);
     }
@@ -82,7 +81,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      */
     public OMASServiceInstance(String                  serviceName,
                                OMRSRepositoryConnector repositoryConnector,
-                               OMRSAuditLog            auditLog,
+                               AuditLog                auditLog,
                                String                  localServerUserId,
                                int                     maxPageSize) throws NewInstanceException
     {
@@ -102,13 +101,13 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      * @param maxPageSize maximum page size
      * @throws NewInstanceException a problem occurred during initialization
      */
-    public OMASServiceInstance(String                  serviceName,
-                               OMRSRepositoryConnector repositoryConnector,
-                               List<String>            supportedZones,
-                               List<String>            defaultZones,
-                               OMRSAuditLog            auditLog,
-                               String                  localServerUserId,
-                               int                     maxPageSize) throws NewInstanceException
+    OMASServiceInstance(String                  serviceName,
+                        OMRSRepositoryConnector repositoryConnector,
+                        List<String>            supportedZones,
+                        List<String>            defaultZones,
+                        AuditLog                auditLog,
+                        String                  localServerUserId,
+                        int                     maxPageSize) throws NewInstanceException
     {
         super(null, serviceName, auditLog, localServerUserId, maxPageSize);
 
@@ -130,29 +129,17 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
             }
             catch (Throwable error)
             {
-                OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.OMRS_NOT_INITIALIZED;
-                String                      errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-                throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+                throw new NewInstanceException(OMAGServerInstanceErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
 
             }
         }
         else
         {
-            OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.OMRS_NOT_INITIALIZED;
-            String                      errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            throw new NewInstanceException(OMAGServerInstanceErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
 
         }
     }
@@ -175,15 +162,9 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
         }
         else
         {
-            OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.OMRS_NOT_AVAILABLE;
-            String                      errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            throw new NewInstanceException(OMAGServerInstanceErrorCode.OMRS_NOT_AVAILABLE.getMessageDefinition(methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
         }
     }
 
@@ -194,19 +175,13 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      * @param methodName calling method
      * @throws PropertyServerException problem with the repository services
      */
-    protected void validateActiveRepository(String  methodName) throws PropertyServerException
+    void validateActiveRepository(String  methodName) throws PropertyServerException
     {
         if ((repositoryConnector == null) || (metadataCollection == null) || (! repositoryConnector.isActive()))
         {
-            OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.OMRS_NOT_AVAILABLE;
-            String                      errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(OMAGServerInstanceErrorCode.OMRS_NOT_AVAILABLE.getMessageDefinition(methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 

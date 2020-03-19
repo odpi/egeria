@@ -28,6 +28,13 @@ public enum GovernanceEngineErrorCode {
             "The Governance Engine Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
             "The access service has not been passed valid configuration for its out topic connection.",
             "Correct the configuration and restart the service."),
+    NULL_TOPIC_CONNECTOR(400, "OMAS-GOVERNANCEENGINE-400-012",
+                         "Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize",
+                         "The local server will not connect to the cohort.",
+                         "The connection to the connector is configured in the server configuration.  " +
+                                 "Review previous error messages to determine the precise error in the " +
+                                 "start up configuration. " +
+                                 "Correct the configuration and reconnect the server to the cohort. "),
     OMRS_NOT_INITIALIZED(404, "OMAS-GOVERNANCE-ENGINE-404-001 ",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to the open metadata property handlers.",

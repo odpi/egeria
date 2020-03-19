@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.events.*;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 
@@ -47,11 +47,11 @@ public class OMRSEventListener implements OMRSTopicListener
      * @param repositoryEventProcessor processor for TypeDef and Instance synchronization events
      * @param auditLog audit log for this component.
      */
-    public OMRSEventListener(String                                cohortName,
-                             String                                localMetadataCollectionId,
-                             OMRSRegistryEventProcessor            registryEventProcessor,
-                             OMRSRepositoryEventProcessor          repositoryEventProcessor,
-                             OMRSAuditLog                          auditLog)
+    public OMRSEventListener(String                       cohortName,
+                             String                       localMetadataCollectionId,
+                             OMRSRegistryEventProcessor   registryEventProcessor,
+                             OMRSRepositoryEventProcessor repositoryEventProcessor,
+                             AuditLog                     auditLog)
     {
         this.cohortName                = cohortName;
         this.localMetadataCollectionId = localMetadataCollectionId;
@@ -63,14 +63,7 @@ public class OMRSEventListener implements OMRSTopicListener
 
         log.debug(actionDescription);
 
-        OMRSAuditCode auditCode = OMRSAuditCode.OMRS_LISTENER_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(cohortName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_LISTENER_INITIALIZING.getMessageDefinition(cohortName));
     }
 
 

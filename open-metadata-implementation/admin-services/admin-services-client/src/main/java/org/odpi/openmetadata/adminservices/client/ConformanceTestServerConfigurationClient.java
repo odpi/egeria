@@ -80,7 +80,7 @@ abstract class ConformanceTestServerConfigurationClient extends CohortMemberConf
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -114,7 +114,7 @@ abstract class ConformanceTestServerConfigurationClient extends CohortMemberConf
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         URLRequestBody requestBody = new URLRequestBody();

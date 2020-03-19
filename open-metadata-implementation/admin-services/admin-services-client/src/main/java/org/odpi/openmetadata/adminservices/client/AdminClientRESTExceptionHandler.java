@@ -24,15 +24,13 @@ class AdminClientRESTExceptionHandler extends RESTExceptionHandler
     /**
      * Throw an exception if it is encoded in the REST response.
      *
-     * @param methodName  name of the method called
      * @param restResult  response from the rest call.  This generated in the remote server.
      *
      * @throws OMAGInvalidParameterException one of the parameters is invalid.
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException configuration error
      */
-    void detectAndThrowAdminExceptions(String           methodName,
-                                       FFDCResponseBase restResult) throws OMAGInvalidParameterException,
+    void detectAndThrowAdminExceptions(FFDCResponseBase restResult) throws OMAGInvalidParameterException,
                                                                            OMAGNotAuthorizedException,
                                                                            OMAGConfigurationErrorException
     {
@@ -49,15 +47,15 @@ class AdminClientRESTExceptionHandler extends RESTExceptionHandler
 
                 if (exceptionClassName.equals(invalidParameterExceptionClassName))
                 {
-                    this.throwOMAGInvalidParameterException(methodName, restResult);
+                    this.throwOMAGInvalidParameterException(restResult);
                 }
                 else if (exceptionClassName.equals(userNotAuthorizedExceptionClassName))
                 {
-                    this.throwOMAGNotAuthorizedException(methodName, restResult);
+                    this.throwOMAGNotAuthorizedException(restResult);
                 }
                 else
                 {
-                    this.throwOMAGConfigurationException(methodName, restResult);
+                    this.throwOMAGConfigurationException(restResult);
                 }
             }
             else
@@ -71,21 +69,24 @@ class AdminClientRESTExceptionHandler extends RESTExceptionHandler
     /**
      * Throw an OMAGInvalidParameterException if it is encoded in the REST response.
      *
-     * @param methodName  name of the method called.
      * @param restResult  response from UserNotAuthorizedException encoded exception from the server.
      *
      * @throws OMAGInvalidParameterException encoded exception from the server
      */
-    private void throwOMAGInvalidParameterException(String           methodName,
-                                                    FFDCResponseBase restResult) throws OMAGInvalidParameterException
+    private void throwOMAGInvalidParameterException(FFDCResponseBase restResult) throws OMAGInvalidParameterException
     {
         OMAGInvalidParameterException error = new OMAGInvalidParameterException(restResult.getRelatedHTTPCode(),
                                                                                 this.getClass().getName(),
-                                                                                methodName,
+                                                                                restResult.getActionDescription(),
                                                                                 restResult.getExceptionErrorMessage(),
+                                                                                restResult.getExceptionErrorMessageId(),
+                                                                                restResult.getExceptionErrorMessageParameters(),
                                                                                 restResult.getExceptionSystemAction(),
-                                                                                restResult.getExceptionUserAction());
-        log.error("Invalid parameter Exception", error);
+                                                                                restResult.getExceptionUserAction(),
+                                                                                restResult.getExceptionCausedBy(),
+                                                                                restResult.getExceptionProperties());
+
+        log.error("Invalid Parameter Exception", error);
         throw error;
     }
 
@@ -93,20 +94,23 @@ class AdminClientRESTExceptionHandler extends RESTExceptionHandler
     /**
      * Throw an UserNotAuthorizedException if it is encoded in the REST response.
      *
-     * @param methodName  name of the method called.
      * @param restResult  response from UserNotAuthorizedException encoded exception from the server.
      *
      * @throws OMAGNotAuthorizedException encoded exception from the server
      */
-    private void throwOMAGNotAuthorizedException(String           methodName,
-                                                 FFDCResponseBase restResult) throws OMAGNotAuthorizedException
+    private void throwOMAGNotAuthorizedException(FFDCResponseBase restResult) throws OMAGNotAuthorizedException
     {
         OMAGNotAuthorizedException error = new OMAGNotAuthorizedException(restResult.getRelatedHTTPCode(),
                                                                           this.getClass().getName(),
-                                                                          methodName,
+                                                                          restResult.getActionDescription(),
                                                                           restResult.getExceptionErrorMessage(),
+                                                                          restResult.getExceptionErrorMessageId(),
+                                                                          restResult.getExceptionErrorMessageParameters(),
                                                                           restResult.getExceptionSystemAction(),
-                                                                          restResult.getExceptionUserAction());
+                                                                          restResult.getExceptionUserAction(),
+                                                                          restResult.getExceptionCausedBy(),
+                                                                          restResult.getExceptionProperties());
+
         log.error("User Not Authorized Exception", error);
         throw error;
     }
@@ -115,20 +119,23 @@ class AdminClientRESTExceptionHandler extends RESTExceptionHandler
     /**
      * Throw an OMAGConfigurationErrorException if it is encoded in the REST response.
      *
-     * @param methodName  name of the method called.
      * @param restResult  response from UserNotAuthorizedException encoded exception from the server.
      *
      * @throws OMAGConfigurationErrorException encoded exception from the server
      */
-    private void throwOMAGConfigurationException(String           methodName,
-                                                 FFDCResponseBase restResult) throws OMAGConfigurationErrorException
+    private void throwOMAGConfigurationException(FFDCResponseBase restResult) throws OMAGConfigurationErrorException
     {
         OMAGConfigurationErrorException error = new OMAGConfigurationErrorException(restResult.getRelatedHTTPCode(),
                                                                                     this.getClass().getName(),
-                                                                                    methodName,
+                                                                                    restResult.getActionDescription(),
                                                                                     restResult.getExceptionErrorMessage(),
+                                                                                    restResult.getExceptionErrorMessageId(),
+                                                                                    restResult.getExceptionErrorMessageParameters(),
                                                                                     restResult.getExceptionSystemAction(),
-                                                                                    restResult.getExceptionUserAction());
+                                                                                    restResult.getExceptionUserAction(),
+                                                                                    restResult.getExceptionCausedBy(),
+                                                                                    restResult.getExceptionProperties());
+
         log.error("Configuration Error Exception", error);
         throw error;
     }
@@ -142,21 +149,15 @@ class AdminClientRESTExceptionHandler extends RESTExceptionHandler
      * @param error resulting exception
      * @throws OMAGConfigurationErrorException wrapping exception
      */
-    public void logRESTCallException(String    serverPlatformURLRoot,
-                                     String    methodName,
-                                     Throwable error) throws OMAGConfigurationErrorException
+    void logRESTCallException(String    serverPlatformURLRoot,
+                              String    methodName,
+                              Throwable error) throws OMAGConfigurationErrorException
     {
-        OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.CLIENT_SIDE_REST_API_ERROR;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 serverPlatformURLRoot,
-                                                                                                 error.getMessage());
-
-        throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+        throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                                                     serverPlatformURLRoot,
+                                                                                                                     error.getMessage()),
                                                   this.getClass().getName(),
                                                   methodName,
-                                                  errorMessage,
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction(),
                                                   error);
     }
 }

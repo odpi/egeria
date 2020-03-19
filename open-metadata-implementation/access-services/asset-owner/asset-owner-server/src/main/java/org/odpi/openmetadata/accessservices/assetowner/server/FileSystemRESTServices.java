@@ -10,10 +10,10 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,7 +67,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDResponse response = new GUIDResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -139,7 +139,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -201,7 +201,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -264,7 +264,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -325,7 +325,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -386,7 +386,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -454,7 +454,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -521,7 +521,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -584,7 +584,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -646,7 +646,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -708,7 +708,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -765,7 +765,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         FileSystemResponse response = new FileSystemResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog           auditLog = null;
 
         try
         {
@@ -821,7 +821,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         FileSystemResponse response = new FileSystemResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog           auditLog = null;
 
         try
         {
@@ -879,7 +879,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -937,7 +937,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         FolderResponse response = new FolderResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog       auditLog = null;
 
         try
         {
@@ -993,7 +993,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         FolderResponse response = new FolderResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog       auditLog = null;
 
         try
         {
@@ -1056,7 +1056,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -1118,7 +1118,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -1182,7 +1182,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -1249,7 +1249,7 @@ public class FileSystemRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {

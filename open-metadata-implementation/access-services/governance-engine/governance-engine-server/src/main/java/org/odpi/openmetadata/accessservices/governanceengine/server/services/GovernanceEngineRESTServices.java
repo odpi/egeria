@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server.services;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAssetResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAssetListResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAssetResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.model.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.api.model.SoftwareServerCapabilityResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineInstanceHandler;

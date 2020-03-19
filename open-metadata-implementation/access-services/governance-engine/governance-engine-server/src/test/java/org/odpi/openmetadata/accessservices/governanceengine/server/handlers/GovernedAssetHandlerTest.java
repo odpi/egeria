@@ -24,7 +24,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.mock;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.*;
 
 public class GovernedAssetHandlerTest {

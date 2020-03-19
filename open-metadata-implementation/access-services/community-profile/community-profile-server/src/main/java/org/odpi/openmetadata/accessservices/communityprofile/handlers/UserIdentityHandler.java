@@ -186,16 +186,9 @@ public class UserIdentityHandler
             }
             else
             {
-                CommunityProfileErrorCode errorCode = CommunityProfileErrorCode.UNABLE_TO_CREATE_USER_IDENTITY;
-                String                    errorMessage = errorCode.getErrorMessageId()
-                                                         + errorCode.getFormattedErrorMessage(userId);
-
-                throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                                  this.getClass().getName(),
-                                                  methodName,
-                                                  errorMessage,
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction());
+               throw new PropertyServerException(CommunityProfileErrorCode.UNABLE_TO_CREATE_USER_IDENTITY.getMessageDefinition(userId),
+                                                 this.getClass().getName(),
+                                                 methodName);
             }
         }
         catch (PropertyServerException | UserNotAuthorizedException error)
@@ -316,43 +309,25 @@ public class UserIdentityHandler
                 }
                 else
                 {
-                    CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.NO_OTHER_IDENTITY;
-                    String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(obsoleteIdentity, profileGUID);
-
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    throw new InvalidParameterException(CommunityProfileErrorCode.NO_OTHER_IDENTITY.getMessageDefinition(obsoleteIdentity, profileGUID),
                                                         this.getClass().getName(),
                                                         methodName,
-                                                        errorMessage,
-                                                        errorCode.getSystemAction(),
-                                                        errorCode.getUserAction(),
                                                         nameParameter);
                 }
             }
             else
             {
-                CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.UNKNOWN_IDENTITY;
-                String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(obsoleteIdentity, profileGUID);
-
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                throw new InvalidParameterException(CommunityProfileErrorCode.UNKNOWN_IDENTITY.getMessageDefinition(obsoleteIdentity, profileGUID),
                                                     this.getClass().getName(),
                                                     methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction(),
                                                     nameParameter);
             }
         }
         else
         {
-            CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.NO_IDENTITY_FOR_PROFILE;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(profileGUID);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(CommunityProfileErrorCode.NO_IDENTITY_FOR_PROFILE.getMessageDefinition(profileGUID),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -453,7 +428,7 @@ public class UserIdentityHandler
                         EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
                                                                                 entityProxy.getGUID(),
                                                                                 entityProxyName,
-                                                                                PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME,
+                                                                                UserIdentityMapper.USER_IDENTITY_TYPE_NAME,
                                                                                 methodName);
                         UserIdentityConverter converter = new UserIdentityConverter(entity,
                                                                                     repositoryHelper,
@@ -471,15 +446,9 @@ public class UserIdentityHandler
 
             if (userIdentities.isEmpty())
             {
-                CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.NO_IDENTITY_FOR_PROFILE;
-                String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(profileGUID);
-
-                throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                throw new PropertyServerException(CommunityProfileErrorCode.NO_IDENTITY_FOR_PROFILE.getMessageDefinition(profileGUID),
                                                   this.getClass().getName(),
-                                                  methodName,
-                                                  errorMessage,
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction());
+                                                  methodName);
             }
             else
             {

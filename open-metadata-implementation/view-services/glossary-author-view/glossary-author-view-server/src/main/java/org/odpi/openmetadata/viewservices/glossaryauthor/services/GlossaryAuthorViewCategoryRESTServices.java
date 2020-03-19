@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.CategoryHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,9 +53,9 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
     public SubjectAreaOMASAPIResponse createCategory(String serverName, String userId, Category suppliedCategory) {
         final String methodName = "createCategory";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken              token    = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog                   auditLog = null;
 
         // should not be called without a supplied category - the calling layer should not allow this.
         try {
@@ -96,7 +96,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
@@ -146,7 +146,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
@@ -212,7 +212,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
@@ -259,7 +259,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied category - the calling layer should not allow this.
         try {
@@ -324,7 +324,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied category - the calling layer should not allow this.
         try {
@@ -377,7 +377,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied category - the calling layer should not allow this.
         try {

@@ -1574,39 +1574,28 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                                                         PatchErrorException
     {
         final String  thisMethodName = "validateTypeDefPatch";
+        final String  parameterName = "typeDefPatch";
 
 
 
         if (typeDefPatch == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_TYPEDEF_PATCH;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                            sourceName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+           throw new InvalidParameterException(OMRSErrorCode.NULL_TYPEDEF_PATCH.getMessageDefinition(methodName, sourceName),
                                                 this.getClass().getName(),
                                                 thisMethodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                parameterName);
         }
 
 
         if (typeDefPatch.getUpdateToVersion() <= typeDefPatch.getApplyToVersion())
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.INVALID_PATCH_VERSION;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                            sourceName,
-                                                                                                            Long.toString(typeDefPatch.getApplyToVersion()),
-                                                                                                            Long.toString(typeDefPatch.getUpdateToVersion()),
-                                                                                                            typeDefPatch.toString());
-
-            throw new PatchErrorException(errorCode.getHTTPErrorCode(),
+            throw new PatchErrorException(OMRSErrorCode.INVALID_PATCH_VERSION.getMessageDefinition(methodName,
+                                                                                                   sourceName,
+                                                                                                   Long.toString(typeDefPatch.getApplyToVersion()),
+                                                                                                   Long.toString(typeDefPatch.getUpdateToVersion()),
+                                                                                                   typeDefPatch.toString()),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          methodName);
         }
 
         if (typeDefPatch.getNewVersionName() == null)
@@ -1640,18 +1629,12 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                             String       fieldName,
                                             String       methodName) throws PatchErrorException
     {
-        OMRSErrorCode errorCode    = OMRSErrorCode.NULL_MANDATORY_PATCH_FIELD;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                        sourceName,
-                                                                                                        fieldName,
-                                                                                                        typeDefPatch.toString());
-
-        throw new PatchErrorException(errorCode.getHTTPErrorCode(),
+       throw new PatchErrorException(OMRSErrorCode.NULL_MANDATORY_PATCH_FIELD.getMessageDefinition(methodName,
+                                                                                                    sourceName,
+                                                                                                    fieldName,
+                                                                                                    typeDefPatch.toString()),
                                       this.getClass().getName(),
-                                      methodName,
-                                      errorMessage,
-                                      errorCode.getSystemAction(),
-                                      errorCode.getUserAction());
+                                      methodName);
     }
 
 
@@ -1680,17 +1663,12 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         if (originalTypeDef == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_TYPEDEF;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(typeDefParameterName,
-                                                                                                            methodName,
-                                                                                                            sourceName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMRSErrorCode.NULL_TYPEDEF.getMessageDefinition(typeDefParameterName,
+                                                                                                methodName,
+                                                                                                sourceName),
                                                 this.getClass().getName(),
                                                 thisMethodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                typeDefParameterName);
         }
 
         TypeDef updatedTypeDef  = originalTypeDef.cloneFromSubclass();
@@ -1767,20 +1745,14 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                             newPropertyType = newPropertyDefinition.getAttributeType().toString();
                                         }
 
-                                        OMRSErrorCode errorCode    = OMRSErrorCode.INCOMPATIBLE_PROPERTY_PATCH;
-                                        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                                                        sourceName,
-                                                                                                                                        newPropertyName,
-                                                                                                                                        oldPropertyDefinition.getAttributeType().toString(),
-                                                                                                                                        newPropertyType,
-                                                                                                                                        typeDefPatch.toString());
-
-                                        throw new PatchErrorException(errorCode.getHTTPErrorCode(),
+                                        throw new PatchErrorException(OMRSErrorCode.INCOMPATIBLE_PROPERTY_PATCH.getMessageDefinition(methodName,
+                                                                                                                                     sourceName,
+                                                                                                                                     newPropertyName,
+                                                                                                                                     oldPropertyDefinition.getAttributeType().toString(),
+                                                                                                                                     newPropertyType,
+                                                                                                                                     typeDefPatch.toString()),
                                                                       this.getClass().getName(),
-                                                                      methodName,
-                                                                      errorMessage,
-                                                                      errorCode.getSystemAction(),
-                                                                      errorCode.getUserAction());
+                                                                      methodName);
                                     }
                                 }
                             }
@@ -1863,19 +1835,13 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         }
         else
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.INCOMPATIBLE_PATCH_VERSION;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                            sourceName,
-                                                                                                            Long.toString(typeDefPatch.getApplyToVersion()),
-                                                                                                            Long.toString(originalTypeDef.getVersion()),
-                                                                                                            typeDefPatch.toString());
-
-            throw new PatchErrorException(errorCode.getHTTPErrorCode(),
+            throw new PatchErrorException(OMRSErrorCode.INCOMPATIBLE_PATCH_VERSION.getMessageDefinition(methodName,
+                                                                                                        sourceName,
+                                                                                                        Long.toString(typeDefPatch.getApplyToVersion()),
+                                                                                                        Long.toString(originalTypeDef.getVersion()),
+                                                                                                        typeDefPatch.toString()),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          methodName);
         }
     }
 
@@ -1892,17 +1858,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                        String     originatingMethodName,
                                        String     localMethodName)
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.HELPER_LOGIC_ERROR;
-        String errorMessage     = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
-                                                                                                     localMethodName,
-                                                                                                     originatingMethodName);
-
-        throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+        throw new OMRSLogicErrorException(OMRSErrorCode.HELPER_LOGIC_ERROR.getMessageDefinition(sourceName,
+                                                                                                localMethodName,
+                                                                                                originatingMethodName),
                                           this.getClass().getName(),
-                                          localMethodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          localMethodName);
     }
 
 
@@ -1920,17 +1880,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                        String     localMethodName,
                                        Throwable  unexpectedException)
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.HELPER_LOGIC_EXCEPTION;
-        String errorMessage     = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
-                                                                                                     localMethodName,
-                                                                                                     originatingMethodName);
-
-        throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+        throw new OMRSLogicErrorException(OMRSErrorCode.HELPER_LOGIC_EXCEPTION.getMessageDefinition(sourceName,
+                                                                                                    localMethodName,
+                                                                                                    originatingMethodName),
                                           this.getClass().getName(),
                                           localMethodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
                                           unexpectedException);
     }
 }

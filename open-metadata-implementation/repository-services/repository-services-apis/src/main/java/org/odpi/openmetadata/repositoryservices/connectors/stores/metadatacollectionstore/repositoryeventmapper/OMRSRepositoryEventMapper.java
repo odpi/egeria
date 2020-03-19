@@ -22,7 +22,7 @@ public interface OMRSRepositoryEventMapper
      *                            events from.  The repository connector is used to retrieve additional information
      *                            necessary to fill out the OMRS Events.
      */
-    void initialize(String repositoryEventMapperName,
+    void initialize(String                  repositoryEventMapperName,
                     OMRSRepositoryConnector repositoryConnector);
 
 
@@ -94,7 +94,4 @@ public interface OMRSRepositoryEventMapper
      *                                open metadata repository cohort.
      */
     void setRepositoryEventProcessor(OMRSRepositoryEventProcessor repositoryEventProcessor);
-
-
-
 }

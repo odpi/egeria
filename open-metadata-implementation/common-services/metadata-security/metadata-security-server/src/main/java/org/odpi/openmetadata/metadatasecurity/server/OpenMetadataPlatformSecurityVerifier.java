@@ -61,16 +61,10 @@ public class OpenMetadataPlatformSecurityVerifier
             /*
              * The assumption is that any exceptions creating the new connector are down to a bad connection
              */
-            OpenMetadataSecurityErrorCode errorCode    = OpenMetadataSecurityErrorCode.BAD_PLATFORM_SECURITY_CONNECTION;
-            String                        errorMessage = errorCode.getErrorMessageId()
-                                                       + errorCode.getFormattedErrorMessage(error.getMessage(), connection.toString());
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OpenMetadataSecurityErrorCode.BAD_PLATFORM_SECURITY_CONNECTION.getMessageDefinition(error.getMessage(),
+                                                                                                                                    connection.toString()),
                                                 OpenMetadataPlatformSecurityVerifier.class.getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 error,
                                                 "connection");
         }

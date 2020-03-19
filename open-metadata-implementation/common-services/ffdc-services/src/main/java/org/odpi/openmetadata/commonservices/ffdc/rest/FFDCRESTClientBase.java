@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
 import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -19,9 +20,30 @@ public class FFDCRESTClientBase
 {
     protected String               serverName;             /* Initialized in constructor */
     protected String               serverPlatformURLRoot;  /* Initialized in constructor */
+    protected AuditLog             auditLog = null;          /* Initialized in constructor */
     protected RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
-    private   RESTClientConnector  clientConnector;        /* Initialized in constructor */
+    private RESTClientConnector clientConnector;          /* Initialized in constructor */
+
+
+    /**
+     * Constructor for no authentication with audit log.
+     *
+     * @param serverName name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @param auditLog destination for log messages.
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    protected FFDCRESTClientBase(String    serverName,
+                                 String    serverPlatformURLRoot,
+                                 AuditLog  auditLog) throws InvalidParameterException
+    {
+        this(serverName, serverPlatformURLRoot);
+
+        this.auditLog = auditLog;
+    }
 
 
     /**
@@ -48,19 +70,35 @@ public class FFDCRESTClientBase
         }
         catch (Throwable     error)
         {
-            OMAGCommonErrorCode errorCode = OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 error,
                                                 "serverPlatformURLRoot or serverName");
         }
+    }
+
+
+    /**
+     * Constructor for simple userId and password authentication with audit log.
+     *
+     * @param serverName name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @param userId user id for the HTTP request
+     * @param password password for the HTTP request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    protected FFDCRESTClientBase(String   serverName,
+                                 String   serverPlatformURLRoot,
+                                 String   userId,
+                                 String   password,
+                                 AuditLog auditLog) throws InvalidParameterException
+    {
+        this(serverName, serverPlatformURLRoot, userId, password);
+
+        this.auditLog = auditLog;
     }
 
 
@@ -95,16 +133,9 @@ public class FFDCRESTClientBase
         }
         catch (Throwable     error)
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 error,
                                                 "serverPlatformURLRoot or serverName");
         }
@@ -243,18 +274,12 @@ public class FFDCRESTClientBase
     private void logRESTCallException(String    methodName,
                                       Throwable error) throws PropertyServerException
     {
-        OMAGCommonErrorCode errorCode = OMAGCommonErrorCode.CLIENT_SIDE_REST_API_ERROR;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 serverName,
-                                                                                                 serverPlatformURLRoot,
-                                                                                                 error.getMessage());
-
-        throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+        throw new PropertyServerException(OMAGCommonErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                                              serverName,
+                                                                                                              serverPlatformURLRoot,
+                                                                                                              error.getMessage()),
                                           this.getClass().getName(),
                                           methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
                                           error);
     }
 }
