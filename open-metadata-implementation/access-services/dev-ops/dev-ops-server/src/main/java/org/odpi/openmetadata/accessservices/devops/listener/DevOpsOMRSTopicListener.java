@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.devops.listener;
 
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public class DevOpsOMRSTopicListener extends OMRSTopicListenerBase
                                    OMRSRepositoryValidator repositoryValidator,
                                    String                  componentName,
                                    List<String>            supportedZones,
-                                   OMRSAuditLog            auditLog) throws OMAGConfigurationErrorException
+                                   AuditLog                auditLog) throws OMAGConfigurationErrorException
     {
         super(componentName, auditLog);
 

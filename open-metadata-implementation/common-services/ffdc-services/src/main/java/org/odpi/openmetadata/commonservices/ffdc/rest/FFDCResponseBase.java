@@ -4,6 +4,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -34,12 +35,16 @@ public class FFDCResponseBase implements java.io.Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private int                 relatedHTTPCode       = 200;
-    private String              exceptionClassName    = null;
-    private String              exceptionErrorMessage = null;
-    private String              exceptionSystemAction = null;
-    private String              exceptionUserAction   = null;
-    private Map<String, Object> exceptionProperties   = null;
+    private int                 relatedHTTPCode                 = 200;
+    private String              exceptionClassName              = null;
+    private String              exceptionCausedBy               = null;
+    private String              actionDescription               = null;
+    private String              exceptionErrorMessage           = null;
+    private String              exceptionErrorMessageId         = null;
+    private String[]            exceptionErrorMessageParameters = null;
+    private String              exceptionSystemAction           = null;
+    private String              exceptionUserAction             = null;
+    private Map<String, Object> exceptionProperties             = null;
 
     /**
      * Default constructor
@@ -60,33 +65,15 @@ public class FFDCResponseBase implements java.io.Serializable
         {
             this.relatedHTTPCode = template.getRelatedHTTPCode();
             this.exceptionClassName = template.getExceptionClassName();
+            this.exceptionCausedBy = template.getExceptionCausedBy();
+            this.actionDescription = template.getActionDescription();
             this.exceptionErrorMessage = template.getExceptionErrorMessage();
+            this.exceptionErrorMessageId = template.getExceptionErrorMessageId();
+            this.exceptionErrorMessageParameters = template.getExceptionErrorMessageParameters();
             this.exceptionSystemAction = template.getExceptionSystemAction();
             this.exceptionUserAction = template.getExceptionUserAction();
             this.exceptionProperties = template.getExceptionProperties();
         }
-    }
-
-
-    /**
-     * Return the HTTP Code to use if forwarding response to HTTP client.
-     *
-     * @return integer HTTP status code
-     */
-    public int getRelatedHTTPCode()
-    {
-        return relatedHTTPCode;
-    }
-
-
-    /**
-     * Set up the HTTP Code to use if forwarding response to HTTP client.
-     *
-     * @param relatedHTTPCode - integer HTTP status code
-     */
-    public void setRelatedHTTPCode(int relatedHTTPCode)
-    {
-        this.relatedHTTPCode = relatedHTTPCode;
     }
 
 
@@ -113,6 +100,71 @@ public class FFDCResponseBase implements java.io.Serializable
 
 
     /**
+     * Return the name of any nested exception that may indicate the root cause of the exception.
+     *
+     * @return exception class name
+     */
+    public String getExceptionCausedBy()
+    {
+        return exceptionCausedBy;
+    }
+
+
+    /**
+     * Set up the name of any nested exception that may indicate the root cause of the exception.
+     *
+     * @param exceptionCausedBy exception class name
+     */
+    public void setExceptionCausedBy(String exceptionCausedBy)
+    {
+        this.exceptionCausedBy = exceptionCausedBy;
+    }
+
+    /**
+     * Return the description of the activity in progress when the exception occurred.
+     *
+     * @return string description
+     */
+    public String getActionDescription()
+    {
+        return actionDescription;
+    }
+
+
+    /**
+     * Set up the description of the activity in progress when the exception occurred.
+     *
+     * @param actionDescription string description
+     */
+    public void setActionDescription(String actionDescription)
+    {
+        this.actionDescription = actionDescription;
+    }
+
+
+    /**
+     * Return the HTTP Code to use if forwarding response to HTTP client.
+     *
+     * @return integer HTTP status code
+     */
+    public int getRelatedHTTPCode()
+    {
+        return relatedHTTPCode;
+    }
+
+
+    /**
+     * Set up the HTTP Code to use if forwarding response to HTTP client.
+     *
+     * @param relatedHTTPCode - integer HTTP status code
+     */
+    public void setRelatedHTTPCode(int relatedHTTPCode)
+    {
+        this.relatedHTTPCode = relatedHTTPCode;
+    }
+
+
+    /**
      * Return the error message associated with the exception.
      *
      * @return string error message
@@ -131,6 +183,57 @@ public class FFDCResponseBase implements java.io.Serializable
     public void setExceptionErrorMessage(String exceptionErrorMessage)
     {
         this.exceptionErrorMessage = exceptionErrorMessage;
+    }
+
+
+    /**
+     * Return the formal message identifier for the error message.  This is incorporated in the error message.
+     * This is provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @return string identifier
+     */
+    public String getExceptionErrorMessageId()
+    {
+        return exceptionErrorMessageId;
+    }
+
+    /**
+     * Set up the formal message identifier for the error message.  This is incorporated in the error message.
+     * This is provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @param exceptionErrorMessageId string identifier
+     */
+    public void setExceptionErrorMessageId(String exceptionErrorMessageId)
+    {
+        this.exceptionErrorMessageId = exceptionErrorMessageId;
+    }
+
+
+    /**
+     * Return the parameters that were inserted in the error message.
+     * These are provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @return list of strings
+     */
+    public String[] getExceptionErrorMessageParameters()
+    {
+        return exceptionErrorMessageParameters;
+    }
+
+
+    /**
+     * Set up the list of parameters inserted in to the error message.
+     * These are provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @param exceptionErrorMessageParameters list of strings
+     */
+    public void setExceptionErrorMessageParameters(String[] exceptionErrorMessageParameters)
+    {
+        this.exceptionErrorMessageParameters = exceptionErrorMessageParameters;
     }
 
 
@@ -183,6 +286,7 @@ public class FFDCResponseBase implements java.io.Serializable
      *
      * @return property map
      */
+
     public Map<String, Object> getExceptionProperties()
     {
         if (exceptionProperties == null)
@@ -222,7 +326,10 @@ public class FFDCResponseBase implements java.io.Serializable
         return "FFDCResponseBase{" +
                 "relatedHTTPCode=" + relatedHTTPCode +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
+                ", actionDescription='" + actionDescription + '\'' +
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
+                ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
                 ", exceptionProperties=" + exceptionProperties +
@@ -243,19 +350,21 @@ public class FFDCResponseBase implements java.io.Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof FFDCResponseBase))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         FFDCResponseBase that = (FFDCResponseBase) objectToCompare;
-        return getRelatedHTTPCode() == that.getRelatedHTTPCode() &&
-                Objects.equals(getExceptionClassName(), that.getExceptionClassName()) &&
-                Objects.equals(getExceptionErrorMessage(), that.getExceptionErrorMessage()) &&
-                Objects.equals(getExceptionSystemAction(), that.getExceptionSystemAction()) &&
-                Objects.equals(getExceptionUserAction(), that.getExceptionUserAction()) &&
-                Objects.equals(getExceptionProperties(), that.getExceptionProperties());
+        return relatedHTTPCode == that.relatedHTTPCode &&
+                Objects.equals(exceptionClassName, that.exceptionClassName) &&
+                Objects.equals(actionDescription, that.actionDescription) &&
+                Objects.equals(exceptionErrorMessage, that.exceptionErrorMessage) &&
+                Objects.equals(exceptionErrorMessageId, that.exceptionErrorMessageId) &&
+                Arrays.equals(exceptionErrorMessageParameters, that.exceptionErrorMessageParameters) &&
+                Objects.equals(exceptionSystemAction, that.exceptionSystemAction) &&
+                Objects.equals(exceptionUserAction, that.exceptionUserAction) &&
+                Objects.equals(exceptionProperties, that.exceptionProperties);
     }
-
 
     /**
      * Return hash code for this object
@@ -265,11 +374,9 @@ public class FFDCResponseBase implements java.io.Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getRelatedHTTPCode(),
-                            getExceptionClassName(),
-                            getExceptionErrorMessage(),
-                            getExceptionSystemAction(),
-                            getExceptionUserAction(),
-                            getExceptionProperties());
+        int result = Objects.hash(relatedHTTPCode, exceptionClassName, actionDescription, exceptionErrorMessage, exceptionErrorMessageId,
+                                  exceptionSystemAction, exceptionUserAction, exceptionProperties);
+        result = 31 * result + Arrays.hashCode(exceptionErrorMessageParameters);
+        return result;
     }
 }

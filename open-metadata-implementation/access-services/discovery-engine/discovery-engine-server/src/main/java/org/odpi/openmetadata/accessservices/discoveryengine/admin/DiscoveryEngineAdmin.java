@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.admin;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.auditlog.DiscoveryEngineAuditCode;
+import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineAuditCode;
 import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicServerConnector;
 import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicServerProvider;
@@ -14,9 +14,9 @@ import org.odpi.openmetadata.adminservices.configuration.properties.AccessServic
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class DiscoveryEngineAdmin extends AccessServiceAdmin
 {
-    private OMRSAuditLog                    auditLog       = null;
+    private AuditLog                        auditLog       = null;
     private DiscoveryEngineServicesInstance instance       = null;
     private String                          serverName     = null;
     private DiscoveryEnginePublisher        eventPublisher = null;
@@ -55,20 +55,12 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      omrsTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog            auditLog,
+                           AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
         final String             actionDescription = "initialize";
-        DiscoveryEngineAuditCode auditCode;
 
-        auditCode = DiscoveryEngineAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DiscoveryEngineAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         this.auditLog = auditLog;
 
@@ -115,7 +107,7 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
             {
                 Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
 
-                OMRSAuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
+                AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
                 Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
                                                                                      AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
                                                                                      DiscoveryEngineOutTopicServerProvider.class.getName(),
@@ -141,52 +133,31 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
              * Initialization is complete.  The service is now waiting for REST API calls (typically from the Discovery Server) and events
              * from OMRS to indicate that there are metadata changes.
              */
-            auditCode = DiscoveryEngineAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(serverName),
-                               accessServiceConfig.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, DiscoveryEngineAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
         }
         catch (OMAGConfigurationErrorException error)
         {
-            auditCode = DiscoveryEngineAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getMessage()),
-                               accessServiceConfig.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(actionDescription,
+                                  DiscoveryEngineAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
+                                  accessServiceConfig.toString(),
+                                  error);
             throw error;
         }
         catch (Throwable error)
         {
-            auditCode = DiscoveryEngineAuditCode.UNEXPECTED_INITIALIZATION_EXCEPTION;
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
-                                  accessServiceConfig.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
+                                  DiscoveryEngineAuditCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                    error.getMessage()),
                                   error);
 
-            DiscoveryEngineErrorCode errorCode = DiscoveryEngineErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION;
-            String                   errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                       AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
-                                                                                       serverName,
-                                                                                       error.getMessage());
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(
+                    DiscoveryEngineErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                      AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
+                                                                                                      serverName,
+                                                                                                      error.getMessage()),
                                                       this.getClass().getName(),
                                                       actionDescription,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      error);
         }
     }
 
@@ -197,7 +168,6 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
     public void shutdown()
     {
         final String              actionDescription = "shutdown";
-        DiscoveryEngineAuditCode  auditCode;
 
         if (this.instance != null)
         {
@@ -209,13 +179,6 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
             this.eventPublisher.disconnect();
         }
 
-        auditCode = DiscoveryEngineAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(serverName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DiscoveryEngineAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
     }
 }

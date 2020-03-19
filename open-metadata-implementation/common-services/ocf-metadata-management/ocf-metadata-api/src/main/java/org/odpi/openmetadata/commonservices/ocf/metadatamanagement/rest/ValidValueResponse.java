@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ValidValue;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -86,9 +87,13 @@ public class ValidValueResponse extends OCFOMASAPIResponse
     {
         return "ValidValueResponse{" +
                 "validValue=" + validValue +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                ", actionDescription='" + getActionDescription() + '\'' +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
                 ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
                 ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
                 ", exceptionProperties=" + getExceptionProperties() +

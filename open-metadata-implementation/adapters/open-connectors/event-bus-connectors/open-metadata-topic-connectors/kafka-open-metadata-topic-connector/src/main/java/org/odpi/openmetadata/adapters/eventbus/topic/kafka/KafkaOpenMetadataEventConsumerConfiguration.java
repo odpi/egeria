@@ -2,9 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+
 import java.util.Properties;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 /**
  * Configuration for the {@link KafkaOpenMetadataEventConsumerConfiguration}
@@ -14,10 +15,10 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 public class KafkaOpenMetadataEventConsumerConfiguration
 {
 	private final Properties properties;
-	private OMRSAuditLog     auditLog;
+	private       AuditLog   auditLog;
 
-	public KafkaOpenMetadataEventConsumerConfiguration(Properties    properties,
-													   OMRSAuditLog  auditLog)
+	KafkaOpenMetadataEventConsumerConfiguration(Properties properties,
+												AuditLog   auditLog)
 	{
 		this.properties = properties;
 		this.auditLog = auditLog;
@@ -30,7 +31,7 @@ public class KafkaOpenMetadataEventConsumerConfiguration
 	 * @param property property object
 	 * @return property value
 	 */
-	public int getIntProperty(KafkaOpenMetadataEventConsumerProperty property)
+	int getIntProperty(KafkaOpenMetadataEventConsumerProperty property)
 	{
 		return Integer.parseInt(getProperty(property));		
 	}
@@ -42,7 +43,7 @@ public class KafkaOpenMetadataEventConsumerConfiguration
 	 * @param property property object
 	 * @return property value
 	 */
-	public long getLongProperty(KafkaOpenMetadataEventConsumerProperty property)
+	long getLongProperty(KafkaOpenMetadataEventConsumerProperty property)
 	{
 		return Long.parseLong(getProperty(property));
 		
@@ -62,20 +63,12 @@ public class KafkaOpenMetadataEventConsumerConfiguration
 		{
 			final String actionDescription = "getProperty";
 
-			KafkaOpenMetadataTopicConnectorAuditCode auditCode = KafkaOpenMetadataTopicConnectorAuditCode.MISSING_PROPERTY;
-
-			auditLog.logRecord(actionDescription,
-							   auditCode.getLogMessageId(),
-							   auditCode.getSeverity(),
-							   auditCode.getFormattedLogMessage(property.getPropertyName()),
-							   null,
-							   auditCode.getSystemAction(),
-							   auditCode.getUserAction());
+			auditLog.logMessage(actionDescription,
+								KafkaOpenMetadataTopicConnectorAuditCode.MISSING_PROPERTY.getMessageDefinition(property.getPropertyName()));
 
 			return "0";
 		}
 
 		return value;
 	}
-	
 }

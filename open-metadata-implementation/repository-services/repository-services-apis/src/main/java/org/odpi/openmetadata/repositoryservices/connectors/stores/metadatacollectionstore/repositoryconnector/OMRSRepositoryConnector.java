@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -13,7 +15,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
  * The OMRSRepositoryConnector defines the interface for an OMRS Repository Connector.  It is an abstract
  * class since not all of the methods for OMRSMetadataCollectionManager are implemented.
  */
-public abstract class OMRSRepositoryConnector extends ConnectorBase implements OMRSMetadataCollectionManager
+public abstract class OMRSRepositoryConnector extends ConnectorBase implements OMRSMetadataCollectionManager,
+                                                                               AuditLoggingComponent
 {
     protected OMRSRepositoryHelper    repositoryHelper    = null;
     protected OMRSRepositoryValidator repositoryValidator = null;
@@ -24,11 +27,11 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     protected String                  serverUserId        = null;
     protected int                     maxPageSize         = 1000;
 
-    protected String                 metadataCollectionId   = null;
-    protected String                 metadataCollectionName = null;
-    protected OMRSMetadataCollection metadataCollection     = null;
+    protected String                  metadataCollectionId   = null;
+    protected String                  metadataCollectionName = null;
+    protected OMRSMetadataCollection  metadataCollection     = null;
 
-    protected OMRSAuditLog auditLog = null;
+    protected AuditLog                auditLog = null;
 
 
 
@@ -39,15 +42,21 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     {
     }
 
+
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
      * with the correct component description and log destinations.
      *
      * @param auditLog audit log object
      */
-    public void setAuditLog(OMRSAuditLog   auditLog)
+    public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
+
+        if (metadataCollection != null)
+        {
+            metadataCollection.setAuditLog(auditLog);
+        }
     }
 
 
@@ -284,16 +293,9 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     {
         if (! super.isActive())
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_NOT_AVAILABLE;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.REPOSITORY_NOT_AVAILABLE.getMessageDefinition(serverName, methodName),
                     this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName);
         }
     }
 
@@ -311,16 +313,9 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
         {
             final String      methodName = "getMetadataCollection";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(serverName),
                     this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName);
         }
 
         return metadataCollection;

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.ValidValueConsumer;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -24,15 +25,24 @@ import java.util.Map;
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
  */
-public class ValidValuesAssetOwner implements AssetOnboardingValidValues
+public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboardingValidValues
 {
-    private String               serverName;               /* Initialized in constructor */
-    private String               serverPlatformRootURL;    /* Initialized in constructor */
-    private AssetOwnerRESTClient restClient;               /* Initialized in constructor */
+    /**
+     * Create a new client with no authentication embedded in the HTTP request and an audit log.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public ValidValuesAssetOwner(String   serverName,
+                                 String   serverPlatformRootURL,
+                                 AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+    }
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-    private static final NullRequestBody   nullRequestBody = new NullRequestBody();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -45,13 +55,31 @@ public class ValidValuesAssetOwner implements AssetOnboardingValidValues
     public ValidValuesAssetOwner(String serverName,
                                  String serverPlatformRootURL) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
+        super(serverName, serverPlatformRootURL);
+    }
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
 
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL);
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     * There is also an audit log destination.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param auditLog logging destination
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public ValidValuesAssetOwner(String   serverName,
+                                 String   serverPlatformRootURL,
+                                 String   userId,
+                                 String   password,
+                                 AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, userId, password, auditLog);
     }
 
 
@@ -71,14 +99,9 @@ public class ValidValuesAssetOwner implements AssetOnboardingValidValues
                                  String userId,
                                  String password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL, userId, password);
+        super(serverName, serverPlatformRootURL, userId, password);
     }
+
 
     /*
      * ==============================================

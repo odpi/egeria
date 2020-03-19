@@ -8,12 +8,12 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.auditlog.VirtualizationAuditCode;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.event.VirtualizerTopicListener;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.ffdc.VirtualizationErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby.ViewGeneratorDerbyConnector;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby.ViewGeneratorDerbyConnectorProvider;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -236,22 +236,15 @@ public class VirtualizationOperationalServices {
 
             return topicConnector;
         } catch (Throwable error) {
-            String methodName = "getTopicConnector";
+            final String methodName = "getTopicConnector";
 
             if (log.isDebugEnabled()) {
                 log.debug("Unable to create topic connector: " + error.toString());
             }
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage("getTopicConnector");
-
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSConfigErrorException(VirtualizationErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(methodName),
                     this.getClass().getName(),
                     methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
                     error);
         }
     }

@@ -2,15 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 /**
  * It is responsible for registering itself in the instance map.
  */
 public class OMVSServiceInstance extends AuditableServerServiceInstance
 {
-    protected String remoteServerName = null;
-    protected String remoteServerURL = null;
+    protected String remoteServerName;
+    protected String remoteServerURL;
+
     /**
      * Set up the OMVS service instance
      * 
@@ -24,11 +25,12 @@ public class OMVSServiceInstance extends AuditableServerServiceInstance
      */
     public OMVSServiceInstance(String                  serverName,
                                String                  serviceName,
-                               OMRSAuditLog            auditLog,
+                               AuditLog                auditLog,
                                String                  localServerUserId,
                                int                     maxPageSize,
                                String                  remoteServerName,
-                               String                  remoteServerURL ) {
+                               String                  remoteServerURL )
+    {
         super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
         this.remoteServerName = remoteServerName;
         this.remoteServerURL = remoteServerURL;

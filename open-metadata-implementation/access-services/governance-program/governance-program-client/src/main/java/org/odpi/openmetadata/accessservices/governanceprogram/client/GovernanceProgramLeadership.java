@@ -8,11 +8,11 @@ import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReference;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomain;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficer;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.PersonalProfile;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -29,32 +29,32 @@ import java.util.Map;
  */
 public class GovernanceProgramLeadership  implements GovernanceLeadershipInterface
 {
-    private String                      serverName;       /* Initialized in constructor */
-    private String                      omasServerURL;    /* Initialized in constructor */
-    private GovernanceProgramRESTClient restClient;       /* Initialized in constructor */
+    private String                      serverName;               /* Initialized in constructor */
+    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
+    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
-
+    private AuditLog                auditLog                = null;
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public GovernanceProgramLeadership(String     serverName,
-                                       String     omasServerURL) throws InvalidParameterException
+    public GovernanceProgramLeadership(String serverName,
+                                       String serverPlatformURLRoot) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
-        this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new GovernanceProgramRESTClient(serverName, omasServerURL);
+        this.serverName            = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
@@ -63,312 +63,84 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      *
      * @throws InvalidParameterException bad input parameters
      */
     public GovernanceProgramLeadership(String     serverName,
-                                       String     omasServerURL,
+                                       String     serverPlatformURLRoot,
                                        String     userId,
                                        String     password) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
-        this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new GovernanceProgramRESTClient(serverName, omasServerURL, userId, password);
+        this.serverName            = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
+    }
+
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param maxPageSize pre-initialized parameter limit
+     * @param auditLog logging destination
+     *
+     * @throws InvalidParameterException bad input parameters
+     */
+    public GovernanceProgramLeadership(String   serverName,
+                                       String   serverPlatformURLRoot,
+                                       int      maxPageSize,
+                                       AuditLog auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Constructor (no security)";
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName            = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
+        this.auditLog              = auditLog;
     }
 
 
     /**
-     * Create a personal profile for an individual who is to be appointed to a governance role but does not
-     * have a profile in open metadata.
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
      *
-     * @param userId the name of the calling user.
-     * @param profileUserId userId of the individual whose profile this is.
-     * @param employeeNumber personnel/serial/unique employee number of the individual.
-     * @param fullName full name of the person.
-     * @param knownName known name or nickname of the individual.
-     * @param jobTitle job title of the individual.
-     * @param jobRoleDescription job description of the individual.
-     * @param additionalProperties  additional properties about the individual.
-     * @return Unique identifier for the personal profile.
-     * @throws InvalidParameterException the employee number or known name is null.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    public String createPersonalProfile(String              userId,
-                                        String              profileUserId,
-                                        String              employeeNumber,
-                                        String              fullName,
-                                        String              knownName,
-                                        String              jobTitle,
-                                        String              jobRoleDescription,
-                                        Map<String, String> additionalProperties) throws InvalidParameterException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException
-    {
-        final String   methodName = "createPersonalProfile";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/personal-profiles";
-
-        final String   profileUserIdParameterName = "profileUserId";
-        final String   employeeNumberParameterName = "employeeNumber";
-        final String   knownNameParameterName = "knownName";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(profileUserId, profileUserIdParameterName, methodName);
-        invalidParameterHandler.validateName(employeeNumber, employeeNumberParameterName, methodName);
-        invalidParameterHandler.validateName(knownName, knownNameParameterName, methodName);
-
-        PersonalDetailsRequestBody  requestBody = new PersonalDetailsRequestBody();
-        requestBody.setUserId(profileUserId);
-        requestBody.setEmployeeNumber(employeeNumber);
-        requestBody.setFullName(fullName);
-        requestBody.setKnownName(knownName);
-        requestBody.setJobTitle(jobTitle);
-        requestBody.setJobRoleDescription(jobRoleDescription);
-        requestBody.setAdditionalProperties(additionalProperties);
-
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getGUID();
-    }
-
-
-    /**
-     * Update properties for the personal properties.  Null values result in empty fields in the profile.
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize pre-initialized parameter limit
+     * @param auditLog logging destination
      *
-     * @param userId the name of the calling user.
-     * @param profileGUID unique identifier for the profile.
-     * @param employeeNumber personnel/serial/unique employee number of the individual. Used to verify the profileGUID.
-     * @param fullName full name of the person.
-     * @param knownName known name or nickname of the individual.
-     * @param jobTitle job title of the individual.
-     * @param jobRoleDescription job description of the individual.
-     * @param additionalProperties  additional properties about the individual.
-     * @throws InvalidParameterException the known name is null or the employeeNumber does not match the profileGUID.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
+     * @throws InvalidParameterException bad input parameters
      */
-    public void   updatePersonalProfile(String              userId,
-                                        String              profileGUID,
-                                        String              employeeNumber,
-                                        String              fullName,
-                                        String              knownName,
-                                        String              jobTitle,
-                                        String              jobRoleDescription,
-                                        Map<String, String> additionalProperties) throws InvalidParameterException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException
+    public GovernanceProgramLeadership(String     serverName,
+                                       String     serverPlatformURLRoot,
+                                       String     userId,
+                                       String     password,
+                                       int        maxPageSize,
+                                       AuditLog   auditLog) throws InvalidParameterException
     {
-        final String   methodName = "updatePersonalProfile";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/personal-profiles/{2}";
+        final String methodName = "Constructor (with security)";
 
-        final String   guidParameterName = "profileGUID";
-        final String   employeeNumberParameterName = "employeeNumber";
-        final String   knownNameParameterName = "knownName";
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(profileGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateName(employeeNumber, employeeNumberParameterName, methodName);
-        invalidParameterHandler.validateName(knownName, knownNameParameterName, methodName);
-
-        PersonalDetailsRequestBody  requestBody = new PersonalDetailsRequestBody();
-        requestBody.setEmployeeNumber(employeeNumber);
-        requestBody.setFullName(fullName);
-        requestBody.setKnownName(knownName);
-        requestBody.setJobTitle(jobTitle);
-        requestBody.setJobRoleDescription(jobRoleDescription);
-        requestBody.setAdditionalProperties(additionalProperties);
-
-
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  profileGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-    }
-
-
-    /**
-     * Delete the personal profile.
-     *
-     * @param userId the name of the calling user.
-     * @param profileGUID unique identifier for the profile.
-     * @param employeeNumber personnel/serial/unique employee number of the individual.
-     * @throws InvalidParameterException the employee number or full name is null.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    public void   deletePersonalProfile(String              userId,
-                                        String              profileGUID,
-                                        String              employeeNumber) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
-    {
-        final String   methodName = "deletePersonalProfile";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/personal-profiles/{2}/delete";
-
-        final String   guidParameterName = "profileGUID";
-        final String   employeeNumberParameterName = "employeeNumber";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(profileGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateName(employeeNumber, employeeNumberParameterName, methodName);
-
-        PersonalProfileValidatorRequestBody  requestBody = new PersonalProfileValidatorRequestBody();
-        requestBody.setEmployeeNumber(employeeNumber);
-
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  profileGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-    }
-
-
-    /**
-     * Retrieve a personal profile by guid.
-     *
-     * @param userId the name of the calling user.
-     * @param profileGUID unique identifier for the profile.
-     * @return personal profile object.
-     * @throws InvalidParameterException the unique identifier of the personal profile is either null or invalid.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    public PersonalProfile getPersonalProfileByGUID(String        userId,
-                                                    String        profileGUID) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
-    {
-        final String   methodName = "getPersonalProfileByGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/personal-profiles/{2}";
-
-        final String   guidParameterName = "profileGUID";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(profileGUID, guidParameterName, methodName);
-
-        PersonalProfileResponse restResult = restClient.callPersonalProfileGetRESTCall(methodName,
-                                                                                       omasServerURL + urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       profileGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getPersonalProfile();
-    }
-
-
-    /**
-     * Retrieve a personal profile by personnel/serial/unique employee number of the individual.
-     *
-     * @param userId the name of the calling user.
-     * @param employeeNumber personnel/serial/unique employee number of the individual.
-     * @return personal profile object.
-     * @throws InvalidParameterException the employee number is null.
-     * @throws EmployeeNumberNotUniqueException more than one personal profile was found.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    public PersonalProfile getPersonalProfileByEmployeeNumber(String         userId,
-                                                              String         employeeNumber) throws InvalidParameterException,
-                                                                                                    EmployeeNumberNotUniqueException,
-                                                                                                    PropertyServerException,
-                                                                                                    UserNotAuthorizedException
-    {
-        final String   methodName = "getPersonalProfileByEmployeeNumber";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/personal-profiles/by-employee-number/{2}";
-
-        final String   employeeNumberParameterName = "employeeNumber";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(employeeNumber, employeeNumberParameterName, methodName);
-
-        PersonalProfileResponse restResult = restClient.callPersonalProfileGetRESTCall(methodName,
-                                                                                       omasServerURL + urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       employeeNumber);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowEmployeeNumberNotUniqueException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getPersonalProfile();
-    }
-
-
-    /**
-     * Return a list of candidate personal profiles for an individual.  It matches on full name and known name.
-     * The name may include wild card parameters.
-     *
-     * @param userId the name of the calling user.
-     * @param name name of individual.
-     * @return list of personal profile objects.
-     * @throws InvalidParameterException the name is null.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    public List<PersonalProfile> getPersonalProfilesByName(String        userId,
-                                                           String        name) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
-    {
-        final String   methodName = "getPersonalProfilesByName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/personal-profiles/by-name/{2}";
-
-        final String   nameParameterName = "name";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(name, nameParameterName, methodName);
-
-        PersonalProfileListResponse restResult = restClient.callPersonalProfileListGetRESTCall(methodName,
-                                                                                               omasServerURL + urlTemplate,
-                                                                                               serverName,
-                                                                                               userId,
-                                                                                               name);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getPersonalProfiles();
+        this.serverName            = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        this.auditLog              = auditLog;
     }
 
 
@@ -406,7 +178,7 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         final String   titleParameterName = "title";
         final String   governanceDomainParameterName = "governanceDomain";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(appointmentId, appointmentIdParameterName, methodName);
         invalidParameterHandler.validateName(title, titleParameterName, methodName);
@@ -421,14 +193,14 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         requestBody.setExternalReferences(externalReferences);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGUID();
     }
@@ -471,7 +243,7 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         final String   titleParameterName = "title";
         final String   governanceDomainParameterName = "governanceDomain";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceOfficerGUID, guidParameterName, methodName);
         invalidParameterHandler.validateName(appointmentId, appointmentIdParameterName, methodName);
@@ -487,15 +259,15 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         requestBody.setExternalReferences(externalReferences);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
                                                                   governanceOfficerGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
     }
 
 
@@ -524,7 +296,7 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         final String   appointmentIdParameterName = "appointmentId";
         final String   governanceDomainParameterName = "governanceDomain";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateGUID(governanceOfficerGUID, guidParameterName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(appointmentId, appointmentIdParameterName, methodName);
@@ -535,15 +307,15 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         requestBody.setAppointmentId(appointmentId);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
                                                                   governanceOfficerGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
     }
 
 
@@ -567,19 +339,19 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
 
         final String   guidParameterName = "governanceOfficerGUID";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceOfficerGUID, guidParameterName, methodName);
 
         GovernanceOfficerResponse restResult = restClient.callGovernanceOfficerGetRESTCall(methodName,
-                                                                                           omasServerURL + urlTemplate,
+                                                                                           serverPlatformURLRoot + urlTemplate,
                                                                                            serverName,
                                                                                            userId,
                                                                                            governanceOfficerGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGovernanceOfficer();
     }
@@ -607,20 +379,20 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
 
         final String   appointmentIdParameterName = "appointmentId";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(appointmentId, appointmentIdParameterName, methodName);
 
         GovernanceOfficerResponse restResult = restClient.callGovernanceOfficerGetRESTCall(methodName,
-                                                                                           omasServerURL + urlTemplate,
+                                                                                           serverPlatformURLRoot + urlTemplate,
                                                                                            serverName,
                                                                                            userId,
                                                                                            appointmentId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
         exceptionHandler.detectAndThrowAppointmentIdNotUniqueException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGovernanceOfficer();
     }
@@ -642,17 +414,17 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         final String   methodName = "getGovernanceOfficers";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
 
         GovernanceOfficerListResponse restResult = restClient.callGovernanceOfficerListGetRESTCall(methodName,
-                                                                                                   omasServerURL + urlTemplate,
+                                                                                                   serverPlatformURLRoot + urlTemplate,
                                                                                                    serverName,
                                                                                                    userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGovernanceOfficers();
     }
@@ -674,17 +446,17 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         final String   methodName = "getGovernanceOfficers";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/active";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
 
         GovernanceOfficerListResponse restResult = restClient.callGovernanceOfficerListGetRESTCall(methodName,
-                                                                                                   omasServerURL + urlTemplate,
+                                                                                                   serverPlatformURLRoot + urlTemplate,
                                                                                                    serverName,
                                                                                                    userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGovernanceOfficers();
     }
@@ -712,7 +484,7 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
 
         final String   governanceDomainParameterName = "governanceDomain";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         exceptionHandler.validateGovernanceDomain(governanceDomain, governanceDomainParameterName, methodName);
 
@@ -720,14 +492,14 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         requestBody.setGovernanceDomain(governanceDomain);
 
         GovernanceOfficerListResponse restResult = restClient.callGovernanceOfficerListPostRESTCall(methodName,
-                                                                                                    omasServerURL + urlTemplate,
+                                                                                                    serverPlatformURLRoot + urlTemplate,
                                                                                                     requestBody,
                                                                                                     serverName,
                                                                                                     userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGovernanceOfficers();
     }
@@ -757,7 +529,7 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         final String   governanceOfficerGUIDParameterName = "governanceOfficerGUID";
         final String   profileGUIDParameterName = "profileGUID";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceOfficerGUID, governanceOfficerGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
@@ -767,15 +539,15 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         requestBody.setEffectiveDate(startDate);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
                                                                   governanceOfficerGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
     }
 
 
@@ -803,7 +575,7 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         final String   governanceOfficerGUIDParameterName = "governanceOfficerGUID";
         final String   profileGUIDParameterName = "profileGUID";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceOfficerGUID, governanceOfficerGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
@@ -813,14 +585,14 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         requestBody.setEffectiveDate(endDate);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
                                                                   governanceOfficerGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
     }
 }

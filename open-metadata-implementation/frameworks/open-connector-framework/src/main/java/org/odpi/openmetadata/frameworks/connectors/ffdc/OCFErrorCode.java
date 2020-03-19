@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +31,7 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a user should correct the error</li>
  * </ul>
  */
-public enum OCFErrorCode
+public enum OCFErrorCode implements ExceptionMessageSet
 {
     NULL_CONNECTION(400, "OCF-CONNECTION-400-001 ",
             "Null connection object passed on request for new connector instance",
@@ -160,11 +162,7 @@ public enum OCFErrorCode
             "The system is unable to create the requested connector instance because the supplied connection is a virtual connection but the connector's class does not implement org.odpi.openmetadata.VirtualConnector. ",
             "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.");
 
-    private int    httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
+    private ExceptionMessageDefinition messageDefinition;
 
     private static final Logger log = LoggerFactory.getLogger(OCFErrorCode.class);
 
@@ -185,17 +183,23 @@ public enum OCFErrorCode
      */
     OCFErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.httpErrorCode = httpErrorCode;
-        this.errorMessageId = errorMessageId;
-        this.errorMessage = errorMessage;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                errorMessageId,
+                                                                errorMessage,
+                                                                systemAction,
+                                                                userAction);
     }
 
 
+    /**
+     * Return the HTTP error code for this exception.
+     *
+     * @return int
+     */
+    @Deprecated
     public int getHTTPErrorCode()
     {
-        return httpErrorCode;
+        return messageDefinition.getHttpErrorCode();
     }
 
 
@@ -204,9 +208,10 @@ public enum OCFErrorCode
      *
      * @return errorMessageId
      */
+    @Deprecated
     public String getErrorMessageId()
     {
-        return errorMessageId;
+        return messageDefinition.getMessageId();
     }
 
 
@@ -216,9 +221,10 @@ public enum OCFErrorCode
      * @param params   strings that plug into the placeholders in the errorMessage
      * @return errorMessage (formatted with supplied parameters)
      */
+    @Deprecated
     public String getFormattedErrorMessage(String... params)
     {
-        MessageFormat mf = new MessageFormat(errorMessage);
+        MessageFormat mf = new MessageFormat(messageDefinition.getMessageTemplate());
         String result = mf.format(params);
 
         log.debug(String.format("OCFErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
@@ -233,9 +239,10 @@ public enum OCFErrorCode
      *
      * @return systemAction
      */
+    @Deprecated
     public String getSystemAction()
     {
-        return systemAction;
+        return messageDefinition.getSystemAction();
     }
 
 
@@ -244,8 +251,34 @@ public enum OCFErrorCode
      *
      * @return userAction
      */
+    @Deprecated
     public String getUserAction()
     {
-        return userAction;
+        return messageDefinition.getUserAction();
+    }
+
+
+    /**
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
+     *
+     * @return message definition object.
+     */
+    public ExceptionMessageDefinition getMessageDefinition()
+    {
+        return messageDefinition;
+    }
+
+
+    /**
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
+     *
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
+     */
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
+    {
+        messageDefinition.setMessageParameters(params);
+
+        return messageDefinition;
     }
 }

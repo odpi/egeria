@@ -5,8 +5,8 @@ package org.odpi.openmetadata.repositoryservices.eventmanagement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.InternalOMRSEventProcessingContext;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
@@ -52,9 +52,9 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private OMRSAuditLog auditLog;
+    private AuditLog auditLog;
 
-    private static final Logger       log      = LoggerFactory.getLogger(OMRSRepositoryEventManager.class);
+    private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryEventManager.class);
 
 
     /**
@@ -68,7 +68,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     public OMRSRepositoryEventManager(String                          eventManagerName,
                                       OMRSRepositoryEventExchangeRule exchangeRule,
                                       OMRSRepositoryContentValidator  repositoryValidator,
-                                      OMRSAuditLog                    auditLog)
+                                      AuditLog                        auditLog)
     {
         super(eventManagerName);
 
@@ -77,30 +77,17 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
         final String actionDescription = "Initialize OMRS Event Manager";
         final String methodName        = "OMRSRepositoryEventManager";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.INITIALIZING_EVENT_MANAGER;
-
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(eventManagerName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.INITIALIZING_EVENT_MANAGER.getMessageDefinition(eventManagerName));
 
         /*
          * If the exchangeRule is null, throw exception
          */
         if (exchangeRule == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_EXCHANGE_RULE;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_EXCHANGE_RULE.getMessageDefinition(methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         this.exchangeRule = exchangeRule;
@@ -110,15 +97,9 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
          */
         if (repositoryValidator == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_REPOSITORY_VALIDATOR;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_REPOSITORY_VALIDATOR.getMessageDefinition(),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         this.repositoryValidator = repositoryValidator;
@@ -137,16 +118,9 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     {
         final String actionDescription = "Register TypeDef Event Processor";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.REGISTERING_EVENT_PROCESSOR;
-
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(typeDefEventConsumer.getEventProcessorName(),
-                                                            super.getEventProcessorName()),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.REGISTERING_EVENT_PROCESSOR.getMessageDefinition(typeDefEventConsumer.getEventProcessorName(),
+                                                                                           super.getEventProcessorName()));
 
         typeDefEventConsumers.add(typeDefEventConsumer);
     }
@@ -162,16 +136,9 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     {
         final String actionDescription = "Register Instance Event Processor";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.REGISTERING_EVENT_PROCESSOR;
-
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(instanceEventConsumer.getEventProcessorName(),
-                                                            super.getEventProcessorName()),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.REGISTERING_EVENT_PROCESSOR.getMessageDefinition(instanceEventConsumer.getEventProcessorName(),
+                                                                                           super.getEventProcessorName()));
 
         instanceEventConsumers.add(instanceEventConsumer);
     }
@@ -187,16 +154,9 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     {
         final String actionDescription = "Register Instance Event Processor";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.REGISTERING_EVENT_PROCESSOR;
-
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(repositoryEventProcessor.getEventProcessorName(),
-                                                            super.getEventProcessorName()),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.REGISTERING_EVENT_PROCESSOR.getMessageDefinition(repositoryEventProcessor.getEventProcessorName(),
+                                                                                           super.getEventProcessorName()));
 
         instanceEventConsumers.add(repositoryEventProcessor);
         typeDefEventConsumers.add(repositoryEventProcessor);
@@ -211,17 +171,10 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     {
         final String actionDescription = "Start OMRS Event Manager";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.STARTING_EVENT_MANAGER;
-
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(super.eventProcessorName,
-                                                            Integer.toString(typeDefEventConsumers.size()),
-                                                            Integer.toString(instanceEventConsumers.size())),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.STARTING_EVENT_MANAGER.getMessageDefinition(super.eventProcessorName,
+                                                                                      Integer.toString(typeDefEventConsumers.size()),
+                                                                                      Integer.toString(instanceEventConsumers.size())));
 
 
         /*
@@ -256,16 +209,9 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
         if (!typeDefEventBuffer.isEmpty())
         {
-            OMRSAuditCode auditCode = OMRSAuditCode.DRAINING_TYPEDEF_EVENT_BUFFER;
-
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(super.eventProcessorName,
-                                                                Integer.toString(typeDefEventBuffer.size())),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.DRAINING_TYPEDEF_EVENT_BUFFER.getMessageDefinition(super.eventProcessorName,
+                                                                                                 Integer.toString(typeDefEventBuffer.size())));
 
             for (OMRSTypeDefEvent event : typeDefEventBuffer)
             {
@@ -280,16 +226,9 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
         if (!instanceEventBuffer.isEmpty())
         {
-            OMRSAuditCode auditCode = OMRSAuditCode.DRAINING_INSTANCE_EVENT_BUFFER;
-
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(super.eventProcessorName,
-                                                                Integer.toString(instanceEventBuffer.size())),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.DRAINING_INSTANCE_EVENT_BUFFER.getMessageDefinition(super.eventProcessorName,
+                                                                                                  Integer.toString(instanceEventBuffer.size())));
 
             for (BufferedInstanceEvent event : instanceEventBuffer)
             {

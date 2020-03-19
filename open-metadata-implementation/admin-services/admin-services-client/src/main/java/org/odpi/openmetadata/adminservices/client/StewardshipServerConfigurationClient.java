@@ -85,7 +85,7 @@ public class StewardshipServerConfigurationClient extends EngineHostConfiguratio
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -119,7 +119,7 @@ public class StewardshipServerConfigurationClient extends EngineHostConfiguratio
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -152,7 +152,7 @@ public class StewardshipServerConfigurationClient extends EngineHostConfiguratio
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,

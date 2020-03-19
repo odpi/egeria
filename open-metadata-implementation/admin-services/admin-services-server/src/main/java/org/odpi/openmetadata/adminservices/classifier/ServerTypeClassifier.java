@@ -79,15 +79,9 @@ public class ServerTypeClassifier
                 (dataEngineProxyConfig == null) &&
                 (dataPlatformServicesConfig == null))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.EMPTY_CONFIGURATION;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.EMPTY_CONFIGURATION.getMessageDefinition(serverName),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
 
 
@@ -99,15 +93,9 @@ public class ServerTypeClassifier
             /*
              * To get here, then another service is configured but not the repository services.
              */
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.NULL_REPOSITORY_CONFIG;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.NULL_REPOSITORY_CONFIG.getMessageDefinition(serverName),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
 
         /*
@@ -753,15 +741,9 @@ public class ServerTypeClassifier
     {
         if (configurationDocument == null)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_SERVER_CONFIG;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_SERVER_CONFIG.getMessageDefinition(serverName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
 
@@ -784,15 +766,9 @@ public class ServerTypeClassifier
     {
         if (serverTypeClassification == null)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.UNCLASSIFIABLE_SERVER;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.UNCLASSIFIABLE_SERVER.getMessageDefinition(serverName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
 
@@ -841,17 +817,11 @@ public class ServerTypeClassifier
 
         if (subsystemConfig != null)
         {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.INCOMPATIBLE_SUBSYSTEMS;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                     serverTypeName,
-                                                                                                     subsystemName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+           throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.INCOMPATIBLE_SUBSYSTEMS.getMessageDefinition(serverName,
+                                                                                                                      serverTypeName,
+                                                                                                                      subsystemName),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
     }
 }

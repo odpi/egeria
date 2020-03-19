@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
 /**
  * The OpenMetadataArchiveProviderStoreBase provides a base class for the connector provider supporting OMRS
@@ -16,11 +17,9 @@ public abstract class OpenMetadataArchiveStoreProviderBase extends ConnectorProv
     /**
      * Default Constructor
      */
-    public OpenMetadataArchiveStoreProviderBase()
+    protected OpenMetadataArchiveStoreProviderBase()
     {
-        /*
-         * Nothing to do
-         */
+        super.setConnectorComponentDescription(OMRSAuditingComponent.ARCHIVE_STORE_CONNECTOR);
     }
 }
 

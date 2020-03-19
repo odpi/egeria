@@ -1840,14 +1840,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         }
         catch (Throwable   error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY;
-
-            throw new ClassificationErrorException(errorCode.getHTTPErrorCode(),
+            throw new ClassificationErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(repositoryName,
+                                                                                                                        classificationName,
+                                                                                                                        entityType.getTypeDefName()),
                                                    this.getClass().getName(),
-                                                   methodName,
-                                                   error.getMessage(),
-                                                   errorCode.getSystemAction(),
-                                                   errorCode.getUserAction());
+                                                   methodName);
         }
 
         /*

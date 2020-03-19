@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.ProjectHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +63,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
@@ -103,7 +103,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
@@ -153,7 +153,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
@@ -219,7 +219,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
@@ -266,7 +266,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
@@ -331,7 +331,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
@@ -384,7 +384,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied project - the calling layer should not allow this.
         try {

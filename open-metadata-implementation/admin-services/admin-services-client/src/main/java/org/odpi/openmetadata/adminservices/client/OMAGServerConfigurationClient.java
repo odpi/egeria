@@ -63,7 +63,7 @@ public abstract class OMAGServerConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
     }
 
@@ -101,7 +101,7 @@ public abstract class OMAGServerConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
     }
 
@@ -157,7 +157,7 @@ public abstract class OMAGServerConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         URLRequestBody requestBody = new URLRequestBody();
@@ -287,7 +287,7 @@ public abstract class OMAGServerConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         NullRequestBody requestBody = new NullRequestBody();
@@ -345,16 +345,9 @@ public abstract class OMAGServerConfigurationClient
 
         if (maxPageSize < 0)
         {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_MAX_PAGE_SIZE;
-            String             errorMessage = errorCode.getErrorMessageId()
-                                            + errorCode.getFormattedErrorMessage(serverName, Integer.toString(maxPageSize));
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+           throw new OMAGInvalidParameterException(OMAGAdminErrorCode.BAD_MAX_PAGE_SIZE.getMessageDefinition(serverName, Integer.toString(maxPageSize)),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -503,7 +496,7 @@ public abstract class OMAGServerConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -557,7 +550,7 @@ public abstract class OMAGServerConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -637,7 +630,7 @@ public abstract class OMAGServerConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -670,7 +663,7 @@ public abstract class OMAGServerConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         URLRequestBody requestBody = new URLRequestBody();

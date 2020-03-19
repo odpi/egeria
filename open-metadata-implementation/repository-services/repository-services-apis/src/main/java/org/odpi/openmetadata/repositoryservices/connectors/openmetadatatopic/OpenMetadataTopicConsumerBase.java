@@ -3,13 +3,12 @@
 
 package org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 
 import java.util.ArrayList;
@@ -20,11 +19,11 @@ import java.util.List;
  * events on the embedded event bus connector
  */
 public class OpenMetadataTopicConsumerBase extends ConnectorBase implements VirtualConnectorExtension,
-                                                                            AuditableConnector
+                                                                            AuditLoggingComponent
 {
     protected List<OpenMetadataTopicConnector> eventBusConnectors = new ArrayList<>();
     protected String                           connectionName     = "<Unknown>";
-    protected OMRSAuditLog                     auditLog           = null;
+    protected AuditLog                         auditLog           = null;
 
     /**
      * Set up the list of connectors that this virtual connector will use to support its interface.
@@ -66,7 +65,7 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
      *
      * @param auditLog audit log object
      */
-    public void setAuditLog(OMRSAuditLog auditLog)
+    public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
     }
@@ -82,15 +81,9 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
     {
         if (eventBusConnectors.isEmpty())
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NO_EVENT_BUS_CONNECTORS;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(connectionName);
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectorCheckedException(OMRSErrorCode.NO_EVENT_BUS_CONNECTORS.getMessageDefinition(connectionName),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
         }
     }
 
