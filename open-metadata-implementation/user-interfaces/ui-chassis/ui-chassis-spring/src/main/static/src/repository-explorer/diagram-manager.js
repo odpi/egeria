@@ -75,7 +75,7 @@ class RexDiagramManager extends PolymerElement {
 
                 </div>
 
-                <div id='drawingArea' style="width=100%; position:absolute; top:60px; left:0px; overflow: scroll; background-color:#FFFFFF">
+                <div id='drawingArea' style="width:1200px; position:absolute; top:60px; left:0px; overflow: scroll; background-color:#FFFFFF; padding:0px;">
                 Drawing area below...
                 </div>
             </body>

@@ -94,7 +94,7 @@ class NetworkDiagram extends PolymerElement {
                 <div id="pngdataurl" style="display:none"></div>
                 <canvas id="canvas" width="1200" height="1200" style="display:none"></canvas>
 
-                <div id="ins" style="position:relative; overflow: auto; background-color:#FFFFFF">
+                <div id="ins" style="position:relative; overflow: auto; background-color:#FFFFFF; padding:0px;">
                      <p>
                      Placeholder for network diagram...
                      </p>
@@ -211,7 +211,7 @@ class NetworkDiagram extends PolymerElement {
             },
 
             /*
-             * Properties for handling color themese. These are defined in CSS styles
+             * Properties for handling color themes. These are defined in CSS styles
              * but because nodes and links are dynamically re-colored (on selection for
              * example) these are needed as string variables.
              */
@@ -220,9 +220,17 @@ class NetworkDiagram extends PolymerElement {
                 value : ""
             },
 
+            /*
+             * For text labels (which are rendered against white background) the default
+             * primary color (aqua) may be too light. Use a darker shade of the primary
+             * color for labels. This affects the focus entity or relationship label.
+             * If primary is aqua a shade similar to "#50aaba" works well.
+             * The color is initialised to empty here and set up as a relative shade
+             * when cpt ready.
+             */
             egeria_text_color_string : {
                  type : String,
-                 value : "#50aaba"
+                 value : ""
             },
 
             /*
@@ -299,10 +307,15 @@ class NetworkDiagram extends PolymerElement {
          *  To support dynamic theming of colors we need to detect what the primary color has been
          *  set to - this is done via a CSS variable. For most purposes the CSS variable is
          *  sufficient - but the network-diagram will dynamically color switch as elements are
-         *  selected - so we need the primary color accessible at runtime.
+         *  selected - so we need the primary color accessible at runtime. We also need to
+         * set up a slightly dark shade of the primary color for text labels against white
+         * background.
          */
         const styles = window.getComputedStyle(this);
         this.egeria_primary_color_string = styles.getPropertyValue('--egeria-primary-color');
+        var splitPrimary = this.egeria_primary_color_string.split(' ');
+        var strippedPrimary = splitPrimary[splitPrimary.length-1];
+        this.egeria_text_color_string = this.alterShade(strippedPrimary, -20);
 
         /*
          * Finally, render the diagram...
@@ -1120,6 +1133,28 @@ class NetworkDiagram extends PolymerElement {
                 }
             }
         }
+    }
+
+
+    alterShade(color, percent) {
+
+        var R = parseInt(color.substring(1,3),16);
+        var G = parseInt(color.substring(3,5),16);
+        var B = parseInt(color.substring(5,7),16);
+
+        R = parseInt(R * (100 + percent) / 100);
+        G = parseInt(G * (100 + percent) / 100);
+        B = parseInt(B * (100 + percent) / 100);
+
+        R = (R<255)?R:255;
+        G = (G<255)?G:255;
+        B = (B<255)?B:255;
+
+        var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+        var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+        var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+
+        return "#"+RR+GG+BB;
     }
 
 }
