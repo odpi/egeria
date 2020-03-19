@@ -42,7 +42,7 @@ import java.util.*;
                 contact = @Contact(url = "https://egeria.odpi.org", name = "ODPi", email = "odpi-project-egeria@lists.odpi.org")
         ),
 
-        externalDocs = @ExternalDocumentation(description = "OMAG Server Platform documentation", url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/")
+        externalDocs = @ExternalDocumentation(description = "OMAG Server Chassis documentation.", url="https://egeria.odpi.org/open-metadata-implementation/server-chassis/")
         )
 
 
