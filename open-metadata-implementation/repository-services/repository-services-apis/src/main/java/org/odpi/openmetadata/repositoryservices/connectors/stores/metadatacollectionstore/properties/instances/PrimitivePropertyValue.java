@@ -248,16 +248,11 @@ public class PrimitivePropertyValue extends InstancePropertyValue
                          * some other code trying to set the value as a type other than Long.
                          * This is an internal error that needs to be debugged and fixed.
                          */
-                        OMRSErrorCode errorCode    = OMRSErrorCode.INVALID_PRIMITIVE_TYPE;
-                        String        errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage("OM_PRIMITIVE_TYPE_DATE", primitiveDefCategory.getJavaClassName(), primitiveValue.getClass().getName());
-
-                        throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                        throw new OMRSLogicErrorException(OMRSErrorCode.INVALID_PRIMITIVE_TYPE.getMessageDefinition("OM_PRIMITIVE_TYPE_DATE",
+                                                                                                                    primitiveDefCategory.getJavaClassName(),
+                                                                                                                    primitiveValue.getClass().getName()),
                                 this.getClass().getName(),
-                                methodName,
-                                errorMessage,
-                                errorCode.getSystemAction(),
-                                errorCode.getUserAction());
+                                methodName);
                     }
                 }
                 else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL)
@@ -307,18 +302,11 @@ public class PrimitivePropertyValue extends InstancePropertyValue
                     /*
                      * The primitive value supplied is the wrong type.  Throw an exception.
                      */
-                    OMRSErrorCode errorCode = OMRSErrorCode.INVALID_PRIMITIVE_VALUE;
-                    String errorMessage = errorCode.getErrorMessageId()
-                                        + errorCode.getFormattedErrorMessage(primitiveDefCategory.getJavaClassName(),
-                                                                             primitiveValue.getClass().getName(),
-                                                                             primitiveDefCategory.getName());
-
-                    throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                    throw new OMRSLogicErrorException(OMRSErrorCode.INVALID_PRIMITIVE_VALUE.getMessageDefinition(primitiveDefCategory.getJavaClassName(),
+                                                                                                                 primitiveValue.getClass().getName(),
+                                                                                                                 primitiveDefCategory.getName()),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
                 }
             }
         }
@@ -328,17 +316,10 @@ public class PrimitivePropertyValue extends InstancePropertyValue
              * The java class defined in the primitiveDefCategory is not known.  This is an internal error
              * that needs a code fix in PrimitiveDefCategory.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.INVALID_PRIMITIVE_CLASS_NAME;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(primitiveDefCategory.getJavaClassName(),
-                                                                            primitiveDefCategory.getName());
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.INVALID_PRIMITIVE_CLASS_NAME.getMessageDefinition(primitiveDefCategory.getJavaClassName(),
+                                                                                                              primitiveDefCategory.getName()),
                                               this.getClass().getName(),
                                               methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
                                               unknownPrimitiveClass);
         }
         catch (Error    invalidPrimitiveCategory)
@@ -346,16 +327,9 @@ public class PrimitivePropertyValue extends InstancePropertyValue
             /*
              * Some unexpected exception occurred when manipulating the Java Classes.  Probably a coding error.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.INVALID_PRIMITIVE_CATEGORY;
-            String        errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(primitiveDefCategory.getName());
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.INVALID_PRIMITIVE_CATEGORY.getMessageDefinition(primitiveDefCategory.getName()),
                                               this.getClass().getName(),
                                               methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
                                               invalidPrimitiveCategory);
         }
 

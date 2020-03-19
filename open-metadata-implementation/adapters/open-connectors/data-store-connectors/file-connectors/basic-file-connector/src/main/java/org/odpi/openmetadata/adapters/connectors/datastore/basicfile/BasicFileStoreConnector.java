@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.basicfile;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.BasicFileConnectorErrorCode;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
@@ -65,36 +66,29 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
                                 String                      fileStoreName,
                                 Throwable                   caughtException) throws FileException
     {
-        String  errorMessage;
+        ExceptionMessageDefinition messageDefinition;
 
         if (fileStoreName == null)
         {
-            errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(super.connectionBean.getQualifiedName());
+            messageDefinition = errorCode.getMessageDefinition(super.connectionBean.getQualifiedName());
         }
         else
         {
-            errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(fileStoreName,
-                                                                                              super.connectionBean.getQualifiedName());
+            messageDefinition = errorCode.getMessageDefinition(fileStoreName, super.connectionBean.getQualifiedName());
         }
 
         if (caughtException == null)
         {
-            throw new FileException(errorCode.getHTTPErrorCode(),
+            throw new FileException(messageDefinition,
                                     this.getClass().getName(),
                                     methodName,
-                                    errorMessage,
-                                    errorCode.getSystemAction(),
-                                    errorCode.getUserAction(),
                                     fileStoreName);
         }
         else
         {
-            throw new FileException(errorCode.getHTTPErrorCode(),
+            throw new FileException(messageDefinition,
                                     this.getClass().getName(),
                                     methodName,
-                                    errorMessage,
-                                    errorCode.getSystemAction(),
-                                    errorCode.getUserAction(),
                                     caughtException,
                                     fileStoreName);
         }

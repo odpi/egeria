@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.listeners;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
+import org.odpi.openmetadata.accessservices.informationview.auditlog.InformationViewAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
@@ -62,7 +62,7 @@ public class InformationViewEnterpriseOmrsEventListener implements OMRSTopicList
             /*
              * A null event was passed - probably should not happen so log audit record.
              */
-            OMRSAuditCode auditCode = OMRSAuditCode.NULL_OMRS_EVENT_RECEIVED;
+           InformationViewAuditCode auditCode = InformationViewAuditCode.NULL_OMRS_EVENT_RECEIVED;
 
             auditLog.logRecord(actionDescription,
                     auditCode.getLogMessageId(),

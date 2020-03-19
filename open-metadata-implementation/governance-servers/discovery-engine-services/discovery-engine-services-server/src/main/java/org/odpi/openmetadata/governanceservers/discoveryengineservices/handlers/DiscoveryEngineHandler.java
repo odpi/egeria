@@ -6,7 +6,8 @@ import org.odpi.openmetadata.accessservices.discoveryengine.client.*;
 import org.odpi.openmetadata.adapters.connectors.discoveryservices.CSVDiscoveryServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.discoveryservices.DuplicateSuspectDiscoveryProvider;
 import org.odpi.openmetadata.adapters.connectors.discoveryservices.SequentialDiscoveryPipelineProvider;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog.DiscoveryEngineServicesAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.discovery.*;
@@ -15,7 +16,6 @@ import org.odpi.openmetadata.frameworks.discovery.properties.*;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.properties.DiscoveryEngineStatus;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.properties.DiscoveryEngineSummary;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.*;
 
@@ -28,7 +28,7 @@ public class DiscoveryEngineHandler
 {
     private String                       serverName;               /* Initialized in constructor */
     private String                       serverUserId;             /* Initialized in constructor */
-    private OMRSAuditLog                 auditLog;                 /* Initialized in constructor */
+    private AuditLog                     auditLog;                 /* Initialized in constructor */
     private DiscoveryEngineClient        discoveryEngineClient;    /* Initialized in constructor */
     private DiscoveryConfigurationClient configurationClient;      /* Initialized in constructor */
     private int                          maxPageSize;              /* Initialized in constructor */
@@ -62,7 +62,7 @@ public class DiscoveryEngineHandler
                                   String                       serverUserId,
                                   DiscoveryConfigurationClient configurationClient,
                                   DiscoveryEngineClient        discoveryEngineClient,
-                                  OMRSAuditLog                 auditLog,
+                                  AuditLog                     auditLog,
                                   int                          maxPageSize)
     {
         this.discoveryEngineName = discoveryEngineName;
@@ -140,18 +140,11 @@ public class DiscoveryEngineHandler
 
         if (discoveryEngineProperties == null)
         {
-            DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.UNKNOWN_DISCOVERY_ENGINE_CONFIG;
-            String                           errorMessage = errorCode.getErrorMessageId()
-                                                          + errorCode.getFormattedErrorMessage(discoveryEngineName,
-                                                                                               configurationClient.getConfigurationServerName(),
-                                                                                               serverName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(DiscoveryEngineServicesErrorCode.UNKNOWN_DISCOVERY_ENGINE_CONFIG.getMessageDefinition(discoveryEngineName,
+                                                                                                                                    configurationClient.getConfigurationServerName(),
+                                                                                                                                    serverName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
         else
         {
@@ -568,16 +561,10 @@ public class DiscoveryEngineHandler
     {
         if (discoveryEngineProperties == null)
         {
-            DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.DISCOVERY_ENGINE_NOT_INITIALIZED;
-            String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                                               discoveryEngineName);
-
-            throw new DiscoveryEngineException(errorCode.getHTTPErrorCode(),
+            throw new DiscoveryEngineException(DiscoveryEngineServicesErrorCode.DISCOVERY_ENGINE_NOT_INITIALIZED.getMessageDefinition(serverName,
+                                                                                                                                      discoveryEngineName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
     }
 
@@ -677,17 +664,11 @@ public class DiscoveryEngineHandler
             }
             else
             {
-                DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NULL_DISCOVERY_SERVICE;
-                String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                                                   discoveryEngineName,
-                                                                                                                                   discoveryServerName);
-
-                throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                throw new PropertyServerException(DiscoveryEngineServicesErrorCode.NULL_DISCOVERY_SERVICE.getMessageDefinition(methodName,
+                                                                                                                               discoveryEngineName,
+                                                                                                                               discoveryServerName),
                                                    this.getClass().getName(),
-                                                   methodName,
-                                                   errorMessage,
-                                                   errorCode.getSystemAction(),
-                                                   errorCode.getUserAction());
+                                                   methodName);
             }
         }
 
@@ -745,7 +726,7 @@ public class DiscoveryEngineHandler
             }
             catch (ConnectionCheckedException  error)
             {
-                throw new InvalidParameterException(error.getErrorMessage(), error, properties.getQualifiedName() + "DiscoveryService Connection");
+                throw new InvalidParameterException(error.getReportedErrorMessage(), error, properties.getQualifiedName() + "DiscoveryService Connection");
             }
             catch (ConnectorCheckedException error)
             {

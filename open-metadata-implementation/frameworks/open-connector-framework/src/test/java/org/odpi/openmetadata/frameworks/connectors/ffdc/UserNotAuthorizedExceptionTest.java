@@ -14,12 +14,8 @@ import static org.testng.Assert.assertTrue;
  */
 public class UserNotAuthorizedExceptionTest
 {
-    private int       reportedHTTPCode           = 404;
     private String    reportingClassName         = "TestClassName";
     private String    reportingActionDescription = "TestActionDescription";
-    private String    reportedErrorMessage       = "TestErrorMessage";
-    private String    reportedSystemAction       = "TestSystemAction";
-    private String    reportedUserAction         = "TestUserAction";
     private String    userId                     = "TestUserId";
     private Throwable reportedCaughtException    = new Exception("TestReportedCaughtException");
 
@@ -36,20 +32,13 @@ public class UserNotAuthorizedExceptionTest
      */
     @Test public void testNewException()
     {
-        UserNotAuthorizedException exception = new UserNotAuthorizedException(reportedHTTPCode,
+        UserNotAuthorizedException exception = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                                                               reportingClassName,
                                                                               reportingActionDescription,
-                                                                              reportedErrorMessage,
-                                                                              reportedSystemAction,
-                                                                              reportedUserAction,
                                                                               null);
 
-        assertTrue(exception.getReportedHTTPCode() == reportedHTTPCode);
         assertTrue(exception.getReportingClassName().equals(reportingClassName));
         assertTrue(exception.getReportingActionDescription().equals(reportingActionDescription));
-        assertTrue(exception.getErrorMessage().equals(reportedErrorMessage));
-        assertTrue(exception.getReportedSystemAction().equals(reportedSystemAction));
-        assertTrue(exception.getReportedUserAction().equals(reportedUserAction));
         assertTrue(exception.getReportedCaughtException() == null);
         assertTrue(exception.getUserId() == null);
     }
@@ -60,23 +49,15 @@ public class UserNotAuthorizedExceptionTest
      */
     @Test public void testWrappingException()
     {
-        UserNotAuthorizedException exception = new UserNotAuthorizedException(reportedHTTPCode,
-                                                                            reportingClassName,
-                                                                            reportingActionDescription,
-                                                                            reportedErrorMessage,
-                                                                            reportedSystemAction,
-                                                                            reportedUserAction,
-                                                                            reportedCaughtException,
-                                                                            userId);
+        UserNotAuthorizedException exception = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+                                                                              reportingClassName,
+                                                                              reportingActionDescription,
+                                                                              reportedCaughtException,
+                                                                              userId);
 
-        assertTrue(exception.getReportedHTTPCode() == reportedHTTPCode);
         assertTrue(exception.getReportingClassName().equals(reportingClassName));
         assertTrue(exception.getReportingActionDescription().equals(reportingActionDescription));
-        assertTrue(exception.getErrorMessage().equals(reportedErrorMessage));
-        assertTrue(exception.getReportedSystemAction().equals(reportedSystemAction));
-        assertTrue(exception.getReportedUserAction().equals(reportedUserAction));
         assertFalse(exception.getReportedCaughtException().equals(null));
-        assertTrue(exception.getReportedCaughtException().getMessage().equals("TestReportedCaughtException"));
         assertTrue(exception.getUserId().equals(userId));
     }
 
@@ -86,29 +67,20 @@ public class UserNotAuthorizedExceptionTest
      */
     @Test public void testHashCode()
     {
-        UserNotAuthorizedException exception = new UserNotAuthorizedException(reportedHTTPCode,
+        UserNotAuthorizedException exception = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                                                               reportingClassName,
                                                                               reportingActionDescription,
-                                                                              reportedErrorMessage,
-                                                                              reportedSystemAction,
-                                                                              reportedUserAction,
                                                                               userId);
 
-        UserNotAuthorizedException exception2 = new UserNotAuthorizedException(reportedHTTPCode,
+        UserNotAuthorizedException exception2 = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                                                                reportingClassName,
                                                                                reportingActionDescription,
-                                                                               reportedErrorMessage,
-                                                                               reportedSystemAction,
-                                                                               reportedUserAction,
                                                                                reportedCaughtException,
                                                                                userId);
 
-        UserNotAuthorizedException exception3 = new UserNotAuthorizedException(reportedHTTPCode,
+        UserNotAuthorizedException exception3 = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                                                                reportingClassName,
                                                                                reportingActionDescription,
-                                                                               reportedErrorMessage,
-                                                                               reportedSystemAction,
-                                                                               reportedUserAction,
                                                                                reportedCaughtException,
                                                                                userId);
 

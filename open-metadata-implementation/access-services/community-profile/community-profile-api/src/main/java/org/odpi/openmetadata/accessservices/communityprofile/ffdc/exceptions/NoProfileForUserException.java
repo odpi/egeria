@@ -3,6 +3,10 @@
 package org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -15,6 +19,135 @@ public class NoProfileForUserException extends CommunityProfileCheckedExceptionB
 
     private String  userId;
 
+
+    /**
+     * This is the typical constructor used for creating an OMAGCheckedExceptionBase.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param userId calling user
+     */
+    public NoProfileForUserException(ExceptionMessageDefinition messageDefinition,
+                                     String                     className,
+                                     String                     actionDescription,
+                                     String userId)
+    {
+        super(messageDefinition, className, actionDescription);
+        this.userId = userId;
+    }
+
+
+    /**
+     * This is the typical constructor used for creating an OMAGCheckedExceptionBase.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param userId calling user
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public NoProfileForUserException(ExceptionMessageDefinition messageDefinition,
+                                     String                     className,
+                                     String                     actionDescription,
+                                     String userId,
+                                     Map<String, Object> relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, relatedProperties);
+        this.userId = userId;
+    }
+
+
+    /**
+     * This is the constructor used for creating an OMAGCheckedExceptionBase when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     * @param userId calling user
+     */
+    public NoProfileForUserException(ExceptionMessageDefinition messageDefinition,
+                                     String                     className,
+                                     String                     actionDescription,
+                                     Throwable                  caughtError,
+                                     String userId)
+    {
+        super(messageDefinition, className, actionDescription, caughtError);
+        this.userId = userId;
+    }
+
+
+    /**
+     * This is the constructor used for creating an OMAGCheckedExceptionBase when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     * @param userId calling user
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public NoProfileForUserException(ExceptionMessageDefinition messageDefinition,
+                                     String                     className,
+                                     String                     actionDescription,
+                                     Throwable                  caughtError,
+                                     String userId,
+                                     Map<String, Object>        relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
+        this.userId = userId;
+    }
+
+
+    /**
+     * This is the constructor used when receiving an exception from a remote server.  The values are
+     * stored directly in the response object and are passed explicitly to the new exception.
+     * Notice that the technical aspects of the exception - such as class name creating the exception
+     * are local values so that the implementation of the server is not exposed.
+     *
+     * @param httpCode   http response code to use if this exception flows over a REST call
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param errorMessage   description of error
+     * @param errorMessageId unique identifier for the message
+     * @param errorMessageParameters parameters that were inserted in the message
+     * @param systemAction   actions of the system as a result of the error
+     * @param userAction   instructions for correcting the error
+     * @param caughtErrorClassName   previous error causing this exception
+     * @param userId calling user
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public NoProfileForUserException(int                 httpCode,
+                                     String              className,
+                                     String              actionDescription,
+                                     String              errorMessage,
+                                     String              errorMessageId,
+                                     String[]            errorMessageParameters,
+                                     String              systemAction,
+                                     String              userAction,
+                                     String              caughtErrorClassName,
+                                     String userId,
+                                     Map<String, Object> relatedProperties)
+    {
+        super(httpCode,
+              className,
+              actionDescription,
+              errorMessage,
+              errorMessageId,
+              errorMessageParameters,
+              systemAction,
+              userAction,
+              caughtErrorClassName,
+              relatedProperties);
+
+        this.userId = userId;
+    }
+
+
     /**
      * This is the typical constructor used for creating an exception.
      *
@@ -26,6 +159,7 @@ public class NoProfileForUserException extends CommunityProfileCheckedExceptionB
      * @param userAction   instructions for correcting the error
      * @param userId calling user
      */
+    @Deprecated
     public NoProfileForUserException(int    httpCode,
                                      String className,
                                      String actionDescription,
@@ -52,6 +186,7 @@ public class NoProfileForUserException extends CommunityProfileCheckedExceptionB
      * @param caughtError   the error that resulted in this exception.
      * @param userId calling user
      */
+    @Deprecated
     public NoProfileForUserException(int       httpCode,
                                      String    className,
                                      String    actionDescription,
@@ -91,13 +226,16 @@ public class NoProfileForUserException extends CommunityProfileCheckedExceptionB
                 ", reportedHTTPCode=" + getReportedHTTPCode() +
                 ", reportingClassName='" + getReportingClassName() + '\'' +
                 ", reportingActionDescription='" + getReportingActionDescription() + '\'' +
-                ", errorMessage='" + getErrorMessage() + '\'' +
+                ", reportedErrorMessage='" + getReportedErrorMessage() + '\'' +
+                ", reportedErrorMessageId='" + getReportedErrorMessageId() + '\'' +
+                ", reportedErrorMessageParameters=" + Arrays.toString(getReportedErrorMessageParameters()) +
                 ", reportedSystemAction='" + getReportedSystemAction() + '\'' +
                 ", reportedUserAction='" + getReportedUserAction() + '\'' +
                 ", reportedCaughtException=" + getReportedCaughtException() +
+                ", reportedCaughtExceptionClassName='" + getReportedCaughtExceptionClassName() + '\'' +
+                ", relatedProperties=" + getRelatedProperties() +
                 '}';
     }
-
 
     /**
      * Return comparison result based on the content of the properties.

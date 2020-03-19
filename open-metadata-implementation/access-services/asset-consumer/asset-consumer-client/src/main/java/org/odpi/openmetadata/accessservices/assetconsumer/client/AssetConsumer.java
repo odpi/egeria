@@ -11,6 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
@@ -53,6 +54,25 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     *
+     * @throws InvalidParameterException null URL or server name
+     */
+    public AssetConsumer(String   serverName,
+                         String   serverPlatformRootURL,
+                         AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+
+        this.restClient = new AssetConsumerRESTClient(serverName, serverPlatformRootURL, auditLog);
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException null URL or server name
      */
     public AssetConsumer(String serverName,
@@ -61,6 +81,29 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         super(serverName, serverPlatformRootURL);
 
         this.restClient = new AssetConsumerRESTClient(serverName, serverPlatformRootURL);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param auditLog logging destination
+     * @throws InvalidParameterException null URL or server name
+     */
+    public AssetConsumer(String     serverName,
+                         String     serverPlatformRootURL,
+                         String     userId,
+                         String     password,
+                         AuditLog   auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+
+        this.restClient = new AssetConsumerRESTClient(serverName, serverPlatformRootURL, userId, password, auditLog);
     }
 
 

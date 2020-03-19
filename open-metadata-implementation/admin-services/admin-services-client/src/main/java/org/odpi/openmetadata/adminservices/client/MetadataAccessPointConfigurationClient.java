@@ -140,7 +140,7 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -201,7 +201,7 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         StringMapResponse response = restClient.callStringMapGetRESTCall(methodName,
@@ -263,7 +263,7 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -300,7 +300,7 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,

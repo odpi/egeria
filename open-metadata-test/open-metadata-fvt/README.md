@@ -9,9 +9,11 @@ external APIs of the components under test to ensure they are robust enough to s
 needed by their consumers.
 
 * **[access-services-fvt](access-services-fvt)** - provides an FVT test suite for each of the Open Metadata Access Services (OMAS). 
+* **[open-types-fvt](open-types-fvt)** - uses code generated ot build a bean layer from the open metadata types
+and then tests the resulting beans.
 
-
-
+----
+Return to [open-metadata-test](..)
 
 
 ----

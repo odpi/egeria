@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.AssetResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
@@ -21,12 +22,36 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
  */
 public class ConnectedAssetClientBase
 {
-    protected String                  serverName;               /* Initialized in constructor */
-    protected String                  serverPlatformRootURL;    /* Initialized in constructor */
+    protected String   serverName;               /* Initialized in constructor */
+    protected String   serverPlatformRootURL;    /* Initialized in constructor */
+    protected AuditLog auditLog;                 /* Initialized in constructor */
 
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     protected static NullRequestBody         nullRequestBody         = new NullRequestBody();
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param auditLog destination for log messages
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public ConnectedAssetClientBase(String   serverName,
+                                    String   serverPlatformRootURL,
+                                    AuditLog auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.auditLog = auditLog;
+    }
 
 
     /**
@@ -40,12 +65,7 @@ public class ConnectedAssetClientBase
     public ConnectedAssetClientBase(String serverName,
                                     String serverPlatformRootURL) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
+        this(serverName, serverPlatformRootURL, null);
     }
 
 
@@ -124,17 +144,11 @@ public class ConnectedAssetClientBase
         }
         catch (Throwable error)
         {
-            OMAGOCFErrorCode errorCode    = OMAGOCFErrorCode.NO_ASSET_PROPERTIES;
-            String           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(assetGUID,
-                                                                                                               error.getClass().getName(),
-                                                                                                               error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(OMAGOCFErrorCode.NO_ASSET_PROPERTIES.getMessageDefinition(assetGUID,
+                                                                                                        error.getClass().getName(),
+                                                                                                        error.getMessage()),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -177,20 +191,12 @@ public class ConnectedAssetClientBase
              * This is probably some sort of logic error since the connector should have been returned.
              * Whatever the cause, the process can not proceed without a connector.
              */
-            OMAGOCFErrorCode errorCode    = OMAGOCFErrorCode.NULL_CONNECTOR_RETURNED;
-            String           errorMessage = errorCode.getErrorMessageId()
-                                          + errorCode.getFormattedErrorMessage(requestedConnection.getQualifiedName(),
-                                                                               serviceName,
-                                                                               serverName,
-                                                                               serverPlatformRootURL);
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectorCheckedException(OMAGOCFErrorCode.NULL_CONNECTOR_RETURNED.getMessageDefinition(requestedConnection.getQualifiedName(),
+                                                                                                              serviceName,
+                                                                                                              serverName,
+                                                                                                              serverPlatformRootURL),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                null);
+                                                methodName);
         }
 
         try

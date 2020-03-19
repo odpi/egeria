@@ -620,30 +620,17 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             }
             else
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY;
-                String errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(classificationTypeName, entityTypeName);
-
-                throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+                throw new TypeErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(classificationTypeName,
+                                                                                                                  entityTypeName),
                                              this.getClass().getName(),
-                                             methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction());
+                                             methodName);
             }
         }
         else
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.UNKNOWN_CLASSIFICATION;
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(classificationTypeName);
-
-            throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+            throw new TypeErrorException(OMRSErrorCode.UNKNOWN_CLASSIFICATION.getMessageDefinition(classificationTypeName),
                                          this.getClass().getName(),
-                                         methodName,
-                                         errorMessage,
-                                         errorCode.getSystemAction(),
-                                         errorCode.getUserAction());
+                                         methodName);
         }
     }
 
@@ -867,17 +854,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         {
             final String thisMethodName = "addClassificationToEntity";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_CLASSIFICATION_CREATED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
-                                                                                                     thisMethodName,
-                                                                                                     methodName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
+                                                                                                             thisMethodName,
+                                                                                                             methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -901,17 +882,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
         if ((entity == null) || (classificationName == null))
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.VALIDATION_LOGIC_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
-                                                                                                     thisMethodName,
-                                                                                                     methodName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.VALIDATION_LOGIC_ERROR.getMessageDefinition(sourceName,
+                                                                                                        thisMethodName,
+                                                                                                        methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         List<Classification> entityClassifications = entity.getClassifications();
@@ -927,17 +902,12 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             }
         }
 
-        OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_CLASSIFIED;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 sourceName,
-                                                                                                 classificationName,
-                                                                                                 entity.getGUID());
-        throw new ClassificationErrorException(errorCode.getHTTPErrorCode(),
+        throw new ClassificationErrorException(OMRSErrorCode.ENTITY_NOT_CLASSIFIED.getMessageDefinition(methodName,
+                                                                                                        sourceName,
+                                                                                                        classificationName,
+                                                                                                        entity.getGUID()),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
     }
 
 
@@ -969,17 +939,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         {
             final String thisMethodName = "updateClassificationInEntity";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_CLASSIFICATION_CREATED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
-                                                                                                     thisMethodName,
-                                                                                                     methodName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
+                                                                                                             thisMethodName,
+                                                                                                             methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -1025,17 +989,12 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
             if (oldClassification == null)
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_CLASSIFIED;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                         sourceName,
-                                                                                                         oldClassificationName,
-                                                                                                         entity.getGUID());
-                throw new ClassificationErrorException(errorCode.getHTTPErrorCode(),
+                throw new ClassificationErrorException(OMRSErrorCode.ENTITY_NOT_CLASSIFIED.getMessageDefinition(methodName,
+                                                                                                                sourceName,
+                                                                                                                oldClassificationName,
+                                                                                                                entity.getGUID()),
                                                        this.getClass().getName(),
-                                                       methodName,
-                                                       errorMessage,
-                                                       errorCode.getSystemAction(),
-                                                       errorCode.getUserAction());
+                                                       methodName);
             }
 
             if (entityClassificationsMap.isEmpty())
@@ -1055,17 +1014,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         {
             final String thisMethodName = "deleteClassificationFromEntity";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_CLASSIFICATION_NAME;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
-                                                                                                     thisMethodName,
-                                                                                                     methodName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(sourceName,
+                                                                                                          thisMethodName,
+                                                                                                          methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -1250,17 +1203,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                 }
                 catch (TypeErrorException error)
                 {
-                    OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_LOGIC_ERROR;
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
-                                                                                                             methodName,
-                                                                                                             error.getErrorMessage());
-
-                    throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    throw new RepositoryErrorException(OMRSErrorCode.REPOSITORY_LOGIC_ERROR.getMessageDefinition(sourceName,
+                                                                                                                 methodName,
+                                                                                                                 error.getReportedErrorMessage()),
                                                        this.getClass().getName(),
-                                                       methodName,
-                                                       errorMessage,
-                                                       errorCode.getSystemAction(),
-                                                       errorCode.getUserAction());
+                                                       methodName);
                 }
             }
         }
@@ -1314,11 +1261,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @return                          partially filled out entity  needs classifications and properties
      * @throws TypeErrorException       the type name is not recognized.
      */
-    public EntityProxy getSkeletonEntityProxy(String                  sourceName,
-                                              String                  metadataCollectionId,
-                                              InstanceProvenanceType  provenanceType,
-                                              String                  userName,
-                                              String                  typeName) throws TypeErrorException
+    private EntityProxy getSkeletonEntityProxy(String                 sourceName,
+                                               String                 metadataCollectionId,
+                                               InstanceProvenanceType provenanceType,
+                                               String                 userName,
+                                               String                 typeName) throws TypeErrorException
     {
         final String methodName = "getSkeletonEntityProxy";
 
@@ -2139,15 +2086,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      */
     private void throwParameterError(String     methodName) throws InvalidParameterException
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.NULL_PARAMETER;
-        String errorMessage     = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                          this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+        throw new InvalidParameterException(OMRSErrorCode.NULL_PARAMETER.getMessageDefinition(methodName),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            "instance");
     }
 
 
@@ -2162,16 +2104,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     private void throwRepositoryContentError(String              methodName,
                                              InstanceAuditHeader instance) throws RepositoryErrorException
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.INVALID_INSTANCE;
-        String errorMessage     = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     instance.toString());
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+        throw new RepositoryErrorException(OMRSErrorCode.INVALID_INSTANCE.getMessageDefinition(methodName,
+                                                                                               instance.toString()),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          methodName);
     }
 
 
@@ -2187,15 +2123,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     {
         if (repositoryContentManager == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.LOCAL_REPOSITORY_CONFIGURATION_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.LOCAL_REPOSITORY_CONFIGURATION_ERROR.getMessageDefinition(),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 }

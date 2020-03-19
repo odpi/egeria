@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.admin;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.auditlog.AssetConsumerAuditCode;
+import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerAuditCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.listener.AssetConsumerOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -21,9 +21,9 @@ import java.util.List;
  */
 public class AssetConsumerAdmin extends AccessServiceAdmin
 {
-    private OMRSAuditLog                   auditLog            = null;
-    private AssetConsumerServicesInstance  instance            = null;
-    private String                         serverName          = null;
+    private AuditLog                      auditLog   = null;
+    private AssetConsumerServicesInstance instance   = null;
+    private String                        serverName = null;
 
     /**
      * Default constructor
@@ -46,19 +46,12 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      omrsTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog            auditLog,
+                           AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
         final String           actionDescription = "initialize";
 
-        AssetConsumerAuditCode auditCode = AssetConsumerAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, AssetConsumerAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         this.auditLog = auditLog;
 
@@ -95,14 +88,9 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
                                                   auditLog);
             }
 
-            auditCode = AssetConsumerAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(serverName),
-                               accessServiceConfig.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                AssetConsumerAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                accessServiceConfig.toString());
         }
         catch (OMAGConfigurationErrorException error)
         {
@@ -110,14 +98,9 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
         }
         catch (Throwable error)
         {
-            auditCode = AssetConsumerAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
+                                  AssetConsumerAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getClass().getName(), error.getMessage()),
                                   accessServiceConfig.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
                                   error);
 
             super.throwUnexpectedInitializationException(actionDescription,
@@ -133,20 +116,12 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
     public void shutdown()
     {
         final String            actionDescription = "shutdown";
-        AssetConsumerAuditCode  auditCode;
 
         if (instance != null)
         {
             this.instance.shutdown();
         }
 
-        auditCode = AssetConsumerAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(serverName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, AssetConsumerAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
     }
 }

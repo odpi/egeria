@@ -3,14 +3,19 @@
 
 package org.odpi.openmetadata.repositoryservices.rest.server;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIResponse;
+import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServicesInstanceHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,14 +23,23 @@ import java.util.Map;
 /**
  * OMRSRESTExceptionHandler contains the methods to add exceptions into the response objects for REST API calls.
  */
-public class OMRSRESTExceptionHandler
+class OMRSRESTExceptionHandler
 {
+    private static final MessageFormatter messageFormatter = new MessageFormatter();
+    private OMRSRepositoryServicesInstanceHandler instanceHandler;
+
+    private static final Logger log = LoggerFactory.getLogger(OMRSRESTExceptionHandler.class);
+
     /**
      * Default constructor
+     *
+     * @param instanceHandler handler for retrieving a server's audit log.
      */
-    public OMRSRESTExceptionHandler()
+    OMRSRESTExceptionHandler(OMRSRepositoryServicesInstanceHandler instanceHandler)
     {
+        this.instanceHandler = instanceHandler;
     }
+
 
     /**
      * Set the exception information into the response.
@@ -81,44 +95,57 @@ public class OMRSRESTExceptionHandler
      *
      * @param response  REST Response
      * @param error returned response
+     * @param userId calling user
+     * @param serverName targeted server instance
      * @param methodName calling method
-     * @param auditLog log location for recording an unexpected exception
      */
-    void captureThrowable(OMRSAPIResponse response,
-                          Throwable error,
-                          String methodName,
-                          OMRSAuditLog auditLog)
+    void captureThrowable(OMRSAPIResponse              response,
+                          Throwable                    error,
+                          String                       userId,
+                          String                       serverName,
+                          String                       methodName)
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.UNEXPECTED_EXCEPTION;
-
         String  message = error.getMessage();
 
         if (message == null)
         {
             message = "null";
         }
-        response.setRelatedHTTPCode(errorCode.getHTTPErrorCode());
+
+        ExceptionMessageDefinition messageDefinition = OMRSErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                               methodName,
+                                                                                                               message);
+        response.setRelatedHTTPCode(messageDefinition.getHttpErrorCode());
         response.setExceptionClassName(error.getClass().getName());
-        response.setExceptionErrorMessage(errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                             methodName,
-                                                                             message));
-        response.setExceptionSystemAction(errorCode.getSystemAction());
-        response.setExceptionUserAction(errorCode.getUserAction());
+        response.setActionDescription(message);
+        response.setExceptionErrorMessage(messageFormatter.getFormattedMessage(messageDefinition));
+        response.setExceptionErrorMessageId(messageDefinition.getMessageId());
+        response.setExceptionErrorMessageParameters(messageDefinition.getMessageParams());
+        response.setExceptionSystemAction(messageDefinition.getSystemAction());
+        response.setExceptionUserAction(messageDefinition.getUserAction());
+
+        if (error.getCause() != null)
+        {
+            response.setExceptionCausedBy(error.getCause().getClass().getName());
+        }
+
         response.setExceptionProperties(null);
 
-        if (auditLog != null)
+        try
         {
-            OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION;
-            auditLog.logException(methodName,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getClass().getName(),
-                                                                   methodName,
-                                                                   message),
-                                  null,
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
-                                  error);
+            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      OMRSAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                              methodName,
+                                                                                              message),
+                                      error);
+            }
+        }
+        catch (Throwable  secondError)
+        {
+            log.error("Unexpected exception processing error {}", error.toString(), secondError);
         }
     }
 
@@ -154,9 +181,13 @@ public class OMRSRESTExceptionHandler
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setActionDescription(error.getReportingActionDescription());
+        response.setExceptionErrorMessage(error.getReportedErrorMessage());
+        response.setExceptionErrorMessageId(error.getReportedErrorMessageId());
+        response.setExceptionErrorMessageParameters(error.getReportedErrorMessageParameters());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
         response.setExceptionProperties(exceptionProperties);
+        response.setExceptionCausedBy(error.getReportedCaughtExceptionClassName());
     }
 }

@@ -2,17 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
+
 
 /**
  * OpenMetadataArchiveStoreConnector is the base class for connectors that support the OpenMetadataArchiveStore
  */
 public abstract class OpenMetadataArchiveStoreConnector extends ConnectorBase implements OpenMetadataArchiveStore,
-                                                                                         AuditableConnector
+                                                                                         AuditLoggingComponent
 {
-    protected OMRSAuditLog auditLog = null;
+    protected AuditLog auditLog = null;
 
 
     /**
@@ -21,7 +22,7 @@ public abstract class OpenMetadataArchiveStoreConnector extends ConnectorBase im
      *
      * @param auditLog audit log object
      */
-    public void setAuditLog(OMRSAuditLog   auditLog)
+    public void setAuditLog(AuditLog   auditLog)
     {
         this.auditLog = auditLog;
     }

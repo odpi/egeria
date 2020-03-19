@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators;
 
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
@@ -17,7 +17,7 @@ import java.util.Map;
 public class QueryAccumulatorBase extends ExceptionAccumulatorBase
 {
     protected String                  localMetadataCollectionId;
-    protected OMRSAuditLog            auditLog;
+    protected AuditLog                auditLog;
     protected OMRSRepositoryValidator repositoryValidator;
 
     private int                  responsesRequired  = 0;
@@ -33,9 +33,9 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param auditLog audit log provides destination for log messages
      * @param repositoryValidator validator provides common validation routines
      */
-    QueryAccumulatorBase(String                            localMetadataCollectionId,
-                         OMRSAuditLog                      auditLog,
-                         OMRSRepositoryValidator           repositoryValidator)
+    QueryAccumulatorBase(String                  localMetadataCollectionId,
+                         AuditLog                auditLog,
+                         OMRSRepositoryValidator repositoryValidator)
     {
         super();
 

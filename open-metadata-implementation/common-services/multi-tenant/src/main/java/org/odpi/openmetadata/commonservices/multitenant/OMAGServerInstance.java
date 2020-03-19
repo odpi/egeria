@@ -6,10 +6,10 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerExcept
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.platformservices.properties.OMAGServerInstanceHistory;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.*;
 
@@ -133,9 +133,9 @@ class OMAGServerInstance
      *
      * @throws InvalidParameterException the connection is invalid
      */
-    synchronized  OpenMetadataServerSecurityVerifier registerSecurityValidator(String         localServerUserId,
-                                                                               OMRSAuditLog   auditLog,
-                                                                               Connection     connection) throws InvalidParameterException
+    synchronized  OpenMetadataServerSecurityVerifier registerSecurityValidator(String     localServerUserId,
+                                                                               AuditLog   auditLog,
+                                                                               Connection connection) throws InvalidParameterException
     {
         try
         {
@@ -146,7 +146,7 @@ class OMAGServerInstance
         }
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException  error)
         {
-            throw new InvalidParameterException(error.getErrorMessage(), error);
+            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         return this.securityVerifier;
@@ -211,18 +211,11 @@ class OMAGServerInstance
 
         if (serverServiceInstance == null)
         {
-            OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.SERVICE_NOT_AVAILABLE;
-            String                      errorMessage = errorCode.getErrorMessageId()
-                                                     + errorCode.getFormattedErrorMessage(serviceName,
-                                                                                          serverName,
-                                                                                          userId);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(OMAGServerInstanceErrorCode.SERVICE_NOT_AVAILABLE.getMessageDefinition(serviceName,
+                                                                                                                     serverName,
+                                                                                                                     userId),
                                               this.getClass().getName(),
-                                              serviceOperationName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              serviceOperationName);
         }
 
         return serverServiceInstance;
@@ -253,17 +246,11 @@ class OMAGServerInstance
 
         if (!serviceInstanceMap.isEmpty())
         {
-            OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.SERVICES_NOT_SHUTDOWN;
-            String                      errorMessage = errorCode.getErrorMessageId()
-                                                     + errorCode.getFormattedErrorMessage(serverName,
-                                                                                          serviceInstanceMap.keySet().toString());
-
             this.serviceInstanceMap = new HashMap<>();
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(OMAGServerInstanceErrorCode.SERVICES_NOT_SHUTDOWN.getMessageDefinition(serverName,
+                                                                                                                     serviceInstanceMap.keySet().toString()),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());        }
+                                              methodName);
+        }
     }
 }

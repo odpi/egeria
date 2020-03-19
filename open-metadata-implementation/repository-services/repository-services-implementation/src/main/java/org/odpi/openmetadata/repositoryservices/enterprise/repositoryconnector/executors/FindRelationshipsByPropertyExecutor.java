@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -69,7 +69,7 @@ public class FindRelationshipsByPropertyExecutor extends PageableRepositoryExecu
                                                SequencingOrder           sequencingOrder,
                                                int                       pageSize,
                                                String                    localMetadataCollectionId,
-                                               OMRSAuditLog              auditLog,
+                                               AuditLog                  auditLog,
                                                OMRSRepositoryValidator   repositoryValidator,
                                                String                    methodName)
     {

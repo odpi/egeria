@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
@@ -25,12 +27,26 @@ public class ConnectorBroker
     private final        int    hashCode = UUID.randomUUID().hashCode();
 
 
+    private AuditLog auditLog = null;
+
+
     /**
      * Typical constructor
      */
     public ConnectorBroker()
     {
         /* Nothing to do */
+    }
+
+
+    /**
+     * Constructor to supply the audit log to all connectors that implement the AuditLoggingConnector interface.
+     *
+     * @param auditLog auditlog to pass on
+     */
+    public ConnectorBroker(AuditLog   auditLog)
+    {
+        this.auditLog = auditLog;
     }
 
 
@@ -50,15 +66,9 @@ public class ConnectorBroker
             /*
              * It is not possible to create a connector without a connection.
              */
-            OCFErrorCode errorCode    = OCFErrorCode.NULL_CONNECTION;
-            String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.NULL_CONNECTION.getMessageDefinition(),
                                                  this.getClass().getName(),
-                                                 methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction());
+                                                 methodName);
         }
 
         if (connection instanceof VirtualConnectionProperties)
@@ -68,16 +78,9 @@ public class ConnectorBroker
 
             if ((embeddedConnections == null) || (embeddedConnections.isEmpty()))
             {
-                OCFErrorCode errorCode    = OCFErrorCode.INVALID_VIRTUAL_CONNECTION;
-                String       errorMessage = errorCode.getErrorMessageId()
-                                          + errorCode.getFormattedErrorMessage(connection.getConnectionName());
-
-                throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+                throw new ConnectionCheckedException(OCFErrorCode.INVALID_VIRTUAL_CONNECTION.getMessageDefinition(connection.getConnectionName()),
                                                      this.getClass().getName(),
-                                                     methodName,
-                                                     errorMessage,
-                                                     errorCode.getSystemAction(),
-                                                     errorCode.getUserAction());
+                                                     methodName);
             }
         }
     }
@@ -102,16 +105,9 @@ public class ConnectorBroker
              * It is not possible to create a connector without a connector type since it
              * holds the name of the connector provider's Java class.  Build an exception.
              */
-            OCFErrorCode  errorCode = OCFErrorCode.NULL_CONNECTOR_TYPE;
-            String        connectionName = connection.getConnectionName();
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.NULL_CONNECTOR_TYPE.getMessageDefinition(connection.getConnectionName()),
                                                  this.getClass().getName(),
-                                                 methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction());
+                                                 methodName);
         }
 
         return requestedConnectorType;
@@ -142,15 +138,9 @@ public class ConnectorBroker
              * The connector provider class name is blank so it is not possible to create the
              * connector provider.  Throw an exception.
              */
-            OCFErrorCode  errorCode = OCFErrorCode.NULL_CONNECTOR_PROVIDER;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.NULL_CONNECTOR_PROVIDER.getMessageDefinition(connectionName),
                                                  this.getClass().getName(),
-                                                 methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction());
+                                                 methodName);
         }
 
 
@@ -175,17 +165,10 @@ public class ConnectorBroker
             /*
              * Wrap exception in the ConnectionCheckedException with a suitable message
              */
-            OCFErrorCode  errorCode = OCFErrorCode.UNKNOWN_CONNECTOR_PROVIDER;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectorProviderClassName,
-                                                                            connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.UNKNOWN_CONNECTOR_PROVIDER.getMessageDefinition(connectorProviderClassName,
+                                                                                                              connectionName),
                                                  this.getClass().getName(),
                                                  methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
                                                  classException);
         }
         catch (ClassCastException  castException)
@@ -193,17 +176,10 @@ public class ConnectorBroker
             /*
              * Wrap class cast exception in a connection exception with error message to say that
              */
-            OCFErrorCode  errorCode = OCFErrorCode.NOT_CONNECTOR_PROVIDER;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectorProviderClassName,
-                                                                            connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.NOT_CONNECTOR_PROVIDER.getMessageDefinition(connectorProviderClassName,
+                                                                                                          connectionName),
                                                  this.getClass().getName(),
                                                  methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
                                                  castException);
         }
         catch (Throwable unexpectedSomething)
@@ -212,17 +188,10 @@ public class ConnectorBroker
              * Wrap throwable in a connection exception with error message to say that there was a problem with
              * the connector provider.
              */
-            OCFErrorCode  errorCode = OCFErrorCode.INVALID_CONNECTOR_PROVIDER;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectorProviderClassName,
-                                                                            connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.INVALID_CONNECTOR_PROVIDER.getMessageDefinition(connectorProviderClassName,
+                                                                                                              connectionName),
                                                  this.getClass().getName(),
                                                  methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
                                                  unexpectedSomething);
         }
 
@@ -258,12 +227,8 @@ public class ConnectorBroker
                     configurationProperties = new HashMap<>();
                 }
 
-                Iterator<String>     argumentNames = arguments.keySet().iterator();
-
-                while (argumentNames.hasNext())
+                for (String argumentName : arguments.keySet())
                 {
-                    String  argumentName = argumentNames.next();
-
                     configurationProperties.put(argumentName, arguments.get(argumentName).toString());
                 }
 
@@ -280,6 +245,7 @@ public class ConnectorBroker
 
         return connection;
     }
+
 
     /**
      * Validate that the connection has sufficient properties to attempt to create a connector.
@@ -386,6 +352,15 @@ public class ConnectorBroker
                                                                         methodName);
 
         /*
+         * If the connector provider or connector is capable of using an audit log, an audit log is passed to the connector provider if available.
+         */
+        if (connectorProvider instanceof AuditLoggingComponent)
+        {
+            ((AuditLoggingComponent) connectorProvider).setAuditLog(auditLog);
+        }
+
+
+        /*
          * At this point we hopefully have a valid connector provider so all that is left to do is call
          * it to get the connector instance.  This is done in a different try ... catch block from the
          * instantiation of the connector provider so we can separate errors in the Connection from
@@ -398,21 +373,13 @@ public class ConnectorBroker
         {
             connectorInstance = connectorProvider.getConnector(connection);
         }
-        catch (ConnectionCheckedException connectionError)
+        catch (ConnectionCheckedException | ConnectorCheckedException ocfError)
         {
             /*
-             * The connector provider has already provided first failure data capture in a ConnectionCheckedException.
+             * The connector provider has already provided first failure data capture in an OCF Exception.
              * This exception is rethrown to the caller.
              */
-            throw connectionError;
-        }
-        catch (ConnectorCheckedException connectorError)
-        {
-            /*
-             * The connector provider has already provided first failure data capture in a ConnectorCheckedException.
-             * This exception is rethrown to the caller.
-             */
-            throw connectorError;
+            throw ocfError;
         }
         catch (Throwable  unexpectedSomething)
         {
@@ -420,15 +387,9 @@ public class ConnectorBroker
              * The connector provider threw an unexpected runtime exception or error.  This is wrapped in a
              * ConnectorError and thrown to caller.
              */
-            OCFErrorCode errorCode = OCFErrorCode.CAUGHT_EXCEPTION;
-            String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectorCheckedException(OCFErrorCode.CAUGHT_EXCEPTION.getMessageDefinition(),
                                               this.getClass().getName(),
                                               "getConnector",
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
                                               unexpectedSomething);
         }
 
@@ -442,17 +403,10 @@ public class ConnectorBroker
             /*
              * Build and throw exception.
              */
-            OCFErrorCode errorCode = OCFErrorCode.NULL_CONNECTOR;
-            String       errorMessage = errorCode.getErrorMessageId()
-                                      + errorCode.getFormattedErrorMessage(requestedConnectorType.getConnectorProviderClassName(),
-                                                                           connection.getConnectionName());
-
-            throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+            throw new OCFRuntimeException(OCFErrorCode.NULL_CONNECTOR.getMessageDefinition(requestedConnectorType.getConnectorProviderClassName(),
+                                                                                           connection.getConnectionName()),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          methodName);
         }
 
 
@@ -490,17 +444,10 @@ public class ConnectorBroker
                 /*
                  * Build and throw exception.
                  */
-                OCFErrorCode errorCode = OCFErrorCode.NOT_VIRTUAL_CONNECTOR;
-                String       errorMessage = errorCode.getErrorMessageId()
-                                          + errorCode.getFormattedErrorMessage(requestedConnectorType.getConnectorProviderClassName(),
-                                                                               connection.getConnectionName());
-
-                throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+                throw new OCFRuntimeException(OCFErrorCode.NOT_VIRTUAL_CONNECTOR.getMessageDefinition(requestedConnectorType.getConnectorProviderClassName(),
+                                                                                                      connection.getConnectionName()),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
             }
         }
 
@@ -572,9 +519,9 @@ public class ConnectorBroker
      * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
      * connection in order to supply them to the Connector implementation.
      */
-    private class AccessibleConnection extends ConnectionProperties
+    private static class AccessibleConnection extends ConnectionProperties
     {
-        protected AccessibleConnection(ConnectionProperties templateConnection)
+        AccessibleConnection(ConnectionProperties templateConnection)
         {
             super(templateConnection);
         }

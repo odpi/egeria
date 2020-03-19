@@ -3,14 +3,14 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.admin;
 
 
-import org.odpi.openmetadata.accessservices.projectmanagement.auditlog.ProjectManagementAuditCode;
+import org.odpi.openmetadata.accessservices.projectmanagement.ffdc.ProjectManagementAuditCode;
 import org.odpi.openmetadata.accessservices.projectmanagement.listener.ProjectManagementOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.projectmanagement.server.ProjectManagementServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class ProjectManagementAdmin extends AccessServiceAdmin
 {
-    private OMRSAuditLog                      auditLog   = null;
+    private AuditLog                          auditLog   = null;
     private ProjectManagementServicesInstance instance   = null;
     private String                            serverName = null;
 
@@ -47,20 +47,12 @@ public class ProjectManagementAdmin extends AccessServiceAdmin
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      omrsTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog            auditLog,
+                           AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
         final String               actionDescription = "initialize";
-        ProjectManagementAuditCode auditCode;
 
-        auditCode = ProjectManagementAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, ProjectManagementAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         this.auditLog = auditLog;
 
@@ -71,10 +63,10 @@ public class ProjectManagementAdmin extends AccessServiceAdmin
                                                                       auditLog);
 
             this.instance = new ProjectManagementServicesInstance(repositoryConnector,
-                                                              supportedZones,
-                                                              auditLog,
-                                                              serverUserName,
-                                                              repositoryConnector.getMaxPageSize());
+                                                                  supportedZones,
+                                                                  auditLog,
+                                                                  serverUserName,
+                                                                  repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
             /*
@@ -97,14 +89,9 @@ public class ProjectManagementAdmin extends AccessServiceAdmin
                                                   auditLog);
             }
 
-            auditCode = ProjectManagementAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(serverName),
-                               accessServiceConfig.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                ProjectManagementAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                accessServiceConfig.toString());
         }
         catch (OMAGConfigurationErrorException error)
         {
@@ -112,14 +99,9 @@ public class ProjectManagementAdmin extends AccessServiceAdmin
         }
         catch (Throwable error)
         {
-            auditCode = ProjectManagementAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  ProjectManagementAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
                                   accessServiceConfig.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
                                   error);
 
             super.throwUnexpectedInitializationException(actionDescription,
@@ -134,21 +116,13 @@ public class ProjectManagementAdmin extends AccessServiceAdmin
      */
     public void shutdown()
     {
-        final String            actionDescription = "shutdown";
-        ProjectManagementAuditCode  auditCode;
+        final String actionDescription = "shutdown";
 
         if (instance != null)
         {
             this.instance.shutdown();
         }
 
-        auditCode = ProjectManagementAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(serverName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, ProjectManagementAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
     }
 }

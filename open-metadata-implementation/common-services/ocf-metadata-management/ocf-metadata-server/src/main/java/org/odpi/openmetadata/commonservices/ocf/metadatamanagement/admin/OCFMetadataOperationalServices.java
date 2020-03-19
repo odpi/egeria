@@ -6,7 +6,7 @@ import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInsta
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.auditlog.OCFMetadataAuditCode;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.OCFMetadataInstanceHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.OCFMetadataServicesInstance;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 
@@ -16,8 +16,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class OCFMetadataOperationalServices
 {
-    private String       serverName;
-    private OMRSAuditLog auditLog;
+    private String   serverName;
+    private AuditLog auditLog;
 
 
     /**
@@ -31,7 +31,7 @@ public class OCFMetadataOperationalServices
     @Deprecated
     public OCFMetadataOperationalServices(String                   serverName,
                                           OMRSRepositoryConnector  repositoryConnector,
-                                          OMRSAuditLog             auditLog) throws NewInstanceException
+                                          AuditLog                 auditLog) throws NewInstanceException
     {
         this(serverName, repositoryConnector, auditLog, null, 500);
     }
@@ -49,48 +49,32 @@ public class OCFMetadataOperationalServices
      */
     public OCFMetadataOperationalServices(String                   serverName,
                                           OMRSRepositoryConnector  repositoryConnector,
-                                          OMRSAuditLog             auditLog,
+                                          AuditLog                 auditLog,
                                           String                   localServerUserId,
                                           int                      maxPageSize) throws NewInstanceException
     {
         this.serverName = serverName;
         this.auditLog = auditLog;
 
-        final String         actionDescription = "initialize";
-        OCFMetadataAuditCode auditCode;
+        final String actionDescription = "initialize";
 
-        auditCode = OCFMetadataAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OCFMetadataAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         try
         {
-            auditCode = OCFMetadataAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, OCFMetadataAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
 
             new OCFMetadataServicesInstance(repositoryConnector, auditLog, localServerUserId, maxPageSize);
         }
+        catch (NewInstanceException error)
+        {
+            throw error;
+        }
         catch (Throwable error)
         {
-            auditCode = OCFMetadataAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logException(actionDescription,
+                                  OCFMetadataAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
+                                  error);
         }
     }
 
@@ -100,16 +84,9 @@ public class OCFMetadataOperationalServices
      */
     public void shutdown()
     {
-        final String          actionDescription = "shutdown";
-        OCFMetadataAuditCode  auditCode = OCFMetadataAuditCode.SERVICE_SHUTDOWN;
+        final String actionDescription = "shutdown";
 
-        this.auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(serverName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        this.auditLog.logMessage(actionDescription, OCFMetadataAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
 
         new OCFMetadataInstanceHandler().removeServerServiceInstance(serverName);
     }

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.readonly.repositorycon
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnectorProviderBase;
 
 /**
@@ -42,5 +43,6 @@ public class ReadOnlyOMRSRepositoryConnectorProvider extends OMRSRepositoryConne
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         super.connectorTypeBean = connectorType;
+        super.setConnectorComponentDescription(OMRSAuditingComponent.READ_ONLY_REPOSITORY_CONNECTOR);
     }
 }

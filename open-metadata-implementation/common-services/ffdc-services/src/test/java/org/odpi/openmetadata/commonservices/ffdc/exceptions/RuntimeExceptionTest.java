@@ -38,6 +38,7 @@ public class RuntimeExceptionTest
     /**
      * Test that a new exception is properly populated
      */
+    @SuppressWarnings(value = "deprecation")
     @Test public void testNewException()
     {
         OMAGRuntimeException exception = new OMAGRuntimeException(reportedHTTPCode,
@@ -51,7 +52,7 @@ public class RuntimeExceptionTest
         assertTrue(exception.getReportedHTTPCode() == reportedHTTPCode);
         assertTrue(exception.getReportingClassName().equals(reportingClassName));
         assertTrue(exception.getReportingActionDescription().equals(reportingActionDescription));
-        assertTrue(exception.getErrorMessage().equals(reportedErrorMessage));
+        assertTrue(exception.getReportedErrorMessage().equals(reportedErrorMessage));
         assertTrue(exception.getReportedSystemAction().equals(reportedSystemAction));
         assertTrue(exception.getReportedUserAction().equals(reportedUserAction));
         assertTrue(exception.getReportedCaughtException() == null);
@@ -62,6 +63,7 @@ public class RuntimeExceptionTest
     /**
      * Test that a caught exception is properly wrapped
      */
+    @SuppressWarnings(value="deprecation")
     @Test public void testWrappingException()
     {
         OMAGRuntimeException exception = new OMAGRuntimeException(reportedHTTPCode,
@@ -88,6 +90,7 @@ public class RuntimeExceptionTest
     /**
      * Validate that string, equals and hashCode work off of the values of the exception
      */
+    @SuppressWarnings(value="deprecation")
     @Test public void testHashCode()
     {
         OMAGRuntimeException exception = new OMAGRuntimeException(reportedHTTPCode,

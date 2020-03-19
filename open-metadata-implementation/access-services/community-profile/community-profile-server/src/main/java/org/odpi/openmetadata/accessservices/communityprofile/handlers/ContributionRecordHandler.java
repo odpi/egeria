@@ -149,18 +149,12 @@ public class ContributionRecordHandler
              * Throw logic error because if there is a problem with the repository server or security,
              * an exception should already have been thrown.
              */
-            CommunityProfileErrorCode errorCode = CommunityProfileErrorCode.UNABLE_TO_CREATE_CONTRIBUTION_RECORD;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     serverName,
-                                                                                                     personalProfileGUID,
-                                                                                                     qualifiedName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(CommunityProfileErrorCode.UNABLE_TO_CREATE_CONTRIBUTION_RECORD.getMessageDefinition(methodName,
+                                                                                                                                  serverName,
+                                                                                                                                  personalProfileGUID,
+                                                                                                                                  qualifiedName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
