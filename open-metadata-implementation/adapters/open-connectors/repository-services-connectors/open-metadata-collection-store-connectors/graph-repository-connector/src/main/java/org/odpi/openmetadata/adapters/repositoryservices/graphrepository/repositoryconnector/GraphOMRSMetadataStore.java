@@ -1646,14 +1646,37 @@ class GraphOMRSMetadataStore {
                 }
             }
 
+            /*
+             * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+             * between the match properties and the properties defined on the type (core or type defined). So
+             * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+             * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+             * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+             * be satisfied. For matchCriteria NONE we can assert that the relationship but since we still need to
+             * retrieve the vertex from the graoh (to construct the relationship) it is better to let that case continue.
+             */
+
+
             switch (matchCriteria) {
                 case ALL:
-                    gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    if (propCriteria.isEmpty()) {
+                        g.tx().rollback();
+                        return null;
+                    }
+                    else {
+                        gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    }
                     break;
                 case ANY:
-                    gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    if (propCriteria.isEmpty()) {
+                        g.tx().rollback();
+                        return null;
+                    }
+                    else {
+                        gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    }
                     break;
                 case NONE:
                     DefaultGraphTraversal t = new DefaultGraphTraversal();
@@ -2036,14 +2059,37 @@ class GraphOMRSMetadataStore {
                 }
             }
 
+            /*
+             * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+             * between the match properties and the properties defined on the type (core or type defined). So
+             * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+             * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+             * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+             * be satisfied. For matchCriteria NONE we can assert that the relationship but since we still need to
+             * retrieve the vertex from the graoh (to construct the relationship) it is better to let that case continue.
+             */
+
+
             switch (matchCriteria) {
                 case ALL:
-                    gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    if (propCriteria.isEmpty()) {
+                        g.tx().rollback();
+                        return null;
+                    }
+                    else {
+                        gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    }
                     break;
                 case ANY:
-                    gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    if (propCriteria.isEmpty()) {
+                        g.tx().rollback();
+                        return null;
+                    }
+                    else {
+                        gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    }
                     break;
                 case NONE:
                     DefaultGraphTraversal t = new DefaultGraphTraversal();
