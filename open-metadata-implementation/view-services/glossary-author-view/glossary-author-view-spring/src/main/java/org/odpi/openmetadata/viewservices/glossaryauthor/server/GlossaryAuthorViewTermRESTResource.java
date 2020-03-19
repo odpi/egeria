@@ -160,10 +160,6 @@ public class GlossaryAuthorViewTermRESTResource {
     /**
      * Update a Term
      * <p>
-     * If the caller has chosen to incorporate the term name in their Term Terms or Categories qualified name, renaming the term will cause those
-     * qualified names to mismatch the Term name.
-     * If the caller has chosen to incorporate the term qualifiedName in their Term Terms or Categories qualified name, changing the qualified name of the term will cause those
-     * qualified names to mismatch the Term name.
      * Status is not updated using this call.
      *
      * @param serverName   local UI server name

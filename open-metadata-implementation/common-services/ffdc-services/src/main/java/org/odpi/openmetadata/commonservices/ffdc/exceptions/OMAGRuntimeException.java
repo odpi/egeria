@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ffdc.exceptions;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -11,6 +14,77 @@ import java.util.Map;
 public class OMAGRuntimeException extends org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException
 {
     private static final long    serialVersionUID = 1L;
+
+    /**
+     * This is the typical constructor used for creating an OMAGRuntimeException.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     */
+    public OMAGRuntimeException(ExceptionMessageDefinition messageDefinition,
+                                String                     className,
+                                String                     actionDescription)
+    {
+        super(messageDefinition, className, actionDescription);
+    }
+
+
+    /**
+     * This is the typical constructor used for creating an OMAGRuntimeException.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public OMAGRuntimeException(ExceptionMessageDefinition messageDefinition,
+                                String                     className,
+                                String                     actionDescription,
+                                Map<String, Object>        relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, relatedProperties);
+    }
+
+
+    /**
+     * This is the constructor used for creating an OMAGRuntimeException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     */
+    public OMAGRuntimeException(ExceptionMessageDefinition messageDefinition,
+                                String                     className,
+                                String                     actionDescription,
+                                Throwable                  caughtError)
+    {
+        super(messageDefinition, className, actionDescription, caughtError);
+    }
+
+
+    /**
+     * This is the constructor used for creating an OMAGRuntimeException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public OMAGRuntimeException(ExceptionMessageDefinition messageDefinition,
+                                String                     className,
+                                String                     actionDescription,
+                                Throwable                  caughtError,
+                                Map<String, Object>        relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
+    }
+
 
     /**
      * This is the typical constructor used for creating an exception.
@@ -23,6 +97,7 @@ public class OMAGRuntimeException extends org.odpi.openmetadata.frameworks.conne
      * @param userAction         instructions for correcting the error
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
+    @Deprecated
     public OMAGRuntimeException(int                 httpCode,
                                 String              className,
                                 String              actionDescription,
@@ -48,6 +123,7 @@ public class OMAGRuntimeException extends org.odpi.openmetadata.frameworks.conne
      * @param caughtError        previous error causing this exception
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
+    @Deprecated
     public OMAGRuntimeException(int                 httpCode,
                                 String              className,
                                 String              actionDescription,
@@ -73,10 +149,13 @@ public class OMAGRuntimeException extends org.odpi.openmetadata.frameworks.conne
                 "reportedHTTPCode=" + getReportedHTTPCode() +
                 ", reportingClassName='" + getReportingClassName() + '\'' +
                 ", reportingActionDescription='" + getReportingActionDescription() + '\'' +
-                ", errorMessage='" + getErrorMessage() + '\'' +
+                ", reportedErrorMessage='" + getReportedErrorMessage() + '\'' +
+                ", reportedErrorMessageId='" + getReportedErrorMessageId() + '\'' +
+                ", reportedErrorMessageParameters=" + Arrays.toString(getReportedErrorMessageParameters()) +
                 ", reportedSystemAction='" + getReportedSystemAction() + '\'' +
                 ", reportedUserAction='" + getReportedUserAction() + '\'' +
                 ", reportedCaughtException=" + getReportedCaughtException() +
+                ", reportedCaughtExceptionClassName='" + getReportedCaughtExceptionClassName() + '\'' +
                 ", relatedProperties=" + getRelatedProperties() +
                 '}';
     }

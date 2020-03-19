@@ -11,7 +11,7 @@ import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.handlers.Gove
 import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneListResponse;
 import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneRequestBody;
 import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneResponse;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -34,6 +34,7 @@ public class GovernanceZoneRESTServices
     public GovernanceZoneRESTServices()
     {
     }
+    
 
     /**
      * Create a definition of a governance zone.  The qualified name of these governance zones can be added
@@ -59,7 +60,7 @@ public class GovernanceZoneRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -115,7 +116,7 @@ public class GovernanceZoneRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ZoneListResponse response = new ZoneListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -158,7 +159,7 @@ public class GovernanceZoneRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ZoneResponse response = new ZoneResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -177,7 +178,4 @@ public class GovernanceZoneRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
-
 }

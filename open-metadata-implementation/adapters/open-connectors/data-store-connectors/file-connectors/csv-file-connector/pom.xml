@@ -34,6 +34,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
         </dependency>
 
@@ -56,9 +61,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <scope>test</scope>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-ut</artifactId>
         </dependency>
 
     </dependencies>

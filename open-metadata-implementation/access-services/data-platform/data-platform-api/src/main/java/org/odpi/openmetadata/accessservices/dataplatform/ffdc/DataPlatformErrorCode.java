@@ -101,6 +101,13 @@ public enum DataPlatformErrorCode
             "Unable to create classification {0} for entity of type {1}. Error: {2}",
             "The system is unable to process the request.",
             "Verify the topic event."),
+    NULL_TOPIC_CONNECTOR(400, "OMAS-DATA-PLATFORM-400-021",
+                         "Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize",
+                         "The local server will not connect to the cohort.",
+                         "The connection to the connector is configured in the server configuration.  " +
+                                 "Review previous error messages to determine the precise error in the " +
+                                 "start up configuration. " +
+                                 "Correct the configuration and reconnect the server to the cohort. "),
     SERVER_NOT_AVAILABLE(404, "OMAS-DATA-PLATFORM-404-001 ",
             "The OMAS Service {0} is not available",
             "The system is unable to connect to the OMAS Server.",

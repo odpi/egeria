@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSRepositoryConnector;
@@ -32,7 +32,7 @@ public class RelationshipAccumulator extends QueryInstanceAccumulatorBase
      * @param repositoryValidator validator provides common validation routines
      */
     public RelationshipAccumulator(String                            localMetadataCollectionId,
-                                   OMRSAuditLog                      auditLog,
+                                   AuditLog                          auditLog,
                                    OMRSRepositoryValidator           repositoryValidator)
     {
         super(localMetadataCollectionId, auditLog, repositoryValidator);

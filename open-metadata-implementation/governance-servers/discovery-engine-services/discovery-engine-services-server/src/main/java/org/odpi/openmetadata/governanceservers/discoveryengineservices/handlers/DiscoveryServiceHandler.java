@@ -2,13 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers;
 
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog.DiscoveryEngineServicesAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryContext;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.Date;
 
@@ -22,7 +22,7 @@ public class DiscoveryServiceHandler implements Runnable
     private String                    discoveryServiceName;
     private DiscoveryService          discoveryService;
     private DiscoveryContext          discoveryContext;
-    private OMRSAuditLog              auditLog;
+    private AuditLog                  auditLog;
 
 
     /**
@@ -42,7 +42,7 @@ public class DiscoveryServiceHandler implements Runnable
                              String                    discoveryServiceName,
                              DiscoveryService          discoveryService,
                              DiscoveryContext          discoveryContext,
-                             OMRSAuditLog              auditLog)
+                             AuditLog                  auditLog)
     {
         this.discoveryEngineProperties = discoveryEngineProperties;
         this.assetDiscoveryType        = assetDiscoveryType;

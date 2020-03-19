@@ -224,16 +224,9 @@ public class AuditLogBase implements AuditLog
     {
         if (newPropertyName == null)
         {
-            GAFErrorCode errorCode = GAFErrorCode.NULL_AUDITLOG_PROPERTYNAME;
-            String         errorMessage = errorCode.getErrorMessageId()
-                                        + errorCode.getFormattedErrorMessage(getAuditLogName());
-
-            throw new GAFRuntimeException(errorCode.getHTTPErrorCode(),
-                                          "AuditLogBase",
-                                          "setProperty",
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+            throw new GAFRuntimeException(GAFErrorCode.NULL_AUDITLOG_PROPERTY_NAME.getMessageDefinition(getAuditLogName()),
+                                          this.getClass().getName(),
+                                          "setProperty");
         }
         else if (newPropertyValue == null)
         {

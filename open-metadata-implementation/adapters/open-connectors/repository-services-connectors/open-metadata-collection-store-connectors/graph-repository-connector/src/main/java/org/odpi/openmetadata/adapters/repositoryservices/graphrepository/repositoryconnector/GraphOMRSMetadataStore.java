@@ -13,7 +13,7 @@ import org.apache.tinkerpop.gremlin.structure.Element;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.attribute.Text;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -89,7 +89,6 @@ class GraphOMRSMetadataStore {
     private String               metadataCollectionId;
     private String               metadataCollectionName = null;
     private OMRSRepositoryHelper repositoryHelper;
-    private OMRSAuditLog         auditLog;
 
     // The instance graph is used to store entities (vertices) and relationships (edges).
     private JanusGraph instanceGraph;
@@ -98,15 +97,22 @@ class GraphOMRSMetadataStore {
     private GraphOMRSClassificationMapper classificationMapper;
 
 
+
     /**
-     * Default constructor
+     * Typical constructor
+     *
+     * @param metadataCollectionId unique identifier for the metadata collection
+     * @param repositoryName name of this repository
+     * @param repositoryHelper utilities
+     * @param auditLog logging destination
+     * @param storageProperties properties for the graph DB
+     * @throws RepositoryErrorException problem with the graph database.
      */
-    public GraphOMRSMetadataStore(String               metadataCollectionId,
-                                  String               repositoryName,
-                                  OMRSRepositoryHelper repositoryHelper,
-                                  OMRSAuditLog         auditLog,
-                                  Map<String, Object> storageProperties
-    )
+    GraphOMRSMetadataStore(String               metadataCollectionId,
+                           String               repositoryName,
+                           OMRSRepositoryHelper repositoryHelper,
+                           AuditLog             auditLog,
+                           Map<String, Object>  storageProperties)
         throws
             RepositoryErrorException
     {
@@ -116,7 +122,6 @@ class GraphOMRSMetadataStore {
         this.metadataCollectionId = metadataCollectionId;
         this.repositoryName = repositoryName;
         this.repositoryHelper = repositoryHelper;
-        this.auditLog = auditLog;
 
         try {
             synchronized (GraphOMRSMetadataStore.class) {
@@ -175,34 +180,28 @@ class GraphOMRSMetadataStore {
                 } else {
                     log.error("{} existing vertex apparently a proxy, but has local metadataCollectionId", methodName);
                     g.tx().rollback();
-                    GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS;
 
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
-                            this.getClass().getName(),
-                            repositoryName);
+                    final String parameterName = "metadataCollectionId";
 
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                            this.getClass().getName(),
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
+                    throw new InvalidParameterException(GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                                      this.getClass().getName(),
+                                                                                                                      repositoryName),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        parameterName);
                 }
             } else {
                 log.error("{} existing vertex for GUID {} and it is not a proxy", methodName, entity.getGUID());
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
-                        this.getClass().getName(),
-                        repositoryName);
+                String parameterName = "entity";
 
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                throw new InvalidParameterException(GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                                  this.getClass().getName(),
+                                                                                                                  repositoryName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
             }
         } else {
 
@@ -231,18 +230,11 @@ class GraphOMRSMetadataStore {
             log.error("{} Caught exception from entity mapper {}", methodName, e.getMessage());
             g.tx().rollback();
 
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_CREATED;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+            throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_NOT_CREATED.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                          this.getClass().getName(),
+                                                                                                          repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName, e);
         }
 
 
@@ -270,18 +262,13 @@ class GraphOMRSMetadataStore {
             Vertex vertex = vertexIt.next();
             log.error("{} createEntityProxyInStore found existing vertex {}", methodName, vertex);
             g.tx().rollback();
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityProxy.getGUID(), methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS.getMessageDefinition(entityProxy.getGUID(), methodName,
+                                                                                                              this.getClass().getName(),
+                                                                                                              repositoryName),
                     this.getClass().getName(),
                     methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    "entityProxy");
         }
 
         Vertex vertex = g.addV("Entity").next();
@@ -293,7 +280,7 @@ class GraphOMRSMetadataStore {
             List<Classification> classifications = entityProxy.getClassifications();
             if (classifications != null) {
                 for (Classification classification : classifications) {
-                    log.debug("{} add classification ", methodName, classification.getName());
+                    log.debug("{} add classification {}", methodName, classification.getName());
                     Vertex classificationVertex = g.addV("Classification").next();
                     classificationMapper.mapClassificationToVertex(classification, classificationVertex);
                     Edge classifierEdge = vertex.addEdge("Classifier", classificationVertex);
@@ -303,18 +290,12 @@ class GraphOMRSMetadataStore {
         } catch (Exception e) {
             log.error("{} Caught exception from entity mapper {}", methodName, e.getMessage());
             g.tx().rollback();
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_CREATED;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityProxy.getGUID(), methodName,
+            throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_NOT_CREATED.getMessageDefinition(entityProxy.getGUID(), methodName,
+                                                                                                          this.getClass().getName(),
+                                                                                                          repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName, e);
         }
 
         g.tx().commit();
@@ -397,18 +378,13 @@ class GraphOMRSMetadataStore {
 
                 log.error("{} found an existing vertex from a different source, with metadataCollectionId {}", methodName, vertexMetadataCollectionId);
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
-                        this.getClass().getName(),
-                        repositoryName);
-
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                throw new InvalidParameterException(GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                                  this.getClass().getName(),
+                                                                                                                  repositoryName),
                         this.getClass().getName(),
                         methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        "entity");
             }
 
         } else {
@@ -443,24 +419,15 @@ class GraphOMRSMetadataStore {
             log.error("{} Caught exception from entity mapper {}", methodName, e.getMessage());
             g.tx().rollback();
 
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_CREATED;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+            throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_NOT_CREATED.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                          this.getClass().getName(),
+                                                                                                          repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName, e);
         }
 
 
         g.tx().commit();
-
-        return;
     }
 
 
@@ -503,21 +470,15 @@ class GraphOMRSMetadataStore {
                         entityMapper.mapVertexToEntityDetail(vertex, entity);
                     }
                     else {
-                        // We know this is a proxy - throw the appropraite exception
+                        // We know this is a proxy - throw the appropriate exception
                         log.error("{} found entity but it is only a proxy, guid {}", methodName, guid);
                         g.tx().rollback();
-                        GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROXY_ONLY;
 
-                        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid, methodName,
+                        throw new EntityProxyOnlyException(GraphOMRSErrorCode.ENTITY_PROXY_ONLY.getMessageDefinition(guid, methodName,
+                                                                                                                     this.getClass().getName(),
+                                                                                                                     repositoryName),
                                 this.getClass().getName(),
-                                repositoryName);
-
-                        throw new EntityProxyOnlyException(errorCode.getHTTPErrorCode(),
-                                this.getClass().getName(),
-                                methodName,
-                                errorMessage,
-                                errorCode.getSystemAction(),
-                                errorCode.getUserAction());
+                                methodName);
                     }
 
                 }
@@ -527,37 +488,25 @@ class GraphOMRSMetadataStore {
 
                 log.error("{} Caught exception {}", methodName, e.getMessage());
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid, methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(guid, methodName,
+                                                                                                            this.getClass().getName(),
+                                                                                                            repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, e);
             }
 
         } else {
 
             // Entity was not found by GUID
-            log.error("{} entity with GUID {} not found {}", methodName, guid);
+            log.error("{} entity with GUID {} not found", methodName, guid);
             g.tx().rollback();
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid, methodName,
+            throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(guid, methodName,
+                                                                                                       this.getClass().getName(),
+                                                                                                       repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-
-            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName);
         }
 
 
@@ -598,37 +547,25 @@ class GraphOMRSMetadataStore {
 
                 log.error("{} Caught exception {}", methodName, e.getMessage());
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid, methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(guid, methodName,
+                                                                                                            this.getClass().getName(),
+                                                                                                            repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, e);
             }
 
         } else {
 
             // Entity was not found by GUID
-            log.error("{} entity with GUID {} not found {}", methodName, guid);
+            log.error("{} entity with GUID {} not found", methodName, guid);
             g.tx().rollback();
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid, methodName,
+            throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(guid, methodName,
+                                                                                                       this.getClass().getName(),
+                                                                                                       repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-
-            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName);
         }
 
 
@@ -669,18 +606,12 @@ class GraphOMRSMetadataStore {
             } catch (Exception e) {
                 log.error("{} Caught exception from entity mapper {}", methodName, e.getMessage());
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid, methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(guid, methodName,
+                                                                                                            this.getClass().getName(),
+                                                                                                            repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, e);
             }
         }
 
@@ -713,18 +644,13 @@ class GraphOMRSMetadataStore {
             Edge edge = edgeIt.next();
             log.error("{} found existing edge {}", methodName, edge);
             g.tx().rollback();
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+            throw new InvalidParameterException(GraphOMRSErrorCode.RELATIONSHIP_ALREADY_EXISTS.getMessageDefinition(relationship.getGUID(),
+                                                                                                                    methodName,
+                                                                                                                    this.getClass().getName(),
+                                                                                                                    repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName, "relationship");
         }
 
 
@@ -750,18 +676,12 @@ class GraphOMRSMetadataStore {
         if (vertexOne == null || vertexTwo == null) {
             log.error("{} Could not find both ends for relationship {}", methodName, relationship.getGUID());
             g.tx().rollback();
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_NOT_CREATED;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+            throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_NOT_CREATED.getMessageDefinition(relationship.getGUID(), methodName,
+                                                                                                                this.getClass().getName(),
+                                                                                                                repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName);
         }
 
         Edge edge = vertexOne.addEdge("Relationship", vertexTwo);
@@ -773,18 +693,13 @@ class GraphOMRSMetadataStore {
         } catch (Exception e) {
             log.error("{} Caught exception from relationship mapper {}", methodName, e.getMessage());
             g.tx().rollback();
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_NOT_CREATED;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
-                    this.getClass().getName(),
-                    repositoryName);
 
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_NOT_CREATED.getMessageDefinition(relationship.getGUID(), methodName,
+                                                                                                                this.getClass().getName(),
+                                                                                                                repositoryName),
                     this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName, e);
         }
 
         log.debug("{} Commit tx containing creation of edge", methodName);
@@ -925,18 +840,12 @@ class GraphOMRSMetadataStore {
             // Error!!
             log.error("{} Could not locate or create vertex for entity with guid {} used in relationship {}", methodName, vertexOne==null?entityOne.getGUID():entityTwo.getGUID(),relationship.getGUID());
             g.tx().rollback();
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_NOT_CREATED;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+            throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_NOT_CREATED.getMessageDefinition(relationship.getGUID(), methodName,
+                                                                                                                this.getClass().getName(),
+                                                                                                                repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName);
         }
 
 
@@ -969,18 +878,16 @@ class GraphOMRSMetadataStore {
 
                 log.error("{} found an existing edge from a different source, with metadataCollectionId {}", methodName, edgeMetadataCollectionId);
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_ALREADY_EXISTS;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
-                        this.getClass().getName(),
-                        repositoryName);
+                final String parameterName = "relationship";
 
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                throw new InvalidParameterException(GraphOMRSErrorCode.RELATIONSHIP_ALREADY_EXISTS.getMessageDefinition(relationship.getGUID(),
+                                                                                                                        methodName,
+                                                                                                                        this.getClass().getName(),
+                                                                                                                        repositoryName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
             }
 
 
@@ -989,7 +896,6 @@ class GraphOMRSMetadataStore {
             // No existing edge found. Create an edge for the relationship
             edge = vertexOne.addEdge("Relationship", vertexTwo);
         }
-
 
 
         // Populate the edge with the relationship
@@ -1001,30 +907,23 @@ class GraphOMRSMetadataStore {
         catch (Exception e) {
             log.error("{} Caught exception from relationship mapper {}", methodName, e.getMessage());
             g.tx().rollback();
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_NOT_CREATED;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+            throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_NOT_CREATED.getMessageDefinition(relationship.getGUID(),
+                                                                                                                methodName,
+                                                                                                                this.getClass().getName(),
+                                                                                                                repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName, e);
         }
 
         log.debug("{} Commit tx containing creation or update of edge", methodName);
         g.tx().commit();
-
-        return;
     }
 
 
 
 
-    protected synchronized Relationship getRelationshipFromStore(String guid)
+    synchronized Relationship getRelationshipFromStore(String guid)
             throws RepositoryErrorException
     {
         String methodName = "getRelationshipFromStore";
@@ -1073,18 +972,12 @@ class GraphOMRSMetadataStore {
             } catch (Exception e) {
                 log.error("{} Caught exception from entity mapper {}", methodName, e.getMessage());
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_NOT_FOUND;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityMapper.getEntityGUID(vertex), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_NOT_FOUND.getMessageDefinition(entityMapper.getEntityGUID(vertex), methodName,
+                                                                                                                  this.getClass().getName(),
+                                                                                                                  repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, e);
             }
         }
 
@@ -1130,18 +1023,12 @@ class GraphOMRSMetadataStore {
             } catch (Exception e) {
                 log.error("{} caught exception {}", methodName, e.getMessage());
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_UPDATED;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_NOT_UPDATED.getMessageDefinition(entity.getGUID(), methodName,
+                                                                                                              this.getClass().getName(),
+                                                                                                              repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, e);
             }
         }
 
@@ -1188,19 +1075,13 @@ class GraphOMRSMetadataStore {
             } catch (Exception e) {
                 log.error("{} caught exception {}", methodName, e.getMessage());
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_UPDATED;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityProxy.getGUID(),
-                        methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_NOT_UPDATED.getMessageDefinition(entityProxy.getGUID(),
+                                                                                                              methodName,
+                                                                                                              this.getClass().getName(),
+                                                                                                              repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, e);
             }
         }
 
@@ -1311,23 +1192,15 @@ class GraphOMRSMetadataStore {
 
                 log.error("{} Caught exception from relationship mapper {}", methodName, e.getMessage());
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_NOT_UPDATED;
-
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_NOT_UPDATED.getMessageDefinition(relationship.getGUID(), methodName,
+                                                                                                                    this.getClass().getName(),
+                                                                                                                    repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, e);
             }
         }
 
         g.tx().commit();
-
     }
 
     // removeEntityFromStore
@@ -1511,18 +1384,12 @@ class GraphOMRSMetadataStore {
                 } catch (Exception e) {
                     log.error("{} Caught exception from entity mapper {}", methodName, e.getMessage());
                     g.tx().rollback();
-                    GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_NOT_FOUND;
 
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityMapper.getEntityGUID(vertex), methodName,
+                    throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_NOT_FOUND.getMessageDefinition(entityMapper.getEntityGUID(vertex), methodName,
+                                                                                                                      this.getClass().getName(),
+                                                                                                                      repositoryName),
                             this.getClass().getName(),
-                            repositoryName);
-
-                    throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                            this.getClass().getName(),
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
+                            methodName, e);
                 }
 
                 relationships.add(relationship);
@@ -1640,9 +1507,9 @@ class GraphOMRSMetadataStore {
                     /*
                      * Treat the match property as a reference to a core property
                      *
-                     * For a core property to be held in a maptchProperties (InstanceProperties) object, the caller will need to have converted from InstanceAuditHeader
+                     * For a core property to be held in a matchProperties (InstanceProperties) object, the caller will need to have converted from InstanceAuditHeader
                      * type declaration to an appropriate 'soft' type. For example a java.lang.String field such as createdBy must have been converted to a primitive with
-                     * primiitve def category of string.
+                     * primitive def category of string.
                      */
 
                     propNameToSearch = PROPERTY_KEY_PREFIX_ENTITY + propName;
@@ -1674,7 +1541,7 @@ class GraphOMRSMetadataStore {
                                 PrimitivePropertyValue ppv = (PrimitivePropertyValue) mpv;
                                 mpCat = ppv.getPrimitiveDefCategory();
                             } else {
-                                log.debug("{} non-primitive match property {} ignored", propName);
+                                log.debug("{} non-primitive match property {} ignored", methodName, propName);
                             }
 
                             PrimitiveDefCategory pdCat = OM_PRIMITIVE_TYPE_UNKNOWN;
@@ -1749,7 +1616,7 @@ class GraphOMRSMetadataStore {
                                 // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
 
                                 String searchString = convertSearchStringToJanusRegex((String) primValue);
-                                log.debug("{} primitive match property search string ", methodName, searchString);
+                                log.debug("{} primitive match property search string {}", methodName, searchString);
 
                                 // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
                                 if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
@@ -1774,19 +1641,42 @@ class GraphOMRSMetadataStore {
                         log.debug("{} primitive match property has property criterion {}", methodName, t);
                         propCriteria.add(t);
                     } else {
-                        log.debug("{} non-primitive match property {} ignored", propName);
+                        log.debug("{} non-primitive match property {} ignored", methodName, propName);
                     }
                 }
             }
 
+            /*
+             * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+             * between the match properties and the properties defined on the type (core or type defined). So
+             * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+             * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+             * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+             * be satisfied. For matchCriteria NONE we can assert that the relationship but since we still need to
+             * retrieve the vertex from the graoh (to construct the relationship) it is better to let that case continue.
+             */
+
+
             switch (matchCriteria) {
                 case ALL:
-                    gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    if (propCriteria.isEmpty()) {
+                        g.tx().rollback();
+                        return null;
+                    }
+                    else {
+                        gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    }
                     break;
                 case ANY:
-                    gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    if (propCriteria.isEmpty()) {
+                        g.tx().rollback();
+                        return null;
+                    }
+                    else {
+                        gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    }
                     break;
                 case NONE:
                     DefaultGraphTraversal t = new DefaultGraphTraversal();
@@ -1795,18 +1685,15 @@ class GraphOMRSMetadataStore {
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
                 default:
-                    GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.INVALID_MATCH_CRITERIA;
                     g.tx().rollback();
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                            this.getClass().getName(),
-                            repositoryName);
+                    final String parameterName = "matchCriteria";
 
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                            this.getClass().getName(),
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
+                    throw new InvalidParameterException(GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(methodName,
+                                                                                                                       this.getClass().getName(),
+                                                                                                                       repositoryName),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        parameterName);
 
             }
 
@@ -2031,9 +1918,9 @@ class GraphOMRSMetadataStore {
                     /*
                      * Treat the match property as a reference to a core property
                      *
-                     * For a core property to be held in a maptchProperties (InstanceProperties) object, the caller will need to have converted from InstanceAuditHeader
+                     * For a core property to be held in a matchProperties (InstanceProperties) object, the caller will need to have converted from InstanceAuditHeader
                      * type declaration to an appropriate 'soft' type. For example a java.lang.String field such as createdBy must have been converted to a primitive with
-                     * primiitve def category of string.
+                     * primitive def category of string.
                      */
 
                     propNameToSearch = PROPERTY_KEY_PREFIX_RELATIONSHIP + propName;
@@ -2067,7 +1954,7 @@ class GraphOMRSMetadataStore {
                                 PrimitivePropertyValue ppv = (PrimitivePropertyValue) mpv;
                                 mpCat = ppv.getPrimitiveDefCategory();
                             } else {
-                                log.debug("{} non-primitive match property {} ignored", propName);
+                                log.debug("{} non-primitive match property {} ignored", methodName, propName);
                             }
 
                             PrimitiveDefCategory pdCat = OM_PRIMITIVE_TYPE_UNKNOWN;
@@ -2142,7 +2029,7 @@ class GraphOMRSMetadataStore {
                                 // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
 
                                 String searchString = convertSearchStringToJanusRegex((String) primValue);
-                                log.debug("{} primitive match property search string ", methodName, searchString);
+                                log.debug("{} primitive match property search string {}", methodName, searchString);
 
                                 // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
                                 if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
@@ -2167,19 +2054,42 @@ class GraphOMRSMetadataStore {
                         log.debug("{} primitive match property has property criterion {}", methodName, t);
                         propCriteria.add(t);
                     } else {
-                        log.debug("{} non-primitive match property {} ignored", propName);
+                        log.debug("{} non-primitive match property {} ignored", methodName, propName);
                     }
                 }
             }
 
+            /*
+             * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+             * between the match properties and the properties defined on the type (core or type defined). So
+             * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+             * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+             * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+             * be satisfied. For matchCriteria NONE we can assert that the relationship but since we still need to
+             * retrieve the vertex from the graoh (to construct the relationship) it is better to let that case continue.
+             */
+
+
             switch (matchCriteria) {
                 case ALL:
-                    gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    if (propCriteria.isEmpty()) {
+                        g.tx().rollback();
+                        return null;
+                    }
+                    else {
+                        gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    }
                     break;
                 case ANY:
-                    gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    if (propCriteria.isEmpty()) {
+                        g.tx().rollback();
+                        return null;
+                    }
+                    else {
+                        gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                    }
                     break;
                 case NONE:
                     DefaultGraphTraversal t = new DefaultGraphTraversal();
@@ -2188,18 +2098,15 @@ class GraphOMRSMetadataStore {
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
                 default:
-                    GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.INVALID_MATCH_CRITERIA;
                     g.tx().rollback();
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                            this.getClass().getName(),
-                            repositoryName);
 
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    final String parameterName = "matchCriteria";
+                    throw new InvalidParameterException(GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(methodName,
+                                                                                                                       this.getClass().getName(),
+                                                                                                                       repositoryName),
                             this.getClass().getName(),
                             methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
+                            parameterName);
 
             }
         }
@@ -2235,18 +2142,12 @@ class GraphOMRSMetadataStore {
             } catch (Exception e) {
                 log.error("{} Caught exception from entity mapper {}", methodName, e.getMessage());
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(relationship.getGUID(), methodName,
+                                                                                                                         this.getClass().getName(),
+                                                                                                                         repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, e);
             }
 
             relationships.add(relationship);
@@ -2260,7 +2161,7 @@ class GraphOMRSMetadataStore {
 
 
     // For each searchable type convert searchCriteria into matchProperties
-    public InstanceProperties constructMatchPropertiesForSearchCriteria(TypeDef typeDef, String searchCriteria, GraphOMRSConstants.ElementType elementType)
+    InstanceProperties constructMatchPropertiesForSearchCriteria(TypeDef typeDef, String searchCriteria, GraphOMRSConstants.ElementType elementType)
     {
 
         final String methodName = "constructMatchPropertiesForSearchCriteria";
@@ -2340,7 +2241,7 @@ class GraphOMRSMetadataStore {
     }
 
 
-    public void createEntityIndexes(TypeDef typeDef)
+    void createEntityIndexes(TypeDef typeDef)
     {
 
         final String methodName = "createEntityIndexes";
@@ -2399,7 +2300,7 @@ class GraphOMRSMetadataStore {
     }
 
 
-    public void createClassificationIndexes(TypeDef typeDef)
+    void createClassificationIndexes(TypeDef typeDef)
     {
 
         final String methodName = "createClassificationIndexes";
@@ -2458,7 +2359,7 @@ class GraphOMRSMetadataStore {
     }
 
 
-    public void createRelationshipIndexes(TypeDef typeDef)
+    void createRelationshipIndexes(TypeDef typeDef)
     {
 
         final String methodName = "createRelationshipIndexes";
@@ -2584,7 +2485,7 @@ class GraphOMRSMetadataStore {
                         case OM_PRIMITIVE_TYPE_STRING:
                             // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
                             String searchString = convertSearchStringToJanusRegex((String) primValue);
-                            log.debug("{} primitive match property search string ", methodName, searchString);
+                            log.debug("{} primitive match property search string {}", methodName, searchString);
 
                             // NB This is using a JG specific approach to text predicates - see the static import above.
                             // From TP 3.4.0 try to use the TP text predicates.
@@ -2602,7 +2503,7 @@ class GraphOMRSMetadataStore {
                     log.debug("{} primitive match property has property criterion {}", methodName, t);
                     propCriteria.add(t);
                 } else {
-                    log.debug("{} non-primitive match property {} ignored", propName);
+                    log.debug("{} non-primitive match property {} ignored", methodName, propName);
                 }
             }
 
@@ -2622,18 +2523,15 @@ class GraphOMRSMetadataStore {
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
                 default:
-                    GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.INVALID_MATCH_CRITERIA;
                     g.tx().rollback();
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                            this.getClass().getName(),
-                            repositoryName);
+                    final String parameterName = "matchCriteria";
 
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                            this.getClass().getName(),
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
+                    throw new InvalidParameterException(GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(methodName,
+                                                                                                                       this.getClass().getName(),
+                                                                                                                       repositoryName),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        parameterName);
 
             }
         }
@@ -2668,12 +2566,12 @@ class GraphOMRSMetadataStore {
     }
 
 
-    public InstanceGraph getSubGraph(String entityGUID,
-                                     List<String> entityTypeGUIDs,
-                                     List<String> relationshipTypeGUIDs,
-                                     List<InstanceStatus> limitResultsByStatus,
-                                     List<String> limitResultsByClassification,
-                                     int level)
+    InstanceGraph getSubGraph(String entityGUID,
+                              List<String> entityTypeGUIDs,
+                              List<String> relationshipTypeGUIDs,
+                              List<InstanceStatus> limitResultsByStatus,
+                              List<String> limitResultsByClassification,
+                              int level)
             throws
             TypeErrorException,
             EntityNotKnownException
@@ -2722,16 +2620,12 @@ class GraphOMRSMetadataStore {
                 } catch (Exception e) {
                     log.error("{} caught exception from repository helper trying to resolve type with GUID {}", methodName, entTypeGUID);
 
-                    GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_TYPE_GUID_NOT_KNOWN;
-
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entTypeGUID, methodName, this.getClass().getName(), repositoryName);
-
-                    throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+                    throw new TypeErrorException(GraphOMRSErrorCode.ENTITY_TYPE_GUID_NOT_KNOWN.getMessageDefinition(entTypeGUID,
+                                                                                                                    methodName,
+                                                                                                                    this.getClass().getName(),
+                                                                                                                    repositoryName),
                             this.getClass().getName(),
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
+                            methodName, e);
                 }
 
             }
@@ -2751,16 +2645,12 @@ class GraphOMRSMetadataStore {
                 } catch (Exception e) {
                     log.error("{} caught exception from repository helper trying to resolve type with GUID {}", methodName, relTypeGUID);
 
-                    GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_TYPE_GUID_NOT_KNOWN;
-
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relTypeGUID, methodName, this.getClass().getName(), repositoryName);
-
-                    throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+                    throw new TypeErrorException(GraphOMRSErrorCode.RELATIONSHIP_TYPE_GUID_NOT_KNOWN.getMessageDefinition(relTypeGUID,
+                                                                                                                          methodName,
+                                                                                                                          this.getClass().getName(),
+                                                                                                                          repositoryName),
                             this.getClass().getName(),
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
+                            methodName, e);
                 }
 
             }
@@ -2837,18 +2727,12 @@ class GraphOMRSMetadataStore {
 
                 log.error("{} could not retrieve start entity with GUID {}", methodName, entityGUID);
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName,
+                throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(entityGUID, methodName,
+                                                                                                           this.getClass().getName(),
+                                                                                                           repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName);
 
             } else {
 
@@ -2867,18 +2751,12 @@ class GraphOMRSMetadataStore {
 
                     log.error("{} caught exception whilst trying to map entity with GUID {}, exception {}", methodName, entityGUID, e.getMessage());
                     g.tx().rollback();
-                    GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
 
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName,
+                    throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(entityGUID, methodName,
+                                                                                                               this.getClass().getName(),
+                                                                                                               repositoryName),
                             this.getClass().getName(),
-                            repositoryName);
-
-                    throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                            this.getClass().getName(),
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
+                            methodName, e);
 
                 }
 
@@ -3019,18 +2897,12 @@ class GraphOMRSMetadataStore {
                                  */
                                 log.error("{} caught exception whilst trying to map entity, exception {}", methodName, e.getMessage());
                                 g.tx().rollback();
-                                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
 
-                                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityMapper.getEntityGUID(vertex), methodName,
+                                throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(entityMapper.getEntityGUID(vertex), methodName,
+                                                                                                                           this.getClass().getName(),
+                                                                                                                           repositoryName),
                                         this.getClass().getName(),
-                                        repositoryName);
-
-                                throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                                        this.getClass().getName(),
-                                        methodName,
-                                        errorMessage,
-                                        errorCode.getSystemAction(),
-                                        errorCode.getUserAction());
+                                        methodName, e);
                             }
                         }
                     }
@@ -3075,7 +2947,7 @@ class GraphOMRSMetadataStore {
         final String methodName = "getPaths";
 
 
-        log.debug("{} startEntityGUID = {}, endEntityGUID = {}, limitResultsByStatus = {}, maxPaths = {}",
+        log.debug("{} startEntityGUID = {}, endEntityGUID = {}, limitResultsByStatus = {}, maxPaths = {}, maxDepth {}",
                 methodName, startEntityGUID, endEntityGUID, limitResultsByStatus, maxPaths, maxDepth);
 
         /*
@@ -3155,18 +3027,12 @@ class GraphOMRSMetadataStore {
 
                 log.error("{} could not retrieve start entity with GUID {}", methodName, startEntityGUID);
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(startEntityGUID, methodName,
+                throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(startEntityGUID, methodName,
+                                                                                                           this.getClass().getName(),
+                                                                                                           repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName);
             } else {
 
                 // Since we have access to it now, we might as well map the rootVertex to produce helpful debug information
@@ -3195,18 +3061,12 @@ class GraphOMRSMetadataStore {
 
                     log.error("{} caught exception whilst trying to map entity with GUID {}, exception {}", methodName, startEntityGUID, e.getMessage());
                     g.tx().rollback();
-                    GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
 
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(startEntityGUID, methodName,
+                    throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(startEntityGUID, methodName,
+                                                                                                               this.getClass().getName(),
+                                                                                                               repositoryName),
                             this.getClass().getName(),
-                            repositoryName);
-
-                    throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                            this.getClass().getName(),
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
+                            methodName, e);
                 }
 
 
@@ -3275,18 +3135,14 @@ class GraphOMRSMetadataStore {
                                         catch (RepositoryErrorException | EntityProxyOnlyException e) {
                                             log.error("{} could not map vertex returned in path expression, entity GUID {}, exception {}", methodName, entityMapper.getEntityGUID(vertex), e.getMessage());
                                             g.tx().rollback();
-                                            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
+                                            ;
 
-                                            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(startEntityGUID, methodName,
-                                                    this.getClass().getName(),
-                                                    repositoryName);
 
-                                            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                                            throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(startEntityGUID, methodName,
+                                                                                                                                       this.getClass().getName(),
+                                                                                                                                       repositoryName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
                                         }
                                     }
                                 }
@@ -3346,18 +3202,12 @@ class GraphOMRSMetadataStore {
                                          */
                                         log.error("{} caught exception whilst trying to map entity, exception {}", methodName, e.getMessage());
                                         g.tx().rollback();
-                                        GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
 
-                                        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityMapper.getEntityGUID(vertex), methodName,
+                                        throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(entityMapper.getEntityGUID(vertex), methodName,
+                                                                                                                                   this.getClass().getName(),
+                                                                                                                                   repositoryName),
                                                 this.getClass().getName(),
-                                                repositoryName);
-
-                                        throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName, e);
                                     }
                                 }
                             } else {

@@ -4,7 +4,10 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.*;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -21,7 +24,6 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
     private GlossaryHandler glossaryHandler;
     private AssetContextHandler assetContextHandler;
-    private CommonHandler commonHandler;
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
 
@@ -30,14 +32,15 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones      list of zones that AssetLineage is allowed to serve Assets from.
-     * @param auditLog            destination for audit log events.
+     * @param lineageClassificationTypes
      * @param localServerUserId   userId used for server initiated actions
+     * @param auditLog            destination for audit log events.
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                         List<String> supportedZones,
-                                        OMRSAuditLog auditLog,
-                                        String localServerUserId) throws NewInstanceException {
+                                        List<String> lineageClassificationTypes,
+                                        String localServerUserId, OMRSAuditLog auditLog) throws NewInstanceException {
         super(myDescription.getAccessServiceFullName(),
                 repositoryConnector,
                 auditLog,
@@ -60,11 +63,6 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     repositoryHandler,
                     supportedZones);
 
-            commonHandler = new CommonHandler(
-                    invalidParameterHandler,
-                    repositoryHelper,
-                    repositoryHandler);
-
             processContextHandler = new ProcessContextHandler(
                     invalidParameterHandler,
                     repositoryHelper,
@@ -72,7 +70,8 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     supportedZones);
 
             classificationHandler = new ClassificationHandler(
-                    invalidParameterHandler
+                    invalidParameterHandler,
+                    lineageClassificationTypes
             );
 
         } else {
@@ -105,15 +104,6 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      */
     AssetContextHandler getAssetContextHandler() {
         return assetContextHandler;
-    }
-
-    /**
-     * Return the specialized common handler for Asset Lineage OMAS.
-     *
-     * @return common handler
-     */
-    CommonHandler getCommonHandler() {
-        return commonHandler;
     }
 
     /**

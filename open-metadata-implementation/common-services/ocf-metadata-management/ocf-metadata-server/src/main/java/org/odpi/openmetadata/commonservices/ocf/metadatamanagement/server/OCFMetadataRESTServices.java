@@ -7,12 +7,12 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,8 +62,8 @@ public class OCFMetadataRESTServices
 
         log.debug("Calling method: " + methodName + " from service " + serviceURLName + " for server " + serverName);
 
-        ConnectionResponse  response = new ConnectionResponse();
-        OMRSAuditLog        auditLog = null;
+        ConnectionResponse response = new ConnectionResponse();
+        AuditLog           auditLog = null;
 
         try
         {
@@ -121,7 +121,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " from service " + serviceURLName + " for server " + serverName);
 
         GUIDResponse  response = new GUIDResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
 
         try
@@ -178,7 +178,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " from service " + serviceURLName + " for server " + serverName);
 
         ConnectionResponse  response = new ConnectionResponse();
-        OMRSAuditLog        auditLog = null;
+        AuditLog            auditLog = null;
 
         try
         {
@@ -238,7 +238,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " from service " + serviceURLName + " for server " + serverName);
 
         AssetResponse response = new AssetResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -383,7 +383,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         CertificationsResponse  response = new CertificationsResponse();
-        OMRSAuditLog            auditLog = null;
+        AuditLog                auditLog = null;
 
         try
         {
@@ -444,7 +444,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         CommentsResponse  response = new CommentsResponse();
-        OMRSAuditLog      auditLog = null;
+        AuditLog          auditLog = null;
 
         try
         {
@@ -593,7 +593,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         ConnectionsResponse  response = new ConnectionsResponse();
-        OMRSAuditLog         auditLog = null;
+        AuditLog             auditLog = null;
 
         try
         {
@@ -652,7 +652,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         ExternalIdentifiersResponse  response = new ExternalIdentifiersResponse();
-        OMRSAuditLog                 auditLog = null;
+        AuditLog                     auditLog = null;
 
         try
         {
@@ -711,7 +711,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         ExternalReferencesResponse  response = new ExternalReferencesResponse();
-        OMRSAuditLog                auditLog = null;
+        AuditLog                    auditLog = null;
 
         try
         {
@@ -770,7 +770,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         InformalTagsResponse  response = new InformalTagsResponse();
-        OMRSAuditLog          auditLog = null;
+        AuditLog              auditLog = null;
 
         try
         {
@@ -834,7 +834,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         LicensesResponse  response = new LicensesResponse();
-        OMRSAuditLog      auditLog = null;
+        AuditLog          auditLog = null;
 
         try
         {
@@ -893,7 +893,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         LikesResponse  response = new LikesResponse();
-        OMRSAuditLog   auditLog = null;
+        AuditLog       auditLog = null;
 
         try
         {
@@ -952,7 +952,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         LocationsResponse  response = new LocationsResponse();
-        OMRSAuditLog       auditLog = null;
+        AuditLog           auditLog = null;
 
         try
         {
@@ -1011,7 +1011,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         NoteLogsResponse  response = new NoteLogsResponse();
-        OMRSAuditLog      auditLog = null;
+        AuditLog          auditLog = null;
 
         try
         {
@@ -1095,7 +1095,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         NotesResponse  response = new NotesResponse();
-        OMRSAuditLog   auditLog = null;
+        AuditLog       auditLog = null;
 
         try
         {
@@ -1154,7 +1154,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         RatingsResponse  response = new RatingsResponse();
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -1213,7 +1213,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         RelatedAssetsResponse  response = new RelatedAssetsResponse();
-        OMRSAuditLog           auditLog = null;
+        AuditLog               auditLog = null;
 
         try
         {
@@ -1282,7 +1282,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         MoreInformationResponse  response = new MoreInformationResponse();
-        OMRSAuditLog             auditLog = null;
+        AuditLog                 auditLog = null;
 
         try
         {
@@ -1346,7 +1346,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         RelatedMediaReferencesResponse  response = new RelatedMediaReferencesResponse();
-        OMRSAuditLog                    auditLog = null;
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -1405,7 +1405,7 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         SchemaAttributesResponse  response = new SchemaAttributesResponse();
-        OMRSAuditLog              auditLog = null;
+        AuditLog                  auditLog = null;
 
         try
         {

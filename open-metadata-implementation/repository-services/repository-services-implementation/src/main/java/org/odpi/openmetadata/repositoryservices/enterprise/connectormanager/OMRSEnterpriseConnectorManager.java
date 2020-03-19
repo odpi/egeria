@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.connectormanager;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -83,7 +83,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
     private OMRSRepositoryContentManager      repositoryContentManager;
     private List<RegisteredConnector>         registeredRemoteConnectors   = new ArrayList<>();
     private List<RegisteredConnectorConsumer> registeredConnectorConsumers = new ArrayList<>();
-    private OMRSAuditLog                      auditLog;
+    private AuditLog                          auditLog;
     private String                            localServerUserId;
     private String                            localServerPassword;
 
@@ -103,7 +103,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
     public OMRSEnterpriseConnectorManager(boolean                      enterpriseAccessEnabled,
                                           int                          maxPageSize,
                                           OMRSRepositoryContentManager repositoryContentManager,
-                                          OMRSAuditLog                 auditLog,
+                                          AuditLog                     auditLog,
                                           String                       localServerUserId,
                                           String                       localServerPassword)
     {
@@ -220,41 +220,30 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                                                           ConnectorCheckedException
     {
         final String   actionDescription = "Processing incoming registration request from remote cohort member";
-        OMRSAuditCode auditCode;
 
         RegisteredConnector registeredConnector = this.getRegisteredConnector(metadataCollectionId);
 
         if (registeredConnector == null)
         {
-            auditCode = OMRSAuditCode.NEW_REMOTE_MEMBER;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(remoteServerName,
-                                                                cohortName,
-                                                                metadataCollectionId,
-                                                                metadataCollectionName,
-                                                                remoteServerType,
-                                                                owningOrganizationName),
-                               remoteConnection.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.NEW_REMOTE_MEMBER.getMessageDefinition(remoteServerName,
+                                                                                     cohortName,
+                                                                                     metadataCollectionId,
+                                                                                     metadataCollectionName,
+                                                                                     remoteServerType,
+                                                                                     owningOrganizationName),
+                               remoteConnection.toString());
         }
         else
         {
-            auditCode = OMRSAuditCode.REMOTE_MEMBER_REFRESHED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(remoteServerName,
-                                                                cohortName,
-                                                                metadataCollectionId,
-                                                                metadataCollectionName,
-                                                                remoteServerType,
-                                                                owningOrganizationName),
-                               remoteConnection.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.REMOTE_MEMBER_REFRESHED.getMessageDefinition(remoteServerName,
+                                                                                           cohortName,
+                                                                                           metadataCollectionId,
+                                                                                           metadataCollectionName,
+                                                                                           remoteServerType,
+                                                                                           owningOrganizationName),
+                               remoteConnection.toString());
         }
 
 
@@ -282,17 +271,12 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         {
             metadataCollection = null;
 
-            auditCode = OMRSAuditCode.NEW_REMOTE_MEMBER_FAILURE;
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(remoteServerName,
-                                                                   cohortName,
-                                                                   error.getClass().getName(),
-                                                                   error.getMessage()),
+                                  OMRSAuditCode.NEW_REMOTE_MEMBER_FAILURE.getMessageDefinition(remoteServerName,
+                                                                                               cohortName,
+                                                                                               error.getClass().getName(),
+                                                                                               error.getMessage()),
                                   remoteConnection.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
                                   error);
         }
 
@@ -308,16 +292,9 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         {
             final String   methodName = "addRemoteConnection";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_COHORT_METADATA_COLLECTION;
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(cohortName, metadataCollectionId);
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectorCheckedException(OMRSErrorCode.NULL_COHORT_METADATA_COLLECTION.getMessageDefinition(cohortName, metadataCollectionId),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
         }
 
 
@@ -414,14 +391,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
             }
         }
 
-        OMRSAuditCode auditCode = OMRSAuditCode.FEDERATION_LIST;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(serverList.toString()),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OMRSAuditCode.FEDERATION_LIST.getMessageDefinition(serverList.toString()));
     }
 
 
@@ -439,14 +409,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
     {
         final String   actionDescription = "Processing incoming unregistration request from remote cohort member";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.REMOVE_REMOTE_MEMBER;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(cohortName, metadataCollectionId),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OMRSAuditCode.REMOVE_REMOTE_MEMBER.getMessageDefinition(cohortName, metadataCollectionId));
 
         /*
          * Remove the connector from the registered list and work out if the repository is still registered
@@ -581,16 +544,10 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                     final String actionDescription = "Registering an enterprise connector with the enterprise connector manager";
                     final String methodName = "registerConnectorConsumer";
 
-                    OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION;
                     auditLog.logException(actionDescription,
-                                          auditCode.getLogMessageId(),
-                                          auditCode.getSeverity(),
-                                          auditCode.getFormattedLogMessage(error.getClass().getName(),
-                                                                           methodName,
-                                                                           error.getErrorMessage()),
-                                          null,
-                                          auditCode.getSystemAction(),
-                                          auditCode.getUserAction(),
+                                          OMRSAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                  methodName,
+                                                                                                  error.getReportedErrorMessage()),
                                           error);
                 }
             }
@@ -724,15 +681,9 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                 connectionName = connection.toString();
             }
 
-            OMRSErrorCode errorCode = OMRSErrorCode.INVALID_OMRS_CONNECTION;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(connectionName);
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectorCheckedException(OMRSErrorCode.INVALID_OMRS_CONNECTION.getMessageDefinition(connectionName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 error);
         }
     }
@@ -742,7 +693,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * RegisteredConnector holds the information about connecting to a repository in the open metadata repository
      * cluster.
      */
-    private class RegisteredConnector
+    private static class RegisteredConnector
     {
         private String     source;
         private String     serverName;
@@ -893,7 +844,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * RegisteredConnectorConsumer relates a connector consumer to an identifier.  It is used by
      * OMRSEnterpriseConnectorManager to manage the list of registered connector consumers.
      */
-    private class RegisteredConnectorConsumer
+    private static class RegisteredConnectorConsumer
     {
         private String                   connectorConsumerId;
         private OMRSConnectorConsumer    connectorConsumer;
@@ -905,7 +856,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
          * @param connectorConsumerId unique identifier of the connection consumer
          * @param connectorConsumer connector consumer itself
          */
-        public RegisteredConnectorConsumer(String connectorConsumerId, OMRSConnectorConsumer connectorConsumer)
+        RegisteredConnectorConsumer(String connectorConsumerId, OMRSConnectorConsumer connectorConsumer)
         {
             this.connectorConsumerId = connectorConsumerId;
             this.connectorConsumer = connectorConsumer;
@@ -917,7 +868,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
          *
          * @param connectorConsumer connector consumer itself
          */
-        public RegisteredConnectorConsumer(OMRSConnectorConsumer connectorConsumer)
+        RegisteredConnectorConsumer(OMRSConnectorConsumer connectorConsumer)
         {
             this.connectorConsumer = connectorConsumer;
             this.connectorConsumerId = UUID.randomUUID().toString();
@@ -929,7 +880,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
          *
          * @return String identifier
          */
-        public String getConnectorConsumerId()
+        String getConnectorConsumerId()
         {
             return connectorConsumerId;
         }
@@ -940,7 +891,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
          *
          * @return connector consumer object ref
          */
-        public OMRSConnectorConsumer getConnectorConsumer()
+        OMRSConnectorConsumer getConnectorConsumer()
         {
             return connectorConsumer;
         }

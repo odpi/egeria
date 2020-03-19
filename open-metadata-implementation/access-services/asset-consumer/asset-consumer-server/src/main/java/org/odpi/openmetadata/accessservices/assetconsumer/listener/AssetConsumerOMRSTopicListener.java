@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.events.NewAssetEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.UpdatedAssetEvent;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
@@ -56,7 +57,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
                                           OMRSRepositoryValidator repositoryValidator,
                                           String                  componentName,
                                           List<String>            supportedZones,
-                                          OMRSAuditLog            auditLog) throws OMAGConfigurationErrorException
+                                          AuditLog                 auditLog) throws OMAGConfigurationErrorException
     {
         super(componentName, auditLog);
 

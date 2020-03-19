@@ -131,15 +131,9 @@ public class OpenMetadataTypesArchive1_5
              * This is a logic error since it means the creation of the archive builder threw an exception
              * in the constructor and so this object should not be used.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.ARCHIVE_UNAVAILABLE;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.ARCHIVE_UNAVAILABLE.getMessageDefinition(),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 

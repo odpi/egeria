@@ -13,7 +13,7 @@ import java.util.Set;
 public class AssetContext {
 
     private Set<LineageEntity> vertices;
-    private Set<GraphContext> edges;
+    private Set<GraphContext> graphContexts;
     private Map<String, Set<GraphContext>> neighbors;
 
     /**
@@ -21,7 +21,7 @@ public class AssetContext {
      */
     public AssetContext() {
         vertices = new HashSet<>();
-        edges = new HashSet<>();
+        graphContexts = new HashSet<>();
         neighbors = new HashMap<>();
     }
 
@@ -37,20 +37,16 @@ public class AssetContext {
 
 
     /**
-     * Add edge boolean.
+     * Add graphContext boolean.
      *
-     * @param edge the edge
+     * @param graphContext the graphContext
      * @return the boolean
      */
-    public boolean addEdge(GraphContext edge) {
-       if (!edges.add(edge)) return false;
-
-        String guid = edge.getFromVertex().getGuid();
-
+    public boolean addGraphContext(GraphContext graphContext) {
+        if (!graphContexts.add(graphContext)) return false;
+        String guid = graphContext.getFromVertex().getGuid();
         neighbors.putIfAbsent(guid, new HashSet<>());
-
-        neighbors.get(guid).add(edge);
-
+        neighbors.get(guid).add(graphContext);
         return true;
     }
 
@@ -59,7 +55,7 @@ public class AssetContext {
      *
      * @return the set
      */
-    public Set<LineageEntity> getVertices(){
+    public Set<LineageEntity> getVertices() {
         return vertices;
     }
 
@@ -68,17 +64,17 @@ public class AssetContext {
      *
      * @return the edges
      */
-    public Set<GraphContext> getEdges() {
-        return edges;
+    public Set<GraphContext> getGraphContexts() {
+        return graphContexts;
     }
 
     /**
      * Sets edges.
      *
-     * @param edges the edges
+     * @param graphContexts the edges
      */
-    public void setEdges(Set<GraphContext> edges) {
-        this.edges = edges;
+    public void setGraphContexts(Set<GraphContext> graphContexts) {
+        this.graphContexts = graphContexts;
     }
 
     /**
@@ -94,7 +90,7 @@ public class AssetContext {
     public String toString() {
         return "AssetContext{" +
                 "vertices=" + vertices +
-                ", edges=" + edges +
+                ", graphContexts=" + graphContexts +
                 ", neighbors=" + neighbors +
                 '}';
     }

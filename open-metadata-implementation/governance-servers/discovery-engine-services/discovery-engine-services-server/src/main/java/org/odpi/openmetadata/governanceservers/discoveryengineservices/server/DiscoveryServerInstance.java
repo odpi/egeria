@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.governanceservers.discoveryengineservices.server;
 
 import org.odpi.openmetadata.commonservices.multitenant.GovernanceServerServiceInstance;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryEngineHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.properties.DiscoveryEngineSummary;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class DiscoveryServerInstance extends GovernanceServerServiceInstance
      */
     DiscoveryServerInstance(String                              serverName,
                             String                              serviceName,
-                            OMRSAuditLog                        auditLog,
+                            AuditLog                            auditLog,
                             String                              localServerUserId,
                             int                                 maxPageSize,
                             String                              accessServiceRootURL,
@@ -95,16 +95,10 @@ public class DiscoveryServerInstance extends GovernanceServerServiceInstance
 
         if (instance == null)
         {
-            DiscoveryEngineServicesErrorCode errorCode = DiscoveryEngineServicesErrorCode.UNKNOWN_DISCOVERY_ENGINE;
-            String                   errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                                       discoveryEngineName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(DiscoveryEngineServicesErrorCode.UNKNOWN_DISCOVERY_ENGINE.getMessageDefinition(serverName,
+                                                                                                                               discoveryEngineName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 guidParameterName);
         }
 

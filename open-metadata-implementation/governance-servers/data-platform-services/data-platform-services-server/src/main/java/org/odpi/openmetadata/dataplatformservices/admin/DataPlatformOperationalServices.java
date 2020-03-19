@@ -7,12 +7,12 @@ import org.odpi.openmetadata.adminservices.configuration.properties.DataPlatform
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.dataplatformservices.api.DataPlatformMetadataExtractorBase;
 import org.odpi.openmetadata.dataplatformservices.auditlog.DataPlatformServicesAuditCode;
+import org.odpi.openmetadata.dataplatformservices.ffdc.DataPlatformServicesErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -234,18 +234,11 @@ public class DataPlatformOperationalServices {
 
             return topicConnector;
         } catch (Exception error) {
-            String methodName = "getTopicConnector";
+            final String methodName = "getTopicConnector";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage("getTopicConnector");
-
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSConfigErrorException(DataPlatformServicesErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(methodName),
                     this.getClass().getName(),
                     methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
                     error);
 
         }

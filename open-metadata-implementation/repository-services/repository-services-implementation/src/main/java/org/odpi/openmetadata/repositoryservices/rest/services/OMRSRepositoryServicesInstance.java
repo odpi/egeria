@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.rest.services;
 
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -19,7 +20,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
     private OMRSMetadataCollection       enterpriseMetadataCollection;
     private OMRSMetadataHighwayManager   metadataHighwayManager;
     private String                       localServerURL;
-    private OMRSAuditLog                 auditLog;
+    private AuditLog                     auditLog;
 
 
     /**
@@ -43,7 +44,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
                                           OMRSMetadataHighwayManager   metadataHighwayManager,
                                           String                       localServerURL,
                                           String                       serviceName,
-                                          OMRSAuditLog                 auditLog,
+                                          AuditLog                     auditLog,
                                           int                          maxPageSize)
     {
         super(localServerName, serviceName, maxPageSize);
@@ -133,7 +134,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
      *
      * @return auditLog
      */
-    public OMRSAuditLog getAuditLog()
+    public AuditLog getAuditLog()
     {
         return auditLog;
     }

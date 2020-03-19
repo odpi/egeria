@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -57,21 +57,21 @@ public class FindEntitiesByClassificationExecutor extends PageableRepositoryExec
      * @param repositoryValidator validator for resulting relationships
      * @param methodName calling method
      */
-    public FindEntitiesByClassificationExecutor(String                            userId,
-                                                String                            entityTypeGUID,
-                                                String                            classificationName,
-                                                InstanceProperties                matchClassificationProperties,
-                                                MatchCriteria                     matchCriteria,
-                                                int                               fromEntityElement,
-                                                List<InstanceStatus>              limitResultsByStatus,
-                                                Date                              asOfTime,
-                                                String                            sequencingProperty,
-                                                SequencingOrder                   sequencingOrder,
-                                                int                               pageSize,
-                                                String                            localMetadataCollectionId,
-                                                OMRSAuditLog                      auditLog,
-                                                OMRSRepositoryValidator           repositoryValidator,
-                                                String                            methodName)
+    public FindEntitiesByClassificationExecutor(String                  userId,
+                                                String                  entityTypeGUID,
+                                                String                  classificationName,
+                                                InstanceProperties      matchClassificationProperties,
+                                                MatchCriteria           matchCriteria,
+                                                int                     fromEntityElement,
+                                                List<InstanceStatus>    limitResultsByStatus,
+                                                Date                    asOfTime,
+                                                String                  sequencingProperty,
+                                                SequencingOrder         sequencingOrder,
+                                                int                     pageSize,
+                                                String                  localMetadataCollectionId,
+                                                AuditLog                auditLog,
+                                                OMRSRepositoryValidator repositoryValidator,
+                                                String                  methodName)
     {
         this(userId,
              entityTypeGUID,

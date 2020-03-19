@@ -2,10 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * This package ...
- */
-
-/**
- * This package contains stub headers for events when Asset Owner OMAS supports events.
+ * This package contains stub headers for events when Asset Owner OMAS supported events.
  */
 package org.odpi.openmetadata.accessservices.assetowner.events;

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 
 /**
@@ -35,11 +36,8 @@ public class MockConnectorCheckedExceptionConnectorProvider extends ConnectorPro
     @Override
     public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
-        throw new ConnectorCheckedException(400,
+        throw new ConnectorCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                             this.getClass().getName(),
-                                            "getConnector",
-                                            "Mock error message",
-                                            "System Action",
-                                            "UserAction");
+                                            "getCachedList");
     }
 }

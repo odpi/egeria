@@ -696,18 +696,11 @@ public class ConnectorConfigurationFactory
         catch (Exception classException)
         {
             log.error("Bad connectorProviderClassName: " + classException.getMessage());
-            ConnectorConfigurationFactoryErrorCode errorCode    = ConnectorConfigurationFactoryErrorCode.INVALID_CONNECTOR_PROVIDER;
-            String                                 errorMessage =
-                    errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(connectorProviderClassName,
-                                                                                       classException.getClass().getName(),
-                                                                                       classException.getMessage());
-
-            throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+            throw new OCFRuntimeException(ConnectorConfigurationFactoryErrorCode.INVALID_CONNECTOR_PROVIDER.getMessageDefinition(connectorProviderClassName,
+                                                                                                                                 classException.getClass().getName(),
+                                                                                                                                 classException.getMessage()),
                                           this.getClass().getName(),
                                           methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
                                           classException);
         }
     }

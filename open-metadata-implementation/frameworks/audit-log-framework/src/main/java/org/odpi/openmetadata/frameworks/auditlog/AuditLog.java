@@ -18,7 +18,7 @@ import java.util.*;
  * AuditLog is the superclass of audit log implementations.  It is concrete
  * and so can be used directly as well.
  */
-public class AuditLog
+public class AuditLog extends MessageFormatter
 {
     private static final Logger log = LoggerFactory.getLogger(AuditLog.class);
 
@@ -30,7 +30,7 @@ public class AuditLog
 
 
     /**
-     * Typical constructor: each component using the Audit log will create their own OMRSAuditLog instance and
+     * Typical constructor: each component using the audit log will create their own AuditLog instance and
      * will push log records to it.
      *
      * @param destination destination for the log records
@@ -89,7 +89,11 @@ public class AuditLog
                                               componentName,
                                               componentDescription,
                                               componentWikiURL);
+
+        log.debug("New audit log for component {}", componentName);
         childAuditLogs.add(childAuditLog);
+        log.debug("Current Tree {}", childAuditLogs.toString());
+
 
         return childAuditLog;
     }
@@ -107,30 +111,6 @@ public class AuditLog
                                  childComponent.getComponentName(),
                                  childComponent.getComponentType(),
                                  childComponent.getComponentWikiURL());
-    }
-
-
-    /**
-     * Create a formatted message from a message definition instance.  This instance
-     * contains the unique message identifier, the default message template and the
-     * parameters to insert into it.  The Audit Log controls whether to use the default
-     * message template or substitute it for a version in a different language.
-     *
-     * The method is public to allow external components to format messages - for example,
-     * from exceptions.
-     *
-     * @param messageDefinition details about the message to format.
-     * @return formatted message
-     */
-    public String getFormattedMessage(MessageDefinition messageDefinition)
-    {
-        MessageFormat mf = new MessageFormat(messageDefinition.getMessageTemplate());
-
-        String formattedMessage = mf.format(messageDefinition.getMessageParams());
-
-        log.debug("New message: {}", formattedMessage);
-
-        return formattedMessage;
     }
 
 
@@ -308,7 +288,7 @@ public class AuditLog
             }
 
             logRecord.setMessageId(messageDefinition.getMessageId());
-            logRecord.setMessageText(this.getFormattedMessage(messageDefinition));
+            logRecord.setMessageText(this.getFormattedMessageText(messageDefinition));
             logRecord.setMessageParameters(messageDefinition.getMessageParams());
             logRecord.setSystemAction(messageDefinition.getSystemAction());
             logRecord.setUserAction(messageDefinition.getUserAction());

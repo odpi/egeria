@@ -6,8 +6,8 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 import org.odpi.openmetadata.accessservices.assetlineage.admin.AssetLineageAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 /**
  * AssetLineageRegistration registers the access service with the OMAG Server administration services.

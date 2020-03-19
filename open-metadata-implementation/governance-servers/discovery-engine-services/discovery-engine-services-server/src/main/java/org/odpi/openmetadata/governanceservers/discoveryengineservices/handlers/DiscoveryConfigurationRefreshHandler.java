@@ -4,10 +4,10 @@
 package org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryConfigurationClient;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog.DiscoveryEngineServicesAuditCode;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.listener.DiscoveryConfigurationRefreshListener;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ public class DiscoveryConfigurationRefreshHandler implements Runnable
 {
     private Map<String, DiscoveryEngineHandler> discoveryEngineHandlers;
     private DiscoveryConfigurationClient        configurationClient;
-    private OMRSAuditLog                        auditLog;
+    private AuditLog                            auditLog;
     private String                              localServerUserId;
     private String                              localServerName;
     private String                              accessServiceServerName;
@@ -48,7 +48,7 @@ public class DiscoveryConfigurationRefreshHandler implements Runnable
      */
     public DiscoveryConfigurationRefreshHandler(Map<String, DiscoveryEngineHandler> discoveryEngineHandlers,
                                                 DiscoveryConfigurationClient        configurationClient,
-                                                OMRSAuditLog                        auditLog,
+                                                AuditLog                            auditLog,
                                                 String                              localServerUserId,
                                                 String                              localServerName,
                                                 String                              accessServiceServerName,
@@ -105,7 +105,7 @@ public class DiscoveryConfigurationRefreshHandler implements Runnable
                                                                                                                       accessServiceServerName,
                                                                                                                       accessServiceRootURL,
                                                                                                                       localServerUserId,
-                                                                                                                      error.getErrorMessage()),
+                                                                                                                      error.getReportedErrorMessage()),
                                           error);
                     waitToRetry();
                 }

@@ -86,16 +86,9 @@ public class RootBuilder
 
                 if (classification.getClassificationName() == null)
                 {
-                    OMAGOCFErrorCode errorCode = OMAGOCFErrorCode.NULL_CLASSIFICATION_NAME;
-                    String           errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(serviceName, methodName);
-
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    throw new InvalidParameterException(OMAGOCFErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(serviceName, methodName),
                                                         this.getClass().getName(),
                                                         methodName,
-                                                        errorMessage,
-                                                        errorCode.getSystemAction(),
-                                                        errorCode.getUserAction(),
                                                         "Classification name");
                 }
 
@@ -110,18 +103,11 @@ public class RootBuilder
                 }
                 catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
                 {
-                    OMAGOCFErrorCode errorCode = OMAGOCFErrorCode.BAD_CLASSIFICATION_PROPERTIES;
-                    String           errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(serviceName,
-                                                                                       classification.getClassificationName(),
-                                                                                       error.getMessage());
-
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    throw new InvalidParameterException(OMAGOCFErrorCode.BAD_CLASSIFICATION_PROPERTIES.getMessageDefinition(serviceName,
+                                                                                                                            classification.getClassificationName(),
+                                                                                                                            error.getMessage()),
                                                         this.getClass().getName(),
                                                         methodName,
-                                                        errorMessage,
-                                                        errorCode.getSystemAction(),
-                                                        errorCode.getUserAction(),
                                                         error,
                                                         "Properties for classification " + classification.getClassificationName());
                 }
