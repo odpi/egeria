@@ -144,7 +144,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset Search</a></div>
                     <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
-                    <div name="type-explorer"><a href="[[rootPath]]#/type-explorer>Type Explorer</a></div>
+                    <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
                     <div name="about"><a href="[[rootPath]]#/about">About</a></div>
                   </iron-selector>
 
@@ -180,7 +180,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <asset-search-view language="[[language]]" name="asset-search" route="{{tail}}"></asset-search-view>
                     <about-view language="[[language]]" name="about"></about-view>
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
-                    <asset-lineage-view language="[[language]]" name="asset-lineage" ></asset-lineage-view>
+                    <asset-lineage-view language="[[language]]" name="asset-lineage"  route="{{tail}}"></asset-lineage-view>
                     <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
                     <my-view404 name="view404"></my-view404>
                   </iron-pages>
