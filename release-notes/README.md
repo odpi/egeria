@@ -25,6 +25,8 @@ Below are the release notes for the latest ODPi Egeria release:
 
 * [Release 1.5 (February 2020)](release-notes-1-5.md) 
     * Metadata de-duplication identification and notification
+    * Data Engine OMAS
+    * Data Engine Proxy Server
 
 ## Older Releases
 

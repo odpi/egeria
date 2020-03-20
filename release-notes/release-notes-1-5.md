@@ -3,7 +3,7 @@
 
 # Release 1.5 (Planned February 2020)
 
-Release 1.5 delivers the automatic metadata discovery of duplicate assets.
+Release 1.5 delivers the automatic metadata discovery of duplicate assets, Additional, in Tech Preview, Data Engine OMAS, and a data engine proxy server.
 
 ## Released Components
 
@@ -22,7 +22,14 @@ Release 1.5 delivers the automatic metadata discovery of duplicate assets.
   [samples](../open-metadata-resources/open-metadata-samples) demonstrating
   the new de-duplication detection features.
 
+## Technical Previews
 
+   * The [Data Engine OMAS](../open-metadata-implementation/access-services/data-engine) supports the processing of notifications from data engines such as ETL platforms in order to catalog information about the data movement, transformation and copying they are engaged in.
+   
+   * The [Data Engine Proxy Server](../open-metadata-implementation/governance-servers/data-engine-proxy-services) is also included in the technical preview.
+     It supports the polling of data engines such as ETL platforms
+     in order to catalog information about the data movement, transformation and copying they are engaged in.
+     It calls the Data Engine OMAS.
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
