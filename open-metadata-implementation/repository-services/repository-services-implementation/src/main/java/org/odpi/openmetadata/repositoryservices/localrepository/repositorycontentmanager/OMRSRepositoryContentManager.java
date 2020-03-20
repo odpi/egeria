@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
@@ -65,7 +65,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private              OMRSAuditLog auditLog;
+    private AuditLog auditLog;
 
     private static final Logger       log      = LoggerFactory.getLogger(OMRSRepositoryContentManager.class);
 
@@ -77,8 +77,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param localServerUserId userId to use when processing messages
      * @param auditLog  audit log for this component.
      */
-    public OMRSRepositoryContentManager(String         localServerUserId,
-                                        OMRSAuditLog   auditLog)
+    public OMRSRepositoryContentManager(String   localServerUserId,
+                                        AuditLog auditLog)
     {
         super("Local Repository Content (TypeDef) Manager");
 
@@ -375,30 +375,16 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                         }
                         else
                         {
-                            OMRSErrorCode errorCode = OMRSErrorCode.BAD_TYPEDEF_ATTRIBUTE_NAME;
-                            String errorMessage = errorCode.getErrorMessageId()
-                                                + errorCode.getFormattedErrorMessage(sourceName);
-
-                            throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+                            throw new TypeErrorException(OMRSErrorCode.BAD_TYPEDEF_ATTRIBUTE_NAME.getMessageDefinition(sourceName),
                                                          this.getClass().getName(),
-                                                         methodName,
-                                                         errorMessage,
-                                                         errorCode.getSystemAction(),
-                                                         errorCode.getUserAction());
+                                                         methodName);
                         }
                     }
                     else
                     {
-                        OMRSErrorCode errorCode = OMRSErrorCode.NULL_TYPEDEF_ATTRIBUTE;
-                        String errorMessage = errorCode.getErrorMessageId()
-                                            + errorCode.getFormattedErrorMessage(sourceName);
-
-                        throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+                        throw new TypeErrorException(OMRSErrorCode.NULL_TYPEDEF_ATTRIBUTE.getMessageDefinition(sourceName),
                                                      this.getClass().getName(),
-                                                     methodName,
-                                                     errorMessage,
-                                                     errorCode.getSystemAction(),
-                                                     errorCode.getUserAction());
+                                                     methodName);
                     }
                 }
 
@@ -413,19 +399,12 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
         else
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.BAD_TYPEDEF;
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(thisMethodName,
-                                                                     typeDef.getName(),
-                                                                     sourceName,
-                                                                     methodName);
-
-            throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+            throw new TypeErrorException(OMRSErrorCode.BAD_TYPEDEF.getMessageDefinition(thisMethodName,
+                                                                                        typeDef.getName(),
+                                                                                        sourceName,
+                                                                                        methodName),
                                          this.getClass().getName(),
-                                         methodName,
-                                         errorMessage,
-                                         errorCode.getSystemAction(),
-                                         errorCode.getUserAction());
+                                         methodName);
         }
 
         return propertyNames;
@@ -770,16 +749,11 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
         else
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.BAD_CATEGORY_FOR_TYPEDEF_ATTRIBUTE;
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(sourceName, typeName, category.getName());
-
-            throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+            throw new TypeErrorException(OMRSErrorCode.BAD_CATEGORY_FOR_TYPEDEF_ATTRIBUTE.getMessageDefinition(sourceName,
+                                                                                                               typeName,
+                                                                                                               category.getName()),
                                          this.getClass().getName(),
-                                         methodName,
-                                         errorMessage,
-                                         errorCode.getSystemAction(),
-                                         errorCode.getUserAction());
+                                         methodName);
         }
 
         return null;
@@ -832,19 +806,12 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
         else
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN_FOR_INSTANCE;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(typeName,
-                                                         category.getName(),
-                                                         methodName,
-                                                         sourceName);
-
-            throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+            throw new TypeErrorException(OMRSErrorCode.TYPEDEF_NOT_KNOWN_FOR_INSTANCE.getMessageDefinition(typeName,
+                                                                                                           category.getName(),
+                                                                                                           methodName,
+                                                                                                           sourceName),
                                          this.getClass().getName(),
-                                         methodName,
-                                         errorMessage,
-                                         errorCode.getSystemAction(),
-                                         errorCode.getUserAction());
+                                         methodName);
         }
 
         return false;
@@ -967,16 +934,9 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
         if (typeDef == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN;
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(typeName, originalMethodName, sourceName);
-
-            throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+            throw new TypeErrorException(OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN.getMessageDefinition(typeName, originalMethodName, sourceName),
                                          this.getClass().getName(),
-                                         originalMethodName,
-                                         errorMessage,
-                                         errorCode.getSystemAction(),
-                                         errorCode.getUserAction());
+                                         originalMethodName);
         }
 
         return typeDef;
@@ -1201,18 +1161,12 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
             if (typeDef == null)
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(typeDefGUID,
-                                                                                                         guidParameterName,
-                                                                                                         methodName,
-                                                                                                         sourceName);
-
-                throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+                throw new TypeErrorException(OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN.getMessageDefinition(typeDefGUID,
+                                                                                                     guidParameterName,
+                                                                                                     methodName,
+                                                                                                     sourceName),
                                              this.getClass().getName(),
-                                             methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction());
+                                             methodName);
             }
 
             return typeDef;
@@ -1245,18 +1199,12 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
             if (attributeTypeDef == null)
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.BAD_TYPEDEF;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(thisMethodName,
-                                                                                                         attributeTypeDefGUID,
-                                                                                                         sourceName,
-                                                                                                         methodName);
-
-                throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+                throw new TypeErrorException(OMRSErrorCode.BAD_TYPEDEF.getMessageDefinition(thisMethodName,
+                                                                                            attributeTypeDefGUID,
+                                                                                            sourceName,
+                                                                                            methodName),
                                              this.getClass().getName(),
-                                             methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction());
+                                             methodName);
             }
 
             return attributeTypeDef;
@@ -1293,20 +1241,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
         else
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.UNKNOWN_TYPEDEF;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
-                                                                                                     typeDefName,
-                                                                                                     typeDefGUID,
-                                                                                                     methodName,
-                                                                                                     nameParameterName,
-                                                                                                     guidParameterName);
-
-            throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+            throw new TypeErrorException(OMRSErrorCode.UNKNOWN_TYPEDEF.getMessageDefinition(sourceName,
+                                                                                            typeDefName,
+                                                                                            typeDefGUID,
+                                                                                            methodName,
+                                                                                            nameParameterName,
+                                                                                            guidParameterName),
                                          this.getClass().getName(),
-                                         methodName,
-                                         errorMessage,
-                                         errorCode.getSystemAction(),
-                                         errorCode.getUserAction());
+                                         methodName);
         }
     }
 
@@ -1336,18 +1278,12 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
         else
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.BAD_TYPEDEF;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(thisMethodName,
-                                                                                                     attributeTypeDefName,
-                                                                                                     sourceName,
-                                                                                                     methodName);
-
-            throw new TypeErrorException(errorCode.getHTTPErrorCode(),
+            throw new TypeErrorException(OMRSErrorCode.BAD_TYPEDEF.getMessageDefinition(thisMethodName,
+                                                                                        attributeTypeDefName,
+                                                                                        sourceName,
+                                                                                        methodName),
                                          this.getClass().getName(),
-                                         methodName,
-                                         errorMessage,
-                                         errorCode.getSystemAction(),
-                                         errorCode.getUserAction());
+                                         methodName);
         }
     }
 
@@ -1432,15 +1368,9 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             }
             else
             {
-                OMRSErrorCode errorCode    = OMRSErrorCode.CONFLICTING_ENTERPRISE_TYPEDEFS;
-                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                throw new RepositoryErrorException(OMRSErrorCode.CONFLICTING_ENTERPRISE_TYPEDEFS.getMessageDefinition(),
                                                    this.getClass().getName(),
-                                                   methodName,
-                                                   errorMessage,
-                                                   errorCode.getSystemAction(),
-                                                   errorCode.getUserAction());
+                                                   methodName);
             }
         }
     }
@@ -1473,15 +1403,9 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             }
             else
             {
-                OMRSErrorCode errorCode    = OMRSErrorCode.CONFLICTING_ENTERPRISE_TYPEDEFS;
-                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                throw new RepositoryErrorException(OMRSErrorCode.CONFLICTING_ENTERPRISE_TYPEDEFS.getMessageDefinition(),
                                                    this.getClass().getName(),
-                                                   methodName,
-                                                   errorMessage,
-                                                   errorCode.getSystemAction(),
-                                                   errorCode.getUserAction());
+                                                   methodName);
             }
         }
     }
@@ -1775,14 +1699,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate type identifier";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.UNKNOWN_TYPE;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(sourceName, requestedTypeName, requestedTypeGUID),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.UNKNOWN_TYPE.getMessageDefinition(sourceName, requestedTypeName, requestedTypeGUID));
     }
 
 
@@ -1799,14 +1717,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate type identifier";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.NULL_TYPE_NAME;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(sourceName, requestedTypeGUID),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.NULL_TYPE_NAME.getMessageDefinition(sourceName, requestedTypeGUID));
     }
 
 
@@ -1823,14 +1735,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate type identifier";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.NULL_TYPE_IDENTIFIER;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(requestedTypeName, sourceName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.NULL_TYPE_IDENTIFIER.getMessageDefinition(requestedTypeName, sourceName));
     }
 
 
@@ -1853,18 +1759,12 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate type identifier";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.TYPE_IDENTIFIER_MISMATCH;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(localTypeName,
-                                                            localTypeGUID,
-                                                            requestedTypeName,
-                                                            requestedTypeGUID,
-                                                            sourceName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.TYPE_IDENTIFIER_MISMATCH.getMessageDefinition(localTypeName,
+                                                                                        localTypeGUID,
+                                                                                        requestedTypeName,
+                                                                                        requestedTypeGUID,
+                                                                                        sourceName));
     }
 
 
@@ -1883,17 +1783,11 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate type identifiers and category";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.NULL_INSTANCE_ID;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(sourceName,
-                                                            typeDefName,
-                                                            typeDefGUID,
-                                                            category.getName()),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.NULL_INSTANCE_ID.getMessageDefinition(sourceName,
+                                                                                typeDefName,
+                                                                                typeDefGUID,
+                                                                                category.getName()));
     }
 
 
@@ -1908,14 +1802,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate request parameters";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.NULL_INSTANCE_ID;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(methodName, sourceName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_INSTANCE_ID.getMessageDefinition(methodName, sourceName));
     }
 
 
@@ -1979,16 +1866,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate type identifiers and category";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.NULL_TYPE_CATEGORY;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(sourceName,
-                                                            typeDefName,
-                                                            typeDefGUID),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.NULL_TYPE_CATEGORY.getMessageDefinition(sourceName, typeDefName, typeDefGUID));
     }
 
 
@@ -2011,18 +1890,12 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate type identifiers and category";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.UNKNOWN_TYPE_CATEGORY;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(sourceName,
-                                                            typeDefName,
-                                                            typeDefGUID,
-                                                            category,
-                                                            localTypeCategory),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.UNKNOWN_TYPE_CATEGORY.getMessageDefinition(sourceName,
+                                                                                     typeDefName,
+                                                                                     typeDefGUID,
+                                                                                     category,
+                                                                                     localTypeCategory));
     }
 
 
@@ -2047,19 +1920,13 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate type identifiers and category";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.TYPE_VERSION_MISMATCH;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(sourceName,
-                                                            typeDefName,
-                                                            typeDefGUID,
-                                                            category,
-                                                            versionName,
-                                                            localVersionName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.TYPE_VERSION_MISMATCH.getMessageDefinition(sourceName,
+                                                                                     typeDefName,
+                                                                                     typeDefGUID,
+                                                                                     category,
+                                                                                     versionName,
+                                                                                     localVersionName));
     }
 
 
@@ -2082,19 +1949,13 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate type identifiers and category";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.NULL_METADATA_COLLECTION_ID;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(methodName,
-                                                            sourceName,
-                                                            instanceGUID,
-                                                            typeDefName,
-                                                            typeDefGUID,
-                                                            category),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.NULL_METADATA_COLLECTION_ID.getMessageDefinition(methodName,
+                                                                                           sourceName,
+                                                                                           instanceGUID,
+                                                                                           typeDefName,
+                                                                                           typeDefGUID,
+                                                                                           category));
     }
 
 
@@ -2109,14 +1970,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate type object";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.NULL_TYPE;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(methodName, sourceName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_TYPE.getMessageDefinition(methodName, sourceName));
     }
 
 
@@ -2197,7 +2051,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             return true;
         }
 
-        if (!typeDef.getVersionName().equals(typeDefVersion)) {
+        if (!typeDef.getVersionName().equals(typeDefVersion))
+        {
             logVersionMismatch(sourceName,
                                typeDefGUID,
                                typeDefName,
@@ -2504,19 +2359,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                             String                     originatorServerName,
                                             String                     additionalInformation)
     {
-        OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_TYPE_PROCESSING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(error.getClass().getName(),
-                                                            typeName,
-                                                            sourceName,
-                                                            originatorServerName,
-                                                            originatorMetadataCollectionId,
-                                                            error.getErrorMessage()),
-                           additionalInformation,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_TYPE_PROCESSING.getMessageDefinition(error.getClass().getName(),
+                                                                                                         typeName,
+                                                                                                         sourceName,
+                                                                                                         originatorServerName,
+                                                                                                         originatorMetadataCollectionId,
+                                                                                                         error.getReportedErrorMessage()),
+                            additionalInformation);
     }
 
 
@@ -2533,16 +2383,11 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                         String      sourceName,
                                         String      additionalInformation)
     {
-        OMRSAuditCode auditCode = OMRSAuditCode.UNHANDLED_EXCEPTION_FROM_TYPE_PROCESSING;
         auditLog.logException(actionDescription,
-                              auditCode.getLogMessageId(),
-                              auditCode.getSeverity(),
-                              auditCode.getFormattedLogMessage(sourceName,
-                                                               error.getClass().getName(),
-                                                               error.getMessage()),
+                              OMRSAuditCode.UNHANDLED_EXCEPTION_FROM_TYPE_PROCESSING.getMessageDefinition(sourceName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          error.getMessage()),
                               additionalInformation,
-                              auditCode.getSystemAction(),
-                              auditCode.getUserAction(),
                               error);
     }
 
@@ -2599,17 +2444,11 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                     {
                         metadataCollection.addTypeDef(sourceName, typeDef);
 
-                        OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_ADDED;
-                        auditLog.logRecord(actionDescription,
-                                           auditCode.getLogMessageId(),
-                                           auditCode.getSeverity(),
-                                           auditCode.getFormattedLogMessage(typeDef.getName(),
-                                                                            typeDef.getGUID(),
-                                                                            Long.toString(typeDef.getVersion()),
-                                                                            sourceName),
-                                           null,
-                                           auditCode.getSystemAction(),
-                                           auditCode.getUserAction());
+                        auditLog.logMessage(actionDescription,
+                                            OMRSAuditCode.NEW_TYPE_ADDED.getMessageDefinition(typeDef.getName(),
+                                                                                              typeDef.getGUID(),
+                                                                                              Long.toString(typeDef.getVersion()),
+                                                                                              sourceName));
                     }
 
                     /*
@@ -2635,16 +2474,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
              */
             this.cacheTypeDef(sourceName, typeDef, false);
 
-            OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_NOT_SUPPORTED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(typeDef.getName(),
-                                                                typeDef.getGUID(),
-                                                                Long.toString(typeDef.getVersion())),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.NEW_TYPE_NOT_SUPPORTED.getMessageDefinition(typeDef.getName(),
+                                                                                          typeDef.getGUID(),
+                                                                                          Long.toString(typeDef.getVersion())));
 
             log.debug("TypeDef not added because repository does not support dynamic type definitions: " + typeDef);
             log.debug("TypeDefNotSupportedException:", fixedTypeSystemResponse);
@@ -2702,7 +2535,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                                                        typeDef,
                                                                        originatorMetadataCollectionId,
                                                                        knownTypeDefNames.get(typeDef.getName()),
-                                                                       error.getErrorMessage());
+                                                                       error.getReportedErrorMessage());
         }
         catch (InvalidTypeDefException error)
         {
@@ -2792,17 +2625,11 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
                     activeAttributeTypeDefNames.put(attributeTypeDef.getName(), attributeTypeDef);
 
-                    OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_ADDED;
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(attributeTypeDef.getName(),
-                                                                        attributeTypeDef.getGUID(),
-                                                                        Long.toString(attributeTypeDef.getVersion()),
-                                                                        sourceName),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logMessage(actionDescription,
+                                        OMRSAuditCode.NEW_TYPE_ADDED.getMessageDefinition(attributeTypeDef.getName(),
+                                                                                          attributeTypeDef.getGUID(),
+                                                                                          Long.toString(attributeTypeDef.getVersion()),
+                                                                                          sourceName));
                 }
 
                 /*
@@ -2827,16 +2654,11 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
              */
             this.cacheAttributeTypeDef(sourceName, attributeTypeDef, false);
 
-            OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_NOT_SUPPORTED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(attributeTypeDef.getName(),
-                                                                attributeTypeDef.getGUID(),
-                                                                Long.toString(attributeTypeDef.getVersion())),
-                               attributeTypeDef.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.NEW_TYPE_NOT_SUPPORTED.getMessageDefinition(attributeTypeDef.getName(),
+                                                                                          attributeTypeDef.getGUID(),
+                                                                                          Long.toString(attributeTypeDef.getVersion())),
+                                attributeTypeDef.toString());
 
             log.debug("TypeDef not added because repository does not support dynamic type definitions: " + attributeTypeDef);
             log.debug("TypeDefNotSupportedException:", fixedTypeSystemResponse);
@@ -2985,17 +2807,11 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
                         log.debug("Patch successfully applied:" + updatedTypeDef);
 
-                        OMRSAuditCode auditCode = OMRSAuditCode.TYPE_UPDATED;
-                        auditLog.logRecord(actionDescription,
-                                           auditCode.getLogMessageId(),
-                                           auditCode.getSeverity(),
-                                           auditCode.getFormattedLogMessage(updatedTypeDef.getName(),
-                                                                            updatedTypeDef.getGUID(),
-                                                                            Long.toString(updatedTypeDef.getVersion()),
-                                                                            sourceName),
-                                           null,
-                                           auditCode.getSystemAction(),
-                                           auditCode.getUserAction());
+                        auditLog.logMessage(actionDescription,
+                                            OMRSAuditCode.TYPE_UPDATED.getMessageDefinition(updatedTypeDef.getName(),
+                                                                                            updatedTypeDef.getGUID(),
+                                                                                            Long.toString(updatedTypeDef.getVersion()),
+                                                                                            sourceName));
 
                         this.cacheTypeDef(sourceName, updatedTypeDef, true);
                     }
@@ -3451,19 +3267,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             additionalInformation += "<null>";
         }
 
-        OMRSAuditCode auditCode = OMRSAuditCode.REMOTE_TYPE_CONFLICT;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(typeName,
-                                                            typeGUID,
-                                                            originatorServerName,
-                                                            originatorMetadataCollectionId,
-                                                            otherMetadataCollectionId,
-                                                            errorMessage),
-                           additionalInformation,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.REMOTE_TYPE_CONFLICT.getMessageDefinition(typeName,
+                                                                                    typeGUID,
+                                                                                    originatorServerName,
+                                                                                    originatorMetadataCollectionId,
+                                                                                    otherMetadataCollectionId,
+                                                                                    errorMessage),
+                            additionalInformation);
     }
 
 
@@ -3520,19 +3331,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             additionalInformation += "<null>";
         }
 
-        OMRSAuditCode auditCode = OMRSAuditCode.REMOTE_TYPE_CONFLICT;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(typeName,
-                                                            typeGUID,
-                                                            originatorServerName,
-                                                            originatorMetadataCollectionId,
-                                                            otherMetadataCollectionId,
-                                                            errorMessage),
-                           additionalInformation,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.REMOTE_TYPE_CONFLICT.getMessageDefinition(typeName,
+                                                                                    typeGUID,
+                                                                                    originatorServerName,
+                                                                                    originatorMetadataCollectionId,
+                                                                                    otherMetadataCollectionId,
+                                                                                    errorMessage),
+                            additionalInformation);
     }
 
 
@@ -3626,16 +3432,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                                String     originatingMethodName,
                                                String     localMethodName)
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.CONTENT_MANAGER_LOGIC_ERROR;
-        String errorMessage     = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
-                                                                                                     localMethodName,
-                                                                                                     originatingMethodName);
-
-        throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+        throw new OMRSLogicErrorException(OMRSErrorCode.CONTENT_MANAGER_LOGIC_ERROR.getMessageDefinition(sourceName,
+                                                                                                         localMethodName,
+                                                                                                         originatingMethodName),
                                           this.getClass().getName(),
-                                          localMethodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          localMethodName);
     }
 }

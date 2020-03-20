@@ -15,7 +15,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
 
@@ -68,8 +68,8 @@ public class AssetConsumerRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GUIDResponse  response = new GUIDResponse();
-        OMRSAuditLog  auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -115,7 +115,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -160,7 +160,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -209,7 +209,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ConnectionResponse  response = new ConnectionResponse();
-        OMRSAuditLog        auditLog = null;
+        AuditLog            auditLog = null;
 
         try
         {
@@ -259,7 +259,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -315,7 +315,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -358,7 +358,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -408,7 +408,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -451,7 +451,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse  response = new GUIDResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -508,7 +508,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse  response = new GUIDResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -565,7 +565,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -623,7 +623,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -671,7 +671,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GlossaryTermResponse response = new GlossaryTermResponse();
-        OMRSAuditLog         auditLog = null;
+        AuditLog             auditLog = null;
 
         try
         {
@@ -715,7 +715,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GlossaryTermListResponse response = new GlossaryTermListResponse();
-        OMRSAuditLog             auditLog = null;
+        AuditLog                 auditLog = null;
 
         try
         {
@@ -760,7 +760,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GlossaryTermListResponse response = new GlossaryTermListResponse();
-        OMRSAuditLog             auditLog = null;
+        AuditLog                 auditLog = null;
 
         try
         {
@@ -805,7 +805,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse  response = new GUIDListResponse();
-        OMRSAuditLog      auditLog = null;
+        AuditLog          auditLog = null;
 
         try
         {
@@ -859,7 +859,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
 
         try
@@ -920,7 +920,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse  response = new GUIDResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -973,7 +973,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -1022,7 +1022,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -1062,7 +1062,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TagResponse  response = new TagResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -1106,7 +1106,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TagsResponse response = new TagsResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -1151,7 +1151,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TagsResponse response = new TagsResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -1196,7 +1196,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TagsResponse response = new TagsResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -1241,7 +1241,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TagsResponse response = new TagsResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -1293,7 +1293,7 @@ public class AssetConsumerRESTServices
         }
 
         VoidResponse  response = new VoidResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -1337,7 +1337,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse  response = new VoidResponse();
-        OMRSAuditLog  auditLog = null;
+        AuditLog      auditLog = null;
 
         try
         {
@@ -1382,7 +1382,7 @@ public class AssetConsumerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse  response = new GUIDListResponse();
-        OMRSAuditLog      auditLog = null;
+        AuditLog          auditLog = null;
 
         try
         {

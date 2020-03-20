@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.events.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -20,7 +20,7 @@ import java.util.Date;
  */
 public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
 {
-    private OMRSAuditLog auditLog;
+    private AuditLog auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSRegistryEventPublisher.class);
 
@@ -38,7 +38,7 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
      */
     public OMRSRegistryEventPublisher(String             publisherName,
                                       OMRSTopicConnector topicConnector,
-                                      OMRSAuditLog       auditLog)
+                                      AuditLog           auditLog)
     {
         super();
 
@@ -58,16 +58,9 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
         {
             log.debug("Null topic connector");
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(publisherName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              actionDescription,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+           throw new OMRSLogicErrorException(OMRSErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(publisherName),
+                                             this.getClass().getName(),
+                                             actionDescription);
 
         }
 
@@ -100,15 +93,9 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
         }
         catch (Throwable error)
         {
-            OMRSAuditCode auditCode = OMRSAuditCode.SEND_REGISTRY_EVENT_ERROR;
-
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(publisherName),
+                                  OMRSAuditCode.SEND_REGISTRY_EVENT_ERROR.getMessageDefinition(publisherName),
                                   "registryEvent : " + registryEvent.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
                                   error);
 
             log.debug("Exception: " + error + "; Registry Event: " + registryEvent);

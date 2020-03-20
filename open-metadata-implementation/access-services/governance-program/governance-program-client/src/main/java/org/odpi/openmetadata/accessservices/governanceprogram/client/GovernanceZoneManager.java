@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneListResponse;
 import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneRequestBody;
 import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -22,30 +23,31 @@ import java.util.Map;
 public class GovernanceZoneManager implements GovernanceZoneManagerInterface
 {
     private String                      serverName;               /* Initialized in constructor */
-    private String                      serverPlatformRootURL;    /* Initialized in constructor */
+    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
     private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private AuditLog                auditLog                = null;
 
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public GovernanceZoneManager(String serverName,
-                                 String serverPlatformRootURL) throws InvalidParameterException
+                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.restClient = new GovernanceProgramRESTClient(serverName, serverPlatformRootURL);
+        this.serverName            = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
@@ -54,25 +56,86 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public GovernanceZoneManager(String     serverName,
-                                 String     serverPlatformRootURL,
-                                 String     userId,
-                                 String     password) throws InvalidParameterException
+    public GovernanceZoneManager(String serverName,
+                                 String serverPlatformURLRoot,
+                                 String userId,
+                                 String password) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.restClient = new GovernanceProgramRESTClient(serverName, serverPlatformRootURL, userId, password);
+        this.serverName            = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
+
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param maxPageSize pre-initialized parameter limit
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public GovernanceZoneManager(String   serverName,
+                                 String   serverPlatformURLRoot,
+                                 int      maxPageSize,
+                                 AuditLog auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Constructor (no security)";
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName            = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
+        this.auditLog              = auditLog;
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize pre-initialized parameter limit
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public GovernanceZoneManager(String   serverName,
+                                 String   serverPlatformURLRoot,
+                                 String   userId,
+                                 String   password,
+                                 int      maxPageSize,
+                                 AuditLog auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName            = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        this.auditLog              = auditLog;
+    }
+
 
     /**
      * Create a definition of a governance zone.  The qualified name of these governance zones can be added
@@ -116,7 +179,7 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
         requestBody.setAdditionalProperties(additionalProperties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId);
@@ -149,7 +212,7 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
 
         ZoneResponse restResult = restClient.callZoneGetRESTCall(methodName,
-                                                                 serverPlatformRootURL + urlTemplate,
+                                                                 serverPlatformURLRoot + urlTemplate,
                                                                  serverName,
                                                                  userId,
                                                                  qualifiedName);
@@ -183,7 +246,7 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
 
         ZoneListResponse restResult = restClient.callZoneListGetRESTCall(methodName,
-                                                                         serverPlatformRootURL + urlTemplate,
+                                                                         serverPlatformURLRoot + urlTemplate,
                                                                          serverName,
                                                                          userId,
                                                                          Integer.toString(startingFrom),

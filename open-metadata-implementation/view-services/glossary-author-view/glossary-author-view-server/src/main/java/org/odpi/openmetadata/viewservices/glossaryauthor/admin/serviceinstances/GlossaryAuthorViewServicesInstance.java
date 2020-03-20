@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 
@@ -38,8 +39,8 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
      * @param remoteServerURL remote server URL
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public GlossaryAuthorViewServicesInstance(String serverName,
-                                              OMRSAuditLog auditLog,
+    public GlossaryAuthorViewServicesInstance(String       serverName,
+                                              AuditLog     auditLog,
                                               String       localServerUserId,
                                               int          maxPageSize,
                                               String       remoteServerName,

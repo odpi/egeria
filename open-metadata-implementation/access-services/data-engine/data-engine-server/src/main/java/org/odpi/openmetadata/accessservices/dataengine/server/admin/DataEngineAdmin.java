@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.auditlog.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.listeners.DataEngineInTopicListener;
 import org.odpi.openmetadata.accessservices.dataengine.server.processors.DataEngineEventProcessor;
@@ -15,7 +16,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,10 +135,10 @@ public class DataEngineAdmin extends AccessServiceAdmin {
         } catch (Exception error) {
             String methodName = "getTopicConnector";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            DataEngineErrorCode errorCode    = DataEngineErrorCode.NULL_TOPIC_CONNECTOR;
+            String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
-            OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(), this.getClass().getName(),
+            OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(errorCode.getHttpErrorCode(), this.getClass().getName(),
                     methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction(), error);
 
             log.error("Exception in returning the topic connector for Data Engine: {}", e);

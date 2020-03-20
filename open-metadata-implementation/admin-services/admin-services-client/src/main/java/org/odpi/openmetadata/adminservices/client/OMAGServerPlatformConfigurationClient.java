@@ -53,7 +53,7 @@ public class OMAGServerPlatformConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
     }
 
@@ -88,7 +88,7 @@ public class OMAGServerPlatformConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
     }
 
@@ -115,7 +115,7 @@ public class OMAGServerPlatformConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -192,7 +192,7 @@ public class OMAGServerPlatformConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         PlatformSecurityRequestBody requestBody = new PlatformSecurityRequestBody();

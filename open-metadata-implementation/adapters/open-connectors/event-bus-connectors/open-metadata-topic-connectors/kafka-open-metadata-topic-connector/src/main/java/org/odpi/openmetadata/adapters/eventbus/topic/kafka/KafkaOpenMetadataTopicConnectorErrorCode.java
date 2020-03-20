@@ -2,11 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The KafkaOpenMetadataTopicConnectorErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
@@ -27,7 +25,7 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a consumer should correct the error</li>
  * </ul>
  */
-public enum KafkaOpenMetadataTopicConnectorErrorCode
+public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessageSet
 {
     ERROR_SENDING_EVENT(400, "OCF-KAFKA-TOPIC-CONNECTOR-400-001 ",
             "An unexpected {0} exception was caught while sending an event to topic {1}.  The message in the exception was: {2}",
@@ -35,128 +33,55 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode
             "Review the exception that was returned from the send.")
     ;
 
-
-    private int    httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnectorErrorCode.class);
+    private ExceptionMessageDefinition messageDefinition;
 
 
     /**
-     * The constructor for AssetConsumerErrorCode expects to be passed one of the enumeration rows defined in
-     * AssetConsumerErrorCode above.   For example:
+     * The constructor for KafkaOpenMetadataTopicConnectorErrorCode expects to be passed one of the enumeration rows defined in
+     * KafkaOpenMetadataTopicConnectorErrorCode above.   For example:
      *
      *     KafkaOpenMetadataTopicConnectorErrorCode   errorCode = KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT;
      *
      * This will expand out to the 5 parameters shown below.
      *
-     * @param newHTTPErrorCode error code to use over REST calls
-     * @param newErrorMessageId  unique Id for the message
-     * @param newErrorMessage  text for the message
-     * @param newSystemAction  description of the action taken by the system when the error condition happened
-     * @param newUserAction  instructions for resolving the error
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique Id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
      */
-    KafkaOpenMetadataTopicConnectorErrorCode(int    newHTTPErrorCode,
-                                             String newErrorMessageId,
-                                             String newErrorMessage,
-                                             String newSystemAction,
-                                             String newUserAction)
+    KafkaOpenMetadataTopicConnectorErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.httpErrorCode = newHTTPErrorCode;
-        this.errorMessageId = newErrorMessageId;
-        this.errorMessage = newErrorMessage;
-        this.systemAction = newSystemAction;
-        this.userAction = newUserAction;
-    }
-
-
-    public int getHTTPErrorCode()
-    {
-        return httpErrorCode;
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                errorMessageId,
+                                                                errorMessage,
+                                                                systemAction,
+                                                                userAction);
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
      *
-     * @return errorMessageId
+     * @return message definition object.
      */
-    public String getErrorMessageId()
+    public ExceptionMessageDefinition getMessageDefinition()
     {
-        return errorMessageId;
+        return messageDefinition;
     }
 
 
     /**
-     * Returns the error message with placeholders for specific details.
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
-     * @return errorMessage (unformatted)
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public String getUnformattedErrorMessage()
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
-        return errorMessage;
-    }
+        messageDefinition.setMessageParameters(params);
 
-
-    /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the errorMessage
-     * @return errorMessage (formatted with supplied parameters)
-     */
-    public String getFormattedErrorMessage(String... params)
-    {
-        log.debug(String.format("<== KafkaOpenMetadataTopicConnectorErrorCode.getMessage(%s)", Arrays.toString(params)));
-
-        MessageFormat mf = new MessageFormat(errorMessage);
-        String result = mf.format(params);
-
-        log.debug(String.format("==> KafkaOpenMetadataTopicConnectorErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-
-        return result;
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction
-     */
-    public String getUserAction()
-    {
-        return userAction;
-    }
-
-
-    /**
-     * JSON-style toString
-     *
-     * @return string of property names and values for this enum
-     */
-    @Override
-    public String toString()
-    {
-        return "KafkaOpenMetadataTopicConnectorErrorCode{" +
-                "httpErrorCode=" + httpErrorCode +
-                ", errorMessageId='" + errorMessageId + '\'' +
-                ", errorMessage='" + errorMessage + '\'' +
-                ", systemAction='" + systemAction + '\'' +
-                ", userAction='" + userAction + '\'' +
-                '}';
+        return messageDefinition;
     }
 }

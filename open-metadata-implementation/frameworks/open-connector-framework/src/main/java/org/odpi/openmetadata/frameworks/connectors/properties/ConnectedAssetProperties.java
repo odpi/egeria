@@ -38,8 +38,6 @@ public abstract class ConnectedAssetProperties extends AssetPropertyElementBase
      */
     protected AssetUniverse assetProperties = null;
 
-    private static final Logger log = LoggerFactory.getLogger(ConnectedAssetProperties.class);
-
     /**
      * Typical constructor.
      */

@@ -201,13 +201,13 @@ public class DataPlatformAdmin extends AccessServiceAdmin
 
             return topicConnector;
         } catch (Throwable error) {
-            String methodName = "getTopicConnector";
+            final String methodName = "getTopicConnector";
 
             if (log.isDebugEnabled()) {
                 log.debug("Unable to create topic connector: " + error.toString());
             }
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.NULL_TOPIC_CONNECTOR;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage("getTopicConnector");
 

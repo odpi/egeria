@@ -25,6 +25,7 @@ public class ViewServiceRegistration implements Serializable
      *
      * @param viewServiceCode ordinal for this view service
      * @param viewServiceName symbolic name for this view service
+     * @param viewServiceFullName full name for this view service
      * @param viewServiceURLMarker name of the part of the URL that is the name of the view service
      * @param viewServiceDescription short description for this view service
      * @param viewServiceWiki wiki page for the view service for this view service

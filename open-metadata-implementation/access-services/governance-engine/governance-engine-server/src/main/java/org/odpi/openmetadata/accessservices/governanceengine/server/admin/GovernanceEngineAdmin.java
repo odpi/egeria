@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.auditlog.GovernanceEngineAuditCode;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineServicesInstance;
 import org.odpi.openmetadata.accessservices.governanceengine.server.listeners.GovernanceEngineOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.governanceengine.server.processor.GovernanceEngineEventProcessor;
@@ -135,7 +136,7 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
             return topicConnector;
         } catch (Exception error) {
             String methodName = "getTopicConnector";
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.NULL_TOPIC_CONNECTOR;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage("getTopicConnector");
 

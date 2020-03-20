@@ -53,15 +53,9 @@ public abstract class DiscoveryPipeline extends DiscoveryService implements Virt
 
         if (embeddedDiscoveryServices == null)
         {
-            ODFErrorCode errorCode    = ODFErrorCode.NO_EMBEDDED_DISCOVERY_SERVICES;
-            String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(discoveryServiceName);
-
-            throw new DiscoveryServiceException(errorCode.getHTTPErrorCode(),
+            throw new DiscoveryServiceException(ODFErrorCode.NO_EMBEDDED_DISCOVERY_SERVICES.getMessageDefinition(discoveryServiceName),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
         }
 
         runDiscoveryPipeline();

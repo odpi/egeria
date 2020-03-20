@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandle
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -34,7 +35,7 @@ public class AssetConsumerServicesInstance extends OCFOMASServiceInstance
      */
     public AssetConsumerServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                          List<String>            supportedZones,
-                                         OMRSAuditLog            auditLog,
+                                         AuditLog                auditLog,
                                          String                  localServerUserId,
                                          int                     maxPageSize) throws NewInstanceException
     {
@@ -54,15 +55,9 @@ public class AssetConsumerServicesInstance extends OCFOMASServiceInstance
         }
         else
         {
-            AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.OMRS_NOT_INITIALIZED;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            throw new NewInstanceException(AssetConsumerErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
 
         }
     }

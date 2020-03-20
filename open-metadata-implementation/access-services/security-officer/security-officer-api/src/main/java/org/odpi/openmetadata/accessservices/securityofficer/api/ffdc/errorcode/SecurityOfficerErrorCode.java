@@ -30,10 +30,18 @@ public enum SecurityOfficerErrorCode {
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
             "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
 
-    PUBLISH_EVENT_EXCEPTION(500, "OMAS-SECURITY-OFFICER-001 ",
+    PUBLISH_EVENT_EXCEPTION(500, "OMAS-SECURITY-OFFICER-500-001 ",
             "Event {0} could not be published: {1}",
             "The system is unable to process the request.",
-            "Verify the topic configuration.");
+            "Verify the topic configuration."),
+
+    NULL_TOPIC_CONNECTOR(400, "SECURITY-OFFICER-400-001",
+                         "Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize",
+                         "The local server will not connect to the cohort.",
+                         "The connection to the connector is configured in the server configuration.  " +
+                                 "Review previous error messages to determine the precise error in the " +
+                                 "start up configuration. " +
+                                 "Correct the configuration and reconnect the server to the cohort. ");
 
     private int httpErrorCode;
     private String errorMessageId;

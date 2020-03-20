@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.datascience.ffdc;
 
 /**
  * This package provides the first failure data capture support for the Data Science OMAS module.
@@ -27,3 +26,4 @@ package org.odpi.openmetadata.accessservices.datascience.ffdc;
  *
  * Both constructors take the values from the error code enum to define the cause and resolution.
  */
+package org.odpi.openmetadata.accessservices.datascience.ffdc;

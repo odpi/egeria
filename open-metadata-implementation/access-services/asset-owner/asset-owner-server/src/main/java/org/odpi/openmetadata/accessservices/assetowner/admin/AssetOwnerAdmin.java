@@ -3,13 +3,13 @@
 package org.odpi.openmetadata.accessservices.assetowner.admin;
 
 
-import org.odpi.openmetadata.accessservices.assetowner.auditlog.AssetOwnerAuditCode;
+import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerAuditCode;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class AssetOwnerAdmin extends AccessServiceAdmin
 {
-    private OMRSAuditLog               auditLog   = null;
+    private AuditLog                   auditLog   = null;
     private AssetOwnerServicesInstance instance   = null;
     private String                     serverName = null;
 
@@ -46,19 +46,12 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      omrsTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog            auditLog,
+                           AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
         final String             actionDescription = "initialize";
 
-        AssetOwnerAuditCode      auditCode = AssetOwnerAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, AssetOwnerAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         this.auditLog = auditLog;
         try
@@ -79,14 +72,9 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
                                                            repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
-            auditCode = AssetOwnerAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(serverName),
-                               accessServiceConfig.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                AssetOwnerAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                accessServiceConfig.toString());
         }
         catch (OMAGConfigurationErrorException error)
         {
@@ -94,14 +82,9 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
         }
         catch (Throwable error)
         {
-            auditCode = AssetOwnerAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  AssetOwnerAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
                                   accessServiceConfig.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
                                   error);
 
             super.throwUnexpectedInitializationException(actionDescription,
@@ -117,20 +100,12 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
     public void shutdown()
     {
         final String         actionDescription = "shutdown";
-        AssetOwnerAuditCode  auditCode;
 
         if (instance != null)
         {
             this.instance.shutdown();
         }
 
-        auditCode = AssetOwnerAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(serverName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, AssetOwnerAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
     }
 }
