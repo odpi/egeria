@@ -2,6 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serverchassis.springboot;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
 import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.http.HttpHelper;
@@ -17,20 +22,30 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.*;
+import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.*;
 
+
 @SpringBootApplication
 @ComponentScan({"org.odpi.openmetadata.*"})
-@EnableSwagger2
+
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Egeria",
+                version = "1.6-SNAPSHOT",
+                description = "Egeria Open Metadata",
+                license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0"),
+                contact = @Contact(url = "https://egeria.odpi.org", name = "ODPi", email = "odpi-project-egeria@lists.odpi.org")
+        ),
+
+        externalDocs = @ExternalDocumentation(description = "OMAG Server Chassis documentation.", url="https://egeria.odpi.org/open-metadata-implementation/server-chassis/")
+        )
+
+
 @Configuration
 public class OMAGServerPlatform
 {
@@ -137,22 +152,6 @@ public class OMAGServerPlatform
             operationalServices.deactivateTemporarilyServerList(sysUser, servers);
         }
     }
-
-
-    /**
-     * Enable swagger.
-     *
-     * @return Swagger documentation bean used to show API documentation
-     */
-    @Bean
-    public Docket swaggerDocumentationAPI() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build();
-    }
-
 
     @Component
     public class ApplicationContextListener

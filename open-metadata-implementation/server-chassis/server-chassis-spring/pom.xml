@@ -258,33 +258,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- Spring Fox for Swagger API documentation generation -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-        </dependency>
-
-        <!-- Spring Fox Swagger UI dependency for presentation of generated swagger.json -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-spring-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-spi</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-core</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>http-helper</artifactId>
@@ -293,6 +266,19 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <!-- Documentation -->
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.1.1</version>
         </dependency>
 
     </dependencies>
@@ -330,9 +316,6 @@
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.odpi.egeria:*connector*
                                 </ignoredUnusedDeclaredDependency>
-                                <!-- springfox added for swagger UI -->
-                                <ignoredUnusedDeclaredDependency>io.springfox:springfox-swagger-ui
-                                </ignoredUnusedDeclaredDependency>
                                 <!-- Spring seems to cause false positives on dependency checker -->
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*
                                 </ignoredUnusedDeclaredDependency>
@@ -342,6 +325,9 @@
                                 <ignoredUnusedDeclaredDependency>
                                     org.springframework.boot:spring-boot-starter-data-jpa:*
                                 </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>
+                                    org.springdoc:springdoc-openapi-ui:*
+                                </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
@@ -349,7 +335,51 @@
             </plugin>
             <!-- Special configuration for dependency checking due to the way spring scans -->
 
+
         </plugins>
     </build>
-
+    <profiles>
+        <profile>
+            <id>openapi</id>
+            <activation>
+                <property>
+                <name>openapi</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springdoc</groupId>
+                        <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>integration-test</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>pre-integration-test</id>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>post-integration-test</id>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
