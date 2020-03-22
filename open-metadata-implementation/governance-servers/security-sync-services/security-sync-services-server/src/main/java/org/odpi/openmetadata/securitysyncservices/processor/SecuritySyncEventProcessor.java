@@ -170,7 +170,7 @@ public class SecuritySyncEventProcessor {
             ResponseEntity<String> result = restTemplate.exchange(governanceEngineURL, HttpMethod.GET, entity, String.class);
             return (GovernedAssetListResponse) mapToObject(result, GovernedAssetListResponse.class);
         } catch (HttpStatusCodeException exception) {
-            log.debug("Unable to get the governed assets!");
+            log.error("Unable to get the governed assets: ", exception);
         }
         return null;
     }
@@ -192,7 +192,7 @@ public class SecuritySyncEventProcessor {
             String resultString = sanitize(result.getBody());
             return mapper.readValue(resultString, className);
         } catch (IOException e) {
-            log.error("403", e.getMessage(), e);
+            log.error("403 {} - {}", e.getMessage(), e);
         }
 
         return null;

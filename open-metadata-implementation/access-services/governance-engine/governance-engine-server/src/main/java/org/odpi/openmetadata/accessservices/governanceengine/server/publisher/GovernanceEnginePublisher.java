@@ -41,7 +41,7 @@ public class GovernanceEnginePublisher {
         try {
             return mapper.writeValueAsString(engineEvent);
         } catch (JsonProcessingException e) {
-            log.debug("[Governance Engine] Unable to map the event {} to string.", engineEvent);
+            log.error("[Governance Engine] Unable to map the event {} to string.", engineEvent);
         }
 
         return null;
