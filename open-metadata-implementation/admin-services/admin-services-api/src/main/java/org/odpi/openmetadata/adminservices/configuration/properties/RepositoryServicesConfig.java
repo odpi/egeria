@@ -56,6 +56,7 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
     private List<Connection>       openMetadataArchiveConnections = new ArrayList<>();
     private LocalRepositoryConfig  localRepositoryConfig          = null;
     private EnterpriseAccessConfig enterpriseAccessConfig         = null;
+    private SearchIndexingConfig   searchIndexingConfig           = null;
     private List<CohortConfig>     cohortConfigList               = new ArrayList<>();
 
 
@@ -83,6 +84,7 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
             this.openMetadataArchiveConnections = template.getOpenMetadataArchiveConnections();
             this.localRepositoryConfig = template.getLocalRepositoryConfig();
             this.enterpriseAccessConfig = template.getEnterpriseAccessConfig();
+            this.searchIndexingConfig = template.getSearchIndexingConfig();
             this.cohortConfigList = template.getCohortConfigList();
         }
     }
@@ -201,6 +203,24 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
         this.enterpriseAccessConfig = enterpriseAccessConfig;
     }
 
+    /**
+     * Return the configuration for the search indexing connector
+     *
+     * @return configuration properties
+     */
+    public SearchIndexingConfig getSearchIndexingConfig() {
+        return searchIndexingConfig;
+    }
+
+    /**
+     * Set up the configuration for the search indexing repository
+     * Services (OMASs).
+     *
+     * @param searchIndexingConfig configuration properties
+     */
+    public void setSearchIndexingConfig(SearchIndexingConfig searchIndexingConfig) {
+        this.searchIndexingConfig = searchIndexingConfig;
+    }
 
     /**
      * Return the configuration properties for each open metadata repository cohort that this local server
@@ -276,6 +296,7 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
         return Objects.equals(getAuditLogConnections(), that.getAuditLogConnections()) &&
                 Objects.equals(getOpenMetadataArchiveConnections(), that.getOpenMetadataArchiveConnections()) &&
                 Objects.equals(getLocalRepositoryConfig(), that.getLocalRepositoryConfig()) &&
+                Objects.equals(getSearchIndexingConfig(), that.getSearchIndexingConfig()) &&
                 Objects.equals(getEnterpriseAccessConfig(), that.getEnterpriseAccessConfig()) &&
                 Objects.equals(getCohortConfigList(), that.getCohortConfigList());
     }
@@ -290,6 +311,6 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
     public int hashCode()
     {
         return Objects.hash(getAuditLogConnections(), getOpenMetadataArchiveConnections(), getLocalRepositoryConfig(),
-                            getEnterpriseAccessConfig(), getCohortConfigList());
+                            getEnterpriseAccessConfig(), getSearchIndexingConfig(), getCohortConfigList());
     }
 }

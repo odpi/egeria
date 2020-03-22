@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.searchindexingstore.OMRSSearchIndexingConnector;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.OMRSInstanceRetrievalEventProcessor;
 import org.slf4j.Logger;
@@ -43,6 +44,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     private String                              connectorConsumerId;
 
     private LocalOMRSRepositoryConnector        localConnector            = null;
+    private OMRSSearchIndexingConnector         searchIndexingConnector   = null;
     private OMRSInstanceRetrievalEventProcessor localEventProcessor       = null;
     private String                              localMetadataCollectionId = null;
     private List<FederatedConnector>            remoteCohortConnectors    = new ArrayList<>();
@@ -150,6 +152,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         }
 
         localConnector = null;
+        searchIndexingConnector = null;
         remoteCohortConnectors = new ArrayList<>();
     }
 
@@ -365,6 +368,16 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         {
             this.localEventProcessor = localConnector.getIncomingInstanceRetrievalEventProcessor();
         }
+    }
+
+    /**
+     * Pass details of the connection for the search indexing to the connection consumer.
+     *
+     * @param searchIndexingConnector connector to the search indexing repository
+     */
+    public void setSearchIndexingConnector(OMRSSearchIndexingConnector searchIndexingConnector)
+    {
+        this.searchIndexingConnector = searchIndexingConnector;
     }
 
 

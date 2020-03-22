@@ -171,6 +171,11 @@ public enum OMRSAuditingComponent implements ComponentDescription
              "Native open metadata connector that maps open metadata calls to an in memory cache.",
              "https://egeria.odpi.org/open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection" +
                                            "-store-connectors/readonly-repository-connector/"),
+    //TODO: update doc link
+    SEARCH_INDEXING_REPOSITORY_CONNECTOR(31,
+            "Search Indexing Repository Connector",
+            "Supports access to the search indexing solution ",
+            "https://egeria.odpi.org/open-metadata-implementation/repository-services/docs/component-descriptions/enterprise-repository-connector.html"),
     ;
 
 

@@ -5,11 +5,7 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.classifier.ServerTypeClassifier;
 import org.odpi.openmetadata.adminservices.client.ConfigurationManagementClient;
-import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -3049,5 +3045,75 @@ public class OMAGServerAdminServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Set up the configuration for the search indexing repository.  This overrides the current values.
+     *
+     * @param userId               user that is issuing the request.
+     * @param serverName           local server name.
+     * @param searchIndexingConfig configuration properties for the search indexing connector
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryConfig parameter.
+     */
+    public VoidResponse setSearchIndexingConfig(String userId, String serverName, SearchIndexingConfig searchIndexingConfig) {
+        VoidResponse response = new VoidResponse();
+
+        String methodName = "setSearchIndexingConfig";
+
+        try {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            List<String> configAuditTrail = getAuditTrail(serverConfig);
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+            if (repositoryServicesConfig != null) {
+                SearchIndexingConfig existingSearchIndexingConfig = repositoryServicesConfig.getSearchIndexingConfig();
+                if (existingSearchIndexingConfig != null) {
+                    configAuditTrail.add(new Date().toString() + " " + userId + "  existing configuration for the " +
+                            "search indexing repository is overwritten.");
+                }
+
+                repositoryServicesConfig.setSearchIndexingConfig(searchIndexingConfig);
+            } else {
+                OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
+                //TODO: Daniela
+                //repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig.setSearchIndexingConfig(searchIndexingConfig);
+            }
+
+            configAuditTrail.add(new Date().toString() + " " + userId + " saved configuration for the search indexing repository.");
+            /*
+             * Save the open metadata repository services config in the server's config
+             */
+            serverConfig.setAuditTrail(configAuditTrail);
+            serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+        } catch (OMAGInvalidParameterException error) {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        } catch (OMAGNotAuthorizedException error) {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        } catch (Throwable error) {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        //log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+    private List<String> getAuditTrail(OMAGServerConfig serverConfig) {
+        List<String> configAuditTrail = serverConfig.getAuditTrail();
+
+        if (configAuditTrail == null) {
+            return new ArrayList<>();
+        }
+
+        return configAuditTrail;
     }
 }

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.connectormanager;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.searchindexingstore.OMRSSearchIndexingConnector;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 
 /**
@@ -21,6 +22,12 @@ public interface OMRSConnectorConsumer
     void setLocalConnector(String                       metadataCollectionId,
                            LocalOMRSRepositoryConnector localConnector);
 
+    /**
+     * Pass details of the connection for the search indexing to the connection consumer.
+     *
+     * @param searchIndexingConnector connector to the search indexing repository
+     */
+    void setSearchIndexingConnector(OMRSSearchIndexingConnector searchIndexingConnector);
 
     /**
      * Pass the connector to one of the remote repositories in the metadata repository cohort.

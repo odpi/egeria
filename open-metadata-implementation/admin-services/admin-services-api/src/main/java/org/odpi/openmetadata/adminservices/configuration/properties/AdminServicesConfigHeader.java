@@ -37,7 +37,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = StewardshipEngineServicesConfig.class, name = "StewardshipServicesConfig"),
         @JsonSubTypes.Type(value = VirtualizationConfig.class, name = "VirtualizationConfig"),
         @JsonSubTypes.Type(value = DataEngineProxyConfig.class, name = "DataEngineProxyConfig"),
-        @JsonSubTypes.Type(value = DataPlatformServicesConfig.class, name = "DataPlatformServicesConfig")
+        @JsonSubTypes.Type(value = DataPlatformServicesConfig.class, name = "DataPlatformServicesConfig"),
+        @JsonSubTypes.Type(value = SearchIndexingConfig.class, name = "SearchIndexingConfig")
 })
 public class AdminServicesConfigHeader implements Serializable
 {

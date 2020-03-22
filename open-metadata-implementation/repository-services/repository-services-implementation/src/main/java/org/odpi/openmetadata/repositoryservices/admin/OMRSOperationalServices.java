@@ -2,18 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.admin;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogDestination;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.searchindexingstore.OMRSSearchIndexingConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.searchindexingstore.OMRSSearchIndexingConnectorProvider;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
 import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveManager;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -92,7 +92,9 @@ public class OMRSOperationalServices
     private OMRSAuditLogDestination        auditLogDestination              = null;
     private OMRSAuditLog                   auditLog                         = null;
 
-
+    private OMRSSearchIndexingConnector searchIndexingConnector = null;
+    private OMRSRepositoryContentManager searchIndexingRepositoryContentManager = null;
+    private OMRSRepositoryEventManager searchIndexingEventManager = null;
 
     /**
      * Constructor used at server startup.
@@ -321,6 +323,7 @@ public class OMRSOperationalServices
         EnterpriseAccessConfig  enterpriseAccessConfig = repositoryServicesConfig.getEnterpriseAccessConfig();
         LocalRepositoryConfig   localRepositoryConfig  = repositoryServicesConfig.getLocalRepositoryConfig();
         List<CohortConfig>      cohortConfigList       = repositoryServicesConfig.getCohortConfigList();
+        SearchIndexingConfig    searchIndexingConfig   = repositoryServicesConfig.getSearchIndexingConfig();
 
         /*
          * The local repository is optional.  However, the repository content manager is still
@@ -411,6 +414,47 @@ public class OMRSOperationalServices
             {
                 auditLog.logMessage(actionDescription,
                                     OMRSAuditCode.LOCAL_REPOSITORY_FAILED_TO_START.getMessageDefinition(error.getMessage()));
+            }
+        }
+
+        if (searchIndexingConfig != null) {
+            /*
+             * Supports outbound events from the local repository
+             */
+
+            searchIndexingRepositoryContentManager = new OMRSRepositoryContentManager(localServerUserId,
+                    new OMRSAuditLog(auditLogDestination, OMRSAuditingComponent.REPOSITORY_CONTENT_MANAGER));
+
+            searchIndexingEventManager =
+                    new OMRSRepositoryEventManager("Search repository outbound",
+                            new OMRSRepositoryEventExchangeRule(OpenMetadataExchangeRule.ALL, null),
+                            new OMRSRepositoryContentValidator(searchIndexingRepositoryContentManager),
+                            new OMRSAuditLog(auditLogDestination, OMRSAuditingComponent.REPOSITORY_EVENT_MANAGER));
+
+            /*
+             * If the enterprise repositoryservices topic is active, then register an event publisher for it.
+             * This topic is active if the Open Metadata Access Services (OMASs) are active.
+             */
+            if (enterpriseOMRSTopicConnector != null) {
+                OMRSRepositoryEventPublisher
+                        enterpriseEventPublisher = new OMRSRepositoryEventPublisher("Search Connector to Enterprise",
+                        enterpriseOMRSTopicConnector,
+                        auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER));
+
+
+                this.searchIndexingEventManager.registerRepositoryEventProcessor(enterpriseEventPublisher);
+            }
+
+            //TODO:
+            searchIndexingConnector = initializeSearchIndexingConnector(searchIndexingConfig, searchIndexingEventManager);
+        }
+
+        if (searchIndexingConnector != null) {
+            try {
+                searchIndexingConnector.start();
+            } catch (ConnectorCheckedException error) {
+                auditLog.logMessage(actionDescription,
+                        OMRSAuditCode.SEARCH_INDEXING_REPOSITORY_FAILED_TO_START.getMessageDefinition(error.getMessage()));
             }
         }
 
@@ -1160,5 +1204,40 @@ public class OMRSOperationalServices
                                                methodName,
                                                error);
         }
+    }
+
+    private OMRSSearchIndexingConnector initializeSearchIndexingConnector(SearchIndexingConfig searchIndexingConfig,
+                                                                          OMRSRepositoryEventManager searchIndexingEventManager) {
+        String methodName = "initializeSearchIndexingConnector";
+
+        if (searchIndexingConfig == null) {
+            log.debug("Configuration Properties for Search Indexing Connector is not available.");
+            return null;
+        }
+
+        /*
+         * Create the search indexing Connector Provider.  This is a special connector provider that
+         * creates an OMRS Search Indexing Connector that wraps the real OMRS Search Indexing Connector.
+         */
+        OMRSSearchIndexingConnectorProvider searchIndexingConnectorProvider =
+                new OMRSSearchIndexingConnectorProvider(searchIndexingConfig.getSearchIndexingConnection(), null);
+
+        return this.getSearchIndexingConnector(searchIndexingConfig.getSearchIndexingConnection(),
+                searchIndexingConnectorProvider);
+
+    }
+
+    private OMRSSearchIndexingConnector getSearchIndexingConnector(Connection connection,
+                                                                   OMRSSearchIndexingConnectorProvider searchIndexingConnectorProvider) {
+
+        OMRSSearchIndexingConnector searchIndexingConnector = (OMRSSearchIndexingConnector) searchIndexingConnectorProvider.getConnector(connection);
+        if (searchIndexingConnector != null) {
+            searchIndexingConnector.setAuditLog(new OMRSAuditLog(auditLogDestination, OMRSAuditingComponent.SEARCH_INDEXING_REPOSITORY_CONNECTOR));
+
+//            searchIndexingConnector.set
+            log.debug("Search Indexing Repository Connector has been initialized");
+        }
+
+        return searchIndexingConnector;
     }
 }

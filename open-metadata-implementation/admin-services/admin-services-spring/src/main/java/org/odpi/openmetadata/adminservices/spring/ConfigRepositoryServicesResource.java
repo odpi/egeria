@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.SearchIndexingConfig;
 import org.odpi.openmetadata.adminservices.rest.CohortConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.ConnectionListResponse;
 import org.odpi.openmetadata.adminservices.rest.LocalRepositoryConfigResponse;
@@ -686,5 +687,22 @@ public class ConfigRepositoryServicesResource
                                         @RequestBody  CohortConfig cohortConfig)
     {
         return adminAPI.setCohortConfig(userId, serverName, cohortName, cohortConfig);
+    }
+
+    /**
+     * Set up the configuration for the local repository.  This overrides the current values.
+     *
+     * @param userId               user that is issuing the request.
+     * @param serverName           local server name.
+     * @param searchIndexingConfig configuration properties for the local repository.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryConfig parameter.
+     */
+    @PostMapping(path = "/search-indexing/configuration")
+    public VoidResponse setSearchIndexingConfig(@PathVariable String userId,
+                                                @PathVariable String serverName,
+                                                @RequestBody SearchIndexingConfig searchIndexingConfig) {
+        return adminAPI.setSearchIndexingConfig(userId, serverName, searchIndexingConfig);
     }
 }

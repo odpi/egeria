@@ -407,6 +407,14 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                          "The local server has started up the logging destinations defined in the configuration document.",
                          "Validate that all of the logging destinations are working."),
 
+    SEARCH_INDEXING_REPOSITORY_FAILED_TO_START("OMRS-AUDIT-0065",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "Unable to start processing in the search indexing repository due to error {0}",
+            "The search indexing repository server will not process events.",
+            "Review previous error messages to determine the precise error in the " +
+                    "start up configuration. " +
+                    "Correct the configuration and restart the server. "),
+
     EVENT_PARSING_ERROR("OMRS-AUDIT-0100",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                       "Unable parse an incoming event {0} due to exception {1}",

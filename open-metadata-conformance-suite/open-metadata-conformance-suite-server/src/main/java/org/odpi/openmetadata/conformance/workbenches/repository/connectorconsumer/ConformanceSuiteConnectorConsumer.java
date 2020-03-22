@@ -6,6 +6,7 @@ import org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.searchindexingstore.OMRSSearchIndexingConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorConsumer;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 
@@ -64,6 +65,11 @@ public class ConformanceSuiteConnectorConsumer implements OMRSConnectorConsumer
 
         workPad.setLocalMetadataCollectionId(metadataCollectionId);
         workPad.setLocalRepositoryConnector(localConnector);
+    }
+
+    @Override
+    public void setSearchIndexingConnector(OMRSSearchIndexingConnector searchIndexingConnector) {
+        //TODO:
     }
 
 
