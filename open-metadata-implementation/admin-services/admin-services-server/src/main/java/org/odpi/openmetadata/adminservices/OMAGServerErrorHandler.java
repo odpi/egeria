@@ -41,15 +41,9 @@ public class OMAGServerErrorHandler
     {
         if (("".equals(userId)) || (userId == null))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_USER_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGNotAuthorizedException(errorCode.getHTTPErrorCode(),
+            throw new OMAGNotAuthorizedException(OMAGAdminErrorCode.NULL_USER_NAME.getMessageDefinition(serverName),
                                                  this.getClass().getName(),
-                                                 methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction());
+                                                 methodName);
         }
     }
 
@@ -69,15 +63,9 @@ public class OMAGServerErrorHandler
          */
         if ("".equals(serverName) || (serverName == null))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
 
@@ -99,15 +87,9 @@ public class OMAGServerErrorHandler
          */
         if (clientConfig == null)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_CLIENT_CONFIG;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_CLIENT_CONFIG.getMessageDefinition(serverName, methodName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
 
         validateServerName(serverName, methodName);
@@ -139,15 +121,9 @@ public class OMAGServerErrorHandler
 
         if (eventBusConfig == null)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NO_EVENT_BUS_SET;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.NO_EVENT_BUS_SET.getMessageDefinition(serverName),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
 
         return eventBusConfig;
@@ -171,27 +147,15 @@ public class OMAGServerErrorHandler
     {
         if (registration == null)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.ACCESS_SERVICE_NOT_RECOGNIZED;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.ACCESS_SERVICE_NOT_RECOGNIZED.getMessageDefinition(serverName, serviceURLMarker),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
         else if (registration.getAccessServiceOperationalStatus() != ServiceOperationalStatus.ENABLED)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.ACCESS_SERVICE_NOT_ENABLED;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.ACCESS_SERVICE_NOT_ENABLED.getMessageDefinition(serverName, serviceURLMarker),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
     }
 
@@ -212,27 +176,15 @@ public class OMAGServerErrorHandler
     {
         if (registration == null)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.VIEW_SERVICE_NOT_RECOGNIZED;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.VIEW_SERVICE_NOT_RECOGNIZED.getMessageDefinition(serverName, serviceURLMarker),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
         else if (registration.getViewServiceOperationalStatus() != ServiceOperationalStatus.ENABLED)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.VIEW_SERVICE_NOT_ENABLED;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.VIEW_SERVICE_NOT_ENABLED.getMessageDefinition(serverName, serviceURLMarker),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
     }
 
@@ -253,15 +205,9 @@ public class OMAGServerErrorHandler
     {
         if ((accessServiceRootURL == null) || ("".equals(accessServiceRootURL)))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_ACCESS_SERVICE_ROOT_URL;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverService, serverName, accessServiceName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_ACCESS_SERVICE_ROOT_URL.getMessageDefinition(serverService, serverName, accessServiceName),
                                                     this.getClass().getName(),
-                                                    serverService,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    serverService);
         }
     }
 
@@ -282,15 +228,9 @@ public class OMAGServerErrorHandler
     {
         if ((accessServiceServerName == null) || ("".equals(accessServiceServerName)))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_ACCESS_SERVICE_SERVER_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverService, serverName, accessServiceName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_ACCESS_SERVICE_SERVER_NAME.getMessageDefinition(serverService, serverName, accessServiceName),
                                                     this.getClass().getName(),
-                                                    serverService,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    serverService);
         }
     }
 
@@ -309,15 +249,9 @@ public class OMAGServerErrorHandler
     {
         if (("".equals(cohortName)) || (cohortName == null))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_COHORT_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_COHORT_NAME.getMessageDefinition(serverName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
 
@@ -362,15 +296,9 @@ public class OMAGServerErrorHandler
         /*
          * If we get here then the cohort is not configured for this server
          */
-        OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.COHORT_NOT_KNOWN;
-        String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, cohortName);
-
-        throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new OMAGInvalidParameterException(OMAGAdminErrorCode.COHORT_NOT_KNOWN.getMessageDefinition(serverName, cohortName),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
     }
 
 
@@ -388,15 +316,9 @@ public class OMAGServerErrorHandler
                                 String serverName,
                                 String methodName) throws OMAGConfigurationErrorException
     {
-        OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.COHORT_TOPIC_STRANGE;
-        String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, cohortName);
-
-        throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+        throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.COHORT_TOPIC_STRANGE.getMessageDefinition(serverName, cohortName),
                                                   this.getClass().getName(),
-                                                  methodName,
-                                                  errorMessage,
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction());
+                                                  methodName);
     }
 
 
@@ -415,15 +337,9 @@ public class OMAGServerErrorHandler
     {
         if (("".equals(fileName)) || (fileName == null))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_FILE_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_FILE_NAME.getMessageDefinition(serverName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
 
@@ -442,15 +358,9 @@ public class OMAGServerErrorHandler
     {
         if (("".equals(name)) || (name == null))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_METADATA_COLLECTION_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_METADATA_COLLECTION_NAME.getMessageDefinition(serverName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
 
@@ -469,15 +379,9 @@ public class OMAGServerErrorHandler
     {
         if (connection == null)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_CONNECTION;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_CONNECTION.getMessageDefinition(serverName, methodName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
 
@@ -494,15 +398,9 @@ public class OMAGServerErrorHandler
     {
         if (connection == null)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_PLATFORM_CONNECTION;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_PLATFORM_CONNECTION.getMessageDefinition(methodName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
 
@@ -522,14 +420,9 @@ public class OMAGServerErrorHandler
     {
         if (property == null)
         {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.MISSING_CONFIGURATION_PROPERTY;
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.MISSING_CONFIGURATION_PROPERTY.getMessageDefinition(serverName, propertyName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, propertyName),
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
 
@@ -547,15 +440,9 @@ public class OMAGServerErrorHandler
     {
         if ((omagServerServiceRootURL == null) || ("".equals(omagServerServiceRootURL)))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_OMAG_SERVER_ROOT_URL;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverService, serverName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_OMAG_SERVER_ROOT_URL.getMessageDefinition(serverService, serverName),
                                                     this.getClass().getName(),
-                                                    serverService,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    serverService);
         }
     }
 
@@ -572,15 +459,9 @@ public class OMAGServerErrorHandler
     {
         if ((omagServerName == null) || ("".equals(omagServerName)))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_OMAG_SERVER_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverService, serverName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_OMAG_SERVER_NAME.getMessageDefinition(serverService, serverName),
                                                     this.getClass().getName(),
-                                                    serverService,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    serverService);
         }
     }
 }

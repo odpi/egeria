@@ -25,8 +25,7 @@ public class Converter {
     public LineageEntity createLineageEntity(EntityDetail entityDetail) {
         LineageEntity lineageEntity = new LineageEntity();
         setInstanceHeaderProperties(entityDetail, lineageEntity);
-        lineageEntity.setProperties(getMapProperties(entityDetail.getProperties()));
-
+        lineageEntity.setProperties(instancePropertiesToMap(entityDetail.getProperties()));
         return lineageEntity;
     }
 
@@ -40,7 +39,7 @@ public class Converter {
     public LineageRelationship createLineageRelationship(Relationship relationship) {
         LineageRelationship lineageRelationship = new LineageRelationship();
         setInstanceHeaderProperties(relationship, lineageRelationship);
-        lineageRelationship.setProperties(getMapProperties(relationship.getProperties()));
+        lineageRelationship.setProperties(instancePropertiesToMap(relationship.getProperties()));
 
         lineageRelationship.setFirstEndGUID(relationship.getEntityTwoProxy().getGUID());
         lineageRelationship.setSecondEndGUID(relationship.getEntityTwoProxy().getGUID());
@@ -48,35 +47,36 @@ public class Converter {
         return lineageRelationship;
     }
     /**
-     * Gets map properties.
+     * Retrieve the properties from an InstanceProperties object and return them as a map
      *
      * @param properties the properties
      * @return the map properties
      */
-    public Map<String, String> getMapProperties(InstanceProperties properties) {
+    public Map<String, String> instancePropertiesToMap(InstanceProperties properties) {
         Map<String, String> attributes = new HashMap<>();
 
-        if(properties == null) {return  attributes;}
+        if (properties == null)
+            return attributes;
 
         Map<String, InstancePropertyValue> instanceProperties = properties.getInstanceProperties();
-        if(instanceProperties == null ) {return attributes;}
+
+        if (instanceProperties == null)
+            return attributes;
 
         for (Map.Entry<String, InstancePropertyValue> property : instanceProperties.entrySet()) {
 
-            if (property.getValue() == null) {return  attributes;}
+            if (property.getValue() == null)
+                continue;
 
-            String propertyValue = getStringForPropertyValue(property.getValue());
-            if (!propertyValue.equals("")) {
+            String propertyValue = propertyValueToString(property.getValue());
+            if (propertyValue.equals(""))
+                continue;
 
-                if (property.getKey().equals("name")) {
-                    attributes.put("displayName", propertyValue);
-                    }
-                else {
-                    attributes.put(property.getKey(), propertyValue);
-                    }
-                }
-            }
-
+            if (property.getKey().equals("name"))
+                attributes.put("displayName", propertyValue);
+            else
+                attributes.put(property.getKey(), propertyValue);
+        }
         return attributes;
     }
 
@@ -90,8 +90,7 @@ public class Converter {
         lineageEntity.setVersion(instanceHeader.getVersion());
     }
 
-    private String getStringForPropertyValue(InstancePropertyValue ipv) {
-
+    private String propertyValueToString(InstancePropertyValue ipv) {
         if (ipv instanceof PrimitivePropertyValue) {
             PrimitiveDefCategory primtype =
                     ((PrimitivePropertyValue) ipv).getPrimitiveDefCategory();
@@ -122,8 +121,7 @@ public class Converter {
         } else {
             if (ipv instanceof EnumPropertyValue) {
                 return ((EnumPropertyValue) ipv).getSymbolicName();
-            }
-            else {
+            } else {
                 return "";
             }
         }

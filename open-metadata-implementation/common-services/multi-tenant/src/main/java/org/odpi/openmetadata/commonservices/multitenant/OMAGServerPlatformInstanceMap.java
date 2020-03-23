@@ -10,11 +10,11 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerExcept
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.platformservices.properties.OMAGServerInstanceHistory;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.*;
 
@@ -377,7 +377,7 @@ public class OMAGServerPlatformInstanceMap
      */
     private static synchronized OpenMetadataServerSecurityVerifier setServerActiveWithSecurity(String       localServerUserId,
                                                                                                String       serverName,
-                                                                                               OMRSAuditLog auditLog,
+                                                                                               AuditLog     auditLog,
                                                                                                Connection   connection) throws InvalidParameterException
     {
         OMAGServerInstance  serverInstance = getActiveServerInstance(serverName);
@@ -808,19 +808,14 @@ public class OMAGServerPlatformInstanceMap
                                             String    serverName,
                                             String    methodName) throws InvalidParameterException
     {
-        OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.SERVER_NOT_AVAILABLE;
-        String                      errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, userId);
         Map<String, Object>         debugProperties = new HashMap<>();
 
         final String  serverNameProperty = "serverName";
         debugProperties.put(serverNameProperty, serverName);
 
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(OMAGServerInstanceErrorCode.SERVER_NOT_AVAILABLE.getMessageDefinition(serverName, userId),
                                             OMAGServerPlatformInstanceMap.class.getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             serverNameProperty,
                                             debugProperties);
     }
@@ -947,7 +942,7 @@ public class OMAGServerPlatformInstanceMap
      */
     public OpenMetadataServerSecurityVerifier startUpServerInstance(String       localServerUserId,
                                                                     String       serverName,
-                                                                    OMRSAuditLog auditLog,
+                                                                    AuditLog     auditLog,
                                                                     Connection   connection) throws InvalidParameterException
     {
         return OMAGServerPlatformInstanceMap.setServerActiveWithSecurity(localServerUserId, serverName, auditLog, connection);

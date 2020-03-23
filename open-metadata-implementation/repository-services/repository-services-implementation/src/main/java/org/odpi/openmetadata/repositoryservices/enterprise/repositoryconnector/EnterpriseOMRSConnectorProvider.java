@@ -72,6 +72,8 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
                                            String                       enterpriseMetadataCollectionName)
     {
         super();
+        super.setConnectorComponentDescription(OMRSAuditingComponent.ENTERPRISE_REPOSITORY_CONNECTOR);
+
 
         Class<?>    connectorClass = EnterpriseOMRSRepositoryConnector.class;
 
@@ -108,15 +110,9 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
             /*
              * If the cohort is not connected then throw an exception to indicate that the repositories are offline.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.COHORT_NOT_CONNECTED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectorCheckedException(OMRSErrorCode.COHORT_NOT_CONNECTED.getMessageDefinition(),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
         }
 
         /*

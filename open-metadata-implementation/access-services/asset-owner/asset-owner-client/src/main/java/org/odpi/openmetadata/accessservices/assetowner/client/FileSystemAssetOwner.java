@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -21,15 +22,23 @@ import java.util.Map;
  * FileSystemAssetOwner provides specialist methods for onboarding details of a file system and the files within it.
  * At the top level is a file system.  It can have nested Folders attached and inside the folders are the files.
  */
-public class FileSystemAssetOwner implements AssetOnboardingFileSystem
+public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingFileSystem
 {
-    private String               serverName;               /* Initialized in constructor */
-    private String               serverPlatformRootURL;    /* Initialized in constructor */
-    private AssetOwnerRESTClient restClient;               /* Initialized in constructor */
-
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-    private static final  NullRequestBody nullRequestBody = new NullRequestBody();
+    /**
+     * Create a new client with no authentication embedded in the HTTP request and an audit log.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public FileSystemAssetOwner(String   serverName,
+                                String   serverPlatformRootURL,
+                                AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+    }
 
 
     /**
@@ -40,16 +49,34 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public FileSystemAssetOwner(String     serverName,
+    public FileSystemAssetOwner(String serverName,
                                 String serverPlatformRootURL) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
+        super(serverName, serverPlatformRootURL);
+    }
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
 
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL);
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     * There is also an audit log destination.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param auditLog logging destination
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public FileSystemAssetOwner(String   serverName,
+                                String   serverPlatformRootURL,
+                                String   userId,
+                                String   password,
+                                AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, userId, password, auditLog);
     }
 
 
@@ -64,18 +91,12 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public FileSystemAssetOwner(String     serverName,
+    public FileSystemAssetOwner(String serverName,
                                 String serverPlatformRootURL,
-                                String     userId,
-                                String     password) throws InvalidParameterException
+                                String userId,
+                                String password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL, userId, password);
+        super(serverName, serverPlatformRootURL, userId, password);
     }
 
     /*

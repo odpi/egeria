@@ -22,6 +22,7 @@ public class RESTCallToken
     private String    serverName;
     private String    userId;
     private String    methodName;
+    private String    threadName;
 
     /**
      * Set up the values that will be used in the logging process.
@@ -34,8 +35,9 @@ public class RESTCallToken
     RESTCallToken(String serviceName, String serverName, String userId, String methodName)
     {
         this.serviceName = serviceName;
-        this.userId     = userId;
-        this.methodName = methodName;
+        this.userId      = userId;
+        this.methodName  = methodName;
+        this.threadName  = Thread.currentThread().getName();
 
         this.watch = StopWatch.createStarted();
         this.callId = getNextCallId();
@@ -58,6 +60,8 @@ public class RESTCallToken
      */
     String getRESTCallStartText()
     {
+        Thread.currentThread().setName("REST:" + serviceName + ":" + methodName);
+
         return callId + ":" + serviceName + ":" + serverName + ":" + methodName + " call invoked by " + userId;
     }
 
@@ -70,6 +74,8 @@ public class RESTCallToken
      */
     String getRESTCallReturnText(String response)
     {
+        Thread.currentThread().setName(threadName);
+
         return callId + ":" + serviceName + ":" + serverName + ":" + methodName + " call invoked by " + userId + " returned with response " + response + "; Duration: " + watch.getTime()/1000 + "seconds";
     }
 }

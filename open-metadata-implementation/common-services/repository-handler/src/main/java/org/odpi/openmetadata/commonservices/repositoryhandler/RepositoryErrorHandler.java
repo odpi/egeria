@@ -51,29 +51,16 @@ public class RepositoryErrorHandler
     {
         if (repositoryConnector == null)
         {
-            RepositoryHandlerErrorCode errorCode    = RepositoryHandlerErrorCode.OMRS_NOT_INITIALIZED;
-            String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(RepositoryHandlerErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-
+                                              methodName);
         }
 
         if (! repositoryConnector.isActive())
         {
-            RepositoryHandlerErrorCode errorCode    = RepositoryHandlerErrorCode.OMRS_NOT_AVAILABLE;
-            String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(RepositoryHandlerErrorCode.OMRS_NOT_AVAILABLE.getMessageDefinition(methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         try
@@ -82,15 +69,9 @@ public class RepositoryErrorHandler
         }
         catch (Throwable error)
         {
-            RepositoryHandlerErrorCode errorCode    = RepositoryHandlerErrorCode.NO_METADATA_COLLECTION;
-            String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(RepositoryHandlerErrorCode.NO_METADATA_COLLECTION.getMessageDefinition(methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -119,21 +100,15 @@ public class RepositoryErrorHandler
 
             if (! validatingProperty.equals(retrievedPropertyValue.valueAsString()))
             {
-                RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.INVALID_PROPERTY;
-                String errorMessage = errorCode.getErrorMessageId()
-                                    + errorCode.getFormattedErrorMessage(validatingPropertyName,
-                                                                         validatingProperty,
-                                                                         methodName,
-                                                                         retrievedPropertyValue.valueAsString(),
-                                                                         instanceGUID);
-
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction(),
-                                                    validatingPropertyName);
+                throw new InvalidParameterException(
+                        RepositoryHandlerErrorCode.INVALID_PROPERTY.getMessageDefinition(validatingPropertyName,
+                                                                                         validatingProperty,
+                                                                                         methodName,
+                                                                                         retrievedPropertyValue.valueAsString(),
+                                                                                         instanceGUID),
+                        this.getClass().getName(),
+                        methodName,
+                        validatingPropertyName);
             }
         }
     }
@@ -222,19 +197,12 @@ public class RepositoryErrorHandler
     {
         final String  defaultGUIDParameterName = "guid";
 
-        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.INSTANCE_WRONG_TYPE_FOR_GUID;
-        String                     errorMessage = errorCode.getErrorMessageId()
-                                                + errorCode.getFormattedErrorMessage(methodName,
-                                                                                     guid,
-                                                                                     actualType,
-                                                                                     expectedType);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(RepositoryHandlerErrorCode.INSTANCE_WRONG_TYPE_FOR_GUID.getMessageDefinition(methodName,
+                                                                                                                         guid,
+                                                                                                                         actualType,
+                                                                                                                         expectedType),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             defaultGUIDParameterName);
 
     }
@@ -257,21 +225,13 @@ public class RepositoryErrorHandler
     {
         final String  parameterName = "qualifiedName";
 
-        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.DUPLICATE_CREATE_REQUEST;
-        String                     errorMessage = errorCode.getErrorMessageId()
-                                                + errorCode.getFormattedErrorMessage(typeName,
-                                                                                     parameterName,
-                                                                                     qualifiedName,
-                                                                                     existingEntityGUID);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(RepositoryHandlerErrorCode.DUPLICATE_CREATE_REQUEST.getMessageDefinition(typeName,
+                                                                                                                     parameterName,
+                                                                                                                     qualifiedName,
+                                                                                                                     existingEntityGUID),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             parameterName);
-
     }
 
 
@@ -286,21 +246,13 @@ public class RepositoryErrorHandler
     public void handleUnauthorizedUser(String userId,
                                        String methodName) throws UserNotAuthorizedException
     {
-        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.USER_NOT_AUTHORIZED;
-        String                     errorMessage = errorCode.getErrorMessageId()
-                                                + errorCode.getFormattedErrorMessage(userId,
-                                                                                     methodName,
-                                                                                     serviceName,
-                                                                                     serverName);
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(RepositoryHandlerErrorCode.USER_NOT_AUTHORIZED.getMessageDefinition(userId,
+                                                                                                                 methodName,
+                                                                                                                 serviceName,
+                                                                                                                 serverName),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
-
     }
 
 
@@ -317,23 +269,15 @@ public class RepositoryErrorHandler
                                           String     methodName,
                                           String     propertyName) throws InvalidParameterException
     {
-        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.INVALID_PROPERTY;
-        String                     errorMessage = errorCode.getErrorMessageId()
-                                                + errorCode.getFormattedErrorMessage(propertyName,
-                                                                                     methodName,
-                                                                                     serviceName,
-                                                                                     serverName,
-                                                                                     error.getMessage());
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(RepositoryHandlerErrorCode.INVALID_PROPERTY.getMessageDefinition(propertyName,
+                                                                                                             methodName,
+                                                                                                             serviceName,
+                                                                                                             serverName,
+                                                                                                             error.getMessage()),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             error,
                                             propertyName);
-
     }
 
 
@@ -349,20 +293,12 @@ public class RepositoryErrorHandler
     public void handleRepositoryError(Throwable  error,
                                       String     methodName) throws PropertyServerException
     {
-        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.PROPERTY_SERVER_ERROR;
-        String                     errorMessage = errorCode.getErrorMessageId()
-                                                + errorCode.getFormattedErrorMessage(error.getMessage(),
-                                                                                     methodName,
-                                                                                     serviceName,
-                                                                                     serverName);
-
-        throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+        throw new PropertyServerException(RepositoryHandlerErrorCode.PROPERTY_SERVER_ERROR.getMessageDefinition(error.getMessage(),
+                                                                                                                methodName,
+                                                                                                                serviceName,
+                                                                                                                serverName),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
-
+                                          methodName);
     }
 
 
@@ -383,21 +319,14 @@ public class RepositoryErrorHandler
                                     String     methodName,
                                     String     guidParameterName) throws InvalidParameterException
     {
-        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.UNKNOWN_ENTITY;
-        String                     errorMessage = errorCode.getErrorMessageId()
-                                                + errorCode.getFormattedErrorMessage(entityTypeName,
-                                                                                     entityGUID,
-                                                                                     methodName,
-                                                                                     serviceName,
-                                                                                     serverName,
-                                                                                     error.getMessage());
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(RepositoryHandlerErrorCode.UNKNOWN_ENTITY.getMessageDefinition(entityTypeName,
+                                                                                                           entityGUID,
+                                                                                                           methodName,
+                                                                                                           serviceName,
+                                                                                                           serverName,
+                                                                                                           error.getMessage()),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             error,
                                             guidParameterName);
 
@@ -422,23 +351,15 @@ public class RepositoryErrorHandler
                                   String     methodName,
                                   String     guidParameterName) throws InvalidParameterException
     {
-        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.PROXY_ENTITY_FOUND;
-        String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityTypeName,
-                                                                                                                     entityGUID,
-                                                                                                                     serverName,
-                                                                                                                     error.getMessage());
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(RepositoryHandlerErrorCode.PROXY_ENTITY_FOUND.getMessageDefinition(entityTypeName,
+                                                                                                               entityGUID,
+                                                                                                               serverName,
+                                                                                                               error.getMessage()),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             error,
                                             guidParameterName);
-
     }
-
 
 
     /**
@@ -471,21 +392,14 @@ public class RepositoryErrorHandler
             }
         }
 
-        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.MULTIPLE_RELATIONSHIPS_FOUND;
-        String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationshipTypeName,
-                                                                                                                     entityTypeName,
-                                                                                                                     entityGUID,
-                                                                                                                     relationshipGUIDs.toString(),
-                                                                                                                     methodName,
-                                                                                                                     serverName);
-
-        throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+        throw new PropertyServerException(RepositoryHandlerErrorCode.MULTIPLE_RELATIONSHIPS_FOUND.getMessageDefinition(relationshipTypeName,
+                                                                                                                       entityTypeName,
+                                                                                                                       entityGUID,
+                                                                                                                       relationshipGUIDs.toString(),
+                                                                                                                       methodName,
+                                                                                                                       serverName),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
-
+                                          methodName);
     }
 
 
@@ -519,21 +433,14 @@ public class RepositoryErrorHandler
             }
         }
 
-        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.MULTIPLE_ENTITIES_FOUND;
-        String                   errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityTypeName,
-                                                                                                                   name,
-                                                                                                                   entityGUIDs.toString(),
-                                                                                                                   methodName,
-                                                                                                                   nameParameterName,
-                                                                                                                   serverName);
-
-        throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+        throw new PropertyServerException(RepositoryHandlerErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(entityTypeName,
+                                                                                                                  name,
+                                                                                                                  entityGUIDs.toString(),
+                                                                                                                  methodName,
+                                                                                                                  nameParameterName,
+                                                                                                                  serverName),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
-
+                                          methodName);
     }
 
 
@@ -552,22 +459,14 @@ public class RepositoryErrorHandler
                                      String             relationshipTypeName,
                                      String             methodName) throws PropertyServerException
     {
-        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.NO_RELATIONSHIPS_FOUND;
-        String                   errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationshipTypeName,
-                                                                                                                   entityTypeName,
-                                                                                                                   entityGUID,
-                                                                                                                   methodName,
-                                                                                                                   serverName);
-
-        throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+       throw new PropertyServerException(RepositoryHandlerErrorCode.NO_RELATIONSHIPS_FOUND.getMessageDefinition(relationshipTypeName,
+                                                                                                                 entityTypeName,
+                                                                                                                 entityGUID,
+                                                                                                                 methodName,
+                                                                                                                 serverName),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
-
+                                          methodName);
     }
-
 
 
     /**
@@ -585,22 +484,15 @@ public class RepositoryErrorHandler
                                InstanceProperties properties,
                                String             methodName) throws PropertyServerException
     {
-        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.NULL_ENTITY_RETURNED;
-        String                   errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                                   serverName,
-                                                                                                                   entityTypeName,
-                                                                                                                   entityTypeGUID,
-                                                                                                                   properties.toString());
-
-        throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+        throw new PropertyServerException(RepositoryHandlerErrorCode.NULL_ENTITY_RETURNED.getMessageDefinition(methodName,
+                                                                                                               serverName,
+                                                                                                               entityTypeName,
+                                                                                                               entityTypeGUID,
+                                                                                                               properties.toString()),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          methodName);
 
     }
-
 
 
     /**
@@ -620,20 +512,13 @@ public class RepositoryErrorHandler
                                                 InstanceProperties properties,
                                                 String             methodName) throws PropertyServerException
     {
-        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.NULL_ENTITY_RETURNED_FOR_CLASSIFICATION;
-        String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                                     serverName,
-                                                                                                                     entityGUID,
-                                                                                                                     classificationTypeName,
-                                                                                                                     classificationTypeGUID,
-                                                                                                                     properties.toString());
-
-        throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+        throw new PropertyServerException(RepositoryHandlerErrorCode.NULL_ENTITY_RETURNED_FOR_CLASSIFICATION.getMessageDefinition(methodName,
+                                                                                                                                  serverName,
+                                                                                                                                  entityGUID,
+                                                                                                                                  classificationTypeName,
+                                                                                                                                  classificationTypeGUID,
+                                                                                                                                  properties.toString()),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
-
+                                          methodName);
     }
 }

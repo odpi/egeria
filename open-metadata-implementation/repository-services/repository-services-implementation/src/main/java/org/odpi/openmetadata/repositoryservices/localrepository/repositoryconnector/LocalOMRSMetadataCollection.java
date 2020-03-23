@@ -84,16 +84,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             final String      actionDescription = "Local OMRS Metadata Collection Constructor";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_LOCAL_METADATA_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_LOCAL_METADATA_COLLECTION.getMessageDefinition(),
                                               this.getClass().getName(),
-                                              actionDescription,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              actionDescription);
         }
         this.realMetadataCollection = realMetadataCollection;
 
@@ -2973,17 +2966,17 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     private EntityDetail validateEntityIsNotProxy(String           userId,
-                                                String           entityGUID,
-                                                String           methodName) throws InvalidParameterException,
-                                                                                    RepositoryErrorException,
-                                                                                    EntityNotKnownException,
-                                                                                    UserNotAuthorizedException
+                                                  String           entityGUID,
+                                                  String           methodName) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      EntityNotKnownException,
+                                                                                      UserNotAuthorizedException
     {
         EntityDetail entityDetail;
 
         try
         {
-              entityDetail = realMetadataCollection.getEntityDetail(userId, entityGUID);
+            entityDetail = realMetadataCollection.getEntityDetail(userId, entityGUID);
         }
         catch (EntityProxyOnlyException  error)
         {
@@ -2991,21 +2984,16 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              * There is a serious logic error as the entity stored in what should be the home repository
              * is only an entity proxy.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.ENTITY_PROXY_IN_HOME;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(repositoryName, entityGUID, methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
-                                               error);
+            throw new InvalidParameterException(OMRSErrorCode.ENTITY_PROXY_IN_HOME.getMessageDefinition(repositoryName,
+                                                                                                        entityGUID,
+                                                                                                        methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error,
+                                                "entityGUID");
         }
 
         return entityDetail;
-
     }
 
 
@@ -3045,18 +3033,13 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              * There is a logic error as the caller has requested update or delete of an entity and this
              * repository does not have the right to perform the requested operation.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.ENTITY_CAN_NOT_BE_UPDATED;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(repositoryName,
-                                                                            entityGUID,
-                                                                            methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+            String parameterName = "entityGUID";
+            throw new InvalidParameterException(OMRSErrorCode.ENTITY_CAN_NOT_BE_UPDATED.getMessageDefinition(repositoryName,
+                                                                                                             entityGUID,
+                                                                                                             methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
         }
         else
         {
@@ -3064,18 +3047,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              * There is a logic error as the caller has requested update of an entity but the
              * entity cannot be found.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_INSTANCE;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(repositoryName,
-                                                                            entityGUID,
-                                                                            methodName);
-
-            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+            throw new EntityNotKnownException(OMRSErrorCode.NULL_INSTANCE.getMessageDefinition(repositoryName,
+                                                                                               entityGUID,
+                                                                                               methodName),
+                                              this.getClass().getName(),
+                                              methodName);
         }
     }
 
@@ -3114,9 +3090,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          *   if something really ugly happens this method will throw RepositoryErrorException but not in any of the above scenarios
          */
 
-        EntityDetail entityDetail = this.validateEntityIsNotProxy(userId, entityGUID, methodName);
-
-        return entityDetail;
+        return this.validateEntityIsNotProxy(userId, entityGUID, methodName);
     }
 
 
@@ -3202,19 +3176,24 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             boolean updateAllowed = false;
 
             InstanceProvenanceType instanceProvenance = entityDetail.getInstanceProvenanceType();
-            switch (instanceProvenance) {
+            switch (instanceProvenance)
+            {
                 case LOCAL_COHORT:
                     String entityHome = entityDetail.getMetadataCollectionId();
-                    if (entityHome != null && !entityHome.equals(metadataCollectionId)) {
+                    if (entityHome != null && !entityHome.equals(metadataCollectionId))
+                    {
                         updateAllowed = true;
                     }
                     break;
+
                 case EXTERNAL_SOURCE:
                     String replicatedBy = entityDetail.getReplicatedBy();
-                    if (replicatedBy != null && !replicatedBy.equals(metadataCollectionId)) {
+                    if (replicatedBy != null && !replicatedBy.equals(metadataCollectionId))
+                    {
                         updateAllowed = true;
                     }
                     break;
+
                 default:
                     /*
                      * For any other instance provenance value do not allow update
@@ -3229,28 +3208,23 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
             else
             {
-
                 /*
                  * There is a logic error as the caller has requested update or delete of an entity and this
                  * repository does not have the right to perform the requested operation.
                  *
                  * The entity should not be updated - throw InvalidParameterException
                  */
+                String parameterName = "entityGUID";
 
-                OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
-
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
-                        entityDetail.getMetadataCollectionId(), methodName, entityDetail.getGUID(), metadataCollectionId, repositoryName);
-
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                throw new InvalidParameterException(OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL.getMessageDefinition(entityDetail.getMetadataCollectionId(),
+                                                                                                               methodName,
+                                                                                                               entityDetail.getGUID(),
+                                                                                                               metadataCollectionId,
+                                                                                                               repositoryName),
                                                     this.getClass().getName(),
                                                     methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    parameterName);
             }
-
-
         }
         else
         {
@@ -3258,18 +3232,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              * There is a logic error as the caller has requested update of an entity but the
              * entity cannot be found.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_INSTANCE;
-            String        errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(repositoryName,
-                                                         entityGUID,
-                                                         methodName);
-
-            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+            throw new EntityNotKnownException(OMRSErrorCode.NULL_INSTANCE.getMessageDefinition(repositoryName,
+                                                                                               entityGUID,
+                                                                                               methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -3358,15 +3325,14 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
 
 
-        if (relationship != null) {
-
+        if (relationship != null)
+        {
             relationship = this.validateRelationshipCanBeUpdatedByRepository(relationship.getGUID(),
                                                                              relationship,
                                                                              methodName);
 
 
             return relationship;
-
         }
         else
         {
@@ -3374,18 +3340,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              * There is a logic error as the caller has requested update of a relationship but the
              * relationship cannot be found.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_INSTANCE;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(repositoryName,
-                                                         null,
-                                                         methodName);
-
-            throw new RelationshipNotKnownException(errorCode.getHTTPErrorCode(),
+            throw new RelationshipNotKnownException(OMRSErrorCode.NULL_INSTANCE.getMessageDefinition(repositoryName,
+                                                                                                     null,
+                                                                                                     methodName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
 
@@ -3428,18 +3387,14 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              * There is a logic error as the caller has requested update or delete of an relationship and this
              * repository does not have the right to perform the requested operation.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.RELATIONSHIP_CAN_NOT_BE_UPDATED;
-            String        errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(repositoryName,
-                                                         relationshipGUID,
-                                                         methodName);
+            String  parameterName = "relationshipGUID";
 
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMRSErrorCode.RELATIONSHIP_CAN_NOT_BE_UPDATED.getMessageDefinition(repositoryName,
+                                                                                                                   relationshipGUID,
+                                                                                                                   methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                parameterName);
         }
         else
         {
@@ -3447,18 +3402,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              * There is a logic error as the caller has requested update of a relationship but the
              * relationship cannot be found.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_INSTANCE;
-            String        errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(repositoryName,
-                                                         relationshipGUID,
-                                                         methodName);
-
-            throw new RelationshipNotKnownException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+            throw new RelationshipNotKnownException(OMRSErrorCode.NULL_INSTANCE.getMessageDefinition(repositoryName,
+                                                                                                     relationshipGUID,
+                                                                                                     methodName),
+                                                    this.getClass().getName(),
+                                                    methodName);
         }
     }
 
@@ -3499,11 +3447,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          *   if something really ugly happens this method will throw RepositoryErrorException but not in any of the above scenarios
          */
 
-        Relationship relationship = this.validateRelationshipCanBeRehomedByRepository(relationshipGUID,
-                                                                                      realMetadataCollection.getRelationship(userId, relationshipGUID),
-                                                                                      methodName);
-
-        return relationship;
+        return this.validateRelationshipCanBeRehomedByRepository(relationshipGUID,
+                                                                 realMetadataCollection.getRelationship(userId, relationshipGUID),
+                                                                 methodName);
     }
 
 
@@ -3542,19 +3488,24 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             boolean updateAllowed = false;
 
             InstanceProvenanceType instanceProvenance = relationship.getInstanceProvenanceType();
-            switch (instanceProvenance) {
+            switch (instanceProvenance)
+            {
                 case LOCAL_COHORT:
                     String entityHome = relationship.getMetadataCollectionId();
-                    if (entityHome != null && !entityHome.equals(metadataCollectionId)) {
+                    if (entityHome != null && !entityHome.equals(metadataCollectionId))
+                    {
                         updateAllowed = true;
                     }
                     break;
+
                 case EXTERNAL_SOURCE:
                     String replicatedBy = relationship.getReplicatedBy();
-                    if (replicatedBy != null && !replicatedBy.equals(metadataCollectionId)) {
+                    if (replicatedBy != null && !replicatedBy.equals(metadataCollectionId))
+                    {
                         updateAllowed = true;
                     }
                     break;
+
                 default:
                     /*
                      * For any other instance provenance value do not allow update
@@ -3569,25 +3520,22 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
             else
             {
-
                 /*
                  * There is a logic error as the caller has requested update or delete of a relationship and this
                  * repository does not have the right to perform the requested operation.
                  *
                  * The relationship should not be updated - throw InvalidParameterException
                  */
+                String parameterName = "relationshipGUID";
 
-                OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
-
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
-                        relationship.getMetadataCollectionId(), methodName, relationship.getGUID(), metadataCollectionId, repositoryName);
-
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                throw new InvalidParameterException(OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL.getMessageDefinition(relationship.getMetadataCollectionId(),
+                                                                                                               methodName,
+                                                                                                               relationship.getGUID(),
+                                                                                                               metadataCollectionId,
+                                                                                                               repositoryName),
                                                     this.getClass().getName(),
                                                     methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    parameterName);
             }
 
 
@@ -3598,18 +3546,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              * There is a logic error as the caller has requested update of an relationship but the
              * relationship cannot be found.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_INSTANCE;
-            String        errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(repositoryName,
-                                                         relationshipGUID,
-                                                         methodName);
-
-            throw new RelationshipNotKnownException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+            throw new RelationshipNotKnownException(OMRSErrorCode.NULL_INSTANCE.getMessageDefinition(repositoryName,
+                                                                                                     relationshipGUID,
+                                                                                                     methodName),
+                                                    this.getClass().getName(),
+                                                    methodName);
         }
     }
 
@@ -5340,19 +5281,13 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             return entity;
         }
 
-        OMRSErrorCode errorCode = OMRSErrorCode.NOT_FOR_LOCAL_COLLECTION;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID,
-                                                                                                        typeDefName,
-                                                                                                        typeDefGUID,
-                                                                                                        newHomeMetadataCollectionId,
-                                                                                                        metadataCollectionId);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+       throw new InvalidParameterException(OMRSErrorCode.NOT_FOR_LOCAL_COLLECTION.getMessageDefinition(entityGUID,
+                                                                                                       typeDefName,
+                                                                                                       typeDefGUID,
+                                                                                                       newHomeMetadataCollectionId,
+                                                                                                       metadataCollectionId),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             newHomeParameterName);
     }
 
@@ -5658,19 +5593,13 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             return relationship;
         }
 
-        OMRSErrorCode errorCode = OMRSErrorCode.NOT_FOR_LOCAL_COLLECTION;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationshipGUID,
+        throw new InvalidParameterException(OMRSErrorCode.NOT_FOR_LOCAL_COLLECTION.getMessageDefinition(relationshipGUID,
                                                                                                         typeDefName,
                                                                                                         typeDefGUID,
                                                                                                         newHomeMetadataCollectionId,
-                                                                                                        metadataCollectionId);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                                                                        metadataCollectionId),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             newHomeParameterName);
     }
 
@@ -5937,18 +5866,12 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             if (metadataCollectionId.equals(entity.getMetadataCollectionId()))
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.HOME_REFRESH;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                         entityGUID,
-                                                                                                         metadataCollectionId,
-                                                                                                         repositoryName);
-
-                throw new HomeEntityException(errorCode.getHTTPErrorCode(),
+                throw new HomeEntityException(OMRSErrorCode.HOME_REFRESH.getMessageDefinition(methodName,
+                                                                                              entityGUID,
+                                                                                              metadataCollectionId,
+                                                                                              repositoryName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
             }
         }
 
@@ -6228,18 +6151,12 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             if (metadataCollectionId.equals(relationship.getMetadataCollectionId()))
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.HOME_REFRESH;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                         relationshipGUID,
-                                                                                                         metadataCollectionId,
-                                                                                                         repositoryName);
-
-                throw new HomeRelationshipException(errorCode.getHTTPErrorCode(),
+                throw new HomeRelationshipException(OMRSErrorCode.HOME_REFRESH.getMessageDefinition(methodName,
+                                                                                                    relationshipGUID,
+                                                                                                    metadataCollectionId,
+                                                                                                    repositoryName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
             }
         }
 

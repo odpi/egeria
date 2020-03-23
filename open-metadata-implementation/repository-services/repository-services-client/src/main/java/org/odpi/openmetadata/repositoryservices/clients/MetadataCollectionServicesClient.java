@@ -5,6 +5,8 @@ package org.odpi.openmetadata.repositoryservices.clients;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -32,7 +34,7 @@ import java.util.Map;
  *     <li><i>operationSpecificURL</i> - operation specific part of the URL</li>
  * </ul>
  */
-abstract class MetadataCollectionServicesClient
+public abstract class MetadataCollectionServicesClient implements AuditLoggingComponent
 {
     static final private String rootServiceNameInURL  = "/open-metadata/repository-services";
     static final private String userIdInURL           = "/users/{0}";
@@ -46,6 +48,8 @@ abstract class MetadataCollectionServicesClient
     private String              repositoryName;             /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+
+    protected AuditLog          auditLog = null;
 
 
     /**
@@ -73,11 +77,14 @@ abstract class MetadataCollectionServicesClient
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),
                                                 error.getReportingActionDescription(),
-                                                error.getErrorMessage(),
+                                                error.getReportedErrorMessage(),
+                                                error.getReportedErrorMessageId(),
+                                                error.getReportedErrorMessageParameters(),
                                                 error.getReportedSystemAction(),
                                                 error.getReportedUserAction(),
+                                                error.getClass().getName(),
                                                 error.getParameterName(),
-                                                error.getReportedCaughtException());
+                                                error.getRelatedProperties());
         }
 
         this.repositoryName = repositoryName;
@@ -118,17 +125,32 @@ abstract class MetadataCollectionServicesClient
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),
                                                 error.getReportingActionDescription(),
-                                                error.getErrorMessage(),
+                                                error.getReportedErrorMessage(),
+                                                error.getReportedErrorMessageId(),
+                                                error.getReportedErrorMessageParameters(),
                                                 error.getReportedSystemAction(),
                                                 error.getReportedUserAction(),
+                                                error.getClass().getName(),
                                                 error.getParameterName(),
-                                                error.getReportedCaughtException());
+                                                error.getRelatedProperties());
         }
 
         this.repositoryName = repositoryName;
         this.restURLRoot = restURLRoot;
         this.serviceURLMarker = serviceURLMarker;
         this.restClient = this.getRESTClientConnector(repositoryName, restURLRoot, userId, password);
+    }
+
+
+    /**
+     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
+     * with the correct component description and log destinations.
+     *
+     * @param auditLog audit log object
+     */
+    public void setAuditLog(AuditLog auditLog)
+    {
+        this.auditLog = auditLog;
     }
 
 
@@ -160,18 +182,12 @@ abstract class MetadataCollectionServicesClient
         }
         catch (Throwable error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.REMOTE_REPOSITORY_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     repositoryName,
-                                                                                                     error.getClass().getSimpleName(),
-                                                                                                     error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+           throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
+                                                                                                          repositoryName,
+                                                                                                          error.getClass().getSimpleName(),
+                                                                                                          error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
         }
 
@@ -206,18 +222,12 @@ abstract class MetadataCollectionServicesClient
         }
         catch (Throwable error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.REMOTE_REPOSITORY_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     repositoryName,
-                                                                                                     error.getClass().getSimpleName(),
-                                                                                                     error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
+                                                                                                          repositoryName,
+                                                                                                          error.getClass().getSimpleName(),
+                                                                                                          error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
         }
 
@@ -4304,19 +4314,11 @@ abstract class MetadataCollectionServicesClient
         }
         catch (Throwable error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_REST_CLIENT;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
-
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                "client",
-                                                error);
+           throw new InvalidParameterException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(serverName, error.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               error,
+                                               "client");
         }
     }
 
@@ -4763,17 +4765,11 @@ abstract class MetadataCollectionServicesClient
         }
         catch (Throwable error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     repositoryName,
-                                                                                                     error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                                             repositoryName,
+                                                                                                             error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
         }
     }
@@ -4806,17 +4802,11 @@ abstract class MetadataCollectionServicesClient
         }
         catch (Throwable error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     repositoryName,
-                                                                                                     error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                                             repositoryName,
+                                                                                                             error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
         }
     }
@@ -4888,8 +4878,12 @@ abstract class MetadataCollectionServicesClient
                                                    this.getClass().getName(),
                                                    methodName,
                                                    restResult.getExceptionErrorMessage(),
+                                                   restResult.getExceptionErrorMessageId(),
+                                                   restResult.getExceptionErrorMessageParameters(),
                                                    restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction());
+                                                   restResult.getExceptionUserAction(),
+                                                   restResult.getExceptionCausedBy(),
+                                                   restResult.getExceptionProperties());
         }
     }
 
@@ -4912,8 +4906,12 @@ abstract class MetadataCollectionServicesClient
                                               this.getClass().getName(),
                                               methodName,
                                               restResult.getExceptionErrorMessage(),
+                                              restResult.getExceptionErrorMessageId(),
+                                              restResult.getExceptionErrorMessageParameters(),
                                               restResult.getExceptionSystemAction(),
-                                              restResult.getExceptionUserAction());
+                                              restResult.getExceptionUserAction(),
+                                              restResult.getExceptionCausedBy(),
+                                              restResult.getExceptionProperties());
         }
     }
 
@@ -4936,8 +4934,12 @@ abstract class MetadataCollectionServicesClient
                                                 this.getClass().getName(),
                                                 methodName,
                                                 restResult.getExceptionErrorMessage(),
+                                                restResult.getExceptionErrorMessageId(),
+                                                restResult.getExceptionErrorMessageParameters(),
                                                 restResult.getExceptionSystemAction(),
-                                                restResult.getExceptionUserAction());
+                                                restResult.getExceptionUserAction(),
+                                                restResult.getExceptionCausedBy(),
+                                                restResult.getExceptionProperties());
         }
     }
 
@@ -4960,8 +4962,12 @@ abstract class MetadataCollectionServicesClient
                                               this.getClass().getName(),
                                               methodName,
                                               restResult.getExceptionErrorMessage(),
+                                              restResult.getExceptionErrorMessageId(),
+                                              restResult.getExceptionErrorMessageParameters(),
                                               restResult.getExceptionSystemAction(),
-                                              restResult.getExceptionUserAction());
+                                              restResult.getExceptionUserAction(),
+                                              restResult.getExceptionCausedBy(),
+                                              restResult.getExceptionProperties());
         }
     }
 
@@ -4984,8 +4990,12 @@ abstract class MetadataCollectionServicesClient
                                                this.getClass().getName(),
                                                methodName,
                                                restResult.getExceptionErrorMessage(),
+                                               restResult.getExceptionErrorMessageId(),
+                                               restResult.getExceptionErrorMessageParameters(),
                                                restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction());
+                                               restResult.getExceptionUserAction(),
+                                               restResult.getExceptionCausedBy(),
+                                               restResult.getExceptionProperties());
         }
     }
 
@@ -5008,8 +5018,12 @@ abstract class MetadataCollectionServicesClient
                                                     this.getClass().getName(),
                                                     methodName,
                                                     restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionErrorMessageId(),
+                                                    restResult.getExceptionErrorMessageParameters(),
                                                     restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction());
+                                                    restResult.getExceptionUserAction(),
+                                                    restResult.getExceptionCausedBy(),
+                                                    restResult.getExceptionProperties());
         }
     }
 
@@ -5033,8 +5047,12 @@ abstract class MetadataCollectionServicesClient
                                           this.getClass().getName(),
                                           methodName,
                                           restResult.getExceptionErrorMessage(),
+                                          restResult.getExceptionErrorMessageId(),
+                                          restResult.getExceptionErrorMessageParameters(),
                                           restResult.getExceptionSystemAction(),
-                                          restResult.getExceptionUserAction());
+                                          restResult.getExceptionUserAction(),
+                                          restResult.getExceptionCausedBy(),
+                                          restResult.getExceptionProperties());
         }
     }
 
@@ -5057,8 +5075,12 @@ abstract class MetadataCollectionServicesClient
                                                 this.getClass().getName(),
                                                 methodName,
                                                 restResult.getExceptionErrorMessage(),
+                                                restResult.getExceptionErrorMessageId(),
+                                                restResult.getExceptionErrorMessageParameters(),
                                                 restResult.getExceptionSystemAction(),
-                                                restResult.getExceptionUserAction());
+                                                restResult.getExceptionUserAction(),
+                                                restResult.getExceptionCausedBy(),
+                                                restResult.getExceptionProperties());
         }
     }
 
@@ -5081,8 +5103,12 @@ abstract class MetadataCollectionServicesClient
                                              this.getClass().getName(),
                                              methodName,
                                              restResult.getExceptionErrorMessage(),
+                                             restResult.getExceptionErrorMessageId(),
+                                             restResult.getExceptionErrorMessageParameters(),
                                              restResult.getExceptionSystemAction(),
-                                             restResult.getExceptionUserAction());
+                                             restResult.getExceptionUserAction(),
+                                             restResult.getExceptionCausedBy(),
+                                             restResult.getExceptionProperties());
         }
     }
 
@@ -5128,11 +5154,15 @@ abstract class MetadataCollectionServicesClient
                  * a RepositoryErrorException as if the whole platform is missing.
                  */
                 throw new RepositoryErrorException(restResult.getRelatedHTTPCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    restResult.getExceptionErrorMessage(),
-                                                    restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction());
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   restResult.getExceptionErrorMessage(),
+                                                   restResult.getExceptionErrorMessageId(),
+                                                   restResult.getExceptionErrorMessageParameters(),
+                                                   restResult.getExceptionSystemAction(),
+                                                   restResult.getExceptionUserAction(),
+                                                   restResult.getExceptionCausedBy(),
+                                                   restResult.getExceptionProperties());
             }
             else
             {
@@ -5140,9 +5170,13 @@ abstract class MetadataCollectionServicesClient
                                                     this.getClass().getName(),
                                                     methodName,
                                                     restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionErrorMessageId(),
+                                                    restResult.getExceptionErrorMessageParameters(),
                                                     restResult.getExceptionSystemAction(),
                                                     restResult.getExceptionUserAction(),
-                                                    parameterName);
+                                                    restResult.getExceptionCausedBy(),
+                                                    parameterName,
+                                                    restResult.getExceptionProperties());
             }
         }
     }
@@ -5166,8 +5200,12 @@ abstract class MetadataCollectionServicesClient
                                                    this.getClass().getName(),
                                                    methodName,
                                                    restResult.getExceptionErrorMessage(),
+                                                   restResult.getExceptionErrorMessageId(),
+                                                   restResult.getExceptionErrorMessageParameters(),
                                                    restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction());
+                                                   restResult.getExceptionUserAction(),
+                                                   restResult.getExceptionCausedBy(),
+                                                   restResult.getExceptionProperties());
         }
     }
 
@@ -5190,8 +5228,12 @@ abstract class MetadataCollectionServicesClient
                                               this.getClass().getName(),
                                               methodName,
                                               restResult.getExceptionErrorMessage(),
+                                              restResult.getExceptionErrorMessageId(),
+                                              restResult.getExceptionErrorMessageParameters(),
                                               restResult.getExceptionSystemAction(),
-                                              restResult.getExceptionUserAction());
+                                              restResult.getExceptionUserAction(),
+                                              restResult.getExceptionCausedBy(),
+                                              restResult.getExceptionProperties());
         }
     }
 
@@ -5214,8 +5256,12 @@ abstract class MetadataCollectionServicesClient
                                            this.getClass().getName(),
                                            methodName,
                                            restResult.getExceptionErrorMessage(),
+                                           restResult.getExceptionErrorMessageId(),
+                                           restResult.getExceptionErrorMessageParameters(),
                                            restResult.getExceptionSystemAction(),
-                                           restResult.getExceptionUserAction());
+                                           restResult.getExceptionUserAction(),
+                                           restResult.getExceptionCausedBy(),
+                                           restResult.getExceptionProperties());
         }
     }
 
@@ -5238,8 +5284,12 @@ abstract class MetadataCollectionServicesClient
                                           this.getClass().getName(),
                                           methodName,
                                           restResult.getExceptionErrorMessage(),
+                                          restResult.getExceptionErrorMessageId(),
+                                          restResult.getExceptionErrorMessageParameters(),
                                           restResult.getExceptionSystemAction(),
-                                          restResult.getExceptionUserAction());
+                                          restResult.getExceptionUserAction(),
+                                          restResult.getExceptionCausedBy(),
+                                          restResult.getExceptionProperties());
         }
     }
 
@@ -5262,8 +5312,12 @@ abstract class MetadataCollectionServicesClient
                                              this.getClass().getName(),
                                              methodName,
                                              restResult.getExceptionErrorMessage(),
+                                             restResult.getExceptionErrorMessageId(),
+                                             restResult.getExceptionErrorMessageParameters(),
                                              restResult.getExceptionSystemAction(),
-                                             restResult.getExceptionUserAction());
+                                             restResult.getExceptionUserAction(),
+                                             restResult.getExceptionCausedBy(),
+                                             restResult.getExceptionProperties());
         }
     }
 
@@ -5286,8 +5340,12 @@ abstract class MetadataCollectionServicesClient
                                                     this.getClass().getName(),
                                                     methodName,
                                                     restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionErrorMessageId(),
+                                                    restResult.getExceptionErrorMessageParameters(),
                                                     restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction());
+                                                    restResult.getExceptionUserAction(),
+                                                    restResult.getExceptionCausedBy(),
+                                                    restResult.getExceptionProperties());
         }
     }
 
@@ -5310,8 +5368,12 @@ abstract class MetadataCollectionServicesClient
                                                       this.getClass().getName(),
                                                       methodName,
                                                       restResult.getExceptionErrorMessage(),
+                                                      restResult.getExceptionErrorMessageId(),
+                                                      restResult.getExceptionErrorMessageParameters(),
                                                       restResult.getExceptionSystemAction(),
-                                                      restResult.getExceptionUserAction());
+                                                      restResult.getExceptionUserAction(),
+                                                      restResult.getExceptionCausedBy(),
+                                                      restResult.getExceptionProperties());
         }
     }
 
@@ -5334,8 +5396,12 @@ abstract class MetadataCollectionServicesClient
                                                     this.getClass().getName(),
                                                     methodName,
                                                     restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionErrorMessageId(),
+                                                    restResult.getExceptionErrorMessageParameters(),
                                                     restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction());
+                                                    restResult.getExceptionUserAction(),
+                                                    restResult.getExceptionCausedBy(),
+                                                    restResult.getExceptionProperties());
         }
     }
 
@@ -5358,8 +5424,12 @@ abstract class MetadataCollectionServicesClient
                                                   this.getClass().getName(),
                                                   methodName,
                                                   restResult.getExceptionErrorMessage(),
+                                                  restResult.getExceptionErrorMessageId(),
+                                                  restResult.getExceptionErrorMessageParameters(),
                                                   restResult.getExceptionSystemAction(),
-                                                  restResult.getExceptionUserAction());
+                                                  restResult.getExceptionUserAction(),
+                                                  restResult.getExceptionCausedBy(),
+                                                  restResult.getExceptionProperties());
         }
     }
 
@@ -5382,8 +5452,12 @@ abstract class MetadataCollectionServicesClient
                                                this.getClass().getName(),
                                                methodName,
                                                restResult.getExceptionErrorMessage(),
+                                               restResult.getExceptionErrorMessageId(),
+                                               restResult.getExceptionErrorMessageParameters(),
                                                restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction());
+                                               restResult.getExceptionUserAction(),
+                                               restResult.getExceptionCausedBy(),
+                                               restResult.getExceptionProperties());
         }
     }
 
@@ -5406,8 +5480,12 @@ abstract class MetadataCollectionServicesClient
                                             this.getClass().getName(),
                                             methodName,
                                             restResult.getExceptionErrorMessage(),
+                                            restResult.getExceptionErrorMessageId(),
+                                            restResult.getExceptionErrorMessageParameters(),
                                             restResult.getExceptionSystemAction(),
-                                            restResult.getExceptionUserAction());
+                                            restResult.getExceptionUserAction(),
+                                            restResult.getExceptionCausedBy(),
+                                            restResult.getExceptionProperties());
         }
     }
 
@@ -5430,8 +5508,12 @@ abstract class MetadataCollectionServicesClient
                                             this.getClass().getName(),
                                             methodName,
                                             restResult.getExceptionErrorMessage(),
+                                            restResult.getExceptionErrorMessageId(),
+                                            restResult.getExceptionErrorMessageParameters(),
                                             restResult.getExceptionSystemAction(),
-                                            restResult.getExceptionUserAction());
+                                            restResult.getExceptionUserAction(),
+                                            restResult.getExceptionCausedBy(),
+                                            restResult.getExceptionProperties());
         }
     }
 
@@ -5454,8 +5536,12 @@ abstract class MetadataCollectionServicesClient
                                                this.getClass().getName(),
                                                methodName,
                                                restResult.getExceptionErrorMessage(),
+                                               restResult.getExceptionErrorMessageId(),
+                                               restResult.getExceptionErrorMessageParameters(),
                                                restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction());
+                                               restResult.getExceptionUserAction(),
+                                               restResult.getExceptionCausedBy(),
+                                               restResult.getExceptionProperties());
         }
     }
 
@@ -5478,8 +5564,12 @@ abstract class MetadataCollectionServicesClient
                                                    this.getClass().getName(),
                                                    methodName,
                                                    restResult.getExceptionErrorMessage(),
+                                                   restResult.getExceptionErrorMessageId(),
+                                                   restResult.getExceptionErrorMessageParameters(),
                                                    restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction());
+                                                   restResult.getExceptionUserAction(),
+                                                   restResult.getExceptionCausedBy(),
+                                                   restResult.getExceptionProperties());
         }
     }
 
@@ -5502,8 +5592,12 @@ abstract class MetadataCollectionServicesClient
                                          this.getClass().getName(),
                                          methodName,
                                          restResult.getExceptionErrorMessage(),
+                                         restResult.getExceptionErrorMessageId(),
+                                         restResult.getExceptionErrorMessageParameters(),
                                          restResult.getExceptionSystemAction(),
-                                         restResult.getExceptionUserAction());
+                                         restResult.getExceptionUserAction(),
+                                         restResult.getExceptionCausedBy(),
+                                         restResult.getExceptionProperties());
         }
     }
 
@@ -5522,12 +5616,23 @@ abstract class MetadataCollectionServicesClient
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
+            String userId = null;
+
+            if (restResult.getExceptionProperties() != null)
+            {
+                userId = (String)restResult.getExceptionProperties().get("userId");
+            }
             throw new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  restResult.getExceptionErrorMessage(),
+                                                 restResult.getExceptionErrorMessageId(),
+                                                 restResult.getExceptionErrorMessageParameters(),
                                                  restResult.getExceptionSystemAction(),
-                                                 restResult.getExceptionUserAction());
+                                                 restResult.getExceptionUserAction(),
+                                                 restResult.getExceptionCausedBy(),
+                                                 userId,
+                                                 restResult.getExceptionProperties());
         }
     }
 
@@ -5545,16 +5650,9 @@ abstract class MetadataCollectionServicesClient
     {
         if (restResult == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_RESPONSE_FROM_API;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(methodName, repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NULL_RESPONSE_FROM_API.getMessageDefinition(methodName, repositoryName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
         else if (restResult.getExceptionClassName() != null)
         {
@@ -5565,8 +5663,12 @@ abstract class MetadataCollectionServicesClient
                                                this.getClass().getName(),
                                                methodName,
                                                restResult.getExceptionErrorMessage(),
+                                               restResult.getExceptionErrorMessageId(),
+                                               restResult.getExceptionErrorMessageParameters(),
                                                restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction());
+                                               restResult.getExceptionUserAction(),
+                                               restResult.getExceptionCausedBy(),
+                                               restResult.getExceptionProperties());
         }
     }
 }

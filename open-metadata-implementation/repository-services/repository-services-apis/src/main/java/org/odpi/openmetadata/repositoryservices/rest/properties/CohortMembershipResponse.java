@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
 import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -85,8 +86,12 @@ public class CohortMembershipResponse extends OMRSAPIResponse
         return "CohortMembershipResponse{" +
                 "cohorts=" + cohortMember +
                 ", relatedHTTPCode=" + relatedHTTPCode +
+                ", actionDescription='" + actionDescription + '\'' +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
+                ", exceptionCausedBy='" + exceptionCausedBy + '\'' +
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
+                ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
                 ", exceptionProperties=" + exceptionProperties +

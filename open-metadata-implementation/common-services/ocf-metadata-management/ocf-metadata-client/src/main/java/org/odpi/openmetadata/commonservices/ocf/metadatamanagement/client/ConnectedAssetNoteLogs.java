@@ -147,9 +147,9 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
                                                                              cacheStartPointer,
                                                                              maximumSize);
 
-            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(restResult);
 
             List<NoteLogResponse> noteLogResponses = restResult.getList();
             if ((noteLogResponses == null) || (noteLogResponses.isEmpty()))

@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
@@ -26,9 +29,12 @@ import java.util.UUID;
  * To use the ConnectorProviderBase, create a new class that extends the ConnectorProviderBase class
  * and in the constructor call super.setConnectorClassName("your connector's class name");
  */
-public abstract class ConnectorProviderBase extends ConnectorProvider
+public abstract class ConnectorProviderBase extends ConnectorProvider implements AuditLoggingComponent
 {
-    private   String        connectorClassName = null;
+    private String               connectorClassName            = null;
+    private ComponentDescription connectorComponentDescription = null;
+
+    protected AuditLog      auditLog  = null;
     protected ConnectorType connectorTypeBean  = null;
 
     private final int     hashCode = UUID.randomUUID().hashCode();
@@ -83,6 +89,31 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
         log.debug("Connector class name set: " + newConnectorClassName);
 
         connectorClassName = newConnectorClassName;
+    }
+
+
+    /**
+     * Update the component name to use in the creation of the connector's audit log.
+     *
+     * @param connectorComponentDescription   component description.
+     */
+    protected  void setConnectorComponentDescription(ComponentDescription   connectorComponentDescription)
+    {
+        log.debug("Connector audit logging component description: " + connectorComponentDescription.toString());
+
+        this.connectorComponentDescription = connectorComponentDescription;
+    }
+
+
+    /**
+     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
+     * with the correct component description and log destinations.
+     *
+     * @param auditLog audit log object
+     */
+    public void setAuditLog(AuditLog auditLog)
+    {
+        this.auditLog = auditLog;
     }
 
 
@@ -174,15 +205,9 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
             /*
              * It is not possible to create a connector without a connection.
              */
-            OCFErrorCode errorCode    = OCFErrorCode.NULL_CONNECTION;
-            String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.NULL_CONNECTION.getMessageDefinition(),
                                                  this.getClass().getName(),
-                                                 methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction());
+                                                 methodName);
         }
 
 
@@ -195,15 +220,9 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
              * This instance of the connector provider is not initialised with the connector's class name so
              * throw an exception because a connector can not be generated.
              */
-            OCFErrorCode   errorCode = OCFErrorCode.NULL_CONNECTOR_CLASS;
-            String         errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.NULL_CONNECTOR_CLASS.getMessageDefinition(),
                                                  this.getClass().getName(),
-                                                 methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction());
+                                                 methodName);
         }
 
 
@@ -223,23 +242,34 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
 
             connector = (Connector)potentialConnector;
             connector.initialize(guid, connection);
+
+            if (connector instanceof AuditLoggingComponent)
+            {
+                if (auditLog != null)
+                {
+                    if (connectorComponentDescription == null)
+                    {
+                        ((AuditLoggingComponent) connector).setAuditLog(auditLog);
+                    }
+                    else
+                    {
+                        ((AuditLoggingComponent) connector).setAuditLog(auditLog.createNewAuditLog(connectorComponentDescription.getComponentId(),
+                                                                                                   connectorComponentDescription.getComponentName() + ":" + guid,
+                                                                                                   connectorComponentDescription.getComponentType(),
+                                                                                                   connectorComponentDescription.getComponentWikiURL()));
+                    }
+                }
+            }
         }
         catch (ClassNotFoundException classException)
         {
             /*
              * Wrap exception in the ConnectionCheckedException with a suitable message
              */
-            OCFErrorCode  errorCode = OCFErrorCode.UNKNOWN_CONNECTOR;
-            String        connectionName = connection.getConnectionName();
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectorClassName, connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.UNKNOWN_CONNECTOR.getMessageDefinition(connectorClassName,
+                                                                                                     connection.getConnectionName()),
                                                  this.getClass().getName(),
                                                  methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
                                                  classException);
         }
         catch (ClassCastException  castException)
@@ -247,17 +277,10 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
             /*
              * Wrap class cast exception in a connection exception with error message to say that
              */
-            OCFErrorCode  errorCode = OCFErrorCode.NOT_CONNECTOR;
-            String        connectionName = connection.getConnectionName();
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectorClassName, connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.NOT_CONNECTOR.getMessageDefinition(connectorClassName,
+                                                                                                 connection.getConnectionName()),
                                                  this.getClass().getName(),
                                                  methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
                                                  castException);
         }
         catch (Throwable unexpectedSomething)
@@ -266,17 +289,10 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
              * Wrap throwable in a connection exception with error message to say that there was a problem with
              * the connector implementation.
              */
-            OCFErrorCode     errorCode = OCFErrorCode.INVALID_CONNECTOR;
-            String           connectionName = connection.getConnectionName();
-            String           errorMessage = errorCode.getErrorMessageId()
-                                          + errorCode.getFormattedErrorMessage(connectorClassName, connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectionCheckedException(OCFErrorCode.INVALID_CONNECTOR.getMessageDefinition(connectorClassName,
+                                                                                                     connection.getConnectionName()),
                                                  this.getClass().getName(),
                                                  methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
                                                  unexpectedSomething);
         }
 

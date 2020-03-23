@@ -114,9 +114,8 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
         List<String> supportedTypesForSearch = null;
         if (accessServiceConfigurationProperties.getAccessServiceOptions() != null) {
             Object supportedTypesProperty = accessServiceConfigurationProperties.getAccessServiceOptions().get(SUPPORTED_TYPES_FOR_SEARCH);
-            if (supportedTypesProperty != null) {
+            if (supportedTypesProperty != null)
                 supportedTypesForSearch = (List<String>) supportedTypesProperty;
-            }
         }
         return supportedTypesForSearch;
     }

@@ -3570,18 +3570,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
         if (newStatus == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_INSTANCE_STATUS;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(statusParameterName,
-                                                                                                     methodName,
-                                                                                                     repositoryName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMRSErrorCode.NULL_INSTANCE_STATUS.getMessageDefinition(statusParameterName,
+                                                                                                        methodName,
+                                                                                                        repositoryName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                statusParameterName);
         }
     }
 
@@ -6033,33 +6027,19 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         }
         catch (TypeErrorException error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     this.getClass().getName(),
-                                                                                                     repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.TYPEDEF_NOT_KNOWN.getMessageDefinition(methodName,
+                                                                                                    this.getClass().getName(),
+                                                                                                    repositoryName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
         catch (Throwable  error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.UNEXPECTED_EXCEPTION;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(this.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       repositoryName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
 
         return typeDef;
@@ -6096,18 +6076,11 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      */
     protected void reportUnsupportedOptionalFunction(String methodName) throws FunctionNotSupportedException
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 this.getClass().getName(),
-                                                                                                 repositoryName);
-
-        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+        throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                          this.getClass().getName(),
+                                                                                                          repositoryName),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
     }
 
 
@@ -6120,18 +6093,11 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      */
     private void reportUnsupportedMandatoryFunction(String methodName) throws RepositoryErrorException
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 this.getClass().getName(),
-                                                                                                 repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+        throw new RepositoryErrorException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                     this.getClass().getName(),
+                                                                                                     repositoryName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
     }
 
 
@@ -6147,20 +6113,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                          String guidParameterName,
                                          String methodName) throws TypeDefNotKnownException
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
-
-        String errorMessage = errorCode.getErrorMessageId()
-                            + errorCode.getFormattedErrorMessage(guid,
-                                                                 guidParameterName,
-                                                                 methodName,
-                                                                 repositoryName);
-
-        throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
+        throw new TypeDefNotKnownException(OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN.getMessageDefinition(guid,
+                                                                                                   guidParameterName,
+                                                                                                   methodName,
+                                                                                                   repositoryName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
     }
 
 
@@ -6174,18 +6132,11 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     protected void reportUnknownTypeName(String name,
                                          String methodName) throws TypeDefNotKnownException
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(name,
-                                                                                                 methodName,
-                                                                                                 repositoryName);
-
-        throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
+        throw new TypeDefNotKnownException(OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN.getMessageDefinition(name,
+                                                                                                     methodName,
+                                                                                                     repositoryName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
     }
 
 
@@ -6200,17 +6151,11 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     protected void reportEntityNotKnown(String    entityGUID,
                                         String    methodName) throws EntityNotKnownException
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID,
-                                                                                                        methodName,
-                                                                                                        repositoryName);
-
-        throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+        throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID,
+                                                                                              methodName,
+                                                                                              repositoryName),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          methodName);
     }
 
 
@@ -6225,17 +6170,11 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     protected void reportRelationshipNotKnown(String    relationshipGUID,
                                               String    methodName) throws RelationshipNotKnownException
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.RELATIONSHIP_NOT_KNOWN;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationshipGUID,
-                                                                                                        methodName,
-                                                                                                        repositoryName);
-
-        throw new RelationshipNotKnownException(errorCode.getHTTPErrorCode(),
+        throw new RelationshipNotKnownException(OMRSErrorCode.RELATIONSHIP_NOT_KNOWN.getMessageDefinition(relationshipGUID,
+                                                                                                          methodName,
+                                                                                                          repositoryName),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
     }
 
 
@@ -6250,16 +6189,10 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     protected void reportTypeDefNotSupported(String    typeName,
                                              String    methodName) throws TypeDefNotSupportedException
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.TYPE_NOT_IMPLEMENTED;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(repositoryName,
-                                                                                                        typeName);
-
-        throw new TypeDefNotSupportedException(errorCode.getHTTPErrorCode(),
+        throw new TypeDefNotSupportedException(OMRSErrorCode.TYPE_NOT_IMPLEMENTED.getMessageDefinition(repositoryName,
+                                                                                                       typeName),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
     }
 
 
@@ -6275,17 +6208,11 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                String typeName,
                                                String methodName) throws TypeDefKnownException
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ALREADY_DEFINED;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(typeName,
-                                                                                                 typeGUID,
-                                                                                                 repositoryName);
-
-        throw new TypeDefKnownException(errorCode.getHTTPErrorCode(),
+        throw new TypeDefKnownException(OMRSErrorCode.TYPEDEF_ALREADY_DEFINED.getMessageDefinition(typeName,
+                                                                                                   typeGUID,
+                                                                                                   repositoryName),
                                         this.getClass().getName(),
-                                        methodName,
-                                        errorMessage,
-                                        errorCode.getSystemAction(),
-                                        errorCode.getUserAction());
+                                        methodName);
     }
 
 
@@ -6301,16 +6228,11 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                          String typeName,
                                          String methodName) throws TypeDefConflictException
     {
-        OMRSErrorCode errorCode    = OMRSErrorCode.VERIFY_CONFLICT_DETECTED;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(typeGUID, typeName,
-                                                                                                        repositoryName);
-
-        throw new TypeDefConflictException(errorCode.getHTTPErrorCode(),
+        throw new TypeDefConflictException(OMRSErrorCode.VERIFY_CONFLICT_DETECTED.getMessageDefinition(typeGUID,
+                                                                                                       typeName,
+                                                                                                       repositoryName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
     }
 
 
@@ -6326,17 +6248,11 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                       String typeName,
                                       String methodName) throws TypeDefInUseException
     {
-        OMRSErrorCode errorCode    = OMRSErrorCode.TYPEDEF_IN_USE;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(typeName,
-                                                                                                        typeGUID,
-                                                                                                        repositoryName);
-
-        throw new TypeDefInUseException(errorCode.getHTTPErrorCode(),
+        throw new TypeDefInUseException(OMRSErrorCode.TYPEDEF_IN_USE.getMessageDefinition(typeName,
+                                                                                          typeGUID,
+                                                                                          repositoryName),
                                         this.getClass().getName(),
-                                        methodName,
-                                        errorMessage,
-                                        errorCode.getSystemAction(),
-                                        errorCode.getUserAction());
+                                        methodName);
     }
 
 
@@ -6352,17 +6268,11 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                          String guidParameterName,
                                          String methodName) throws EntityProxyOnlyException
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_PROXY_ONLY;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
-                                                                                                        repositoryName,
-                                                                                                        guidParameterName,
-                                                                                                        methodName);
-
-        throw new EntityProxyOnlyException(errorCode.getHTTPErrorCode(),
+        throw new EntityProxyOnlyException(OMRSErrorCode.ENTITY_PROXY_ONLY.getMessageDefinition(guid,
+                                                                                                repositoryName,
+                                                                                                guidParameterName,
+                                                                                                methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
     }
 }

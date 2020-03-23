@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassification;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernanceClassification;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAsset;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerSecurityServicePolicies;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerServiceResource;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerTag;

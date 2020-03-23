@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.governanceservers.discoveryengineservices.client;
 
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -12,8 +13,26 @@ import org.odpi.openmetadata.governanceservers.discoveryengineservices.rest.Disc
 /**
  * DiscoveryEngineServicesRESTClient is responsible for issuing the REST API calls
  */
-public class DiscoveryEngineServicesRESTClient extends ODFRESTClient
+class DiscoveryEngineServicesRESTClient extends ODFRESTClient
 {
+    /**
+     * Constructor for no authentication with audit log.
+     *
+     * @param serverName name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @param auditLog destination for log messages.
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    DiscoveryEngineServicesRESTClient(String    serverName,
+                                      String    serverPlatformURLRoot,
+                                      AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, auditLog);
+    }
+
+
     /**
      * Constructor for no authentication.
      *
@@ -22,10 +41,31 @@ public class DiscoveryEngineServicesRESTClient extends ODFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DiscoveryEngineServicesRESTClient(String serverName,
-                                             String serverPlatformURLRoot) throws InvalidParameterException
+    DiscoveryEngineServicesRESTClient(String serverName,
+                                      String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
+    }
+
+
+    /**
+     * Constructor for simple userId and password authentication with audit log.
+     *
+     * @param serverName name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @param userId user id for the HTTP request
+     * @param password password for the HTTP request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    DiscoveryEngineServicesRESTClient(String   serverName,
+                                      String   serverPlatformURLRoot,
+                                      String   userId,
+                                      String   password,
+                                      AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -39,10 +79,10 @@ public class DiscoveryEngineServicesRESTClient extends ODFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DiscoveryEngineServicesRESTClient(String serverName,
-                                             String serverPlatformURLRoot,
-                                             String userId,
-                                             String password) throws InvalidParameterException
+    DiscoveryEngineServicesRESTClient(String serverName,
+                                      String serverPlatformURLRoot,
+                                      String userId,
+                                      String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -60,11 +100,11 @@ public class DiscoveryEngineServicesRESTClient extends ODFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public DiscoveryEngineStatusResponse callDiscoveryEngineStatusGetRESTCall(String    methodName,
-                                                                              String    urlTemplate,
-                                                                              Object... params) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+    DiscoveryEngineStatusResponse callDiscoveryEngineStatusGetRESTCall(String    methodName,
+                                                                       String    urlTemplate,
+                                                                       Object... params) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         DiscoveryEngineStatusResponse restResult = this.callGetRESTCall(methodName,
                                                                         DiscoveryEngineStatusResponse.class,
@@ -75,5 +115,4 @@ public class DiscoveryEngineServicesRESTClient extends ODFRESTClient
 
         return restResult;
     }
-
 }

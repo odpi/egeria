@@ -2,27 +2,22 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server.admin;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.auditlog.GovernanceEngineAuditCode;
-import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineServicesInstance;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.server.listeners.GovernanceEngineOMRSTopicListener;
-import org.odpi.openmetadata.accessservices.governanceengine.server.processor.GovernanceEngineEventProcessor;
-import org.odpi.openmetadata.accessservices.governanceengine.server.publisher.GovernanceEnginePublisher;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 
-public class GovernanceEngineAdmin extends AccessServiceAdmin
-{
+import java.util.List;
 
-    private OMRSAuditLog auditLog;
+public class GovernanceEngineAdmin extends AccessServiceAdmin {
+
+    private AuditLog auditLog;
     private GovernanceEngineServicesInstance instance;
     private String serverName;
 
@@ -35,151 +30,83 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
      * @param auditLog                             - audit log component for logging messages.
      * @param serverUserName                       - user id to use on OMRS calls where there is no end user.
      */
-    public synchronized void initialize(AccessServiceConfig accessServiceConfigurationProperties,
-                                        OMRSTopicConnector enterpriseOMRSTopicConnector,
-                                        OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
-                                        OMRSAuditLog auditLog,
-                                        String serverUserName) {
+    public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
+                           OMRSTopicConnector enterpriseOMRSTopicConnector,
+                           OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
+                           AuditLog auditLog,
+                           String serverUserName) throws OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
 
-        GovernanceEngineAuditCode auditCode = GovernanceEngineAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, GovernanceEngineAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
+
+        this.auditLog = auditLog;
 
         try {
-            this.auditLog = auditLog;
-            this.instance = new GovernanceEngineServicesInstance(enterpriseOMRSRepositoryConnector);
+            List<String> supportedZones = this.extractSupportedZones(
+                    accessServiceConfigurationProperties.getAccessServiceOptions(),
+                    accessServiceConfigurationProperties.getAccessServiceName(),
+                    auditLog);
+
+            this.instance = new GovernanceEngineServicesInstance(enterpriseOMRSRepositoryConnector,
+                    supportedZones,
+                    auditLog,
+                    serverUserName,
+                    enterpriseOMRSRepositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
-            OpenMetadataTopicConnector governanceEngineOutputTopic = initializeGovernanceEngineTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-            GovernanceEngineEventProcessor governanceEngineEventProcessor = new GovernanceEngineEventProcessor(enterpriseOMRSRepositoryConnector, governanceEngineOutputTopic);
+            /*
+             * Only set up the listening and event publishing if requested in the config.
+             */
+            OpenMetadataTopicConnector outTopicConnector = null;
 
-            GovernanceEnginePublisher governanceEnginePublisher = new GovernanceEnginePublisher(governanceEngineEventProcessor);
-
-            if (enterpriseOMRSTopicConnector != null) {
-                auditCode = GovernanceEngineAuditCode.SERVICE_REGISTERED_WITH_TOPIC;
-                auditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(serverName),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
-
-                GovernanceEngineOMRSTopicListener omrsTopicListener = new GovernanceEngineOMRSTopicListener(governanceEnginePublisher);
-                enterpriseOMRSTopicConnector.registerListener(omrsTopicListener, accessServiceConfigurationProperties.getAccessServiceName());
+            if (accessServiceConfigurationProperties.getAccessServiceOutTopic() != null) {
+                outTopicConnector = super.getOutTopicEventBusConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic(),
+                        AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                        auditLog);
             }
 
-            auditCode = GovernanceEngineAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(serverName),
-                    accessServiceConfigurationProperties.toString(),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
-        } catch (Exception error) {
-            auditCode = GovernanceEngineAuditCode.SERVICE_INSTANCE_FAILURE;
+
+            if (accessServiceConfigurationProperties.getAccessServiceOutTopic() != null) {
+                GovernanceEngineOMRSTopicListener omrsTopicListener =
+                        new GovernanceEngineOMRSTopicListener(outTopicConnector,
+                                enterpriseOMRSRepositoryConnector.getRepositoryHelper(),
+                                enterpriseOMRSRepositoryConnector.getRepositoryValidator(),
+                                accessServiceConfigurationProperties.getAccessServiceName(),
+                                serverName,
+                                supportedZones,
+                                auditLog);
+                super.registerWithEnterpriseTopic(accessServiceConfigurationProperties.getAccessServiceName(),
+                        serverName,
+                        enterpriseOMRSTopicConnector,
+                        omrsTopicListener,
+                        auditLog);
+            }
+
+            auditLog.logMessage(actionDescription, GovernanceEngineAuditCode.SERVICE_INITIALIZED.getMessageDefinition());
+        } catch (OMAGConfigurationErrorException error) {
+            throw error;
+        } catch (Throwable error) {
             auditLog.logException(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(error.getMessage()),
-                    accessServiceConfigurationProperties.toString(),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
+                    GovernanceEngineAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
+                    error);
+
+            super.throwUnexpectedInitializationException(actionDescription,
+                    AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
                     error);
         }
     }
-
-    /**
-     * Returns the topic created based on connection properties
-     *
-     * @param topicConnection properties of the topic
-     * @return the topic created based on the connection properties
-     */
-    private OpenMetadataTopicConnector initializeGovernanceEngineTopicConnector(Connection topicConnection) {
-        final String actionDescription = "initialize";
-        if (topicConnection != null) {
-            try {
-                return getTopicConnector(topicConnection);
-            } catch (Exception e) {
-                GovernanceEngineAuditCode auditCode = GovernanceEngineAuditCode.ERROR_INITIALIZING_TOPIC_CONNECTION;
-                auditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(topicConnection.toString(), serverName, e.getMessage()),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
-                throw e;
-            }
-
-        }
-        return null;
-    }
-
-    private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection) {
-        try {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
-            Connector connector = connectorBroker.getConnector(topicConnection);
-            OpenMetadataTopicConnector topicConnector = (OpenMetadataTopicConnector) connector;
-
-            topicConnector.setAuditLog(auditLog);
-            topicConnector.start();
-
-            return topicConnector;
-        } catch (Exception error) {
-            String methodName = "getTopicConnector";
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage("getTopicConnector");
-
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-
-        }
-    }
-
 
     /**
      * Shutdown the access service.
      */
     public synchronized void shutdown() {
         final String actionDescription = "shutdown";
-        GovernanceEngineAuditCode auditCode;
-
-        auditCode = GovernanceEngineAuditCode.SERVICE_TERMINATING;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(serverName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, GovernanceEngineAuditCode.SERVICE_TERMINATING.getMessageDefinition());
 
         if (instance != null) {
             this.instance.shutdown();
         }
 
-        auditCode = GovernanceEngineAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(serverName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, GovernanceEngineAuditCode.SERVICE_SHUTDOWN.getMessageDefinition());
     }
 }
-
-

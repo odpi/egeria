@@ -11,7 +11,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.handlers.GovernanceZoneHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 
@@ -40,7 +40,7 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
      * @throws NewInstanceException a problem occurred during initialization
      */
     public GovernanceProgramServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                             OMRSAuditLog            auditLog,
+                                             AuditLog                auditLog,
                                              String                  localServerUserId,
                                              int                     maxPageSize) throws NewInstanceException
     {
@@ -82,15 +82,9 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
         }
         else
         {
-            GovernanceProgramErrorCode errorCode   = GovernanceProgramErrorCode.OMRS_NOT_INITIALIZED;
-            String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            throw new NewInstanceException(GovernanceProgramErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
 
         }
     }
@@ -112,15 +106,9 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
         }
         else
         {
-            GovernanceProgramErrorCode errorCode    = GovernanceProgramErrorCode.OMRS_NOT_AVAILABLE;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+           throw new NewInstanceException(GovernanceProgramErrorCode.OMRS_NOT_AVAILABLE.getMessageDefinition(methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
         }
     }
 

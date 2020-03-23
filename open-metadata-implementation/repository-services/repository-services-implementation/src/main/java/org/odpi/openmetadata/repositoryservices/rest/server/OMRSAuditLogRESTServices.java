@@ -24,9 +24,9 @@ public class OMRSAuditLogRESTServices
     private static final String  serviceName  = CommonServicesDescription.REPOSITORY_SERVICES.getServiceName();
 
     private static final OMRSRepositoryServicesInstanceHandler instanceHandler = new OMRSRepositoryServicesInstanceHandler(serviceName);
-    private static final OMRSRESTExceptionHandler              exceptionHandler = new OMRSRESTExceptionHandler();
+    private static final OMRSRESTExceptionHandler              exceptionHandler = new OMRSRESTExceptionHandler(instanceHandler);
 
-    private static final Logger log = LoggerFactory.getLogger(OMRSMetadataHighwayRESTServices.class);
+    private static final Logger log = LoggerFactory.getLogger(OMRSAuditLogRESTServices.class);
 
     /**
      * Default constructor
@@ -58,7 +58,6 @@ public class OMRSAuditLogRESTServices
              * Validate that the serverName and userId permit the request.
              */
             instanceHandler.getInstance(userId, serverName, methodName);
-
             response.setSeverities(OMRSAuditLogRecordSeverity.getSeverityList());
         }
         catch (InvalidParameterException error)
@@ -75,7 +74,7 @@ public class OMRSAuditLogRESTServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            exceptionHandler.captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -106,11 +105,11 @@ public class OMRSAuditLogRESTServices
              * Validate that the serverName and userId permit the request.
              */
             OMRSRepositoryServicesInstance instance = instanceHandler.getInstance(userId, serverName, methodName);
-            OMRSAuditLog                   auditLog = instance.getMasterAuditLog();
+            OMRSAuditLog                   masterAuditLog = instance.getMasterAuditLog();
 
-            if (auditLog != null)
+            if (masterAuditLog != null)
             {
-                response.setReport(auditLog.getFullReport());
+                response.setReport(masterAuditLog.getFullReport());
             }
         }
         catch (InvalidParameterException error)
@@ -127,7 +126,7 @@ public class OMRSAuditLogRESTServices
         }
         catch (Throwable  error)
         {
-            exceptionHandler.captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            exceptionHandler.captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

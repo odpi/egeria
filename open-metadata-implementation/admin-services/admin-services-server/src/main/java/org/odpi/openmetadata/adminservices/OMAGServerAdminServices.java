@@ -445,16 +445,9 @@ public class OMAGServerAdminServices
             }
             else
             {
-                OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_MAX_PAGE_SIZE;
-                String        errorMessage = errorCode.getErrorMessageId()
-                                           + errorCode.getFormattedErrorMessage(serverName, Integer.toString(maxPageSize));
-
-                throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                throw new OMAGInvalidParameterException(OMAGAdminErrorCode.BAD_MAX_PAGE_SIZE.getMessageDefinition(serverName, Integer.toString(maxPageSize)),
                                                         this.getClass().getName(),
-                                                        methodName,
-                                                        errorMessage,
-                                                        errorCode.getSystemAction(),
-                                                        errorCode.getUserAction());
+                                                        methodName);
             }
         }
         catch (OMAGInvalidParameterException error)
@@ -1497,15 +1490,9 @@ public class OMAGServerAdminServices
              */
             if (localRepositoryConfig == null)
             {
-                OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.LOCAL_REPOSITORY_MODE_NOT_SET;
-                String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.LOCAL_REPOSITORY_MODE_NOT_SET.getMessageDefinition(serverName),
                                                           this.getClass().getName(),
-                                                          methodName,
-                                                          errorMessage,
-                                                          errorCode.getSystemAction(),
-                                                          errorCode.getUserAction());
+                                                          methodName);
             }
 
             /*
@@ -1640,15 +1627,9 @@ public class OMAGServerAdminServices
              */
             if (localRepositoryConfig == null)
             {
-                OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.LOCAL_REPOSITORY_MODE_NOT_SET;
-                String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-                throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                throw new OMAGInvalidParameterException(OMAGAdminErrorCode.LOCAL_REPOSITORY_MODE_NOT_SET.getMessageDefinition(serverName),
                                                         this.getClass().getName(),
-                                                        methodName,
-                                                        errorMessage,
-                                                        errorCode.getSystemAction(),
-                                                        errorCode.getUserAction());
+                                                        methodName);
             }
 
             /*
@@ -1724,15 +1705,9 @@ public class OMAGServerAdminServices
              */
             if (localRepositoryConfig == null)
             {
-                OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.LOCAL_REPOSITORY_MODE_NOT_SET;
-                String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.LOCAL_REPOSITORY_MODE_NOT_SET.getMessageDefinition(serverName),
                                                           this.getClass().getName(),
-                                                          methodName,
-                                                          errorMessage,
-                                                          errorCode.getSystemAction(),
-                                                          errorCode.getUserAction());
+                                                          methodName);
             }
 
             /*
@@ -2889,15 +2864,9 @@ public class OMAGServerAdminServices
 
             if (omagServerConfig == null)
             {
-                OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_SERVER_CONFIG;
-                String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-                throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+               throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_SERVER_CONFIG.getMessageDefinition(serverName),
                                                         this.getClass().getName(),
-                                                        methodName,
-                                                        errorMessage,
-                                                        errorCode.getSystemAction(),
-                                                        errorCode.getUserAction());
+                                                        methodName);
             }
 
             List<String>  configAuditTrail = omagServerConfig.getAuditTrail();

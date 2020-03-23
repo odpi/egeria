@@ -26,6 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               })
 public abstract class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private CommunityProfileOutboundEventType eventType = null;
 
     /**

@@ -26,7 +26,13 @@
     </description>
 
     <artifactId>open-metadata-test</artifactId>
+
     <packaging>pom</packaging>
+
+    <modules>
+        <module>open-metadata-ut</module>
+    </modules>
+
 
     <!-- FVTs are run as long as skipFVT is not defined -->
     <profiles>
@@ -39,6 +45,7 @@
                 </property>
             </activation>
             <modules>
+                <module>open-metadata-ut</module>
                 <module>open-metadata-fvt</module>
             </modules>
         </profile>

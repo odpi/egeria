@@ -3,10 +3,20 @@
 
 package org.odpi.openmetadata.frameworks.auditlog.messagesets;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 /**
  * AuditLogMessageDefinition extends MessageDefinition to provide a container that describes
  * a single instance of a message for an audit log record.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class AuditLogMessageDefinition extends MessageDefinition
 {
     private AuditLogRecordSeverity severity;

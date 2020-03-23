@@ -7,9 +7,9 @@ import org.odpi.openmetadata.accessservices.discoveryengine.api.DiscoveryEngineE
 import org.odpi.openmetadata.accessservices.discoveryengine.events.DiscoveryEngineConfigurationEvent;
 import org.odpi.openmetadata.accessservices.discoveryengine.events.DiscoveryEngineEvent;
 import org.odpi.openmetadata.accessservices.discoveryengine.events.DiscoveryServiceConfigurationEvent;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog.DiscoveryEngineServicesAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryEngineHandler;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.Map;
 
@@ -20,7 +20,7 @@ import java.util.Map;
 public class DiscoveryConfigurationRefreshListener extends DiscoveryEngineEventListener
 {
     private Map<String, DiscoveryEngineHandler> discoveryEngineHandlers;
-    private OMRSAuditLog                        auditLog;
+    private AuditLog                            auditLog;
 
     /**
      * Constructor for the listener.  Its job is to receive events and pass the information received on to the
@@ -31,7 +31,7 @@ public class DiscoveryConfigurationRefreshListener extends DiscoveryEngineEventL
      * @param auditLog logging destination
      */
     public DiscoveryConfigurationRefreshListener(Map<String, DiscoveryEngineHandler> discoveryEngineHandlers,
-                                                 OMRSAuditLog                        auditLog)
+                                                 AuditLog                            auditLog)
     {
         this.discoveryEngineHandlers = discoveryEngineHandlers;
         this.auditLog = auditLog;

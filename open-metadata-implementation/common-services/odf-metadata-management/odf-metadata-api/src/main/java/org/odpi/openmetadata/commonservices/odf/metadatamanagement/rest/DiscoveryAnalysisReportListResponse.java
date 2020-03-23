@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -93,9 +94,13 @@ public class DiscoveryAnalysisReportListResponse extends ODFOMASAPIResponse
     {
         return "DiscoveryAnalysisReportListResponse{" +
                 "discoveryAnalysisReports=" + discoveryAnalysisReports +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                ", actionDescription='" + getActionDescription() + '\'' +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
                 ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
                 ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
                 ", exceptionProperties=" + getExceptionProperties() +
