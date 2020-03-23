@@ -11,7 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.ValidValuesHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -65,8 +65,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GUIDResponse        response             = new GUIDResponse();
-        OMRSAuditLog        auditLog             = null;
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -123,8 +123,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GUIDResponse        response             = new GUIDResponse();
-        OMRSAuditLog        auditLog             = null;
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -185,8 +185,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -246,8 +246,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -302,8 +302,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -347,8 +347,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -393,8 +393,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -437,8 +437,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -482,8 +482,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -526,8 +526,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -572,8 +572,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -617,8 +617,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -658,8 +658,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ValidValueResponse  response             = new ValidValueResponse();
-        OMRSAuditLog        auditLog             = null;
+        ValidValueResponse response = new ValidValueResponse();
+        AuditLog           auditLog = null;
 
         try
         {
@@ -701,7 +701,7 @@ public class ValidValuesRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ValidValuesResponse response = new ValidValuesResponse();
-        OMRSAuditLog        auditLog = null;
+        AuditLog            auditLog = null;
 
         try
         {
@@ -750,7 +750,7 @@ public class ValidValuesRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ValidValuesResponse response = new ValidValuesResponse();
-        OMRSAuditLog        auditLog = null;
+        AuditLog            auditLog = null;
 
         try
         {
@@ -798,7 +798,7 @@ public class ValidValuesRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ValidValuesResponse response = new ValidValuesResponse();
-        OMRSAuditLog        auditLog = null;
+        AuditLog            auditLog = null;
 
         try
         {
@@ -846,8 +846,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ValidValuesResponse response             = new ValidValuesResponse();
-        OMRSAuditLog        auditLog             = null;
+        ValidValuesResponse response = new ValidValuesResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -896,7 +896,7 @@ public class ValidValuesRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ValidValueConsumersResponse response = new ValidValueConsumersResponse();
-        OMRSAuditLog                auditLog = null;
+        AuditLog                    auditLog = null;
 
         try
         {
@@ -945,7 +945,7 @@ public class ValidValuesRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AssetsResponse response = new AssetsResponse();
-        OMRSAuditLog   auditLog = null;
+        AuditLog       auditLog = null;
 
         try
         {

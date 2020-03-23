@@ -26,7 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({@JsonSubTypes.Type(value = TableSource.class, name = "TableSource")})
-@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "@id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "guid")
+
 @JsonIdentityReference
 public abstract class Source {
 

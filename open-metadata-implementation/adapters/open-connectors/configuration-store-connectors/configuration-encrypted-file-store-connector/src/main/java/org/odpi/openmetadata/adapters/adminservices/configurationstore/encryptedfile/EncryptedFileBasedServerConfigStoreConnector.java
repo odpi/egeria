@@ -69,15 +69,10 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         try {
             AeadConfig.register();
         } catch (GeneralSecurityException e) {
-            DocStoreErrorCode errorCode = DocStoreErrorCode.INIT_ERROR;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getClass().getName(), e.getMessage());
 
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectorCheckedException(DocStoreErrorCode.INIT_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName, e);
         }
 
     }

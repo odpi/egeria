@@ -46,20 +46,15 @@ public class Classification extends InstanceAuditHeader
          */
         if (name == null || name.equals(""))
         {
+            final String methodName = "validateName";
+
             /*
              * Build and throw exception.  This should not happen and it is likely to be a problem in the
              * repository connector.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_CLASSIFICATION_PROPERTY_NAME;
-            String       errorMessage = errorCode.getErrorMessageId()
-                                      + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSRuntimeException(errorCode.getHTTPErrorCode(),
+            throw new OMRSRuntimeException(OMRSErrorCode.NULL_CLASSIFICATION_PROPERTY_NAME.getMessageDefinition(),
                                            this.getClass().getName(),
-                                           "validateName",
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
         }
         else
         {
@@ -112,20 +107,15 @@ public class Classification extends InstanceAuditHeader
          */
         if (template == null)
         {
+            final String methodName = "Copy Constructor";
+
             /*
              * Build and throw exception.  This should not happen and this is likely to be a problem in the
              * repository connector.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_CLASSIFICATION_PROPERTY_NAME;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage("<Unknown>");
-
-            throw new OMRSRuntimeException(errorCode.getHTTPErrorCode(),
+            throw new OMRSRuntimeException(OMRSErrorCode.NULL_CLASSIFICATION_PROPERTY_NAME.getMessageDefinition("<Unknown>"),
                                            this.getClass().getName(),
-                                           "Copy Constructor",
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
         }
         else
         {

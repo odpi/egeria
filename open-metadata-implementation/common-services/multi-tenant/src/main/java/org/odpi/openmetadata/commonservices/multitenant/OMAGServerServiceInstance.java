@@ -133,15 +133,9 @@ public abstract class OMAGServerServiceInstance
         }
         else
         {
-            OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.SERVER_NAME_NOT_AVAILABLE;
-            String                      errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            throw new NewInstanceException(OMAGServerInstanceErrorCode.SERVER_NAME_NOT_AVAILABLE.getMessageDefinition(methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
         }
     }
 

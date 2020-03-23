@@ -9,7 +9,7 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -110,14 +110,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         {
             final String actionDescription = "start";
 
-            OMRSAuditCode auditCode = OMRSAuditCode.STARTING_ENTERPRISE_CONNECTOR;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(callingServiceName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, OMRSAuditCode.STARTING_ENTERPRISE_CONNECTOR.getMessageDefinition(callingServiceName));
         }
 
         if (connectorManager != null)
@@ -128,15 +121,9 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         {
             String   methodName = "start";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.INVALID_COHORT_CONFIG;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSRuntimeException(errorCode.getHTTPErrorCode(),
+            throw new OMRSRuntimeException(OMRSErrorCode.INVALID_COHORT_CONFIG.getMessageDefinition(),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
         }
     }
 
@@ -154,14 +141,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         {
             final String actionDescription = "disconnect";
 
-            OMRSAuditCode auditCode = OMRSAuditCode.DISCONNECTING_ENTERPRISE_CONNECTOR;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(callingServiceName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, OMRSAuditCode.DISCONNECTING_ENTERPRISE_CONNECTOR.getMessageDefinition(callingServiceName));
         }
 
         if ((connectorManager != null) && (connectorConsumerId != null))
@@ -192,17 +172,11 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
             return repositoryConnector.getMetadataCollection();
         }
 
-        OMRSErrorCode  errorCode = OMRSErrorCode.NO_HOME_FOR_INSTANCE;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 instance.getGUID(),
-                                                                                                 instance.getMetadataCollectionId());
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+        throw new RepositoryErrorException(OMRSErrorCode.NO_HOME_FOR_INSTANCE.getMessageDefinition(methodName,
+                                                                                                   instance.getGUID(),
+                                                                                                   instance.getMetadataCollectionId()),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
     }
 
     /**
@@ -259,17 +233,11 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
             }
         }
 
-        OMRSErrorCode  errorCode = OMRSErrorCode.NO_HOME_FOR_INSTANCE;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 instance.getGUID(),
-                                                                                                 instanceMetadataCollectionId);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+        throw new RepositoryErrorException(OMRSErrorCode.NO_HOME_FOR_INSTANCE.getMessageDefinition(methodName,
+                                                                                                   instance.getGUID(),
+                                                                                                   instanceMetadataCollectionId),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
     }
 
 
@@ -339,15 +307,9 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         }
         else
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_REPOSITORIES;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(callingServiceName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NO_REPOSITORIES.getMessageDefinition(callingServiceName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
     }
 
@@ -426,16 +388,10 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
                 {
                     final String actionDescription = "Processing incoming registration request from remote cohort member";
 
-                    OMRSAuditCode auditCode = OMRSAuditCode.NEW_REMOTE_MEMBER_DEPLOYED;
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(remoteConnector.getServerName(),
-                                                                        metadataCollectionId,
-                                                                        callingServiceName),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logMessage(actionDescription,
+                                        OMRSAuditCode.NEW_REMOTE_MEMBER_DEPLOYED.getMessageDefinition(remoteConnector.getServerName(),
+                                                                                                      metadataCollectionId,
+                                                                                                      callingServiceName));
                 }
             }
             else
@@ -445,16 +401,10 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
                 {
                     final String actionDescription = "Processing incoming registration request from remote cohort member";
 
-                    OMRSAuditCode auditCode = OMRSAuditCode.REMOTE_MEMBER_DEPLOY_REFRESH;
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(remoteConnector.getServerName(),
-                                                                        metadataCollectionId,
-                                                                        callingServiceName),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logMessage(actionDescription,
+                                        OMRSAuditCode.REMOTE_MEMBER_DEPLOY_REFRESH.getMessageDefinition(remoteConnector.getServerName(),
+                                                                                                        metadataCollectionId,
+                                                                                                        callingServiceName));
                 }
             }
         }
@@ -485,15 +435,9 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         {
             final String actionDescription = "Processing incoming registration request from remote cohort member";
 
-            OMRSAuditCode auditCode = OMRSAuditCode.REMOTE_MEMBER_UNDEPLOYED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(metadataCollectionId,
-                                                                callingServiceName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.REMOTE_MEMBER_UNDEPLOYED.getMessageDefinition(metadataCollectionId,
+                                                                                            callingServiceName));
         }
     }
 

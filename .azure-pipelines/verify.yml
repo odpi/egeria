@@ -8,6 +8,7 @@ pr:
     include:
       - master
       - egeria-release-*
+      - egeria-feature-*
 
 variables:
   - group: Artifactory

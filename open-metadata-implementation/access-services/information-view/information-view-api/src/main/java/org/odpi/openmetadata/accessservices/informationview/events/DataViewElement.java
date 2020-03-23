@@ -23,7 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DataViewColumn.class, name = "DataViewColumn"),
         @JsonSubTypes.Type(value = DataViewModel.class, name = "DataViewModel")})
-@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class)
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property="id")
 @JsonIdentityReference
 public class DataViewElement {
 

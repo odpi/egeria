@@ -3,10 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.NoProfileForUserException;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.CommunityProfileOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.Map;
@@ -57,9 +54,13 @@ class CommunityProfileRESTExceptionHandler extends org.odpi.openmetadata.commons
                                                 this.getClass().getName(),
                                                 methodName,
                                                 restResult.getExceptionErrorMessage(),
+                                                restResult.getExceptionErrorMessageId(),
+                                                restResult.getExceptionErrorMessageParameters(),
                                                 restResult.getExceptionSystemAction(),
                                                 restResult.getExceptionUserAction(),
-                                                userId);
+                                                restResult.getExceptionCausedBy(),
+                                                userId,
+                                                restResult.getExceptionProperties());
         }
     }
 }

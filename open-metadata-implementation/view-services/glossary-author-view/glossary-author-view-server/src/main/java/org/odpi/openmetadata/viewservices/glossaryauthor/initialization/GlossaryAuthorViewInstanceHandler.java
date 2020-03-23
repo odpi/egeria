@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.initialization;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaProject;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.*;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
@@ -12,11 +10,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.Property
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
-import org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances.GlossaryAuthorViewServicesInstance;
-import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.GlossaryHandler;
-import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.ProjectHandler;
-import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.TermHandler;
-import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryauthorViewServicesInstance;
+import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.*;
+import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewServicesInstance;
 
 /**
  * GlossaryAuthorViewInstanceHandler retrieves information from the instance map for the
@@ -43,7 +38,7 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
      * @throws MetadataServerUncontactableException no available instance for the requested server
      */
     public String  getViewServiceName(String serverName) throws MetadataServerUncontactableException {
-        GlossaryauthorViewServicesInstance instance = instanceMap.getInstance(serverName);
+        GlossaryAuthorViewServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
             return instance.getServiceName();
@@ -73,11 +68,22 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
         SubjectAreaProject subjectAreaProject = this.getSubjectAreaProject(serverName,userId,serviceOperationName);
         return new ProjectHandler(subjectAreaProject);
     }
+    public RelationshipHandler getRelationshipHandler(String serverName,String userId,String serviceOperationName) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, MetadataServerUncontactableException {
+
+        SubjectAreaRelationship subjectAreaRelationship = this.getSubjectAreaRelationship(serverName, userId, serviceOperationName);
+        return new RelationshipHandler(subjectAreaRelationship);
+    }
 
     public TermHandler getTermHandler(String serverName, String userId, String serviceOperationName) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, MetadataServerUncontactableException {
 
         SubjectAreaTerm subjectAreaTerm = this.getSubjectAreaTerm(serverName,userId,serviceOperationName);
         return new TermHandler(subjectAreaTerm);
+    }
+
+    public CategoryHandler getCategoryHandler(String serverName, String userId, String serviceOperationName) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, MetadataServerUncontactableException {
+
+        SubjectAreaCategory subjectAreaCategory = this.getSubjectAreaCategory(serverName, userId, serviceOperationName);
+        return new CategoryHandler(subjectAreaCategory);
     }
 
     /**
@@ -92,7 +98,7 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
     private SubjectAreaGlossary getSubjectAreaGlossary(String serverName, String userId, String serviceOperationName)
             throws
             org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException {
-        GlossaryAuthorViewServicesInstance instance  = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
+        org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances.GlossaryAuthorViewServicesInstance instance  = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
         return instance.getSubjectAreaGlossary();
     }
 
@@ -107,8 +113,23 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
     private SubjectAreaTerm getSubjectAreaTerm(String serverName, String userId, String serviceOperationName)
             throws
             org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException {
-        GlossaryAuthorViewServicesInstance instance  = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
+        org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances.GlossaryAuthorViewServicesInstance instance  = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
         return instance.getSubjectAreaTerm();
+    }
+
+    /**
+     * This method returns the object for the tenant to use to work with the
+     * subject area category API
+     * @param serverName  name of the server that the request is for
+     * @param userId local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return SubjectAreaGlossary subject area glossary API object
+     */
+    private SubjectAreaCategory getSubjectAreaCategory(String serverName, String userId, String serviceOperationName)
+    throws
+    org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException {
+        org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances.GlossaryAuthorViewServicesInstance instance  = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
+        return instance.getSubjectAreaCategory();
     }
     /**
      * This method returns the object for the tenant to use to work with the
@@ -116,13 +137,28 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
      * @param serverName  name of the server that the request is for
      * @param userId local server userid
      * @param serviceOperationName service operation - usually the top level rest call
-     * @return SubjectAreaGlossary subject area glossary API object
+     * @return SubjectAreaProject subject area glossary API object
      */
     private SubjectAreaProject getSubjectAreaProject(String serverName, String userId, String serviceOperationName)
             throws
             org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException {
-        GlossaryAuthorViewServicesInstance instance  = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
+        org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances.GlossaryAuthorViewServicesInstance instance  = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
         return instance.getSubjectAreaProject();
+    }
+
+    /**
+     * This method returns the object for the tenant to use to work with the
+     * subject area relationship API
+     * @param serverName  name of the server that the request is for
+     * @param userId local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return SubjectAreaRelationship subject area glossary API object
+     */
+    private SubjectAreaRelationship getSubjectAreaRelationship(String serverName, String userId, String serviceOperationName)
+    throws
+    org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException {
+        org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances.GlossaryAuthorViewServicesInstance instance  = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
+        return instance.getSubjectAreaRelationship();
     }
 
     /**
@@ -136,9 +172,9 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
      * @throws UserNotAuthorizedException
      * @throws MetadataServerUncontactableException
      */
-    private GlossaryAuthorViewServicesInstance getSubjectAreaViewServicesInstance(String userId, String serverName, String serviceOperationName)
+    private org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances.GlossaryAuthorViewServicesInstance getSubjectAreaViewServicesInstance(String userId, String serverName, String serviceOperationName)
             throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException {
-        return (GlossaryAuthorViewServicesInstance)
+        return (org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances.GlossaryAuthorViewServicesInstance)
                     super.getServerServiceInstance(userId,
                             serverName,
                             serviceOperationName);

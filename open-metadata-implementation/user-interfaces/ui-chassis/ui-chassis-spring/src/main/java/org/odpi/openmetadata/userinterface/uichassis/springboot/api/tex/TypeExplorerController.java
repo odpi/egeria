@@ -3,9 +3,7 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api.tex;
 
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
+import org.odpi.openmetadata.repositoryservices.clients.LocalRepositoryServicesClient;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.SecureController;
 import org.slf4j.Logger;
@@ -14,10 +12,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
 
-import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
@@ -28,14 +22,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -100,10 +91,6 @@ public class TypeExplorerController extends SecureController
             }
             return texResp;
         }
-        catch (ConnectionCheckedException | ConnectorCheckedException e) {
-
-            exceptionMessage = "Connector error occurred, please check the server name and URL root parameters";
-        }
         catch (UserNotAuthorizedException e) {
 
             exceptionMessage = "Sorry - this username was not authorized to perform the request";
@@ -124,14 +111,24 @@ public class TypeExplorerController extends SecureController
     }
 
 
-
+    /**
+     * getTypeExplorer
+     *
+     * This method will get a repository services client and then access the repository for its type information,
+     * which is the processed into a TypeExplorer object. The resolve method of the TEX object is then invoked,
+     * which will elaborate the type information, adding cross-references for easy manipulation in a UI cpt.
+     *
+     * @param userId
+     * @param serverName
+     * @param serverURLRoot
+     * @param enterpriseOption
+     * @throws InvalidParameterException
+     */
     private TypeExplorer getTypeExplorer(String  userId,
                                          String  serverName,
                                          String  serverURLRoot,
                                          boolean enterpriseOption)
         throws
-            ConnectionCheckedException,
-            ConnectorCheckedException,
             UserNotAuthorizedException,
             RepositoryErrorException,
             InvalidParameterException
@@ -139,11 +136,13 @@ public class TypeExplorerController extends SecureController
 
         try {
 
-            this.getMetadataCollection(userId, serverName, serverURLRoot, enterpriseOption);
+            // TODO - add switch for enterprise option
+
+            LocalRepositoryServicesClient repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
 
             TypeExplorer tex = new TypeExplorer();
 
-            TypeDefGallery typeDefGallery = metadataCollection.getAllTypes(userId);
+            TypeDefGallery typeDefGallery = repositoryServicesClient.getAllTypes(userId);
 
             List<TypeDef> typeDefs = typeDefGallery.getTypeDefs();
             for (TypeDef typeDef : typeDefs) {
@@ -186,9 +185,7 @@ public class TypeExplorerController extends SecureController
             return tex;
 
         }
-        catch (ConnectionCheckedException |
-               ConnectorCheckedException  |
-               UserNotAuthorizedException |
+        catch (UserNotAuthorizedException |
                RepositoryErrorException   |
                InvalidParameterException e ) {
             throw e;
@@ -196,7 +193,42 @@ public class TypeExplorerController extends SecureController
 
     }
 
+    /**
+     * getLocalRepositoryServicesClient
+     *
+     * This method will get the above client object, which then provides access to all the methods of the
+     * MetadataCollection interface. This client is used when the enterprise option is not set, and will
+     * connect to the local repository.
+     *
+     * @param serverName
+     * @param serverURLRoot
+     * @throws InvalidParameterException
+     */
+    private LocalRepositoryServicesClient getLocalRepositoryServicesClient(String serverName,
+                                                                           String serverURLRoot)
+        throws
+            InvalidParameterException
+    {
+        /*
+         * The serverName is used as the repositoryName
+         * The serverURLRoot is used as part of the restURLRoot, along with the serverName
+         */
 
+        /*
+         * The only exception thrown by the CTOR is InvalidParameterException, and this is not caught
+         * here because we want to surface it to the REST API that called this method so that the
+         * exception can be wrapped and a suitable indication sent in the REST Response.
+         */
+        String restURLRoot = serverURLRoot + "/servers/" + serverName;
+        LocalRepositoryServicesClient client = new LocalRepositoryServicesClient(serverName, restURLRoot);
+
+        return client;
+    }
+
+
+ // TODO clean up old code...
+
+ /*
 
     private void getMetadataCollection(String  userId,
                                        String  serverName,
@@ -251,9 +283,9 @@ public class TypeExplorerController extends SecureController
             }
         }
 
-        /*
+        *//*
          * Perform integrity checks on metadataCollection
-         */
+         *//*
         try {
 
             boolean error = false;
@@ -271,15 +303,10 @@ public class TypeExplorerController extends SecureController
             else {
                 final String methodName = "getMetadataCollection";
 
-                OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
-                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                // todo Should not use OMRSErrorCode - create an error code file for TEX
+                throw new RepositoryErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(serverName),
                         this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName);
             }
 
         }
@@ -300,9 +327,9 @@ public class TypeExplorerController extends SecureController
         {
             ConnectorConfigurationFactory factory = new ConnectorConfigurationFactory();
 
-            /*
+            *//*
              * We do not have an explicit repositoryName here so set repositoryName to serverName
-             */
+             *//*
             Connection connection = factory.getDefaultLocalRepositoryRemoteConnection(serverName, serverURLRoot);
 
             ConnectorBroker connectorBroker = new ConnectorBroker();
@@ -313,10 +340,10 @@ public class TypeExplorerController extends SecureController
 
             repositoryConnector.setRepositoryName(serverName);
 
-            /*
+            *//*
              * The metadataCollectionId parameter is not used by the REST connector - but it needs to be non-null and
              * preferably informative so it is meaningful in any error messages and audit log entries.
-             */
+             *//*
 
             repositoryConnector.setMetadataCollectionId("Metadata Collection for repository "+serverName);
 
@@ -331,5 +358,5 @@ public class TypeExplorerController extends SecureController
         }
     }
 
-
+*/
 }

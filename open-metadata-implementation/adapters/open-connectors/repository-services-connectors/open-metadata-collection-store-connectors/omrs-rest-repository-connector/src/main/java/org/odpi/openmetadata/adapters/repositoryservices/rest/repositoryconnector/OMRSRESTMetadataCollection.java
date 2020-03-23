@@ -78,15 +78,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         if (endpointAddress == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_URL_NULL;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.REPOSITORY_URL_NULL.getMessageDefinition(),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
 
         /*
@@ -103,17 +97,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         }
         catch (Throwable error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_REST_CLIENT;
-            this.errorMessage = error.getMessage();
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(repositoryName,
-                                                                                                     this.errorMessage);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(repositoryName,
+                                                                                                 this.errorMessage),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
         }
 
@@ -130,16 +117,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     {
         if (this.omrsClient == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_REST_CLIENT;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(repositoryName,
-                                                                                                     this.errorMessage);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(repositoryName,
+                                                                                                 this.errorMessage),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
     }
 
@@ -159,33 +140,19 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             if (! remoteMetadataCollectionId.equals(super.metadataCollectionId))
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.METADATA_COLLECTION_ID_MISMATCH;
-                String errorMessage = errorCode.getErrorMessageId()
-                                              + errorCode.getFormattedErrorMessage(repositoryName,
-                                                                                   remoteMetadataCollectionId,
-                                                                                   super.metadataCollectionId);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                throw new RepositoryErrorException(OMRSErrorCode.METADATA_COLLECTION_ID_MISMATCH.getMessageDefinition(repositoryName,
+                                                                                                                      remoteMetadataCollectionId,
+                                                                                                                      super.metadataCollectionId),
                                                    this.getClass().getName(),
-                                                   methodName,
-                                                   errorMessage,
-                                                   errorCode.getSystemAction(),
-                                                   errorCode.getUserAction());
+                                                   methodName);
             }
         }
         else
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION_ID;
-            String errorMessage = errorCode.getErrorMessageId()
-                                          + errorCode.getFormattedErrorMessage(repositoryName,
-                                                                               super.metadataCollectionId);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION_ID.getMessageDefinition(repositoryName,
+                                                                                                              super.metadataCollectionId),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
     }
 

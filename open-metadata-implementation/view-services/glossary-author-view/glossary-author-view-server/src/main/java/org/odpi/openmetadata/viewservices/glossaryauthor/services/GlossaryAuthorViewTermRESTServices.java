@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.TermHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +16,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The GlossaryAuthorViewTermRESTServices provides the org.odpi.openmetadata.viewservices.glossaryauthor.services implementation of the SubjectArea Open Metadata
- * View Service (OMVS). This interface provides view term authoring interfaces for subject area experts to author glossaries.
+ * The GlossaryAuthorViewTermRESTServices provides the org.odpi.openmetadata.viewservices.glossaryauthor.services implementation of the Glossary Author Open Metadata
+ * View Service (OMVS). This interface provides view term authoring interfaces for subject area experts to author terms.
  */
 
 public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
@@ -55,7 +55,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
@@ -96,7 +96,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
@@ -146,7 +146,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
@@ -164,8 +164,9 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
                     pageSize,
                     sequencingOrder,
                     sequencingProperty);
-            TermsResponse glossariesResponse = new TermsResponse();
-            glossariesResponse.setTerms(terms);
+            TermsResponse termsResponse = new TermsResponse();
+            termsResponse.setTerms(terms);
+            response = termsResponse;
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, methodName);
         }
@@ -211,7 +212,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
@@ -229,16 +230,12 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
     /**
      * Update a Term
      * <p>
-     * If the caller has chosen to incorporate the term name in their Term Terms or Categories qualified name, renaming the term will cause those
-     * qualified names to mismatch the Term name.
-     * If the caller has chosen to incorporate the term qualifiedName in their Term Terms or Categories qualified name, changing the qualified name of the term will cause those
-     * qualified names to mismatch the Term name.
      * Status is not updated using this call.
      *
      * @param serverName         name of the local view server.
      * @param userId             user identifier
-     * @param guid       guid of the term to update
-     * @param term   term to update
+     * @param guid               guid of the term to update
+     * @param term               term to update
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
@@ -262,7 +259,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
@@ -327,7 +324,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
@@ -380,7 +377,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied term - the calling layer should not allow this.
         try {

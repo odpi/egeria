@@ -18,7 +18,7 @@ import java.util.*;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
 
 /**
  * The process context handler provides methods to build lineage context from processes.
@@ -30,7 +30,7 @@ public class ProcessContextHandler {
     private final RepositoryHandler repositoryHandler;
     private final InvalidParameterHandler invalidParameterHandler;
     private final List<String> supportedZones;
-    private final CommonHandler commonHandler;
+    private final HandlerHelper handlerHelper;
 
     private AssetContext graph;
 
@@ -49,7 +49,7 @@ public class ProcessContextHandler {
                                  List<String> supportedZones) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
-        this.commonHandler = new CommonHandler(invalidParameterHandler, repositoryHelper, repositoryHandler);
+        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler);
         this.supportedZones = supportedZones;
     }
 
@@ -66,7 +66,7 @@ public class ProcessContextHandler {
 
         graph = new AssetContext();
 
-        Optional<EntityDetail> entityDetail = commonHandler.getEntityDetails(userId, processGuid, PROCESS);
+        Optional<EntityDetail> entityDetail = handlerHelper.getEntityDetails(userId, processGuid, PROCESS);
         if (!entityDetail.isPresent()) {
             log.error("Entity with guid {} was not found in any metadata repository", processGuid);
 
@@ -80,7 +80,7 @@ public class ProcessContextHandler {
 
         invalidParameterHandler.validateAssetInSupportedZone(processGuid,
                 GUID_PARAMETER,
-                commonHandler.getAssetZoneMembership(entityDetail.get().getClassifications()),
+                handlerHelper.getAssetZoneMembership(entityDetail.get().getClassifications()),
                 supportedZones,
                 ASSET_LINEAGE_OMAS,
                 methodName);
@@ -136,7 +136,7 @@ public class ProcessContextHandler {
      * @return List of entities that are on the other end of the relationship, empty list if none
      */
     private List<EntityDetail> getRelationshipsBetweenEntities(String userId, String guid, String relationshipType, String typeDefName) throws OCFCheckedExceptionBase {
-        List<Relationship> relationships = commonHandler.getRelationshipsByType(userId, guid, relationshipType, typeDefName);
+        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, guid, relationshipType, typeDefName);
         EntityDetail startEntity = repositoryHandler.getEntityByGUID(userId, guid, "guid", typeDefName, "getRelationships");
 
         if (startEntity == null) return Collections.emptyList();
@@ -149,7 +149,7 @@ public class ProcessContextHandler {
                     startEntityType.equals(TABULAR_COLUMN)) {
                 continue;
             }
-            EntityDetail endEntity = commonHandler.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph, false);
+            EntityDetail endEntity = handlerHelper.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph, false);
             if (endEntity == null) return Collections.emptyList();
 
             entityDetails.add(endEntity);

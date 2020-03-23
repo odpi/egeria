@@ -80,7 +80,7 @@ implementing the OMAS one scenario at a time.
   [open metadata types](../../../../open-metadata-publication/website/open-metadata-types) (mapping to the open metadata types comes later).
  
    * Document this as a summary for the top-level README.md for the OMAS (***omas-name*/README.md**) and a
-     more detailed description as in introduction to the user documentation in ***omas-name*/docs/user/README.md**.
+     more detailed description as an introduction to the user documentation in ***omas-name*/docs/user/README.md**.
   
    * Document each of the core concepts as their own markdown file in ***omas-name*/docs/concepts/*concept-name*.md**.
      Add links to these files wherever the concept is first used in other markdown files.
@@ -204,18 +204,27 @@ implementing the OMAS one scenario at a time.
   
   Link to the the top-level README.md for the OMAS's server module (***omas-name*/*omas-name*-server/README.md**).
   
-  Implement the ***omas-name*/*omas-name*-server-spring module for the OMAS.  This contains the sever-side
+  Implement the ***omas-name*/*omas-name*-server-spring** module for the OMAS.  This contains the sever-side
   resource classes that support the REST API.
   
-  Add the ***omas-name*/*omas-name*-server-spring module to the `pom.xml` file for the 
+  Add the ***omas-name*/*omas-name*-server-spring** module to the `pom.xml` file for the
   [OMAG Server Chassis](../../../server-chassis/server-chassis-spring).
 
 * Design and implement the event handling.
 
+  Log each event that is picked up (inbound) to be processed by the OMAS into its audit log using the `EVENT` severity.
+  Also log each event that is produced (outbound) by the OMAS into its audit log using the `EVENT` severity. This
+  ensures a record is kept of the asynchronous processing done by the OMAS.
+
+  Log the first error of a given kind via audit log as well, using the appropriate severity. For example, if an event is
+  picked up that triggers some logic in the OMAS that requires the OMAS to communicate with an external system for
+  additional information, and that system is unreachable, log that failure in communication once per external system.
+  Since there could be many other events that also trigger a need to communicate with that same system, it is not
+  necessary to log this communication failure with that system every time, as this would result in many duplicate error
+  messages and could needlessly flood the audit log. However, it is important to log the error at least once so that
+  appropriate problem determination of the asynchronous processing can be done from the audit log.
+
 * Implement the FVT and run it.
-
-
-
 
 
 
