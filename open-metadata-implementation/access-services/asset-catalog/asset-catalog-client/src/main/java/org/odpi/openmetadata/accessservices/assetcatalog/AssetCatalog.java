@@ -52,7 +52,7 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
-     * Create a new AssetConsumer client.
+     * Create a new AssetCatalog client.
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
