@@ -52,12 +52,7 @@ public enum SubjectAreaAuditCode implements AuditLogMessageSet
                                      "occurred with error message: {2}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
-
-//    ASSET_AUDIT_LOG("OMAS-SUBJECT_AREA-0008",
-//               OMRSAuditLogRecordSeverity.ASSET,
-//               "Audit message for asset {0}: {1}",
-//               "An asset consumer has logged a message for an asset.",
-//               "Review the message to ensure no action is required.")
+    
 
     ;
 
