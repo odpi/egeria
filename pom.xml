@@ -124,7 +124,7 @@
         <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
-        <junit.platform.version>1.6.0</junit.platform.version>
+        <junit.platform.version>1.6.1</junit.platform.version>
         <junit.jupiter.version>5.6.1</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
