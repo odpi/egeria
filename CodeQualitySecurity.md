@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
 # Code Quality and Security
 
 Egeria has a clear focus on ensuring the code delivered is of the highest quality to ensure that downstream consumers can leverage Egeria with as minimal risk as possible.
