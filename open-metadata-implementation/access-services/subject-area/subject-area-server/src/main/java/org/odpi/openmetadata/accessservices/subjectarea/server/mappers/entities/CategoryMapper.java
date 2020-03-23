@@ -46,7 +46,7 @@ public class CategoryMapper extends EntityDetailMapper implements INodeMapper {
      * @return Category the equivalent Category to the supplied entityDetail.
      * @throws InvalidParameterException a parameter is null or an invalid value.
      */
-    public Node mapEntityDetailToNode(EntityDetail entityDetail) throws InvalidParameterException{
+    public Category mapEntityDetailToNode(EntityDetail entityDetail) throws InvalidParameterException{
         String methodName = "mapEntityDetailToNode";
         String entityTypeName = entityDetail.getType().getTypeDefName();
         if (repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),entityTypeName, GLOSSARY_CATEGORY)) {
