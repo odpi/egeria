@@ -119,7 +119,13 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             text-transform: none;
             color: #eeff41;
           }
-        
+          .breadcrumbs {
+              padding: 8px 24px;
+              margin-bottom: 20px;
+              list-style: none;
+              background-color: #eeeeee;
+              border-radius: 4px;
+        } 
       </style>
      
       <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
