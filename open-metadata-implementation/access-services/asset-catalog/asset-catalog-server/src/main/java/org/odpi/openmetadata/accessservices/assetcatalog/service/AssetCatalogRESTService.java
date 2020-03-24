@@ -8,24 +8,13 @@ import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHa
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.ExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,7 +43,7 @@ public class AssetCatalogRESTService {
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
             AssetDescription assetDescription = assetCatalogHandler.getEntityDetails(userId, assetGUID, assetTypeName);
-            response.setAssetDescriptionList(Collections.singletonList(assetDescription));
+            response.setAssetDescription(assetDescription);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
@@ -82,7 +71,7 @@ public class AssetCatalogRESTService {
             AssetDescription assetDescription = assetCatalogHandler.getEntityDetails(userId, assetGUID, assetTypeName);
             assetDescription.setRelationships(assetCatalogHandler.getRelationshipsByEntityGUID(userId, assetGUID, assetDescription.getType().getName()));
 
-            response.setAssetDescriptionList(Collections.singletonList(assetDescription));
+            response.setAssetDescription(assetDescription);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
@@ -122,14 +111,14 @@ public class AssetCatalogRESTService {
         return response;
     }
 
-    public RelationshipsResponse getLinkingRelationships(String serverName,
-                                                         String userId,
-                                                         String startAssetId,
-                                                         String endAssetId) {
+    public RelationshipListResponse getLinkingRelationships(String serverName,
+                                                            String userId,
+                                                            String startAssetId,
+                                                            String endAssetId) {
         String methodName = "getLinkingRelationships";
         log.debug(CALLING_METHOD, methodName);
 
-        RelationshipsResponse response = new RelationshipsResponse();
+        RelationshipListResponse response = new RelationshipListResponse();
         try {
 
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
@@ -150,17 +139,17 @@ public class AssetCatalogRESTService {
         return response;
     }
 
-    public RelationshipsResponse getAssetRelationships(String serverName,
-                                                       String userId,
-                                                       String assetGUID,
-                                                       String assetTypeName,
-                                                       String relationshipTypeName,
-                                                       Integer startFrom,
-                                                       Integer limit) {
+    public RelationshipListResponse getAssetRelationships(String serverName,
+                                                          String userId,
+                                                          String assetGUID,
+                                                          String assetTypeName,
+                                                          String relationshipTypeName,
+                                                          Integer startFrom,
+                                                          Integer limit) {
         String methodName = "getAssetRelationships";
         log.debug(CALLING_METHOD, methodName);
 
-        RelationshipsResponse response = new RelationshipsResponse();
+        RelationshipListResponse response = new RelationshipListResponse();
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
             response.setRelationships(assetCatalogHandler.getRelationships(userId, assetGUID,
@@ -178,14 +167,14 @@ public class AssetCatalogRESTService {
         return response;
     }
 
-    public AssetDescriptionResponse getLinkingAssets(String serverName,
-                                                     String userId,
-                                                     String startAssetId,
-                                                     String endAssetId) {
+    public AssetDescriptionListResponse getLinkingAssets(String serverName,
+                                                         String userId,
+                                                         String startAssetId,
+                                                         String endAssetId) {
         String methodName = "getLinkingAssets";
         log.debug(CALLING_METHOD, methodName);
 
-        AssetDescriptionResponse response = new AssetDescriptionResponse();
+        AssetDescriptionListResponse response = new AssetDescriptionListResponse();
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
             response.setAssetDescriptionList(assetCatalogHandler.getIntermediateAssets(userId, startAssetId, endAssetId));
@@ -204,14 +193,14 @@ public class AssetCatalogRESTService {
         return response;
     }
 
-    public AssetDescriptionResponse getAssetsFromNeighborhood(String serverName,
-                                                              String userId,
-                                                              String entityGUID,
-                                                              SearchParameters searchParameters) {
+    public AssetDescriptionListResponse getAssetsFromNeighborhood(String serverName,
+                                                                  String userId,
+                                                                  String entityGUID,
+                                                                  SearchParameters searchParameters) {
         String methodName = "getAssetsFromNeighborhood";
         log.debug(CALLING_METHOD, methodName);
 
-        AssetDescriptionResponse response = new AssetDescriptionResponse();
+        AssetDescriptionListResponse response = new AssetDescriptionListResponse();
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
             List<AssetDescription> entitiesFromNeighborhood = assetCatalogHandler.getEntitiesFromNeighborhood(serverName, userId, entityGUID, searchParameters);
@@ -232,16 +221,16 @@ public class AssetCatalogRESTService {
         return response;
     }
 
-    public AssetResponse searchByType(String serverName,
-                                      String userId,
-                                      String searchCriteria,
-                                      SearchParameters searchParameters) {
+    public AssetListResponse searchByType(String serverName,
+                                          String userId,
+                                          String searchCriteria,
+                                          SearchParameters searchParameters) {
         String methodName = "searchByType";
-        AssetResponse response = new AssetResponse();
+        AssetListResponse response = new AssetListResponse();
 
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            response.setAssets(assetCatalogHandler.searchByType(userId, searchCriteria, searchParameters));
+            response.setAssetElementsList(assetCatalogHandler.searchByType(userId, searchCriteria, searchParameters));
         } catch (UserNotAuthorizedException
                 | PagingErrorException
                 | TypeErrorException
@@ -270,7 +259,7 @@ public class AssetCatalogRESTService {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
             AssetElements assetElements = assetCatalogHandler.buildContextByType(userId, assetGUID, assetType);
             if (assetElements != null) {
-                response.setAssets(Collections.singletonList(assetElements));
+                response.setAsset(assetElements);
             }
 
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
