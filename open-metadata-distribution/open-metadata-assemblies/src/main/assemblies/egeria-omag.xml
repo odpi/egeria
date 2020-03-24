@@ -225,7 +225,7 @@
             <directory>../../open-metadata-resources/open-metadata-archives/design-model-archives/target</directory>
             <outputDirectory>./utilities</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}*</include>
+                <include>*${open-metadata.version}*jar</include>
             </includes>
             <excludes>
                 <exclude>*javadoc*</exclude>
@@ -249,8 +249,18 @@
             <directoryMode>0755</directoryMode>
         </fileSet>
 
+        <!-- Open metadata archives -->
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-archives/design-model-archives/target/archives</directory>
+            <outputDirectory>./archives</outputDirectory>
+            <includes>
+                <include>*</include>
+            </includes>
+            <fileMode>0644</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
         <!-- Open Metadata Samples -->
-        <!-- Copy the archive utilities -->
 
         <fileSet>
             <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/target</directory>
