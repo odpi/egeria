@@ -140,7 +140,8 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      * @param mapper converter
      * @param <K> key
      * @param <V> value
-     * @param <K> no idea
+     * @param <R> type for return Map values.
+     *           For example, types Object {@link #mapValuesAsObject} or String {@link #mapValuesAsString}.
      * @return Map with new values
      */
     private <K, V extends InstancePropertyValue, R> Map<K, R> convertValues(Map<K, V> valMap, Function<Map.Entry<K, V>, R> mapper)
