@@ -20,7 +20,6 @@ class AboutView extends PolymerElement {
         }
         div.container {
           min-height: 10em;
-          display: table-cell;
           vertical-align: middle;
           margin-left: auto;
           margin-right: auto;
