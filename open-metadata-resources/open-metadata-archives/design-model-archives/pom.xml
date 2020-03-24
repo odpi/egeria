@@ -69,4 +69,38 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>gen-cim-archive</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- Need to create ant property to pass from maven to ant task -->
+                                <!-- generating code here -->
+                                <property name="antDirectory" value="${project.build.directory}/archives"/>
+                                <mkdir dir="${antDirectory}"/>
+                                <java classname="org.odpi.openmetadata.archiveutilities.designmodels.cloudinformationmodel.CloudInformationModelArchiveWriter"
+                                      fork="true" failonerror="true" dir="${antDirectory}">
+                                    <arg value="CloudInformationModel.json"/>
+                                    <classpath>
+                                        <path refid="maven.compile.classpath"/>
+                                        <!--path refid="maven.plugin.classpath"/-->
+                                    </classpath>
+                                    <sysproperty key="org.slf4j.simpleLogger.defaultLogLevel" value="INFO"/>
+                                </java>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
