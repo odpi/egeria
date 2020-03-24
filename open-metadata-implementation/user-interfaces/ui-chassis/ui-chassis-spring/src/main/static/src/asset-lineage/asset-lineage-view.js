@@ -32,7 +32,7 @@ class AssetLineageView extends PolymerElement {
     </style>
     
     <app-route route="{{route}}" pattern="/:usecase/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
-      
+     
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
     <vaadin-tabs id ="useCases" selected="[[_getUseCase(usecase)]]" style="left: -20px; color: var(--egeria-primary-color);" >
       <vaadin-tab value="ultimateSource">Ultimate Source</vaadin-tab>
@@ -75,6 +75,7 @@ class AssetLineageView extends PolymerElement {
                 type: String,
                 observer: '_useCaseChanged'
             },
+            routeData: Object,
             usecases:{
                 type: Array,
                 value:['ultimateSource','endToEnd','ultimateDestination','glossaryLineage','sourceAndDestination' ]
@@ -113,6 +114,15 @@ class AssetLineageView extends PolymerElement {
         }
     }
 
+    static get observers() {
+        return [
+            '_routeChanged(routeData)'
+        ];
+    }
+
+    _routeChanged(routeData){
+        this._reload(this.routeData.usecase, this.$.processMenu.value);
+    }
 
         _graphDataChanged(data) {
             console.log(data);
@@ -180,26 +190,26 @@ class AssetLineageView extends PolymerElement {
 
         switch (usecase) {
             case 'ultimateSource':
-                this._ultimateSource(this.guid, includeProcesses);
+                this._ultimateSource(this.routeData.guid, includeProcesses);
                 break;
             case 'endToEnd':
-                this._endToEndLineage(this.guid, includeProcesses);
+                this._endToEndLineage(this.routeData.guid, includeProcesses);
                 break;
             case 'ultimateDestination':
-                this._ultimateDestination(this.guid, includeProcesses);
+                this._ultimateDestination(this.routeData.guid, includeProcesses);
                 break;
             case 'glossaryLineage':
-                this._glossaryLineage(this.guid, includeProcesses);
+                this._glossaryLineage(this.routeData.guid, includeProcesses);
                 break;
             case 'sourceAndDestination':
-                this._sourceAndDestination(this.guid, includeProcesses);
+                this._sourceAndDestination(this.routeData.guid, includeProcesses);
                 break;
         }
     }
 
 
     _guidChanged() {
-        this._reload(this.usecase, this.$.processMenu.value);
+        this._reload(this.routeData.usecase, this.$.processMenu.value);
     }
 
     _useCaseChanged() {

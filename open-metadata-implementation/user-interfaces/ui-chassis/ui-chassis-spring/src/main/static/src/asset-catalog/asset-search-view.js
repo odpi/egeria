@@ -38,12 +38,13 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
             cursor: hand;
         }
       </style>
+      
+<!--      <app-route route="{{route}}" pattern="/:usecase/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>-->
 
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
       <token-ajax id="tokenAjaxTypes" last-response="{{items}}"></token-ajax>
       
-      <app-route route="{{route}}" pattern="/:usecase/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
-
+      
       <iron-form id="searchForm">
         <form method="get">
             <iron-a11y-keys keys="enter" on-keys-pressed="_search"></iron-a11y-keys>
@@ -63,7 +64,8 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
            </div>
         </form>
        </iron-form>
-        <vaadin-grid id="grid" items="{{searchResp}}" theme="row-stripes"
+       
+      <vaadin-grid id="grid" items="{{searchResp}}" theme="row-stripes"
                      column-reordering-allowed multi-sort>
             <vaadin-grid-selection-column auto-select frozen></vaadin-grid-selection-column>
         
@@ -72,7 +74,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                     <vaadin-grid-sorter path="displayName">Name</vaadin-grid-sorter>
                 </template>
                 <template>
-                   <a href="#/asset-search/view/[[item.guid]]">
+                   <a href="#/asset-catalog/view/[[item.guid]]">
                         [[_itemName(item)]]
                    </a>
                 </template>

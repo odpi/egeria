@@ -141,7 +141,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <img src="../images/Logo_trademark.jpg" height="60" style="margin: auto; display: block; margin-top: 15pt;"/>
                   <iron-selector selected="[[page]]" attr-for-selected="name"
                         class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
-                    <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset Search</a></div>
+                    <div name="asset-catalog" language="[[language]]"><a href="[[rootPath]]#/asset-catalog/search">Asset Catalog</a></div>
                     <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
                     <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
@@ -178,7 +178,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   </div>
                   
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
-                    <asset-search-view language="[[language]]" name="asset-search" route="{{tail}}"></asset-search-view>
+                    <asset-view language="[[language]]" name="asset-catalog" route="{{tail}}"></asset-view>
                     <about-view language="[[language]]" name="about"></about-view>
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
                     <asset-lineage-view language="[[language]]" name="asset-lineage"  route="{{tail}}"></asset-lineage-view>
@@ -202,10 +202,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 reflectToAttribute: true,
                 observer: '_pageChanged',
             },
-            // guid: {
-            //     type: String,
-            //     reflectToAttribute: true
-            // },
             token: {
                 type: Object,
                 notify: true,
@@ -214,7 +210,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             routeData: Object,
             pages: {
                 type: Array,
-                value: ['asset-search', 'subject-area', 'asset-lineage', 'type-explorer', 'repository-explorer', 'about' ]
+                value: ['asset-catalog', 'subject-area', 'asset-lineage', 'type-explorer', 'repository-explorer', 'about' ]
             },
             feedback: {
                 type: Object,
@@ -222,13 +218,14 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 observer: '_feedbackChanged'
             },
             crumbs: {
-                type: Array
+                type: Array,
+                notify: true
             },
             allCrumbs: {
                 type: Object,
                 value:{
                     'home': {label: 'Home', href: this.rootPath + '#'},
-                    'asset-search': {label: 'Asset Search', href: "/asset-search"},
+                    'asset-catalog': {label: 'Asset Catalog', href: "/asset"},
                     'subject-area': {label: 'Subject Area', href: "/subject-area"},
                     'asset-lineage': {label: 'Asset Lineage', href: "/asset-lineage"},
                     'type-explorer': {label: 'Type Explorer', href: "/type-explorer"},
@@ -246,7 +243,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
     static get observers() {
         return [
-            '_routePageChanged(routeData.page)'
+            '_routePageChanged(routeData.page)',
+            '_updateBreadcrumb(routeData.page)'
         ];
     }
 
@@ -255,6 +253,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         this.addEventListener('logout', this._onLogout);
         this.addEventListener('open-page', this._onPageChanged);
         this.addEventListener('set-title', this._onSetTitle);
+        this.addEventListener('push-crumb', this._onPushCrumb);
     }
 
     _getDrawer(){
@@ -272,6 +271,12 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         } else {
             dL.drawer.toggle();
         }
+    }
+
+    _onPushCrumb(event) {
+        var crumbs = [].concat(this.crumbs);
+        crumbs.push( event.detail );
+        this.crumbs = crumbs;
     }
 
     _updateBreadcrumb(page){
@@ -299,11 +304,11 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         // Show 'asset-search' in that case. And if the page doesn't exist, show 'view404'.
 
         if (!page) {
-            this.page = 'asset-search';
+            this.page = 'asset-catalog';
         } else if (this.pages.indexOf(page) !== -1) {
             this.page = page;
         } else {
-            this.page = 'asset-search';
+            this.page = 'asset-catalog';
         }
 
         // Close a non-persistent drawer when the page & route are changed.
@@ -312,7 +317,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             this._getDrawer().close();
 
         }
-        this._updateBreadcrumb(this.page);
+
     }
 
     _onPageChanged(event) {
@@ -356,10 +361,16 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 import('./repository-explorer/repository-explorer-view.js');
                 break;
             case 'view404':
-                import('./asset-search/my-view404.js');
+                import('./asset-catalog/my-view404.js');
                 break;
             case 'asset-search' :
-                import('./asset-search/asset-search-view.js');
+                import('./asset-catalog/asset-search-view.js');
+                break;
+            case 'asset-catalog' :
+                import('./asset-catalog/asset-catalog-view.js');
+                break;
+            case 'asset-catalog' :
+                import('./asset-catalog/asset-catalog-view.js');
                 break;
             case 'about' :
                 import('./about-view.js');
