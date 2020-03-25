@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,16 +41,16 @@ public class AssetCatalogOMASService {
      * @return the asset with its header and the list of associated classifications and specific properties
      * @throws PropertyServerException there is a problem retrieving information from the property server
      */
-    public List<AssetDescription> getAssetDetails(String user, String assetId, String assetType) throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+    public AssetDescription getAssetDetails(String user, String assetId, String assetType) throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         try {
             if (assetCatalog.getAssetDetails(user, assetId, assetType) != null) {
-                return assetCatalog.getAssetDetails(user, assetId, assetType).getAssetDescriptionList();
+                return assetCatalog.getAssetDetails(user, assetId, assetType).getAssetDescription();
             }
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | PropertyServerException e) {
             LOG.error(String.format("Error retrieving asset details for %s", assetId));
             throw e;
         }
-        return Collections.emptyList();
+        return null;
     }
 
     /**
@@ -63,10 +62,10 @@ public class AssetCatalogOMASService {
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public List<AssetDescription> getAssetUniverse(String user, String assetId, String assetType)
+    public AssetDescription getAssetUniverse(String user, String assetId, String assetType)
             throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         try {
-            return assetCatalog.getAssetUniverse(user, assetId, assetType).getAssetDescriptionList();
+            return assetCatalog.getAssetUniverse(user, assetId, assetType).getAssetDescription();
         } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             LOG.error(String.format("Error retrieving asset universe for %s", assetId));
             throw e;
@@ -124,16 +123,17 @@ public class AssetCatalogOMASService {
     public List<AssetElements> searchAssets(String user, String searchCriteria, SearchParameters searchParameters)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         try {
-            return assetCatalog.searchByType(user, searchCriteria, searchParameters).getAssets();
+            return assetCatalog.searchByType(user, searchCriteria, searchParameters).getAssetElementsList();
         } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             LOG.error(String.format("Error searching the assets by criteria %s", searchCriteria));
             throw e;
         }
     }
 
-    public List<AssetElements> getAssetContext(String userId, String assetId, String assetType) throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+    public AssetElements getAssetContext(String userId, String assetId, String assetType)
+            throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         try {
-            return assetCatalog.getAssetContext(userId, assetId, assetType).getAssets();
+            return assetCatalog.getAssetContext(userId, assetId, assetType).getAsset();
         } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             LOG.error(String.format("Error retrieving asset context for '%s'", assetId));
             throw e;
@@ -142,7 +142,7 @@ public class AssetCatalogOMASService {
 
 
     public List<Type> getSupportedTypes(String userId) throws PropertyServerException,
-                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+            org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         try {
             return assetCatalog.getSupportedTypes(userId, null).getTypes();
         } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {

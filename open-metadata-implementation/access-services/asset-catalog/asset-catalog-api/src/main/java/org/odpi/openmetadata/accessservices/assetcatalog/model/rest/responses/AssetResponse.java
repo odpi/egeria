@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,16 +17,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssetResponse extends AssetCatalogOMASAPIResponse {
 
-    private static final long serialVersionUID = 1L;
+    private AssetElements asset;
 
-    private List<AssetElements> assets = new ArrayList<>();
-
-    public List<AssetElements> getAssets() {
-        return assets;
+    public AssetElements getAsset() {
+        return asset;
     }
 
-    public void setAssets(List<AssetElements> assets) {
-        this.assets = assets;
+    public void setAsset(AssetElements asset) {
+        this.asset = asset;
     }
 
     @Override
@@ -36,12 +32,12 @@ public class AssetResponse extends AssetCatalogOMASAPIResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        AssetResponse that = (AssetResponse) o;
-        return Objects.equals(assets, that.assets);
+        AssetResponse response = (AssetResponse) o;
+        return asset.equals(response.asset);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), assets);
+        return Objects.hash(super.hashCode(), asset);
     }
 }
