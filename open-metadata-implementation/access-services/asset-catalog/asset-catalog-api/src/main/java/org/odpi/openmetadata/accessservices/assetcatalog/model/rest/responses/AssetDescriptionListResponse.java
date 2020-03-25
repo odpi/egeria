@@ -1,5 +1,4 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -7,41 +6,42 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetDescriptionResponse is the response structure used on the Asset Catalog OMAS REST API calls that returns an
- * asset description object as a response.
+ * AssetDescriptionResponse is the response structure used on the Asset Catalog OMAS REST API calls that returns a
+ * list of asset description object as a response.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AssetDescriptionResponse extends AssetCatalogOMASAPIResponse {
+public class AssetDescriptionListResponse extends AssetCatalogOMASAPIResponse implements Serializable {
 
-    private AssetDescription assetDescription;
+    private List<AssetDescription> assetDescriptionList;
 
-    public AssetDescription getAssetDescription() {
-        return assetDescription;
+    public List<AssetDescription> getAssetDescriptionList() {
+        return assetDescriptionList;
     }
 
-    public void setAssetDescription(AssetDescription assetDescription) {
-        this.assetDescription = assetDescription;
+    public void setAssetDescriptionList(List<AssetDescription> assetDescriptionList) {
+        this.assetDescriptionList = assetDescriptionList;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        AssetDescriptionResponse that = (AssetDescriptionResponse) o;
-        return assetDescription.equals(that.assetDescription);
+        AssetDescriptionListResponse that = (AssetDescriptionListResponse) o;
+        return Objects.equals(assetDescriptionList, that.assetDescriptionList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), assetDescription);
+        return Objects.hash(assetDescriptionList);
     }
 }
