@@ -8,8 +8,11 @@ public final class Constants {
     public static final String SECURITY_LABELS = "securityLabels";
     public static final String SECURITY_PROPERTIES = "securityProperties";
     public static final String SECURITY_TAG = "SecurityTags";
-    public static final String ATTRIBUTE_FOR_SCHEMA_GUID_GUID = "86b176a2-015c-44a6-8106-54d5d69ba661";
-    public static final String SCHEMA_ATTRIBUTE_TYPE_GUID = "2d955049-e59b-45dd-8e62-cde1add59f9e";
+    public static final String SECURITY_TAGS_GUID =  "a0b07a86-9fd3-40ca-bb9b-fe83c6981deb";
+
+    public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
+    public static final String NESTED_SCHEMA_ATTRIBUTE_GUID = "0ffb9d87-7074-45da-a9b0-ae0859611133";
+
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
     public static final String NAME = "name";
     public static final String DESCRIPTION = "description";

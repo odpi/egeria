@@ -66,6 +66,7 @@ class TypeManager extends PolymerElement {
      */
     loadTypes(serverName, serverURLRoot, enterpriseQuery) {
 
+        alert("type-manager cpt: serverName and serverURLRoot fields are "+serverName+" "+serverURLRoot);
         if (this.validate(serverName) && this.validate(serverURLRoot)) {
 
             if (serverName.length > 0 && serverURLRoot.length > 0) {

@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssetCatalogSupportedTypes extends AssetCatalogOMASAPIResponse {
 
-    private static final long serialVersionUID = 1L;
-
     private List<Type> types;
 
     public List<Type> getTypes() {

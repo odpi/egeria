@@ -34,7 +34,7 @@ import java.util.Map;
  *     <li><i>operationSpecificURL</i> - operation specific part of the URL</li>
  * </ul>
  */
-abstract class MetadataCollectionServicesClient implements AuditLoggingComponent
+public abstract class MetadataCollectionServicesClient implements AuditLoggingComponent
 {
     static final private String rootServiceNameInURL  = "/open-metadata/repository-services";
     static final private String userIdInURL           = "/users/{0}";
