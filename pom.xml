@@ -2541,6 +2541,7 @@
                 <configuration>
                     <additionalJOption>-J-Xmx1536m</additionalJOption>
                     <quiet>true</quiet>
+                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
                 </configuration>
                 <executions>
                     <execution>
