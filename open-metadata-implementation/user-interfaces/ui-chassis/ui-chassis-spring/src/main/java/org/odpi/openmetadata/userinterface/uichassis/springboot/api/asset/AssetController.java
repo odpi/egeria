@@ -47,14 +47,14 @@ public class AssetController {
     }
 
     @GetMapping( value = "/{guid}")
-    public List<AssetDescription> getAsset(@PathVariable("guid") String guid)
+    public AssetDescription getAsset(@PathVariable("guid") String guid)
             throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName( );
         return assetCatalogOMASService.getAssetDetails(user, guid, "none");
     }
 
     @GetMapping( value = "/{guid}/context")
-    public List<AssetElements> getAssetContext(@PathVariable("guid") String guid)
+    public AssetElements getAssetContext(@PathVariable("guid") String guid)
             throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName( );
         return assetCatalogOMASService.getAssetContext(user, guid, "none");
