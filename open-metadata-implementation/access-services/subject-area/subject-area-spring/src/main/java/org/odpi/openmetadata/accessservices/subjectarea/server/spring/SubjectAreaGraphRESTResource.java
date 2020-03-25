@@ -30,7 +30,7 @@ public class SubjectAreaGraphRESTResource extends SubjectAreaRESTServicesInstanc
      * Default constructor
      */
     public SubjectAreaGraphRESTResource() {
-        //SubjectAreaRESTServicesInstance registers this omas.
+
     }
 
     /**
