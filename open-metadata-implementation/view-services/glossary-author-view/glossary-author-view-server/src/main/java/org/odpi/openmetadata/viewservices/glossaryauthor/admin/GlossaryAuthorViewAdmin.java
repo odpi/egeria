@@ -83,14 +83,6 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
         auditLog.logMessage(actionDescription, auditCode.getMessageDefinition(message));
     }
 
-//    private String extractRemoteServerURL(Map<String, Object> viewServiceOptions) {
-//        return (String)viewServiceOptions.get(remoteServerURL);
-//    }
-//
-//    private String extractRemoteServerName(Map<String, Object> viewServiceOptions) {
-//        return (String)viewServiceOptions.get(remoteServerName);
-//    }
-
     /**
      * Shutdown the subject area view service.
      */

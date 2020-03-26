@@ -47,7 +47,11 @@ When the initialization is complete, you will see this message:
 Thu Jan 31 13:15:26 GMT 2019 OMAG server platform ready for configuration
 ```
 
-This means your OMAG server platform is running.  Try the following command (replace 8080 accordingly if using a non standard port):
+This means your OMAG server platform is running. 
+
+If you get an error that the port is in use, check for any applications using the same port. Note that in current versions of zookeeper, an AdminServer uses port 8080 by default - see [zookeeper docs](https://zookeeper.apache.org/doc/r3.5.7/zookeeperAdmin.html)
+
+ Try the following command (replace 8080 accordingly if using a non standard port):
 
 ```bash
 $ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform/origin
