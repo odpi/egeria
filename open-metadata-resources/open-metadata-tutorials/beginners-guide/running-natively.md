@@ -21,7 +21,7 @@ You need to start four OMAG Server Platforms at the following URLs - remembering
 - `http://localhost:8082`
 - `http://localhost:8083`
 
-
+See the section on ZooKeeper below if you see a clash on port 8080.
 ## Java
 
 [Java](https://www.java.com) is a relatively mature object-oriented programming language that was
@@ -76,6 +76,8 @@ The [QuickStart Guide provided by Kafka itself](https://kafka.apache.org/quickst
 instructions on running a minimal ZooKeeper server necessary for Kafka's use. For more detailed information,
 you will want to read the [ZooKeeper Getting Started Guide](https://zookeeper.apache.org/doc/current/zookeeperStarted.html).
 
+Note that in versions of zookeeper >= 3.5, an AdminServer is started by default to provide a http interface for zookeeper. This runs on port 8080 so will clash with Egeria if run with defaults on the same machine. This can be disabled by setting `admin.enableServer=false
+` in your configuration.  See the [zookeeper docs](https://zookeeper.apache.org/doc/r3.5.7/zookeeperAdmin.html) for more information 
 ## Jupyter
 
 [Project Jupyter](https://jupyter.org) provides tools for interactive computing. In particular, we use
