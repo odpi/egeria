@@ -11,6 +11,7 @@ BEGIN
         || '  EMPID INT NOT NULL,'
         || '  FNAME VARCHAR(50) NOT NULL,'
         || '  SURNAME VARCHAR(50) NOT NULL,'
+        || '  LOCATION INT NOT NULL,'
         || '    PRIMARY KEY(EMPID)'
         || ')';
 
@@ -21,6 +22,6 @@ BEGIN
     execute immediate 'delete from EMPLNAME';
 END@
 
-import from '{{ egeria_samples_minimal_targets.files }}/Names.csv' of DEL modified by coldel; skipcount 1 insert into EMPLNAME@
+import from '{{ egeria_samples_minimal_targets.files }}/names.csv' of DEL modified by coldel; skipcount 1 insert into EMPLNAME@
 
 terminate@
