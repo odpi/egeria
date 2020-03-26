@@ -138,13 +138,11 @@
   vars:
     ingest:
       datastage:
-        # TODO: change this to a per-flow set of table definitions
-        - from: "metadata/ibm-igc/ds_tabledefs_{{ egeria_samples_minimal_db_type }}.isx"
+        - from: "metadata/ibm-igc/ds_tabledefs_{{ egeria_samples_minimal_flow }}.isx"
           into_project: minimal
           with_options:
             overwrite: True
-        # TODO: change this to a per-flow set of jobs
-        - from: "metadata/ibm-igc/ds_jobs_{{ egeria_samples_minimal_db_type }}.isx"
+        - from: "metadata/ibm-igc/ds_jobs_{{ egeria_samples_minimal_flow }}.isx"
           into_project: minimal
           with_options:
             overwrite: True

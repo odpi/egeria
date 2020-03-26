@@ -7,3 +7,4 @@ egeria_samples_minimal_tables:
   - EMPLNAME
 egeria_samples_minimal_files:
   - names.csv
+egeria_samples_minimal_flow: flow1

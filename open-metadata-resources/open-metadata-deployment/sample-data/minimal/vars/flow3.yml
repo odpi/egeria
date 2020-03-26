@@ -6,3 +6,4 @@
 egeria_samples_minimal_tables:
   - EMPLDIRECTORY
 egeria_samples_minimal_files: []
+egeria_samples_minimal_flow: flow3

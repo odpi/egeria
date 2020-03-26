@@ -7,3 +7,4 @@ egeria_samples_minimal_tables:
   - WORKPLACE
 egeria_samples_minimal_files:
   - locations.csv
+egeria_samples_minimal_flow: flow2
