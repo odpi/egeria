@@ -59,4 +59,4 @@
       when: >
         ('ibm_information_server_engine' in group_names)
         and (egeria_samples_minimal_db_type == 'ibm-db2')
-        and __minimal_db2catalog_completion.stdout.find(item) > 0
+        and __minimal_db2catalog_completion.stdout.find('MINIMAL') > 0

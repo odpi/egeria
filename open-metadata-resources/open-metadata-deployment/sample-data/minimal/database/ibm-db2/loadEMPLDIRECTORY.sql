@@ -21,6 +21,4 @@ BEGIN
     execute immediate 'delete from EMPLDIRECTORY';
 END@
 
-import from '{{ egeria_samples_minimal_targets.files }}/locations.csv' of DEL modified by coldel; skipcount 1 insert into EMPLDIRECTORY@
-
 terminate@
