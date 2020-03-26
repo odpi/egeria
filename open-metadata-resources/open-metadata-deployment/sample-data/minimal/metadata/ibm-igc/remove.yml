@@ -149,7 +149,7 @@
     {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
     -u {{ ibm_infosvr_users.isadmin }}
     -w {{ ibm_infosvr_upwds.isadmin }}
-    -n Minimal_SampleFiles
+    -n Minimal_{{ item }}
     -a delete
     --type area
   args:
@@ -164,7 +164,7 @@
     {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
     -u {{ ibm_infosvr_users.isadmin }}
     -w {{ ibm_infosvr_upwds.isadmin }}
-    -n Minimal
+    -n Minimal_{{ item }}
     -a delete
     --type area
   args:
