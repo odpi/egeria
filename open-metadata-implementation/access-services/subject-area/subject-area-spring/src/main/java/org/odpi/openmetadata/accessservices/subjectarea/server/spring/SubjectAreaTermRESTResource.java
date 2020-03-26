@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -27,7 +26,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * Default constructor
      */
     public SubjectAreaTermRESTResource() {
-        //SubjectAreaRESTServicesInstance registers this omas.
+
     }
 
     /**
@@ -112,7 +111,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
         return restAPI.findTerm(serverName, userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
-    /*
+    /**
      * Get Term relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.subjectarea.initialization;
+package org.odpi.openmetadata.accessservices.subjectarea.server;
 
 import org.odpi.openmetadata.accessservices.subjectarea.admin.SubjectAreaAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
