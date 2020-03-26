@@ -31,4 +31,4 @@
     executable: /bin/bash
   become: yes
   become_user: "{{ egeria_samples_db_credentials.owner }}"
-  when: __minimal_db2catalog_completion.stdout.find(item) == -1
+  when: __minimal_db2catalog_completion.stdout.find('MINIMAL') == -1

@@ -7,7 +7,7 @@
   any_errors_fatal: true
   vars_files:
     - defaults/main.yml
-    - vars/databases.yml
+    - vars/data.yml
   tasks:
     - name: load sample data files
       include_tasks: data-files/load.yml
@@ -23,7 +23,7 @@
   any_errors_fatal: true
   vars_files:
     - defaults/main.yml
-    - vars/databases.yml
+    - vars/data.yml
   tasks:
     - name: load sample data files
       include_tasks: data-files/load.yml

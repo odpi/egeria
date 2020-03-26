@@ -156,7 +156,8 @@
     executable: /bin/bash
   when: >
     ('ibm_information_server_engine' in group_names)
-    and __minimal_existing_import_areas.stdout.find('Minimal_SampleFiles') != -1
+    and __minimal_existing_import_areas.stdout.find('Minimal_'~item) != -1
+  with_items: "{{ egeria_samples_minimal_files }}"
 
 - name: remove Metadata Asset Manager database import areas
   shell: >
@@ -171,3 +172,4 @@
   when: >
     ('ibm_information_server_engine' in group_names)
     and __minimal_existing_import_areas.stdout.find('Minimal_'~item) != -1
+  with_items: "{{ egeria_samples_minimal_tables }}"

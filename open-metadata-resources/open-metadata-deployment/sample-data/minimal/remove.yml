@@ -7,7 +7,7 @@
   any_errors_fatal: true
   vars_files:
     - defaults/main.yml
-    - vars/databases.yml
+    - vars/data.yml
   tasks:
     - name: remove sample data files
       include_tasks: data-files/remove.yml
@@ -20,7 +20,7 @@
   any_errors_fatal: true
   vars_files:
     - defaults/main.yml
-    - vars/databases.yml
+    - vars/data.yml
   tasks:
     - name: remove sample data files
       include_tasks: data-files/remove.yml

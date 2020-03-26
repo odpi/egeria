@@ -17,7 +17,7 @@
     name: IBM.infosvr-metadata-asset-manager
   vars:
     import_areas:
-      - name: Minimal_SampleFiles_{{ item }}
+      - name: Minimal_{{ item }}
         type: LocalFileConnector
         description: "Loads metadata for Minimal sample files"
         metadata_interchange_server: "{{ groups['ibm_information_server_engine'][0] | lower }}"
