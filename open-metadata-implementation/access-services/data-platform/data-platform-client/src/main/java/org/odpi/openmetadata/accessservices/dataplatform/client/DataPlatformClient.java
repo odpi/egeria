@@ -73,14 +73,18 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
     public GUIDResponse createExternalDataPlatform(String userId, SoftwareServerCapability softwareServerCapability) throws
             InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
-            final String methodName = "createExternalDataPlatform";
+        final String methodName = "createExternalDataPlatform";
 
-            invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
 
-            DataPlatformRegistrationRequestBody requestBody = new DataPlatformRegistrationRequestBody();
-            requestBody.setSoftwareServerCapability(softwareServerCapability);
+        DataPlatformRegistrationRequestBody requestBody = new DataPlatformRegistrationRequestBody();
+        requestBody.setSoftwareServerCapability(softwareServerCapability);
 
-            return callGUIDPostRESTCall(userId, methodName, DATA_PLATFORM_REGISTRATION_URL_TEMPLATE, requestBody);
+        return callGUIDPostRESTCall(methodName,
+                serverPlatformURLRoot + DATA_PLATFORM_REGISTRATION_URL_TEMPLATE,
+                requestBody,
+                serverName,
+                userId);
     }
 
     /**
@@ -104,6 +108,10 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
         DeployedDatabaseSchemaRequestBody requestBody = new DeployedDatabaseSchemaRequestBody();
         requestBody.setDeployedDatabaseSchema(deployedDatabaseSchema);
 
-        return callGUIDPostRESTCall(userId, methodName, DEPLOYED_DATABASE_SCHEMA_URL_TEMPLATE, requestBody);
+        return callGUIDPostRESTCall(methodName,
+                serverPlatformURLRoot + DEPLOYED_DATABASE_SCHEMA_URL_TEMPLATE,
+                requestBody,
+                serverName,
+                userId);
     }
 }
