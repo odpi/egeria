@@ -6,9 +6,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.springframework.util.ReflectionUtils;
@@ -109,10 +120,10 @@ public class AssetCatalogClientTest {
 
     @Test
     public void testGetClassificationsForAsset() throws Exception {
-        ClassificationsResponse response = mockClassificationsResponse();
+        ClassificationListResponse response = mockClassificationsResponse();
 
         when(connector.callGetRESTCall(eq("getClassificationsForAsset"),
-                eq(ClassificationsResponse.class),
+                eq(ClassificationListResponse.class),
                 anyString(),
                 eq(SERVER_NAME),
                 eq(USER_ID),
@@ -120,13 +131,13 @@ public class AssetCatalogClientTest {
                 eq(ASSET_TYPE),
                 eq(CLASSIFICATION_NAME))).thenReturn(response);
 
-        ClassificationsResponse classificationsResponse = assetCatalog.getClassificationsForAsset(
+        ClassificationListResponse classificationListResponse = assetCatalog.getClassificationsForAsset(
                 USER_ID,
                 ASSET_ID,
                 ASSET_TYPE,
                 CLASSIFICATION_NAME);
 
-        Assert.assertEquals(CLASSIFICATION_NAME, classificationsResponse.getClassifications().get(0).getName());
+        Assert.assertEquals(CLASSIFICATION_NAME, classificationListResponse.getClassifications().get(0).getName());
     }
 
     @Test
@@ -287,10 +298,10 @@ public class AssetCatalogClientTest {
         return searchParameters;
     }
 
-    private ClassificationsResponse mockClassificationsResponse() {
-        ClassificationsResponse classificationsResponse = new ClassificationsResponse();
-        classificationsResponse.setClassifications(mockClassifications());
-        return classificationsResponse;
+    private ClassificationListResponse mockClassificationsResponse() {
+        ClassificationListResponse classificationListResponse = new ClassificationListResponse();
+        classificationListResponse.setClassifications(mockClassifications());
+        return classificationListResponse;
     }
 
 

@@ -3,7 +3,15 @@
 package org.odpi.openmetadata.accessservices.assetcatalog;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
@@ -128,21 +136,21 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
      * {@inheritDoc}
      */
     @Override
-    public ClassificationsResponse getClassificationsForAsset(String userId,
-                                                              String assetGUID,
-                                                              String assetType,
-                                                              String classificationName)
+    public ClassificationListResponse getClassificationsForAsset(String userId,
+                                                                 String assetGUID,
+                                                                 String assetType,
+                                                                 String classificationName)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "getClassificationsForAsset";
 
         validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
 
-        ClassificationsResponse classificationsResponse = callGetRESTCall(methodName, ClassificationsResponse.class,
+        ClassificationListResponse classificationListResponse = callGetRESTCall(methodName, ClassificationListResponse.class,
                 serverPlatformURLRoot + BASE_PATH + ASSET_CLASSIFICATIONS,
                 serverName, userId, assetGUID, assetType, classificationName);
 
-        detectExceptions(classificationsResponse);
-        return classificationsResponse;
+        detectExceptions(classificationListResponse);
+        return classificationListResponse;
     }
 
     /**
