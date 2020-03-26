@@ -25,6 +25,7 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
             "/data-platform/users/{1}/registration";
     private static final String DEPLOYED_DATABASE_SCHEMA_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
             "/data-platform/users/{1}/deployed-database-schema";
+    private String externalSourceName;
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -79,6 +80,8 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
 
         DataPlatformRegistrationRequestBody requestBody = new DataPlatformRegistrationRequestBody();
         requestBody.setSoftwareServerCapability(softwareServerCapability);
+        requestBody.setExternalSourceName(softwareServerCapability.getQualifiedName());
+        setExternalSourceName(softwareServerCapability.getQualifiedName());
 
         return callGUIDPostRESTCall(methodName,
                 serverPlatformURLRoot + DATA_PLATFORM_REGISTRATION_URL_TEMPLATE,
@@ -107,11 +110,20 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
 
         DeployedDatabaseSchemaRequestBody requestBody = new DeployedDatabaseSchemaRequestBody();
         requestBody.setDeployedDatabaseSchema(deployedDatabaseSchema);
+        requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(methodName,
                 serverPlatformURLRoot + DEPLOYED_DATABASE_SCHEMA_URL_TEMPLATE,
                 requestBody,
                 serverName,
                 userId);
+    }
+
+    public String getExternalSourceName() {
+        return externalSourceName;
+    }
+
+    public void setExternalSourceName(String externalSourceName) {
+        this.externalSourceName = externalSourceName;
     }
 }
