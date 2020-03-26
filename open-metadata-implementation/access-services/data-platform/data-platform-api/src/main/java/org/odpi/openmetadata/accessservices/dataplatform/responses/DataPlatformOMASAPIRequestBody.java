@@ -19,11 +19,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = DataPlatformRegistrationRequestBody.class, name = "DataPlatformRegistration"),
-                @JsonSubTypes.Type(value = DeployedDatabaseSchemaRequestBody.class, name = "DeployedDatabaseSchema")
+                @JsonSubTypes.Type(value = DataPlatformRegistrationRequestBody.class, name = "dataPlatform"),
+                @JsonSubTypes.Type(value = DeployedDatabaseSchemaRequestBody.class, name = "deployedDatabaseSchema")
         })
 
-public abstract class DataPlatformOMASAPIRequestBody extends FFDCResponseBase implements java.io.Serializable {
+public abstract class DataPlatformOMASAPIRequestBody implements java.io.Serializable {
 
     private static final long serialVersionUID = 1L;
 

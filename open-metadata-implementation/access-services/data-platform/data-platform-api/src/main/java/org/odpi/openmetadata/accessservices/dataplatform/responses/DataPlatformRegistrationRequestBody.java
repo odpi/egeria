@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataPlatformRegistrationRequestBody extends DataPlatformOMASAPIRequestBody {
 
-    @JsonProperty("softwareServerCapability")
+    @JsonProperty("dataPlatform")
     private SoftwareServerCapability softwareServerCapability;
 
     /**
