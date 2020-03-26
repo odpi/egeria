@@ -16,9 +16,8 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -82,7 +81,7 @@ class AssetCatalogOMASServiceTest {
     @Test
     @DisplayName("Asset Classification")
     void testGetClassificationForAsset() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
-        ClassificationsResponse expectedResponse = mockClassificationsResponse();
+        ClassificationListResponse expectedResponse = mockClassificationsResponse();
         when(assetCatalog.getClassificationsForAsset(anyString(), anyString(), anyString(), anyString())).thenReturn(expectedResponse);
         List<Classification> resultList = assetCatalogOMASService.getClassificationsForAsset(user, assetId, typeDef, CONFIDENTIALITY);
         verifyClassificationResponse(resultList);
@@ -133,8 +132,8 @@ class AssetCatalogOMASServiceTest {
         return type1;
     }
 
-    private ClassificationsResponse mockClassificationsResponse() {
-        ClassificationsResponse expectedResponse = new ClassificationsResponse();
+    private ClassificationListResponse mockClassificationsResponse() {
+        ClassificationListResponse expectedResponse = new ClassificationListResponse();
         List<Classification> expectedClassificationList = new ArrayList<>();
         Classification expectedClassification = new Classification();
         Type type = mockType(CONFIDENTIALITY);

@@ -3,11 +3,23 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.server.spring;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRESTService;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -96,11 +108,11 @@ public class AssetCatalogEntityResource {
      */
     @GetMapping(path = "/asset-classifications/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ClassificationsResponse getClassificationsForAsset(@PathVariable("serverName") String serverName,
-                                                              @PathVariable("userId") String userId,
-                                                              @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                              @RequestParam(name = "assetType", required = false) String assetType,
-                                                              @RequestParam(name = "classificationName", required = false) String classificationName) {
+    public ClassificationListResponse getClassificationsForAsset(@PathVariable("serverName") String serverName,
+                                                                 @PathVariable("userId") String userId,
+                                                                 @PathVariable("assetGUID") @NotBlank String assetGUID,
+                                                                 @RequestParam(name = "assetType", required = false) String assetType,
+                                                                 @RequestParam(name = "classificationName", required = false) String classificationName) {
         return assetService.getClassificationByAssetGUID(serverName, userId, assetGUID, assetType, classificationName);
     }
 
@@ -210,6 +222,5 @@ public class AssetCatalogEntityResource {
                                                         @RequestParam(name = "type", required = false) @Nullable String type) {
         return assetService.getSupportedTypes(serverName, userId, type);
     }
-
 
 }
