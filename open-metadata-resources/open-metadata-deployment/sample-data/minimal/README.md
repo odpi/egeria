@@ -7,15 +7,23 @@ The Minimal samples provide a low volume set of examples for very basic initial 
 these are focused on efforts for testing lineage across various connectors, and are thus starting with a minimal
 set of targets to which to deploy.
 
-The samples themselves broadly fit into two categories:
+The samples themselves include the following:
 
-- data: provided as both sample files and database tables
-    - 1 database, currently only loadable to IBM DB2
-    - 1 sample file (semi-colon separated CSV)
-- metadata: provided as archives that can be loaded into one or more metadata repositories
-    - 2 sample IBM DataStage jobs (currently only loadable to IBM Information Server):
-        - 1 job loading from (input) file to table
-        - 1 job loading from table to (output) file
+- 1 database:
+    - `MINIMAL` containing all of the tables below
+- 3 database tables (IBM DB2):
+    - `EMPLNAME` with columns: `EMPID`, `FNAME`, `SURNAME`, `LOCID`
+    - `WORKPLACE` with columns: `LOCID`, `LOCNAME`
+    - `EMPLDIRECTORY` with columns: `EMPID`, `EMPNAME`, `LOCID`, `LOCNAME`
+- 2 files under the `/data/files/minimal` directory (by default):
+    - `names.csv` with fields: `Id`, `First`, `Last`, `Location`
+    - `locations.csv` with fields: `Id`, `Name`
+- 3 ETL jobs (IBM DataStage) under a project named `minimal`:
+    - `flow1` loads the `names.csv` file into the `EMPLNAME` table
+    - `flow2` loads the `locations.csv` file into the `WORKPLACE` table
+    - `flow3` joins the `EMPLNAME` and `WORKPLACE` tables and loads the result to `EMPLDIRECTORY`
+- 1 ETL abstraction (IBM DataStage "sequence") under the `minimal` project:
+    - `sequence` orchestrates the execution of `flow1`, `flow2` and then `flow3`
 
 ## Requirements
 
@@ -52,33 +60,61 @@ For repeatability, ie. to achieve the same starting point each time, follow this
 
 Should you want to "reset" your environment, simply re-run these steps.
 
-(While you can likely skip some of the first steps the first time you run the samples deployment, it will
-not harm anything to run them if your environment is empty -- so the safest approach is to always run all
-of the steps.)
-
 ## Loading the samples to your environment
+
+### 1. Load the sample data
 
 Assuming you have configured the settings as listed under "Requirements" above, run the `deploy.yml` playbook to
 deploy everything (using Ansible):
 
 ```shell script
-$ ansible-playbook -i hosts deploy.yml
+$ ansible-playbook -i hosts deploy-data.yml
 ```
+
+This only needs to be done once and simply makes the data available, but does not harvest or
+process any metadata.
+
+### 2. Load the sample metadata, flow-by-flow
+
+You can then load the flow-specific metadata, flow-by-flow, using the following:
+
+```shell script
+$ ansible-playbook -i hosts deploy-flowX.yml
+```
+
+Note that the flows are intended to build on each other, so you should really run this with
+`deploy-flow1.yml` first, then `deploy-flow2.yml`, and so on.
 
 If you have configured the [IGC Repository Connector](https://github.com/odpi/egeria-connector-ibm-information-server)
 in advance of running the playbook, including the event mapper configuration, you will also
 see events published into the cohort for these samples as well as part of the load process.
 
+The flows build upon each other as follows:
+
+- `deploy-flow1` contains only the `flow1` ETL job loading from file to table
+- `deploy-flow2` adds another file-to-table ETL job (`flow2`) and also a process abstraction (`sequence`)
+- `deploy-flow3` adds a table-to-table ETL job that includes a join (`flow3`), and updates `sequence`
+- `deploy-flow4` updates the logic of `flow3` by adding a transformation that concatenates two columns after the join
+
+Since they are cumulative, each latter flow attempts to re-load any objects needed from prior
+flows, in case they do not already exist. In other words, from a clean environment, if you want
+to jump straight to the `flow3` situation you can simply run `deploy-flow3` directly. Just be aware
+that in the case where a flow contains updates to previous artifacts, by directly deploying a latter
+flow without first loading the previous flows the update will not be done but simply an addition.
+
 ## Removing the samples from your environment
 
-A removal playbook is also provided to clean the samples from your environment, allowing you
-to repeat the load process if you so desire.
+### 1. Removing the flows and metadata
+
+A removal playbook is also provided to clean all of the minimal samples from your environment,
+allowing you to repeat the load process if you so desire. (Note that these are not removed
+flow-by-flow, but all at once.)
 
 Again, assuming you have configured the settings as listed under "Requirements" above, run the removal playbook as
 follows:
 
-```bash
-ansible-playbook -i hosts remove.yml
+```shell script
+$ ansible-playbook -i hosts remove.yml
 ```
 
 Note that to fully remove artifacts from an IGC environment you must also allow import areas to
@@ -98,6 +134,17 @@ client.
 
 - The local file system data connection (can only be deleted via Metadata Asset Manager)
 - The database data connection (can only be deleted via Metadata Asset Manager)
+
+### 2. Removing the underlying data
+
+It is also possible to remove the underlying data (ie. the databases and the files). To do this,
+run the following playbook:
+
+```shell script
+$ ansible-playbook -i hosts remove-data.yml
+```
+
+Note that this should only be done after first removing the metadata (above).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
