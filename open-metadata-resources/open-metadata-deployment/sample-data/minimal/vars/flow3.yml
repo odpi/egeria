@@ -4,6 +4,10 @@
 
 # Artifacts used for flow3 (do not change)
 egeria_samples_minimal_tables:
+  - EMPLNAME
+  - WORKPLACE
   - EMPLDIRECTORY
-egeria_samples_minimal_files: []
+egeria_samples_minimal_files:
+  - names.csv
+  - locations.csv
 egeria_samples_minimal_flow: flow3
