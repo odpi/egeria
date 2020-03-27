@@ -6,9 +6,16 @@ import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetConverter
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+/**
+ * Relationship Handler supports the lookup of the asset's relationship from the repositories.
+ * It runs on the server-side of the Asset Catalog OMAS, fetches the relationships using the RepositoryHandler.
+ */
 public class RelationshipHandler {
 
     private final RepositoryHandler repositoryHandler;
@@ -24,7 +31,7 @@ public class RelationshipHandler {
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
-     * @param errorHandler
+     * @param errorHandler            provides common validation routines for the other handler classes
      */
     public RelationshipHandler(InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler,
                                OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
@@ -35,10 +42,23 @@ public class RelationshipHandler {
         this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper, this.errorHandler);
     }
 
+    /**
+     * Fetch relationship between entities details based on its unique identifier of the ends
+     *
+     * @param userId           String unique identifier for the user
+     * @param entity1GUID      Entity guid of the first end of the relationship
+     * @param entity2GUID      Entity guid of the second end of the relationship
+     * @param relationshipType Type of the relationship
+     * @return the relationship between entities
+     * @throws InvalidParameterException  full path or userId is null
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
     public org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship getRelationshipBetweenEntities(String userId,
                                                                                                                String entity1GUID,
                                                                                                                String entity2GUID,
-                                                                                                               String relationshipType) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException {
+                                                                                                               String relationshipType)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         final String methodName = "getRelationshipBetweenEntities";
 
         invalidParameterHandler.validateUserId(userId, methodName);
