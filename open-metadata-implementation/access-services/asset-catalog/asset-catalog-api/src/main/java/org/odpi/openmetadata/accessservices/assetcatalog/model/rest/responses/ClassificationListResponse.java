@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,9 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ClassificationsResponse extends AssetCatalogOMASAPIResponse implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class ClassificationListResponse extends AssetCatalogOMASAPIResponse {
 
     private List<Classification> classifications;
 
@@ -38,7 +35,7 @@ public class ClassificationsResponse extends AssetCatalogOMASAPIResponse impleme
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClassificationsResponse that = (ClassificationsResponse) o;
+        ClassificationListResponse that = (ClassificationListResponse) o;
         return Objects.equals(classifications, that.classifications);
     }
 

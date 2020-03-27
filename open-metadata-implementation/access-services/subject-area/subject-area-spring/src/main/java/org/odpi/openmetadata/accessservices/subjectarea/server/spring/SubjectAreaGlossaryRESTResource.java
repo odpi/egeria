@@ -111,7 +111,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
     )  {
         return restAPI.findGlossary(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
     }
-    /*
+    /**
      * Get Glossary relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -144,7 +144,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
                                                             @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                             @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
     ) {
-        return restAPI.getGlossaryRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+        return restAPI.getGlossaryRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
