@@ -11,7 +11,7 @@ BEGIN
         || '  EMPID INT NOT NULL,'
         || '  FNAME VARCHAR(50) NOT NULL,'
         || '  SURNAME VARCHAR(50) NOT NULL,'
-        || '  LOCATION INT NOT NULL,'
+        || '  LOCID INT NOT NULL,'
         || '    PRIMARY KEY(EMPID)'
         || ')';
 
