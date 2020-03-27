@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ClassificationsResponse extends AssetCatalogOMASAPIResponse {
+public class ClassificationListResponse extends AssetCatalogOMASAPIResponse {
 
     private List<Classification> classifications;
 
@@ -35,7 +35,7 @@ public class ClassificationsResponse extends AssetCatalogOMASAPIResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClassificationsResponse that = (ClassificationsResponse) o;
+        ClassificationListResponse that = (ClassificationListResponse) o;
         return Objects.equals(classifications, that.classifications);
     }
 

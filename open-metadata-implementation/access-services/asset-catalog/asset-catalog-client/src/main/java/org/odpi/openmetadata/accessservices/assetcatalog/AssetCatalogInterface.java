@@ -2,7 +2,14 @@
 package org.odpi.openmetadata.accessservices.assetcatalog;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
@@ -68,7 +75,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    ClassificationsResponse getClassificationsForAsset(String userId, String assetGUID, String assetType, String classificationName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    ClassificationListResponse getClassificationsForAsset(String userId, String assetGUID, String assetType, String classificationName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
 
     /**
      * Returns a sub-graph of intermediate assets that connected two assets
@@ -154,5 +161,7 @@ public interface AssetCatalogInterface {
      * @return list of types and sub-types supported for search
      */
 
-    AssetCatalogSupportedTypes getSupportedTypes(String userId, String type) throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+    AssetCatalogSupportedTypes getSupportedTypes(String userId, String type) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+            org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+            org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 }
