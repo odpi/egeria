@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.dataplatform.client;
 
 import org.odpi.openmetadata.accessservices.dataplatform.DataPlatformInterface;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;

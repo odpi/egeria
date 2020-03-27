@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.dataplatform.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
 
