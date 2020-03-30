@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceabl
  */
 public class MockAssetReferenceable extends AssetReferenceable
 {
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Bean constructor
      *

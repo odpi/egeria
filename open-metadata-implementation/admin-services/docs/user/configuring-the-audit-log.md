@@ -13,7 +13,7 @@ sufficient.  This is the just the console audit log destination.
 Using this option overrides all previous audit log destinations.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/cocoMDS1/audit-log-destinations/default
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/default
 ```
 
 If this server is a production server then you will probably want to set up the audit log
@@ -33,6 +33,18 @@ in the request body of the command.  The audit log severities are as follows:
   attention to correct configuration or fix a logic error because it is not operating as a proper peer in the
   open metadata repository cohort.
 * **Security** - Unauthorized access to a service or metadata instance has been attempted.
+* **Startup** - A new component is starting up.
+* **Shutdown** - An existing component is shutting down.
+* **Asset** - An auditable action relating to an asset has been taken.
+* **Types** - Activity is occurring that relates to the open metadata types in use by this server.
+* **Cohort** - The server is exchanging registration information about an open metadata repository cohort that
+  it is connecting to.
+* **Trace** - This is additional information on the operation of the server that may be
+  of assistance in debugging a problem.  It is not normally logged to any destination, but can be added when needed.,
+* **PerfMon** - This log record contains performance monitoring timing information for 
+  specific types of processing. It is not normally logged to any destination, but can be added when needed.
+* **\<Unknown\>** - Uninitialized Severity
+
 
 If an empty list is passed as the request body then all severities are supported by the destination.
 

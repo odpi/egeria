@@ -36,6 +36,7 @@ import java.util.Map;
  */
 public class AssetSummary extends AssetDescriptor
 {
+    private static final long     serialVersionUID = 1L;
 
     /**
      * Default constructor only for subclasses

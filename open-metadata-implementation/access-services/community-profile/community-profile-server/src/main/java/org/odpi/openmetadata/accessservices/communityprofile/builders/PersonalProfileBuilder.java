@@ -47,14 +47,38 @@ public class PersonalProfileBuilder extends ReferenceableBuilder
 
 
     /**
+     * Create/update constructor.
+     *
+     * @param qualifiedName unique name of this object
+     * @param additionalProperties additional properties
+     * @param extendedProperties  properties from the subtype.
+     * @param repositoryHelper helper class for formatting instances
+     * @param serviceName name of this service
+     * @param serverName name of this server
+     */
+    public PersonalProfileBuilder(String               qualifiedName,
+                                  Map<String, String>  additionalProperties,
+                                  Map<String, Object>  extendedProperties,
+                                  OMRSRepositoryHelper repositoryHelper,
+                                  String               serviceName,
+                                  String               serverName)
+    {
+        super(qualifiedName, additionalProperties, extendedProperties, repositoryHelper, serviceName, serverName);
+
+        this.repositoryHelper = repositoryHelper;
+        this.serviceName = serviceName;
+
+        this.errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName);
+    }
+
+
+    /**
      * Create an instance properties object for a Person entity for an individual.
      *
      * @param fullName full name of the person.
      * @param name known name or nickname of the individual.
      * @param jobTitle job title of the individual.
      * @param description job description of the individual.
-     * @param extendedProperties  properties about the individual for a new type that is the subclass of Person.
-     * @param additionalProperties  additional properties about the individual.
      *
      * @return InstanceProperties object
      * @throws InvalidParameterException bad property
@@ -62,13 +86,11 @@ public class PersonalProfileBuilder extends ReferenceableBuilder
     public  InstanceProperties getPersonEntityProperties(String              name,
                                                          String              fullName,
                                                          String              jobTitle,
-                                                         String              description,
-                                                         Map<String, Object> extendedProperties,
-                                                         Map<String, String> additionalProperties) throws InvalidParameterException
+                                                         String              description) throws InvalidParameterException
     {
         final String  methodName = "getPersonEntityProperties";
 
-        InstanceProperties properties = super.getQualifiedNameInstanceProperties(methodName);
+        InstanceProperties properties = super.getInstanceProperties(methodName);
 
         if (fullName != null)
         {
@@ -107,33 +129,6 @@ public class PersonalProfileBuilder extends ReferenceableBuilder
                                                                       methodName);
         }
 
-
-        if (extendedProperties != null)
-        {
-            try
-            {
-                properties = repositoryHelper.addPropertyMapToInstance(serviceName,
-                                                                       null,
-                                                                       extendedProperties,
-                                                                       methodName);
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
-            {
-                final String  propertyName = "extendedProperties";
-
-                errorHandler.handleUnsupportedProperty(error, methodName, propertyName);
-            }
-        }
-
-
-        if ((additionalProperties != null) && (! additionalProperties.isEmpty()))
-        {
-            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         properties,
-                                                                         PersonalProfileMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
-                                                                         additionalProperties,
-                                                                         methodName);
-        }
 
         log.debug("Instance properties: " + properties.toString());
 

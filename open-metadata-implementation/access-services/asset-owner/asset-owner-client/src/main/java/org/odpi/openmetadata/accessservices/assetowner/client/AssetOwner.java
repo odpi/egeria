@@ -5,9 +5,10 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 
 import org.odpi.openmetadata.accessservices.assetowner.api.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
+import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.SecurityTagsRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
@@ -223,7 +224,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         invalidParameterHandler.validateName(typeName, typeNameParameter, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
 
-        AssetRequestBody  requestBody = new AssetRequestBody();
+        AssetRequestBody requestBody = new AssetRequestBody();
 
         requestBody.setQualifiedName(qualifiedName);
         requestBody.setDisplayName(displayName);
@@ -239,6 +240,303 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                                                                   typeName);
 
        return restResult.getGUID();
+    }
+
+
+    /**
+     * Stores the supplied schema details in the catalog and attaches it to the asset.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.  If more attributes need to be added in addition to the
+     * ones supplied then this can be done with addSchemaAttributesToSchemaType().
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param schemaType schema type to create and attach directly to the asset.
+     * @param schemaAttributes optional schema attributes.
+     *
+     * @return guid of the schema type or
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String   addCombinedSchemaToAsset(String                          userId,
+                                             String                          assetGUID,
+                                             SchemaTypeProperties            schemaType,
+                                             List<SchemaAttributeProperties> schemaAttributes) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        final String   methodName = "addCombinedSchemaToAsset";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   schemaTypeParameter = "schemaType";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/schemas/top-level-schema-type-with-attributes";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+        invalidParameterHandler.validateObject(schemaType, schemaTypeParameter, methodName);
+
+        CombinedSchemaRequestBody requestBody = new CombinedSchemaRequestBody();
+
+        requestBody.setSchemaType(schemaType);
+        requestBody.setSchemaAttributes(schemaAttributes);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  assetGUID);
+
+        return restResult.getGUID();
+    }
+
+
+
+    /**
+     * Stores the supplied schema type in the catalog and attaches it to the asset.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param schemaType schema type to create and attach directly to the asset.
+     *
+     * @return guid of the new schema type or
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String   addSchemaTypeToAsset(String               userId,
+                                         String               assetGUID,
+                                         SchemaTypeProperties schemaType) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String   methodName = "addSchemaTypeToAsset";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   schemaTypeParameter = "schemaType";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/schemas/top-level-schema-type";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+        invalidParameterHandler.validateObject(schemaType, schemaTypeParameter, methodName);
+
+        SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
+
+        requestBody.setSchemaTypeProperties(schemaType);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  assetGUID);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Links the supplied schema type directly to the asset.  If this schema is either not found, or
+     * already attached to an asset, then an error occurs.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param schemaTypeGUID unique identifier of the schema type to attach
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void   attachSchemaTypeToAsset(String            userId,
+                                          String            assetGUID,
+                                          String            schemaTypeGUID) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String   methodName = "attachSchemaTypeToAsset";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   schemaTypeParameter = "schemaTypeGUID";
+        final String   urlTemplate
+                = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/schemas/top-level-schema-type/{3}/attach";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeParameter, methodName);
+
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID,
+                                        schemaTypeGUID);
+    }
+
+
+    /**
+     * Unlinks the schema from the asset but does not delete it.  This means it can be be reattached to a different asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @return guid of detached schema type
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String detachSchemaTypeFromAsset(String          userId,
+                                            String          assetGUID) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        final String   methodName = "detachSchemaTypeFromAsset";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   urlTemplate
+                = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/schemas/top-level-schema-type/detach";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  nullRequestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  assetGUID);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Detaches and deletes an asset's schema.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  deleteAssetSchemaType(String          userId,
+                                       String          assetGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String   methodName = "deleteAssetSchemaType";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   urlTemplate
+                = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/schemas/top-level-schema-type/delete";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        restClient.callGUIDPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
+    }
+
+
+    /**
+     * Adds attributes to a complex schema type like a relational table, avro schema or a structured document.
+     * This method can be called repeatedly to add many attributes to a schema.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param parentGUID unique identifier of the schema element to anchor these attributes to.
+     * @param schemaAttributes list of schema attribute objects.
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void addSchemaAttributes(String                          serverName,
+                                    String                          userId,
+                                    String                          assetGUID,
+                                    String                          parentGUID,
+                                    List<SchemaAttributeProperties> schemaAttributes) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String   methodName = "addSchemaAttributesToSchemaType";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   parentGUIDParameter = "parentGUID";
+        final String   urlTemplate
+                = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/schemas/{3}/schema-attributes/list";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameter, methodName);
+
+        SchemaAttributesRequestBody requestBody = new SchemaAttributesRequestBody();
+
+        requestBody.setSchemaAttributeProperties(schemaAttributes);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID,
+                                        parentGUID);
+    }
+
+
+    /**
+     * Adds a schema attribute to a complex schema type like a relational table, avro schema or a structured document.
+     * This method can be called repeatedly to add many attributes to a schema.  The GUID returned can be used to add
+     * nested attributes.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param parentGUID unique identifier of the schema element to anchor these attributes to.
+     * @param schemaAttribute schema attribute object to add.
+     *
+     * @return unique identifier for the new schema attribute or
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String addSchemaAttribute(String                    serverName,
+                                     String                    userId,
+                                     String                    assetGUID,
+                                     String                    parentGUID,
+                                     SchemaAttributeProperties schemaAttribute) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String   methodName = "addSchemaAttributes";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   parentGUIDParameter = "parentGUID";
+        final String   urlTemplate
+                = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/schemas/{3}/schema-attributes";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameter, methodName);
+
+        SchemaAttributeRequestBody requestBody = new SchemaAttributeRequestBody();
+
+        requestBody.setSchemaAttributeProperties(schemaAttribute);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  assetGUID,
+                                                                  parentGUID);
+
+        return restResult.getGUID();
     }
 
 
@@ -260,6 +558,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Deprecated
     public String   addSchemaToAsset(String                userId,
                                      String                assetGUID,
                                      SchemaType            schemaType,
@@ -304,6 +603,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Deprecated
     public void   addSchemaAttributesToSchema(String                 userId,
                                               String                 schemaTypeGUID,
                                               List<SchemaAttribute>  schemaAttributes) throws InvalidParameterException,

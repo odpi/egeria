@@ -164,6 +164,12 @@ public class Classification extends InstanceAuditHeader
         {
             return null;
         }
+        else if ((classificationProperties.getInstanceProperties() == null) &&
+                 (classificationProperties.getEffectiveFromTime() == null) &&
+                 (classificationProperties.getEffectiveToTime() == null))
+        {
+            return null;
+        }
         else
         {
             return new InstanceProperties(classificationProperties);

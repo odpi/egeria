@@ -27,6 +27,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  */
 public abstract class RelatedAssetProperties extends AssetPropertyElementBase
 {
+    private static final long     serialVersionUID = 1L;
+
     /*
      * AssetUniverse extends AssetDetails which extends AssetSummary.  The interaction with the metadata repository
      * pulls the asset universe in one single network interaction and the caller can then explore the metadata

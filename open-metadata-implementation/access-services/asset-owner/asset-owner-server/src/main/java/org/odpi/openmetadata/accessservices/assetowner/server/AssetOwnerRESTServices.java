@@ -3,14 +3,16 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
+import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.SecurityTagsRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.AnnotationHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.DiscoveryAnalysisReportHandler;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
@@ -21,6 +23,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -188,6 +191,329 @@ public class AssetOwnerRESTServices
     }
 
 
+
+    /**
+     * Stores the supplied schema details in the catalog and attaches it to the asset.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.  If more attributes need to be added in addition to the
+     * ones supplied then this can be done with addSchemaAttributesToSchemaType().
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param requestBody schema type to create and attach directly to the asset.
+     *
+     * @return guid of the schema type or
+     * InvalidParameterException full path or userId is null, or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public GUIDResponse   addCombinedSchemaToAsset(String                    serverName,
+                                                   String                    userId,
+                                                   String                    assetGUID,
+                                                   CombinedSchemaRequestBody requestBody)
+    {
+        final String   methodName = "addCombinedSchemaToAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if ((requestBody != null) && (requestBody.getSchemaType() != null))
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                AssetHandler          handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                SchemaType            schemaType = requestBody.getSchemaType().cloneProperties(null);
+                List<SchemaAttribute> schemaAttributes = new ArrayList<>();
+
+                if (requestBody.getSchemaAttributes() != null)
+                {
+                    for (SchemaAttributeProperties schemaAttributeProperties : requestBody.getSchemaAttributes())
+                    {
+                        if (schemaAttributeProperties != null)
+                        {
+                            schemaAttributes.add(schemaAttributeProperties.cloneProperties(null));
+                        }
+                    }
+                }
+
+                if (schemaAttributes.isEmpty())
+                {
+                    schemaAttributes = null;
+                }
+
+                handler.saveAssociatedSchemaType(userId,
+                                                 assetGUID,
+                                                 schemaType,
+                                                 schemaAttributes,
+                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Stores the supplied schema type in the catalog and attaches it to the asset.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param requestBody schema type to create and attach directly to the asset.
+     *
+     * @return guid of the new schema type or
+     * InvalidParameterException full path or userId is null, or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public GUIDResponse   addSchemaTypeToAsset(String                serverName,
+                                               String                userId,
+                                               String                assetGUID,
+                                               SchemaTypeRequestBody requestBody)
+    {
+        final String   methodName = "addSchemaTypeToAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if ((requestBody != null) && (requestBody.getSchemaTypeProperties() != null))
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                AssetHandler          handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                SchemaType            schemaType = requestBody.getSchemaTypeProperties().cloneProperties(null);
+
+                handler.saveAssociatedSchemaType(userId,
+                                                 assetGUID,
+                                                 schemaType,
+                                                 null,
+                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Links the supplied schema type directly to the asset.  If this schema is either not found, or
+     * already attached to an asset, then an error occurs.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param schemaTypeGUID unique identifier of the schema type to attach
+     * @param requestBody null
+     *
+     * @return void or
+     * InvalidParameterException full path or userId or one of the GUIDs is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse   attachSchemaTypeToAsset(String            serverName,
+                                                  String            userId,
+                                                  String            assetGUID,
+                                                  String            schemaTypeGUID,
+                                                  NullRequestBody   requestBody)
+    {
+        return null;
+    }
+
+
+    /**
+     * Unlinks the schema from the asset but does not delete it.  This means it can be be reattached to a different asset.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param requestBody null
+     *
+     * @return guid of the schema type or
+     * InvalidParameterException full path or userId or one of the GUIDs is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public GUIDResponse   detachSchemaTypeFromAsset(String          serverName,
+                                                    String          userId,
+                                                    String          assetGUID,
+                                                    NullRequestBody requestBody)
+    {
+        return null;
+    }
+
+
+    /**
+     * Detaches and deletes an asset's schema.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param requestBody null
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null, or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse  deleteAssetSchemaType(String          serverName,
+                                               String          userId,
+                                               String          assetGUID,
+                                               NullRequestBody requestBody)
+    {
+        return null;
+    }
+
+
+    /**
+     * Adds attributes to a complex schema type like a relational table, avro schema or a structured document.
+     * This method can be called repeatedly to add many attributes to a schema.
+     * The schema type may be attached both directly or indirectly via nested schema elements to the asset.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param parentGUID unique identifier of the schema element to anchor these attributes to.
+     * @param requestBody list of schema attribute objects.
+     *
+     * @return list of unique identifiers for the new schema attributes returned in the same order as the supplied attribute or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addSchemaAttributes(String                      serverName,
+                                            String                      userId,
+                                            String                      assetGUID,
+                                            String                      parentGUID,
+                                            SchemaAttributesRequestBody requestBody)
+    {
+        final String   methodName = "addSchemaAttributes";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if ((requestBody != null)
+                    && (requestBody.getSchemaAttributeProperties() != null)
+                    && (! requestBody.getSchemaAttributeProperties().isEmpty()))
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                AssetHandler      assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                SchemaTypeHandler schemaTypeHandler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+                List<SchemaAttribute>  schemaAttributes = new ArrayList<>();
+
+                for (SchemaAttributeProperties schemaAttributeProperties : requestBody.getSchemaAttributeProperties())
+                {
+                    schemaAttributes.add(schemaAttributeProperties.cloneProperties(null));
+                }
+
+                assetHandler.validateUserForAssetAttachmentUpdate(userId, assetGUID, methodName);
+                schemaTypeHandler.saveSchemaAttributes(userId, parentGUID, schemaAttributes, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Adds attributes to a complex schema type like a relational table, avro schema or a structured document.
+     * This method can be called repeatedly to add many attributes to a schema.
+     * The schema type may be attached both directly or indirectly via nested schema elements to the asset.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param parentGUID unique identifier of the schema element to anchor these attributes to.
+     * @param requestBody schema attribute object.
+     *
+     * @return list of unique identifiers for the new schema attributes returned in the same order as the supplied attribute or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public GUIDResponse addSchemaAttribute(String                     serverName,
+                                           String                     userId,
+                                           String                     assetGUID,
+                                           String                     parentGUID,
+                                           SchemaAttributeRequestBody requestBody)
+    {
+        final String   methodName = "addSchemaAttribute";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if ((requestBody != null) && (requestBody.getSchemaAttributeProperties() != null))
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                AssetHandler      assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                SchemaTypeHandler schemaTypeHandler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+                SchemaAttribute   schemaAttribute = requestBody.getSchemaAttributeProperties().cloneProperties(null);
+
+                assetHandler.validateUserForAssetAttachmentUpdate(userId, assetGUID, methodName);
+                schemaTypeHandler.saveSchemaAttribute(userId, parentGUID, schemaAttribute, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
     /**
      * Links the supplied schema to the asset.  If the schema is not defined in the metadata repository, it
      * is created.
@@ -203,10 +529,11 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public GUIDResponse   addSchemaToAsset(String             serverName,
-                                           String             userId,
-                                           String             assetGUID,
-                                           SchemaRequestBody  requestBody)
+    @Deprecated
+    public GUIDResponse   addSchemaToAsset(String            serverName,
+                                           String            userId,
+                                           String            assetGUID,
+                                           SchemaRequestBody requestBody)
     {
         final String   methodName = "addSchemaToAsset";
 
@@ -257,6 +584,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @Deprecated
     public VoidResponse   addSchemaAttributesToSchema(String                 serverName,
                                                       String                 userId,
                                                       String                 schemaTypeGUID,

@@ -23,7 +23,6 @@ public class MockConnectionCheckedExceptionConnectorProvider extends ConnectorPr
     }
 
 
-
     /**
      * Creates a new instance of a connector based on the information in the supplied connection.
      *
