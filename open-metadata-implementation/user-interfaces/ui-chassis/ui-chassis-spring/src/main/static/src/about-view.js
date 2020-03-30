@@ -15,8 +15,8 @@ class AboutView extends PolymerElement {
        <style include="shared-styles">
         :host {
           display: block;
-
           padding: 10px 20px;
+          background-color:  var(--egeria-background-color);
         }
         div.container {
           min-height: 10em;
@@ -25,11 +25,6 @@ class AboutView extends PolymerElement {
           margin-right: auto;
         }
         
-        @media (max-width: 600px){
-          :host {
-            justify-content: flex-end;
-          }
-        }
       </style>
     
       <token-ajax id="userAjax" last-response="{{a}}" url="/api/about" auto></token-ajax>
