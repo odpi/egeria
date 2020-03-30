@@ -325,6 +325,7 @@ public class TestAssetBoundedSchemaType
      * Validate that 2 different objects with the same content are evaluated as equal.
      * Also that different objects are considered not equal.
      */
+    @SuppressWarnings(value = "deprecation")
     @Test public void testEquals()
     {
         assertFalse(getTestObject().equals(null));
