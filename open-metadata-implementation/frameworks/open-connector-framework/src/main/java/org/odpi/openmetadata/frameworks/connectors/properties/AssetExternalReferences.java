@@ -14,6 +14,8 @@ import java.util.Iterator;
  */
 public abstract class AssetExternalReferences extends AssetPropertyIteratorBase implements Iterator<AssetExternalReference>
 {
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *

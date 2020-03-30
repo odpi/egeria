@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class AdditionalProperties extends AssetPropertyBase
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Map<String, String>  additionalProperties = new HashMap<>();
 
 

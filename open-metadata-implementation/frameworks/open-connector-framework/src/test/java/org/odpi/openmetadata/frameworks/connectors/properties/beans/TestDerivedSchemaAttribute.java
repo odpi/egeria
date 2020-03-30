@@ -61,7 +61,6 @@ public class TestDerivedSchemaAttribute
         testObject.setAdditionalProperties(additionalProperties);
         testObject.setAttributeName("TestAttributeName");
         testObject.setElementPosition(23);
-        testObject.setCardinality("TestCardinality");
         testObject.setDefaultValueOverride("TestDefault");
         testObject.setAttributeType(schemaElement);
         testObject.setExternalAttributeType(schemaLink);
@@ -91,12 +90,10 @@ public class TestDerivedSchemaAttribute
 
         assertTrue(resultObject.getAttributeName().equals("TestAttributeName"));
         assertTrue(resultObject.getElementPosition() == 23);
-        assertTrue(resultObject.getCardinality().equals("TestCardinality"));
         assertTrue(resultObject.getDefaultValueOverride().equals("TestDefault"));
 
         assertTrue(resultObject.getAttributeType().equals(schemaElement));
         assertTrue(resultObject.getExternalAttributeType().equals(schemaLink));
-        assertTrue(resultObject.getAttributeRelationships().equals(relationships));
 
         assertTrue(resultObject.getFormula().equals("TestFormula"));
         assertTrue(resultObject.getQueries().equals(queries));
@@ -120,11 +117,9 @@ public class TestDerivedSchemaAttribute
 
         assertTrue(nullObject.getAttributeName() == null);
         assertTrue(nullObject.getElementPosition() == 0);
-        assertTrue(nullObject.getCardinality() == null);
         assertTrue(nullObject.getDefaultValueOverride() == null);
         assertTrue(nullObject.getAttributeType() == null);
         assertTrue(nullObject.getExternalAttributeType() == null);
-        assertTrue(nullObject.getAttributeRelationships() == null);
 
         assertTrue(nullObject.getFormula() == null);
         assertTrue(nullObject.getQueries() == null);
@@ -141,11 +136,9 @@ public class TestDerivedSchemaAttribute
 
         assertTrue(nullObject.getAttributeName() == null);
         assertTrue(nullObject.getElementPosition() == 0);
-        assertTrue(nullObject.getCardinality() == null);
         assertTrue(nullObject.getDefaultValueOverride() == null);
         assertTrue(nullObject.getAttributeType() == null);
         assertTrue(nullObject.getExternalAttributeType() == null);
-        assertTrue(nullObject.getAttributeRelationships() == null);
 
         assertTrue(nullObject.getFormula() == null);
         assertTrue(nullObject.getQueries() == null);
@@ -158,7 +151,6 @@ public class TestDerivedSchemaAttribute
 
         assertTrue(nullObject.getClassifications() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
-        assertTrue(nullObject.getAttributeRelationships() == null);
 
         nullObject.setQueries(new ArrayList<>());
 

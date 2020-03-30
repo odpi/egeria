@@ -2,16 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 
-import java.util.Map;
 import java.util.Objects;
 
 /**
  * <p>
  *     The AssetSchemaType object provides a base class for the pieces that make up a schema for an asset.
  *     A schema provides information about how the data is structured in the asset.  Schemas are typically
- *     described as nested structures of linked schema elements.  Schemas can also be reused in other schemas.
+ *     described as nested structures of linked schema elements.
  * </p>
  *     AssetSchemaType is an abstract class - its subclasses enable the most accurate and precise mapping of the
  *     elements in a schema to the asset.
@@ -25,10 +24,45 @@ import java.util.Objects;
  *     StructSchemaType elements can be linked to one another using SchemaLink.
  * </p>
  */
-public class AssetSchemaType extends AssetSchemaElement
+public abstract class AssetSchemaType extends AssetSchemaElement
 {
-    SchemaType schemaTypeBean = null;
+    private static final long     serialVersionUID = 1L;
 
+    @SuppressWarnings(value = "deprecation")
+    public static AssetSchemaType createAssetSchemaType(AssetDescriptor parentAsset, SchemaType bean)
+    {
+        AssetSchemaType assetSchemaType = null;
+
+        if (bean instanceof PrimitiveSchemaType)
+        {
+            assetSchemaType = new AssetPrimitiveSchemaType(parentAsset, (PrimitiveSchemaType)bean);
+        }
+        else if (bean instanceof MapSchemaType)
+        {
+            assetSchemaType = new AssetMapSchemaType(parentAsset, (MapSchemaType)bean);
+        }
+        else if (bean instanceof EnumSchemaType)
+        {
+            assetSchemaType = new AssetEnumSchemaType(parentAsset, (EnumSchemaType)bean);
+        }
+        else if (bean instanceof BoundedSchemaType)
+        {
+            assetSchemaType = new AssetBoundedSchemaType(parentAsset, (BoundedSchemaType)bean);
+        }
+        else if (bean instanceof LiteralSchemaType)
+        {
+            assetSchemaType = new AssetLiteralSchemaType(parentAsset, (LiteralSchemaType)bean);
+        }
+        else if (bean instanceof ComplexSchemaType)
+        {
+            assetSchemaType = new AssetComplexSchemaType(parentAsset, (ComplexSchemaType)bean);
+        }
+
+        return assetSchemaType;
+    }
+
+
+    private SchemaType schemaTypeBean = null;
 
     /**
      * Constructor used by the subclasses
@@ -61,7 +95,7 @@ public class AssetSchemaType extends AssetSchemaElement
      * @param schemaTypeBean bean containing the schema element properties
      */
     public AssetSchemaType(AssetDescriptor parentAsset,
-                           SchemaType schemaTypeBean)
+                           SchemaType      schemaTypeBean)
     {
         super(parentAsset, schemaTypeBean);
 
@@ -93,16 +127,12 @@ public class AssetSchemaType extends AssetSchemaElement
 
 
     /**
-     * Return a clone of this schema element.  This method should be overridden by
-     * the subclasses.
+     * Return a clone of this schema type.  This method should be implemented by the subclasses.
      *
      * @param parentAsset description of the asset that this schema element is attached to.
      * @return An instance of the this object's subclass
      */
-    protected AssetSchemaType cloneAssetSchemaType(AssetDescriptor parentAsset)
-    {
-        return new AssetSchemaType(parentAsset, this);
-    }
+    protected abstract AssetSchemaType cloneAssetSchemaType(AssetDescriptor parentAsset);
 
 
     /**
@@ -125,22 +155,6 @@ public class AssetSchemaType extends AssetSchemaElement
     protected SchemaType getSchemaTypeBean()
     {
         return schemaTypeBean;
-    }
-
-
-    /**
-     * Return the simple name of the schema type.
-     *
-     * @return string name
-     */
-    public String  getDisplayName()
-    {
-        if (schemaTypeBean == null)
-        {
-            return null;
-        }
-
-        return this.getSchemaTypeBean().getDisplayName();
     }
 
 
@@ -207,6 +221,7 @@ public class AssetSchemaType extends AssetSchemaElement
         return this.getSchemaTypeBean().getEncodingStandard();
     }
 
+
     /**
      * Standard toString method.
      *
@@ -217,18 +232,20 @@ public class AssetSchemaType extends AssetSchemaElement
     {
         return "AssetSchemaType{" +
                 "parentAsset=" + parentAsset +
-                ", displayName='" + getDisplayName() + '\'' +
                 ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", meanings=" + getMeanings() +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
                 ", assetClassifications=" + getAssetClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

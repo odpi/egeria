@@ -4,7 +4,13 @@ package org.odpi.openmetadata.accessservices.assetcatalog.builders;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElement;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -13,7 +19,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -27,6 +37,12 @@ public class AssetConverter {
         this.repositoryHelper = repositoryHelper;
     }
 
+    /**
+     * Method used to convert the Entity Details to Asset Catalog OMAS Model - Asset Description object
+     *
+     * @param entityDetail entityDetails object
+     * @return Asset Description object
+     */
     public AssetDescription getAssetDescription(EntityDetail entityDetail) {
         AssetDescription assetDescription = new AssetDescription();
         assetDescription.setGuid(entityDetail.getGUID());
@@ -55,6 +71,12 @@ public class AssetConverter {
         return assetDescription;
     }
 
+    /**
+     * Method used to covert a list of relationships from OMRS model to AC OMAS model
+     *
+     * @param relationships list of relationships - OMRS model
+     * @return a list of AC OMAS relationships objects
+     */
     public List<Relationship> convertRelationships(List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships) {
         if (relationships == null) {
             return Collections.emptyList();
@@ -63,6 +85,12 @@ public class AssetConverter {
         return relationships.stream().map(this::convertRelationship).collect(Collectors.toList());
     }
 
+    /**
+     * Method used to convert the relationship from the OMRS model to AC OMAS model
+     *
+     * @param rel relationship in the OMRS model
+     * @return a relationship in AC OMAS model
+     */
     public Relationship convertRelationship(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship rel) {
         Relationship relationship = new Relationship();
 
@@ -92,8 +120,14 @@ public class AssetConverter {
         return relationship;
     }
 
+    /**
+     * Convert a list of Classifications from the OMRS model to Asset Catalog OMAS model
+     *
+     * @param classificationsFromEntity - list of classification in the repository services model
+     * @return list of classifications in the AC OMAS model
+     */
     public List<Classification> convertClassifications
-            (List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> classificationsFromEntity) {
+    (List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> classificationsFromEntity) {
 
         if (classificationsFromEntity == null || classificationsFromEntity.isEmpty()) {
             return new ArrayList<>();
@@ -130,7 +164,12 @@ public class AssetConverter {
         return classifications;
     }
 
-
+    /**
+     * Add an element in the context. If the context is null, the current element becomes the root of the context
+     *
+     * @param assetElement the context
+     * @param entityDetail entity details of the new element
+     */
     public void addElement(AssetElement assetElement, EntityDetail entityDetail) {
         List<Element> context = assetElement.getContext();
         AssetElements element = buildAssetElements(entityDetail);
@@ -145,18 +184,36 @@ public class AssetConverter {
         }
     }
 
+    /**
+     * Returns the last node added in the context
+     *
+     * @param assetElement given context
+     * @return the last element
+     */
     public Element getLastNode(AssetElement assetElement) {
         List<Element> context = assetElement.getContext();
 
         return CollectionUtils.isNotEmpty(context) ? lastElementAdded(context.get(context.size() - 1)) : null;
     }
 
+    /**
+     * Method use to add the parent element to the current element in the built context tree
+     *
+     * @param parentElement parent element from the context
+     * @param element       a child element
+     */
     public void addChildElement(Element parentElement, Element element) {
         if (parentElement != null) {
             parentElement.setParentElement(element);
         }
     }
 
+    /**
+     * Method use to add to the context of the given entity
+     *
+     * @param assetElement asset element that contains the current context
+     * @param entityDetail entity details
+     */
     public void addContextElement(AssetElement assetElement, EntityDetail entityDetail) {
         List<Element> context = assetElement.getContext();
         if (context == null) {
@@ -166,6 +223,12 @@ public class AssetConverter {
         assetElement.setContext(context);
     }
 
+    /**
+     * Method used to convert TypeDef to Type object from the Asset Catalog OMAS
+     *
+     * @param openType type definition
+     * @return the Type object
+     */
     public Type convertType(TypeDef openType) {
         Type type = new Type();
         type.setName(openType.getName());
@@ -175,6 +238,12 @@ public class AssetConverter {
         return type;
     }
 
+    /**
+     * Create an Asset Element from the Entity Details
+     *
+     * @param entityDetail entityDetails
+     * @return an AssetElement object
+     */
     public AssetElements buildAssetElements(EntityDetail entityDetail) {
         if (entityDetail == null) {
             return null;

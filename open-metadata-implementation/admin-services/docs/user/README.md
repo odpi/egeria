@@ -10,7 +10,7 @@ each supporting a variety of open metadata and governance capabilities.
 In Figure 1, the OMAG Server Platforms are the blue rounded boxes and the 
 orange circles are the OMAG Servers.
 
-![Figure 1](../../../../open-metadata-publication/website/images/egeria-distributed-operation.png)
+![Figure 1](../../../../open-metadata-publication/website/images/egeria-distributed-operation.png#pagewidth)
 > **Figure 1:** OMAG Server Platforms running in different cloud platforms and/or data centers,
 > each hosting OMAG Servers that are providing specialist integration capability
 > for different tools.

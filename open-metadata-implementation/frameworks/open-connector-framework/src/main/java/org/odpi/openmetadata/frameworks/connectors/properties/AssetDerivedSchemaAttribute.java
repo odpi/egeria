@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class AssetDerivedSchemaAttribute extends AssetSchemaAttribute
 {
+    private static final long     serialVersionUID = 1L;
+
     protected DerivedSchemaAttribute           schemaAttributeBean;
     protected AssetSchemaImplementationQueries queries;
 
@@ -22,40 +24,12 @@ public class AssetDerivedSchemaAttribute extends AssetSchemaAttribute
      * Bean constructor
      *
      * @param schemaAttributeBean bean containing all of the properties
-     * @param localSchemaType type for this schema attribute
      * @param queries queries used to create the element
      */
-    public AssetDerivedSchemaAttribute(DerivedSchemaAttribute schemaAttributeBean,
-                                       AssetSchemaType localSchemaType,
+    public AssetDerivedSchemaAttribute(DerivedSchemaAttribute           schemaAttributeBean,
                                        AssetSchemaImplementationQueries queries)
     {
-        super(schemaAttributeBean, localSchemaType);
-
-        if (schemaAttributeBean == null)
-        {
-            this.schemaAttributeBean = new DerivedSchemaAttribute();
-        }
-        else
-        {
-            this.schemaAttributeBean = schemaAttributeBean;
-        }
-
-        this.queries = queries;
-    }
-
-
-    /**
-     * Bean constructor
-     *
-     * @param schemaAttributeBean bean containing all of the properties
-     * @param externalSchemaLink indirect link to the type for this schema attribute
-     * @param queries queries used to create the element
-     */
-    public AssetDerivedSchemaAttribute(DerivedSchemaAttribute schemaAttributeBean,
-                                       AssetSchemaLink externalSchemaLink,
-                                       AssetSchemaImplementationQueries queries)
-    {
-        super(schemaAttributeBean, externalSchemaLink);
+        super(schemaAttributeBean);
 
         if (schemaAttributeBean == null)
         {
@@ -75,43 +49,13 @@ public class AssetDerivedSchemaAttribute extends AssetSchemaAttribute
      *
      * @param parentAsset description of the asset that this schema attribute is attached to.
      * @param schemaAttributeBean bean containing all of the properties
-     * @param localSchemaType type for this schema attribute
      * @param queries queries used to create the element
      */
-    public AssetDerivedSchemaAttribute(AssetDescriptor parentAsset,
-                                       DerivedSchemaAttribute schemaAttributeBean,
-                                       AssetSchemaType localSchemaType,
+    public AssetDerivedSchemaAttribute(AssetDescriptor                  parentAsset,
+                                       DerivedSchemaAttribute           schemaAttributeBean,
                                        AssetSchemaImplementationQueries queries)
     {
-        super(parentAsset, schemaAttributeBean, localSchemaType);
-
-        if (schemaAttributeBean == null)
-        {
-            this.schemaAttributeBean = new DerivedSchemaAttribute();
-        }
-        else
-        {
-            this.schemaAttributeBean = schemaAttributeBean;
-        }
-
-        this.queries = queries;
-    }
-
-
-    /**
-     * Bean constructor with parent asset
-     *
-     * @param parentAsset description of the asset that this schema attribute is attached to.
-     * @param schemaAttributeBean bean containing all of the properties
-     * @param externalSchemaLink indirect link to the type for this schema attribute
-     * @param queries queries used to create the element
-     */
-    public AssetDerivedSchemaAttribute(AssetDescriptor parentAsset,
-                                       DerivedSchemaAttribute schemaAttributeBean,
-                                       AssetSchemaLink externalSchemaLink,
-                                       AssetSchemaImplementationQueries queries)
-    {
-        super(parentAsset, schemaAttributeBean, externalSchemaLink);
+        super(parentAsset, schemaAttributeBean);
 
         if (schemaAttributeBean == null)
         {
@@ -221,25 +165,28 @@ public class AssetDerivedSchemaAttribute extends AssetSchemaAttribute
     public String toString()
     {
         return "AssetDerivedSchemaAttribute{" +
-                "queries=" + queries +
-                ", parentAsset=" + parentAsset +
-                ", formula='" + getFormula() + '\'' +
+                "formula='" + getFormula() + '\'' +
                 ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
+                ", category=" + getCategory() +
                 ", cardinality='" + getCardinality() + '\'' +
+                ", minCardinality=" + getMinCardinality() +
+                ", maxCardinality=" + getMaxCardinality() +
+                ", allowsDuplicateValues=" + allowsDuplicateValues() +
+                ", hasOrderedValues=" + hasOrderedValues() +
+                ", sortOrder=" + getSortOrder() +
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", localSchemaType=" + getLocalSchemaType() +
+                ", attributeType=" + getAttributeType() +
                 ", externalSchemaLink=" + getExternalSchemaLink() +
                 ", attributeRelationships=" + getAttributeRelationships() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", meanings=" + getMeanings() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
-                ", assetClassifications=" + getAssetClassifications() +
                 '}';
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
