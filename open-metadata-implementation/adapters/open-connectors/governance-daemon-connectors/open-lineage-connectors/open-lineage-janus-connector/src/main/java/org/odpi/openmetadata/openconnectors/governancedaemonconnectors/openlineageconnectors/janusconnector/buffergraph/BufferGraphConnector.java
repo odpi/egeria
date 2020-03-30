@@ -211,7 +211,9 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      * @param lineageEntity - Entity to be created
      */
     private  Vertex addVertex(GraphTraversalSource g,LineageEntity lineageEntity) throws JanusConnectorException{
-        Iterator<Vertex> vertexIt = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
+        Iterator<Vertex> vertexIt = g.V()
+                                     .has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid())
+                                     .has(PROPERTY_KEY_ENTITY_VERSION,lineageEntity.getVersion());
         Vertex vertex;
 
         if(!vertexIt.hasNext()){

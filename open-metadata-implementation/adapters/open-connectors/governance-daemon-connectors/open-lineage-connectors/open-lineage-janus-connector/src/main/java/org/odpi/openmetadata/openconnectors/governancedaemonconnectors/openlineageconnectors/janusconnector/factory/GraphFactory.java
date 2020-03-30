@@ -159,6 +159,8 @@ public class GraphFactory extends IndexingFactory {
 
         createCompositeIndexForProperty(PROPERTY_NAME_GUID, PROPERTY_KEY_ENTITY_GUID, true, janusGraph, Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_LABEL, PROPERTY_KEY_LABEL, false, janusGraph, Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_VERSION, PROPERTY_KEY_ENTITY_VERSION, false, janusGraph, Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_METADATA_ID, PROPERTY_KEY_METADATA_ID, false, janusGraph, Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_LABEL, PROPERTY_KEY_RELATIONSHIP_LABEL, false, janusGraph, Edge.class);
         createCompositeIndexForProperty(PROPERTY_NAME_GUID, PROPERTY_KEY_RELATIONSHIP_GUID, false, janusGraph, Edge.class);
 

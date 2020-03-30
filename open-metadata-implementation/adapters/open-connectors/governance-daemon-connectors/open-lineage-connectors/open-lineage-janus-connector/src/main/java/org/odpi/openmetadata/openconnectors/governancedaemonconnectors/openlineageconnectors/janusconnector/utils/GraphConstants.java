@@ -47,6 +47,7 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_PROCESS_TYPE = "processType";
     public static final String PROPERTY_NAME_PARENT_PROCESS_GUID = "parent.process.guid";
     public static final String PROPERTY_NAME_GLOSSARY = "glossary";
+    public static final String PROPERTY_NAME_METADATA_ID = "metadataCollectionId";
 
     public static final String CONDENSED_NODE_DISPLAY_NAME = "...";
 
@@ -73,6 +74,7 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_GLOSSARY_TERM = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_GLOSSARY_TERM;
     public static final String PROPERTY_KEY_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_DISPLAY_NAME;
     public static final String PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_INSTANCEPROP_DISPLAY_NAME;
+    public static final String PROPERTY_KEY_METADATA_ID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_METADATA_ID;
 
     public static final String PROPERTY_KEY_ENTITY_VERSION = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_VERSION;
     public static final String PROPERTY_KEY_ENTITY_CREATED_BY = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_CREATED_BY;
