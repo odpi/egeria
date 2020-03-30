@@ -27,9 +27,10 @@ public enum AssetLineageEventType implements Serializable {
     CLASSIFICATION_CONTEXT_EVENT            (2, "ClassificationContextEvent", "Has the full context for a classified element"),
     UPDATE_ENTITY_EVENT                     (3, "UpdateEvent", "Has the entity that is being updated"),
     DELETE_ENTITY_EVENT                     (4, "DeleteEvent", "Has the entity to be deleted"),
-    UPDATE_RELATIONSHIP_EVENT               (5, "UpdateRelationship", "Has the relationship that is being updated"),
-    DELETE_RELATIONSHIP_EVENT               (6, "DeleteRelationship", "Has the relationship to be deleted"),
-    DECLASSIFIED_ENTITY_EVENT            (7, "DeclassifiedEntityEvent", "All relevant lineage classifications for this entity have been removed"),
+    NEW_RELATIONSHIP_EVENT                  (5, "NewRelationship", "Has the relationship that is being created"),
+    UPDATE_RELATIONSHIP_EVENT               (6, "UpdateRelationship", "Has the relationship that is being updated"),
+    DELETE_RELATIONSHIP_EVENT               (7, "DeleteRelationship", "Has the relationship to be deleted"),
+    DECLASSIFIED_ENTITY_EVENT               (8, "DeclassifiedEntityEvent", "All relevant lineage classifications for this entity have been removed"),
     UNKNOWN_ASSET_LINEAGE_EVENT             (100, "UnknownAssetLineageEvent", "An AssetLineage OMAS event that is not recognized by the local handlers.");
 
     private static final long serialVersionUID = 1L;
