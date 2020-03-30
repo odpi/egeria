@@ -15,8 +15,10 @@ import java.util.Iterator;
  * a new iterator.
  */
 public abstract class AssetSchemaImplementationQueries extends AssetPropertyIteratorBase
-        implements Iterator<AssetSchemaImplementationQuery>
+                                                       implements Iterator<AssetSchemaImplementationQuery>
 {
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *

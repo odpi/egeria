@@ -22,6 +22,8 @@ import java.util.Objects;
  */
 public class AssetDetail extends AssetSummary
 {
+    private static final long     serialVersionUID = 1L;
+
     protected AssetExternalIdentifiers    externalIdentifiers    = null;
     protected AssetRelatedMediaReferences relatedMediaReferences = null;
     protected AssetNoteLogs               noteLogs               = null;

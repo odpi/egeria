@@ -37,17 +37,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = MapSchemaType.class, name = "MapSchemaType"),
                 @JsonSubTypes.Type(value = APISchemaType.class, name = "APISchemaType"),
                 @JsonSubTypes.Type(value = APIOperation.class, name = "APIOperation"),
-                @JsonSubTypes.Type(value = PrimitiveSchemaType.class, name = "PrimitiveSchemaType")
+                @JsonSubTypes.Type(value = LiteralSchemaType.class, name = "LiteralSchemaType"),
+                @JsonSubTypes.Type(value = SimpleSchemaType.class, name = "SimpleSchemaType"),
+                @JsonSubTypes.Type(value = SchemaTypeChoice.class, name = "SchemaTypeChoice"),
         })
+@SuppressWarnings(value = "deprecation")
 public class SchemaType extends SchemaElement
 {
     private static final long     serialVersionUID = 1L;
 
-    protected String              displayName      = null;
     protected String              versionNumber    = null;
     protected String              author           = null;
     protected String              usage            = null;
     protected String              encodingStandard = null;
+    protected String              namespace        = null;
 
     /**
      * Default constructor
@@ -59,33 +62,31 @@ public class SchemaType extends SchemaElement
 
 
     /**
-     * Copy/clone Constructor - the parentAsset is passed separately to the template because it is also
-     * likely to be being cloned in the same operation and we want the definitions clone to point to the
-     * asset clone and not the original asset.
+     * Copy/clone Constructor.
      *
-     * @param templateSchema template object to copy.
+     * @param template template object to copy.
      */
-    public SchemaType(SchemaType templateSchema)
+    public SchemaType(SchemaType template)
     {
-        super(templateSchema);
+        super(template);
 
-        if (templateSchema != null)
+        if (template != null)
         {
-            displayName = templateSchema.getDisplayName();
-            versionNumber = templateSchema.getVersionNumber();
-            author = templateSchema.getAuthor();
-            usage = templateSchema.getUsage();
-            encodingStandard = templateSchema.getEncodingStandard();
+            versionNumber = template.getVersionNumber();
+            author = template.getAuthor();
+            usage = template.getUsage();
+            encodingStandard = template.getEncodingStandard();
+            namespace = template.getNamespace();
         }
     }
 
 
     /**
-     * Return a clone of this schema element.  This method is needed because schema element
-     * is abstract.
+     * Returns a clone of this object as the abstract SchemaElement class.
      *
-     * @return Clone of subclass.
+     * @return SchemaElement
      */
+    @Override
     public SchemaElement cloneSchemaElement()
     {
         return new SchemaType(this);
@@ -93,33 +94,13 @@ public class SchemaType extends SchemaElement
 
 
     /**
-     * Return a clone of this schema type.  This method is needed because schema type
-     * is abstract.
+     * Return a clone of this schema type.
      *
      * @return Clone of subclass.
      */
-    public SchemaType cloneSchemaType()
+    public  SchemaType cloneSchemaType()
     {
         return new SchemaType(this);
-    }
-
-
-    /**
-     * Return the simple name of the schema type.
-     *
-     * @return string name
-     */
-    public String  getDisplayName() { return displayName; }
-
-
-    /**
-     * Set up the simple name of the schema type.
-     *
-     * @param name String display name
-     */
-    public void setDisplayName(String   name)
-    {
-        this.displayName = name;
     }
 
 
@@ -202,6 +183,28 @@ public class SchemaType extends SchemaElement
 
 
     /**
+     * Return the name of the namespace that this type belongs to.
+     *
+     * @return string name
+     */
+    public String getNamespace()
+    {
+        return namespace;
+    }
+
+
+    /**
+     * Set up the name of the namespace that this type belongs to.
+     *
+     * @param namespace string name
+     */
+    public void setNamespace(String namespace)
+    {
+        this.namespace = namespace;
+    }
+
+
+    /**
      * Compare the values of the supplied object with those stored in the current object.
      *
      * @param objectToCompare supplied object
@@ -226,6 +229,7 @@ public class SchemaType extends SchemaElement
         return Objects.equals(getVersionNumber(), that.getVersionNumber()) &&
                 Objects.equals(getAuthor(), that.getAuthor()) &&
                 Objects.equals(getUsage(), that.getUsage()) &&
+                Objects.equals(getNamespace(), that.getNamespace()) &&
                 Objects.equals(getEncodingStandard(), that.getEncodingStandard());
     }
 
@@ -243,13 +247,18 @@ public class SchemaType extends SchemaElement
                 ", author='" + author + '\'' +
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
+                ", namespace='" + namespace + '\'' +
+                ", deprecated=" + isDeprecated() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", meanings=" + getMeanings() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 }

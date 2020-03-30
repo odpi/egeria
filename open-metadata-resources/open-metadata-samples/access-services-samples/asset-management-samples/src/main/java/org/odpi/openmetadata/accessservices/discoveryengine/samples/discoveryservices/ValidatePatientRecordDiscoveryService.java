@@ -154,7 +154,7 @@ public class ValidatePatientRecordDiscoveryService extends DiscoveryService
             SchemaAnalysisAnnotation  schemaAnnotation      = new SchemaAnalysisAnnotation();
 
             schemaAnnotation.setSchemaName("CSV");
-            schemaAnnotation.setSchemaTypeName("TabularSchemaType");
+            schemaAnnotation.setSchemaTypeName("TabularSchemaTypeProperties");
             schemaAnnotation.setAnnotationStatus(AnnotationStatus.NEW_ANNOTATION);
 
             String schemaAnnotationGUID = annotationStore.addAnnotationToDiscoveryReport(schemaAnnotation);

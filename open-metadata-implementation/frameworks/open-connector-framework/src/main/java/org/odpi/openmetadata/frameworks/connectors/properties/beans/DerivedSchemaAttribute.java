@@ -38,20 +38,18 @@ public class DerivedSchemaAttribute extends SchemaAttribute
 
 
     /**
-     * Copy/clone Constructor the parentAsset is passed separately to the template because it is also
-     * likely to be being cloned in the same operation and we want the definitions clone to point to the
-     * asset clone and not the original asset.
+     * Copy/clone Constructor.
      *
-     * @param templateSchemaElement template object to copy.
+     * @param template template object to copy.
      */
-    public DerivedSchemaAttribute(DerivedSchemaAttribute templateSchemaElement)
+    public DerivedSchemaAttribute(DerivedSchemaAttribute template)
     {
-        super(templateSchemaElement);
+        super(template);
 
-        if (templateSchemaElement != null)
+        if (template != null)
         {
-            formula = templateSchemaElement.getFormula();
-            queries = templateSchemaElement.getQueries();
+            formula = template.getFormula();
+            queries = template.getQueries();
         }
     }
 

@@ -4,9 +4,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -37,6 +34,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public abstract class SchemaElement extends Referenceable
 {
+    private static final long     serialVersionUID = 1L;
+
+    protected boolean isDeprecated = false;
+    protected String  displayName = null;
+    protected String  description = null;
+
     /**
      * Default constructor
      */
@@ -60,6 +63,69 @@ public abstract class SchemaElement extends Referenceable
 
 
     /**
+     * Is the schema element deprecated?
+     *
+     * @return boolean flag
+     */
+    public boolean isDeprecated()
+    {
+        return isDeprecated;
+    }
+
+
+    /**
+     * Set whether the schema element deprecated or not.  Default is false.
+     *
+     * @param deprecated boolean flag
+     */
+    public void setDeprecated(boolean deprecated)
+    {
+        isDeprecated = deprecated;
+    }
+
+
+    /**
+     * Return the simple name of the schema element.
+     *
+     * @return string name
+     */
+    public String  getDisplayName() { return displayName; }
+
+
+    /**
+     * Set up the simple name of the schema element.
+     *
+     * @param name String display name
+     */
+    public void setDisplayName(String   name)
+    {
+        this.displayName = name;
+    }
+
+
+    /**
+     * Returns the stored description property for the schema element.
+     *
+     * @return string description
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+
+    /**
+     * Set up the stored description property for the schema element.
+     *
+     * @param description string description
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+
+    /**
      * Return a clone of this schema element.  This method is needed because schema element
      * is abstract.
      *
@@ -77,12 +143,16 @@ public abstract class SchemaElement extends Referenceable
     public String toString()
     {
         return "SchemaElement{" +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
-                ", classifications=" + getClassifications() +
+                "displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", qualifiedName='" + qualifiedName + '\'' +
+                ", additionalProperties=" + additionalProperties +
+                ", meanings=" + meanings +
+                ", type=" + type +
+                ", guid='" + guid + '\'' +
+                ", url='" + url + '\'' +
+                ", classifications=" + classifications +
+                ", extendedProperties=" + extendedProperties +
                 '}';
     }
 }

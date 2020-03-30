@@ -12,6 +12,8 @@ import java.util.Objects;
  */
 public class AssetSchemaImplementationQuery extends AssetPropertyBase
 {
+    private static final long     serialVersionUID = 1L;
+
     protected SchemaImplementationQuery  schemaImplementationQueryBean;
     protected AssetSchemaAttribute       queryTargetElement;
 

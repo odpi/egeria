@@ -12,6 +12,8 @@ import java.util.Objects;
  */
 public class AssetLike extends AssetElementHeader
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Like likeBean = null;
 
 

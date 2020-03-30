@@ -15,6 +15,8 @@ import java.util.Objects;
  */
 public class AssetExternalIdentifier extends AssetReferenceable
 {
+    private static final long     serialVersionUID = 1L;
+
     protected  ExternalIdentifier   externalIdentifierBean;
 
 
