@@ -6,8 +6,8 @@ package org.odpi.openmetadata.accessservices.dataplatform.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import java.util.Objects;
 
@@ -22,6 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataPlatformRegistrationRequestBody extends DataPlatformOMASAPIRequestBody {
 
+    @JsonProperty("dataPlatform")
     private SoftwareServerCapability softwareServerCapability;
 
     /**

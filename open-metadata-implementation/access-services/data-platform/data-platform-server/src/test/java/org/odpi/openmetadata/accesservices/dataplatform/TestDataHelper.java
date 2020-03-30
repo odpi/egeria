@@ -2,9 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accesservices.dataplatform;
 
-import org.odpi.openmetadata.accessservices.dataplatform.events.*;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.*;
+import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.BusinessTerm;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DatabaseSource;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DerivedColumn;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.EndpointSource;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.TableColumn;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.TableSource;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
