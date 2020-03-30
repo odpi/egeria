@@ -721,9 +721,7 @@ public class DataEngineRESTServices {
             if (!processEntity.isPresent()) {
                 processGUID = processHandler.createProcess(userId, process, externalSourceName);
 
-                List<Attribute> schemaAttributes = portImplementations.stream()
-                        .map(portImplementation -> portImplementation.getSchemaType().getAttributeList())
-                        .flatMap(Collection::stream).collect(Collectors.toList());
+                List<Attribute> schemaAttributes = getAttributes(portImplementations);
 
                 addAnchorGUID(userId, serverName, processGUID, schemaAttributes);
             } else {
@@ -758,6 +756,14 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    private List<Attribute> getAttributes(List<PortImplementation> portImplementations) {
+        if (CollectionUtils.isEmpty(portImplementations)) {
+            return new ArrayList<>();
+        }
+        return portImplementations.stream().map(portImplementation -> portImplementation.getSchemaType().getAttributeList())
+                .flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
     private void addAnchorGUID(String userId, String serverName, String processGUID, List<Attribute> schemaAttributes) throws
                                                                                                                        InvalidParameterException,
                                                                                                                        PropertyServerException,
@@ -765,7 +771,7 @@ public class DataEngineRESTServices {
         final String methodName = "addAnchorGUID";
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
-        for(Attribute attribute : schemaAttributes) {
+        for (Attribute attribute : schemaAttributes) {
             dataEngineSchemaTypeHandler.addAnchorGUID(userId, attribute, processGUID);
         }
     }
