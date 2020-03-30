@@ -6,21 +6,19 @@ connect to MINIMAL@
 BEGIN
     declare continue handler for sqlstate '42710' begin end;
 
-    execute immediate 'CREATE TABLE EMPLNAME'
+    execute immediate 'CREATE TABLE EMPLDIRECTORY'
         || '('
         || '  EMPID INT NOT NULL,'
-        || '  FNAME VARCHAR(50) NOT NULL,'
-        || '  SURNAME VARCHAR(50) NOT NULL,'
-        || '    PRIMARY KEY(EMPID)'
+        || '  EMPNAME VARCHAR(120) NOT NULL,'
+        || '  LOCID INT NOT NULL,'
+        || '  LOCNAME VARCHAR(50) NOT NULL'
         || ')';
 
 END@
 
 BEGIN
     declare continue handler for sqlstate '02000' begin end;
-    execute immediate 'delete from EMPLNAME';
+    execute immediate 'delete from EMPLDIRECTORY';
 END@
-
-import from '{{ egeria_samples_minimal_targets.files }}/Names.csv' of DEL modified by coldel; skipcount 1 insert into EMPLNAME@
 
 terminate@

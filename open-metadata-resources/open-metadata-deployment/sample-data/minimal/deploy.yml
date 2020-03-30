@@ -1,6 +1,0 @@
----
-# SPDX-License-Identifier: Apache-2.0
-# Copyright Contributors to the ODPi Egeria project.
-
-- import_playbook: deploy-data.yml
-- import_playbook: deploy-metadata.yml
