@@ -5,9 +5,9 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.security
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Context;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassification;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.Context;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernanceClassification;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAsset;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerPolicyResource;

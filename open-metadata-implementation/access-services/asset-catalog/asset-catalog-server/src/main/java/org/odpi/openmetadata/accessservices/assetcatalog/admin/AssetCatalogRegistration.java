@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 /**
  * AssetCatalogRegistration registers the access service with the OMAG Server administration services.

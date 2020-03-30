@@ -26,10 +26,9 @@
 - name: create databases
   shell: >
     source ~/.bashrc &&
-    db2 create database {{ item | upper }} on '{{ egeria_samples_minimal_targets.db_location }}'
+    db2 create database MINIMAL on '{{ egeria_samples_minimal_targets.db_location }}'
   args:
     executable: /bin/bash
   become: yes
   become_user: "{{ egeria_samples_db_credentials.owner }}"
-  when: __minimal_db2catalog_completion.stdout.find(item) == -1
-  with_items: "{{ egeria_samples_minimal_databases }}"
+  when: __minimal_db2catalog_completion.stdout.find('MINIMAL') == -1

@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.dataplatform.server;
 import org.odpi.openmetadata.accessservices.dataplatform.admin.DataPlatformAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 
 /**

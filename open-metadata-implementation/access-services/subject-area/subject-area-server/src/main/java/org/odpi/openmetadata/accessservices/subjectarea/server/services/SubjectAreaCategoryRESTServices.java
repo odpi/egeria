@@ -2,38 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailsResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.GlossarySummaryResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.RelationshipsResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
+import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaCategoryHandler;
+import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlossaryHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchorRelationship;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryAnchorMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryHierarchyLinkMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.CategoryResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaDefinitionResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.TypeGuids;
-import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
-import org.odpi.openmetadata.accessservices.subjectarea.validators.RestValidator;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -46,6 +28,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaCategoryRESTServices.class);
 
     private static final String className = SubjectAreaCategoryRESTServices.class.getName();
+    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
+
 
 
     /**
@@ -95,78 +79,21 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
     public SubjectAreaOMASAPIResponse createCategory(String serverName, String userId, Category suppliedCategory)
     {
         final String methodName = "createCategory";
-        if (log.isDebugEnabled())
-        {
+        if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
-        if (response == null) {
-            try
-            {
-                InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
-                SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
-                glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
-                String suppliedCategoryParentGuid = null;
-                if (suppliedCategory.getParentCategory() != null)
-                {
-                    //store the parent category guid
-                    suppliedCategoryParentGuid = suppliedCategory.getParentCategory().getGuid();
-                }
+        SubjectAreaOMASAPIResponse response = null;
+        try {
+            SubjectAreaCategoryHandler categoryHandler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
+            SubjectAreaGlossaryHandler glossaryHandler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
 
-                // need to check we have a name
-                final String suppliedCategoryName = suppliedCategory.getName();
-                if (suppliedCategoryName == null || suppliedCategoryName.equals(""))
-                {
-                    SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_WITHOUT_NAME;
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
-                    log.error(errorMessage);
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
-                }
-                GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
-                SubjectAreaOMASAPIResponse glossaryResponse = RestValidator.validateGlossarySummaryDuringCreation(serverName, userId, methodName, suppliedGlossary, glossaryRESTServices);
-                if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Glossary)) {
-                    // the glossary that was supplied is valid.
-                    EntityDetail entityDetail = new CategoryMapper(oMRSAPIHelper).mapNodeToEntityDetail(suppliedCategory);
+            response = categoryHandler.createCategory(glossaryHandler, userId, suppliedCategory);
 
-                    response = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, entityDetail);
-                    if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
-                        EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
-                        entityDetail = entityDetailResponse.getEntityDetail();
-                        String categoryGuid = entityDetail.getGUID();
-                        // Knit the Category to the supplied glossary
-                        // get the associated glossary
-                        Glossary associatedGlossary = ((GlossaryResponse) glossaryResponse).getGlossary();
-                        String glossaryGuid = associatedGlossary.getSystemAttributes().getGUID();
-                        CategoryAnchorRelationship categoryAnchor = new CategoryAnchorRelationship();
-                        categoryAnchor.setGlossaryGuid(glossaryGuid);
-                        categoryAnchor.setCategoryGuid(categoryGuid);
-                        Relationship categoryAnchorRelationship = new CategoryAnchorMapper(oMRSAPIHelper).mapLineToRelationship(categoryAnchor);
-                        response = oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, categoryAnchorRelationship);
-                        if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
-                            if (suppliedCategoryParentGuid != null) {
-                                // Knit the Category to the supplied parent
-                                CategoryHierarchyLink categoryHierarchyLink = new CategoryHierarchyLink();
-                                categoryHierarchyLink.setSuperCategoryGuid(suppliedCategoryParentGuid);
-                                categoryHierarchyLink.setSubCategoryGuid(categoryGuid);
-                                Relationship relationship = new CategoryHierarchyLinkMapper(oMRSAPIHelper).mapLineToRelationship(categoryHierarchyLink);
-                                response = oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
-                            }
-                            if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
-                                response = getCategory(serverName,userId,categoryGuid);
-                            }
-                        }
-                    }
-                }
-            } catch (InvalidParameterException e)
-            {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            }
-
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
+            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
         }
-        if (log.isDebugEnabled())
-        {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
         return response;
     }
@@ -188,56 +115,20 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
 
     public SubjectAreaOMASAPIResponse getCategory( String serverName, String userId, String guid)
     {
-        final String methodName = "getCategory";
-        if (log.isDebugEnabled())
-        {
+        final String methodName = "getCategoryByGuid";
+        if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
-        try
-        {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId,guid);
-            if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail))
-            {
-                EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
-                EntityDetail gotEntityDetail = entityDetailResponse.getEntityDetail();
-                CategoryMapper categoryMapper = new CategoryMapper(oMRSAPIHelper);
-                Category gotCategory = (Category) categoryMapper.mapEntityDetailToNode(gotEntityDetail);
-                String anchorTypeGuid = TypeGuids.getCategoryAnchorTypeGuid();
-                response = oMRSAPIHelper.callGetRelationshipsForEntity(methodName, userId,guid, anchorTypeGuid,0,null,null,null,0);
-                if (response.getResponseCategory().equals(ResponseCategory.OmrsRelationships))
-                {
-                    RelationshipsResponse relationshipsResponse = (RelationshipsResponse) response;
-                    List<Relationship> glossaryRelationships =  relationshipsResponse.getRelationships();
-                    if (glossaryRelationships.iterator().hasNext())
-                    {
-                        Relationship glossaryRelationship = glossaryRelationships.iterator().next();
-                        CategoryAnchorRelationship categoryAnchor = (CategoryAnchorRelationship) new CategoryAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
-                        response = SubjectAreaUtils.getGlossarySummaryForCategory(methodName, userId, oMRSAPIHelper, categoryAnchor);
-                        if (response.getResponseCategory().equals(ResponseCategory.GlossarySummary))
-                        {
-                            GlossarySummaryResponse glossarySummaryResponse = (GlossarySummaryResponse) response;
-                            GlossarySummary glossarySummary = glossarySummaryResponse.getGlossarySummary();
-                            gotCategory.setGlossary(glossarySummary);
-                            response = getResponse(gotCategory);
-                        }
-                    } else {
-                        // return the Category without a Glossary summary as we have not got one.
-                        response = getResponse(gotCategory);
-                    }
-                }
-            }
+        SubjectAreaOMASAPIResponse response = null;
+        try {
+            SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
+            response = handler.getCategory(userId, guid);
 
-        } catch (InvalidParameterException e)
-        {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
+            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
         }
-
-        if (log.isDebugEnabled())
-        {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
         return response;
     }
@@ -287,39 +178,17 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
-        if (response == null) {
+        SubjectAreaOMASAPIResponse response = null;
+        try {
+            SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
+            response = handler.findCategory(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
+            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+        }
 
-            response = this.oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "GlossaryCategory", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
-            if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetails) {
-                EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
-                List<EntityDetail> entitydetails = entityDetailsResponse.getEntityDetails();
-                List<Category> categories = new ArrayList<>();
-                if (entitydetails == null) {
-                    response = new CategoriesResponse(categories);
-                } else {
-                    for (EntityDetail entityDetail : entitydetails) {
-                        // call the getCategory so that the GlossarySummary and other parts are populated.
-                        response = getCategory(serverName, userId, entityDetail.getGUID());
-                        if (response.getResponseCategory() == ResponseCategory.Category) {
-                            CategoryResponse categoryResponse = (CategoryResponse) response;
-                            Category category = categoryResponse.getCategory();
-                            categories.add(category);
-                        } else {
-                            break;
-                        }
-                    }
-                    if (response.getResponseCategory() == ResponseCategory.Category) {
-                        response = new CategoriesResponse(categories);
-                    }
-                }
-            }
-        }
-        if (log.isDebugEnabled())
-        {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
-        }
         return response;
     }
     /*
@@ -352,8 +221,29 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                                                                 org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
                                                                 String sequencingProperty
     ) {
-        String restAPIName ="getCategoryRelationships";
-        return  getRelationshipsFromGuid(serverName ,restAPIName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+
+            String methodName = "getCategoryRelationships";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+        }
+        SubjectAreaOMASAPIResponse response = null;
+        try {
+            SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
+            response = handler.getCategoryRelationships(userId,
+                                                    guid,
+                                                    asOfTime,
+                                                    offset,
+                                                    pageSize,
+                                                    sequencingOrder,
+                                                    sequencingProperty);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
+            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+        }
+
+        return response;
     }
 
     /**
@@ -379,73 +269,19 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
     public SubjectAreaOMASAPIResponse updateCategory(String serverName, String userId, String guid, Category suppliedCategory, boolean isReplace) {
         final String methodName = "updateCategory";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response =initializeAPI(serverName, userId, methodName);
-        if (response ==null) {
-            try {
-                InputValidator.validateUserIdNotNull(className, methodName, userId);
-                InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
-                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-                response = getCategory(serverName, userId, guid);
-                if (response.getResponseCategory().equals(ResponseCategory.Category)) {
-                    org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category originalCategory = ((CategoryResponse) response).getCategory();
-                    if (originalCategory.getSystemAttributes() != null) {
-                        Status status = originalCategory.getSystemAttributes().getStatus();
-                        SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.GLOSSARY_UPDATE_FAILED_ON_DELETED_GLOSSARY);
-                    }
-                    if (suppliedCategory.getSystemAttributes() != null) {
-                        Status status = suppliedCategory.getSystemAttributes().getStatus();
-                        SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.STATUS_UPDATE_TO_DELETED_NOT_ALLOWED);
-                    }
-                    Category updateCategory = originalCategory;
-                    if (isReplace) {
-                        // copy over attributes
-                        updateCategory.setName(suppliedCategory.getName());
-                        updateCategory.setQualifiedName(suppliedCategory.getQualifiedName());
-                        updateCategory.setDescription(suppliedCategory.getDescription());
-                        updateCategory.setAdditionalProperties(suppliedCategory.getAdditionalProperties());
-                        //TODO handle classifications
-                    } else {
-                        // copy over attributes if specified
-                        if (suppliedCategory.getName() != null) {
-                            updateCategory.setName(suppliedCategory.getName());
-                        }
-                        if (suppliedCategory.getQualifiedName() != null) {
-                            updateCategory.setQualifiedName(suppliedCategory.getQualifiedName());
-                        }
-                        if (suppliedCategory.getDescription() != null) {
-                            updateCategory.setDescription(suppliedCategory.getDescription());
-                        }
-
-                        if (suppliedCategory.getAdditionalProperties() != null) {
-                            updateCategory.setAdditionalProperties(suppliedCategory.getAdditionalProperties());
-                        }
-                        //TODO handle classifications
-                    }
-                    Date termFromTime = suppliedCategory.getEffectiveFromTime();
-                    Date termToTime = suppliedCategory.getEffectiveToTime();
-                    updateCategory.setEffectiveFromTime(termFromTime);
-                    updateCategory.setEffectiveToTime(termToTime);
-                    CategoryMapper mapper =new CategoryMapper(oMRSAPIHelper);
-                    EntityDetail updateEntityDetail = mapper.mapNodeToEntityDetail(updateCategory);
-                    String categoryGuid = updateCategory.getSystemAttributes().getGUID();
-                    response = oMRSAPIHelper.callOMRSUpdateEntityProperties(methodName, userId, updateEntityDetail);
-                    if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
-                        response = getCategory(serverName,userId,categoryGuid);
-                    }
-                }
-            } catch (InvalidParameterException e) {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            }
+        SubjectAreaOMASAPIResponse response = null;
+        try {
+            SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
+            response = handler.updateCategory(userId, guid, suppliedCategory, isReplace);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
+            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
         }
-
         if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ",response=" + response);
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
         return response;
-
     }
 
     /**
@@ -478,42 +314,17 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
     public SubjectAreaOMASAPIResponse deleteCategory(String serverName, String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteCategory";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ", guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
-        if (response ==null)
-        {
-            OMRSRepositoryHelper repositoryHelper = this.oMRSAPIHelper.getOMRSRepositoryHelper();
-            try
-            {
-                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-                String source = oMRSAPIHelper.getServiceName();
-                String typeDefName = "GlossaryCategory";
-                String typeDefGuid = repositoryHelper.getTypeDefByName(source, typeDefName).getGUID();
-                if (isPurge)
-                {
-                    response = oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, typeDefName, typeDefGuid, guid);
-                } else
-                {
-                    response = oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, typeDefName, typeDefGuid, guid);
-                    if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail))
-                    {
-                        EntityDetailResponse entityDetailResponse = (EntityDetailResponse)response;
-                        EntityDetail entityDetail = entityDetailResponse.getEntityDetail();
-                        CategoryMapper categoryMapper = new CategoryMapper(oMRSAPIHelper);
-                        Category deletedCategory = (Category) categoryMapper.mapEntityDetailToNode(entityDetail);
-                        response = getResponse(deletedCategory);
-                    }
-                }
-            } catch (InvalidParameterException e)
-            {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            }
+        SubjectAreaOMASAPIResponse response = null;
+        try {
+            SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
+            response = handler.deleteCategory(userId, guid, isPurge);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
+            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
         }
-        if (log.isDebugEnabled())
-        {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
         return response;
     }
@@ -537,27 +348,18 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
     public SubjectAreaOMASAPIResponse restoreCategory(String serverName, String userId, String guid)
     {
         final String methodName = "restoreCategory";
-        if (log.isDebugEnabled())
-        {
+        if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
-        try
-        {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            response  = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
-            if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
-                response = getCategory(serverName,userId,guid);
-            }
-        } catch (InvalidParameterException e)
-        {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        SubjectAreaOMASAPIResponse response = null;
+        try {
+            SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
+            response = handler.restoreCategory(userId, guid);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
+            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
         }
-
-        if (log.isDebugEnabled())
-        {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
         return response;
     }
