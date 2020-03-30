@@ -19,7 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes(
         {
@@ -33,6 +32,7 @@ public class SchemaAttribute extends SchemaElement
     protected int                               elementPosition        = 0;
     protected String                            cardinality            = null;
     protected String                            defaultValueOverride   = null;
+    protected String                            anchorGUID             = null;
     protected SchemaType                        attributeType          = null;
     protected SchemaLink                        externalAttributeType  = null;
     protected List<SchemaAttributeRelationship> attributeRelationships = null;
@@ -62,6 +62,7 @@ public class SchemaAttribute extends SchemaElement
             elementPosition = template.getElementPosition();
             cardinality = template.getCardinality();
             defaultValueOverride = template.getDefaultValueOverride();
+            anchorGUID = template.getAnchorGUID();
             attributeType = template.getAttributeType();
             externalAttributeType = template.getExternalAttributeType();
             attributeRelationships = template.getAttributeRelationships();
@@ -155,6 +156,24 @@ public class SchemaAttribute extends SchemaElement
     public void setDefaultValueOverride(String defaultValueOverride)
     {
         this.defaultValueOverride = defaultValueOverride;
+    }
+
+    /**
+     * Return the anchorGUID defined for this schema attribute.
+     *
+     * @return String anchorGUID defined for this schema attribute.
+     */
+    public String getAnchorGUID() {
+        return anchorGUID;
+    }
+
+    /**
+     * Set up the anchorGUID of this schema attribute
+     *
+     * @param anchorGUID GUID of the anchor entity
+     */
+    public void setAnchorGUID(String anchorGUID) {
+        this.anchorGUID = anchorGUID;
     }
 
     /**
@@ -256,6 +275,7 @@ public class SchemaAttribute extends SchemaElement
                 ", elementPosition=" + elementPosition +
                 ", cardinality='" + cardinality + '\'' +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
+                ", anchorGUID='" + anchorGUID + '\'' +
                 ", attributeType=" + attributeType +
                 ", externalAttributeType=" + externalAttributeType +
                 ", attributeRelationships=" + attributeRelationships +
@@ -294,6 +314,7 @@ public class SchemaAttribute extends SchemaElement
                 Objects.equals(getAttributeName(), that.getAttributeName()) &&
                 Objects.equals(getCardinality(), that.getCardinality()) &&
                 Objects.equals(getDefaultValueOverride(), that.getDefaultValueOverride()) &&
+                Objects.equals(getAnchorGUID(), that.getAnchorGUID()) &&
                 Objects.equals(getAttributeRelationships(), that.getAttributeRelationships()) &&
                 Objects.equals(getAttributeType(), that.getAttributeType()) &&
                 Objects.equals(getExternalAttributeType(), that.getExternalAttributeType());

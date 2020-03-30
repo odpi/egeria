@@ -134,5 +134,5 @@ public class SchemaElementMapper
     public static final String TABULAR_COLUMN_TYPE_NAME                 = "TabularColumn";
     /* PrimitiveSchemaType */
 
-
+    public static final String ANCHOR_GUID_PROPERTY_NAME                 = "anchorGUID";
 }

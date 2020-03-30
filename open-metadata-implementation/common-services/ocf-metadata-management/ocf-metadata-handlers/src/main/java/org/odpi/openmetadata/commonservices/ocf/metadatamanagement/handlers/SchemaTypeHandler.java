@@ -758,6 +758,7 @@ public class SchemaTypeHandler
                                               schemaAttribute.getElementPosition(),
                                               schemaAttribute.getCardinality(),
                                               schemaAttribute.getDefaultValueOverride(),
+                                              schemaAttribute.getAnchorGUID(),
                                               schemaAttribute.getAdditionalProperties(),
                                               schemaAttribute.getExtendedProperties(),
                                               repositoryHelper,

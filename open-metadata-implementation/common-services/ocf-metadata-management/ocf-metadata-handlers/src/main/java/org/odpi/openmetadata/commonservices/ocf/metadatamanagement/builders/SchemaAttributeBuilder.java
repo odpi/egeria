@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.CommentMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -18,6 +19,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     private int    elementPosition;
     private String cardinality;
     private String defaultValueOverride;
+    private String anchorGUID;
 
 
     /**
@@ -50,6 +52,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * @param cardinality does the attribute repeat?
      * @param defaultValueOverride override for the Type's default value.
      * @param additionalProperties additional properties
+     * @param anchorGUID unique identifier of the anchor entity
      * @param extendedProperties  properties from the subtype.
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
@@ -60,6 +63,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                   int                  elementPosition,
                                   String               cardinality,
                                   String               defaultValueOverride,
+                                  String               anchorGUID,
                                   Map<String, String>  additionalProperties,
                                   Map<String, Object>  extendedProperties,
                                   OMRSRepositoryHelper repositoryHelper,
@@ -77,6 +81,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         this.elementPosition = elementPosition;
         this.cardinality = cardinality;
         this.defaultValueOverride = defaultValueOverride;
+        this.anchorGUID = anchorGUID;
     }
 
 
@@ -122,6 +127,15 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                       properties,
                                                                       SchemaElementMapper.DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME,
                                                                       defaultValueOverride,
+                                                                      methodName);
+        }
+
+        if (anchorGUID != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      SchemaElementMapper.ANCHOR_GUID_PROPERTY_NAME,
+                                                                      anchorGUID,
                                                                       methodName);
         }
 

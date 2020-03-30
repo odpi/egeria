@@ -226,6 +226,32 @@ public class DataEngineSchemaTypeHandler {
         removeTabularSchemaType(userId, schemaTypeGUID);
     }
 
+    /**
+     * Updates the schema attribute with anchorGUID property set to process GUID
+     *
+     * @param userId         the name of the calling user
+     * @param attribute the properties of the schema attribute
+     * @param processGUID the GUID of the process
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void addAnchorGUID(String userId, Attribute attribute, String processGUID) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                                             PropertyServerException {
+        final String methodName = "addAnchorGUID";
+
+        SchemaAttribute schemaAttribute = createTabularColumn(attribute);
+        schemaAttribute.setAnchorGUID(processGUID);
+
+        Optional<EntityDetail> schemaAttributeEntity = findSchemaAttributeEntity(userId, attribute.getQualifiedName());
+        if (!schemaAttributeEntity.isPresent()) {
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName);
+        } else {
+            schemaTypeHandler.updateSchemaAttribute(userId, schemaAttributeEntity.get().getGUID(), schemaAttribute);
+        }
+    }
+
     private void createOrUpdateSchemaAttributes(String userId, String schemaTypeGUID, List<Attribute> attributeList, String externalSourceName) throws
                                                                                                                                                 InvalidParameterException,
                                                                                                                                                 PropertyServerException,
@@ -256,7 +282,8 @@ public class DataEngineSchemaTypeHandler {
 
         SchemaAttributeBuilder builder = new SchemaAttributeBuilder(schemaAttribute.getQualifiedName(), schemaAttribute.getAttributeName(),
                 schemaAttribute.getElementPosition(), schemaAttribute.getCardinality(), schemaAttribute.getDefaultValueOverride(),
-                schemaAttribute.getAdditionalProperties(), schemaAttribute.getExtendedProperties(), repositoryHelper, serviceName, serverName);
+                schemaAttribute.getAnchorGUID(), schemaAttribute.getAdditionalProperties(), schemaAttribute.getExtendedProperties(), repositoryHelper,
+                serviceName, serverName);
 
         return dataEngineCommonHandler.buildEntityDetail(schemaAttributeGUID, builder.getInstanceProperties(methodName));
     }
