@@ -3,9 +3,10 @@
 package org.odpi.openmetadata.accessservices.dataplatform.server;
 
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.DeployedDatabaseSchemaAssetHandler;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -40,8 +41,8 @@ public class DataPlatformRestServices {
     /**
      * Create the software server capability entity from an external data platforms
      *
-     * @param serverName              name of server instance to call
-     * @param userId                  the name of the calling user
+     * @param serverName                          name of server instance to call
+     * @param userId                              the name of the calling user
      * @param dataPlatformRegistrationRequestBody properties of the server
      * @return the unique identifier (guid) of the created server
      */
@@ -84,23 +85,24 @@ public class DataPlatformRestServices {
      * @param qualifiedName qualified name of the server
      * @return the unique identifier from a software server capability definition
      */
-    public DataPlatformRegistrationRequestBody getExternalDataPlatformByQualifiedName(String serverName, String userId, String qualifiedName) {
+    public DataPlatformOMASAPIResponse getExternalDataPlatformByQualifiedName(String serverName, String userId, String qualifiedName) {
 
         final String methodName = "getExternalDataPlatformByQualifiedName";
-        DataPlatformRegistrationRequestBody response = new DataPlatformRegistrationRequestBody();
+        DataPlatformOMASAPIResponse response = new DataPlatformOMASAPIResponse();
 
         try {
             RegistrationHandler handler = dataPlatformInstanceHandler.getRegistrationHandler(userId, serverName, methodName);
-
             response.setSoftwareServerCapability(handler.getSoftwareServerCapabilityByQualifiedName(userId, qualifiedName));
 
         } catch (InvalidParameterException error) {
-            dataPlatformInstanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
+
         } catch (PropertyServerException error) {
-            dataPlatformInstanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         } catch (UserNotAuthorizedException error) {
-            dataPlatformInstanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
+
         log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
         return response;
     }

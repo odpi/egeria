@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.dataplatform.client;
 
 import org.odpi.openmetadata.accessservices.dataplatform.DataPlatformInterface;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -25,6 +25,7 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
             "/data-platform/users/{1}/registration";
     private static final String DEPLOYED_DATABASE_SCHEMA_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
             "/data-platform/users/{1}/deployed-database-schema";
+    private String externalSourceName;
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -73,14 +74,20 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
     public GUIDResponse createExternalDataPlatform(String userId, SoftwareServerCapability softwareServerCapability) throws
             InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
-            final String methodName = "createExternalDataPlatform";
+        final String methodName = "createExternalDataPlatform";
 
-            invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
 
-            DataPlatformRegistrationRequestBody requestBody = new DataPlatformRegistrationRequestBody();
-            requestBody.setSoftwareServerCapability(softwareServerCapability);
+        DataPlatformRegistrationRequestBody requestBody = new DataPlatformRegistrationRequestBody();
+        requestBody.setSoftwareServerCapability(softwareServerCapability);
+        requestBody.setExternalSourceName(softwareServerCapability.getQualifiedName());
+        setExternalSourceName(softwareServerCapability.getQualifiedName());
 
-            return callGUIDPostRESTCall(userId, methodName, DATA_PLATFORM_REGISTRATION_URL_TEMPLATE, requestBody);
+        return callGUIDPostRESTCall(methodName,
+                serverPlatformURLRoot + DATA_PLATFORM_REGISTRATION_URL_TEMPLATE,
+                requestBody,
+                serverName,
+                userId);
     }
 
     /**
@@ -103,7 +110,20 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
 
         DeployedDatabaseSchemaRequestBody requestBody = new DeployedDatabaseSchemaRequestBody();
         requestBody.setDeployedDatabaseSchema(deployedDatabaseSchema);
+        requestBody.setExternalSourceName(externalSourceName);
 
-        return callGUIDPostRESTCall(userId, methodName, DEPLOYED_DATABASE_SCHEMA_URL_TEMPLATE, requestBody);
+        return callGUIDPostRESTCall(methodName,
+                serverPlatformURLRoot + DEPLOYED_DATABASE_SCHEMA_URL_TEMPLATE,
+                requestBody,
+                serverName,
+                userId);
+    }
+
+    public String getExternalSourceName() {
+        return externalSourceName;
+    }
+
+    public void setExternalSourceName(String externalSourceName) {
+        this.externalSourceName = externalSourceName;
     }
 }
