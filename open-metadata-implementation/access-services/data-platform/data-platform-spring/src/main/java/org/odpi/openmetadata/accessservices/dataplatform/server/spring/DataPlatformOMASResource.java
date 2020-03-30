@@ -2,11 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.server.spring;
 
+import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformRestServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The type Data platform omas resource.
@@ -47,16 +53,16 @@ public class DataPlatformOMASResource {
      * @return the software server capability by qualified name
      */
     @GetMapping(path = "/software-server-capability/{qualifiedName}")
-    public DataPlatformRegistrationRequestBody getExternalDataPlatformByQualifiedName(@PathVariable String serverName,
-                                                                                      @PathVariable String userId,
-                                                                                      @PathVariable String qualifiedName) {
+    public DataPlatformOMASAPIResponse getExternalDataPlatformByQualifiedName(@PathVariable String serverName,
+                                                                              @PathVariable String userId,
+                                                                              @PathVariable String qualifiedName) {
         return restAPI.getExternalDataPlatformByQualifiedName(serverName, userId, qualifiedName);
     }
 
     @PostMapping(path = "/deployed-database-schema")
     public GUIDResponse createDeployedDatabaseSchema(@PathVariable("serverName") String serverName,
-                                                       @PathVariable("userId") String userId,
-                                                       @RequestBody DeployedDatabaseSchemaRequestBody requestBody) {
+                                                     @PathVariable("userId") String userId,
+                                                     @RequestBody DeployedDatabaseSchemaRequestBody requestBody) {
         return restAPI.createDeployedDatabaseSchema(serverName, userId, requestBody);
     }
 

@@ -24,6 +24,8 @@ import java.util.Objects;
  */
 public class AssetCertification extends AssetReferenceable
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Certification certificationBean;
 
 

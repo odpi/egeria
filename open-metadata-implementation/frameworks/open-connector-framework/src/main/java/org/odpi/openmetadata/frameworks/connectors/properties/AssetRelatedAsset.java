@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class AssetRelatedAsset extends AssetReferenceable
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Asset                  assetBean;
     protected String                 relationshipTypeName;
     protected String                 relationshipAttributeName;

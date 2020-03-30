@@ -1,0 +1,12 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+# Data names (do not change)
+egeria_samples_minimal_tables:
+  - EMPLNAME
+  - WORKPLACE
+  - EMPLDIRECTORY
+egeria_samples_minimal_files:
+  - names.csv
+  - locations.csv
