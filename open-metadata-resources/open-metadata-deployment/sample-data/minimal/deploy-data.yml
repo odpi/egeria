@@ -3,17 +3,53 @@
 # Copyright Contributors to the ODPi Egeria project.
 
 - name: load Minimal sample data
-  hosts: egeria_samples_db_host
+  hosts: all
   any_errors_fatal: true
   vars_files:
     - defaults/main.yml
-    - vars/databases.yml
+    - vars/data.yml
   tasks:
     - name: load sample data files
       include_tasks: data-files/load.yml
+      when: ('egeria_samples_db_host' in group_names) or ('ibm_information_server_engine' in group_names)
 
     - name: create sample databases
       include_tasks: "database/{{ egeria_samples_minimal_db_type }}/create-databases.yml"
+      when: ('egeria_samples_db_host' in group_names)
 
     - name: load sample data to databases
       include_tasks: "database/{{ egeria_samples_minimal_db_type }}/load.yml"
+      when: ('egeria_samples_db_host' in group_names)
+
+    - name: setup Information Server variables
+      import_role:
+        name: IBM.infosvr
+        tasks_from: setup_vars.yml
+      when: ('ibm_information_server_engine' in group_names)
+
+    - name: post-check remote database catalog status
+      shell: "source ~/.bashrc && db2 list database directory"
+      args:
+        executable: /bin/bash
+      become_user: "{{ ibm_infosvr_users.db2inst1 }}"
+      become: yes
+      ignore_errors: yes
+      register: __minimal_db2catalog_completion
+      changed_when: False
+      when: >
+        ('ibm_information_server_engine' in group_names)
+        and (egeria_samples_minimal_db_type == 'ibm-db2')
+
+    - name: catalog remote data nodes
+      shell: >
+        source ~/.bashrc &&
+        db2 catalog database MINIMAL at node REPO &&
+        db2 terminate
+      args:
+        executable: /bin/bash
+      when: >
+        ('ibm_information_server_engine' in group_names)
+        and (egeria_samples_minimal_db_type == 'ibm-db2')
+        and __minimal_db2catalog_completion.stdout.find('MINIMAL') == -1
+      become_user: "{{ ibm_infosvr_users.db2inst1 }}"
+      become: yes

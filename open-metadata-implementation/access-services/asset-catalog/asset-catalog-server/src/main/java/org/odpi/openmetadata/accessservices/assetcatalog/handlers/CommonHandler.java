@@ -20,10 +20,18 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_CATALOG_OMAS;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_ZONE_MEMBERSHIP;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.REFERENCEABLE;
 
 /**
  * Common  Handler supports the lookup types and metadata collection.
@@ -37,6 +45,13 @@ public class CommonHandler {
     private final OMRSRepositoryHelper repositoryHelper;
     private final RepositoryErrorHandler errorHandler;
 
+    /**
+     * Construct the handler information needed to interact with the repository services
+     *
+     * @param repositoryHandler manages calls to the repository services
+     * @param repositoryHelper  provides utilities for manipulating the repository services objects
+     * @param errorHandler      provides common validation routines for the other handler classes
+     */
     CommonHandler(RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
@@ -47,6 +62,13 @@ public class CommonHandler {
         return repositoryHandler.getMetadataCollection();
     }
 
+    /**
+     * Returns a list of the sub-types of the provided type
+     *
+     * @param userId      user identifier that issues the call
+     * @param typeDefName the type definition name
+     * @return a list of sub-types
+     */
     List<Type> getTypeContext(String userId, String typeDefName) {
         List<Type> response = new ArrayList<>();
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
@@ -144,6 +166,13 @@ public class CommonHandler {
         return null;
     }
 
+    /**
+     * Return a list of the types def GUIDs
+     *
+     * @param userId calling user
+     * @param types  list of the type def names
+     * @return a list of type def GUIDs
+     */
     List<String> getTypesGUID(String userId, List<String> types) {
         if (CollectionUtils.isEmpty(types)) {
             return Collections.emptyList();
