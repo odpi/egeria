@@ -4,12 +4,14 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
+import org.apache.tinkerpop.gremlin.structure.Column;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
@@ -19,12 +21,11 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.addE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
@@ -279,21 +280,99 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         }
     }
 
+    /**
+     * Updates a vertex
+     * @param lineageEntity - LineageEntity object that has the updated values
+     */
     @Override
-    public void updateEntity(LineageEvent lineageEvent){}
-
-    @Override
-    public void deleteEntity(String guid){
+    public void updateEntity(LineageEntity lineageEntity){
         GraphTraversalSource g = bufferGraph.traversal();
 
-        //TODO add check when we will have classifications to delete classifications first
-        if(checkIfVertexExist(g,guid)){
-            g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).drop();
-            g.tx().commit();
-            log.debug("Vertex with guid {} deleted",guid);
+        Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID,lineageEntity.getGuid());
+        if(!vertex.hasNext()){
+            log.debug("when trying to update, vertex was not found with guid {} ", lineageEntity.getGuid());
+            g.tx().rollback();
         }
-        g.tx().rollback();
-        log.debug("Vertex with guid did not delete {}",guid);
+
+        addOrUpdateProperties(g,vertex.next(),lineageEntity);
+        g.tx().commit();
+    }
+
+    /**
+     * Updates an edge
+     * @param lineageRelationship - lineageRelationship object that has the updated values
+     */
+    @Override
+    public void updateRelationship(LineageRelationship lineageRelationship){
+        GraphTraversalSource g = bufferGraph.traversal();
+
+        Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID,lineageRelationship.getGuid());
+        if(!edge.hasNext()){
+            log.debug("when trying to update, edge was not found with guid {} ", lineageRelationship.getGuid());
+            g.tx().rollback();
+        }
+
+        g.V().has(PROPERTY_KEY_ENTITY_GUID,lineageRelationship.getFirstEndGUID()).as("v").
+                V(glossaryMain.id()).
+                coalesce(__.outE(EDGE_LABEL_SEMANTIC).where(inV().as("v")),
+                        addE(EDGE_LABEL_SEMANTIC).from("v")).next();
+        addOrUpdateProperties(g,vertex.next(),lineageEntity);
+        g.tx().commit();
+    }
+
+    @Override
+    public void deleteEntity(String guid,String version){
+        GraphTraversalSource g = bufferGraph.traversal();
+
+        Iterator<Vertex> vertex = checkIfVertexExist(g,guid,version);
+        //TODO add check when we will have classifications to delete classifications first
+        if(!vertex.hasNext()){
+            g.tx().rollback();
+            log.debug("Vertex with guid did not delete {}",guid);
+        }
+
+        g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).drop();
+        g.tx().commit();
+        log.debug("Vertex with guid {} deleted",guid);
+    }
+
+    /**
+     * Adds or updates properties of a vertex.
+     * @param g - Graph traversal object
+     * @param vertex - vertex to be updated
+     * @param lineageEntity - LineageEntity object that has the updates values
+     */
+    private void addOrUpdateProperties(GraphTraversalSource g,Vertex vertex,LineageEntity lineageEntity){
+
+        Map<String, Object> properties  = lineageEntity.getProperties().entrySet().stream().collect(Collectors.toMap(
+               e -> PROPERTY_KEY_PREFIX_ELEMENT+PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+e.getKey(),
+               Map.Entry::getValue
+        ));
+
+        properties.put(PROPERTY_KEY_ENTITY_GUID,lineageEntity.getGuid());
+        properties.put(PROPERTY_KEY_ENTITY_CREATE_TIME,lineageEntity.getCreateTime());
+        properties.put(PROPERTY_KEY_ENTITY_CREATED_BY,lineageEntity.getCreatedBy());
+        properties.put(PROPERTY_KEY_ENTITY_UPDATE_TIME,lineageEntity.getUpdateTime());
+        properties.put(PROPERTY_KEY_ENTITY_UPDATED_BY,lineageEntity.getUpdatedBy());
+        properties.put(PROPERTY_KEY_DISPLAY_NAME,lineageEntity.getTypeDefName());
+        properties.put(PROPERTY_KEY_ENTITY_VERSION,lineageEntity.getVersion());
+
+        try {
+            g.inject(properties)
+                    .unfold()
+                    .as("properties")
+                    .V(vertex.id())
+                    .as("v")
+                    .sideEffect(__.select("properties")
+                            .unfold()
+                            .as("kv")
+                            .select("v")
+                            .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))
+                            .iterate()).next();
+        }
+        catch (Exception e){
+            log.error("An exception happened during update of the properties with exception: {}",e);
+        }
 
     }
 
@@ -338,8 +417,9 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         }
     }
 
-    private boolean checkIfVertexExist(GraphTraversalSource g,String guid){
-        return g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).hasNext();
+    private Iterator<Vertex> checkIfVertexExist(GraphTraversalSource g, String guid, String version){
+
+        return g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).has(PROPERTY_KEY_ENTITY_VERSION,version);
     }
 
     private void throwException(JanusConnectorErrorCode errorCode,String guid,String methodName) throws JanusConnectorException {
