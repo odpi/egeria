@@ -113,13 +113,8 @@ public class ProcessHandler {
                                                                                                   PropertyServerException {
         final String methodName = "createProcess";
 
-        /*
-         * Initialize the asset's zone membership
-         */
-        List<String> zoneMembership = securityVerifier.initializeAssetZones(defaultZones, process);
-        process.setZoneMembership(zoneMembership);
+        initializeAssetZoneMembership(process);
         securityVerifier.validateUserForAssetCreate(userId, process);
-
         validateProcessParameters(userId, process.getQualifiedName(), methodName);
 
         ProcessPropertiesBuilder builder = new ProcessPropertiesBuilder(process.getQualifiedName(), process.getName(), process.getDisplayName(),
@@ -151,6 +146,7 @@ public class ProcessHandler {
 
         final String methodName = "updateProcess";
 
+        initializeAssetZoneMembership(updatedProcess);
         validateProcessParameters(userId, updatedProcess.getQualifiedName(), methodName);
 
         String processGUID = originalProcessEntity.getGUID();
@@ -334,5 +330,10 @@ public class ProcessHandler {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND, methodName,
                     parentProcess.getQualifiedName());
         }
+    }
+
+    private void initializeAssetZoneMembership(Process updatedProcess) throws InvalidParameterException, PropertyServerException {
+        List<String> zoneMembership = securityVerifier.initializeAssetZones(defaultZones, updatedProcess);
+        updatedProcess.setZoneMembership(zoneMembership);
     }
 }

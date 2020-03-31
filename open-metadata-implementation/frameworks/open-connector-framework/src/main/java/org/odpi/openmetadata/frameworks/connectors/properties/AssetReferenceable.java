@@ -21,6 +21,8 @@ import java.util.Objects;
  */
 public class AssetReferenceable extends AssetElementHeader
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Referenceable referenceableBean;
 
 

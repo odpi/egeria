@@ -16,11 +16,11 @@ jobs:
         if: success()
         id: check_links
         uses: cmgrote/github-action-link-check@master
-      - name: Create issue from file
-        if: success()
-        uses: peter-evans/create-issue-from-file@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: Broken links
-          content-filepath: ./errors.txt
-          labels: documentation, consumability, tidy up
+#      - name: Create issue from file
+#        if: success()
+#        uses: peter-evans/create-issue-from-file@v2
+#        with:
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          title: Broken links
+#          content-filepath: ./errors.txt
+#          labels: documentation, consumability, tidy up

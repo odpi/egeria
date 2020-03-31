@@ -8,7 +8,7 @@
     dest: "/home/{{ egeria_samples_db_credentials.owner }}/load{{ item }}.sql"
   become_user: "{{ egeria_samples_db_credentials.owner }}"
   become: yes
-  with_items: "{{ egeria_samples_minimal_databases }}"
+  with_items: "{{ egeria_samples_minimal_tables }}"
 
 - name: load sample data to database
   shell: >
@@ -18,6 +18,6 @@
     executable: /bin/bash
   become_user: "{{ egeria_samples_db_credentials.owner }}"
   become: yes
-  with_items: "{{ egeria_samples_minimal_databases }}"
+  with_items: "{{ egeria_samples_minimal_tables }}"
   register: __db2_load_result
   failed_when: __db2_load_result.rc != 0 and __db2_load_result.rc != 4

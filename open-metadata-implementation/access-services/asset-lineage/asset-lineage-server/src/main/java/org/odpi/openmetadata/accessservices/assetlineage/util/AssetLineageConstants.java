@@ -55,6 +55,7 @@ public final class AssetLineageConstants {
     public static final String PORT_SCHEMA = "PortSchema";
     public static final String NESTED_FILE = "NestedFile";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";
+    public static final String PROCESS_HIERARCHY = "ProcessHierarchy";
 
     public static final String CLASSIFICATION_NAME_CONFIDENTIALITY = "Confidentiality";
     public static final String CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
@@ -99,5 +100,5 @@ public final class AssetLineageConstants {
 
     public static final ImmutableList<String> immutableValidLineageRelationshipTypes = ImmutableList.copyOf(Arrays.asList(SCHEMA_ATTRIBUTE,
             ATTRIBUTE_FOR_SCHEMA, COMPLEX_SCHEMA_TYPE, ASSET_SCHEMA_TYPE, CONNECTION_TO_ASSET, CONNECTION_ENDPOINT, DATA_CONTENT_FOR_DATA_SET,
-            SEMANTIC_ASSIGNMENT, PORT_DELEGATION, PROCESS_PORT, LINEAGE_MAPPING, PORT_SCHEMA, NESTED_FILE, FOLDER_HIERARCHY));
+            SEMANTIC_ASSIGNMENT, PORT_DELEGATION, PROCESS_PORT, LINEAGE_MAPPING, PORT_SCHEMA, NESTED_FILE, FOLDER_HIERARCHY, PROCESS_HIERARCHY));
 }

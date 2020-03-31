@@ -26,7 +26,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * Default constructor
      */
     public SubjectAreaCategoryRESTResource() {
-        //SubjectAreaRESTServicesInstance registers this omas.
+
     }
 
     /**

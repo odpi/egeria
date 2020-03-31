@@ -17,6 +17,8 @@ import java.util.Objects;
  */
 public class EmbeddedConnectionProperties extends AssetPropertyBase
 {
+    private static final long     serialVersionUID = 1L;
+
     protected EmbeddedConnection embeddedConnectionBean;
 
 

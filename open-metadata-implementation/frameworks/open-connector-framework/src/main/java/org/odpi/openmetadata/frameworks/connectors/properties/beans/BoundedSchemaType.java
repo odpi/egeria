@@ -15,11 +15,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@Deprecated
 public class BoundedSchemaType extends SchemaType
 {
     private static final long     serialVersionUID = 1L;
 
-    protected BoundedSchemaCategory boundedSchemaCategory = null;
+    private   BoundedSchemaCategory boundedSchemaCategory = null;
     protected int                   maximumElements       = 0;
     protected SchemaType            elementType           = null;
 
@@ -27,6 +28,7 @@ public class BoundedSchemaType extends SchemaType
     /**
      * Default constructor
      */
+    @Deprecated
     public BoundedSchemaType()
     {
         super();
@@ -34,12 +36,11 @@ public class BoundedSchemaType extends SchemaType
 
 
     /**
-     * Copy/clone Constructor the parentAsset is passed separately to the template because it is also
-     * likely to be being cloned in the same operation and we want the definitions clone to point to the
-     * asset clone and not the original asset.
+     * Copy/clone Constructor.
      *
-     * @param template template object to copy.
+     * @param template object to copy
      */
+    @Deprecated
     public BoundedSchemaType(BoundedSchemaType template)
     {
         super(template);
@@ -58,6 +59,7 @@ public class BoundedSchemaType extends SchemaType
      *
      * @return a copy of this schema as a SchemaElement
      */
+    @Deprecated
     @Override
     public SchemaElement cloneSchemaElement()
     {
@@ -71,6 +73,7 @@ public class BoundedSchemaType extends SchemaType
      *
      * @return a copy of this schema as a SchemaType
      */
+    @Deprecated
     @Override
     public SchemaType cloneSchemaType()
     {
@@ -83,6 +86,7 @@ public class BoundedSchemaType extends SchemaType
      *
      * @return BoundedSchemaCategory enum
      */
+    @Deprecated
     public BoundedSchemaCategory getBoundedSchemaCategory() { return boundedSchemaCategory; }
 
 
@@ -91,6 +95,7 @@ public class BoundedSchemaType extends SchemaType
      *
      * @param boundedSchemaCategory BoundedSchemaCategory enum
      */
+    @Deprecated
     public void setBoundedSchemaCategory(BoundedSchemaCategory boundedSchemaCategory)
     {
         this.boundedSchemaCategory = boundedSchemaCategory;
@@ -104,6 +109,7 @@ public class BoundedSchemaType extends SchemaType
      *
      * @return int maximum number of elements
      */
+    @Deprecated
     public int getMaximumElements()
     {
         return maximumElements;
@@ -117,6 +123,7 @@ public class BoundedSchemaType extends SchemaType
      *
      * @param maximumElements int maximum number of elements
      */
+    @Deprecated
     public void setMaximumElements(int maximumElements)
     {
         this.maximumElements = maximumElements;
@@ -128,6 +135,7 @@ public class BoundedSchemaType extends SchemaType
      *
      * @return schema type
      */
+    @Deprecated
     public SchemaType getElementType()
     {
         return elementType;
@@ -139,6 +147,7 @@ public class BoundedSchemaType extends SchemaType
      *
      * @param elementType schema type
      */
+    @Deprecated
     public void setElementType(SchemaType elementType)
     {
         this.elementType = elementType;

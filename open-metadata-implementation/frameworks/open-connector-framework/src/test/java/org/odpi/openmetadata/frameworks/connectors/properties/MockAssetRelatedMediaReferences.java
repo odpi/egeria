@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class MockAssetRelatedMediaReferences extends AssetRelatedMediaReferences
 {
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,11 +18,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = DataPlatformRegistrationRequestBody.class, name = "DataPlatformRegistration"),
-                @JsonSubTypes.Type(value = DeployedDatabaseSchemaRequestBody.class, name = "DeployedDatabaseSchema")
+                @JsonSubTypes.Type(value = DataPlatformRegistrationRequestBody.class, name = "dataPlatform"),
+                @JsonSubTypes.Type(value = DeployedDatabaseSchemaRequestBody.class, name = "deployedDatabaseSchema")
         })
 
-public abstract class DataPlatformOMASAPIRequestBody extends FFDCResponseBase implements java.io.Serializable {
+public abstract class DataPlatformOMASAPIRequestBody implements java.io.Serializable {
 
     private static final long serialVersionUID = 1L;
 
