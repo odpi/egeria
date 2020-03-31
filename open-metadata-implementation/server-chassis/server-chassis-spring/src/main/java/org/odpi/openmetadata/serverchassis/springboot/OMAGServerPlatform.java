@@ -36,7 +36,7 @@ import java.util.*;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria",
-                version = "1.6-SNAPSHOT",
+                version = "1.7-SNAPSHOT",
                 description = "Egeria Open Metadata",
                 license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0"),
                 contact = @Contact(url = "https://egeria.odpi.org", name = "ODPi", email = "odpi-project-egeria@lists.odpi.org")
