@@ -312,8 +312,8 @@ class DataEngineSchemaTypeHandlerTest {
         Attribute attribute = new Attribute();
         attribute.setQualifiedName(ATTRIBUTE_QUALIFIED_NAME);
         attribute.setDisplayName(ATTRIBUTE_DISPLAY_NAME);
-        attribute.setMinCardinality("1");
-        attribute.setMaxCardinality("1");
+        attribute.setMinCardinality(1);
+        attribute.setMaxCardinality(1);
         attribute.setPosition(1);
 
         return attribute;

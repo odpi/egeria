@@ -367,6 +367,10 @@ public class DataEngineSchemaTypeHandler {
         schemaAttribute.setAttributeName(displayName);
         schemaAttribute.setDefaultValueOverride(attribute.getDefaultValueOverride());
         schemaAttribute.setElementPosition(attribute.getPosition());
+        schemaAttribute.setMaxCardinality(attribute.getMaxCardinality());
+        schemaAttribute.setMaxCardinality(attribute.getMinCardinality());
+        schemaAttribute.setAllowsDuplicateValues(attribute.getAllowsDuplicateValues());
+        schemaAttribute.setOrderedValues(attribute.getOrderedValues());
 
         return schemaAttribute;
     }
