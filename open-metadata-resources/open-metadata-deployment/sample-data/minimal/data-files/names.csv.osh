@@ -5,4 +5,5 @@ record { record_delim='\n', delim=';', final_delim=end, null_field='', charset=U
     Id: not nullable int64;
     First: nullable string;
     Last: nullable string;
+    Location: not nullable int64;
 )

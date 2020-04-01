@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingValidValues;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.ValidValueConsumer;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;

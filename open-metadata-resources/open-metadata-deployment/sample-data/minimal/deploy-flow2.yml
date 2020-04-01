@@ -7,12 +7,8 @@
   any_errors_fatal: true
   vars_files:
     - defaults/main.yml
-    - vars/databases.yml
+    - vars/flow2.yml
   tasks:
-    - name: load sample data files
-      include_tasks: data-files/load.yml
-      when: ('ibm_information_server_engine' in group_names)
-
     - name: load sample metadata
       include_tasks: "metadata/{{ egeria_samples_metadata_backend }}/load.yml"
       when: >

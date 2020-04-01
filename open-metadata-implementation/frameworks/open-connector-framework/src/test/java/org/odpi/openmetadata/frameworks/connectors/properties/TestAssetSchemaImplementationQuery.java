@@ -100,7 +100,7 @@ public class TestAssetSchemaImplementationQuery
         testBean.setQuery("TestQuery");
         testBean.setQueryTargetElement(schemaAttribute);
 
-        return new AssetSchemaImplementationQuery(testBean, new AssetSchemaAttribute(null, queryTargetBean, attributeSchemaType));
+        return new AssetSchemaImplementationQuery(testBean, new AssetSchemaAttribute(null, queryTargetBean));
     }
 
 
@@ -181,7 +181,7 @@ public class TestAssetSchemaImplementationQuery
         AssetDescriptor parentAsset = new AssetSummary(new Asset());
 
         SchemaAttribute      schemaAttribute = new SchemaAttribute();
-        AssetSchemaAttribute queryTarget     = new AssetSchemaAttribute(schemaAttribute, attributeSchemaType);
+        AssetSchemaAttribute queryTarget     = new AssetSchemaAttribute(schemaAttribute);
 
         SchemaImplementationQuery testBean = new SchemaImplementationQuery();
         testBean.setQueryTargetElement(schemaAttribute);

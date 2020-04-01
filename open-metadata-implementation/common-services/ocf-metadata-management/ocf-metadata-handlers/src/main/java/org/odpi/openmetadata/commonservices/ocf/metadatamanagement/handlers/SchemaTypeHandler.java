@@ -13,7 +13,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -142,6 +145,8 @@ public class SchemaTypeHandler
         return schemaAttribute;
     }
 
+
+
     /**
      * Is there an attached schema for the Asset?
      *
@@ -155,27 +160,28 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public SchemaType getSchemaTypeForAsset(String   userId,
-                                            String   anchorGUID,
-                                            String   methodName) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+    SchemaType getSchemaTypeForAsset(String   userId,
+                                     String   anchorGUID,
+                                     String   methodName) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
     {
-            return this.getSchemaTypeForAnchor(userId,
-                                               anchorGUID,
-                                               AssetMapper.ASSET_TYPE_NAME,
-                                               AssetMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                               AssetMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                                               methodName);
+        return this.getSchemaTypeForAnchor(userId,
+                                           anchorGUID,
+                                           AssetMapper.ASSET_TYPE_NAME,
+                                           AssetMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                           AssetMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                           methodName);
     }
 
 
 
     /**
-     * Is there an attached schema for the SchemaAttribute?
+     * Is there an attached schema for the SchemaAttribute? it may be in the classification of the schema attribute
+     * or linked via a relationship.
      *
      * @param userId     calling user
-     * @param anchorGUID identifier for the entity that the object is attached to
+     * @param schemaAttributeEntity the schema attribute entity that the potential schema type is attached to
      * @param methodName calling method
      *
      * @return schemaType object or null
@@ -184,18 +190,42 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public SchemaType getSchemaTypeForAttribute(String   userId,
-                                                String   anchorGUID,
-                                                String   methodName) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+    private SchemaType getSchemaTypeForAttribute(String       userId,
+                                                 EntityDetail schemaAttributeEntity,
+                                                 String       methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
-        return this.getSchemaTypeForAnchor(userId,
-                                           anchorGUID,
-                                           SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                           SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
-                                           SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
-                                           methodName);
+        if (schemaAttributeEntity != null)
+        {
+            List<Classification> classifications = schemaAttributeEntity.getClassifications();
+
+            if (classifications != null)
+            {
+                for (Classification classification : classifications)
+                {
+                    if (classification != null)
+                    {
+                        if (SchemaElementMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                        {
+                            return this.getSchemaTypeFromClassification(userId,
+                                                                        schemaAttributeEntity.getGUID(),
+                                                                        classification,
+                                                                        methodName);
+                        }
+                    }
+                }
+            }
+
+            return this.getSchemaTypeForAnchor(userId,
+                                                   schemaAttributeEntity.getGUID(),
+                                                   SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                   SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                   SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
+                                                   methodName);
+        }
+
+        return null;
     }
 
 
@@ -231,31 +261,98 @@ public class SchemaTypeHandler
                                                                                         relationshipTypeGUID,
                                                                                         relationshipTypeName,
                                                                                         methodName);
-        if (schemaTypeEntity != null)
+
+        return getSchemaTypeFromEntity(userId, schemaTypeEntity, methodName);
+    }
+
+
+    /**
+     * Retrieve a specific schema type based on its unique identifier (GUID).  This is use to do updates
+     * and to retrieve a linked schema.
+     *
+     * @param userId calling user
+     * @param schemaTypeGUID guid of schema type to retrieve.
+     * @param guidParameterName parameter describing where the guid came from
+     * @param methodName calling method
+     *
+     * @return schema type or null depending on whether the object is found
+     * @throws InvalidParameterException  the guid is null
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    private SchemaType getSchemaType(String   userId,
+                                     String   schemaTypeGUID,
+                                     String   guidParameterName,
+                                     String   methodName) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
+    {
+        EntityDetail  schemaTypeEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                           schemaTypeGUID,
+                                                                           guidParameterName,
+                                                                           SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                           methodName);
+
+        return getSchemaTypeFromEntity(userId, schemaTypeEntity, methodName);
+    }
+
+
+    /**
+     * Transform a schema type entity into a schema type bean.  To completely fill out the schema type
+     * it may be necessary to
+     *
+     * @param userId calling user
+     * @param schemaTypeEntity entity retrieved from the repository
+     * @param methodName calling method
+     *
+     * @return schema type bean
+     * @throws InvalidParameterException problem with the entity
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    private SchemaType getSchemaTypeFromEntity(String       userId,
+                                               EntityDetail schemaTypeEntity,
+                                               String       methodName) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        final String guidParameterName = "schemaTypeEntity.getGUID()";
+
+        if ((schemaTypeEntity != null) && (schemaTypeEntity.getType() != null))
         {
-            /*
-             * Complex schema types have attributes attached to them
-             */
-            int attributeCount = 0;
+            InstanceProperties properties = schemaTypeEntity.getProperties();
+            String typeName = repositoryHelper.removeStringProperty(serviceName,
+                                                                    SchemaElementMapper.TYPE_NAME_PROPERTY_NAME,
+                                                                    properties,
+                                                                    methodName);
 
-            if (schemaTypeEntity.getType() != null)
+            if (properties != null)
             {
-                if (repositoryHelper.isTypeOf(serviceName,
-                                              schemaTypeEntity.getType().getTypeDefName(),
-                                              SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME))
+                /*
+                 * Complex schema types have attributes attached to them
+                 */
+                int attributeCount = 0;
+
+                if (typeName != null)
                 {
-                    attributeCount = this.countSchemaAttributes(userId,
-                                                                schemaTypeEntity.getGUID(),
-                                                                methodName);
+                    if (repositoryHelper.isTypeOf(serviceName,
+                                                  typeName,
+                                                  SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME))
+                    {
+                        attributeCount = this.countSchemaAttributes(userId,
+                                                                    schemaTypeEntity.getGUID(),
+                                                                    guidParameterName,
+                                                                    methodName);
+                    }
                 }
+
+                SchemaTypeConverter converter = new SchemaTypeConverter(schemaTypeEntity,
+                                                                        attributeCount,
+                                                                        repositoryHelper,
+                                                                        serviceName);
+
+                return this.getEmbeddedTypes(userId, schemaTypeEntity.getGUID(), converter.getBean(), methodName);
             }
-
-            SchemaTypeConverter converter = new SchemaTypeConverter(schemaTypeEntity,
-                                                                    attributeCount,
-                                                                    repositoryHelper,
-                                                                    serviceName);
-
-            return converter.getBean();
         }
 
         return null;
@@ -263,113 +360,207 @@ public class SchemaTypeHandler
 
 
     /**
-     * Turn the list of column headers into a SchemaType object.  The assumption is that all of the columns contain
-     * strings.  Later analysis may update this.
+     * Transform a schema type entity into a schema type bean.  To completely fill out the schema type
+     * it may be necessary to
      *
-     * @param anchorQualifiedName unique name for the object that this schema is connected to
-     * @param anchorDisplayName human-readable name for the object that this schema is connected to
-     * @param author userId of author
-     * @param encodingStandard internal encoding
-     * @param columnHeaders  list of column headers.
+     * @param userId calling user
+     * @param embeddedSchemaType entity retrieved from the repository
+     * @param methodName calling method
      *
-     * @return schema type object
+     * @return schema type bean
+     * @throws InvalidParameterException problem with the entity
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
      */
-    public SchemaType getTabularSchemaType(String            anchorQualifiedName,
-                                           String            anchorDisplayName,
-                                           String            author,
-                                           String            encodingStandard,
-                                           List<String>      columnHeaders)
+    private SchemaType getSchemaTypeFromClassification(String         userId,
+                                                       String         schemaAttributeGUID,
+                                                       Classification embeddedSchemaType,
+                                                       String         methodName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
     {
-        ComplexSchemaType    tableSchemaType = this.getEmptyComplexSchemaType(SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID,
-                                                                              SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME);
+        final String guidParameterName = "schemaAttributeGUID";
 
-        if (columnHeaders != null)
+        if ((embeddedSchemaType != null) && (embeddedSchemaType.getProperties() != null))
         {
-            tableSchemaType.setAttributeCount(columnHeaders.size());
-        }
+            InstanceProperties properties = embeddedSchemaType.getProperties();
+            String typeName = repositoryHelper.removeStringProperty(serviceName,
+                                                                    SchemaElementMapper.TYPE_NAME_PROPERTY_NAME,
+                                                                    properties,
+                                                                    methodName);
 
-        tableSchemaType.setQualifiedName(anchorQualifiedName + ":TabularSchema");
-        tableSchemaType.setDisplayName(anchorDisplayName + " Tabular Schema");
-        tableSchemaType.setAuthor(author);
-        tableSchemaType.setVersionNumber("1.0");
-        tableSchemaType.setEncodingStandard(encodingStandard);
-
-        return tableSchemaType;
-    }
-
-
-    /**
-     * Turn the list of column headers into a SchemaType object.  The assumption is that all of the columns contain
-     * strings.  Later analysis may update this.
-     *
-     * @param parentSchemaQualifiedName name of the linked schema's qualified name
-     * @param columnHeaders   list of column names.
-     *
-     * @return list of schema attribute objects
-     */
-    public  List<SchemaAttribute> getTabularSchemaColumns(String            parentSchemaQualifiedName,
-                                                          List<String>      columnHeaders)
-    {
-        List<SchemaAttribute>    tableColumns = new ArrayList<>();
-
-        if (columnHeaders != null)
-        {
-            int positionCount = 0;
-            for (String  columnName : columnHeaders)
+            if (properties != null)
             {
-                if (columnName != null)
-                {
-                    SchemaAttribute schemaAttribute = this.getEmptySchemaAttribute();
+                /*
+                 * Complex schema types have attributes attached to them
+                 */
+                int attributeCount = 0;
 
-                    schemaAttribute.setQualifiedName(parentSchemaQualifiedName + ":Column:" + columnName);
-                    schemaAttribute.setAttributeName(columnName);
-                    schemaAttribute.setCardinality("1");
-                    schemaAttribute.setElementPosition(positionCount);
-                    tableColumns.add(schemaAttribute);
-                    positionCount++;
+                if (typeName != null)
+                {
+                    if (repositoryHelper.isTypeOf(serviceName,
+                                                  typeName,
+                                                  SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME))
+                    {
+                        attributeCount = this.countSchemaAttributes(userId,
+                                                                    schemaAttributeGUID,
+                                                                    guidParameterName,
+                                                                    methodName);
+                    }
                 }
+
+                SchemaTypeConverter converter = new SchemaTypeConverter(typeName,
+                                                                        properties,
+                                                                        attributeCount,
+                                                                        repositoryHelper,
+                                                                        serviceName);
+
+                return this.getEmbeddedTypes(userId, schemaAttributeGUID, converter.getBean(), methodName);
             }
         }
 
-        if (tableColumns.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return tableColumns;
-        }
+        return null;
     }
 
 
     /**
-     * Count the number of connection attached to an anchor asset.
+     * This method manufactures a complete schema type bean of the requested type from the supplied properties and
+     * potentially more retrieves from the repository if necessary.
+     *
+     * @param userId calling user
+     * @param schemaElementGUID GUID of the object that is the root of the schema type - needed if have to retrieve
+     *                          additional information.
+     * @param parentSchemaType properties for the schema type
+     * @param methodName calling method
+     * @return schema type bean or null
+     *
+     * @throws InvalidParameterException problem with the properties
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server or values retrieved are weird.
+     */
+    @SuppressWarnings(value = "deprecation")
+    private SchemaType getEmbeddedTypes(String     userId,
+                                        String     schemaElementGUID,
+                                        SchemaType parentSchemaType,
+                                        String     methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        if (parentSchemaType instanceof MapSchemaType)
+        {
+            EntityDetail entity = repositoryHandler.getEntityForRelationshipType(userId,
+                                                                                 schemaElementGUID,
+                                                                                 SchemaElementMapper.MAP_SCHEMA_TYPE_TYPE_NAME,
+                                                                                 SchemaElementMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
+                                                                                 SchemaElementMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
+                                                                                 methodName);
+            if (entity != null)
+            {
+                ((MapSchemaType) parentSchemaType).setMapFromElement(this.getSchemaTypeFromEntity(userId, entity, methodName));
+            }
+
+            entity = repositoryHandler.getEntityForRelationshipType(userId,
+                                                                    schemaElementGUID,
+                                                                    SchemaElementMapper.MAP_SCHEMA_TYPE_TYPE_NAME,
+                                                                    SchemaElementMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
+                                                                    SchemaElementMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
+                                                                    methodName);
+
+            if (entity != null)
+            {
+                ((MapSchemaType) parentSchemaType).setMapToElement(this.getSchemaTypeFromEntity(userId, entity, methodName));
+            }
+        }
+        else if (parentSchemaType instanceof SchemaTypeChoice)
+        {
+            List<EntityDetail>  entities = repositoryHandler.getEntitiesForRelationshipType(userId,
+                                                                                            schemaElementGUID,
+                                                                                            SchemaElementMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME,
+                                                                                            SchemaElementMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                                                                            SchemaElementMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                                                                            0,
+                                                                                            invalidParameterHandler.getMaxPagingSize(),
+                                                                                            methodName);
+
+            if (entities != null)
+            {
+                List<SchemaType> schemaTypes = new ArrayList<>();
+
+                for (EntityDetail entity : entities)
+                {
+                    if (entity != null)
+                    {
+                        schemaTypes.add(getSchemaTypeFromEntity(userId, entity, methodName));
+                    }
+                }
+
+                if (! schemaTypes.isEmpty())
+                {
+                    ((SchemaTypeChoice) parentSchemaType).setSchemaOptions(schemaTypes);
+                }
+            }
+        }
+        else if (parentSchemaType instanceof BoundedSchemaType)
+        {
+            EntityDetail entity = repositoryHandler.getEntityForRelationshipType(userId,
+                                                                                 schemaElementGUID,
+                                                                                 SchemaElementMapper.BOUNDED_SCHEMA_TYPE_TYPE_NAME,
+                                                                                 SchemaElementMapper.BOUNDED_ELEMENT_RELATIONSHIP_TYPE_GUID,
+                                                                                 SchemaElementMapper.BOUNDED_ELEMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                 methodName);
+
+            if (entity != null)
+            {
+                ((BoundedSchemaType) parentSchemaType).setElementType(this.getSchemaTypeFromEntity(userId, entity, methodName));
+            }
+        }
+
+        return parentSchemaType;
+    }
+
+
+    /**
+     * Count the number of connection attached to an anchor schema type.
      *
      * @param userId     calling user
-     * @param schemaTypeGUID identifier for the parent schema type
+     * @param schemaElementGUID identifier for the parent complex schema type - this could be a schemaAttribute or a
+     *                          schema type
+     * @param guidParameterName name of guid parameter
      * @param methodName calling method
      * @return count of attached objects
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countSchemaAttributes(String   userId,
-                                     String   schemaTypeGUID,
-                                     String   methodName) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+    private int countSchemaAttributes(String   userId,
+                                      String   schemaElementGUID,
+                                      String   guidParameterName,
+                                      String   methodName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
-        final String guidParameterName      = "schemaTypeGUID";
-
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(schemaTypeGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateGUID(schemaElementGUID, guidParameterName, methodName);
 
-        return repositoryHandler.countAttachedRelationshipsByType(userId,
-                                                                  schemaTypeGUID,
-                                                                  SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
-                                                                  SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                  SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                  methodName);
+        int count = repositoryHandler.countAttachedRelationshipsByType(userId,
+                                                                       schemaElementGUID,
+                                                                       SchemaElementMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                       SchemaElementMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                       SchemaElementMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                       methodName);
+
+
+        if (count == 0)
+        {
+            count = repositoryHandler.countAttachedRelationshipsByType(userId,
+                                                                       schemaElementGUID,
+                                                                       SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
+                                                                       SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                       SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                       methodName);
+        }
+
+        return count;
     }
 
 
@@ -426,7 +617,7 @@ public class SchemaTypeHandler
                     SchemaType   attributeType = null;
                     if (attributeTypeEntity != null)
                     {
-                        attributeType = this.getSchemaTypeForAttribute(userId, attributeTypeEntity.getGUID(), methodName);
+                        attributeType = this.getSchemaTypeForAttribute(userId, attributeTypeEntity, methodName);
                     }
 
                     SchemaAttributeConverter converter = new SchemaAttributeConverter(schemaAttributeEntity,
@@ -463,12 +654,12 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void  saveSchemaAttributes(String                userId,
-                                      String                schemaTypeGUID,
-                                      List<SchemaAttribute> schemaAttributes,
-                                      String                methodName) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException
+    public void saveSchemaAttributes(String                userId,
+                                     String                schemaTypeGUID,
+                                     List<SchemaAttribute> schemaAttributes,
+                                     String                methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
         if (schemaAttributes != null)
         {
@@ -476,27 +667,157 @@ public class SchemaTypeHandler
             {
                 if (schemaAttribute != null)
                 {
-                    String schemaAttributeGUID = this.findSchemaAttribute(userId, schemaAttribute, methodName);
-
-                    if (schemaAttributeGUID == null)
-                    {
-                        schemaAttributeGUID = addSchemaAttribute(userId, schemaAttribute);
-
-                        repositoryHandler.createRelationship(userId,
-                                                             SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                             schemaTypeGUID,
-                                                             schemaAttributeGUID,
-                                                             null,
-                                                             methodName);
-                    }
-                    else
-                    {
-                        updateSchemaAttribute(userId, schemaAttributeGUID, schemaAttribute);
-                    }
+                    saveSchemaTypeAttribute(userId, schemaTypeGUID, schemaAttribute, methodName);
                 }
             }
         }
     }
+
+
+    /**
+     * Work through the schema attributes adding or updating the instances
+     *
+     * @param userId calling userId
+     * @param parentGUID anchor object
+     * @param schemaAttribute schema attribute object with embedded type
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the guid or bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String saveSchemaAttribute(String          userId,
+                                      String          parentGUID,
+                                      SchemaAttribute schemaAttribute,
+                                      String          methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        final String guidParameterName = "parentGUID";
+
+        invalidParameterHandler.validateGUID(parentGUID, guidParameterName, methodName);
+
+        EntityDetail parentEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                      parentGUID,
+                                                                      guidParameterName,
+                                                                      SchemaElementMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                      methodName);
+
+        if (parentEntity != null)
+        {
+            String       typeName = null;
+            InstanceType type = parentEntity.getType();
+
+            if (type != null)
+            {
+                typeName = type.getTypeDefName();
+            }
+
+            if (repositoryHelper.isTypeOf(serviceName, typeName, SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME))
+            {
+                return saveSchemaTypeAttribute(userId, parentGUID, schemaAttribute, methodName);
+            }
+            else
+            {
+                return saveNestedSchemaAttribute(userId, parentGUID, schemaAttribute, methodName);
+            }
+        }
+        else
+        {
+            invalidParameterHandler.throwUnknownElement(userId,
+                                                        parentGUID,
+                                                        SchemaElementMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                        serviceName,
+                                                        serverName,
+                                                        methodName);
+            return null;
+        }
+    }
+
+
+
+    /**
+     * Work through the schema attributes adding or updating the instances
+     *
+     * @param userId calling userId
+     * @param schemaTypeGUID anchor object
+     * @param schemaAttribute schema attribute object with embedded type
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    private String saveSchemaTypeAttribute(String          userId,
+                                           String          schemaTypeGUID,
+                                           SchemaAttribute schemaAttribute,
+                                           String          methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        String schemaAttributeGUID = this.findSchemaAttribute(userId, schemaAttribute, methodName);
+
+        if (schemaAttributeGUID == null)
+        {
+            schemaAttributeGUID = addSchemaAttribute(userId, schemaAttribute);
+
+            repositoryHandler.createRelationship(userId,
+                                                 SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                 schemaTypeGUID,
+                                                 schemaAttributeGUID,
+                                                 null,
+                                                 methodName);
+        }
+        else
+        {
+            updateSchemaAttribute(userId, schemaAttributeGUID, schemaAttribute);
+        }
+
+        return schemaAttributeGUID;
+    }
+
+
+    /**
+     * Work through the schema attributes adding or updating the instances
+     *
+     * @param userId calling userId
+     * @param parentSchemaAttributeGUID anchor object
+     * @param nestedSchemaAttribute schema attribute object with embedded type
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    private String saveNestedSchemaAttribute(String          userId,
+                                             String          parentSchemaAttributeGUID,
+                                             SchemaAttribute nestedSchemaAttribute,
+                                             String          methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        String schemaAttributeGUID = this.findSchemaAttribute(userId, nestedSchemaAttribute, methodName);
+
+        if (schemaAttributeGUID == null)
+        {
+            schemaAttributeGUID = addSchemaAttribute(userId, nestedSchemaAttribute);
+
+            repositoryHandler.createRelationship(userId,
+                                                 SchemaElementMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                 parentSchemaAttributeGUID,
+                                                 schemaAttributeGUID,
+                                                 null,
+                                                 methodName);
+        }
+        else
+        {
+            updateSchemaAttribute(userId, schemaAttributeGUID, nestedSchemaAttribute);
+        }
+
+        return schemaAttributeGUID;
+    }
+
+
 
     /**
      * Work through the schema attributes from an external source adding or updating the instances
@@ -518,8 +839,8 @@ public class SchemaTypeHandler
                                               String                externalSourceGUID,
                                               String                externalSourceName,
                                               String                methodName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
     {
         if (schemaAttributes != null)
         {
@@ -652,7 +973,7 @@ public class SchemaTypeHandler
 
 
     /**
-     * Add the schema type to the repository.
+     * Add the schema attribute to the repository.  Notice there is no attempt to process its type.
      *
      * @param userId   calling userId
      * @param schemaAttribute object to add
@@ -668,14 +989,69 @@ public class SchemaTypeHandler
     {
         final String methodName = "addSchemaAttribute";
 
-        SchemaAttributeBuilder builder = this.getSchemaAttributeBuilder(schemaAttribute);
+        SchemaAttributeBuilder schemaAttributeBuilder = this.getSchemaAttributeBuilder(schemaAttribute);
 
-        return repositoryHandler.createEntity(userId,
-                                              this.getSchemaAttributeTypeGUID(schemaAttribute),
-                                              this.getSchemaAttributeTypeName(schemaAttribute),
-                                              builder.getInstanceProperties(methodName),
-                                              methodName);
+        String schemaAttributeGUID = repositoryHandler.createEntity(userId,
+                                                                    this.getSchemaAttributeTypeGUID(schemaAttribute),
+                                                                    this.getSchemaAttributeTypeName(schemaAttribute),
+                                                                    schemaAttributeBuilder.getInstanceProperties(methodName),
+                                                                    methodName);
+
+        SchemaType schemaType = schemaAttribute.getAttributeType();
+
+        if (schemaType != null)
+        {
+            if ((schemaType.getExtendedProperties() == null) &&
+                    ((schemaType instanceof ComplexSchemaType) ||
+                     (schemaType instanceof LiteralSchemaType) ||
+                     (schemaType instanceof SimpleSchemaType)))
+            {
+                /*
+                 * The schema type can be represented as a classification on the schema attribute.
+                 */
+                SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(schemaType);
+
+                repositoryHandler.classifyEntity(userId,
+                                                 schemaAttributeGUID,
+                                                 SchemaElementMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
+                                                 SchemaElementMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                                 schemaTypeBuilder.getInstanceProperties(methodName),
+                                                 methodName);
+            }
+            else
+            {
+                String schemaTypeGUID = addSchemaType(userId, schemaType);
+                if (schemaTypeGUID != null)
+                {
+                    repositoryHandler.createRelationship(userId,
+                                                         SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                         schemaAttributeGUID,
+                                                         schemaTypeGUID,
+                                                         null,
+                                                         methodName);
+                }
+            }
+        }
+        else if (schemaAttribute.getExternalAttributeType() != null)
+        {
+            final String guidParameterName = "schemaAttribute.getExternalAttributeType().getLinkedSchemaTypeGUID()";
+            SchemaLink schemaLink = schemaAttribute.getExternalAttributeType();
+            InstanceProperties properties = new InstanceProperties();
+
+            SchemaType linkedType = this.getSchemaType(userId,
+                                                       schemaLink.getLinkedSchemaTypeGUID(),
+                                                       guidParameterName,
+                                                       methodName);
+
+            if (linkedType != null)
+            {
+                // todo
+            }
+        }
+
+        return schemaAttributeGUID;
     }
+
 
     /**
      * Add the schema type from an external source to the repository.
@@ -693,8 +1069,8 @@ public class SchemaTypeHandler
                                              SchemaAttribute      schemaAttribute,
                                              String               externalSourceGUID,
                                              String               externalSourceName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
         final String methodName = "addExternalSchemaAttribute";
 
@@ -750,22 +1126,44 @@ public class SchemaTypeHandler
      */
     private SchemaAttributeBuilder  getSchemaAttributeBuilder(SchemaAttribute  schemaAttribute)
     {
+        SchemaAttributeBuilder builder = null;
+
         if (schemaAttribute != null)
         {
-            // TODO will need different builder for DerivedSchemaAttribute
-            return new SchemaAttributeBuilder(schemaAttribute.getQualifiedName(),
-                                              schemaAttribute.getAttributeName(),
-                                              schemaAttribute.getElementPosition(),
-                                              schemaAttribute.getCardinality(),
-                                              schemaAttribute.getDefaultValueOverride(),
-                                              schemaAttribute.getAdditionalProperties(),
-                                              schemaAttribute.getExtendedProperties(),
-                                              repositoryHelper,
-                                              serviceName,
-                                              serverName);
+            builder = new SchemaAttributeBuilder(schemaAttribute.getQualifiedName(),
+                                                 schemaAttribute.getAttributeName(),
+                                                 schemaAttribute.getElementPosition(),
+                                                 schemaAttribute.getMinCardinality(),
+                                                 schemaAttribute.getMaxCardinality(),
+                                                 schemaAttribute.isDeprecated(),
+                                                 schemaAttribute.getDefaultValueOverride(),
+                                                 schemaAttribute.isAllowsDuplicateValues(),
+                                                 schemaAttribute.isOrderedValues(),
+                                                 schemaAttribute.getSortOrder(),
+                                                 schemaAttribute.getMinimumLength(),
+                                                 schemaAttribute.getLength(),
+                                                 schemaAttribute.getSignificantDigits(),
+                                                 schemaAttribute.isNullable(),
+                                                 schemaAttribute.getNativeJavaClass(),
+                                                 schemaAttribute.getAliases(),
+                                                 schemaAttribute.getAdditionalProperties(),
+                                                 schemaAttribute.getExtendedProperties(),
+                                                 repositoryHelper,
+                                                 serviceName,
+                                                 serverName);
+
+            /*
+             * Extract additional properties if this is a derived schema attribute.
+             */
+            if (schemaAttribute instanceof DerivedSchemaAttribute)
+            {
+                DerivedSchemaAttribute derivedSchemaAttribute = (DerivedSchemaAttribute) schemaAttribute;
+
+                builder.setFormula(derivedSchemaAttribute.getFormula());
+            }
         }
 
-        return null;
+        return builder;
     }
 
 
@@ -813,7 +1211,8 @@ public class SchemaTypeHandler
     /**
      * Find out if the schema type object is already stored in the repository.  If the schema type's
      * guid is set, it uses it to retrieve the entity.  If the GUID is not set, it tries the
-     * fully qualified name.  If neither are set it throws an exception.
+     * fully qualified name.  If neither are set it throws an exception.  If the schema type is not
+     * found it returns null.
      *
      * @param userId calling user
      * @param schemaTypeGUID unique Id
@@ -823,7 +1222,7 @@ public class SchemaTypeHandler
      *
      * @return unique identifier of the connection or null
      *
-     * @throws InvalidParameterException the connection bean properties are invalid
+     * @throws InvalidParameterException the schema type bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
@@ -915,7 +1314,8 @@ public class SchemaTypeHandler
      *
      * @param userId calling userId
      * @param schemaType object to add
-     * @param schemaAttributes list of nested schema attribute objects or null
+     * @param schemaAttributes list of nested schema attribute objects or null. These attributes can not have
+     *                         attributes nested themselves because the GUID is not returned to the caller.
      * @param methodName calling method
      *
      * @return unique identifier of the schemaType in the repository.
@@ -931,6 +1331,38 @@ public class SchemaTypeHandler
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
     {
+        String schemaTypeGUID = this.saveSchemaType(userId, schemaType, methodName);
+
+        if (schemaAttributes != null)
+        {
+            this.saveSchemaAttributes(userId, schemaTypeGUID, schemaAttributes, methodName);
+        }
+
+        return schemaTypeGUID;
+    }
+
+
+    /**
+     * Determine if the SchemaType object is stored in the repository and create it if it is not.
+     * If the schemaType is located, there is no check that the schemaType values are equal to those in
+     * the supplied object.
+     *
+     * @param userId calling userId
+     * @param schemaType object to add
+     * @param methodName calling method
+     *
+     * @return unique identifier of the schemaType in the repository.
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String  saveSchemaType(String                userId,
+                                  SchemaType            schemaType,
+                                  String                methodName) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
         String schemaTypeGUID = this.findSchemaType(userId, schemaType, methodName);
 
         if (schemaTypeGUID == null)
@@ -942,13 +1374,9 @@ public class SchemaTypeHandler
             updateSchemaType(userId, schemaTypeGUID, schemaType);
         }
 
-        if (schemaAttributes != null)
-        {
-            this.saveSchemaAttributes(userId, schemaTypeGUID, schemaAttributes, methodName);
-        }
-
         return schemaTypeGUID;
     }
+
 
     /**
      * Determine if the SchemaType object is stored in the repository and create it if it is not.
@@ -957,7 +1385,6 @@ public class SchemaTypeHandler
      *
      * @param userId calling userId
      * @param schemaType object to add
-     * @param schemaAttributes list of nested schema attribute objects or null
      * @param externalSourceGUID unique identifier(guid) for the external source
      * @param externalSourceName unique name for the external source
      * @param methodName calling method
@@ -970,12 +1397,11 @@ public class SchemaTypeHandler
      */
     public String  saveExternalSchemaType(String                userId,
                                           SchemaType            schemaType,
-                                          List<SchemaAttribute> schemaAttributes,
                                           String                externalSourceGUID,
                                           String                externalSourceName,
                                           String                methodName) throws InvalidParameterException,
-                    PropertyServerException,
-                    UserNotAuthorizedException
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
     {
         String schemaTypeGUID = this.findSchemaType(userId, schemaType, methodName);
 
@@ -988,18 +1414,12 @@ public class SchemaTypeHandler
             updateSchemaType(userId, schemaTypeGUID, schemaType);
         }
 
-        if (schemaAttributes != null)
-        {
-            this.saveExternalSchemaAttributes(userId, schemaTypeGUID, schemaAttributes, externalSourceGUID,
-                    externalSourceName, methodName);
-        }
-
         return schemaTypeGUID;
     }
 
 
     /**
-     * Add the schema type to the repository.
+     * Add the schema type to the repository and any schema types embedded within it.
      *
      * @param userId   calling userId
      * @param schemaType object to add
@@ -1010,23 +1430,130 @@ public class SchemaTypeHandler
      */
     private String addSchemaType(String                userId,
                                  SchemaType            schemaType) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
     {
         final String methodName = "addSchemaType";
 
         SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(schemaType);
 
-        return repositoryHandler.createEntity(userId,
-                                              this.getSchemaTypeTypeGUID(schemaType),
-                                              this.getSchemaTypeTypeName(schemaType),
-                                              schemaTypeBuilder.getInstanceProperties(methodName),
-                                              methodName);
+        String schemaTypeGUID = repositoryHandler.createEntity(userId,
+                                                               this.getSchemaTypeTypeGUID(schemaType),
+                                                               this.getSchemaTypeTypeName(schemaType),
+                                                               schemaTypeBuilder.getInstanceProperties(methodName),
+                                                               methodName);
+
+        return addEmbeddedTypes(userId, schemaTypeGUID, schemaType);
     }
 
 
     /**
-     * Add the schema type from an external source to the repository.
+     * Add additional schema types that are part of a schema type.
+     *
+     * @param userId calling user
+     * @param schemaTypeGUID schema type entity to link to
+     * @param schemaType description of complete schema type.
+     * @return schemaTypeGUID
+     * @throws InvalidParameterException  the schemaType bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @SuppressWarnings(value = "deprecation")
+    private String addEmbeddedTypes(String     userId,
+                                    String     schemaTypeGUID,
+                                    SchemaType schemaType) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "addEmbeddedTypes";
+
+        if (schemaType instanceof MapSchemaType)
+        {
+            SchemaType mapFrom = ((MapSchemaType) schemaType).getMapFromElement();
+            SchemaType mapTo   = ((MapSchemaType) schemaType).getMapToElement();
+
+            if (mapFrom != null)
+            {
+                String mapFromGUID = addSchemaType(userId, mapFrom);
+
+                if (mapFromGUID != null)
+                {
+                    repositoryHandler.createRelationship(userId,
+                                                         SchemaElementMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
+                                                         schemaTypeGUID,
+                                                         mapFromGUID,
+                                                         null,
+                                                         methodName);
+                }
+            }
+
+            if (mapTo != null)
+            {
+                String mapToGUID = addSchemaType(userId, mapTo);
+
+                if (mapToGUID != null)
+                {
+                    repositoryHandler.createRelationship(userId,
+                                                         SchemaElementMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
+                                                         schemaTypeGUID,
+                                                         mapToGUID,
+                                                         null,
+                                                         methodName);
+                }
+            }
+        }
+        else if (schemaType instanceof SchemaTypeChoice)
+        {
+            List<SchemaType>  schemaOptions = ((SchemaTypeChoice) schemaType).getSchemaOptions();
+
+            if (schemaOptions != null)
+            {
+                for (SchemaType option : schemaOptions)
+                {
+                    if (option != null)
+                    {
+                        String optionGUID = addSchemaType(userId, option);
+
+                        if (optionGUID != null)
+                        {
+                            repositoryHandler.createRelationship(userId,
+                                                                 SchemaElementMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                                                 schemaTypeGUID,
+                                                                 optionGUID,
+                                                                 null,
+                                                                 methodName);
+                        }
+                    }
+                }
+            }
+        }
+        else if (schemaType instanceof BoundedSchemaType)
+        {
+            SchemaType elementType = ((BoundedSchemaType) schemaType).getElementType();
+
+            if (elementType != null)
+            {
+                String elementTypeGUID = addSchemaType(userId, elementType);
+
+                if (elementTypeGUID != null)
+                {
+                    repositoryHandler.createRelationship(userId,
+                                                         SchemaElementMapper.BOUNDED_ELEMENT_RELATIONSHIP_TYPE_GUID,
+                                                         schemaTypeGUID,
+                                                         elementTypeGUID,
+                                                         null,
+                                                         methodName);
+                }
+            }
+        }
+
+        return schemaTypeGUID;
+    }
+
+
+
+    /**
+     * Add the schema type from an external source to the repository along with any schema types embedded within it.
      *
      * @param userId   calling userId
      * @param schemaType object to add
@@ -1048,14 +1575,133 @@ public class SchemaTypeHandler
 
         SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(schemaType);
 
-        return repositoryHandler.createExternalEntity(userId,
-                                                      this.getSchemaTypeTypeGUID(schemaType),
-                                                      this.getSchemaTypeTypeName(schemaType),
-                                                      externalSourceGUID,
-                                                      externalSourceName,
-                                                      schemaTypeBuilder.getInstanceProperties(methodName),
-                                                      methodName);
+        String schemaTypeGUID = repositoryHandler.createExternalEntity(userId,
+                                                                       this.getSchemaTypeTypeGUID(schemaType),
+                                                                       this.getSchemaTypeTypeName(schemaType),
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       schemaTypeBuilder.getInstanceProperties(methodName),
+                                                                       methodName);
+
+        return addExternalEmbeddedTypes(userId, schemaTypeGUID, schemaType, externalSourceGUID, externalSourceName);
     }
+
+
+    /**
+     * Add additional schema types that are part of an external schema type.
+     *
+     * @param userId calling user
+     * @param schemaTypeGUID schema type entity to link to
+     * @param schemaType description of complete schema type.
+     * @param externalSourceGUID unique identifier(guid) for the external source
+     * @param externalSourceName unique name for the external source
+     * @return schemaTypeGUID
+     * @throws InvalidParameterException  the schemaType bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @SuppressWarnings(value = "deprecation")
+    private String addExternalEmbeddedTypes(String                userId,
+                                            String                schemaTypeGUID,
+                                            SchemaType            schemaType,
+                                            String                externalSourceGUID,
+                                            String                externalSourceName) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName = "addExternalEmbeddedTypes";
+
+        if (schemaType instanceof MapSchemaType)
+        {
+            SchemaType mapFrom = ((MapSchemaType) schemaType).getMapFromElement();
+            SchemaType mapTo   = ((MapSchemaType) schemaType).getMapToElement();
+
+            if (mapFrom != null)
+            {
+                String mapFromGUID = addExternalSchemaType(userId, mapFrom, externalSourceGUID, externalSourceName);
+
+                if (mapFromGUID != null)
+                {
+                    repositoryHandler.createExternalRelationship(userId,
+                                                                 SchemaElementMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 schemaTypeGUID,
+                                                                 mapFromGUID,
+                                                                 null,
+                                                                 methodName);
+                }
+            }
+
+            if (mapTo != null)
+            {
+                String mapToGUID = addExternalSchemaType(userId, mapTo, externalSourceGUID, externalSourceName);
+
+                if (mapToGUID != null)
+                {
+                    repositoryHandler.createExternalRelationship(userId,
+                                                                 SchemaElementMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 schemaTypeGUID,
+                                                                 mapToGUID,
+                                                                 null,
+                                                                 methodName);
+                }
+            }
+        }
+        else if (schemaType instanceof SchemaTypeChoice)
+        {
+            List<SchemaType>  schemaOptions = ((SchemaTypeChoice) schemaType).getSchemaOptions();
+
+            if (schemaOptions != null)
+            {
+                for (SchemaType option : schemaOptions)
+                {
+                    if (option != null)
+                    {
+                        String optionGUID = addExternalSchemaType(userId, option, externalSourceGUID, externalSourceName);
+
+                        if (optionGUID != null)
+                        {
+                            repositoryHandler.createExternalRelationship(userId,
+                                                                         SchemaElementMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                                                         externalSourceGUID,
+                                                                         externalSourceName,
+                                                                         schemaTypeGUID,
+                                                                         optionGUID,
+                                                                         null,
+                                                                         methodName);
+                        }
+                    }
+                }
+            }
+        }
+        else if (schemaType instanceof BoundedSchemaType)
+        {
+            SchemaType elementType = ((BoundedSchemaType) schemaType).getElementType();
+
+            if (elementType != null)
+            {
+                String elementTypeGUID = addExternalSchemaType(userId, elementType, externalSourceGUID, externalSourceName);
+
+                if (elementTypeGUID != null)
+                {
+                    repositoryHandler.createExternalRelationship(userId,
+                                                                 SchemaElementMapper.BOUNDED_ELEMENT_RELATIONSHIP_TYPE_GUID,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 schemaTypeGUID,
+                                                                 elementTypeGUID,
+                                                                 null,
+                                                                 methodName);
+                }
+            }
+        }
+
+        return schemaTypeGUID;
+    }
+
 
 
     /**
@@ -1131,114 +1777,104 @@ public class SchemaTypeHandler
 
 
     /**
-     * Return the schemaType builder for bounded schema types such as sets and arrays.
-     *
-     * @param schemaType object with properties
-     * @return builder object.
-     */
-    private SchemaTypeBuilder  getBoundedSchemaTypeBuilder(BoundedSchemaType  schemaType)
-    {
-        return  new BoundedSchemaTypeBuilder(schemaType.getQualifiedName(),
-                                             schemaType.getDisplayName(),
-                                             schemaType.getVersionNumber(),
-                                             schemaType.getAuthor(),
-                                             schemaType.getUsage(),
-                                             schemaType.getEncodingStandard(),
-                                             schemaType.getMaximumElements(),
-                                             schemaType.getAdditionalProperties(),
-                                             schemaType.getExtendedProperties(),
-                                             repositoryHelper,
-                                             serviceName,
-                                             serverName);
-    }
-
-
-    /**
-     * Return the schemaType builder for complex schema types such as tables.
-     *
-     * @param schemaType object with properties
-     * @return builder object.
-     */
-    private SchemaTypeBuilder  getComplexSchemaTypeBuilder(ComplexSchemaType  schemaType)
-    {
-        return  new ComplexSchemaTypeBuilder(schemaType.getQualifiedName(),
-                                             schemaType.getDisplayName(),
-                                             schemaType.getVersionNumber(),
-                                             schemaType.getAuthor(),
-                                             schemaType.getUsage(),
-                                             schemaType.getEncodingStandard(),
-                                             schemaType.getAdditionalProperties(),
-                                             schemaType.getExtendedProperties(),
-                                             repositoryHelper,
-                                             serviceName,
-                                             serverName);
-    }
-
-
-    /**
-     * Return the schemaType builder for primitive schema types such as strings and numbers.
-     *
-     * @param schemaType object with properties
-     * @return builder object.
-     */
-    private SchemaTypeBuilder  getPrimitiveSchemaTypeBuilder(PrimitiveSchemaType  schemaType)
-    {
-        return  new PrimitiveSchemaTypeBuilder(schemaType.getQualifiedName(),
-                                               schemaType.getDisplayName(),
-                                               schemaType.getVersionNumber(),
-                                               schemaType.getAuthor(),
-                                               schemaType.getUsage(),
-                                               schemaType.getEncodingStandard(),
-                                               schemaType.getDataType(),
-                                               schemaType.getDefaultValue(),
-                                               schemaType.getAdditionalProperties(),
-                                               schemaType.getExtendedProperties(),
-                                               repositoryHelper,
-                                               serviceName,
-                                               serverName);
-    }
-
-
-
-    /**
      * Return the appropriate schemaType builder for the supplied schema type.
      *
      * @param schemaType object with properties
      * @return builder object.
      */
+    @SuppressWarnings(value = "deprecation")
     private SchemaTypeBuilder  getSchemaTypeBuilder(SchemaType  schemaType)
     {
+        SchemaTypeBuilder builder = null;
+
         if (schemaType != null)
         {
-            if (schemaType instanceof PrimitiveSchemaType)
+            builder = new SchemaTypeBuilder(SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME,
+                                            schemaType.getQualifiedName(),
+                                            schemaType.getDisplayName(),
+                                            schemaType.getDescription(),
+                                            schemaType.getVersionNumber(),
+                                            schemaType.isDeprecated(),
+                                            schemaType.getAuthor(),
+                                            schemaType.getUsage(),
+                                            schemaType.getEncodingStandard(),
+                                            schemaType.getNamespace(),
+                                            schemaType.getAdditionalProperties(),
+                                            schemaType.getExtendedProperties(),
+                                            repositoryHelper,
+                                            serviceName,
+                                            serverName);
+
+            /*
+             * Set up the properties that are specific to particular subtypes of schema type.
+             */
+            if (schemaType instanceof SimpleSchemaType)
             {
-                return getPrimitiveSchemaTypeBuilder((PrimitiveSchemaType) schemaType);
+                builder.setDataType(((SimpleSchemaType) schemaType).getDataType());
+                builder.setDefaultValue(((SimpleSchemaType) schemaType).getDefaultValue());
+            }
+            else if (schemaType instanceof LiteralSchemaType)
+            {
+                builder.setDataType(((LiteralSchemaType) schemaType).getDataType());
+                builder.setFixedValue(((LiteralSchemaType) schemaType).getFixedValue());
             }
             else if (schemaType instanceof BoundedSchemaType)
             {
-                return getBoundedSchemaTypeBuilder((BoundedSchemaType) schemaType);
+                builder.setMaximumElements(((BoundedSchemaType) schemaType).getMaximumElements());
             }
-            else if (schemaType instanceof ComplexSchemaType)
+
+            /*
+             * The type name is extracted from the header in preference (in case it is a subtype that we do
+             * not explicitly support).  If the caller has not set up the type name then it is extracted
+             * from the class of the schema type.
+             */
+            String typeName = null;
+
+            if (schemaType.getType() != null)
             {
-                return getComplexSchemaTypeBuilder((ComplexSchemaType) schemaType);
+                typeName = schemaType.getType().getElementTypeName();
             }
-            else
+
+            if (typeName == null)
             {
-                return new SchemaTypeBuilder(schemaType.getQualifiedName(),
-                                             schemaType.getDisplayName(),
-                                             schemaType.getVersionNumber(),
-                                             schemaType.getAuthor(),
-                                             schemaType.getUsage(),
-                                             schemaType.getEncodingStandard(),
-                                             schemaType.getAdditionalProperties(),
-                                             schemaType.getExtendedProperties(),
-                                             repositoryHelper,
-                                             serviceName,
-                                             serverName);
+                if (schemaType instanceof PrimitiveSchemaType)
+                {
+                    typeName = SchemaElementMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME;
+                }
+                else if (schemaType instanceof EnumSchemaType)
+                {
+                    typeName = SchemaElementMapper.ENUM_SCHEMA_TYPE_TYPE_NAME;
+                }
+                else if (schemaType instanceof SimpleSchemaType)
+                {
+                    typeName = SchemaElementMapper.SIMPLE_SCHEMA_TYPE_TYPE_NAME;
+                }
+                else if (schemaType instanceof LiteralSchemaType)
+                {
+                    typeName = SchemaElementMapper.LITERAL_SCHEMA_TYPE_TYPE_NAME;
+                }
+                else if (schemaType instanceof ComplexSchemaType)
+                {
+                    typeName = SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME;
+                }
+                else if (schemaType instanceof MapSchemaType)
+                {
+                    typeName = SchemaElementMapper.MAP_SCHEMA_TYPE_TYPE_NAME;
+                }
+                else if (schemaType instanceof BoundedSchemaType)
+                {
+                    typeName = SchemaElementMapper.BOUNDED_SCHEMA_TYPE_TYPE_NAME;
+                }
+                else
+                {
+                    typeName = SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME;
+                }
             }
+
+            builder.setTypeName(typeName);
         }
 
-        return null;
+        return builder;
     }
 
 

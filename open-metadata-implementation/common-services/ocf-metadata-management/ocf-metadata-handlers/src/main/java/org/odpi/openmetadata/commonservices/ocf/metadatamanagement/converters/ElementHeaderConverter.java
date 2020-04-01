@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -27,6 +29,7 @@ public class ElementHeaderConverter
     protected Relationship           relationship = null;
     protected OMRSRepositoryHelper   repositoryHelper;
     protected String                 serviceName;
+    protected String                 typeName;
 
     /**
      * Constructor captures the initial content
@@ -84,6 +87,13 @@ public class ElementHeaderConverter
             bean.setGUID(entity.getGUID());
             bean.setURL(entity.getInstanceURL());
         }
-    }
+        else if (typeName != null)
+        {
+            ElementType type = new ElementType();
 
+            type.setElementTypeName(typeName);
+
+            bean.setType(type);
+        }
+    }
 }

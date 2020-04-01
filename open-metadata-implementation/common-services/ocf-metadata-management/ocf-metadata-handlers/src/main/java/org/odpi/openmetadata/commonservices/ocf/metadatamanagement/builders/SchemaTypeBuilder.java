@@ -10,15 +10,26 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.Map;
 
 /**
- * SchemaTypeBuilder creates repository entities and relationships from properties for a schema type.
+ * SchemaTypeBuilder manages the properties for a schema type.  These properties may be stored in a schema type entity or
+ * a type embedded attribute classification (linked off of schema attribute).
  */
 public class SchemaTypeBuilder extends ReferenceableBuilder
 {
-    private String       displayName;
-    private String       versionNumber;
-    private String       author           = null;
-    private String       usage            = null;
-    private String       encodingStandard = null;
+    private String              displayName;
+
+    private String              typeName             = null;
+    private String              description          = null;
+    private boolean             isDeprecated         = false;
+    private String              versionNumber        = null;
+    private String              author               = null;
+    private String              usage                = null;
+    private String              encodingStandard     = null;
+    private String              namespace            = null;
+    private String              dataType             = null;
+    private String              defaultValue         = null;
+    private String              fixedValue           = null;
+
+    private int                 maximumElements      = 0;
 
 
     /**
@@ -43,26 +54,34 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
 
     /**
-     * Constructor supporting all properties.
+     * Constructor supporting all common properties.
      *
-     * @param qualifiedName unique name
+     * @param typeName unique name of schema sub type
+     * @param qualifiedName unique name of schema type itself
      * @param displayName new value for the display name.
+     * @param description description of the schema type.
      * @param versionNumber version of the schema type.
+     * @param isDeprecated is the schema type deprecated
      * @param author name of the author
      * @param usage guidance on how the schema should be used.
      * @param encodingStandard format of the schema.
+     * @param namespace namespace where the schema is defined.
      * @param additionalProperties additional properties
      * @param extendedProperties  properties from the subtype.
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public SchemaTypeBuilder(String               qualifiedName,
+    public SchemaTypeBuilder(String               typeName,
+                             String               qualifiedName,
                              String               displayName,
+                             String               description,
                              String               versionNumber,
+                             boolean              isDeprecated,
                              String               author,
                              String               usage,
                              String               encodingStandard,
+                             String               namespace,
                              Map<String, String>  additionalProperties,
                              Map<String, Object>  extendedProperties,
                              OMRSRepositoryHelper repositoryHelper,
@@ -76,11 +95,72 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
+        this.typeName = typeName;
         this.displayName = displayName;
+        this.description = description;
         this.versionNumber = versionNumber;
+        this.isDeprecated = isDeprecated;
         this.author = author;
         this.usage = usage;
         this.encodingStandard = encodingStandard;
+        this.namespace = namespace;
+    }
+
+
+    /**
+     * Set up the unique name for the sub type of this element.
+     *
+     * @param typeName string name
+     */
+    public void setTypeName(String typeName)
+    {
+        this.typeName = typeName;
+    }
+
+
+    /**
+     * Set up the type of data (for simple and literal types)
+     *
+     * @param dataType string name
+     */
+    public void setDataType(String dataType)
+    {
+        this.dataType = dataType;
+    }
+
+
+    /**
+     * Set up the default value of a field (for simple types).
+     *
+     * @param defaultValue string value
+     */
+    public void setDefaultValue(String defaultValue)
+    {
+        this.defaultValue = defaultValue;
+    }
+
+
+    /**
+     * Set up the fixed data value (for literal types).
+     *
+     * @param fixedValue string value
+     */
+    public void setFixedValue(String fixedValue)
+    {
+        this.fixedValue = fixedValue;
+    }
+
+
+    /**
+     * Set up the maximum number of elements allowed - zero for no limit.  This property is deprecated because
+     * it is for BoundedSchemaType which is also deprecated.
+     *
+     * @param maximumElements int
+     */
+    @Deprecated
+    public void setMaximumElements(int maximumElements)
+    {
+        this.maximumElements = maximumElements;
     }
 
 
@@ -105,6 +185,16 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
                                                                       methodName);
         }
 
+
+        if (description != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      SchemaElementMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      description,
+                                                                      methodName);
+        }
+
         if (versionNumber != null)
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -113,6 +203,12 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
                                                                       versionNumber,
                                                                       methodName);
         }
+
+        properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
+                                                                   properties,
+                                                                   SchemaElementMapper.IS_DEPRECATED_PROPERTY_NAME,
+                                                                   isDeprecated,
+                                                                   methodName);
 
         if (author != null)
         {
@@ -138,6 +234,78 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
                                                                       properties,
                                                                       SchemaElementMapper.ENCODING_STANDARD_PROPERTY_NAME,
                                                                       encodingStandard,
+                                                                      methodName);
+        }
+
+        if (namespace != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      SchemaElementMapper.NAMESPACE_PROPERTY_NAME,
+                                                                      namespace,
+                                                                      methodName);
+        }
+
+
+        if (dataType != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      SchemaElementMapper.DATA_TYPE_PROPERTY_NAME,
+                                                                      dataType,
+                                                                      methodName);
+        }
+
+        if (defaultValue != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      SchemaElementMapper.DEFAULT_VALUE_PROPERTY_NAME,
+                                                                      defaultValue,
+                                                                      methodName);
+        }
+
+        if (fixedValue != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      SchemaElementMapper.FIXED_VALUE_PROPERTY_NAME,
+                                                                      fixedValue,
+                                                                      methodName);
+        }
+
+        if (maximumElements != 0)
+        {
+            properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                                   properties,
+                                                                   SchemaElementMapper.MAX_ELEMENTS_PROPERTY_NAME,
+                                                                   maximumElements,
+                                                                   methodName);
+        }
+
+        return properties;
+    }
+
+
+    /**
+     * Return the supplied bean properties in an InstanceProperties object for a TypeEmbeddedAttribute
+     * classification.  If the caller uses this when there are extended properties defined for the
+     * builder then the call to create or add the entity will fail with invalid properties.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     * @throws InvalidParameterException there is a problem with the properties
+     */
+    public InstanceProperties getTypeEmbeddedInstanceProperties(String  methodName) throws InvalidParameterException
+    {
+        InstanceProperties properties = this.getInstanceProperties(methodName);
+
+        if (typeName != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      SchemaElementMapper.TYPE_NAME_PROPERTY_NAME,
+                                                                      typeName,
                                                                       methodName);
         }
 

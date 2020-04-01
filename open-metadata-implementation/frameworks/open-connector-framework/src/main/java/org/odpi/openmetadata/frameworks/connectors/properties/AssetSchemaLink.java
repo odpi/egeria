@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class AssetSchemaLink extends AssetPropertyBase
 {
+    private static final long     serialVersionUID = 1L;
+
     protected SchemaLink schemaLinkBean;
 
 
@@ -44,7 +46,7 @@ public class AssetSchemaLink extends AssetPropertyBase
      * @param schemaLinkBean bean containing all of the properties
      */
     public AssetSchemaLink(AssetDescriptor parentAsset,
-                           SchemaLink schemaLinkBean)
+                           SchemaLink      schemaLinkBean)
     {
         super(parentAsset);
 

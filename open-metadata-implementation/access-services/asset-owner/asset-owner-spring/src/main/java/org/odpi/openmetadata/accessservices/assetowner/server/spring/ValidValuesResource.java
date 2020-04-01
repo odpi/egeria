@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
+import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesRequestBody;
 import org.odpi.openmetadata.accessservices.assetowner.server.ValidValuesRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -57,7 +58,7 @@ public class ValidValuesResource
 
     public GUIDResponse createValidValueSet(@PathVariable String                 serverName,
                                             @PathVariable String                 userId,
-                                            @RequestBody  ValidValuesRequestBody requestBody)
+                                            @RequestBody ValidValuesRequestBody requestBody)
     {
         return restAPI.createValidValueSet(serverName, userId, requestBody);
     }

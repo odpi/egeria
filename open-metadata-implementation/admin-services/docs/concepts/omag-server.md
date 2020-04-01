@@ -24,6 +24,7 @@ similar types of server together.
 ![Figure 1](types-of-omag-servers.png#pagewidth)
 
 More detail about each type of OMAG Server can be found by following the links below:
+
 * [Cohort Member](cohort-member.md) - able to exchange metadata through an open metadata repository cohort
   * [Metadata Server](metadata-server.md) - supports a metadata repository that can natively store open metadata types
     as well as specialized metadata APIs for different types of tools (these APIs are called [access services](../../../access-services)).
@@ -36,7 +37,9 @@ More detail about each type of OMAG Server can be found by following the links b
   * [Conformance test server](conformance-test-server.png) - validates that a member of the
     cohort is conforming with the open metadata protocols.  This server is typically only see in development
     and test cohort rather than production.
+
 * [View Server](view-server.md) - manages specialist services for user interfaces.
+
 * [Governance Server](governance-server-types.md) - supports the use of metadata in the broader IT landscape.
   * [Engine Host](engine-host.md) - provides a runtime for a specific type of governance engine.
      * [Discovery Server](discovery-server.md) - hosts discovery engines that manage automated metadata discovery.
@@ -67,6 +70,15 @@ The governance servers connect out to external tools, engines and platforms.
 
 
 ## Further Information
+
+The configuration for an OMAG Server is defined in a
+[configuration document](configuration-document.md).
+This configuration document is stored by a
+[configuration document store connector](configuration-document-store-connector.md).
+Details of the commands to configure an OMAG Server are
+[here](../user/configuring-an-omag-server.md) and
+the commands to start and stop an OMAG Server are
+[here](../user/operating-omag-server.md).
 
 There is design information on the OMAG Server and its relationship to
 the OMAG Server Platform [here](../../../../open-metadata-publication/website/omag-server).

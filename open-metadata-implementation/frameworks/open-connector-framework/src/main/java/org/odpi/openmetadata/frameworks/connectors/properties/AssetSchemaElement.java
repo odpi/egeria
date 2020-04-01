@@ -11,6 +11,10 @@ import java.util.Objects;
  */
 public abstract class AssetSchemaElement extends AssetReferenceable
 {
+    private static final long     serialVersionUID = 1L;
+
+    protected SchemaElement schemaElementBean = null;
+
     /**
      * Constructor used by the subclasses
      *
@@ -56,5 +60,125 @@ public abstract class AssetSchemaElement extends AssetReferenceable
     public AssetSchemaElement(AssetDescriptor parentAsset, AssetSchemaElement template)
     {
         super(parentAsset, template);
+    }
+
+
+    /**
+     * Set up the bean that contains the properties of the schema element.
+     *
+     * @param schemaElementBean bean containing all of the properties
+     */
+    protected void  setBean(SchemaElement schemaElementBean)
+    {
+        super.setBean(schemaElementBean);
+        this.schemaElementBean = schemaElementBean;
+    }
+
+
+    /**
+     * Return this schema type bean.
+     *
+     * @return An instance of the appropriate subclass of SchemaElement bean
+     */
+    protected SchemaElement getSchemaElementBean()
+    {
+        return schemaElementBean;
+    }
+
+
+    /**
+     * Is the schema element deprecated?
+     *
+     * @return boolean flag
+     */
+    public boolean isDeprecated()
+    {
+        if (schemaElementBean == null)
+        {
+            return false;
+        }
+
+        return this.schemaElementBean.isDeprecated();
+    }
+
+
+    /**
+     * Return the simple name of the schema element.
+     *
+     * @return string name
+     */
+    public String  getDisplayName()
+    {
+        if (schemaElementBean == null)
+        {
+            return null;
+        }
+
+        return this.schemaElementBean.getDisplayName();
+    }
+
+
+    /**
+     * Returns the stored description property for the schema element.
+     *
+     * @return string description
+     */
+    public String getDescription()
+    {
+        if (schemaElementBean == null)
+        {
+            return null;
+        }
+
+        return this.schemaElementBean.getDescription();
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
+    @Override
+    public String toString()
+    {
+        return "AssetSchemaElement{" +
+                "displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", meanings=" + getMeanings() +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", assetClassifications=" + getAssetClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
+                '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        AssetSchemaType that = (AssetSchemaType) objectToCompare;
+        return Objects.equals(getSchemaElementBean(), that.getSchemaTypeBean());
     }
 }

@@ -101,11 +101,11 @@ public class RepositoryErrorHandler
             if (! validatingProperty.equals(retrievedPropertyValue.valueAsString()))
             {
                 throw new InvalidParameterException(
-                        RepositoryHandlerErrorCode.INVALID_PROPERTY.getMessageDefinition(validatingPropertyName,
-                                                                                         validatingProperty,
-                                                                                         methodName,
-                                                                                         retrievedPropertyValue.valueAsString(),
-                                                                                         instanceGUID),
+                        RepositoryHandlerErrorCode.INVALID_PROPERTY_VALUE.getMessageDefinition(validatingPropertyName,
+                                                                                               validatingProperty,
+                                                                                               methodName,
+                                                                                               retrievedPropertyValue.valueAsString(),
+                                                                                               instanceGUID),
                         this.getClass().getName(),
                         methodName,
                         validatingPropertyName);
