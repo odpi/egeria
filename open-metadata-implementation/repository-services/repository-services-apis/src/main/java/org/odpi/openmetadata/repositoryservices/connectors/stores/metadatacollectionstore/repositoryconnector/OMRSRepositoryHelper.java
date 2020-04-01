@@ -657,12 +657,33 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Note that usage of the string by methods that cannot handle regular expressions should first un-escape the string
      * using the getUnqualifiedLiteralString helper method.
      *
-     * @param searchString - the string to escape to avoid being interpreted as a regular expression
+     * Finally, note that this enforces a case-sensitive search.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression
+     * @return string that is interpreted literally rather than as a regular expression
+     * @see #isExactMatchRegex(String)
+     * @see #getUnqualifiedLiteralString(String)
+     * @see #getExactMatchRegex(String, boolean)
+     */
+    String getExactMatchRegex(String searchString);
+
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * without being interpreted as a regular expression (i.e. the returned string will be interpreted as a literal --
+     * used to find an exact match of the string, irrespective of whether it contains characters that may have special
+     * meanings to regular expressions).
+     *
+     * Note that usage of the string by methods that cannot handle regular expressions should first un-escape the string
+     * using the getUnqualifiedLiteralString helper method.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression
+     * @param insensitive set to true to have a case-insensitive exact match regular expression
      * @return string that is interpreted literally rather than as a regular expression
      * @see #isExactMatchRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    String getExactMatchRegex(String searchString);
+    String getExactMatchRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -677,12 +698,35 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param searchString - the string to check whether it should be interpreted literally or as as a regular expression
+     * @param searchString the string to check whether it should be interpreted literally or as as a regular expression
      * @return true if the provided string should be interpreted literally, false if it should be interpreted as a regex
      * @see #getExactMatchRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
     boolean isExactMatchRegex(String searchString);
+
+
+    /**
+     * Indicates whether the provided string should be treated as an exact match (true) or any other regular expression
+     * (false).
+     *
+     * Note that this method relies on the use of the getExactMatchRegex helper method having been used to
+     * qualify a string when it should be treated as a literal. That is, this method relies on the presence of the
+     * escape sequences used by Java's Pattern.quote() method. The method is not intended to work on all strings in
+     * general to arbitrarily detect whether they might be a regular expression or not.
+     *
+     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
+     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     *
+     * @param searchString the string to check whether it should be interpreted literally or as as a regular expression
+     * @param insensitive when true, only return true if the string is a case-insensitive exact match regex; when
+     *                    false, only return true if the string is a case-sensitive exact match regex
+     * @return true if the provided string should be interpreted literally, false if it should be interpreted as a
+     *          regex
+     * @see #getExactMatchRegex(String, boolean)
+     * @see #getUnqualifiedLiteralString(String)
+     */
+    boolean isExactMatchRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -694,12 +738,33 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
+     * Finally, note that this enforces a case-sensitive search.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
+     * @return string that is interpreted literally, wrapped for a "contains" semantic
+     * @see #isContainsRegex(String)
+     * @see #getUnqualifiedLiteralString(String)
+     * @see #getContainsRegex(String, boolean)
+     */
+    String getContainsRegex(String searchString);
+
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * to search for the string with a "contains" semantic. The passed string will NOT be treated as a regular expression;
+     * if you intend to use both a "contains" semantic and a regular expression within the string, simply construct your
+     * own regular expression directly (not with this helper method).
+     *
+     * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
+     * the returned string using the getUnqualifiedLiteralString helper method.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
+     * @param insensitive set to true to have a case-insensitive contains regular expression
      * @return string that is interpreted literally, wrapped for a "contains" semantic
      * @see #isContainsRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    String getContainsRegex(String searchString);
+    String getContainsRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -721,6 +786,26 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Indicates whether the provided string should be treated as a simple "contains" regular expression (true) or any
+     * other regular expression (false).
+     *
+     * Note that this method relies on the use of the getContainsRegex helper method having been used to
+     * qualify a string when it should be treated primarily as a literal with only very basic "contains" wrapping.
+     *
+     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
+     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     *
+     * @param searchString the string to check whether it should be interpreted as a simple "contains"
+     * @param insensitive when true, only return true if the string is a case-insensitive "contains" regex; when
+     *                    false, only return true if the string is a case-sensitive "contains" regex
+     * @return true if the provided string should be interpreted as a simple "contains", false if it should be interpreted as a full regex
+     * @see #getContainsRegex(String, boolean)
+     * @see #getUnqualifiedLiteralString(String)
+     */
+    boolean isContainsRegex(String searchString, boolean insensitive);
+
+
+    /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
      * to search for the string with a "startswith" semantic. The passed string will NOT be treated as a regular expression;
      * if you intend to use both a "startswith" semantic and a regular expression within the string, simply construct your
@@ -729,12 +814,33 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
+     * Finally, note that this enforces a case-sensitive search.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
+     * @return string that is interpreted literally, wrapped for a "startswith" semantic
+     * @see #isStartsWithRegex(String)
+     * @see #getUnqualifiedLiteralString(String)
+     * @see #getStartsWithRegex(String, boolean)
+     */
+    String getStartsWithRegex(String searchString);
+
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * to search for the string with a "startswith" semantic. The passed string will NOT be treated as a regular expression;
+     * if you intend to use both a "startswith" semantic and a regular expression within the string, simply construct your
+     * own regular expression directly (not with this helper method).
+     *
+     * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
+     * the returned string using the getUnqualifiedLiteralString helper method.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
+     * @param insensitive set to true to have a case-insensitive "startswith" regular expression
      * @return string that is interpreted literally, wrapped for a "startswith" semantic
      * @see #isStartsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    String getStartsWithRegex(String searchString);
+    String getStartsWithRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -747,12 +853,32 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param searchString - the string to check whether it should be interpreted as a simple "startswith"
+     * @param searchString the string to check whether it should be interpreted as a simple "startswith"
      * @return true if the provided string should be interpreted as a simple "startswith", false if it should be interpreted as a full regex
      * @see #getStartsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
     boolean isStartsWithRegex(String searchString);
+
+
+    /**
+     * Indicates whether the provided string should be treated as a simple "startswith" regular expression (true) or any
+     * other regular expression (false).
+     *
+     * Note that this method relies on the use of the getStartsWithRegex helper method having been used to
+     * qualify a string when it should be treated primarily as a literal with only very basic "startswith" wrapping.
+     *
+     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
+     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     *
+     * @param searchString the string to check whether it should be interpreted as a simple "startswith"
+     * @param insensitive when true, only return true if the string is a case-insensitive "startswith" regex; when
+     *                    false, only return true if the string is a case-sensitive "startswith" regex
+     * @return true if the provided string should be interpreted as a simple "startswith", false if it should be interpreted as a full regex
+     * @see #getStartsWithRegex(String, boolean)
+     * @see #getUnqualifiedLiteralString(String)
+     */
+    boolean isStartsWithRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -764,12 +890,33 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
+     * Finally, note that this enforces a case-sensitive search.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
+     * @return string that is interpreted literally, wrapped for an "endswith" semantic
+     * @see #isEndsWithRegex(String)
+     * @see #getUnqualifiedLiteralString(String)
+     * @see #getEndsWithRegex(String, boolean)
+     */
+    String getEndsWithRegex(String searchString);
+
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * to search for the string with an "endswith" semantic. The passed string will NOT be treated as a regular expression;
+     * if you intend to use both a "endswith" semantic and a regular expression within the string, simply construct your
+     * own regular expression directly (not with this helper method).
+     *
+     * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
+     * the returned string using the getUnqualifiedLiteralString helper method.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
+     * @param insensitive set to true to have a case-insensitive "endswith" regular expression
      * @return string that is interpreted literally, wrapped for an "endswith" semantic
      * @see #isEndsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    String getEndsWithRegex(String searchString);
+    String getEndsWithRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -782,12 +929,32 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param searchString - the string to check whether it should be interpreted as a simple "endswith"
+     * @param searchString the string to check whether it should be interpreted as a simple "endswith"
      * @return true if the provided string should be interpreted as a simple "endswith", false if it should be interpreted as a full regex
      * @see #getEndsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
     boolean isEndsWithRegex(String searchString);
+
+
+    /**
+     * Indicates whether the provided string should be treated as a simple "endswith" regular expression (true) or any
+     * other regular expression (false).
+     *
+     * Note that this method relies on the use of the getEndsWithRegex helper method having been used to
+     * qualify a string when it should be treated primarily as a literal with only very basic "endswith" wrapping.
+     *
+     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
+     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     *
+     * @param searchString the string to check whether it should be interpreted as a simple "endswith"
+     * @param insensitive when true, only return true if the string is a case-insensitive "endswith" regex; when
+     *                    false, only return true if the string is a case-sensitive "endswith" regex
+     * @return true if the provided string should be interpreted as a simple "endswith", false if it should be interpreted as a full regex
+     * @see #getEndsWithRegex(String, boolean)
+     * @see #getUnqualifiedLiteralString(String)
+     */
+    boolean isEndsWithRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -806,6 +973,26 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @see #getEndsWithRegex(String)
      */
     String getUnqualifiedLiteralString(String searchString);
+
+
+    /**
+     * Indicates whether the provided string should be treated as a case-insensitive regular expression (true) or as a
+     * case-sensitive regular expression (false).
+     *
+     * Note that this method relies on the use of the getXYZRegex helper methods having been used to qualify a string
+     * with case-insensitivity.
+     *
+     * Primarily this is a helper method for methods that do not directly handle regular expressions (for those it
+     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     *
+     * @param searchString the string to check whether it should be interpreted as case-insensitive
+     * @return true if provided string should be interpreted as case-insensitive, false if it should be case-sensitive
+     * @see #getExactMatchRegex(String, boolean)
+     * @see #getStartsWithRegex(String, boolean)
+     * @see #getEndsWithRegex(String, boolean)
+     * @see #getContainsRegex(String, boolean)
+     */
+    boolean isCaseInsensitiveRegex(String searchString);
 
 
     /**
