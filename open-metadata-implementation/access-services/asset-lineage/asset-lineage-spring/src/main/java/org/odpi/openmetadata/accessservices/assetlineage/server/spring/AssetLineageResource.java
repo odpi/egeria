@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-lineage/users/{userId}/")
 
-@Tag(name="Asset Lineage", description="The Asset Lineage OMAS provides services to query the lineage of business terms and data assets.", externalDocs=@ExternalDocumentation(description="Asset Lineage Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/asset-lineage/"))
+@Tag(name="Asset Lineage OMAS", description="The Asset Lineage OMAS provides services to query the lineage of business terms and data assets.", externalDocs=@ExternalDocumentation(description="Asset Lineage Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/asset-lineage/"))
 public class AssetLineageResource {
 
     private final AssetLineageRestServices restAPI = new AssetLineageRestServices();

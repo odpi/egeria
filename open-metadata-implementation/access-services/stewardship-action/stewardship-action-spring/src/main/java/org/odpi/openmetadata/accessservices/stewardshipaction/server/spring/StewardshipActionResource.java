@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/stewardship-action/users/{userId}")
 
-@Tag(name="Stewardship Action", description="The Stewardship Action OMAS provides APIs and events for tools and applications focused on resolving issues detected in the data landscape.", externalDocs=@ExternalDocumentation(description="Stewardship Action Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/stewardship-action/"))
+@Tag(name="Stewardship Action OMAS", description="The Stewardship Action OMAS provides APIs and events for tools and applications focused on resolving issues detected in the data landscape.", externalDocs=@ExternalDocumentation(description="Stewardship Action Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/stewardship-action/"))
 
 public class StewardshipActionResource
 {

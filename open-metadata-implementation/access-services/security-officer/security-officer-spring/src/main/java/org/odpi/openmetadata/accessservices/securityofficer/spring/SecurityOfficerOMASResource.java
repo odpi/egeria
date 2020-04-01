@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/security-officer/users/{userId}")
 
-@Tag(name="Security Officer", description="The Security Officer OMAS provides APIs and events for tools and applications that are defining the data protection requirements and implementations for a governance program." +
+@Tag(name="Security Officer OMAS", description="The Security Officer OMAS provides APIs and events for tools and applications that are defining the data protection requirements and implementations for a governance program." +
         "\n", externalDocs=@ExternalDocumentation(description="Security Officer Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/security-officer/"))
 
 public class SecurityOfficerOMASResource {

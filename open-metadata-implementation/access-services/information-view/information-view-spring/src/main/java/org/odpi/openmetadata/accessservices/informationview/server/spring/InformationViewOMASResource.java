@@ -21,7 +21,7 @@ import javax.validation.constraints.PositiveOrZero;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/")
 
-@Tag(name="Information View", description="The Information View OMAS configures and manages metadata for data tools that create virtual views over data - such as business intelligence tools and data virtualization platforms." +
+@Tag(name="Information View OMAS", description="The Information View OMAS configures and manages metadata for data tools that create virtual views over data - such as business intelligence tools and data virtualization platforms." +
         "\n", externalDocs=@ExternalDocumentation(description="Information View Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/information-view/"))
 
 @Validated

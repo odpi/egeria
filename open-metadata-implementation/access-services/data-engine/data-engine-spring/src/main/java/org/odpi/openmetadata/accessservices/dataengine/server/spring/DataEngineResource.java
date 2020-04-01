@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}")
 
-@Tag(name="Data Engine", description="The Data Engine OMAS provides APIs and events for data movement/processing engines to record the changes made to the data landscape.", externalDocs=@ExternalDocumentation(description="Data Engine Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-engine/"))
+@Tag(name="Data Engine OMAS", description="The Data Engine OMAS provides APIs and events for data movement/processing engines to record the changes made to the data landscape.", externalDocs=@ExternalDocumentation(description="Data Engine Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-engine/"))
 
 public class DataEngineResource {
     private DataEngineRESTServices restAPI;
