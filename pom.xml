@@ -138,7 +138,7 @@
         <kafka.version>2.4.1</kafka.version>
         <janus.version>0.5.0</janus.version>
         <gremlin.version>3.4.6</gremlin.version>
-        <netty.version>4.1.42.Final</netty.version>
+        <netty.version>4.1.48.Final</netty.version>
         <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
         <spring.version>5.2.5.RELEASE</spring.version>
         <spring-security.version>5.3.1.RELEASE</spring-security.version>
@@ -476,6 +476,42 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-buffer</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-common</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-handler</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-resolver</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport</artifactId>
                 <version>${netty.version}</version>
             </dependency>
 
