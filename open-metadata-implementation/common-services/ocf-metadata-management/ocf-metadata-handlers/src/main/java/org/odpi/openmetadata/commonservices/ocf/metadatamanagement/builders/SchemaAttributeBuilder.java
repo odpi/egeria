@@ -111,6 +111,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * @param allowsDuplicateValues unique values ?
      * @param orderedValues ordered values ?
      * @param sortOrder sort order if ordered
+     * @param anchorGUID unique identifier of the anchor entity
      * @param minimumLength minimum length of data in field
      * @param length size of data field
      * @param significantDigits number of digits on right of decimal point
