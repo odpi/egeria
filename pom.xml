@@ -140,7 +140,7 @@
         <gremlin.version>3.4.6</gremlin.version>
         <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
         <spring.version>5.2.5.RELEASE</spring.version>
-        <spring-security.version>5.3.0.RELEASE</spring-security.version>
+        <spring-security.version>5.3.1.RELEASE</spring-security.version>
         <spring-data.version>2.2.6.RELEASE</spring-data.version>
         <tomcat.version>9.0.33</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
