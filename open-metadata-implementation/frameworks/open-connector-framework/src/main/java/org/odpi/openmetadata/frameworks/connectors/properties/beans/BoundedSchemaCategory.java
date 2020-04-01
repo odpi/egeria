@@ -17,6 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@Deprecated
 public enum BoundedSchemaCategory implements Serializable
 {
     UNKNOWN (0, "<Unknown>", "The schema type is unknown."),
@@ -36,6 +37,7 @@ public enum BoundedSchemaCategory implements Serializable
      * @param schemaTypeName default name
      * @param schemaTypeDescription default description
      */
+    @Deprecated
     BoundedSchemaCategory(int schemaTypeCode, String schemaTypeName, String schemaTypeDescription)
     {
         this.schemaTypeCode = schemaTypeCode;
@@ -49,6 +51,7 @@ public enum BoundedSchemaCategory implements Serializable
      *
      * @return int code number
      */
+    @Deprecated
     public int getOrdinal()
     {
         return schemaTypeCode;
@@ -71,6 +74,7 @@ public enum BoundedSchemaCategory implements Serializable
      *
      * @return String description
      */
+    @Deprecated
     public String getDescription()
     {
         return schemaTypeDescription;
@@ -82,6 +86,7 @@ public enum BoundedSchemaCategory implements Serializable
      *
      * @return print out of variables in a JSON-style
      */
+    @Deprecated
     @Override
     public String toString()
     {

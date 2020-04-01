@@ -549,12 +549,12 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
      * @return subtype of AssetSchemaType
      */
-    AssetSchemaType    getAssetSchemaType(String     serviceName,
-                                          String     remoteServerName,
-                                          String     omasServerURL,
-                                          String     userId,
-                                          SchemaType bean,
-                                          OCFRESTClient restClient)
+    private AssetSchemaType    getAssetSchemaType(String     serviceName,
+                                                  String     remoteServerName,
+                                                  String     omasServerURL,
+                                                  String     userId,
+                                                  SchemaType bean,
+                                                  OCFRESTClient restClient)
     {
         if (bean == null)
         {
@@ -571,34 +571,9 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                        (ComplexSchemaType)bean,
                                                        restClient);
         }
-        else if (bean instanceof MapSchemaType)
-        {
-            return new ConnectedAssetMapSchemaType(serviceName,
-                                                   remoteServerName,
-                                                   omasServerURL,
-                                                   userId,
-                                                   this,
-                                                   (MapSchemaType)bean,
-                                                   restClient);
-        }
-        else if (bean instanceof PrimitiveSchemaType)
-        {
-            return new AssetPrimitiveSchemaType(this, (PrimitiveSchemaType) bean);
-        }
-        else if (bean instanceof BoundedSchemaType)
-        {
-            return new ConnectedAssetBoundedSchemaType(serviceName,
-                                                       remoteServerName,
-                                                       omasServerURL,
-                                                       userId,
-                                                       this,
-                                                       (BoundedSchemaType)bean,
-                                                       restClient);
-        }
         else
         {
-            return new AssetSchemaType(this, bean);
+            return AssetSchemaType.createAssetSchemaType(this, bean);
         }
     }
-    
 }

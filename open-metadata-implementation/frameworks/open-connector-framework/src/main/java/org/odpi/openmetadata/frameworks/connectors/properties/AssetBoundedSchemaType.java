@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.BoundedSchemaCategory;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.BoundedSchemaType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
@@ -12,8 +11,12 @@ import java.util.Objects;
 /**
  * The AssetBoundedSchemaType object provides schema information for sets and arrays.
  */
+@Deprecated
 public class AssetBoundedSchemaType extends AssetSchemaType
 {
+    private static final long     serialVersionUID = 1L;
+
+    @Deprecated
     protected BoundedSchemaType boundedSchemaTypeBean    = null;
     protected AssetSchemaType   boundedSchemaElementType = null;
 
@@ -32,10 +35,8 @@ public class AssetBoundedSchemaType extends AssetSchemaType
      * Bean constructor
      *
      * @param boundedSchemaType bean containing the schema properties
-     * @param boundedSchemaElementType type of element inside the bounded schema type.
      */
-    public AssetBoundedSchemaType(BoundedSchemaType boundedSchemaType,
-                                  AssetSchemaType   boundedSchemaElementType)
+    public AssetBoundedSchemaType(BoundedSchemaType boundedSchemaType)
     {
         super(boundedSchemaType);
 
@@ -47,8 +48,6 @@ public class AssetBoundedSchemaType extends AssetSchemaType
         {
             this.boundedSchemaTypeBean = boundedSchemaType;
         }
-
-        this.boundedSchemaElementType = boundedSchemaElementType;
     }
 
 
@@ -57,11 +56,9 @@ public class AssetBoundedSchemaType extends AssetSchemaType
      *
      * @param parentAsset descriptor for parent asset
      * @param boundedSchemaType bean containing the schema properties
-     * @param boundedSchemaElementType type of element inside the bounded schema type.
      */
     public AssetBoundedSchemaType(AssetDescriptor   parentAsset,
-                                  BoundedSchemaType boundedSchemaType,
-                                  AssetSchemaType   boundedSchemaElementType)
+                                  BoundedSchemaType boundedSchemaType)
     {
         super(parentAsset, boundedSchemaType);
 
@@ -73,8 +70,6 @@ public class AssetBoundedSchemaType extends AssetSchemaType
         {
             this.boundedSchemaTypeBean = boundedSchemaType;
         }
-
-        this.boundedSchemaElementType = boundedSchemaElementType;
     }
 
 
@@ -97,7 +92,6 @@ public class AssetBoundedSchemaType extends AssetSchemaType
         else
         {
             this.boundedSchemaTypeBean = template.boundedSchemaTypeBean;
-            this.boundedSchemaElementType = template.getBoundedSchemaElementType();
         }
     }
 
@@ -154,13 +148,13 @@ public class AssetBoundedSchemaType extends AssetSchemaType
      */
     public AssetSchemaType getBoundedSchemaElementType()
     {
-        if (boundedSchemaElementType == null)
+        if (boundedSchemaTypeBean.getElementType() == null)
         {
             return null;
         }
         else
         {
-            return boundedSchemaElementType.cloneAssetSchemaType(parentAsset);
+            return AssetSchemaType.createAssetSchemaType(parentAsset, boundedSchemaTypeBean.getElementType());
         }
     }
 

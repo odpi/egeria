@@ -22,6 +22,8 @@ import java.util.Objects;
  */
 public class VirtualConnectionProperties extends ConnectionProperties
 {
+    private static final long     serialVersionUID = 1L;
+
     protected VirtualConnection connectionBean;
 
 

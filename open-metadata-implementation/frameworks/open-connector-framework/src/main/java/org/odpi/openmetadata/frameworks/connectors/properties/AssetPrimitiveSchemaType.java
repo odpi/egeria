@@ -11,8 +11,10 @@ import java.util.Objects;
  * PrimitiveSchemaType describes a schema element that has a primitive type.  This class stores which
  * type of primitive type it is an a default value if supplied.
  */
-public class AssetPrimitiveSchemaType extends AssetSchemaType
+public class AssetPrimitiveSchemaType extends AssetSimpleSchemaType
 {
+    private static final long     serialVersionUID = 1L;
+
     protected PrimitiveSchemaType primitiveSchemaTypeBean;
 
     /**
@@ -101,22 +103,6 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
     {
         return primitiveSchemaTypeBean;
     }
-
-
-    /**
-     * Return the data type for this element.  Null means unknown data type.
-     *
-     * @return String DataType
-     */
-    public String getDataType() { return primitiveSchemaTypeBean.getDataType(); }
-
-
-    /**
-     * Return the default value for the element.  Null means no default value set up.
-     *
-     * @return String containing default value
-     */
-    public String getDefaultValue() { return primitiveSchemaTypeBean.getDefaultValue(); }
 
 
     /**

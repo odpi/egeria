@@ -44,6 +44,7 @@ public class TestBoundedSchemaCategory
     /**
      * Validated the values of the enum.
      */
+    @SuppressWarnings(value = "deprecation")
     @Test public void testSchemaTypeValues()
     {
         existingOrdinals = new ArrayList<>();
@@ -75,6 +76,7 @@ public class TestBoundedSchemaCategory
      * Validate that an object generated from a JSON String has the same content as the object used to
      * create the JSON String.
      */
+    @SuppressWarnings(value = "deprecation")
     @Test public void testJSON()
     {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -103,6 +105,7 @@ public class TestBoundedSchemaCategory
     /**
      * Test that toString is overridden.
      */
+    @SuppressWarnings(value = "deprecation")
     @Test public void testToString()
     {
         assertTrue(BoundedSchemaCategory.ARRAY.toString().contains("BoundedSchemaCategory"));

@@ -15,6 +15,8 @@ import java.util.Iterator;
  */
 public abstract class AssetAPIOperations extends AssetPropertyIteratorBase implements Iterator<AssetSchemaAttribute>
 {
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *
@@ -113,7 +115,7 @@ public abstract class AssetAPIOperations extends AssetPropertyIteratorBase imple
     @Override
     public String toString()
     {
-        return "AssetSchemaAttributes{" +
+        return "AssetAPIOperations{" +
                 "pagingIterator=" + pagingIterator +
                 '}';
     }

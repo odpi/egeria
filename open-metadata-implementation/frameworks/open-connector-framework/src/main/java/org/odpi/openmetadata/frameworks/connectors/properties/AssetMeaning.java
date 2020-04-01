@@ -13,6 +13,8 @@ import java.util.Objects;
  */
 public class AssetMeaning extends AssetElementHeader
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Meaning   meaningBean;
 
 

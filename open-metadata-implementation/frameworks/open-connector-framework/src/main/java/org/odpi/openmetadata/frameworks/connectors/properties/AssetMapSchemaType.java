@@ -14,9 +14,9 @@ import java.util.Objects;
  */
 public class AssetMapSchemaType extends AssetSchemaType
 {
+    private static final long     serialVersionUID = 1L;
+
     protected MapSchemaType   mapSchemaTypeBean = null;
-    protected AssetSchemaType mapFromElement    = null;
-    protected AssetSchemaType mapToElement      = null;
 
 
     /**
@@ -48,69 +48,13 @@ public class AssetMapSchemaType extends AssetSchemaType
      * Bean constructor
      *
      * @param schemaType bean containing the schema properties
-     * @param mapFromElement schema element that represents the property name for the map.
-     * @param mapToElement schema element that represents the property value for the map.
      */
-    public AssetMapSchemaType(MapSchemaType   schemaType,
-                              AssetSchemaType mapFromElement,
-                              AssetSchemaType mapToElement)
+    public AssetMapSchemaType(MapSchemaType   schemaType)
     {
         super(schemaType);
 
-        if (mapFromElement == null)
-        {
-            this.mapFromElement = null;
-        }
-        else
-        {
-            this.mapFromElement = mapFromElement.cloneAssetSchemaType(super.getParentAsset());
-        }
-
-        if (mapToElement == null)
-        {
-            this.mapToElement = null;
-        }
-        else
-        {
-            this.mapToElement = mapToElement.cloneAssetSchemaType(super.getParentAsset());
-        }
+        mapSchemaTypeBean = schemaType;
     }
-
-
-    /**
-     * Bean constructor with parent asset
-     *
-     * @param parentAsset descriptor for parent asset
-     * @param schemaTypeBean bean containing the schema properties
-     * @param mapFromElement schema element that represents the property name for the map.
-     * @param mapToElement schema element that represents the property value for the map.
-     */
-    public AssetMapSchemaType(AssetDescriptor parentAsset,
-                              SchemaType schemaTypeBean,
-                              AssetSchemaType mapFromElement,
-                              AssetSchemaType mapToElement)
-    {
-        super(parentAsset, schemaTypeBean);
-
-        if (mapFromElement == null)
-        {
-            this.mapFromElement = null;
-        }
-        else
-        {
-            this.mapFromElement = mapFromElement.cloneAssetSchemaType(super.getParentAsset());
-        }
-
-        if (mapToElement == null)
-        {
-            this.mapToElement = null;
-        }
-        else
-        {
-            this.mapToElement = mapToElement.cloneAssetSchemaType(super.getParentAsset());
-        }
-    }
-
 
     /**
      * Copy/clone Constructor the parentAsset is passed separately to the template because it is also
@@ -118,40 +62,27 @@ public class AssetMapSchemaType extends AssetSchemaType
      * asset clone and not the original asset.
      *
      * @param parentAsset description of the asset that this map is attached to.
-     * @param templateSchema template object to copy.
+     * @param template template object to copy.
      */
-    public AssetMapSchemaType(AssetDescriptor parentAsset, AssetMapSchemaType templateSchema)
+    public AssetMapSchemaType(AssetDescriptor parentAsset, AssetMapSchemaType template)
     {
-        super(parentAsset, templateSchema);
+        super(parentAsset, template);
 
-        if (templateSchema == null)
+        if (template != null)
         {
-            this.mapFromElement = null;
-            this.mapToElement = null;
+            mapSchemaTypeBean = template.getMapSchemaTypeBean();
         }
-        else
-        {
-            AssetSchemaType templateMapFromElement = templateSchema.getMapFromElement();
-            AssetSchemaType templateMapToElement   = templateSchema.getMapToElement();
+    }
 
-            if (templateMapFromElement == null)
-            {
-                this.mapFromElement = null;
-            }
-            else
-            {
-                this.mapFromElement = templateMapFromElement.cloneAssetSchemaType(super.getParentAsset());
-            }
 
-            if (templateMapToElement == null)
-            {
-                this.mapToElement = null;
-            }
-            else
-            {
-                this.mapToElement = templateMapToElement.cloneAssetSchemaType(super.getParentAsset());
-            }
-        }
+    /**
+     * Return the bean with all of the properties.
+     *
+     * @return map element bean
+     */
+    protected MapSchemaType getMapSchemaTypeBean()
+    {
+        return mapSchemaTypeBean;
     }
 
 
@@ -164,13 +95,13 @@ public class AssetMapSchemaType extends AssetSchemaType
      */
     public AssetSchemaType getMapFromElement()
     {
-        if (mapFromElement == null)
+        if (mapSchemaTypeBean == null)
         {
             return null;
         }
         else
         {
-            return mapFromElement.cloneAssetSchemaType(super.getParentAsset());
+            return AssetSchemaType.createAssetSchemaType(parentAsset, mapSchemaTypeBean.getMapFromElement());
         }
     }
 
@@ -195,13 +126,13 @@ public class AssetMapSchemaType extends AssetSchemaType
      */
     public AssetSchemaType getMapToElement()
     {
-        if (mapToElement == null)
+        if (mapSchemaTypeBean == null)
         {
             return null;
         }
         else
         {
-            return mapToElement.cloneAssetSchemaType(super.getParentAsset());
+            return AssetSchemaType.createAssetSchemaType(parentAsset, mapSchemaTypeBean.getMapToElement());
         }
     }
 
@@ -229,21 +160,25 @@ public class AssetMapSchemaType extends AssetSchemaType
     public String toString()
     {
         return "AssetMapSchemaType{" +
-                "mapFromElement=" + mapFromElement +
-                ", mapToElement=" + mapToElement +
+                "mapFromElement=" + getMapFromElement() +
+                ", mapToElement=" + getMapToElement() +
                 ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", meanings=" + getMeanings() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
                 ", assetClassifications=" + getAssetClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
