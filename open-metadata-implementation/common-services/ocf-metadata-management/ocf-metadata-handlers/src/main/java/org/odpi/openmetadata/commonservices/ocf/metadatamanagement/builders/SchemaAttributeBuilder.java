@@ -66,7 +66,6 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * @param cardinality does the attribute repeat?
      * @param defaultValueOverride override for the Type's default value.
      * @param additionalProperties additional properties
-     * @param anchorGUID unique identifier of the anchor entity
      * @param extendedProperties  properties from the subtype.
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
@@ -134,6 +133,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                   boolean              allowsDuplicateValues,
                                   boolean              orderedValues,
                                   DataItemSortOrder    sortOrder,
+                                  String               anchorGUID,
                                   int                  minimumLength,
                                   int                  length,
                                   int                  significantDigits,
@@ -163,6 +163,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         this.allowsDuplicateValues = allowsDuplicateValues;
         this.orderedValues = orderedValues;
         this.sortOrder = sortOrder;
+        this.anchorGUID = anchorGUID;
         this.minimumLength = minimumLength;
         this.length = length;
         this.significantDigits = significantDigits;

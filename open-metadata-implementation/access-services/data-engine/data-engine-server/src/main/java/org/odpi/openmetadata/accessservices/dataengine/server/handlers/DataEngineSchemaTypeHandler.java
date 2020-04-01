@@ -229,8 +229,8 @@ public class DataEngineSchemaTypeHandler {
     /**
      * Updates the schema attribute with anchorGUID property set to process GUID
      *
-     * @param userId         the name of the calling user
-     * @param attribute the properties of the schema attribute
+     * @param userId      the name of the calling user
+     * @param attribute   the properties of the schema attribute
      * @param processGUID the GUID of the process
      *
      * @throws InvalidParameterException  the bean properties are invalid
@@ -280,10 +280,7 @@ public class DataEngineSchemaTypeHandler {
                                                                                                                        InvalidParameterException {
         String methodName = "buildSchemaAttributeEntityDetail";
 
-        SchemaAttributeBuilder builder = new SchemaAttributeBuilder(schemaAttribute.getQualifiedName(), schemaAttribute.getAttributeName(),
-                schemaAttribute.getElementPosition(), schemaAttribute.getCardinality(), schemaAttribute.getDefaultValueOverride(),
-                schemaAttribute.getAnchorGUID(), schemaAttribute.getAdditionalProperties(), schemaAttribute.getExtendedProperties(), repositoryHelper,
-                serviceName, serverName);
+        SchemaAttributeBuilder builder = schemaTypeHandler.getSchemaAttributeBuilder(schemaAttribute);
 
         return dataEngineCommonHandler.buildEntityDetail(schemaAttributeGUID, builder.getInstanceProperties(methodName));
     }
@@ -371,31 +368,7 @@ public class DataEngineSchemaTypeHandler {
         schemaAttribute.setDefaultValueOverride(attribute.getDefaultValueOverride());
         schemaAttribute.setElementPosition(attribute.getPosition());
 
-        Map<String, String> attributeProperties = buildSchemaAttributeProperties(attribute);
-        schemaAttribute.setAdditionalProperties(attributeProperties);
-
         return schemaAttribute;
-    }
-
-    private Map<String, String> buildSchemaAttributeProperties(Attribute attribute) {
-        //TODO add these values as regular properties in ocf SchemaAttribute
-        Map<String, String> additionalProperties = new HashMap<>();
-
-        if (attribute.getMaxCardinality() != null) {
-            additionalProperties.put(SchemaTypePropertiesMapper.MAX_CARDINALITY, attribute.getMaxCardinality());
-        }
-        if (attribute.getMinCardinality() != null) {
-            additionalProperties.put(SchemaTypePropertiesMapper.MIN_CARDINALITY, attribute.getMinCardinality());
-        }
-        if (attribute.getAllowsDuplicateValues() != null) {
-            additionalProperties.put(SchemaTypePropertiesMapper.ALLOWS_DUPLICATES, attribute.getAllowsDuplicateValues());
-        }
-
-        if (attribute.getOrderedValues() != null) {
-            additionalProperties.put(SchemaTypePropertiesMapper.ORDERED_VALUES, attribute.getOrderedValues());
-        }
-
-        return additionalProperties;
     }
 
     private SchemaType createTabularSchemaType(String qualifiedName, String displayName, String author, String encodingStandard, String usage,
