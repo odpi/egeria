@@ -39,6 +39,7 @@ public class Classification implements Serializable {
     private Type type;
 
     private Map<String, String> properties;
+    private Map<String, String> additionalProperties;
 
     public String getName() {
         return name;
@@ -124,6 +125,14 @@ public class Classification implements Serializable {
         return properties;
     }
 
+    public Map<String, String> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    public void setAdditionalProperties(Map<String, String> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
     public void setProperties(Map<String, String> properties) {
         this.properties = properties;
     }
@@ -143,11 +152,12 @@ public class Classification implements Serializable {
                 Objects.equals(version, that.version) &&
                 Objects.equals(status, that.status) &&
                 Objects.equals(type, that.type) &&
-                Objects.equals(properties, that.properties);
+                Objects.equals(properties, that.properties) &&
+                Objects.equals(additionalProperties, that.additionalProperties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, origin, originGUID, createdBy, createTime, updatedBy, updateTime, version, status, type, properties);
+        return Objects.hash(name, origin, originGUID, createdBy, createTime, updatedBy, updateTime, version, status, type, properties, additionalProperties);
     }
 }

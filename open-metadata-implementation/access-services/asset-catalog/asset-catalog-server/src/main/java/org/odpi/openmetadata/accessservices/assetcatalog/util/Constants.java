@@ -93,6 +93,7 @@ public final class Constants {
 
     public static final String GUID_PARAMETER = "GUID";
     public static final String SEARCH_PARAMETER = "searchParameter";
+    public static final String ADDITIONAL_PROPERTIES_PROPERTY_NAME = "additionalProperties";
 
     private Constants() {
     }
