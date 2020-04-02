@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api.asset;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElement;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
@@ -11,17 +13,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.AssetCatalogOMASService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/assets")
-public class AssetSearchController {
+public class AssetController {
 
     @Autowired
     AssetCatalogOMASService assetCatalogOMASService;
@@ -31,7 +30,8 @@ public class AssetSearchController {
      * @return list of assets
      */
     @GetMapping( path = "/search")
-    public List<AssetElements> searchAssets(@RequestParam("q") String searchCriteria, @RequestParam("types") List<String> types) throws PropertyServerException, InvalidParameterException {
+    public List<AssetElements> searchAssets(@RequestParam("q") String searchCriteria, @RequestParam("types") List<String> types)
+            throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         SearchParameters searchParameters = new SearchParameters();
         if(CollectionUtils.isNotEmpty(types) ) {
@@ -44,6 +44,20 @@ public class AssetSearchController {
     public List<Type> getTypes() throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName( );
         return assetCatalogOMASService.getSupportedTypes(user);
+    }
+
+    @GetMapping( value = "/{guid}")
+    public AssetDescription getAsset(@PathVariable("guid") String guid)
+            throws PropertyServerException, InvalidParameterException {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName( );
+        return assetCatalogOMASService.getAssetDetails(user, guid, "none");
+    }
+
+    @GetMapping( value = "/{guid}/context")
+    public AssetElements getAssetContext(@PathVariable("guid") String guid)
+            throws PropertyServerException, InvalidParameterException {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName( );
+        return assetCatalogOMASService.getAssetContext(user, guid, "none");
     }
 
 
