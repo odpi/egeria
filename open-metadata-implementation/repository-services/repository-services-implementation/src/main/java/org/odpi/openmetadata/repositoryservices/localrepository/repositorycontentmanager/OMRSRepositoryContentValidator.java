@@ -1874,6 +1874,9 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         if (propertyDefCat == attributeDefCat) {
                             validPropertyType = true;
                         }
+                        else {
+                            validPropertyTypeName = attributeDefCat.getName();
+                        }
                     }
                     else if (propertyDefinitionType == AttributeTypeDefCategory.UNKNOWN_DEF) {
                         /*
