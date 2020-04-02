@@ -2,23 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.server.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformRestServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * The type Data platform omas resource.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-platform/users/{userId}")
+
+@Tag(name="Data Platform OMAS", description="The Data Platform OMAS provides APIs for tools and applications wishing to register new data assets. It provides the ability to register the host, platform and location of the data platform itself along with the data assets it hosts.", externalDocs=@ExternalDocumentation(description="Data Platform Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-platform/"))
+
 public class DataPlatformOMASResource {
 
     private DataPlatformRestServices restAPI = new DataPlatformRestServices();
