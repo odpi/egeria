@@ -3,11 +3,9 @@
 
 export const ItemViewBehavior = {
 
-    properties: { item: Object },
-
+    properties: { item: Object},
 
     observers:[ '_itemChanged(item)' ],
-
 
     _itemChanged(item) {
         console.debug('details items changed');
@@ -18,6 +16,7 @@ export const ItemViewBehavior = {
                 detail: {label: this._itemName(item), href: '/view/' + item.guid}
             }));
         }
+        this._attributes(item);
     },
 
     _itemName(item) {
@@ -27,6 +26,25 @@ export const ItemViewBehavior = {
             return item.properties.name;
         else
             return 'N/A';
+    },
+
+    _attributes(obj){
+        var arr = [];
+        Object.keys(obj).forEach(
+            (key)=> {
+                var value = obj[key];
+                if(typeof value !== 'object' && value !== null)
+                arr.push( { 'key' : this._camelCaseToSentence(key) , 'value' : value } );
+            }
+        );
+        return arr;
+    },
+
+    _camelCaseToSentence(val){
+        return val
+            .replace(/([A-Z])/g, ' $1')
+            .replace(/^./, function(str){ return str.toUpperCase(); })
     }
+
 
 }
