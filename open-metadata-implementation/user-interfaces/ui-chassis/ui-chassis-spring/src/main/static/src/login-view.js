@@ -54,7 +54,7 @@ class LoginView extends PolymerElement {
           width: 600px;
         }
         
-        @media (max-width: 600px){
+        @media (max-width: 640px){
           :host {
             justify-content: flex-end;
           }
