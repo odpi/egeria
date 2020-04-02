@@ -14,7 +14,9 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             /* --egeria-primary-color: #FF6200; */     /* orange */
             /* --egeria-primary-color: #CC00FF; */     /* purple */
 
-            --egeria-secondary-color: #24272a;          
+            --egeria-secondary-color: #24272a;
+            --egeria-background-color: white;       
+            --egeria-stripes-color: #efefef;
             --egeria-icon-color: var(--egeria-primary-color);          
           
             --paper-input-container-focus-color: var(--egeria-primary-color);
@@ -27,9 +29,8 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             --app-primary-color: var(--egeria-primary-color);
             --app-secondary-color: var(--egeria-secondary-color);
             
-            --paper-toast-background-color: #ffcfd3;
             --paper-toast-background-color: var(--egeria-secondary-color);
-            
+              
         }
         .feedback {
             min-height: 1em;
@@ -92,6 +93,13 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             margin-top: 3% !important;
             margin-bottom: 2% !important;
         }
+        
+         h3{
+            margin: 0;
+            padding: 2pt;
+            color: var( --egeria-primary-color );
+        }
+        
         paper-button {
           text-transform: none;
         }
@@ -99,13 +107,7 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             background: var(--egeria-primary-color);
             color: white;
         }
-        .breadcrumbs {
-          padding: 8px 15px;
-          margin-bottom: 20px;
-          list-style: none;
-          background-color: #eeeeee;
-          border-radius: 4px;
-        } 
+        
     </style>
   </template>
 </dom-module>`;

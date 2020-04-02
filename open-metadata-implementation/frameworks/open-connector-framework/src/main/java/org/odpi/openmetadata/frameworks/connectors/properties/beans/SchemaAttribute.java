@@ -19,7 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes(
         {
@@ -42,7 +41,7 @@ public class SchemaAttribute extends SchemaElement
     protected boolean           orderedValues         = false;
     protected String            defaultValueOverride  = null;
     protected DataItemSortOrder sortOrder             = null;
-
+    protected String            anchorGUID            = null;
     protected int               minimumLength         = 0;
     protected int               length                = 0;
     protected int               significantDigits     = 0;
@@ -96,6 +95,7 @@ public class SchemaAttribute extends SchemaElement
             significantDigits = template.getSignificantDigits();
             isNullable = template.isNullable();
             defaultValueOverride = template.getDefaultValueOverride();
+            anchorGUID = template.getAnchorGUID();
             attributeType = template.getAttributeType();
             externalAttributeType = template.getExternalAttributeType();
             attributeRelationships = template.getAttributeRelationships();
@@ -475,6 +475,23 @@ public class SchemaAttribute extends SchemaElement
         this.defaultValueOverride = defaultValueOverride;
     }
 
+    /**
+     * Return the anchorGUID defined for this schema attribute.
+     *
+     * @return String anchorGUID defined for this schema attribute.
+     */
+    public String getAnchorGUID() {
+        return anchorGUID;
+    }
+
+    /**
+     * Set up the anchorGUID of this schema attribute
+     *
+     * @param anchorGUID GUID of the anchor entity
+     */
+    public void setAnchorGUID(String anchorGUID) {
+        this.anchorGUID = anchorGUID;
+    }
 
     /**
      * Return the SchemaType that relates to the type of this attribute.
@@ -624,6 +641,7 @@ public class SchemaAttribute extends SchemaElement
                 ", orderedValues=" + orderedValues +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", sortOrder=" + sortOrder +
+                ", anchorGUID='" + anchorGUID + '\'' +
                 ", attributeType=" + attributeType +
                 ", externalAttributeType=" + externalAttributeType +
                 ", attributeRelationships=" + attributeRelationships +
@@ -674,6 +692,7 @@ public class SchemaAttribute extends SchemaElement
                 Objects.equals(attributeName, that.attributeName) &&
                 Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
                 sortOrder == that.sortOrder &&
+                Objects.equals(getAnchorGUID(), that.getAnchorGUID()) &&
                 Objects.equals(attributeType, that.attributeType) &&
                 Objects.equals(externalAttributeType, that.externalAttributeType) &&
                 Objects.equals(getAttributeRelationships(), that.getAttributeRelationships()) &&
