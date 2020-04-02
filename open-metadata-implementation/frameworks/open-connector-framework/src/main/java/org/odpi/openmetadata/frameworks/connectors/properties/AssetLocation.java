@@ -13,6 +13,8 @@ import java.util.Objects;
  */
 public class AssetLocation extends AssetReferenceable
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Location locationBean;
 
 

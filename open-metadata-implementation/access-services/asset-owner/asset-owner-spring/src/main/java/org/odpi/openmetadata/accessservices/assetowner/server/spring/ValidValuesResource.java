@@ -2,12 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesRequestBody;
 import org.odpi.openmetadata.accessservices.assetowner.server.ValidValuesRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.AssetsResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValueConsumersResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValueResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValuesResponse;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -21,6 +27,10 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
+
+@Tag(name="Asset Owner OMAS", description="The Asset Owner OMAS provides APIs and notifications for tools and applications supporting the work of Asset Owners in protecting and enhancing their assets.\n" +
+        "\n", externalDocs=@ExternalDocumentation(description="Asset Owner Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/asset-owner/"))
+
 public class ValidValuesResource
 {
     private ValidValuesRESTServices restAPI = new ValidValuesRESTServices();
@@ -57,7 +67,7 @@ public class ValidValuesResource
 
     public GUIDResponse createValidValueSet(@PathVariable String                 serverName,
                                             @PathVariable String                 userId,
-                                            @RequestBody  ValidValuesRequestBody requestBody)
+                                            @RequestBody ValidValuesRequestBody requestBody)
     {
         return restAPI.createValidValueSet(serverName, userId, requestBody);
     }

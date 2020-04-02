@@ -19,7 +19,7 @@ This command enables a JanusGraph based metadata repository that is embedded in 
 and uses the local disk to store the metadata.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serever}/local-repository/mode/local-graph-repository
+POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/mode/local-graph-repository
 ```
 
 

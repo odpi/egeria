@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.server;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewRelationshipRESTServices;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}/relationships")
+
+@Tag(name="Glossary Author OMVS", description="Develop a definition of a subject area by authoring glossaries, including terms for use by a user interface.", externalDocs=@ExternalDocumentation(description="Glossary Author View Services (OMVS)",url="https://egeria.odpi.org/open-metadata-implementation/view-services/glossary-author-view/"))
+
 public class GlossaryAuthorViewRelationshipRESTResource {
     private GlossaryAuthorViewRelationshipRESTServices restAPI = new GlossaryAuthorViewRelationshipRESTServices();
 

@@ -25,6 +25,8 @@ import java.util.Objects;
  */
 public class AssetUniverse extends AssetDetail
 {
+    private static final long     serialVersionUID = 1L;
+
     protected List<AssetMeaning> meanings       = null;
     protected AssetSchemaType    schema         = null;
     protected AssetFeedback      feedback       = null;

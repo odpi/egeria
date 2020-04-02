@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * list of valid instance statuses.
  * A patch can be applied to an EntityDef, RelationshipDef or ClassificationDef.
  * Changes to a TypeDef's category or superclasses requires a new type definition.
- * In addition it is not possible to delete an attribute through a patch.
+ * In addition it is not possible to delete an attributeTypeDef through a patch.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
