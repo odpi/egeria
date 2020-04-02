@@ -419,7 +419,26 @@ class InstanceRetriever extends PolymerElement {
         else {
             this.getInstanceGUID = entityGUID;
             this.getInstanceCategory = "Entity";
-            this.doGet();
+            /*
+             * Check whether the entity is homed by the selected server (repo) - if so we know it
+             * can be retrieved. If not, then check enterprise flag is on and if not provide an alert
+             * to advise the user that the entity will only be retrieved if enterprise is set.
+             */
+            if (this.guidToGen[entityGUID] !== undefined) {
+                var genId = this.guidToGen[entityGUID];
+                var gen = this.gens[genId-1];
+                var entityDigest = gen.entities[entityGUID];
+                var home = entityDigest.metadataCollectionName;
+                var serverDetails = this.connectionManager.getServerDetails();
+                var serverName = serverDetails.serverName;
+                var enterpriseOption = serverDetails.enterpriseOption;
+                if (enterpriseOption === true || serverName === home ) {
+                    this.doGet();
+                }
+                else {
+                    alert("The selected object is not local to the server being used and the enterprise option is not checked. You could retrieve it either by setting server to "+home+" or by enabling the enterprise option");
+                }
+            }
         }
     }
 
