@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.CommentMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.DataItemSortOrder;
@@ -25,6 +26,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     private boolean           allowsDuplicateValues = false;
     private boolean           orderedValues         = false;
     private DataItemSortOrder sortOrder             = null;
+    private String            anchorGUID            = null;
     private int               minimumLength         = 0;
     private int               length                = 0;
     private int               significantDigits     = 0;
@@ -94,7 +96,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         this.minCardinality = 0;
         this.maxCardinality = 0;
         this.defaultValueOverride = defaultValueOverride;
-    }
+}
 
 
     /**
@@ -109,6 +111,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * @param allowsDuplicateValues unique values ?
      * @param orderedValues ordered values ?
      * @param sortOrder sort order if ordered
+     * @param anchorGUID unique identifier of the anchor entity
      * @param minimumLength minimum length of data in field
      * @param length size of data field
      * @param significantDigits number of digits on right of decimal point
@@ -131,6 +134,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                   boolean              allowsDuplicateValues,
                                   boolean              orderedValues,
                                   DataItemSortOrder    sortOrder,
+                                  String               anchorGUID,
                                   int                  minimumLength,
                                   int                  length,
                                   int                  significantDigits,
@@ -160,6 +164,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         this.allowsDuplicateValues = allowsDuplicateValues;
         this.orderedValues = orderedValues;
         this.sortOrder = sortOrder;
+        this.anchorGUID = anchorGUID;
         this.minimumLength = minimumLength;
         this.length = length;
         this.significantDigits = significantDigits;
@@ -242,6 +247,15 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                       properties,
                                                                       SchemaElementMapper.DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME,
                                                                       defaultValueOverride,
+                                                                      methodName);
+        }
+
+        if (anchorGUID != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      SchemaElementMapper.ANCHOR_GUID_PROPERTY_NAME,
+                                                                      anchorGUID,
                                                                       methodName);
         }
 
