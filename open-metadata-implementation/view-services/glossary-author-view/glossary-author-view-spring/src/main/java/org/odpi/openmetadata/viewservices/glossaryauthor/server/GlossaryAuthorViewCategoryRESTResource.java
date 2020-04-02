@@ -9,6 +9,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMA
 import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewCategoryRESTServices;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
@@ -19,6 +22,8 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}/categories")
+
+@Tag(name="Glossary Author OMVS", description="Develop a definition of a subject area by authoring glossaries, including terms for use by a user interface.", externalDocs=@ExternalDocumentation(description="Glossary Author View Services (OMVS)",url="https://egeria.odpi.org/open-metadata-implementation/view-services/glossary-author-view/"))
 
 public class GlossaryAuthorViewCategoryRESTResource {
 

@@ -56,6 +56,11 @@
             <artifactId>open-lineage-services-server</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
