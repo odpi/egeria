@@ -19,10 +19,10 @@ public class Attribute implements Serializable {
     private static final long serialVersionUID = 1L;
     private String qualifiedName;
     private String displayName;
-    private String minCardinality;
-    private String maxCardinality;
-    private String allowsDuplicateValues;
-    private String orderedValues;
+    private int minCardinality;
+    private int maxCardinality;
+    private boolean allowsDuplicateValues;
+    private boolean orderedValues;
     private int position;
     private String defaultValueOverride;
     private String dataType;
@@ -44,35 +44,35 @@ public class Attribute implements Serializable {
         this.displayName = displayName;
     }
 
-    public String getMinCardinality() {
+    public int getMinCardinality() {
         return minCardinality;
     }
 
-    public void setMinCardinality(String minCardinality) {
+    public void setMinCardinality(int minCardinality) {
         this.minCardinality = minCardinality;
     }
 
-    public String getMaxCardinality() {
+    public int getMaxCardinality() {
         return maxCardinality;
     }
 
-    public void setMaxCardinality(String maxCardinality) {
+    public void setMaxCardinality(int maxCardinality) {
         this.maxCardinality = maxCardinality;
     }
 
-    public String getAllowsDuplicateValues() {
+    public boolean getAllowsDuplicateValues() {
         return allowsDuplicateValues;
     }
 
-    public void setAllowsDuplicateValues(String allowsDuplicateValues) {
+    public void setAllowsDuplicateValues(boolean allowsDuplicateValues) {
         this.allowsDuplicateValues = allowsDuplicateValues;
     }
 
-    public String getOrderedValues() {
+    public boolean getOrderedValues() {
         return orderedValues;
     }
 
-    public void setOrderedValues(String orderedValues) {
+    public void setOrderedValues(boolean orderedValues) {
         this.orderedValues = orderedValues;
     }
 
