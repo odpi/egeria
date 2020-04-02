@@ -956,6 +956,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             {
                 if ((relationship.getStatus() != InstanceStatus.DELETED) &&
                     (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationship)) &&
+                    (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                      relationship.getProperties(),
                                                                                      searchCriteria,
