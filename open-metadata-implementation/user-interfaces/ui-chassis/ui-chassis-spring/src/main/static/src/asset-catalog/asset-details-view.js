@@ -1,70 +1,97 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import { PolymerElement, html } from '@polymer/polymer';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-menu-button';
-import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
-import '@polymer/paper-listbox';
-import '@polymer/paper-item';
-import '@polymer/neon-animation/animations/ripple-animation';
+import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
+import { ItemViewBehavior} from '../common/item';
+import '@polymer/paper-listbox/paper-listbox.js';
+import '@polymer/paper-item/paper-item.js';
+import '@polymer/paper-item/paper-item-body';
+import '@polymer/paper-styles/paper-styles';
+import '@vaadin/vaadin-icons/vaadin-icons';
+import '@polymer/app-layout/app-grid/app-grid-style';
 
 import '../shared-styles.js';
+import '../common/props-table';
 
-class AssetDetailsView extends PolymerElement {
+class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
     static get template() {
         return html`
+      <style include="app-grid-style"></style>
       <style include="shared-styles">
         :host {
+          --app-grid-columns: 2;
+          --app-grid-gutter: 1px;
+          --app-grid-expandible-item-columns: 2;
+          --iron-icon-fill-color: var(--egeria-primary-color);
           display: block;
-          padding: 10px 20px;
+          margin: 10pt 20pt;
+          padding: 3pt;
+          background-color:  var(--egeria-background-color);
+          min-height: calc(100vh - 115px);
+          overflow-scrolling: auto;
+          overflow: visible;
+        }
+        
+        .gridItem{
+            list-style: none;
+        }
+        
+        ul#menu, ul#menu li {
+          display:inline;
+          padding: 0;
+          margin: 0 10pt;
+        }
+        
+        @media (max-width: 640px) {
+          :host {
+            --app-grid-columns: 1;
+          }
         }
         
       </style>
       <app-route route="{{route}}" pattern="/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
+      <token-ajax id="tokenAjaxDetails" last-response="{{item}}" ></token-ajax>
 
-
-      <token-ajax id="tokenAjaxDetails" last-response="{{items}}" ></token-ajax>
-         
-      <div>display name: [[items.0.properties.displayName]]</div>
+      <div style="border: solid 1px var(--egeria-primary-color); padding: 5pt; margin: 10pt;"> 
       
-      <div>type: [[item.0.type.name]]</div>
-      <div>classification : [[items.0.classifications.name]]</div>
-<!--      "createdBy": "Administrator IIS",-->
-<!--      "createTime": "2020-01-17T13:33:05.000+0000",-->
-<!--      "updatedBy": "Administrator IIS",-->
-<!--      "updateTime": "2020-01-17T13:33:21.000+0000",-->
-<!--      "version": 1579268001000,-->
-<!--      "status": "Active",-->
+        <ul id="menu"> 
+            <li> 
+                <a href="#/asset-lineage/ultimateSource/[[item.guid]]" title="Ultimate Source Lineage"><iron-icon icon="vaadin:connect-o" style="transform: rotate(180deg)"></iron-icon></a>
+            </li>
+            <li> 
+                <a href="#/asset-lineage/endToEnd/[[item.guid]]" title="End2End Lineage"><iron-icon icon="vaadin:cluster"></iron-icon></a>
+            </li>
+            <li> 
+                <a href="#/asset-lineage/ultimateDestination/[[item.guid]]" title="Ultimate Destination Lineage"><iron-icon icon="vaadin:connect-o"></iron-icon></a>
+            </li>
+        </ul>
+      </div>
+
+      <props-table items="[[_attributes(item.properties)]]" title="Properties" with-row-stripes ></props-table>
+      <props-table items="[[_attributes(item)]]"  title="Attributes" with-row-stripes ></props-table>
+      
+      <h3 style="margin-left: 20pt; text-align: center;">Classifications</h3>
+      <ul class="app-grid" style="margin: 0; padding: 0">
+      <dom-repeat items="[[item.classifications]]">
+        <template>
+        <li class="gridItem"> <props-table items="[[_attributes(item)]]"  title="" with-row-stripes></props-table> </li>
+        <li class="gridItem"> <props-table items="[[_attributes(item.properties)]]"  title="" with-row-stripes></props-table> </li>
+        </template>
+      </dom-repeat>
+      </ul>
        
     `;
     }
 
-    static get properties() {
-        return {
-            items: {type: Array, notify: true}
-        };
-    }
-
     static get observers() {
         return [
-            '_routeChanged(routeData.guid)',
-            '_itemChanged(items)'
+            '_routeChanged(routeData.guid)'
         ];
     }
 
     _routeChanged(guid) {
         this.$.tokenAjaxDetails.url='/api/assets/' + guid;
         this.$.tokenAjaxDetails._go();
-    }
-
-    _itemChanged(items){
-        console.debug('asset details items changed');
-        if(items){
-            this.dispatchEvent(new CustomEvent('push-crumb', {
-                bubbles: true,
-                composed: true,
-                detail: {label: items[0].properties.displayName, href: '/view/'+ items[0].guid }}));
-        }
     }
 
 }

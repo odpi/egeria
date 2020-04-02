@@ -119,13 +119,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             text-transform: none;
             color: #eeff41;
           }
-          .breadcrumbs {
-              padding: 8px 24px;
-              margin-bottom: 20px;
-              list-style: none;
-              background-color: #eeeeee;
-              border-radius: 4px;
-        } 
+         
       </style>
      
       <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
@@ -224,8 +218,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 observer: '_feedbackChanged'
             },
             crumbs: {
-                type: Array,
-                notify: true
+                type: Array
             },
             allCrumbs: {
                 type: Object,
@@ -286,6 +279,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     }
 
     _updateBreadcrumb(page){
+        if(!page) return;
         var crumbs = [];
         var allCrumbs = new Map(Object.entries(this.allCrumbs));
 
@@ -297,7 +291,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         // if(page == 'asset-lineage' && this.subroute2 && this.subroute2.path){
         //     crumbs.push({label: this.subrouteData2.guid, href:  "/" + this.subrouteData2.guid });
         // }//TODO to create new service to get displayName instead of displaying the gui
-
 
         this.crumbs = crumbs;
 
