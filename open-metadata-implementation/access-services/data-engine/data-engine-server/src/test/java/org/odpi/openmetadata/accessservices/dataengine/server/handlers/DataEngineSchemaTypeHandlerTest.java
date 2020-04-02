@@ -62,6 +62,7 @@ class DataEngineSchemaTypeHandlerTest {
     private static final String TARGET_QUALIFIED_NAME = "targetQualifiedName";
     private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
     private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
+    private static final String PROCESS_GUID = "processGUID";
 
     @Mock
     private RepositoryHandler repositoryHandler;
@@ -262,6 +263,32 @@ class DataEngineSchemaTypeHandlerTest {
         verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID, SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME);
     }
 
+    @Test
+    void addAnchorGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        mockFindEntity(ATTRIBUTE_QUALIFIED_NAME, GUID, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+
+        SchemaAttribute schemaAttribute = new SchemaAttribute();
+        when(schemaTypeHandler.getEmptyTabularColumn()).thenReturn(schemaAttribute);
+
+        dataEngineSchemaTypeHandler.addAnchorGUID(USER, attribute, PROCESS_GUID);
+
+        verify(schemaTypeHandler, times(1)).updateSchemaAttribute(USER, GUID, schemaAttribute);
+    }
+
+    @Test
+    void addAnchorGUID_throwsInvalidParameterException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        SchemaAttribute schemaAttribute = new SchemaAttribute();
+
+        when(schemaTypeHandler.getEmptyTabularColumn()).thenReturn(schemaAttribute);
+
+        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
+
+        dataEngineSchemaTypeHandler.addAnchorGUID(USER, attribute, PROCESS_GUID);
+
+        verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND,
+                "addAnchorGUID");
+    }
+
     private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName) throws UserNotAuthorizedException,
                                                                                                          PropertyServerException,
                                                                                                          InvalidParameterException {
@@ -285,8 +312,8 @@ class DataEngineSchemaTypeHandlerTest {
         Attribute attribute = new Attribute();
         attribute.setQualifiedName(ATTRIBUTE_QUALIFIED_NAME);
         attribute.setDisplayName(ATTRIBUTE_DISPLAY_NAME);
-        attribute.setMinCardinality("1");
-        attribute.setMaxCardinality("1");
+        attribute.setMinCardinality(1);
+        attribute.setMaxCardinality(1);
         attribute.setPosition(1);
 
         return attribute;
