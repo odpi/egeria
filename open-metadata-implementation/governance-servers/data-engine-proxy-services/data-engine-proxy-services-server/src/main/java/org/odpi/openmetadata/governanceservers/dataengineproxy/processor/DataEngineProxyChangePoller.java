@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyErrorCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
@@ -65,6 +66,8 @@ public class DataEngineProxyChangePoller implements Runnable {
         this.dataEngineOMASClient = dataEngineOMASClient;
         this.auditLog = auditLog;
 
+        this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.INIT_POLLING.getMessageDefinition());
+
         // Retrieve the base information from the connector
         if (connector != null) {
             try {
@@ -117,7 +120,7 @@ public class DataEngineProxyChangePoller implements Runnable {
             } catch (UserNotAuthorizedException e) {
                 this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.USER_NOT_AUTHORIZED.getMessageDefinition("send changes"));
             } catch (Exception e) {
-                this.auditLog.logException(methodName, DataEngineProxyAuditCode.UNKNOWN_ERROR.getMessageDefinition(), e);
+                throw new OCFRuntimeException(DataEngineProxyErrorCode.UNKNOWN_ERROR.getMessageDefinition(), this.getClass().getName(), methodName, e);
             }
         }
 
@@ -182,10 +185,8 @@ public class DataEngineProxyChangePoller implements Runnable {
             UserNotAuthorizedException {
         log.info(" ... getting changed processes.");
         List<Process> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
-        if (changedProcesses != null) {
-            for (Process changedProcess : changedProcesses) {
-                dataEngineOMASClient.createOrUpdateProcess(userId, changedProcess);
-            }
+        if (changedProcesses != null && !changedProcesses.isEmpty()) {
+            dataEngineOMASClient.createOrUpdateProcesses(userId, changedProcesses);
             log.info(" ... completing process changes.");
         }
     }
