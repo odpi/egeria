@@ -647,6 +647,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             {
                 if ((entity.getStatus() != InstanceStatus.DELETED) &&
                     (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
+                    (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
+                    (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                     entity.getProperties(),
                                                                                     searchCriteria,
@@ -954,6 +956,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             {
                 if ((relationship.getStatus() != InstanceStatus.DELETED) &&
                     (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationship)) &&
+                    (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                      relationship.getProperties(),
                                                                                      searchCriteria,

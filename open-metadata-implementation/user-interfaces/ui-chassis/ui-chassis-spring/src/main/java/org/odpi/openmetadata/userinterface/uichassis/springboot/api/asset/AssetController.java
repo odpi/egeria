@@ -4,7 +4,6 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.asset;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElement;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
@@ -16,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/assets")
