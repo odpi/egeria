@@ -1056,6 +1056,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>glossary-view-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>glossary-view-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
