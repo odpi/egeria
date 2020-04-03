@@ -2,12 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.platformservices.server.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformOriginServices;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
 
 
 /**
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @RestController
 @RequestMapping("/open-metadata/platform-services/users/{userId}")
+
+@Tag(name="Platform Services", description="The platform services provides the APIs for querying the Open Metadata and Governance (OMAG) Server Platform and discovering information about the OMAG Servers that it is hosting.", externalDocs=@ExternalDocumentation(description="Platform Services",url="https://egeria.odpi.org/open-metadata-implementation/platform-services"))
+
 public class ServerPlatformOriginResource
 {
     OMAGServerPlatformOriginServices originAPI = new OMAGServerPlatformOriginServices();

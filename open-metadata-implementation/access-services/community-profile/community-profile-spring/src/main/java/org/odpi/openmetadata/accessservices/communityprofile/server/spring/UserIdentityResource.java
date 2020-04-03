@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.server.UserIdentityRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}")
+
+@Tag(name="Community Profile OMAS", description="The Community Profile OMAS provides APIs and events for tools and applications that are managing information about people and the way they work together.", externalDocs=@ExternalDocumentation(description="Community Profile Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/community-profile/"))
 
 public class UserIdentityResource
 {

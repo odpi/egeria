@@ -36,6 +36,7 @@ public class Element implements Serializable {
     private String status;
     private String url;
     private Map<String, String> properties;
+    private Map<String, String> additionalProperties;
     private List<Classification> classifications;
     private Element parentElement;
 
@@ -209,6 +210,14 @@ public class Element implements Serializable {
         this.properties = properties;
     }
 
+    public Map<String, String> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    public void setAdditionalProperties(Map<String, String> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
     public List<Classification> getClassifications() {
         return classifications;
     }
@@ -231,7 +240,7 @@ public class Element implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Element element = (Element) o;
         return Objects.equals(guid, element.guid) &&
-                Objects.equals(type.getName(), element.getType().getName()) &&
+                Objects.equals(type, element.type) &&
                 Objects.equals(name, element.name) &&
                 Objects.equals(createdBy, element.createdBy) &&
                 Objects.equals(createTime, element.createTime) &&
@@ -241,12 +250,13 @@ public class Element implements Serializable {
                 Objects.equals(status, element.status) &&
                 Objects.equals(url, element.url) &&
                 Objects.equals(properties, element.properties) &&
+                Objects.equals(additionalProperties, element.additionalProperties) &&
                 Objects.equals(classifications, element.classifications) &&
                 Objects.equals(parentElement, element.parentElement);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(guid, type, name, createdBy, createTime, updatedBy, updateTime, version, status, url, properties, classifications, parentElement);
+        return Objects.hash(guid, type, name, createdBy, createTime, updatedBy, updateTime, version, status, url, properties, additionalProperties, classifications, parentElement);
     }
 }

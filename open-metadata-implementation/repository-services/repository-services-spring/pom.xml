@@ -9,7 +9,7 @@
     <parent>
         <artifactId>repository-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.6-SNAPSHOT</version>
+        <version>1.7-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -43,6 +43,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-implementation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
         </dependency>
 
     </dependencies>

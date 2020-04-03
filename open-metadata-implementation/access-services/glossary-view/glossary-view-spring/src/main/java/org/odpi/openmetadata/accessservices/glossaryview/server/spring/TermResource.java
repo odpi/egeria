@@ -2,22 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.glossaryview.server.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
 import org.odpi.openmetadata.accessservices.glossaryview.server.service.TermService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
-import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.OmasRegistration.PAGE_FROM_DEFAULT_VALUE;
-import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.OmasRegistration.PAGE_SIZE_DEFAULT_VALUE;
-import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.OmasRegistration.PAGE_SIZE_MAX_VALUE;
+import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.OmasRegistration.*;
 
 /**
  * Spring Rest Controller defining 'GlossaryTerm' oriented endpoints
@@ -25,6 +21,9 @@ import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.Om
 @RestController
 @Validated
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/glossary-view/users/{userId}")
+
+@Tag(name="Glossary View OMAS", description="The Glossary View OMAS provides APIs and events for retrieving glossaries, categories and terms.", externalDocs=@ExternalDocumentation(description="Glossary View Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/glossary-view/"))
+
 public class TermResource {
 
     private TermService termService;
