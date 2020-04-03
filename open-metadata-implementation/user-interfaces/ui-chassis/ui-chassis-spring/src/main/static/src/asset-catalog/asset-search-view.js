@@ -35,12 +35,22 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         a {
             color : var(--egeria-primary-color);
             text-decoration: none;
-            cursor: grab;
+            cursor: hand;
         }
+        
+        .level0{ color: inherit;}
+        .level1{ color: inherit;}
+        .level2{ color: orange;}
+        .level3{ color: orange;}
+        .level4{ color: red;}
+        
       </style>
+      
+<!--      <app-route route="{{route}}" pattern="/:usecase/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>-->
 
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
       <token-ajax id="tokenAjaxTypes" last-response="{{items}}"></token-ajax>
+      
       
       <iron-form id="searchForm">
         <form method="get">
@@ -61,7 +71,8 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
            </div>
         </form>
        </iron-form>
-        <vaadin-grid id="grid" items="{{searchResp}}" theme="row-stripes"
+       
+      <vaadin-grid id="grid" items="[[searchResp]]" theme="row-stripes"
                      column-reordering-allowed multi-sort>
             <vaadin-grid-selection-column auto-select frozen></vaadin-grid-selection-column>
         
@@ -70,7 +81,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                     <vaadin-grid-sorter path="displayName">Name</vaadin-grid-sorter>
                 </template>
                 <template>
-                   <a href="#/asset-search/view/[[item.guid]]">
+                   <a href="#/asset-catalog/view/[[item.guid]]">
                         [[_itemName(item)]]
                    </a>
                 </template>
@@ -83,6 +94,22 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 <template>[[item.type.name]]</template>
             </vaadin-grid-column>
             
+             <vaadin-grid-column width="10em" resizable>
+                <template class="header">
+                    <vaadin-grid-sorter path="classifications.0.properties.level">Classifications</vaadin-grid-sorter>
+                </template>
+                <template>
+                <dom-repeat items="[[item.classifications]]">
+                  <template>
+                    <div class$="[[_itemClass(item)]]">
+                        <span>[[item.name]] : [[item.properties.level]] [[item.properties.zoneMembership]] [[item.properties.dataType]]</span>
+                    </div>
+                  </template>
+                </dom-repeat>
+                </template>
+             </vaadin-grid-column>
+             
+             
             <vaadin-grid-column width="15em" resizable>
                 <template class="header">
                     <vaadin-grid-sorter path="properties.summary">Description</vaadin-grid-sorter>
@@ -97,7 +124,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 <template>[[item.properties.qualifiedName]]</template>
             </vaadin-grid-column>
             
-             <vaadin-grid-column width="15em" resizable>
+             <vaadin-grid-column width="3em" resizable>
                 <template class="header">
                     <vaadin-grid-sorter path="properties.qualifiedName">Options</vaadin-grid-sorter>
                 </template>
@@ -131,9 +158,16 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
 
     ready() {
         super.ready();
-        // this.q = this.domHost.queryParams.q;
         this.$.tokenAjaxTypes.url = '/api/assets/types';
         this.$.tokenAjaxTypes._go();
+    }
+
+    _guidChanged(){
+       console.log('guid changed') ;
+    }
+
+    _useCaseChanged(){
+        console.log('usecase changed');
     }
 
     _search() {
@@ -146,6 +180,14 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
 
         this.$.tokenAjax.url = '/api/assets/search?q='+this.q + '&types=' + types;
         this.$.tokenAjax._go();
+    }
+
+    _itemClass(item){
+        if( item && item.properties.level){
+            return 'level'+ item.properties.level;
+        } else {
+            return '';
+        }
     }
 
     _itemName(item){
