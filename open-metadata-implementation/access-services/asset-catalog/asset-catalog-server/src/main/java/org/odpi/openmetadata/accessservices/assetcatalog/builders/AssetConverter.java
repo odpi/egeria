@@ -321,8 +321,8 @@ public class AssetConverter {
     private Map<String, String> extractAdditionalProperties(InstanceProperties instanceProperties) {
         String methodName = "extractAdditionalProperties";
 
-        return repositoryHelper.removeStringMapFromProperty(ASSET_CATALOG_OMAS,
+        return MapUtils.emptyIfNull(repositoryHelper.removeStringMapFromProperty(ASSET_CATALOG_OMAS,
                 ADDITIONAL_PROPERTIES_PROPERTY_NAME,
-                instanceProperties, methodName);
+                instanceProperties, methodName));
     }
 }
