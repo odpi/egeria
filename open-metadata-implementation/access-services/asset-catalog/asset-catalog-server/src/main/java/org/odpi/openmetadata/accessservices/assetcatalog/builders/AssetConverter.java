@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ADDITIONAL_PROPERTIES_PROPERTY_NAME;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_CATALOG_OMAS;
+
 /**
  * AssetConverter is a helper class that maps the OMRS objects to Asset Catalog model.
  */
@@ -63,6 +66,7 @@ public class AssetConverter {
         }
 
         assetDescription.setProperties(extractProperties(entityDetail.getProperties()));
+        assetDescription.setAdditionalProperties(extractAdditionalProperties(entityDetail.getProperties()));
 
         if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
             assetDescription.setClassifications(convertClassifications(entityDetail.getClassifications()));
@@ -253,6 +257,7 @@ public class AssetConverter {
         element.setGuid(entityDetail.getGUID());
         element.setType(convertInstanceType(entityDetail.getType()));
         element.setProperties(extractProperties(entityDetail.getProperties()));
+        element.setAdditionalProperties(extractAdditionalProperties(entityDetail.getProperties()));
         if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
             element.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
@@ -299,11 +304,25 @@ public class AssetConverter {
     }
 
     private Map<String, String> extractProperties(InstanceProperties instanceProperties) {
+        Map<String, Object> instancePropertiesAsMap = repositoryHelper.getInstancePropertiesAsMap(instanceProperties);
         Map<String, String> properties = new HashMap<>();
 
-        if (instanceProperties != null && MapUtils.isNotEmpty(instanceProperties.getInstanceProperties())) {
-            instanceProperties.getInstanceProperties().forEach((key, value) -> properties.put(key, value.valueAsString()));
+        if (MapUtils.isNotEmpty(instancePropertiesAsMap)) {
+            instancePropertiesAsMap.forEach((key, value) -> {
+                if (!key.equals(ADDITIONAL_PROPERTIES_PROPERTY_NAME)) {
+                    properties.put(key, String.valueOf(value));
+                }
+            });
         }
+
         return properties;
+    }
+
+    private Map<String, String> extractAdditionalProperties(InstanceProperties instanceProperties) {
+        String methodName = "extractAdditionalProperties";
+
+        return MapUtils.emptyIfNull(repositoryHelper.removeStringMapFromProperty(ASSET_CATALOG_OMAS,
+                ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                instanceProperties, methodName));
     }
 }
