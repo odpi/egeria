@@ -304,20 +304,13 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      */
     @Override
     public void updateRelationship(LineageRelationship lineageRelationship){
-        GraphTraversalSource g = bufferGraph.traversal();
-
-        Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID,lineageRelationship.getGuid());
-        if(!edge.hasNext()){
-            log.debug("when trying to update, edge was not found with guid {} ", lineageRelationship.getGuid());
-            g.tx().rollback();
-        }
-
-        g.V().has(PROPERTY_KEY_ENTITY_GUID,lineageRelationship.getFirstEndGUID()).as("v").
-                V(glossaryMain.id()).
-                coalesce(__.outE(EDGE_LABEL_SEMANTIC).where(inV().as("v")),
-                        addE(EDGE_LABEL_SEMANTIC).from("v")).next();
-        addOrUpdateProperties(g,vertex.next(),lineageEntity);
-        g.tx().commit();
+//        GraphTraversalSource g = bufferGraph.traversal();
+//
+//        Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID,lineageRelationship.getGuid());
+//        if(!edge.hasNext()){
+//            log.debug("when trying to update, edge was not found with guid {} ", lineageRelationship.getGuid());
+//            g.tx().rollback();
+//        }
     }
 
     @Override
