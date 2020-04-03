@@ -161,7 +161,6 @@ public class AssetConverter {
             }
 
             classification.setProperties(extractProperties(classificationEntity.getProperties()));
-            classification.setAdditionalProperties(extractAdditionalProperties(classificationEntity.getProperties()));
 
             classifications.add(classification);
         }

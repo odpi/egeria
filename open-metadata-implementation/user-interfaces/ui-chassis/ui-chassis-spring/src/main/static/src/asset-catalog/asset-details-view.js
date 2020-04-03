@@ -68,6 +68,7 @@ class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement
       </div>
 
       <props-table items="[[_attributes(item.properties)]]" title="Properties" with-row-stripes ></props-table>
+      <props-table items="[[_attributes(item.additionalProperties)]]" title="Additional Properties" with-row-stripes ></props-table>
       <props-table items="[[_attributes(item)]]"  title="Attributes" with-row-stripes ></props-table>
       
       <h3 style="margin-left: 20pt; text-align: center;">Classifications</h3>
