@@ -178,37 +178,64 @@ class InMemoryEntityNeighbourhood
             {
                 if (limitResultsByClassification == null || limitResultsByClassification != null && (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity1) && (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity2))))
                 {
-                    if (entityTypeGUIDs != null)
-                    {
-                        for (String typeGUID1 : entityTypeGUIDs)
-                        {
-                            if (repositoryValidator.verifyInstanceType(repositoryName, typeGUID1, entity1))
-                            {
-                                /*
-                                 * Valid type
-                                 */
+                    if (entityTypeGUIDs != null) {
 
-                                if (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity1))
-                                {
-                                    validEntity1 = true;
-                                }
-                            }
-                            for (String typeGUID2 : entityTypeGUIDs)
-                            {
-                                if (repositoryValidator.verifyInstanceType(repositoryName, typeGUID2, entity1))
-                                {
+                        if (graphEntities.contains(relationshipEnd1Guid)) {
+                            validEntity1 = true;
+                        }
+                        else {
+                            /*
+                             * If the entity is already included there is no need to test the type of this end entity.
+                             * By omitting the test there is no need to include the root entitiy type GUID in the
+                             * entityTypeGUIDs filtering list. This is beneficial because , although it could be included
+                             * and the relationship validation would work correctly, if the rot type is high level (in
+                             * hierarchy terms) inclsuion of its tyoe in the filter list will admit all other entities
+                             * of that type or any of its subtypes. A finer-grain graph can be achieved by not
+                             * including the root type and instead not validating the types of entities already visited
+                             * and included in the graph.
+                             */
+
+                            for (String typeGUID1 : entityTypeGUIDs) {
+                                if (repositoryValidator.verifyInstanceType(repositoryName, typeGUID1, entity1)) {
                                     /*
                                      * Valid type
                                      */
 
-                                    if (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity2))
-                                    {
+                                    if (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity1)) {
+                                        validEntity1 = true;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (graphEntities.contains(relationshipEnd2Guid)) {
+                            validEntity2 = true;
+                        }
+                        else {
+                            /*
+                             * If the entity is already included there is no need to test the type of this end entity.
+                             * By omitting the test there is no need to include the root entity type GUID in the
+                             * entityTypeGUIDs filtering list. This is beneficial because , although it could be included
+                             * and the relationship validation would work correctly, if the rot type is high level (in
+                             * hierarchy terms) inclsuion of its tyoe in the filter list will admit all other entities
+                             * of that type or any of its subtypes. A finer-grain graph can be achieved by not
+                             * including the root type and instead not validating the types of entities already visited
+                             * and included in the graph.
+                             */
+
+                            for (String typeGUID2 : entityTypeGUIDs) {
+                                if (repositoryValidator.verifyInstanceType(repositoryName, typeGUID2, entity2)) {
+                                    /*
+                                     * Valid type
+                                     */
+
+                                    if (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity2)) {
                                         validEntity2 = true;
                                     }
                                 }
                             }
-
                         }
+
                     } else
                     {
                         validEntity1 = true;
@@ -238,12 +265,20 @@ class InMemoryEntityNeighbourhood
         /*
          * If we have entityType Guids specified then they will scope this relationship. So we need to check that the relationship
          * entity types of the ends are in scope
+         *
+         * This check is relaced for an entity that has already been added to the graph. This is slightly more efficient, but
+         * more importantly it meas the root entity is always included and entity type filters are only evaluated against the
+         * other (non-root) neigbor entities.
          */
 
         boolean found1 = false;
         boolean found2 = false;
 
         if (entityTypeGUIDs !=null && !entityTypeGUIDs.isEmpty()) {
+
+            String end1GUID = relationship.getEntityOneProxy().getGUID();
+            String end2GUID = relationship.getEntityTwoProxy().getGUID();
+
             String actualTypeName1 = relationship.getEntityOneProxy().getType().getTypeDefName();
             String actualTypeName2 = relationship.getEntityTwoProxy().getType().getTypeDefName();
             /*
@@ -255,11 +290,11 @@ class InMemoryEntityNeighbourhood
                         "guid",
                         entityTypeGUID,
                         methodName);
-                if (repositoryHelper.isTypeOf(methodName, actualTypeName1, entityTypeDef.getName()))
+                if (graphEntities.contains(end1GUID) || repositoryHelper.isTypeOf(methodName, actualTypeName1, entityTypeDef.getName()))
                 {
                     found1 = true;
                 }
-                if (repositoryHelper.isTypeOf(methodName, actualTypeName2, entityTypeDef.getName()))
+                if (graphEntities.contains(end2GUID) || repositoryHelper.isTypeOf(methodName, actualTypeName2, entityTypeDef.getName()))
                 {
                     found2 = true;
                 }
@@ -327,10 +362,10 @@ class InMemoryEntityNeighbourhood
         Set<String> nextEntitySet = new HashSet<>();
         for (String entityGuid : entities)
         {
-            if (this.level ==0) {
+            if (currentLevel == 0) {
                 graphEntities.add(entityGuid);
             }
-            else {
+            if (currentLevel < this.level) {
                 Set<String> relationships = this.entityToRelationships.get(entityGuid);
                 if (relationships != null) {
                     for (String relationshipGuid : relationships) {
@@ -371,7 +406,7 @@ class InMemoryEntityNeighbourhood
             }
         }
         int nextLevel = currentLevel + 1;
-        if (nextLevel < this.level && nextEntitySet.size() > 0)
+        if (nextLevel <= this.level && nextEntitySet.size() > 0)
         {
             /*
              * recurse
