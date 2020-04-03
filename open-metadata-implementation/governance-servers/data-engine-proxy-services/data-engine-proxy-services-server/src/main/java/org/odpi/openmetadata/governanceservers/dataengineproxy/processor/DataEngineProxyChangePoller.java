@@ -185,7 +185,7 @@ public class DataEngineProxyChangePoller implements Runnable {
             UserNotAuthorizedException {
         log.info(" ... getting changed processes.");
         List<Process> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
-        if (changedProcesses != null) {
+        if (changedProcesses != null && !changedProcesses.isEmpty()) {
             dataEngineOMASClient.createOrUpdateProcesses(userId, changedProcesses);
             log.info(" ... completing process changes.");
         }
