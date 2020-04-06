@@ -8,6 +8,8 @@ import java.util.List;
 
 public abstract class AssetPropertyIteratorBase extends AssetPropertyBase
 {
+    private static final long     serialVersionUID = 1L;
+
     protected AssetPagingIterator pagingIterator = null;
 
 

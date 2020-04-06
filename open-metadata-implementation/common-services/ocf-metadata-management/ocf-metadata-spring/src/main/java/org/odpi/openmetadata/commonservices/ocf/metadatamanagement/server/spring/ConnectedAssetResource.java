@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.OCFMetadataRESTServices;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/common-services/{serviceURLName}/connected-asset/users/{userId}")
+
+@Tag(name="OCF Metadata Management Services", description="OCF metadata management provides common services for Open Metadata Access Services (OMASs) that are supporting the Open Connector Framework (OCF).", externalDocs=@ExternalDocumentation(description="OCF Metadata Management",url="https://egeria.odpi.org/open-metadata-implementation/common-services/ocf-metadata-management/"))
+
 public class ConnectedAssetResource
 {
     private OCFMetadataRESTServices restAPI = new OCFMetadataRESTServices();

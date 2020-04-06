@@ -21,8 +21,6 @@ public class TestAssetBoundedSchemaType
     private ElementType          type                 = new ElementType();
     private List<Classification> classifications      = new ArrayList<>();
     private Map<String, String>  additionalProperties = new HashMap<>();
-    private PrimitiveSchemaType  schemaType           = new PrimitiveSchemaType();
-    private AssetSchemaType      attributeSchemaType  = new AssetPrimitiveSchemaType(schemaType);
 
 
     /**
@@ -39,6 +37,7 @@ public class TestAssetBoundedSchemaType
      *
      * @return filled in object
      */
+    @SuppressWarnings(value = "deprecation")
     private AssetBoundedSchemaType getTestObject()
     {
         BoundedSchemaType testBean = new BoundedSchemaType();
@@ -59,7 +58,7 @@ public class TestAssetBoundedSchemaType
         testBean.setBoundedSchemaCategory(BoundedSchemaCategory.ARRAY);
         testBean.setMaximumElements(25);
 
-        return new AssetBoundedSchemaType(testBean, attributeSchemaType);
+        return new AssetBoundedSchemaType(testBean);
     }
 
 
@@ -68,6 +67,7 @@ public class TestAssetBoundedSchemaType
      *
      * @return filled in object
      */
+    @SuppressWarnings(value = "deprecation")
     private AssetBoundedSchemaType getDifferentObject()
     {
         BoundedSchemaType testBean = new BoundedSchemaType();
@@ -88,7 +88,7 @@ public class TestAssetBoundedSchemaType
         testBean.setBoundedSchemaCategory(BoundedSchemaCategory.ARRAY);
         testBean.setMaximumElements(25);
 
-        return new AssetBoundedSchemaType(testBean, attributeSchemaType);
+        return new AssetBoundedSchemaType(testBean);
     }
 
 
@@ -98,6 +98,7 @@ public class TestAssetBoundedSchemaType
      *
      * @return filled in object
      */
+    @SuppressWarnings(value = "deprecation")
     private AssetBoundedSchemaType getAnotherDifferentObject()
     {
         BoundedSchemaType testBean = new BoundedSchemaType();
@@ -118,7 +119,7 @@ public class TestAssetBoundedSchemaType
         testBean.setBoundedSchemaCategory(BoundedSchemaCategory.ARRAY);
         testBean.setMaximumElements(25);
 
-        return new AssetBoundedSchemaType(testBean, attributeSchemaType);
+        return new AssetBoundedSchemaType(testBean);
     }
 
 
@@ -127,6 +128,7 @@ public class TestAssetBoundedSchemaType
      *
      * @return filled in object
      */
+    @SuppressWarnings(value = "deprecation")
     private AssetBoundedSchemaType getYetAnotherDifferentObject()
     {
         BoundedSchemaType testBean = new BoundedSchemaType();
@@ -147,7 +149,7 @@ public class TestAssetBoundedSchemaType
         testBean.setBoundedSchemaCategory(BoundedSchemaCategory.SET);
         testBean.setMaximumElements(25);
 
-        return new AssetBoundedSchemaType(new AssetSummary(new Asset()), testBean, attributeSchemaType);
+        return new AssetBoundedSchemaType(new AssetSummary(new Asset()), testBean);
     }
 
 
@@ -156,6 +158,7 @@ public class TestAssetBoundedSchemaType
      *
      * @return filled in object
      */
+    @SuppressWarnings(value = "deprecation")
     private AssetBoundedSchemaType getAndYetAnotherDifferentObject()
     {
         BoundedSchemaType testBean = new BoundedSchemaType();
@@ -176,7 +179,7 @@ public class TestAssetBoundedSchemaType
         testBean.setBoundedSchemaCategory(BoundedSchemaCategory.SET);
         testBean.setMaximumElements(25);
 
-        return new AssetBoundedSchemaType(new AssetSummary(new Asset()), testBean, attributeSchemaType);
+        return new AssetBoundedSchemaType(new AssetSummary(new Asset()), testBean);
     }
 
 
@@ -185,6 +188,7 @@ public class TestAssetBoundedSchemaType
      *
      * @param resultObject object returned by the test
      */
+    @SuppressWarnings(value = "deprecation")
     private void validateResultObject(AssetBoundedSchemaType resultObject)
     {
         assertTrue(resultObject.getType().getElementTypeBean().equals(type));
@@ -201,7 +205,6 @@ public class TestAssetBoundedSchemaType
         assertTrue(resultObject.getAuthor().equals("TestAuthor"));
 
         assertTrue(resultObject.getBoundedSchemaCategory() == BoundedSchemaCategory.ARRAY);
-        assertTrue(resultObject.getBoundedSchemaElementType() != null);
         assertTrue(resultObject.getMaximumElements() == 25);
     }
 
@@ -211,6 +214,7 @@ public class TestAssetBoundedSchemaType
      *
      * @param nullObject object to test
      */
+    @SuppressWarnings(value = "deprecation")
     private void validateNullObject(AssetBoundedSchemaType nullObject)
     {
         assertTrue(nullObject.getType() == null);
@@ -235,44 +239,44 @@ public class TestAssetBoundedSchemaType
     /**
      * Validate that the object is initialized properly
      */
+    @SuppressWarnings(value = "deprecation")
     @Test public void testNullObject()
     {
         BoundedSchemaType      nullBean;
         AssetBoundedSchemaType nullObject;
-        AssetSchemaType        nullAttributeSchemaType = null;
         AssetBoundedSchemaType nullTemplate;
         AssetDescriptor        parentAsset;
 
         nullBean = null;
-        nullObject = new AssetBoundedSchemaType(nullBean, nullAttributeSchemaType);
+        nullObject = new AssetBoundedSchemaType(nullBean);
         validateNullObject(nullObject);
 
         nullBean = new BoundedSchemaType();
-        nullObject = new AssetBoundedSchemaType(nullBean, nullAttributeSchemaType);
+        nullObject = new AssetBoundedSchemaType(nullBean);
         validateNullObject(nullObject);
 
         nullBean = new BoundedSchemaType(null);
-        nullObject = new AssetBoundedSchemaType(nullBean, nullAttributeSchemaType);
+        nullObject = new AssetBoundedSchemaType(nullBean);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new AssetBoundedSchemaType(parentAsset, nullBean, nullAttributeSchemaType);
+        nullObject = new AssetBoundedSchemaType(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullBean = new BoundedSchemaType();
-        nullObject = new AssetBoundedSchemaType(parentAsset, nullBean, nullAttributeSchemaType);
+        nullObject = new AssetBoundedSchemaType(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullBean = new BoundedSchemaType(null);
-        nullObject = new AssetBoundedSchemaType(parentAsset, nullBean, nullAttributeSchemaType);
+        nullObject = new AssetBoundedSchemaType(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullTemplate = null;
         nullObject = new AssetBoundedSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
 
-        nullTemplate = new AssetBoundedSchemaType(parentAsset, nullBean, nullAttributeSchemaType);
+        nullTemplate = new AssetBoundedSchemaType(parentAsset, nullBean);
         nullObject = new AssetBoundedSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
     }
@@ -280,6 +284,7 @@ public class TestAssetBoundedSchemaType
     /**
      * Validate the subclass initialization
      */
+    @SuppressWarnings(value = "deprecation")
     @Test public void testSubclassInitialization()
     {
         BoundedSchemaType      bean        = (BoundedSchemaType)getTestObject().getSchemaTypeBean();
@@ -294,13 +299,14 @@ public class TestAssetBoundedSchemaType
     /**
      * Test that the maximum elements are properly set depending on the type of schema.
      */
+    @SuppressWarnings(value = "deprecation")
     @Test public void testMaximumElements()
     {
         BoundedSchemaType arrayBean = new BoundedSchemaType();
         arrayBean.setBoundedSchemaCategory(BoundedSchemaCategory.ARRAY);
         arrayBean.setMaximumElements(25);
 
-        AssetBoundedSchemaType testObject = new AssetBoundedSchemaType(arrayBean, attributeSchemaType);
+        AssetBoundedSchemaType testObject = new AssetBoundedSchemaType(arrayBean);
 
         assertTrue(testObject.getMaximumElements() == 25);
 
@@ -309,7 +315,7 @@ public class TestAssetBoundedSchemaType
         setBean.setBoundedSchemaCategory(BoundedSchemaCategory.SET);
         setBean.setMaximumElements(27);
 
-        testObject = new AssetBoundedSchemaType(setBean, attributeSchemaType);
+        testObject = new AssetBoundedSchemaType(setBean);
 
         assertTrue(testObject.getMaximumElements() == 27);
     }
@@ -319,11 +325,11 @@ public class TestAssetBoundedSchemaType
      * Validate that 2 different objects with the same content are evaluated as equal.
      * Also that different objects are considered not equal.
      */
+    @SuppressWarnings(value = "deprecation")
     @Test public void testEquals()
     {
         assertFalse(getTestObject().equals(null));
         assertFalse(getTestObject().equals("DummyString"));
-        assertTrue(getTestObject().equals(getTestObject()));
 
         AssetBoundedSchemaType sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
@@ -347,6 +353,7 @@ public class TestAssetBoundedSchemaType
     /**
      *  Validate that an object cloned from another object has the same content as the original
      */
+    @SuppressWarnings(value = "deprecation")
     @Test public void testClone()
     {
         validateResultObject(new AssetBoundedSchemaType((AssetDescriptor)null, getTestObject()));

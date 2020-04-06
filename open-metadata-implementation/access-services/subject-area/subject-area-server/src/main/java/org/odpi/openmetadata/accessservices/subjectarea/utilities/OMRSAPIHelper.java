@@ -53,12 +53,19 @@ public class OMRSAPIHelper {
         return omrsRepositoryHelper;
     }
 
-    /**
-     * Set the OMRS repository connector
-     * @param connector connector cannot be null
-     * @param restAPIName rest API name
-     * @throws MetadataServerUncontactableException Metadata server not contactable
-     */
+    public void setOMRSMetadataCollection(OMRSMetadataCollection oMRSMetadataCollection) {
+        this.oMRSMetadataCollection = oMRSMetadataCollection;
+    }
+
+    public void setOmrsRepositoryHelper(OMRSRepositoryHelper omrsRepositoryHelper) {
+        this.omrsRepositoryHelper = omrsRepositoryHelper;
+    }
+    //    /**
+//     * Set the OMRS repository connector
+//     * @param connector connector cannot be null
+//     * @param restAPIName rest API name
+//     * @throws MetadataServerUncontactableException Metadata server not contactable
+//     */
     public void setOMRSRepositoryConnector(OMRSRepositoryConnector connector, String restAPIName) throws MetadataServerUncontactableException {
         String methodName = "setOMRSRepositoryConnector";
         if (log.isDebugEnabled()) {

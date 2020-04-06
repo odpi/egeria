@@ -3,9 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.Objects;
 
@@ -24,7 +22,8 @@ public class ComplexSchemaType extends SchemaType
 {
     private static final long     serialVersionUID = 1L;
 
-    protected  int attributeCount      = 0;
+    protected int    attributeCount = 0;
+
 
     /**
      * Default constructor used by subclasses
@@ -36,9 +35,7 @@ public class ComplexSchemaType extends SchemaType
 
 
     /**
-     * Copy/clone Constructor the parentAsset is passed separately to the template because it is also
-     * likely to be being cloned in the same operation and we want the definitions clone to point to the
-     * asset clone and not the original asset.
+     * Copy/clone Constructor.
      *
      * @param template template object to copy.
      */
@@ -75,7 +72,7 @@ public class ComplexSchemaType extends SchemaType
     /**
      * Returns a clone of this object as the abstract SchemaElement class.
      *
-     * @return PrimitiveSchemaType object
+     * @return ComplexSchemaType object
      */
     @Override
     public SchemaElement cloneSchemaElement()
@@ -87,7 +84,7 @@ public class ComplexSchemaType extends SchemaType
     /**
      * Returns a clone of this object as the abstract SchemaType class.
      *
-     * @return PrimitiveSchemaType object
+     * @return ComplexSchemaType object
      */
     @Override
     public SchemaType cloneSchemaType()
@@ -105,21 +102,26 @@ public class ComplexSchemaType extends SchemaType
     public String toString()
     {
         return "ComplexSchemaType{" +
-                "attributeCount='" + attributeCount + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
+                "attributeCount=" + attributeCount +
                 ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
+                ", namespace='" + getNamespace() + '\'' +
+                ", deprecated=" + isDeprecated() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", meanings=" + getMeanings() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.

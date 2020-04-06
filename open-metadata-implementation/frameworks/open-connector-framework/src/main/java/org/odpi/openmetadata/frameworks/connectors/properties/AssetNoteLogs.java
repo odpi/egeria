@@ -14,6 +14,8 @@ import java.util.Iterator;
  */
 public abstract class AssetNoteLogs extends AssetPropertyIteratorBase implements Iterator<AssetNoteLog>
 {
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *

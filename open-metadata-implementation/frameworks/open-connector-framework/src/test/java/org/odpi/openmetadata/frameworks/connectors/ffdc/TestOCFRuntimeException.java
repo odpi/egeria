@@ -17,7 +17,7 @@ public class TestOCFRuntimeException
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */
-    private int       reportedHTTPCode = 404;
+    private int       reportedHTTPCode = 400;
     private String    reportingClassName = "TestClassName";
     private String    reportingActionDescription = "TestActionDescription";
     private Throwable reportedCaughtException = new Exception("TestReportedCaughtException");

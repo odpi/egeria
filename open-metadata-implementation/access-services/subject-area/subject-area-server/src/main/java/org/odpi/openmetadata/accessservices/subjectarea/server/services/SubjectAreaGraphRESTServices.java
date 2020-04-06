@@ -2,26 +2,22 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.InstanceGraphResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
+import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGraphHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.StatusFilter;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.*;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.GraphResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.ResponseCategory;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.LineTypeMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.NodeTypeMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -34,13 +30,13 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
 {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGraphRESTServices.class);
     private static final String className = SubjectAreaGraphRESTServices.class.getName();
+    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
+
 
     /**
      * Default constructor
      */
-    public SubjectAreaGraphRESTServices() {
-        super();
-    }
+    public SubjectAreaGraphRESTServices() {}
     public SubjectAreaGraphRESTServices(OMRSAPIHelper oMRSAPIHelper)
     {
         this.oMRSAPIHelper =oMRSAPIHelper;
@@ -85,200 +81,26 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
                                                 Integer level ) {
 
         final String methodName = "getGraph";
-        if (log.isDebugEnabled())
-        {
-            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
+        SubjectAreaOMASAPIResponse response = null;
+        try {
+            SubjectAreaGraphHandler handler = instanceHandler.getSubjectAreaGraphHandler(userId, serverName, methodName);
+            response = handler.getGraph(
+                                        userId,
+                                        guid,
+                                        asOfTime,
+                                        nodeFilterStr,
+                                        lineFilterStr,
+                                        statusFilter,   // may need to extend this for controlled terms
+                                        level);
 
-        // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
-        if (response == null) {
-            //set of entity type guids so we do not have duplicates
-            Set<String> entityTypeGUIDs = new HashSet();
-            Set<NodeType> nodeFilter = new HashSet<>();
-            Set<LineType> lineFilter = new HashSet<>();
-            // if there was no NodeFilter supplied then limit to the the NodeType values, so we only get the types that this omas is interested in.
-            if (nodeFilterStr == null) {
-                nodeFilter = new HashSet();
-                for (NodeType nodeType : NodeType.values()) {
-                    if (nodeType != NodeType.Unknown) {
-                        nodeFilter.add(nodeType);
-                    }
-                }
-            } else {
-                if (nodeFilterStr.contains(",")) {
-                    StringTokenizer tokenizer = new StringTokenizer(nodeFilterStr, ",");
-                    while (tokenizer.hasMoreElements()) {
-                        String nodeTypeName = (String) tokenizer.nextElement();
-                        for (NodeType nodeType : NodeType.values()) {
-                            if (nodeType.name().equals(nodeTypeName)) {
-                                nodeFilter.add(nodeType);
-                            }
-                        }
-                    }
-                } else {
-                    for (NodeType nodeType : NodeType.values()) {
-                        if (nodeType.name().equals(nodeFilterStr)) {
-                            nodeFilter.add(nodeType);
-                        }
-                    }
-                }
-            }
-            try {
-                for (NodeType nodeType : nodeFilter) {
-                    String entityTypeGUID = NodeTypeMapper.mapNodeTypeToEntityTypeGuid(nodeType);
-                    entityTypeGUIDs.add(entityTypeGUID);
-                }
-                // if there was no Line filter supplied then limit to the the LineType values, so we only get the types that this omas is interested in.
-                if (lineFilterStr == null) {
-                    for (LineType lineType : LineType.values()) {
-                        if (lineType != LineType.Unknown) {
-                            lineFilter.add(lineType);
-                        }
-                    }
-                } else {
-                    if (lineFilterStr.contains(",")) {
-                        StringTokenizer tokenizer = new StringTokenizer(lineFilterStr, ",");
-                        while (tokenizer.hasMoreElements()) {
-                            String lineTypeName = (String) tokenizer.nextElement();
-                            for (LineType lineType : LineType.values()) {
-                                if (lineType.name().equals(lineTypeName)) {
-                                    lineFilter.add(lineType);
-                                }
-                            }
-                        }
-                    } else {
-                        for (LineType lineType : LineType.values()) {
-                            if (lineType.name().equals(lineFilterStr)) {
-                                lineFilter.add(lineType);
-                            }
-                        }
-                    }
-                }
-                OMRSRepositoryHelper oMRSRepositoryHelper = oMRSAPIHelper.getOMRSRepositoryHelper();
-                List<String> relationshipTypeGUIDs = new ArrayList<>();
-                for (LineType lineType : lineFilter) {
-                    String relationshipTypeGUID = LineTypeMapper.mapLineTypeToRelationshipTypeGuid(lineType);
-                    relationshipTypeGUIDs.add(relationshipTypeGUID);
-                }
-
-                List<String> entityTypeGUIDList = null;
-                if (!entityTypeGUIDs.isEmpty()) {
-                    entityTypeGUIDList = new ArrayList(entityTypeGUIDs);
-                }
-                List<InstanceStatus> requestedInstanceStatus = null;
-                requestedInstanceStatus = new ArrayList<>();
-                if (statusFilter == null || statusFilter == StatusFilter.ACTIVE) {
-                    requestedInstanceStatus.add(SubjectAreaUtils.convertStatusToInstanceStatus(Status.ACTIVE));
-                } else {
-                    // request all status instances.
-                    for (Status omasStatus : Status.values()) {
-                        requestedInstanceStatus.add(SubjectAreaUtils.convertStatusToInstanceStatus(omasStatus));
-                    }
-                }
-                if (level == null) {
-                    level = 3;
-                }
-
-                response = oMRSAPIHelper.callGetEntityNeighbourhood(methodName,
-                        userId,
-                        guid,
-                        entityTypeGUIDList,
-                        relationshipTypeGUIDs,
-                        requestedInstanceStatus,
-                        null,
-                        asOfTime,
-                        level);
-                if (response.getResponseCategory() == ResponseCategory.OmrsInstanceGraph) {
-                    InstanceGraphResponse instanceGraphResponse = (InstanceGraphResponse) response;
-                    InstanceGraph instanceGraph = instanceGraphResponse.getInstanceGraph();
-                    Graph graph = new Graph();
-                    Set<Node> nodes = null;
-                    Set<Line> lines = null;
-
-                    List<EntityDetail> entities = instanceGraph.getEntities();
-                    List<Relationship> relationships = instanceGraph.getRelationships();
-
-                    if (entities != null && !entities.isEmpty()) {
-                        nodes = new HashSet<>();
-                        for (EntityDetail entity : entities) {
-                            Node node = new Node();
-                            InstanceStatus instanceStatus = entity.getStatus();
-                            Status omas_status = SubjectAreaUtils.convertInstanceStatusToStatus(instanceStatus);
-                            SystemAttributes systemAttributes = new SystemAttributes();
-                            systemAttributes.setCreatedBy(entity.getCreatedBy());
-                            systemAttributes.setStatus(omas_status);
-                            systemAttributes.setCreatedBy(entity.getCreatedBy());
-                            systemAttributes.setUpdatedBy(entity.getUpdatedBy());
-                            systemAttributes.setCreateTime(entity.getCreateTime());
-                            systemAttributes.setUpdateTime(entity.getUpdateTime());
-                            systemAttributes.setVersion(entity.getVersion());
-                            systemAttributes.setGUID(entity.getGUID());
-                            node.setSystemAttributes(systemAttributes);
-                            InstanceProperties entityProperties = entity.getProperties();
-                            if (entityProperties != null) {
-                                node.setEffectiveFromTime(entity.getProperties().getEffectiveFromTime());
-                                node.setEffectiveToTime(entity.getProperties().getEffectiveToTime());
-                                Iterator omrsPropertyIterator = entityProperties.getPropertyNames();
-
-                                while (omrsPropertyIterator.hasNext()) {
-                                    String name = (String) omrsPropertyIterator.next();
-                                    InstancePropertyValue value = entityProperties.getPropertyValue(name);
-                                    // supplied guid matches the expected type
-                                    if (value.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE) {
-                                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
-                                        Object actualValue = primitivePropertyValue.getPrimitiveValue();
-                                        if (name.equals("displayName")) {
-                                            node.setName((String) actualValue);
-                                        }
-                                        if (name.equals("name")) {
-                                            node.setName((String) actualValue);
-                                        }
-                                        if (name.equals("description")) {
-                                            node.setDescription((String) actualValue);
-                                        }
-                                        if (name.equals("qualifiedName")) {
-                                            node.setQualifiedName((String) actualValue);
-                                        }
-                                    }
-                                    break;
-                                }
-                            }   // end while
-                            // change any subtypes into the NodeType value. for example subtypes of Category have NodeType Category
-                            setNodeTypeInNode(methodName, oMRSRepositoryHelper, entity, node);
-                            nodes.add(node);
-                        }
-                    }
-                    if (relationships != null && !relationships.isEmpty()) {
-                        lines = new HashSet<>();
-                        for (Relationship relationship : relationships) {
-                            Line line = new Line(relationship);
-                            line.setLineType(LineType.Unknown);
-                            String typeDefName = relationship.getType().getTypeDefName();
-                            for (LineType lineTypeValue : LineType.values()) {
-                                if (lineTypeValue.name().equals(typeDefName)) {
-                                    line.setLineType(lineTypeValue);
-                                }
-                            }
-                            lines.add(line);
-                        }
-                    }
-                    if (nodes != null) {
-                        graph.setNodes(nodes);
-                    }
-                    if (lines != null) {
-                        graph.setLines(lines);
-                    }
-                    response = new GraphResponse(graph);
-                } // end of if after getEntityNeighbourhood call
-            } catch (InvalidParameterException e) {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            }
-        } // end of if response == null after initialisation
-
-        if (log.isDebugEnabled())
-        {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
+            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
         return response;
     }

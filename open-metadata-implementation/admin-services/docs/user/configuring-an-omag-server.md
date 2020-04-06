@@ -78,7 +78,7 @@ GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{se
 ```
 
 It is also possible to query the origin of the server supporting the open metadata services.
-For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 1.6-SNAPSHOT)".
+For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 1.7-SNAPSHOT)".
 
 ```
 GET {serverURLRoot}/open-metadata/platform-services/users/{adminUserId}/servers/{serverName}/server-platform-origin

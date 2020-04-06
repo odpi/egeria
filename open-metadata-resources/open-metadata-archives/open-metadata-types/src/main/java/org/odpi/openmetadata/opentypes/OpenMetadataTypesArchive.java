@@ -11,7 +11,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * OpenMetadataTypesArchive builds an open metadata archive containing all of the standard open metadata types.
@@ -35,7 +37,7 @@ public class OpenMetadataTypesArchive
     private static final String                  archiveName        = "Open Metadata Types";
     private static final String                  archiveDescription = "Standard types for open metadata repositories.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
-    private static final String                  archiveVersion     = "1.5";
+    private static final String                  archiveVersion     = "1.6";
     private static final String                  originatorName     = "ODPi Egeria";
     private static final String                  originatorLicense  = "Apache 2.0";
     private static final Date                    creationDate       = new Date(1516313040008L);
@@ -133,9 +135,360 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
-
+        update0501SchemaElements();
+        update0505SchemaAttributes();
+        update0512DerivedSchemaAttributes();
     }
 
+
+    private void update0501SchemaElements()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSchemaElementEntity());
+    }
+
+
+    /**
+     * 0501 - SchemaElement entity is changed to allow a schema element to be marked as deprecated.
+     */
+    private TypeDefPatch updateSchemaElementEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SchemaElement";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "isDeprecated";
+        final String attribute1Description     = "This element may still be used but is flagged that it will be removed at some point in the future.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private void update0505SchemaAttributes()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSchemaAttributeEntity());
+        this.archiveBuilder.addTypeDefPatch(updateTypeEmbeddedAttributeClassification());
+    }
+
+
+    /**
+     * 0505 - SchemaAttribute entity is changed to show deprecated properties
+     */
+    private TypeDefPatch updateSchemaAttributeEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SchemaAttribute";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "minimumLength";
+        final String attribute1Description     = "Minimum length of the data value (zero means unlimited).";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "length";
+        final String attribute2Description     = "Length of the data field (zero means unlimited).";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "significantDigits";
+        final String attribute3Description     = "Number of significant digits to the right of decimal point (zero means it is an integer).";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "isNullable";
+        final String attribute4Description     = "Accepts null values or not.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute6Name            = "cardinality";
+        final String attribute6Description     = "Number of occurrences of this attribute allowed (deprecated).";
+        final String attribute6DescriptionGUID = null;
+        final String attribute6ReplacedBy      = "maxCardinality";
+        final String attribute7Name            = "name";
+        final String attribute7Description     = "Name of schema attribute (deprecated).";
+        final String attribute7DescriptionGUID = null;
+        final String attribute7ReplacedBy      = "displayName";
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
+                                                        attribute1Description,
+                                                        attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
+                                                        attribute3Description,
+                                                        attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute4Name,
+                                                            attribute4Description,
+                                                            attribute4DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
+        property.setReplacedByAttribute(attribute6ReplacedBy);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
+                                                           attribute7Description,
+                                                           attribute7DescriptionGUID);
+        property.setReplacedByAttribute(attribute7ReplacedBy);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /**
+     * 0505 - TypeEmbeddedAttribute classification is changed to include more values of schema type
+     */
+    private TypeDefPatch updateTypeEmbeddedAttributeClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "TypeEmbeddedAttribute";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name             = "schemaTypeName";
+        final String attribute1Description      = "Type name for the schema type.";
+        final String attribute1DescriptionGUID  = null;
+        final String attribute2Name             = "qualifiedName";
+        final String attribute2Description      = "Unique name for the schema type.";
+        final String attribute2DescriptionGUID  = null;
+        final String attribute3Name             = "displayName";
+        final String attribute3Description      = "Display name for the schema type.";
+        final String attribute3DescriptionGUID  = null;
+        final String attribute4Name             = "description";
+        final String attribute4Description      = "Description of the schema type.";
+        final String attribute4DescriptionGUID  = null;
+        final String attribute5Name             = "versionNumber";
+        final String attribute5Description      = "Version of the schema type.";
+        final String attribute5DescriptionGUID  = null;
+        final String attribute6Name             = "author";
+        final String attribute6Description      = "User name of the person or process that created the schema type.";
+        final String attribute6DescriptionGUID  = null;
+        final String attribute7Name             = "usage";
+        final String attribute7Description      = "Guidance on how the schema should be used.";
+        final String attribute7DescriptionGUID  = null;
+        final String attribute8Name             = "defaultValue";
+        final String attribute8Description      = "Initial value for data stored in this schema type (primitive and enum types).";
+        final String attribute8DescriptionGUID  = null;
+        final String attribute9Name             = "fixedValue";
+        final String attribute9Description      = "Fixed value for data stored in this schema type (literal schema type).";
+        final String attribute9DescriptionGUID  = null;
+        final String attribute10Name            = "additionalProperties";
+        final String attribute10Description     = "Additional properties for the schema type.";
+        final String attribute10DescriptionGUID = null;
+        final String attribute11Name            = "isDeprecated";
+        final String attribute11Description     = "This element may still be used but is flagged that it will be removed at some point in the " +
+                "future.";
+        final String attribute11DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
+                                                           attribute7Description,
+                                                           attribute7DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute8Name,
+                                                           attribute8Description,
+                                                           attribute8DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute9Name,
+                                                           attribute9Description,
+                                                           attribute9DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute10Name,
+                                                                    attribute10Description,
+                                                                    attribute10DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute11Name,
+                                                            attribute11Description,
+                                                            attribute11DescriptionGUID);
+        properties.add(property);
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+
+    private void update0512DerivedSchemaAttributes()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDerivedSchemaAttributeEntity());
+    }
+
+    /**
+     * 0512 - SchemaAttribute entity is changed to show deprecated properties
+     */
+    private TypeDefPatch updateDerivedSchemaAttributeEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DerivedSchemaAttribute";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "comment";
+        final String attribute1Description     = "Comment from source system (deprecated).";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "id";
+        final String attribute2Description     = "Id of derived schema attribute (deprecated).";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "aggregatingFunction";
+        final String attribute3Description     = "Aggregating function of derived schema attribute (deprecated).";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /**
+     * 0534 - replace fraction with significantDigit in SchemaAttribute
+     */
+    private TypeDefPatch updateRelationalColumnEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DerivedSchemaAttribute";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "fraction";
+        final String attribute1Description     = "Number of significant digits to the right of decimal point (deprecated).";
+        final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "significantDigits";
+        final String attribute2Name            = "isUnique";
+        final String attribute2Description     = "Data is unique or not.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute2ReplacedBy      = "allowsDuplicateValues";
+
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
+                                                        attribute1Description,
+                                                        attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        property.setReplacedByAttribute(attribute1ReplacedBy);
+        properties.add(property);
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
+                                                            attribute2Description,
+                                                            attribute2DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        property.setReplacedByAttribute(attribute2ReplacedBy);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
 
     /*
      * ========================================================================

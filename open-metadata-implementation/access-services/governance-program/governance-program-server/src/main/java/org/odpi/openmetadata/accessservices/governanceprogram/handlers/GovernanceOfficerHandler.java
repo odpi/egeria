@@ -408,9 +408,9 @@ public class GovernanceOfficerHandler
                     {
                         String   personalProfileGUID = null;
 
-                        if (governancePost.getEntityTwoProxy() != null)
+                        if (governancePost.getEntityOneProxy() != null)
                         {
-                            personalProfileGUID = governancePost.getEntityTwoProxy().getGUID();
+                            personalProfileGUID = governancePost.getEntityOneProxy().getGUID();
                         }
 
                         appointees.add(this.getAppointee(governancePost.getGUID(),
@@ -474,9 +474,9 @@ public class GovernanceOfficerHandler
                     {
                         String   personalProfileGUID = null;
 
-                        if (governancePost.getEntityTwoProxy() != null)
+                        if (governancePost.getEntityOneProxy() != null)
                         {
-                            personalProfileGUID = governancePost.getEntityTwoProxy().getGUID();
+                            personalProfileGUID = governancePost.getEntityOneProxy().getGUID();
                         }
 
                         appointees.add(this.getAppointee(governancePost.getGUID(),
@@ -1032,7 +1032,7 @@ public class GovernanceOfficerHandler
         {
             if (governancePost != null)
             {
-                EntityProxy   appointeeProxy = governancePost.getEntityTwoProxy();
+                EntityProxy   appointeeProxy = governancePost.getEntityOneProxy();
 
                 if (appointeeProxy != null)
                 {

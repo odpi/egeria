@@ -12,83 +12,43 @@
     name: IBM.infosvr
     tasks_from: get_certificate.yml
 
-- name: post-check remote database catalog status
-  shell: "source ~/.bashrc && db2 list database directory"
-  args:
-    executable: /bin/bash
-  become_user: "{{ ibm_infosvr_users.db2inst1 }}"
-  become: yes
-  ignore_errors: yes
-  register: __minimal_db2catalog_completion
-  changed_when: False
-  when: >
-    ('ibm_information_server_engine' in group_names)
-    and (egeria_samples_minimal_db_type == 'ibm-db2')
-
-- name: catalog remote data nodes
-  shell: >
-          source ~/.bashrc &&
-          db2 catalog database {{ item | upper }} at node REPO &&
-          db2 terminate
-  args:
-    executable: /bin/bash
-  when: >
-    ('ibm_information_server_engine' in group_names)
-    and (egeria_samples_minimal_db_type == 'ibm-db2')
-    and __minimal_db2catalog_completion.stdout.find(item) == -1
-  with_items: "{{ egeria_samples_minimal_databases }}"
-  become_user: "{{ ibm_infosvr_users.db2inst1 }}"
-  become: yes
-
-- name: setup mappings
-  set_fact:
-    rest_mappings:
-      - { type: "host", property: "name", from: "ENG.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
-      - { type: "host_(engine)", property: "name", from: "ENG.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
-      - { type: "host", property: "name", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ egeria_samples_db_host_remote | upper }}" }
-      - { type: "host_(engine)", property: "name", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ egeria_samples_db_host_remote | upper }}" }
-      - { type: "data_file", property: "path", from: "/data/files/minimal", to: "{{ egeria_samples_minimal_targets.files }}" }
-    iaxml_mappings:
-      - { type: "DataSource", attr: "host", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ egeria_samples_db_host_remote | upper }}" }
-
 - name: harvest file metadata via IBM Metadata Asset Manager
   include_role:
     name: IBM.infosvr-metadata-asset-manager
   vars:
     import_areas:
-      - name: Minimal_SampleFiles
+      - name: Minimal_{{ item }}
         type: LocalFileConnector
         description: "Loads metadata for Minimal sample files"
         metadata_interchange_server: "{{ groups['ibm_information_server_engine'][0] | lower }}"
         dcn:
           name: LOCALFS
         assets_to_import:
-          - "folder[{{ egeria_samples_minimal_targets.files }}]"
+          - "file[{{ egeria_samples_minimal_targets.files }}/{{ item }}]"
         hostname: "{{ groups['ibm_information_server_engine'][0] | upper }}"
+  with_items: "{{ egeria_samples_minimal_files }}"
 
 - name: harvest DB2 metadata via IBM Metadata Asset Manager
   include_role:
     name: IBM.infosvr-metadata-asset-manager
   vars:
     import_areas:
-      - name: Minimal_{{ db_name }}
+      - name: Minimal_{{ item | upper }}
         type: DB2Connector
-        description: "Import area for Minimal {{ db_name }} sample database"
+        description: "Import area for Minimal sample database"
         metadata_interchange_server: "{{ groups['ibm_information_server_engine'][0] | lower }}"
         dcn:
-          name: Minimal_{{ db_name }}_{{ egeria_samples_minimal_db_type }}
+          name: Minimal_{{ egeria_samples_minimal_db_type }}
           description: "Minimal DB2 connection"
-          database: "{{ db_name | upper }}"
+          database: "MINIMAL"
           username: "{{ egeria_samples_db_credentials.owner }}"
           password: "{{ egeria_samples_db_credentials.passwd }}"
         assets_to_import:
-            - "database[{{ db_name | upper }}]"
+          - "table[MINIMAL|{{ egeria_samples_db_credentials.owner | upper }}|{{ item | upper }}]"
         hostname: "{{ egeria_samples_db_host_remote | upper }}"
-        database_name: "{{ db_name | upper }}"
-  with_items: "{{ egeria_samples_minimal_databases }}"
+        database_name: "MINIMAL"
+  with_items: "{{ egeria_samples_minimal_tables }}"
   when: (egeria_samples_minimal_db_type == 'ibm-db2')
-  loop_control:
-    loop_var: db_name
 
 - name: list DataStage projects
   shell: >
@@ -165,6 +125,47 @@
       Cookie: "{{ __minimal_lineage.set_cookie }}"
   when: ('ibm_information_server_domain' in group_names) and __minimal_lineage.json['items'][0].include_for_lineage == "setToFalse"
 
+- import_role: name=IBM.infosvr-import-export
+  vars:
+    ingest:
+      datastage:
+        - from: "metadata/ibm-igc/ds_tabledefs_{{ egeria_samples_minimal_flow }}.isx"
+          into_project: minimal
+          with_options:
+            overwrite: True
+        - from: "metadata/ibm-igc/ds_jobs_{{ egeria_samples_minimal_flow }}.isx"
+          into_project: minimal
+          with_options:
+            overwrite: True
+
+- name: get list of all job RIDs
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}\
+            /ibm/iis/igc-rest/v1/search"
+    method: POST
+    body: '{"types":["dsjob"],"properties":["name"],"where":{"conditions":[{"property":"transformation_project.name","operator":"=","value":"minimal"}],"operator":"and"},"pageSize":100}'
+    body_format: json
+    validate_certs: no
+    status_code: 200
+    headers:
+      Content-Type: "application/json"
+      Cookie: "{{ __minimal_lineage.set_cookie }}"
+  register: __minimal_job_list
+  when: ('ibm_information_server_domain' in group_names)
+
+- name: re-run lineage detection on all jobs
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}\
+            /ibm/iis/igc-rest/v1/flows/detectFlows/dsjob/{{ item._id }}"
+    method: GET
+    validate_certs: no
+    status_code: 202
+    headers:
+      Content-Type: "application/json"
+      Cookie: "{{ __minimal_lineage.set_cookie }}"
+  with_items: "{{ __minimal_job_list.json['items'] }}"
+  when: ('ibm_information_server_domain' in group_names)
+
 - name: close session
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/logout/"
@@ -173,19 +174,6 @@
     headers:
       Cookie: "{{ __minimal_lineage.set_cookie }}"
   when: ('ibm_information_server_domain' in group_names)
-
-- import_role: name=IBM.infosvr-import-export
-  vars:
-    ingest:
-      datastage:
-        - from: "metadata/ibm-igc/ds_tabledefs_{{ egeria_samples_minimal_db_type }}.isx"
-          into_project: minimal
-          with_options:
-            overwrite: True
-        - from: "metadata/ibm-igc/ds_jobs_{{ egeria_samples_minimal_db_type }}.isx"
-          into_project: minimal
-          with_options:
-            overwrite: True
 
 - name: remove cached files
   file:
