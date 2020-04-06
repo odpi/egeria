@@ -39,7 +39,7 @@ stages:
               command: login
               containerRegistry: odpi-dockerhub
             # Normal build for master - note we have the '-Ddocker.taglatest' set
-			# This can likely be refactored using variables. 
+            # This can likely be refactored using variables. 
           - task: ArtifactoryMaven@1
             condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
