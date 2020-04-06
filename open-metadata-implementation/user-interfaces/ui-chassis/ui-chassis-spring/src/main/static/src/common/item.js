@@ -40,6 +40,10 @@ export const ItemViewBehavior = {
         return arr;
     },
 
+    _hasKeys(obj){
+      return Object.keys(obj).length > 0;
+    },
+
     _camelCaseToSentence(val){
         return val
             .replace(/([A-Z])/g, ' $1')

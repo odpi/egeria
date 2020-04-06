@@ -223,8 +223,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             allCrumbs: {
                 type: Object,
                 value:{
-                    'home': {label: 'Home', href: this.rootPath + '#'},
-                    'asset-catalog': {label: 'Asset Catalog', href: "/asset"},
+                    'home': {label: 'Home', href: '#'},
+                    'asset-catalog': {label: 'Asset Catalog', href: "/asset-catalog"},
                     'subject-area': {label: 'Subject Area', href: "/subject-area"},
                     'asset-lineage': {label: 'Asset Lineage', href: "/asset-lineage"},
                     'type-explorer': {label: 'Type Explorer', href: "/type-explorer"},
