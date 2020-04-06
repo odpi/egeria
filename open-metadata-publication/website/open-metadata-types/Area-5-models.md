@@ -13,7 +13,6 @@ capability around the data assets.
 * **[0503 Asset Schema](0503-Asset-Schema.md)**
 * **[0504 Implementation Snippets](0504-Implementation-Snippets.md)**
 * **[0505 Schema Attributes](0505-Schema-Attributes.md)**
-* **[0507 Bounded Schema Types](0507-Bounded-Schema-Types.md)**
 * **[0510 Schema Link Element](0510-Schema-Link-Element.md)**
 * **[0511 Map Schema Element](0511-Map-Schema-Elements.md)**
 * **[0512 Derived Schema Elements](0512-Derived-Schema-Elements.md)**

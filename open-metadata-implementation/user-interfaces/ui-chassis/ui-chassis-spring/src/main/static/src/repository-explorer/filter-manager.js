@@ -75,25 +75,25 @@ class FilterManager extends PolymerElement {
 
                     <!-- Polymer version -->
                     <paper-dropdown-menu class="custom" label="Entity Types" id="entityTypeSelector"
-                         on-change="entitySelectorHandler" noink no-animations
+                         on-change="entitySelectorChangeHandler" noink no-animations
                          on-iron-select="entitySelectorHandler">
-                        <paper-listbox id="entityTypeSelectorList" slot="dropdown-content" selected="0" >
+                        <paper-listbox id="entityTypeSelectorList" slot="dropdown-content" attrForSelected="value" selected="0" >
                             <paper-item>No types to display</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
 
                     <paper-dropdown-menu class="custom" label="Relationship Types" id="relationshipTypeSelector"
-                        on-change="relationshipSelectorHandler" noink no-animations
+                        on-change="relationshipSelectorChangeHandler" noink no-animations
                         on-iron-select="relationshipSelectorHandler">
-                        <paper-listbox id="relationshipTypeSelectorList" slot="dropdown-content" selected="0">
+                        <paper-listbox id="relationshipTypeSelectorList" slot="dropdown-content" attrForSelected="value" selected="0">
                             <paper-item>No types to display</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
 
                     <paper-dropdown-menu class="custom" label="Classification Types" id="classificationTypeSelector"
-                         on-change="classificationSelectorHandler" noink no-animations
+                         on-change="classificationSelectorChangeHandler" noink no-animations
                          on-iron-select="classificationSelectorHandler" disabled>
-                         <paper-listbox id="classificationTypeSelectorList" slot="dropdown-content" selected="0">
+                         <paper-listbox id="classificationTypeSelectorList" slot="dropdown-content" attrForSelected="value" selected="0">
                              <paper-item>No types to display</paper-item>
                          </paper-listbox>
                     </paper-dropdown-menu>
@@ -164,21 +164,32 @@ class FilterManager extends PolymerElement {
 
      // UI event handlers
 
+    entitySelectorChangeHandler(e) {
+        //console.log("Entity selector content changed - do nothing");
+    }
+
     entitySelectorHandler(e) {
         if (polymer) {
             var typeName = e.target.selectedItem.value;
-            this.changeTypeSelected("Entity", typeName);
+            if (typeName !== "none")
+                this.changeTypeSelected("Entity", typeName);
         }
         else {
             var typeName = e.target.value;
             this.changeTypeSelected("Entity", typeName);
         }
+    }
+
+
+    relationshipSelectorHandler(e) {
+        //console.log("Relationship selector content changed - do nothing");
     }
 
     relationshipSelectorHandler(e) {
         if (polymer) {
             var typeName = e.target.selectedItem.value;
-            this.changeTypeSelected("Relationship", typeName);
+            if (typeName !== "none")
+                this.changeTypeSelected("Relationship", typeName);
         }
         else {
             var typeName = e.target.value;
@@ -186,10 +197,15 @@ class FilterManager extends PolymerElement {
         }
     }
 
+    classificationSelectorChangeHandler(e) {
+        //console.log("Classification selector content changed - do nothing");
+    }
+
     classificationSelectorHandler(e) {
         if (polymer) {
             var typeName = e.target.selectedItem.value;
-            this.changeTypeSelected("Classification", typeName);
+            if (typeName !== "none")
+                this.changeTypeSelected("Classification", typeName);
         }
         else {
             var typeName = e.target.value;
@@ -209,7 +225,8 @@ class FilterManager extends PolymerElement {
      */
     populateSelectors() {
 
-
+        // Clear selections
+        this.resetTypeSelectors();
 
         // Empty the selectors before adding new types...
         this.prepareSelectors();
@@ -346,8 +363,22 @@ class FilterManager extends PolymerElement {
 
 
     changeTypeSelected(category, typeName) {
-        // Clear the type selectors
-        this.resetTypeSelectors();
+        // Clear the type selectors for the other categories
+        switch (category) {
+            case "Entity":
+                this.resetRelTypeSelector();
+                this.resetClsTypeSelector();
+                break;
+            case "Relationship":
+                this.resetEntTypeSelector();
+                this.resetClsTypeSelector();
+                break;
+            case "Classification":
+                this.resetEntTypeSelector();
+                this.resetRelTypeSelector();
+                break;
+        }
+
         // Remember the new setting
         this.selectedType     = typeName;
         this.selectedCategory = category;
@@ -373,8 +404,8 @@ class FilterManager extends PolymerElement {
         if (this.polymer) {
 
             // Reset the classification type selector
-            var select = this.$.classificationTypeSelector;
-            select.selected = null;
+            var select = this.$.classificationTypeSelectorList;
+            select.selected = 0;
 
         }
         else {
@@ -391,8 +422,8 @@ class FilterManager extends PolymerElement {
         if (this.polymer) {
 
             // Reset the relationship type selector
-            var select = this.$.relationshipTypeSelector;
-            select.selected = null;
+            var select = this.$.relationshipTypeSelectorList;
+            select.selected = 0;
 
         }
         else {
@@ -409,8 +440,8 @@ class FilterManager extends PolymerElement {
         if (this.polymer) {
 
             // Reset the entity type selector
-            var select = this.$.entityTypeSelector;
-            select.selected = null;
+            var select = this.$.entityTypeSelectorList;
+            select.selected = 0;
 
         }
         else {

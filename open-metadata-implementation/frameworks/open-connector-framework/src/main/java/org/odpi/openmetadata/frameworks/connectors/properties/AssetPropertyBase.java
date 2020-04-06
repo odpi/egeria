@@ -8,6 +8,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
  */
 public abstract class AssetPropertyBase extends AssetPropertyElementBase
 {
+    private static final long     serialVersionUID = 1L;
+
     protected AssetDescriptor parentAsset;
 
 

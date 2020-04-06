@@ -185,7 +185,7 @@
 			"response": []
 		},
 		{
-			"name": "0.4.access-services enabled",
+			"name": "0.4.access-services enabled - with zones",
 			"event": [
 				{
 					"listen": "test",
@@ -218,7 +218,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\n    \"SupportedZones\": [\n        \"zone 1\",\n        \"ZONE 2\",\n        \"zone 3\"\n    ],\n    \"DefaultZones\": [\n        \"zone 1\",\n        \"ZONE 2\",\n        \"zone 4\"\n    ]\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/access-services",
@@ -239,7 +239,7 @@
 			"response": []
 		},
 		{
-			"name": "0.5.set local repo",
+			"name": "0.5.Set local repository",
 			"event": [
 				{
 					"listen": "test",
@@ -343,7 +343,7 @@
 			"response": []
 		},
 		{
-			"name": "1.1. Create Software Server Capability",
+			"name": "1.1. Register external tool",
 			"event": [
 				{
 					"listen": "test",
@@ -378,7 +378,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"dataEngine\": \n\t{\n\t\t\"qualifiedName\": \"{{data-engine-qualified-name}}\",\n    \t\"displayName\": \"Data Stage\",\n    \t\"description\": \"data stage desc\",\n    \t\"engineType\": \"DataEngine\",\n    \t\"engineVersion\": \"1\",\n    \t\"enginePatchLevel\": \"2\",\n    \t\"vendor\": \"ibm\",\n    \t\"version\": \"123\",\n    \t\"source\": \"blah\"\n\t}\n}"
+					"raw": "{\n\t\"dataEngine\": \n\t{\n\t\t\"qualifiedName\": \"{{data-engine-qualified-name}}\",\n    \t\"displayName\": \"data engine display\",\n    \t\"description\": \"data engine desc\",\n    \t\"engineType\": \"DataEngine\",\n    \t\"engineVersion\": \"1\",\n    \t\"enginePatchLevel\": \"2\",\n    \t\"vendor\": \"vendor\",\n    \t\"version\": \"1\",\n    \t\"source\": \"source\"\n\t}\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/registration",
@@ -400,7 +400,7 @@
 			"response": []
 		},
 		{
-			"name": "1.2.Get Software Server Capability by qualifiedName",
+			"name": "1.2.Get external tool by qualified name",
 			"event": [
 				{
 					"listen": "test",
@@ -526,7 +526,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"schema\": {\n    \"qualifiedName\": \"extern:fr:6c18e03b7e4f44089462e858538bd5d2\",\n    \"displayName\": \"EMPLOYEE\",\n    \"columns\": [\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=DEPT_test\",\n        \"displayName\": \"DEPT\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=EMPSTATUS_test\",\n        \"displayName\": \"EMPSTATUS\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=FNAME_test\",\n        \"displayName\": \"FNAME\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LNAME_test\",\n        \"displayName\": \"LNAME\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LOCCODE_test\",\n        \"displayName\": \"LOCCODE\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LVL_test\",\n        \"displayName\": \"LVL\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=PNUM_test\",\n        \"displayName\": \"PNUM\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=ROLE_test\",\n        \"displayName\": \"ROLE\",\n        \"elementPosition\": 0\n      }\n    ]\n  },\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
+					"raw": "{\n  \"schema\": {\n    \"qualifiedName\": \"extern:fr:6c18e03b7e4f44089462e858538bd5d2\",\n    \"displayName\": \"EMPLOYEE\",\n    \"columns\": [\n      {\n        \"qualifiedName\": \"source-schema-attribute-qualified-name\",\n        \"displayName\": \"DEPT\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=EMPSTATUS\",\n        \"displayName\": \"EMPSTATUS\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=FNAME\",\n        \"displayName\": \"FNAME\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LNAME\",\n        \"displayName\": \"LNAME\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LOCCODE\",\n        \"displayName\": \"LOCCODE\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LVL\",\n        \"displayName\": \"LVL\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=PNUM\",\n        \"displayName\": \"PNUM\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=ROLE\",\n        \"displayName\": \"ROLE\",\n        \"elementPosition\": 0\n      }\n    ]\n  },\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/schema-types/",
@@ -549,7 +549,77 @@
 			"response": []
 		},
 		{
-			"name": "2.2.Create Port Implementation",
+			"name": "2.2.Update Schema Type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f7f85ce1-a00c-48bd-876e-4c6d1a1c9ee8",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"relatedHTTPCode code is 200\", function () {",
+							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"schema\": {\n    \"qualifiedName\": \"extern:fr:6c18e03b7e4f44089462e858538bd5d2\",\n    \"displayName\": \"EMPLOYEE-updated\",\n    \"columns\": [\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=DEPT\",\n        \"displayName\": \"DEPT_updated\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=EMPSTATUS_updated\",\n        \"displayName\": \"EMPSTATUS\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=FNAME\",\n        \"displayName\": \"FNAME\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LNAME\",\n        \"displayName\": \"LNAME\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LOCCODE\",\n        \"displayName\": \"LOCCODE\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LVL\",\n        \"displayName\": \"LVL\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=PNUM\",\n        \"displayName\": \"PNUM\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=ROLE\",\n        \"displayName\": \"ROLE\",\n        \"elementPosition\": 0\n      }\n    ]\n  },\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/schema-types/",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"schema-types",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.1.Create Port Implementation",
 			"event": [
 				{
 					"listen": "test",
@@ -598,7 +668,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"portImplementation\": {\n    \"type\": \"OUTPUT_PORT\",\n    \"displayName\": \"CompDir_EmployeeCSV_output\",\n    \"qualifiedName\": \"{{port-impl-qualified-name}}\",\n    \"schema\": {\n      \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema\",\n      \"displayName\": \"DEPT\",\n      \"author\": \"tesgt\",\n      \"usage\": \"tesgt\",\n      \"columns\": [\n        {\n          \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema::newAttribute::DEPCODE\",\n          \"attributeName\": \"DEPCODE\",\n          \"displayName\": \"DEPCODE\",\n          \"cardinality\": \"none\",\n          \"position\": \"1\",\n          \"type\": \"STRING\"\n        },\n        {\n          \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema::newAttribute::EMPSTATUS\",\n          \"displayName\": \"EMPSTATUS\",\n          \"dataType\": \"INT64\",\n          \"defaultValue\": \"\",\n          \"position\": 4,\n          \"description\": null,\n          \"formula\": null\n        }\n      ]\n    }\n  },\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
+					"raw": "{\n  \"portImplementation\": {\n  \t\"qualifiedName\": \"{{port-impl-qualified-name}}\",\n    \"type\": \"OUTPUT_PORT\",\n    \"displayName\": \"OutputPort\",\n    \"schema\": {\n      \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema\",\n      \"displayName\": \"DEPT\",\n      \"author\": \"tesgt\",\n      \"usage\": \"tesgt\",\n      \"columns\": [\n        {\n          \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema::newAttribute::DEPCODE\",\n          \"attributeName\": \"DEPCODE\",\n          \"displayName\": \"DEPCODE\",\n          \"cardinality\": \"none\",\n          \"position\": \"1\",\n          \"type\": \"STRING\"\n        },\n        {\n          \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema::newAttribute::EMPSTATUS\",\n          \"displayName\": \"EMPSTATUS\",\n          \"dataType\": \"INT64\",\n          \"defaultValue\": \"\",\n          \"position\": 4,\n          \"description\": null,\n          \"formula\": null\n        }\n      ]\n    }\n  },\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-implementations",
@@ -620,7 +690,149 @@
 			"response": []
 		},
 		{
-			"name": "2.3.Create Port Alias",
+			"name": "3.2.Update Port Implementation properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3a424f64-3868-4511-a2a2-7a2efa28f77c",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"relatedHTTPCode code is 200\", function () {",
+							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"portImplementation\": {\n    \"type\": \"OUTPUT_PORT\",\n    \"displayName\": \"CompDir_EmployeeCSV_output_updated\",\n    \"qualifiedName\": \"{{port-impl-qualified-name}}\",\n    \"schema\": {\n      \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema\",\n      \"displayName\": \"DEPT\",\n      \"author\": \"tesgt\",\n      \"usage\": \"tesgt\",\n      \"columns\": [\n        {\n          \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema::newAttribute::DEPCODE\",\n          \"attributeName\": \"DEPCODE\",\n          \"displayName\": \"DEPCODE\",\n          \"cardinality\": \"none\",\n          \"position\": \"1\",\n          \"type\": \"STRING\"\n        },\n        {\n          \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema::newAttribute::EMPSTATUS\",\n          \"displayName\": \"EMPSTATUS\",\n          \"dataType\": \"INT64\",\n          \"defaultValue\": \"\",\n          \"position\": 4,\n          \"description\": null,\n          \"formula\": null\n        }\n      ]\n    }\n  },\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-implementations",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"port-implementations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.3.Update Port Implementation - replace schema type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3a424f64-3868-4511-a2a2-7a2efa28f77c",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"relatedHTTPCode code is 200\", function () {",
+							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"portImplementation\": {\n    \"type\": \"OUTPUT_PORT\",\n    \"displayName\": \"CompDir_EmployeeCSV_output_updated\",\n    \"qualifiedName\": \"{{port-impl-qualified-name}}\",\n    \"schema\": {\n      \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema-new\",\n      \"displayName\": \"DEPT\",\n      \"author\": \"tesgt\",\n      \"usage\": \"tesgt\",\n      \"columns\": [\n        {\n          \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema::newAttribute::DEPCODE-new\",\n          \"attributeName\": \"DEPCODE\",\n          \"displayName\": \"DEPCODE\",\n          \"cardinality\": \"none\",\n          \"position\": \"1\",\n          \"type\": \"STRING\"\n        },\n        {\n          \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema::newAttribute::EMPSTATUS-new\",\n          \"displayName\": \"EMPSTATUS\",\n          \"dataType\": \"INT64\",\n          \"defaultValue\": \"\",\n          \"position\": 4,\n          \"description\": null,\n          \"formula\": null\n        }\n      ]\n    }\n  },\n  \"updateSemantic\":\"REPLACE\",\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-implementations",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"port-implementations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.1.Create Port Alias",
 			"event": [
 				{
 					"listen": "test",
@@ -668,7 +880,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"portAlias\": {\n    \"displayName\": \"EMPSALARYANALYSIS\",\n    \"qualifiedName\": \"{{port-alias-qualified-name}}\",\n    \"delegatesTo\": \"{{port-impl-qualified-name}}\",\n    \"type\": \"OUTPUT_PORT\"\n  },\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
+					"raw": "{\n  \"portAlias\": {\n    \"displayName\": \"PortAlias\",\n    \"qualifiedName\": \"{{port-alias-qualified-name}}\",\n    \"delegatesTo\": \"{{port-impl-qualified-name}}\",\n    \"type\": \"OUTPUT_PORT\"\n  },\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-aliases",
@@ -690,7 +902,151 @@
 			"response": []
 		},
 		{
-			"name": "2.4.Create Process - simple process",
+			"name": "4.2.Create Port Alias Invalid portType",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "989f6223-a59f-4605-b995-6c1585e06e5e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"relatedHTTPCode code is 400\", function () {",
+							"    pm.expect(jsonData.relatedHTTPCode).to.equal(400);",
+							"});",
+							"",
+							"pm.test(\"excption message code is the expected one\", function () {",
+							"    pm.expect(jsonData.exceptionErrorMessage).to.equal(\"OMAS-DATA-ENGINE-400-001 The port type passed for the port-impl-qualified-name is invalid, or different from OUTPUT_PORT\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"portAlias\": {\n    \"displayName\": \"PortAlias\",\n    \"qualifiedName\": \"{{port-alias-qualified-name}}-2\",\n    \"delegatesTo\": \"{{port-impl-qualified-name}}\",\n    \"type\": \"INPUT_PORT\"\n  },\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-aliases",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"port-aliases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.3.Update Port Alias properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "989f6223-a59f-4605-b995-6c1585e06e5e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"relatedHTTPCode code is 200\", function () {",
+							"    pm.expect(jsonData.relatedHTTPCode).to.be.equal(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"portAlias\": {\n    \"displayName\": \"PortAlias-updated\",\n    \"qualifiedName\": \"{{port-alias-qualified-name}}\",\n    \"delegatesTo\": \"{{port-impl-qualified-name}}\",\n    \"type\": \"OUTPUT_PORT\"\n  },\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-aliases",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"port-aliases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5.1.Create Process",
 			"event": [
 				{
 					"listen": "test",
@@ -745,7 +1101,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"{{simple-process-qualified-name}}\",\n      \"displayName\": \"CompDir_EmployeeCSV\",\n      \"name\": \"CompDir_EmployeeCSVNew\",\n      \"description\": \"csv desc\",\n      \"owner\": \"Administrator IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done9\",\n      \"formula\": \"whateverformula3\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"{{simple-port-impl-qualified-name}}\",\n          \"displayName\": \"Employee-Employeeup\",\n          \"type\": \"INPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"{{simple-schema-type-qualified-name}}\",\n            \"displayName\": \"Employee-Employee\",\n            \"author\": \"tesgt\",\n            \"usage\": \"tesgt\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"{{simple-column-1-qualified-name}}\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\":\"false\",\n                \"allowsDuplicateValues\":\"true\",\n                \"minCardinality\":\"3\",\n                \"maxCardinality\":\"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"{{simple-column-2-qualified-name}}\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"{{simple-column-1-qualified-name}}\",\n          \"targetAttribute\": \"{{simple-column-2-qualified-name}}\"\n        }\n      ]\n    }\n  ],\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
+					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"{{simple-process-qualified-name}}\",\n      \"displayName\": \"SimpleProcess\",\n      \"name\": \"SimpleProcessName\",\n      \"description\": \"process desc\",\n      \"owner\": \"Administrator IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done\",\n      \"formula\": \"whateverformula\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"{{simple-port-impl-qualified-name}}\",\n          \"displayName\": \"Port Dispay\",\n          \"type\": \"INPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"{{simple-schema-type-qualified-name}}\",\n            \"displayName\": \"schema display\",\n            \"author\": \"test\",\n            \"usage\": \"test\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"{{simple-column-1-qualified-name}}\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\":\"false\",\n                \"allowsDuplicateValues\":\"true\",\n                \"minCardinality\":\"3\",\n                \"maxCardinality\":\"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"{{simple-column-2-qualified-name}}\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"{{simple-column-1-qualified-name}}\",\n          \"targetAttribute\": \"{{simple-column-2-qualified-name}}\"\n        }\n      ]\n    }\n  ],\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
@@ -767,7 +1123,7 @@
 			"response": []
 		},
 		{
-			"name": "2.5.Add LinegeMappings",
+			"name": "6.1.Add LinegeMappings",
 			"event": [
 				{
 					"listen": "test",
@@ -814,7 +1170,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"lineageMappings\": [\n        {\n            \"sourceAttribute\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=DEPT_test\",\n            \"targetAttribute\": \"{{simple-column-1-qualified-name}}\"\n        }\n    ],\n   \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
+					"raw": "{\n    \"lineageMappings\": [\n        {\n            \"sourceAttribute\": \"source-schema-attribute-qualified-name\",\n            \"targetAttribute\": \"{{simple-column-1-qualified-name}}\"\n        }\n    ],\n   \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/lineage-mappings",
@@ -836,7 +1192,80 @@
 			"response": []
 		},
 		{
-			"name": "2.6.Add Ports to Process",
+			"name": "6.2.Add LineageMappings - schema attribute not found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "534d47c0-95b1-44c9-a4b8-3011d7ba274c",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"relatedHTTPCode code is 400\", function () {",
+							"    pm.expect(jsonData.relatedHTTPCode).to.equal(400);",
+							"});",
+							"",
+							"pm.test(\"excption message code is the expected one\", function () {",
+							"    pm.expect(jsonData.exceptionErrorMessage).to.equal(\"OMAS-DATA-ENGINE-400-005 SchemaAttribute with qualifiedName simple-column-1-qualified-name-nope was not found\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"lineageMappings\": [\n        {\n            \"sourceAttribute\": \"source-schema-attribute-qualified-name\",\n            \"targetAttribute\": \"{{simple-column-1-qualified-name}}-nope\"\n        }\n    ],\n   \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/lineage-mappings",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"lineage-mappings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7.1.Add Ports to Process",
 			"event": [
 				{
 					"listen": "test",
@@ -913,7 +1342,7 @@
 			"response": []
 		},
 		{
-			"name": "2.7.Create Process with Parent Process",
+			"name": "8.1.Create child process with parent process",
 			"event": [
 				{
 					"listen": "test",
@@ -966,7 +1395,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"child-process-qualified-name\",\n      \"displayName\": \"child process display\",\n      \"name\": \"childProcessName\",\n      \"description\": \"desc\",\n      \"owner\": \"test\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done\",\n      \"formula\": \"whateverformula\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"port-impl-qualified-name\",\n          \"displayName\": \"port impl display\",\n          \"type\": \"OUTPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"schema-type-qualified-name\",\n            \"displayName\": \"schema-type-display\",\n            \"author\": \"test\",\n            \"usage\": \"test\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"column-1-qualified-name\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\": \"false\",\n                \"allowsDuplicateValues\": \"true\",\n                \"minCardinality\": \"3\",\n                \"maxCardinality\": \"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"column-2-qualified-name\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"column-1-qualified-name\",\n          \"targetAttribute\": \"column-2-qualified-name\"\n        }\n      ],\n      \"parentProcesses\": [\n        {\n          \"qualifiedName\": \"parent-process-qualified-name\",\n          \"containmentType\": \"OWNED\"\n        }\n      ]\n    },\n    {\n      \"qualifiedName\": \"parent-process-qualified-name\",\n      \"displayName\": \"parentProcess\",\n      \"name\": \"parentProcess\",\n      \"description\": \"desc\",\n      \"owner\": \"test IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done\",\n      \"formula\": \"whateverformula3\",\n      \"portAliases\": [\n        {\n          \"displayName\": \"port-alias-display-name\",\n          \"qualifiedName\": \"port-alias-qualified-name\",\n          \"delegatesTo\": \"port-impl-qualified-name\",\n          \"type\": \"OUTPUT_PORT\"\n        }\n      ]\n    }\n  ],\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
+					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"child-process-qualified-name\",\n      \"displayName\": \"child process display\",\n      \"name\": \"childProcessName\",\n      \"description\": \"desc\",\n      \"owner\": \"test\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done\",\n      \"formula\": \"whateverformula\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"port-impl-qualified-name\",\n          \"displayName\": \"port impl display\",\n          \"type\": \"OUTPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"schema-type-qualified-name\",\n            \"displayName\": \"schema-type-display\",\n            \"author\": \"test\",\n            \"usage\": \"test\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"column-1-qualified-name\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\": \"false\",\n                \"allowsDuplicateValues\": \"true\",\n                \"minCardinality\": \"3\",\n                \"maxCardinality\": \"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"column-2-qualified-name\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        },\n          {\n          \"qualifiedName\": \"port-impl-qualified-name-bis\",\n          \"displayName\": \"port impl display\",\n          \"type\": \"OUTPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"schema-type-qualified-name-bis\",\n            \"displayName\": \"schema-type-display\",\n            \"author\": \"test\",\n            \"usage\": \"test\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"column-1-qualified-name-bis\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\": \"false\",\n                \"allowsDuplicateValues\": \"true\",\n                \"minCardinality\": \"3\",\n                \"maxCardinality\": \"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"column-2-qualified-name-bis\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"column-1-qualified-name\",\n          \"targetAttribute\": \"column-2-qualified-name\"\n        }\n      ],\n      \"parentProcesses\": [\n        {\n          \"qualifiedName\": \"parent-process-qualified-name\",\n          \"containmentType\": \"OWNED\"\n        }\n      ]\n    },\n    {\n      \"qualifiedName\": \"parent-process-qualified-name\",\n      \"displayName\": \"parentProcess\",\n      \"name\": \"parentProcess\",\n      \"description\": \"desc\",\n      \"owner\": \"test IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done\",\n      \"formula\": \"whateverformula3\",\n      \"portAliases\": [\n        {\n          \"displayName\": \"port-alias-display-name\",\n          \"qualifiedName\": \"port-alias-qualified-name\",\n          \"delegatesTo\": \"port-impl-qualified-name\",\n          \"type\": \"OUTPUT_PORT\"\n        }\n      ]\n    }\n  ],\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
@@ -988,7 +1417,7 @@
 			"response": []
 		},
 		{
-			"name": "2.8.Create Process with Parent Process - exception for parent",
+			"name": "8.2. Create child process with parent process - process not found",
 			"event": [
 				{
 					"listen": "test",
@@ -1001,17 +1430,12 @@
 							"",
 							"const jsonData = pm.response.json();",
 							"",
-							"pm.test(\"1 total result\", function () {",
-							"    pm.expect(jsonData.guids).to.have.lengthOf(1);",
-							"});",
-							"",
 							"pm.test(\"relatedHTTPCode code is 400\", function () {",
 							"    pm.expect(jsonData.relatedHTTPCode).to.equal(400);",
 							"});",
 							"",
-							"",
 							"pm.test(\"excption message code is the expected one\", function () {",
-							"    pm.expect(jsonData.exceptionErrorMessage).to.equal(\"OMAS-DATA-ENGINE-400-007 Process with qualifiedName parent-process-qualified-name-nope was not found\");",
+							"    pm.expect(jsonData.exceptionErrorMessage).to.equal(\"OMAS-DATA-ENGINE-400-008 Process with qualifiedName parent-process-qualified-name-nope was not found\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -1067,18 +1491,98 @@
 			"response": []
 		},
 		{
-			"name": "3.1.Update Schema Type",
+			"name": "9.1.Update Process - update  properties",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "f7f85ce1-a00c-48bd-876e-4c6d1a1c9ee8",
+						"id": "503061b9-ea1c-45d2-8733-73993b764318",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
 							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"1 total result\", function () {",
+							"    pm.expect(jsonData.guids).to.have.lengthOf(1);",
+							"});",
+							"",
+							"pm.test(\"relatedHTTPCode code is 200\", function () {",
+							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"{{simple-process-qualified-name}}\",\n      \"displayName\": \"SimpleProcess-updated\",\n      \"name\": \"SimpleProcessNameUpd\",\n      \"description\": \"process desc updated\",\n      \"owner\": \"Administrator IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done updated\",\n      \"formula\": \"whateverformula-update\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"{{simple-port-impl-qualified-name}}\",\n           \"displayName\": \"Port Dispay Update\",\n          \"type\": \"INPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"{{simple-schema-type-qualified-name}}\",\n            \"displayName\": \"Employee-Employee-update\",\n            \"author\": \"test\",\n            \"usage\": \"test\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"{{simple-column-1-qualified-name}}\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test-updated\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\":\"false\",\n                \"allowsDuplicateValues\":\"true\",\n                \"minCardinality\":\"3\",\n                \"maxCardinality\":\"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"{{simple-column-2-qualified-name}}\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"{{simple-column-1-qualified-name}}\",\n          \"targetAttribute\": \"{{simple-column-2-qualified-name}}\"\n        }\n      ]\n    }\n  ],\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.2.Update Process - replace schema type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "503061b9-ea1c-45d2-8733-73993b764318",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"1 total result\", function () {",
+							"    pm.expect(jsonData.guids).to.have.lengthOf(1);",
+							"});",
+							"",
 							"pm.test(\"relatedHTTPCode code is 200\", function () {",
 							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
 							"});"
@@ -1114,10 +1618,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"schema\": {\n    \"qualifiedName\": \"extern:fr:6c18e03b7e4f44089462e858538bd5d2\",\n    \"displayName\": \"EMPLOYEE-updated\",\n    \"columns\": [\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=DEPT_test\",\n        \"displayName\": \"DEPT_updated\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=EMPSTATUS_test_updated\",\n        \"displayName\": \"EMPSTATUS\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=FNAME_test\",\n        \"displayName\": \"FNAME\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LNAME_test\",\n        \"displayName\": \"LNAME\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LOCCODE_test\",\n        \"displayName\": \"LOCCODE\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LVL_test\",\n        \"displayName\": \"LVL\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=PNUM_test\",\n        \"displayName\": \"PNUM\",\n        \"elementPosition\": 0\n      },\n      {\n        \"qualifiedName\": \"(host_(engine))=INFOSVR::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=ROLE_test\",\n        \"displayName\": \"ROLE\",\n        \"elementPosition\": 0\n      }\n    ]\n  },\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
+					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"{{simple-process-qualified-name}}\",\n      \"displayName\": \"CompDir_EmployeeCSV\",\n      \"name\": \"CompDir_EmployeeCSVNew\",\n      \"description\": \"csv desc\",\n      \"owner\": \"Administrator IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done9\",\n      \"formula\": \"whateverformula3\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"{{simple-port-impl-qualified-name}}\",\n          \"displayName\": \"Employee-Employeeup\",\n          \"type\": \"INPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"{{simple-schema-type-qualified-name}}-new\",\n            \"displayName\": \"Employee-Employee\",\n            \"author\": \"tesgt\",\n            \"usage\": \"tesgt\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"{{simple-column-1-qualified-name}}-new\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\":\"false\",\n                \"allowsDuplicateValues\":\"true\",\n                \"minCardinality\":\"3\",\n                \"maxCardinality\":\"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"{{simple-column-2-qualified-name}}-new\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"{{simple-column-1-qualified-name}}-new\",\n          \"targetAttribute\": \"{{simple-column-2-qualified-name}}-new\"\n        }\n      ]\n    }\n  ],\n  \"updateSemantic\":\"REPLACE\",\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/schema-types/",
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
 					"host": [
 						"{{base-url}}"
 					],
@@ -1129,27 +1633,30 @@
 						"data-engine",
 						"users",
 						"{{user-id}}",
-						"schema-types",
-						""
+						"processes"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "3.2.Update Port Implementation - update properties",
+			"name": "9.3.Update Process - replace port implementation",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "3a424f64-3868-4511-a2a2-7a2efa28f77c",
+						"id": "503061b9-ea1c-45d2-8733-73993b764318",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"",
 							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"1 total result\", function () {",
+							"    pm.expect(jsonData.guids).to.have.lengthOf(1);",
+							"});",
+							"",
 							"pm.test(\"relatedHTTPCode code is 200\", function () {",
 							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
 							"});",
@@ -1186,10 +1693,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"portImplementation\": {\n    \"type\": \"OUTPUT_PORT\",\n    \"displayName\": \"CompDir_EmployeeCSV_output_updated\",\n    \"qualifiedName\": \"{{port-impl-qualified-name}}\",\n    \"schema\": {\n      \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema\",\n      \"displayName\": \"DEPT\",\n      \"author\": \"tesgt\",\n      \"usage\": \"tesgt\",\n      \"columns\": [\n        {\n          \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema::newAttribute::DEPCODE\",\n          \"attributeName\": \"DEPCODE\",\n          \"displayName\": \"DEPCODE\",\n          \"cardinality\": \"none\",\n          \"position\": \"1\",\n          \"type\": \"STRING\"\n        },\n        {\n          \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema::newAttribute::EMPSTATUS\",\n          \"displayName\": \"EMPSTATUS\",\n          \"dataType\": \"INT64\",\n          \"defaultValue\": \"\",\n          \"position\": 4,\n          \"description\": null,\n          \"formula\": null\n        }\n      ]\n    }\n  },\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
+					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"{{simple-process-qualified-name}}\",\n      \"displayName\": \"CompDir_EmployeeCSV\",\n      \"name\": \"CompDir_EmployeeCSVNew\",\n      \"description\": \"csv desc\",\n      \"owner\": \"Administrator IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done9\",\n      \"formula\": \"whateverformula3\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"{{simple-port-impl-qualified-name}}-new\",\n          \"displayName\": \"Employee-Employeeup\",\n          \"type\": \"INPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"{{simple-schema-type-qualified-name}}-new\",\n            \"displayName\": \"Employee-Employee\",\n            \"author\": \"tesgt\",\n            \"usage\": \"tesgt\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"{{simple-column-1-qualified-name}}-new\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\":\"false\",\n                \"allowsDuplicateValues\":\"true\",\n                \"minCardinality\":\"3\",\n                \"maxCardinality\":\"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"{{simple-column-2-qualified-name}}-new\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"{{simple-column-1-qualified-name}}-new\",\n          \"targetAttribute\": \"{{simple-column-2-qualified-name}}-new\"\n        }\n      ]\n    }\n  ],\n  \"updateSemantic\":\"REPLACE\",\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-implementations",
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
 					"host": [
 						"{{base-url}}"
 					],
@@ -1201,408 +1708,34 @@
 						"data-engine",
 						"users",
 						"{{user-id}}",
-						"port-implementations"
+						"processes"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "3.3.Update Port Implementation - new schema type",
+			"name": "9.4.Update Process -  append port implementation",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "3a424f64-3868-4511-a2a2-7a2efa28f77c",
+						"id": "503061b9-ea1c-45d2-8733-73993b764318",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"",
 							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"1 total result\", function () {",
+							"    pm.expect(jsonData.guids).to.have.lengthOf(1);",
+							"});",
+							"",
 							"pm.test(\"relatedHTTPCode code is 200\", function () {",
 							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
 							"});",
 							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "demo",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "demo",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"portImplementation\": {\n    \"type\": \"OUTPUT_PORT\",\n    \"displayName\": \"CompDir_EmployeeCSV_output_updated\",\n    \"qualifiedName\": \"{{port-impl-qualified-name}}\",\n    \"schema\": {\n      \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema-new\",\n      \"displayName\": \"DEPT\",\n      \"author\": \"tesgt\",\n      \"usage\": \"tesgt\",\n      \"columns\": [\n        {\n          \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema::newAttribute::DEPCODE-new\",\n          \"attributeName\": \"DEPCODE\",\n          \"displayName\": \"DEPCODE\",\n          \"cardinality\": \"none\",\n          \"position\": \"1\",\n          \"type\": \"STRING\"\n        },\n        {\n          \"qualifiedName\": \"XE::(database_schema)=HR::(database_table)=DEPT1::newComplexSchema::newAttribute::EMPSTATUS-new\",\n          \"displayName\": \"EMPSTATUS\",\n          \"dataType\": \"INT64\",\n          \"defaultValue\": \"\",\n          \"position\": 4,\n          \"description\": null,\n          \"formula\": null\n        }\n      ]\n    }\n  },\n  \"externalSourceName\": \"{{data-engine-qualified-name}}\"\n}"
-				},
-				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-implementations",
-					"host": [
-						"{{base-url}}"
-					],
-					"path": [
-						"servers",
-						"{{server-id}}",
-						"open-metadata",
-						"access-services",
-						"data-engine",
-						"users",
-						"{{user-id}}",
-						"port-implementations"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "3.4.Update Port Alias",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "989f6223-a59f-4605-b995-6c1585e06e5e",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"const jsonData = pm.response.json();",
-							"pm.test(\"relatedHTTPCode code is 200\", function () {",
-							"    pm.expect(jsonData.relatedHTTPCode).to.be.equal(200);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "demo",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "demo",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"portAlias\": {\n    \"displayName\": \"EMPSALARYANALYSIS\",\n    \"qualifiedName\": \"{{port-alias-qualified-name}}\",\n    \"delegatesTo\": \"{{port-impl-qualified-name}}\",\n    \"type\": \"OUTPUT_PORT\"\n  },\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
-				},
-				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-aliases",
-					"host": [
-						"{{base-url}}"
-					],
-					"path": [
-						"servers",
-						"{{server-id}}",
-						"open-metadata",
-						"access-services",
-						"data-engine",
-						"users",
-						"{{user-id}}",
-						"port-aliases"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "3.5.Update Process - simple process - properties",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "503061b9-ea1c-45d2-8733-73993b764318",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"const jsonData = pm.response.json();",
-							"",
-							"pm.test(\"1 total result\", function () {",
-							"    pm.expect(jsonData.guids).to.have.lengthOf(1);",
-							"});",
-							"",
-							"pm.test(\"relatedHTTPCode code is 200\", function () {",
-							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
-							"});",
-							"",
-							"const processGuid = jsonData.guids[0];",
-							"pm.environment.set(\"processGuid\", processGuid);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "demo",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "demo",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"{{simple-process-qualified-name}}\",\n      \"displayName\": \"CompDir_EmployeeCSV-upd\",\n      \"name\": \"CompDir_EmployeeCSVNew\",\n      \"description\": \"csv desc updated\",\n      \"owner\": \"Administrator IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done9 updated\",\n      \"formula\": \"updated\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"{{simple-port-impl-qualified-name}}\",\n          \"displayName\": \"Employee-Employeeup\",\n          \"type\": \"INPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"{{simple-schema-type-qualified-name}}\",\n            \"displayName\": \"Employee-Employee\",\n            \"author\": \"tesgt\",\n            \"usage\": \"tesgt\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"{{simple-column-1-qualified-name}}\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test-updated\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\":\"false\",\n                \"allowsDuplicateValues\":\"true\",\n                \"minCardinality\":\"3\",\n                \"maxCardinality\":\"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"{{simple-column-2-qualified-name}}\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"{{simple-column-1-qualified-name}}\",\n          \"targetAttribute\": \"{{simple-column-2-qualified-name}}\"\n        }\n      ]\n    }\n  ],\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
-				},
-				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
-					"host": [
-						"{{base-url}}"
-					],
-					"path": [
-						"servers",
-						"{{server-id}}",
-						"open-metadata",
-						"access-services",
-						"data-engine",
-						"users",
-						"{{user-id}}",
-						"processes"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "3.6.Update Process - simple process - replace port",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "503061b9-ea1c-45d2-8733-73993b764318",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"const jsonData = pm.response.json();",
-							"",
-							"pm.test(\"1 total result\", function () {",
-							"    pm.expect(jsonData.guids).to.have.lengthOf(1);",
-							"});",
-							"",
-							"pm.test(\"relatedHTTPCode code is 200\", function () {",
-							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
-							"});",
-							"",
-							"const processGuid = jsonData.guids[0];",
-							"pm.environment.set(\"processGuid\", processGuid);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "demo",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "demo",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"{{simple-process-qualified-name}}\",\n      \"displayName\": \"CompDir_EmployeeCSV\",\n      \"name\": \"CompDir_EmployeeCSVNew\",\n      \"description\": \"csv desc\",\n      \"owner\": \"Administrator IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done9\",\n      \"formula\": \"whateverformula3\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"{{simple-port-impl-qualified-name}}-new\",\n          \"displayName\": \"Employee-Employeeup\",\n          \"type\": \"INPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"{{simple-schema-type-qualified-name}}-new\",\n            \"displayName\": \"Employee-Employee\",\n            \"author\": \"tesgt\",\n            \"usage\": \"tesgt\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"{{simple-column-1-qualified-name}}-new\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\":\"false\",\n                \"allowsDuplicateValues\":\"true\",\n                \"minCardinality\":\"3\",\n                \"maxCardinality\":\"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"{{simple-column-2-qualified-name}}-new\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"{{simple-column-1-qualified-name}}-new\",\n          \"targetAttribute\": \"{{simple-column-2-qualified-name}}-new\"\n        }\n      ]\n    }\n  ],\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
-				},
-				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
-					"host": [
-						"{{base-url}}"
-					],
-					"path": [
-						"servers",
-						"{{server-id}}",
-						"open-metadata",
-						"access-services",
-						"data-engine",
-						"users",
-						"{{user-id}}",
-						"processes"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "3.7.Update Process - simple process - replace schema",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "503061b9-ea1c-45d2-8733-73993b764318",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"const jsonData = pm.response.json();",
-							"",
-							"pm.test(\"1 total result\", function () {",
-							"    pm.expect(jsonData.guids).to.have.lengthOf(1);",
-							"});",
-							"",
-							"pm.test(\"relatedHTTPCode code is 200\", function () {",
-							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
-							"});",
-							"",
-							"const processGuid = jsonData.guids[0];",
-							"pm.environment.set(\"processGuid\", processGuid);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "demo",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "demo",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"{{simple-process-qualified-name}}\",\n      \"displayName\": \"CompDir_EmployeeCSV\",\n      \"name\": \"CompDir_EmployeeCSVNew\",\n      \"description\": \"csv desc\",\n      \"owner\": \"Administrator IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done9\",\n      \"formula\": \"whateverformula3\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"{{simple-port-impl-qualified-name}}-new\",\n          \"displayName\": \"Employee-Employeeup\",\n          \"type\": \"INPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"{{simple-schema-type-qualified-name}}-new\",\n            \"displayName\": \"Employee-Employee\",\n            \"author\": \"tesgt\",\n            \"usage\": \"tesgt\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"{{simple-column-1-qualified-name}}-new\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\":\"false\",\n                \"allowsDuplicateValues\":\"true\",\n                \"minCardinality\":\"3\",\n                \"maxCardinality\":\"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"{{simple-column-2-qualified-name}}-new\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"{{simple-column-1-qualified-name}}-new\",\n          \"targetAttribute\": \"{{simple-column-2-qualified-name}}-new\"\n        }\n      ]\n    }\n  ],\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
-				},
-				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
-					"host": [
-						"{{base-url}}"
-					],
-					"path": [
-						"servers",
-						"{{server-id}}",
-						"open-metadata",
-						"access-services",
-						"data-engine",
-						"users",
-						"{{user-id}}",
-						"processes"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "3.8.Update Process - simple process - append port",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "503061b9-ea1c-45d2-8733-73993b764318",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"const jsonData = pm.response.json();",
-							"",
-							"pm.test(\"1 total result\", function () {",
-							"    pm.expect(jsonData.guids).to.have.lengthOf(1);",
-							"});",
-							"",
-							"pm.test(\"relatedHTTPCode code is 200\", function () {",
-							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
-							"});",
-							"",
-							"const processGuid = jsonData.guids[0];",
-							"pm.environment.set(\"processGuid\", processGuid);"
 						],
 						"type": "text/javascript"
 					}
@@ -1655,6 +1788,178 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "9.5.Update Process -  append port alias",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "503061b9-ea1c-45d2-8733-73993b764318",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"1 total result\", function () {",
+							"    pm.expect(jsonData.guids).to.have.lengthOf(1);",
+							"});",
+							"",
+							"pm.test(\"relatedHTTPCode code is 200\", function () {",
+							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"{{simple-process-qualified-name}}\",\n      \"displayName\": \"CompDir_EmployeeCSV\",\n      \"name\": \"CompDir_EmployeeCSVNew\",\n      \"description\": \"csv desc\",\n      \"owner\": \"Administrator IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done9\",\n      \"formula\": \"whateverformula3\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"{{simple-port-impl-qualified-name}}-new-append\",\n          \"displayName\": \"Employee-Employeeup\",\n          \"type\": \"INPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"{{simple-schema-type-qualified-name}}-new-append\",\n            \"displayName\": \"Employee-Employee\",\n            \"author\": \"tesgt\",\n            \"usage\": \"tesgt\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"{{simple-column-1-qualified-name}}-new-append\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\":\"false\",\n                \"allowsDuplicateValues\":\"true\",\n                \"minCardinality\":\"3\",\n                \"maxCardinality\":\"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"{{simple-column-2-qualified-name}}-new-append\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n      \"portAliases\":[{\n      \t\"displayName\": \"PortAlias\",\n    \t\"qualifiedName\": \"{{port-alias-qualified-name}}-new-append\",\n    \t\"delegatesTo\": \"{{simple-port-impl-qualified-name}}-new-append\",\n    \t\"type\": \"INPUT_PORT\"\n      }],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"{{simple-column-1-qualified-name}}-new-append\",\n          \"targetAttribute\": \"{{simple-column-2-qualified-name}}-new-append\"\n        }\n      ]\n    }\n  ],\n  \"updateSemantic\":\"APPEND\",\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.6.Update Process -  replace port alias",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "503061b9-ea1c-45d2-8733-73993b764318",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"1 total result\", function () {",
+							"    pm.expect(jsonData.guids).to.have.lengthOf(1);",
+							"});",
+							"",
+							"pm.test(\"relatedHTTPCode code is 200\", function () {",
+							"    pm.expect(jsonData.relatedHTTPCode).to.equal(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"processes\": [\n    {\n      \"qualifiedName\": \"{{simple-process-qualified-name}}\",\n      \"displayName\": \"CompDir_EmployeeCSV\",\n      \"name\": \"CompDir_EmployeeCSVNew\",\n      \"description\": \"csv desc\",\n      \"owner\": \"Administrator IIS\",\n      \"ownerType\": \"USER_ID\",\n      \"latestChange\": \"latest change done9\",\n      \"formula\": \"whateverformula3\",\n      \"portImplementations\": [\n        {\n          \"qualifiedName\": \"{{simple-port-impl-qualified-name}}-new-append\",\n          \"displayName\": \"Employee-Employeeup\",\n          \"type\": \"INPUT_PORT\",\n          \"schema\": {\n            \"qualifiedName\": \"{{simple-schema-type-qualified-name}}-new-append\",\n            \"displayName\": \"Employee-Employee\",\n            \"author\": \"tesgt\",\n            \"usage\": \"tesgt\",\n            \"encodingStandard\": \"encoding\",\n            \"versionNumber\": \"12\",\n            \"columns\": [\n              {\n                \"qualifiedName\": \"{{simple-column-1-qualified-name}}-new-append\",\n                \"displayName\": \"DEPT\",\n                \"defaultValue\": \"test\",\n                \"position\": \"4\",\n                \"defaultOvverride\": \"test\",\n                \"orderedValues\":\"false\",\n                \"allowsDuplicateValues\":\"true\",\n                \"minCardinality\":\"3\",\n                \"maxCardinality\":\"4\",\n                \"description\": \"EMPSTATUS: nullable int64\",\n                \"formula\": \"dfs\",\n                \"dataType\": \"INT64\"\n              },\n              {\n                \"qualifiedName\": \"{{simple-column-2-qualified-name}}-new-append\",\n                \"displayName\": \"EMPSTATUS\",\n                \"dataType\": \"INT64\",\n                \"defaultValue\": \"\",\n                \"position\": 4,\n                \"description\": null,\n                \"formula\": null\n              }\n            ]\n          }\n        }\n      ],\n       \"portAliases\":[{\n      \t\"displayName\": \"PortAlias\",\n    \t\"qualifiedName\": \"{{port-alias-qualified-name}}-new-replace\",\n    \t\"delegatesTo\": \"{{simple-port-impl-qualified-name}}-new-append\",\n    \t\"type\": \"INPUT_PORT\"\n      }],\n      \"lineageMappings\": [\n        {\n          \"sourceAttribute\": \"{{simple-column-1-qualified-name}}-new-append\",\n          \"targetAttribute\": \"{{simple-column-2-qualified-name}}-new-append\"\n        }\n      ]\n    }\n  ],\n  \"updateSemantic\":\"APPEND\",\n  \"externalSourceName\":\"{{data-engine-qualified-name}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e70d0a9c-a547-486a-b59e-50f40b38d07c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "2b1126af-e81d-439e-8533-ee6ce37aec94",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"protocolProfileBehavior": {}

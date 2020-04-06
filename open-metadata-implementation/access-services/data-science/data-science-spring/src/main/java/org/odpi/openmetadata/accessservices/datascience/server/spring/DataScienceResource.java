@@ -2,8 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datascience.server.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.datascience.server.DataScienceRESTServices;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
@@ -12,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-science/users/{userId}")
+
+@Tag(name="Data Science OMAS", description="The Data Science OMAS provides APIs and events for tools and applications focused on building all types of analytics models such as predictive models and machine learning models.", externalDocs=@ExternalDocumentation(description="Data Science Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-science/"))
+
 public class DataScienceResource
 {
     private DataScienceRESTServices restAPI = new DataScienceRESTServices();

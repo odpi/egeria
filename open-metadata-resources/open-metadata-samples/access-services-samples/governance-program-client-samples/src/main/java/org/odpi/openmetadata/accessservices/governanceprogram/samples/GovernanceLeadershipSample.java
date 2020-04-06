@@ -561,6 +561,8 @@ public class GovernanceLeadershipSample
             System.out.println(governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getTitle());
         }
 
+        System.out.println("Deleting all profiles and governance officers");
+
         /*
          * Delete all of the governance officers
          */
@@ -584,6 +586,18 @@ public class GovernanceLeadershipSample
         ppmClient.deletePersonalProfile(clientUserId, reggieMintProfileGUID, reggieMintEmpNo);
         ppmClient.deletePersonalProfile(clientUserId, pollyTaskerProfileGUID, pollyTaskerEmpNo);
 
+        /*
+         * Sleep so that the deletes propagate throughout the cohort.
+         */
+        try
+        {
+            System.out.println("Sleeping ... to allow deletes to propagate");
+            Thread.sleep(100);
+        }
+        catch (InterruptedException exc)
+        {
+            System.out.println("Sleep interrupted");
+        }
 
         /*
          * Should be all gone

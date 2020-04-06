@@ -4,7 +4,6 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
 
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.CommentMapper;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.LikeMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -130,7 +129,7 @@ public class CommentBuilder extends RootBuilder
         final String element4Value           = "Suggestion";
         final String element4Description     = "A suggestion for improvement.";
 
-        final int    element5Ordinal         = 3;
+        final int    element5Ordinal         = 4;
         final String element5Value           = "Experience";
         final String element5Description     = "An account of an experience.";
 
