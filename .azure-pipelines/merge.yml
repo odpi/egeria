@@ -5,6 +5,7 @@ trigger:
   branches:
     include:
       - master
+      - egeria-release-*
 pr: none
 
 variables:
@@ -68,6 +69,7 @@ stages:
                   -Ddocker.images=core
                   -Ddockerfile.googleContainerRegistryEnabled=false
           - task: ArtifactoryPublishBuildInfo@1
+            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
               artifactoryService: ODPiArtifactory
               buildName: 'Egeria'
