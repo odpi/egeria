@@ -43,26 +43,17 @@ public class SpringRESTClientConnector extends RESTClientConnector
     public SpringRESTClientConnector()
     {
         super();
+        
+        DefaultUriBuilderFactory builderFactory = new DefaultUriBuilderFactory();
+        builderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
+        restTemplate = new RestTemplateBuilder()
+                //.rootUri("http://localhost:8080")
+                .uriTemplateHandler(builderFactory)
+                .build();
+        List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
+        converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
+        converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
 
-        // TODO decide
-        if (false) {
-            restTemplate = new RestTemplate();
-            /* Ensure that the REST template always uses UTF-8 */
-            List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
-            converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
-            converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
-        }
-        else {
-            DefaultUriBuilderFactory builderFactory = new DefaultUriBuilderFactory();
-            builderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
-            restTemplate = new RestTemplateBuilder()
-                    //.rootUri("http://localhost:8080")
-                    .uriTemplateHandler(builderFactory)
-                    .build();
-            List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
-            converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
-            converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
-        }
     }
 
 
