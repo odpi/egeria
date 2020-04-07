@@ -74,11 +74,11 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
        
       <vaadin-grid id="grid" items="[[searchResp]]" theme="row-stripes"
                      column-reordering-allowed multi-sort>
-            <vaadin-grid-selection-column auto-select frozen></vaadin-grid-selection-column>
+<!--            <vaadin-grid-selection-column auto-select frozen></vaadin-grid-selection-column>-->
         
             <vaadin-grid-column width="10em" resizable>
                 <template class="header">
-                    <vaadin-grid-sorter path="displayName">Name</vaadin-grid-sorter>
+                    <vaadin-grid-sorter path="properties.displayName">Name</vaadin-grid-sorter>
                 </template>
                 <template>
                    <a href="#/asset-catalog/view/[[item.guid]]">
@@ -123,14 +123,6 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 </template>
                 <template>[[item.properties.qualifiedName]]</template>
             </vaadin-grid-column>
-            
-             <vaadin-grid-column width="3em" resizable>
-                <template class="header">
-                    <vaadin-grid-sorter path="properties.qualifiedName">Options</vaadin-grid-sorter>
-                </template>
-                <template><a href="#/asset-lineage/ultimateSource/[[item.guid]]">Lineage</a></template>
-            </vaadin-grid-column>
-  
         </vaadin-grid>
                
     `;
