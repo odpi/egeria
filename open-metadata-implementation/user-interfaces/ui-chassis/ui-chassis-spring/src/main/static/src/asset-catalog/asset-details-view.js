@@ -24,8 +24,8 @@ class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement
           --app-grid-expandible-item-columns: 2;
           --iron-icon-fill-color: var(--egeria-primary-color);
           display: block;
-          margin: 10pt 20pt;
-          padding: 3pt;
+          margin: 10px 24px;
+          padding: 5px;
           background-color:  var(--egeria-background-color);
           min-height: calc(100vh - 115px);
           overflow-scrolling: auto;
