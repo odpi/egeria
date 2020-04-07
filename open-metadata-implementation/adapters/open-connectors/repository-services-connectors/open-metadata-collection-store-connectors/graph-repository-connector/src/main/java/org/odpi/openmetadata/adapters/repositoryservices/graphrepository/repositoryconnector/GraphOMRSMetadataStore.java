@@ -91,6 +91,9 @@ class GraphOMRSMetadataStore {
     private OMRSRepositoryHelper repositoryHelper;
 
     // The instance graph is used to store entities (vertices) and relationships (edges).
+
+    GraphOMRSGraphFactory graphFactory;
+
     private JanusGraph instanceGraph;
     private GraphOMRSRelationshipMapper relationshipMapper;
     private GraphOMRSEntityMapper entityMapper;
@@ -123,9 +126,12 @@ class GraphOMRSMetadataStore {
         this.repositoryName = repositoryName;
         this.repositoryHelper = repositoryHelper;
 
+
+
         try {
+            graphFactory = new GraphOMRSGraphFactory();
             synchronized (GraphOMRSMetadataStore.class) {
-                instanceGraph = GraphOMRSGraphFactory.open(metadataCollectionId, repositoryName, auditLog, storageProperties);
+                instanceGraph = graphFactory.open(metadataCollectionId, repositoryName, auditLog, storageProperties);
             }
         }
         catch (RepositoryErrorException e) {
@@ -1473,7 +1479,8 @@ class GraphOMRSMetadataStore {
 
 
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
-        Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
         Set<String> typeDefinedPropertyNames = qualifiedPropertyNames.keySet();
 
@@ -1788,12 +1795,22 @@ class GraphOMRSMetadataStore {
              * There is at least some work to do; characters may need to be literalized and/or makde case-insensitive
              */
             StringBuilder outputStringBldr = new StringBuilder();
+
             // Process chars
             for (int i = 0; i < innerString.length(); i++) {
                 Character c = innerString.charAt(i);
                 // No need to escape a '-' char as it is only significant if inside '[]' brackets, and these will be escaped,
                 // so the '-' character has no special meaning
-                if (literalized) {
+
+                /* Handle case where neither lit nor ins are active */
+                if (!literalized && !caseInsensitive) {
+                    outputStringBldr.append(c);
+                }
+
+                else {
+                    /* At least one of literalized or caseInsensitive is active */
+
+                    /* Handle special chars - disjoint from alphas */
                     switch (c) {
                         case '.':
                         case '[':
@@ -1809,21 +1826,33 @@ class GraphOMRSMetadataStore {
                         case '+':
                         case '?':
                         case '\\':  // single backslash escaped for Java
-                            outputStringBldr.append('\\').append(c);
-                            break;
+                            if (literalized) {
+                                outputStringBldr.append('\\').append(c);
+                            } else {
+                                outputStringBldr.append(c);
+                            }
+                            continue;  // process the next character
                     }
-                }
-                if (caseInsensitive) {
+
+                    /* Handle alphas - disjoint from specials */
                     if (c >= 'a' && c <= 'z') {
-                        outputStringBldr.append("[").append(c).append(Character.toUpperCase(c)).append("]");
-                    } else if (c >= 'A' && c <= 'Z') {
-                        outputStringBldr.append("[").append(Character.toLowerCase(c)).append(c).append("]");
-                    } else {
+                        if (caseInsensitive) {
+                            outputStringBldr.append("[").append(c).append(Character.toUpperCase(c)).append("]");
+                        } else {
+                            outputStringBldr.append(c);
+                        }
+                    }
+                    else if (c >= 'A' && c <= 'Z') {
+                        if (caseInsensitive) {
+                            outputStringBldr.append("[").append(Character.toLowerCase(c)).append(c).append("]");
+                        } else {
+                            outputStringBldr.append(c);
+                        }
+                    }
+                    else {
+                        /* The character is not special, not an alpha, just append it... */
                         outputStringBldr.append(c);
                     }
-                }
-                else {
-                    outputStringBldr.append(c);
                 }
             }
             outputString = outputStringBldr.toString();
@@ -1913,7 +1942,8 @@ class GraphOMRSMetadataStore {
 
 
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
-        Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
         Set<String> typeDefinedPropertyNames = qualifiedPropertyNames.keySet();
 
@@ -2281,7 +2311,8 @@ class GraphOMRSMetadataStore {
         // MatchProperties are expressed using the short property name for each property.
         // Properties are stored in the graph with qualified property names - so we need to map to those in order to hit the indexes.
         // For the type of the entity, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
-        Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
         List<TypeDefAttribute> propertyDefs = typeDef.getPropertiesDefinition();
         if (propertyDefs == null || propertyDefs.isEmpty()) {
@@ -2316,7 +2347,7 @@ class GraphOMRSMetadataStore {
                         else
                             mapping = GraphOMRSGraphFactory.MixedIndexMapping.Default;
 
-                        GraphOMRSGraphFactory.createMixedIndexForVertexProperty(
+                        graphFactory.createMixedIndexForVertexProperty(
                                 qualifiedPropertyName,
                                 getPropertyKeyEntity(qualifiedPropertyName),
                                 primDefCat.getJavaClassName(),
@@ -2340,7 +2371,8 @@ class GraphOMRSMetadataStore {
         // MatchProperties are expressed using the short property name for each property.
         // Properties are stored in the graph with qualified property names - so we need to map to those in order to hit the indexes.
         // For the type of the classification, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
-        Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
 
         List<TypeDefAttribute> propertyDefs = typeDef.getPropertiesDefinition();
@@ -2375,7 +2407,7 @@ class GraphOMRSMetadataStore {
                         else
                             mapping = GraphOMRSGraphFactory.MixedIndexMapping.Default;
 
-                        GraphOMRSGraphFactory.createMixedIndexForVertexProperty(
+                        graphFactory.createMixedIndexForVertexProperty(
                                 qualifiedPropertyName,
                                 getPropertyKeyClassification(qualifiedPropertyName),
                                 primDefCat.getJavaClassName(),
@@ -2406,7 +2438,8 @@ class GraphOMRSMetadataStore {
         // Properties are stored in the graph with qualified property names - so we need to map to those in order to hit the indexes.
         // For the type of the relationship, construct a map of short prop name -> qualified prop name. There is no type hierarchy for
         // relationships - but that doesn't matter, the util method will handle types for which superType is null.
-        Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
 
         log.debug("{} create edge indexes for type {}", methodName, typeDef.getName());
@@ -2435,7 +2468,7 @@ class GraphOMRSMetadataStore {
                         else
                             mapping = GraphOMRSGraphFactory.MixedIndexMapping.Default;
 
-                        GraphOMRSGraphFactory.createMixedIndexForEdgeProperty(
+                        graphFactory.createMixedIndexForEdgeProperty(
                                 qualifiedPropertyName,
                                 getPropertyKeyRelationship(qualifiedPropertyName),
                                 primDefCat.getJavaClassName(),
@@ -2480,7 +2513,8 @@ class GraphOMRSMetadataStore {
          */
 
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, classificationName);
-        Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
 
         // This relies on the graph to enforce property validity - it does not pre-check that classification match properties are valid for requested type.
