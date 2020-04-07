@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.repositoryservices.metadatahighway;
+package org.odpi.openmetadata.repositoryservices.init;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Factory that create the threads used for initialization retries
  */
-class RetryThreadFactory implements ThreadFactory
+public class RetryThreadFactory implements ThreadFactory
 {
 
     /**
@@ -30,7 +30,7 @@ class RetryThreadFactory implements ThreadFactory
     {
 
         Thread thr = new Thread(r);
-        thr.setName("OMRS Cohort Initialization Retry Thread " + threadCount.incrementAndGet());
+        thr.setName("OMRS Initialization Retry Thread " + threadCount.incrementAndGet());
         thr.setDaemon(true);
         return thr;
     }

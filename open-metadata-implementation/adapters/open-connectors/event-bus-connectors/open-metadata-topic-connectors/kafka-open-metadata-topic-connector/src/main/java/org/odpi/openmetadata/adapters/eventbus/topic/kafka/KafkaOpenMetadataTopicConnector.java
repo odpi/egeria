@@ -2,17 +2,25 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
+import java.nio.file.FileSystemException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.*;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.IncomingEvent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
+import org.odpi.openmetadata.repositoryservices.init.InitializationManager;
+import org.odpi.openmetadata.repositoryservices.init.InitializationMethod;
+import org.odpi.openmetadata.repositoryservices.init.InitializationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +39,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     
     private Properties consumerEgeriaProperties = new Properties();
     private Properties consumerProperties = new Properties();
-
+    private Properties connectorProperties = new Properties();
+    
     private KafkaOpenMetadataEventConsumer consumer = null;
     private KafkaOpenMetadataEventProducer producer = null;
 
@@ -201,7 +210,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             }
 		}
 	}
-
+ 
     /**
      * Indicates that the connector is completely configured and can begin processing.
      * It creates two threads, one for sending (producer) and the other for receiving
@@ -213,21 +222,125 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     {
 
         this.initializeTopic();
-        
         KafkaOpenMetadataEventConsumerConfiguration consumerConfig = new KafkaOpenMetadataEventConsumerConfiguration(consumerEgeriaProperties, auditLog);
-        consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerConfig, consumerProperties, this, auditLog);
-        consumerThread = new Thread(consumer, threadHeader + "Consumer-" + topicName);
-        consumerThread.start();
+        
+        int maxInitAttempts = consumerConfig.getIntProperty(KafkaOpenMetadataEventConsumerProperty.MAX_INIT_RETRIES);
+        long initAttemptRetryIntervalMs = consumerConfig.getLongProperty(KafkaOpenMetadataEventConsumerProperty.INIT_RETRY_INTERVAL_MS);
+  
+        InitializationManager initializer = new InitializationManager(auditLog, maxInitAttempts, initAttemptRetryIntervalMs, new KafkaInitializationMethod());
+        initializer.start();
+    }
+  
+    /**
+     * {@link InitializationMethod} that initializes 
+     * the {@link KafkaOpenMetadataTopicConnector}
+     * 
+     * @see InitializationManager
+     */
+    private class KafkaInitializationMethod implements InitializationMethod 
+    {
+        
+        private final AtomicBoolean consumerStarted = new AtomicBoolean(false);
+        private final AtomicBoolean producerStarted = new AtomicBoolean(false);
+        
+        @Override
+        public InitializationResult attemptInitialization()
+        {
+            try 
+            {
+                if (! consumerStarted.get()) 
+                {
+                    KafkaOpenMetadataEventConsumerConfiguration consumerConfig = new KafkaOpenMetadataEventConsumerConfiguration(consumerEgeriaProperties, auditLog);
+                    consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerConfig, consumerProperties, KafkaOpenMetadataTopicConnector.this, auditLog);
+                    consumerThread = new Thread(consumer, threadHeader + "Consumer-" + topicName);
+                    consumerThread.start();
+                    consumerStarted.set(true);
+                }
+                
+                if (! producerStarted.get()) 
+                {
+                    producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, KafkaOpenMetadataTopicConnector.this, auditLog);
+                    producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
+                    executor = new KafkaProducerExecutor();
+                    executor.execute(producerThread);
+                    producerStarted.set(true);
+                }
+            
+                //Do not start the parent and advertise that the
+                //connector is started until both the producer
+                //and consumer have successfully been started
+               
+                startParent();
+                
+                return InitializationResult.SUCCESS;
+            }
+            catch(Throwable th)
+            {
+                return new InitializationResult(th);
+            }
+        }
 
-        producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, this, auditLog);
-        producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
-        executor = new KafkaProducerExecutor();
-        executor.execute(producerThread);
+        /**
+         * Returns true if the kafka initialization failed in a way that
+         * is retryable
+         * 
+         * @param result
+         * @return
+         */
+        @Override
+        public boolean isRetryNeeded(InitializationResult result)
+        {
 
+            if (result.isSuccess())
+            {
+                return false;
+            }
+            
+            for (Class<? extends Throwable> exceptionClass : NON_RETRYABLE_EXCEPTIONS)
+            {
+                if (result.hasError(exceptionClass))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        @Override
+        public String getObjectName() {
+
+            return KafkaOpenMetadataTopicConnector.class.getSimpleName() + " for topic " + topicName;
+        }
+       
+    }
+    
+    // List of exceptions that, when in the cause list, prevent an initialization
+    // retry
+    private static final List<Class<? extends Throwable>> NON_RETRYABLE_EXCEPTIONS = buildImmutableList(
+            // file system exceptions, such as java.nio.file.NoSuchFileException
+            // should not trigger a retry. NoSuchFileException is thrown
+            // if the Kafka SSL certificate file is not found.
+            FileSystemException.class,
+
+            // OMRSLogicErrorException indicates that there is a bug somewhere
+            // in the code. We should not retry if that happens.
+            OMRSLogicErrorException.class);
+    
+    private static List<Class<? extends Throwable>> buildImmutableList(Class<? extends Throwable>... items)
+    {
+
+        List<Class<? extends Throwable>> result = new ArrayList<>();
+        for (Class<? extends Throwable> item : items)
+        {
+            result.add(item);
+        }
+        return Collections.unmodifiableList(result);
+    }
+    
+    private void startParent() throws ConnectorCheckedException {
         super.start();
     }
-
-
+    
     /**
      * Sends the supplied event to the topic.
      *

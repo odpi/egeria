@@ -679,7 +679,21 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                "The connector has been removed from this access service's federation list " +
                                        "of servers that are called during a metadata request.",
                              "Verify that this message appears for each of the access services operating in this server."),
-
+    INITIALIZATION_SUCCESS("OMRS-AUDIT-0135",
+            OMRSAuditLogRecordSeverity.STARTUP,
+            "The initilization of {1} was successful",
+            "The information in the event is not available to the server.",
+            "No additional action is needed."),
+    INITIALIZATION_RETRY("OMRS-AUDIT-0136",
+            OMRSAuditLogRecordSeverity.STARTUP,
+            "The initialization of {0} failed due to exception {1} in try {2} of {3}.  We are retrying the initialization.",
+            "The information in the event is not available to the server.",
+            "Review the exception to determine the source of the error and correct it."),
+    INITIALIZATION_FAILURE("OMRS-AUDIT-0137",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "The initialization of {0} failed permenantly due to exception {1}",
+            "The information in the event is not available to the server.",
+            "Review the exception to determine the source of the error and correct it."),
     INCOMING_CONFLICTING_TYPEDEFS("OMRS-AUDIT-0201",
                       OMRSAuditLogRecordSeverity.TYPES,
                       "Server {1} in cohort {0} that hosts metadata collection {2} has detected that " +
@@ -773,7 +787,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                    "Server {0} that hosts metadata collection {1} was unable to remove the reference copy of an instance of type {2} with unique identifier (guid) of {3}.  The exception was {4} with error message: {5}",
                                    "The server returns an exception to the caller.",
                                    "Review the audit log for previous error messages.  This failed action may have been an attempt to correct a detected conflict."),
-
+    
     NEW_TYPE_ADDED("OMRS-AUDIT-0301",
                       OMRSAuditLogRecordSeverity.TYPES,
                       "The local server has added a new type called {0} with a unique identifier of {1} and a version number of {2} from {3}",

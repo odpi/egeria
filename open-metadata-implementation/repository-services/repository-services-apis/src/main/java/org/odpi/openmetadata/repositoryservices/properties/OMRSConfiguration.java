@@ -11,27 +11,27 @@ public class OMRSConfiguration {
     
     private static final OMRSConfiguration INSTANCE = new OMRSConfiguration();
     
-    private int numCohortInitRetryThreads = 1;
+    private int numInitRetryThreads = 1;
 
     /**
      * Gets the number of threads in the thread pool used to
-     * retry failed cohort initializations.  The thread pool is
-     * shared between all cohorts.  The default is one thread.
+     * retry failed initializations.  The thread pool is
+     * shared between all components.  The default is one thread.
      */
-    public int getNumberOfCohortInitRetryThreads() {
+    public int getNumberOfInitRetryThreads() {
     
-        return numCohortInitRetryThreads;
+        return numInitRetryThreads;
     }
     /**
      * Sets the number of threads in the thread pool used to
-     * retry failed cohort initializations.  The thread pool is
-     * shared between all cohorts.  The default is one thread.
+     * retry failed initializations.  The thread pool is
+     * shared between all components.  The default is one thread.
      * 
-     * @param numInitThreads size of cohort initialization retry thread pool
+     * @param numInitThreads size of initialization retry thread pool
      */
-    public void setNumberOfCohortInitRetryThreads(int numInitThreads) {
+    public void setNumberOfInitRetryThreads(int numInitThreads) {
     
-        this.numCohortInitRetryThreads = numInitThreads;
+        this.numInitRetryThreads = numInitThreads;
     }
     
     /**

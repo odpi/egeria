@@ -54,7 +54,28 @@ public enum KafkaOpenMetadataEventConsumerProperty
      * used if auto commit is disabled in the Kafka consumer. 
      * 
      */
-    COMMIT_CHECK_INTERVAL_MS("commit_check_interval_ms", "5000");
+    COMMIT_CHECK_INTERVAL_MS("commit_check_interval_ms", "5000"),
+
+    /**
+     * Controls the maximum number of times to retry the
+     * Kafka initialization in the event of an initialization
+     * failure.  
+     * 
+     * If the value is negative, there will be an unlimited
+     * number of retries
+     * 
+     * Default : -1
+     */
+    MAX_INIT_RETRIES("max_initialization_retries", "-1"),
+    
+    /**
+     * The amount of time to wait between retry attempts
+     * in the event of an initialization failure
+     * 
+     * Default: 1000 ms
+     */
+    INIT_RETRY_INTERVAL_MS("init_retry_intrval_ms", "1000");
+    
 
 	private String propertyName;
 	private String defaultValue;

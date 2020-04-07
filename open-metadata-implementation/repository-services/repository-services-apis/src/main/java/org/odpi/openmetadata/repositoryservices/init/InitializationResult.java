@@ -1,17 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.repositoryservices.metadatahighway;
+package org.odpi.openmetadata.repositoryservices.init;
 
 /**
- * The result of initializing a cohort
+ * The result of attempting to initialize a component
  * 
- * @see OMRSCohortManagerInitializer#start()
- * @see OMRSCohortManager#initialize(String, String, String, String, String, String, org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository, org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager, org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectionConsumer, org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector, org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.OMRSCohortRegistryStore, org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection, org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector, org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule)
+ * @see InitializationManager
  */
-public class CohortInitializationResult
+public class InitializationResult
 {
 
-    public static final CohortInitializationResult SUCCESS = new CohortInitializationResult();
+    public static final InitializationResult SUCCESS = new InitializationResult();
 
     private final Throwable initError;
 
@@ -20,13 +19,13 @@ public class CohortInitializationResult
      * 
      * @param error
      */
-    public CohortInitializationResult(Throwable error)
+    public InitializationResult(Throwable error)
     {
 
         this.initError = error;
     }
 
-    private CohortInitializationResult()
+    private InitializationResult()
     {
 
         initError = null;
@@ -53,7 +52,7 @@ public class CohortInitializationResult
         return initError;
     }
 
-    /**
+    /** 
      * Checks whether the initialization error, if there was one, 
      * contains the specified error
      * 
@@ -91,4 +90,7 @@ public class CohortInitializationResult
         }
         return null;
     }
+   
+
+  
 }

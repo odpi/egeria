@@ -168,29 +168,23 @@ public class OMRSMetadataHighwayManager
                     = new OMRSRepositoryEventExchangeRule(cohortConfig.getEventsToProcessRule(),
                                                           cohortConfig.getSelectedTypesToProcess());
 
-            OMRSCohortManagerInitializer initializer = new OMRSCohortManagerInitializer(cohortManager, 
-                    cohortConfig.getCohortName(),
-                    localMetadataCollectionId,
-                    localMetadataCollectionName,
-                    localServerName,
-                    localServerType,
-                    localOrganizationName,
-                    localRepository,
-                    localRepositoryContentManager,
-                    enterpriseAccessConnectionConsumer,
-                    enterpriseAccessTopicConnector,
-                    cohortRegistryStore,
-                    cohortConfig.getCohortOMRSTopicConnection(),
-                    cohortTopicConnector,
-                    inboundEventExchangeRule,
-                    cohortConfig.getMaxCohortInitAttempts(),
-                    cohortConfig.getMinCohortInitAttemptRetryIntervalMs()
-                    );
-            
-            initializer.start();
+            cohortManager.initialize(cohortConfig.getCohortName(),
+                                     localMetadataCollectionId,
+                                     localMetadataCollectionName,
+                                     localServerName,
+                                     localServerType,
+                                     localOrganizationName,
+                                     localRepository,
+                                     localRepositoryContentManager,
+                                     enterpriseAccessConnectionConsumer,
+                                     enterpriseAccessTopicConnector,
+                                     cohortRegistryStore,
+                                     cohortConfig.getCohortOMRSTopicConnection(),
+                                     cohortTopicConnector,
+                                     inboundEventExchangeRule);
 
             /*
-             * The cohort manager is always added to the list.
+             * The cohort manager is only added to the list if it initializes successfully.
              */
             cohortManagers.add(cohortManager);
         }

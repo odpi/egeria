@@ -50,10 +50,9 @@ public enum CohortConnectionStatus implements Serializable
     CONFIGURATION_ERROR  (3, "ConfigurationError", "There is an error in the configuration and connection is not possible."),
     CONNECTED            (4, "Connected",          "The server is connected to the metadata highway for this cohort and messages " +
                                                            "are being exchanged with other members of the cohort."),
-    DISCONNECTING        (5, "Disconnecting",       "The local components for communicating with the cohort are disconnecting."),
+    DISCONNECTING        (5, "Initializing",       "The local components for communicating with the cohort are disconnecting."),
     DISCONNECTED         (6, "Disconnected",       "The server is disconnected from the metadata highway for this cohort.  This may be because the " +
-                                                           "local server is shutting down or the configuration is being adjusted."),
-    AWAITING_RETRY       (7, "AwaitingRetry",       "The initialization of the cohort failed.  The server is waiting to retry the initialization again.");
+                                                           "local server is shutting down or the configuration is being adjusted.");
 
 
     private static final long    serialVersionUID = 1L;

@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -26,7 +24,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorExc
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -119,7 +118,8 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             this.eventProtocolVersion = eventProtocolVersion;
         }
     }
-    
+
+
     /**
      * Register an OMRSTopicListener object.  This object will be supplied with all of the OMRS events
      * received on the topic.
@@ -131,10 +131,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     {
         if (topicListener != null)
         {
-            if (! internalTopicListeners.contains(topicListener))
-            {
-                internalTopicListeners.add(new OMRSTopicListenerWrapper(topicListener, auditLog));
-            }
+            internalTopicListeners.add(new OMRSTopicListenerWrapper(topicListener, auditLog));
         }
         else
         {
