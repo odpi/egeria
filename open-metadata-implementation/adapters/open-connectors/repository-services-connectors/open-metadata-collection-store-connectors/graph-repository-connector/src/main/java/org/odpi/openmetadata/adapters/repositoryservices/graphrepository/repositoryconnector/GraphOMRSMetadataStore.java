@@ -1731,6 +1731,10 @@ class GraphOMRSMetadataStore {
 
     }
 
+    /*
+     * This method converts an Egeria regex into an expression that can be used with the JanusGraph
+     * text predicates.
+     */
     private String convertSearchStringToJanusRegex(String str) {
 
         if (str == null || str.length() ==0)
@@ -1745,8 +1749,11 @@ class GraphOMRSMetadataStore {
 
         boolean prefixed   = false;
 
-        // A string may consist only of '.*' in which case it is referred to as suffixed rather than prefixed
-        // This is to ensure that we don't double the prefix/suffix in the resultant string
+        /*
+         * A string may consist only of '.*' in which case it is referred to as suffixed rather than prefixed
+         * This is to ensure that we don't double the prefix/suffix in the resultant string
+         */
+
         boolean suffixed   = str.endsWith(".*");
         if (!suffixed || str.length()>2) {
             prefixed = str.startsWith(".*");
@@ -1762,18 +1769,25 @@ class GraphOMRSMetadataStore {
             innerString = innerString.substring(2);
         }
         if (innerString.length() ==0 ) {
-            // There is nothing left after removing any suffix and prefix - return the original string
+            /*
+             * There is nothing left after removing any suffix and prefix - return the original string
+             */
             return str;
         }
 
-        // There is at least some some substance to the inner string.
-        // Check whether it has been entirely literalised
+        /*
+         * There is at least some some substance to the inner string.
+         * Check whether it has been entirely literalised
+         */
+
         String outputString;
 
         boolean literalized = false;
         if (repositoryHelper.isExactMatchRegex(innerString)) {
             if (innerString.length() == 4) {
-                // Although the innerString is wrapped as by exact match qualifiers, there is nothing else
+                /*
+                 * Although the innerString is wrapped as by exact match qualifiers, there is nothing else
+                 */
                 return null;
             } else {
                 literalized = true;
@@ -1799,18 +1813,26 @@ class GraphOMRSMetadataStore {
             // Process chars
             for (int i = 0; i < innerString.length(); i++) {
                 Character c = innerString.charAt(i);
-                // No need to escape a '-' char as it is only significant if inside '[]' brackets, and these will be escaped,
-                // so the '-' character has no special meaning
+                /*
+                 * No need to escape a '-' char as it is only significant if inside '[]' brackets, and these will be escaped,
+                 * so the '-' character has no special meaning
+                 */
 
-                /* Handle case where neither lit nor ins are active */
+                /*
+                 * Handle case where neither literalized nor case-insensitive are active
+                 */
                 if (!literalized && !caseInsensitive) {
                     outputStringBldr.append(c);
                 }
 
                 else {
-                    /* At least one of literalized or caseInsensitive is active */
+                    /*
+                     * At least one of literalized or caseInsensitive is active
+                     */
 
-                    /* Handle special chars - disjoint from alphas */
+                    /*
+                     * Handle special chars - disjoint from alphas
+                     */
                     switch (c) {
                         case '.':
                         case '[':
@@ -1834,7 +1856,9 @@ class GraphOMRSMetadataStore {
                             continue;  // process the next character
                     }
 
-                    /* Handle alphas - disjoint from specials */
+                    /*
+                     * Handle alphas - disjoint from specials
+                     */
                     if (c >= 'a' && c <= 'z') {
                         if (caseInsensitive) {
                             outputStringBldr.append("[").append(c).append(Character.toUpperCase(c)).append("]");
@@ -1850,7 +1874,9 @@ class GraphOMRSMetadataStore {
                         }
                     }
                     else {
-                        /* The character is not special, not an alpha, just append it... */
+                        /*
+                         * The character is not special, not an alpha, just append it...
+                         */
                         outputStringBldr.append(c);
                     }
                 }
@@ -1859,15 +1885,15 @@ class GraphOMRSMetadataStore {
         }
 
 
-        // Re-frame depending on whether suffixed or prefixed
+        /*
+         * Re-frame depending on whether suffixed or prefixed
+         */
         if (suffixed) {
             outputString = outputString + ".*";
         }
         if (prefixed) {
             outputString = ".*" + outputString;
         }
-
-
 
         return outputString;
 
