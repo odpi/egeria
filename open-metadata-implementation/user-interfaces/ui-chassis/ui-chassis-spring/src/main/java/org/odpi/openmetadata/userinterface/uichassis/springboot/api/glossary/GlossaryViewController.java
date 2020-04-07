@@ -31,6 +31,9 @@ public class GlossaryViewController extends SecureController {
      * @param from the index from witch the results to start, used for pagination
      * @param size number of results returned, used for pagination
      * @return all the glossaries
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping
     public List<Glossary> getAllGlossaries(@RequestParam(defaultValue = "0") Integer from,
@@ -43,6 +46,9 @@ public class GlossaryViewController extends SecureController {
     /**
      * @param glossaryGUID GUID of the glossary to be retrieved
      * @return the glossary with the GUID or null
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/{glossaryGUID}")
     public Glossary getGlossary(@PathVariable("categoryGUID") String glossaryGUID, HttpServletRequest request)
@@ -56,6 +62,9 @@ public class GlossaryViewController extends SecureController {
      * @param from         the index from witch the results to start, used for pagination
      * @param size         number of results returned, used for pagination
      * @return list of categories
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/{glossaryGUID}/categories")
     public List<GlossaryCategory> getCategories(@PathVariable("glossaryGUID") String glossaryGUID,
@@ -71,7 +80,10 @@ public class GlossaryViewController extends SecureController {
      * @param from         the index from witch the results to start, used for pagination
      * @param size         number of results returned, used for pagination
      * @return list of terms
-     */
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
+     * */
     @GetMapping("/{glossaryGUID}/terms")
     public List<GlossaryTerm> getTermsOfGlossary(@PathVariable("glossaryGUID") String glossaryGUID,
                                                  @RequestParam(defaultValue = "0") Integer from,
@@ -86,7 +98,10 @@ public class GlossaryViewController extends SecureController {
      * @param from         the index from witch the results to start, used for pagination
      * @param size         number of results returned, used for pagination
      * @return list of external glossary links
-     */
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
+     * */
     @GetMapping("/{glossaryGUID}/externalGlossaryLinks")
     public List<ExternalGlossaryLink> getExternalGlossaryLinksOfGlossary(@PathVariable("glossaryGUID") String glossaryGUID,
                                                                          @RequestParam(defaultValue = "0") Integer from,
@@ -100,7 +115,10 @@ public class GlossaryViewController extends SecureController {
     /**
      * @param termGUID GUID of the term
      * @return the term with the GUID
-     */
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
+    */
     @GetMapping("/terms/{termGUID}")
     public GlossaryTerm getAntonyms(@PathVariable("termGUID") String termGUID, HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
@@ -113,6 +131,9 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list of antonyms
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/terms/{termGUID}/antonyms")
     public List<GlossaryTerm> getAntonyms(@PathVariable("termGUID") String termGUID,
@@ -128,6 +149,9 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list of terms representing the assigned elements
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/terms/{termGUID}/assignedElements")
     public List<GlossaryTerm> getAssignedElements(@PathVariable("termGUID") String termGUID,
@@ -143,6 +167,9 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list of terms representing the antonyms of the term with GUID
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/terms/{termGUID}/attributes")
     public List<GlossaryTerm> getAttributes(@PathVariable("termGUID") String termGUID,
@@ -158,6 +185,9 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list of is-a terms
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/terms/{termGUID}/isA")
     public List<GlossaryTerm> getIsATerms(@PathVariable("termGUID") String termGUID,
@@ -173,6 +203,9 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list of preferred terms
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/terms/{termGUID}/preferredTerms")
     public List<GlossaryTerm> getPreferredTerms(@PathVariable("termGUID") String termGUID,
@@ -188,6 +221,9 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list of related terms
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/terms/{termGUID}/relatedTerms")
     public List<GlossaryTerm> getRelatedTerms(@PathVariable("termGUID") String termGUID,
@@ -203,6 +239,9 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list of replacement terms
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/terms/{termGUID}/replacementTerms")
     public List<GlossaryTerm> getReplacementTerms(@PathVariable("termGUID") String termGUID,
@@ -218,6 +257,9 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list of subtypes terms
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/terms/{termGUID}/subtypes")
     public List<GlossaryTerm> getSubtypes(@PathVariable("termGUID") String termGUID, @RequestParam(defaultValue = "0") Integer from,
@@ -232,6 +274,9 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list of synonym terms
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/terms/{termGUID}/synonyms")
     public List<GlossaryTerm> getSynonyms(@PathVariable("termGUID") String termGUID,
@@ -247,6 +292,9 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list of translations terms
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/terms/{termGUID}/translations")
     public List<GlossaryTerm> getTranslations(@PathVariable("termGUID") String termGUID,
@@ -262,7 +310,10 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list of preferred terms
-     */
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
+     * */
     @GetMapping("/terms/{termGUID}/types")
     public List<GlossaryTerm> getTypes(@PathVariable("termGUID") String termGUID,
                                        @RequestParam(defaultValue = "0") Integer from,
@@ -277,7 +328,10 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list of "used-in-contexts" terms
-     */
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
+     * */
     @GetMapping("/terms/{termGUID}/usedInContext")
     public List<GlossaryTerm> getUsedInContexts(@PathVariable("termGUID") String termGUID,
                                                 @RequestParam(defaultValue = "0") Integer from,
@@ -292,7 +346,10 @@ public class GlossaryViewController extends SecureController {
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
      * @return list valid values terms
-     */
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
+     * */
     @GetMapping("/terms/{termGUID}/validValues")
     public List<GlossaryTerm> getValidValues(@PathVariable("termGUID") String termGUID,
                                              @RequestParam(defaultValue = "0") Integer from,
@@ -305,7 +362,10 @@ public class GlossaryViewController extends SecureController {
     /**
      * @param termGUID GUID of the term
      * @return term's home glossary
-     */
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
+     * */
     @GetMapping("/terms/{termGUID}/homeGlossary")
     public Glossary getSynonyms(@PathVariable("termGUID") String termGUID, HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
@@ -317,6 +377,9 @@ public class GlossaryViewController extends SecureController {
      * @param termGUID GUID of the term
      * @param from     the index from witch the results to start, used for pagination
      * @param size     number of results returned, used for pagination
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      * @return list of term's external glossary links
      */
     @GetMapping("/terms/{termGUID}/externalGlossaryLinks")
@@ -331,7 +394,10 @@ public class GlossaryViewController extends SecureController {
     /**
      * @param categoryGUID GUID of the category to be retrieved
      * @return the glossary category with the GUID or null
-     */
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
+    */
     @GetMapping("/categories/{categoryGUID}")
     public GlossaryCategory getCategory(@PathVariable("categoryGUID") String categoryGUID, HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
@@ -341,7 +407,11 @@ public class GlossaryViewController extends SecureController {
 
     /**
      * @param categoryGUID GUID of the category
+     * @param request
      * @return the home glossary of the category
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/categories/{categoryGUID}/homeGlossary")
     public Glossary getCategoryHomeGlossary(@PathVariable("categoryGUID") String categoryGUID, HttpServletRequest request)
@@ -355,6 +425,9 @@ public class GlossaryViewController extends SecureController {
      * @param from         the index from witch the results to start, used for pagination
      * @param size         number of results returned, used for pagination
      * @return the home glossary of the category
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/categories/{categoryGUID}/subcategories")
     public List<GlossaryCategory> getSubcategories(@PathVariable("categoryGUID") String categoryGUID,
@@ -370,6 +443,9 @@ public class GlossaryViewController extends SecureController {
      * @param from         the index from witch the results to start, used for pagination
      * @param size         number of results returned, used for pagination
      * @return list of terms corresponding to the category
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/categories/{categoryGUID}/terms")
     public List<GlossaryTerm> getTermsOfCategory(@PathVariable("termGUID") String categoryGUID,
@@ -384,7 +460,11 @@ public class GlossaryViewController extends SecureController {
      * @param categoryGUID GUID of the category
      * @param from         the index from witch the results to start, used for pagination
      * @param size         number of results returned, used for pagination
+     * @param request
      * @return list of a category's external glossary links
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/categories/{categoryGUID}/externalGlossaryLinks")
     public List<ExternalGlossaryLink> getExternalGlossaryLinks(@PathVariable("categoryGUID") String categoryGUID,
