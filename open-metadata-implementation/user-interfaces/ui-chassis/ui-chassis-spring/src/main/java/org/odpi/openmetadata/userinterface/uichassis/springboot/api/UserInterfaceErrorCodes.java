@@ -27,7 +27,11 @@ public enum UserInterfaceErrorCodes {
     INVALID_REQUEST_FOR_OPEN_LINEAGE(HttpStatus.INTERNAL_SERVER_ERROR, "USER-INTERFACE-500-005",
                                     "The request for open lineage is invalid",
                                     "The system is unable to handle request.",
-                                    "Check that the configuration for Open Lineage is correct." );
+                                    "Check that the configuration for Open Lineage is correct." ),
+    INVALID_REQUEST_FOR_GLOSSARY_VIEW(HttpStatus.INTERNAL_SERVER_ERROR, "USER-INTERFACE-500-006",
+            "The request for glossary view is invalid",
+            "The system is unable to handle request.",
+            "Check that the configuration for Glossary View is correct." );
 
     private HttpStatus httpErrorCode;
     private String errorMessageId;
