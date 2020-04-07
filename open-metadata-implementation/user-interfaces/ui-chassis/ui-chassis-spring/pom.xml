@@ -284,7 +284,14 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>audit-log-framework</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>glossary-view-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>glossary-view-api</artifactId>
+        </dependency>
     </dependencies>
 
     <profiles>
