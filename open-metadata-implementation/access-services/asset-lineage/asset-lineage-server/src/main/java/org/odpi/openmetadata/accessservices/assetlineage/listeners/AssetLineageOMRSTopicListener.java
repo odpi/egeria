@@ -91,6 +91,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         OMRSInstanceEventType instanceEventType = instanceEvent.getInstanceEventType();
         OMRSEventOriginator instanceEventOriginator = instanceEvent.getEventOriginator();
         EntityDetail entityDetail = instanceEvent.getEntity();
+        Relationship relationship = instanceEvent.getRelationship();
 
         if (instanceEventOriginator == null)
             return;
@@ -118,14 +119,14 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                 case DECLASSIFIED_ENTITY_EVENT:
                     processDeclassifiedEntityEvent(entityDetail);
                     break;
-//                case NEW_RELATIONSHIP_EVENT:
-//                    processNewRelationship(entityDetail);
-//                    break;
+                case NEW_RELATIONSHIP_EVENT:
+                    processNewRelationshipEvent(relationship);
+                    break;
                 case UPDATED_RELATIONSHIP_EVENT:
-                    processUpdatedRelationshipEvent(instanceEvent.getRelationship());
+                    processUpdatedRelationshipEvent(relationship);
                     break;
                 case DELETED_RELATIONSHIP_EVENT:
-                    processDeletedRelationshipEvent(instanceEvent.getRelationship());
+                    processDeletedRelationshipEvent(relationship);
                     break;
             }
         } catch (OCFCheckedExceptionBase e) {
@@ -192,33 +193,37 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         publisher.publishEvent(event);
     }
 
+    private void processNewRelationshipEvent(Relationship relationship) throws ConnectorCheckedException, JsonProcessingException {
+        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
+        if (!PROCESS_HIERARCHY.equals(relationship.getType().getTypeDefName())) {
+            return;
+        }
 
-    private void processNewRelationship(Relationship relationship) {
-        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, "newRelationship", relationship.getGUID());
+        publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
     }
 
     private void processUpdatedRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
-        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, "updatedRelationship", relationship.getGUID());
-        if (!immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName()))
+        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.UPDATE_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
+        if (!immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName())) {
             return;
+        }
 
         publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.UPDATE_RELATIONSHIP_EVENT);
     }
 
     private void processDeletedRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
-        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, "deletedRelationship", relationship.getGUID());
-        if (!immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName()))
+        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.DELETE_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
+        if (!immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName())) {
             return;
+        }
 
         publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.DELETE_RELATIONSHIP_EVENT);
 
     }
 
     private boolean anyLineageClassificationsLeft(EntityDetail entityDetail) {
-        for (String classificationType : lineageClassificationTypes)
-            if (entityDetail.getClassifications().stream().anyMatch(classification -> classification.getName().equals(classificationType)))
-                return true;
-        return false;
+        return lineageClassificationTypes.stream().anyMatch(classificationType -> entityDetail.getClassifications().stream().anyMatch(
+                classification -> classification.getName().equals(classificationType)));
     }
 
     private void logExceptionToAudit(OMRSInstanceEvent instanceEvent, Exception e) {

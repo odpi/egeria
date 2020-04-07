@@ -276,7 +276,6 @@ public class TestAssetPrimitiveSchemaType
     {
         assertFalse(getTestObject().equals(null));
         assertFalse(getTestObject().equals("DummyString"));
-        assertTrue(getTestObject().equals(getTestObject()));
 
         AssetPrimitiveSchemaType sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));

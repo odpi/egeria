@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.server.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.discoveryengine.server.DiscoveryConfigurationServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/discovery-engine/users/{userId}")
+
+@Tag(name="Discovery Engine OMAS", description="The Discovery Engine OMAS provides APIs and events for metadata discovery tools that are surveying the data landscape and recording information in metadata repositories.", externalDocs=@ExternalDocumentation(description="Discovery Engine Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/discovery-engine/"))
+
 public class DiscoveryConfigurationResource
 {
     private DiscoveryConfigurationServices  restAPI = new DiscoveryConfigurationServices();

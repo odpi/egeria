@@ -1729,6 +1729,13 @@ class GraphOMRSMetadataStore {
         if (str == null || str.length() ==0)
             return null;
 
+        boolean caseInsensitive = false;
+
+        if (str.startsWith("(?i)")) {
+            caseInsensitive = true;
+            str = str.substring(4, str.length());
+        }
+
         boolean prefixed   = false;
 
         // A string may consist only of '.*' in which case it is referred to as suffixed rather than prefixed
@@ -1754,21 +1761,39 @@ class GraphOMRSMetadataStore {
 
         // There is at least some some substance to the inner string.
         // Check whether it has been entirely literalised
-        String literalisedString;
+        String outputString;
 
+        boolean literalized = false;
         if (repositoryHelper.isExactMatchRegex(innerString)) {
-            if (innerString.length()==4) {
+            if (innerString.length() == 4) {
                 // Although the innerString is wrapped as by exact match qualifiers, there is nothing else
                 return null;
-            }
-            else {
+            } else {
+                literalized = true;
                 innerString = innerString.substring(2, innerString.length() - 2);
-                StringBuilder literalisedStringBldr = new StringBuilder();
-                // Literalise individual special chars
-                for (int i = 0; i < innerString.length(); i++) {
-                    Character c = innerString.charAt(i);
-                    // No need to escape a '-' char as it is only significant if inside '[]' brackets, and these will be escaped,
-                    // so the '-' character has no special meaning
+            }
+        }
+
+        /*
+         * innerString now contains just the string that may need to be made case-insensitive and/or literalized
+         */
+        if (!caseInsensitive && !literalized) {
+            /*
+             * There is nothing more to do - just use the innerString as-is...
+             */
+            outputString = innerString;
+        }
+        else {
+            /*
+             * There is at least some work to do; characters may need to be literalized and/or makde case-insensitive
+             */
+            StringBuilder outputStringBldr = new StringBuilder();
+            // Process chars
+            for (int i = 0; i < innerString.length(); i++) {
+                Character c = innerString.charAt(i);
+                // No need to escape a '-' char as it is only significant if inside '[]' brackets, and these will be escaped,
+                // so the '-' character has no special meaning
+                if (literalized) {
                     switch (c) {
                         case '.':
                         case '[':
@@ -1784,34 +1809,38 @@ class GraphOMRSMetadataStore {
                         case '+':
                         case '?':
                         case '\\':  // single backslash escaped for Java
-                            literalisedStringBldr.append('\\').append(c);
+                            outputStringBldr.append('\\').append(c);
                             break;
-                        default:
-                            literalisedStringBldr.append(c);
                     }
                 }
-                literalisedString = literalisedStringBldr.toString();
+                if (caseInsensitive) {
+                    if (c >= 'a' && c <= 'z') {
+                        outputStringBldr.append("[").append(c).append(Character.toUpperCase(c)).append("]");
+                    } else if (c >= 'A' && c <= 'Z') {
+                        outputStringBldr.append("[").append(Character.toLowerCase(c)).append(c).append("]");
+                    } else {
+                        outputStringBldr.append(c);
+                    }
+                }
+                else {
+                    outputStringBldr.append(c);
+                }
             }
+            outputString = outputStringBldr.toString();
         }
-        else {
-            // Not exact match - leave innerString as is
-            // i.e. add no escaping - treat the inner string as a regex
-            literalisedString = innerString;
-        }
-
 
 
         // Re-frame depending on whether suffixed or prefixed
         if (suffixed) {
-            literalisedString = literalisedString + ".*";
+            outputString = outputString + ".*";
         }
         if (prefixed) {
-            literalisedString = ".*" + literalisedString;
+            outputString = ".*" + outputString;
         }
 
 
 
-        return literalisedString;
+        return outputString;
 
     }
 

@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
@@ -499,6 +500,7 @@ class DataEngineRESTServicesTest {
     void createProcess() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockSchemaTypeHandler("createOrUpdateSchemaType");
         mockSchemaTypeHandler("addLineageMappings");
+        mockSchemaTypeHandler("addAnchorGUID");
         mockPortHandler("createOrUpdatePortImplementationWithSchemaType");
         mockPortHandler("createOrUpdatePortAliasWithDelegation");
         mockProcessHandler("createOrUpdateProcess");
@@ -849,6 +851,11 @@ class DataEngineRESTServicesTest {
         schemaType.setUsage(USAGE);
         schemaType.setEncodingStandard(ENCODING_STANDARD);
         schemaType.setVersionNumber(VERSION_NUMBER);
+
+        Attribute schemaAttribute = new Attribute();
+        schemaAttribute.setQualifiedName(QUALIFIED_NAME);
+
+        schemaType.setAttributeList(Collections.singletonList(schemaAttribute));
 
         return schemaType;
     }

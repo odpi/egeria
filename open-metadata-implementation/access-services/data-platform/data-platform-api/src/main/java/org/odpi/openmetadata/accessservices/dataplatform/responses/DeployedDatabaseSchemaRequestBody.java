@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
 
 import java.util.Objects;
@@ -21,6 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DeployedDatabaseSchemaRequestBody extends DataPlatformOMASAPIRequestBody {
 
+    @JsonProperty("deployedDatabaseSchema")
     private DeployedDatabaseSchema deployedDatabaseSchema;
 
     /**

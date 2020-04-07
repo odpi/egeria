@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -14,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+
+@Tag(name="Conformance Suite", description="The open metadata conformance suite provides a testing framework to help the developers integrate a specific technology into the open metadata ecosystem.", externalDocs=@ExternalDocumentation(description="Open Metadata Conformance Suite",url="https://egeria.odpi.org/open-metadata-conformance-suite/"))
+
+
 public class ConfigPropertiesResource
 {
     private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();

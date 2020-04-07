@@ -114,7 +114,7 @@ public class ReferenceableBuilder extends RootBuilder
 
 
     /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
+     * Return the supplied bean properties that represent a name in an InstanceProperties object for search.
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object
@@ -139,7 +139,7 @@ public class ReferenceableBuilder extends RootBuilder
 
 
     /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
+     * Return the supplied bean properties that represent a name in an InstanceProperties object for search.
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object

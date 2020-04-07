@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
+
+@Tag(name="Subject Area OMAS", description="The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs=@ExternalDocumentation(description="Subject Area Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
+
 public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServicesInstance
 {
     private SubjectAreaRelationshipRESTServices restAPI = new SubjectAreaRelationshipRESTServices();
@@ -22,7 +27,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * Default constructor
      */
     public SubjectAreaRelationshipRESTResource() {
-        //SubjectAreaRESTServicesInstance registers this omas.
+
     }
 
     /**
@@ -100,7 +105,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the HAS A relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the term has a relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -215,7 +220,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Related term relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the related term relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -233,7 +238,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
-        return restAPI. deleteRelatedTerm(serverName, userId,guid,isPurge);
+        return restAPI.deleteRelatedTerm(serverName, userId,guid,isPurge);
     }
     /**
      * Restore a related Term relationship.
@@ -332,7 +337,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Synonym relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the Synonym relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -448,7 +453,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Antonym relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the Antonym relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -566,7 +571,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Translation relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the Translation relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -682,7 +687,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the UsedInContext relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the UsedInContext relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -802,7 +807,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the PreferredTerm relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the PreferredTerm relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -923,7 +928,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ValidValue relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the ValidValue relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -1043,7 +1048,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ReplacementTerm relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the ReplacementTerm relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -1162,7 +1167,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermTYPEDBYRelationship relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the TermTYPEDBYRelationship relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -1280,7 +1285,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ISARelationship relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the ISARelationship relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -1401,7 +1406,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermISATypeOFRelationship relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the TermISATypeOFRelationship relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -1526,7 +1531,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermCategorizationRelationship relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the TermCategorizationRelationship relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -1626,7 +1631,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermAnchorRelationship relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the TermAnchorRelationship relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -1719,7 +1724,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the CategoryAnchorRelationship relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the CategoryAnchorRelationship relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -1831,7 +1836,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Project scope relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the Project scope relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>

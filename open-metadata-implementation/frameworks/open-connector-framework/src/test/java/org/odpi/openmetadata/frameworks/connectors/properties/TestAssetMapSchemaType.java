@@ -22,10 +22,6 @@ public class TestAssetMapSchemaType
     private List<Classification> classifications      = new ArrayList<>();
     private Map<String, String>  additionalProperties = new HashMap<>();
 
-    private AssetSchemaType mapFromElement = new AssetSchemaType((SchemaType)null);
-    private AssetSchemaType mapToElement   = new AssetSchemaType((SchemaType)null);
-
-
     /**
      * Default constructor
      */
@@ -57,7 +53,7 @@ public class TestAssetMapSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new AssetMapSchemaType(testBean, mapFromElement, mapToElement);
+        return new AssetMapSchemaType(testBean);
     }
 
 
@@ -83,7 +79,7 @@ public class TestAssetMapSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new AssetMapSchemaType(testBean, mapFromElement, mapToElement);
+        return new AssetMapSchemaType(testBean);
     }
 
 
@@ -110,7 +106,7 @@ public class TestAssetMapSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new AssetMapSchemaType(testBean, mapFromElement, null);
+        return new AssetMapSchemaType(testBean);
     }
 
 
@@ -136,7 +132,7 @@ public class TestAssetMapSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new AssetMapSchemaType(new AssetSummary(new Asset()), testBean, mapFromElement, mapToElement);
+        return new AssetMapSchemaType(new AssetSummary(new Asset()), testBean);
     }
 
 
@@ -159,9 +155,6 @@ public class TestAssetMapSchemaType
         assertTrue(resultObject.getUsage().equals("TestUsage"));
         assertTrue(resultObject.getEncodingStandard().equals("TestEncodingStandard"));
         assertTrue(resultObject.getAuthor().equals("TestAuthor"));
-
-        assertTrue(resultObject.getMapFromElement() != null);
-        assertTrue(resultObject.getMapToElement() != null);
     }
 
 
@@ -201,59 +194,39 @@ public class TestAssetMapSchemaType
         AssetDescriptor    parentAsset;
 
         nullBean = null;
-        nullObject = new AssetMapSchemaType(nullBean, null, null);
+        nullObject = new AssetMapSchemaType(nullBean);
         validateNullObject(nullObject);
 
         nullBean = new MapSchemaType();
-        nullObject = new AssetMapSchemaType(nullBean, null, null);
+        nullObject = new AssetMapSchemaType(nullBean);
         validateNullObject(nullObject);
 
         nullBean = new MapSchemaType(null);
-        nullObject = new AssetMapSchemaType(nullBean, null, null);
+        nullObject = new AssetMapSchemaType(nullBean);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new AssetMapSchemaType(parentAsset, nullBean, null, null);
+        nullObject = new AssetMapSchemaType(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullBean = new MapSchemaType();
-        nullObject = new AssetMapSchemaType(parentAsset, nullBean, null, null);
+        nullObject = new AssetMapSchemaType(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullBean = new MapSchemaType(null);
-        nullObject = new AssetMapSchemaType(parentAsset, nullBean, null, null);
+        nullObject = new AssetMapSchemaType(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullTemplate = null;
         nullObject = new AssetMapSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
 
-        nullTemplate = new AssetMapSchemaType(parentAsset, nullBean, null, null);;
+        nullTemplate = new AssetMapSchemaType(parentAsset, nullBean);;
         nullObject = new AssetMapSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
     }
 
-
-    /**
-     * Validate the subclass initialization
-     */
-    @Test public void testSubclassInitialization()
-    {
-        SchemaType         bean        = getTestObject().getSchemaTypeBean();
-        AssetMapSchemaType object;
-        AssetDescriptor    parentAsset = new AssetSummary();
-
-        object = new AssetMapSchemaType((AssetDescriptor)null, bean, mapFromElement, mapToElement);
-        object.setBean(bean);
-
-        validateResultObject(object);
-
-        object = new AssetMapSchemaType(parentAsset, bean, mapFromElement, mapToElement);
-        object.setBean(bean);
-
-        validateResultObject(object);
-    }
 
 
     /**
@@ -264,7 +237,6 @@ public class TestAssetMapSchemaType
     {
         assertFalse(getTestObject().equals(null));
         assertFalse(getTestObject().equals("DummyString"));
-        assertTrue(getTestObject().equals(getTestObject()));
 
         AssetMapSchemaType sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));

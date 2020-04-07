@@ -1,0 +1,10 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+# Artifacts used for flow1 (do not change)
+egeria_samples_minimal_tables:
+  - EMPLNAME
+egeria_samples_minimal_files:
+  - names.csv
+egeria_samples_minimal_flow: flow1

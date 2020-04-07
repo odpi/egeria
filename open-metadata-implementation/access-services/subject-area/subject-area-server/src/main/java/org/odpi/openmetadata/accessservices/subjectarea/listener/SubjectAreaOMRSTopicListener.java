@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.listener;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.outtopic.SubjectAreaPublisher;
@@ -21,20 +22,22 @@ public class SubjectAreaOMRSTopicListener implements OMRSTopicListener
 
 
     /**
-     * The constructor is given the connection to the out topic for Asset Consumer OMAS
+     * The constructor is given the connection to the out topic for Subject Area OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param assetConsumerOutTopic - connection to the out topic
-     * @param repositoryHelper - provides methods for working with metadata instances
-     * @param repositoryValidator - provides validation of metadata instance
-     * @param componentName - name of component
+     * @param subjectAreaOutTopic  connection to the out topic
+     * @param repositoryHelper     provides methods for working with metadata instances
+     * @param repositoryValidator  provides validation of metadata instance
+     * @param componentName        name of component
+     * @param auditLog             audit log
      */
-    public SubjectAreaOMRSTopicListener(Connection              assetConsumerOutTopic,
-                                          OMRSRepositoryHelper    repositoryHelper,
-                                          OMRSRepositoryValidator repositoryValidator,
-                                          String                  componentName)
+    public SubjectAreaOMRSTopicListener(Connection              subjectAreaOutTopic,
+                                        OMRSRepositoryHelper    repositoryHelper,
+                                        OMRSRepositoryValidator repositoryValidator,
+                                        String                  componentName,
+                                        AuditLog auditLog)
     {
-        publisher = new SubjectAreaPublisher(assetConsumerOutTopic,
+        publisher = new SubjectAreaPublisher(subjectAreaOutTopic,
                 repositoryHelper,
                 repositoryValidator,
                 componentName);

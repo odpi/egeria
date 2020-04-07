@@ -21,6 +21,8 @@ import java.util.Objects;
  */
 public class AssetInformalTag extends AssetElementHeader
 {
+    private static final long     serialVersionUID = 1L;
+
     protected InformalTag   informalTagBean;
 
 

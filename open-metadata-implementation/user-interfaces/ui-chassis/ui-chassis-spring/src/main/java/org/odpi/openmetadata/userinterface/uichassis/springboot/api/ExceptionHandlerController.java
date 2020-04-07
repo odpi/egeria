@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -102,8 +101,9 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {GlossaryViewOmasException.class})
     protected ResponseEntity<Object> handleGlossaryViewOmasException(GlossaryViewOmasException ex, WebRequest request) {
         LOG.error(ex.getMessage(), ex);
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, /*TODO DEFINE ERROR*/null);
-        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(), /*todo*/HttpStatus.valueOf(500), request);
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.INVALID_REQUEST_FOR_GLOSSARY_VIEW);
+        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
+                UserInterfaceErrorCodes.INVALID_REQUEST_FOR_GLOSSARY_VIEW.getHttpErrorCode(), request);
     }
 
 }

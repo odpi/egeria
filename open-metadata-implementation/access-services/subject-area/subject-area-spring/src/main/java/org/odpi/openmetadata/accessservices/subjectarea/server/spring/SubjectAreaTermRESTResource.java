@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -20,6 +21,9 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
+
+@Tag(name="Subject Area OMAS", description="The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs=@ExternalDocumentation(description="Subject Area Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
+
 public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
 {
     private SubjectAreaTermRESTServices restAPI = new SubjectAreaTermRESTServices();
@@ -27,7 +31,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * Default constructor
      */
     public SubjectAreaTermRESTResource() {
-        //SubjectAreaRESTServicesInstance registers this omas.
+
     }
 
     /**
@@ -112,7 +116,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
         return restAPI.findTerm(serverName, userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
-    /*
+    /**
      * Get Term relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
