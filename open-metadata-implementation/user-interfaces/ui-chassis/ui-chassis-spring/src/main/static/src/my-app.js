@@ -142,6 +142,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <iron-selector selected="[[page]]" attr-for-selected="name"
                         class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
                     <div name="asset-catalog" language="[[language]]"><a href="[[rootPath]]#/asset-catalog/search">Asset Catalog</a></div>
+                    <div name="glossary" language="[[language]]"><a href="[[rootPath]]#/glossary">Glossary View</a></div>
                     <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
                     <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
@@ -210,7 +211,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             routeData: Object,
             pages: {
                 type: Array,
-                value: ['asset-catalog', 'subject-area', 'asset-lineage', 'type-explorer', 'repository-explorer', 'about' ]
+                value: ['asset-catalog', 'subject-area', 'asset-lineage', 'type-explorer', 'repository-explorer', 'about',
+                'glossary']
             },
             feedback: {
                 type: Object,
@@ -225,6 +227,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 value:{
                     'home': {label: 'Home', href: '/#'},
                     'asset-catalog': {label: 'Asset Catalog', href: "/asset-catalog/search"},
+                    'glossary': {label: 'Glossary', href: "/glossary"},
                     'subject-area': {label: 'Subject Area', href: "/subject-area"},
                     'asset-lineage': {label: 'Asset Lineage', href: "/asset-lineage"},
                     'type-explorer': {label: 'Type Explorer', href: "/type-explorer"},
@@ -278,20 +281,22 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         this.crumbs = crumbs;
     }
 
-    _updateBreadcrumb(page){
-        if(!page) return;
+    _updateBreadcrumb(page) {
+        if (!page) return;
         var crumbs = [];
         var allCrumbs = new Map(Object.entries(this.allCrumbs));
 
         crumbs.push(allCrumbs.get('home'));
-        crumbs.push(allCrumbs.get(page));
-        if(page == 'asset-lineage' && this.subview && this.subview.path && allCrumbs.get(this.subviewData.subview) ){
-           crumbs.push(allCrumbs.get(this.subviewData.subview));
+        var crumb = allCrumbs.get(page);
+        if (crumb) {
+            crumbs.push(crumb);
+            if (page == 'asset-lineage' && this.subview && this.subview.path && allCrumbs.get(this.subviewData.subview)) {
+                crumbs.push(allCrumbs.get(this.subviewData.subview));
+            }
+            // if(page == 'asset-lineage' && this.subroute2 && this.subroute2.path){
+            //     crumbs.push({label: this.subrouteData2.guid, href:  "/" + this.subrouteData2.guid });
+            // }//TODO to create new service to get displayName instead of displaying the gui
         }
-        // if(page == 'asset-lineage' && this.subroute2 && this.subroute2.path){
-        //     crumbs.push({label: this.subrouteData2.guid, href:  "/" + this.subrouteData2.guid });
-        // }//TODO to create new service to get displayName instead of displaying the gui
-
         this.crumbs = crumbs;
 
     }
@@ -307,7 +312,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         } else if (this.pages.indexOf(page) !== -1) {
             this.page = page;
         } else {
-            this.page = 'asset-catalog';
+            this.page = 'view404';
         }
 
         // Close a non-persistent drawer when the page & route are changed.
@@ -359,14 +364,17 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             case 'repository-explorer':
                 import('./repository-explorer/repository-explorer-view.js');
                 break;
-            case 'view404':
-                import('./asset-catalog/my-view404.js');
-                break;
             case 'asset-catalog' :
                 import('./asset-catalog/asset-catalog-view.js');
                 break;
+            case 'glossary' :
+                import('./glossary/glossary-view.js');
+                break;
             case 'about' :
                 import('./about-view.js');
+                break;
+            case 'view404':
+                import('./error404.js');
                 break;
         }
 
