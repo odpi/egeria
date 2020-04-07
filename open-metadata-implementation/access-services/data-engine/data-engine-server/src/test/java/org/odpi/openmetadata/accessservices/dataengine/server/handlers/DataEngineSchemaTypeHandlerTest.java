@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
@@ -61,6 +62,7 @@ class DataEngineSchemaTypeHandlerTest {
     private static final String TARGET_QUALIFIED_NAME = "targetQualifiedName";
     private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
     private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
+    private static final String PROCESS_GUID = "processGUID";
 
     @Mock
     private RepositoryHandler repositoryHandler;
@@ -200,9 +202,9 @@ class DataEngineSchemaTypeHandlerTest {
         dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(1)).addExternalRelationshipRelationship(USER, SOURCE_GUID, TARGET_GUID,
+        verify(dataEngineCommonHandler, times(1)).createOrUpdateExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
                 SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
     }
 
     @Test
@@ -219,9 +221,9 @@ class DataEngineSchemaTypeHandlerTest {
         mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        doThrow(mockedException).when(dataEngineCommonHandler).addExternalRelationshipRelationship(USER, SOURCE_GUID, TARGET_GUID,
+        doThrow(mockedException).when(dataEngineCommonHandler).createOrUpdateExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
                 SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
@@ -232,17 +234,17 @@ class DataEngineSchemaTypeHandlerTest {
 
     @Test
     void addLineageMappingRelationship_throwsInvalidParameterException() throws UserNotAuthorizedException,
-                                                                                 PropertyServerException,
-                                                                                 InvalidParameterException {
+                                                                                PropertyServerException,
+                                                                                InvalidParameterException {
         when(dataEngineCommonHandler.findEntity(USER, TARGET_QUALIFIED_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
-        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
 
-        InvalidParameterException thrown = assertThrows(InvalidParameterException.class, () ->
-                dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
-                        EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
+        dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-400-005 "));
+        verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND,
+                "addLineageMappingRelationship", SOURCE_QUALIFIED_NAME);
     }
+
     @Test
     void removeSchemaType() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         //mock getSchemaAttributesForSchemaType
@@ -259,6 +261,32 @@ class DataEngineSchemaTypeHandlerTest {
         verify(dataEngineCommonHandler, times(1)).removeEntity(USER, ATTRIBUTE_GUID, SchemaElementMapper.TABULAR_COLUMN_TYPE_NAME);
 
         verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID, SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME);
+    }
+
+    @Test
+    void addAnchorGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        mockFindEntity(ATTRIBUTE_QUALIFIED_NAME, GUID, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+
+        SchemaAttribute schemaAttribute = new SchemaAttribute();
+        when(schemaTypeHandler.getEmptyTabularColumn()).thenReturn(schemaAttribute);
+
+        dataEngineSchemaTypeHandler.addAnchorGUID(USER, attribute, PROCESS_GUID);
+
+        verify(schemaTypeHandler, times(1)).updateSchemaAttribute(USER, GUID, schemaAttribute);
+    }
+
+    @Test
+    void addAnchorGUID_throwsInvalidParameterException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        SchemaAttribute schemaAttribute = new SchemaAttribute();
+
+        when(schemaTypeHandler.getEmptyTabularColumn()).thenReturn(schemaAttribute);
+
+        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
+
+        dataEngineSchemaTypeHandler.addAnchorGUID(USER, attribute, PROCESS_GUID);
+
+        verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND,
+                "addAnchorGUID");
     }
 
     private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName) throws UserNotAuthorizedException,
@@ -284,8 +312,8 @@ class DataEngineSchemaTypeHandlerTest {
         Attribute attribute = new Attribute();
         attribute.setQualifiedName(ATTRIBUTE_QUALIFIED_NAME);
         attribute.setDisplayName(ATTRIBUTE_DISPLAY_NAME);
-        attribute.setMinCardinality("1");
-        attribute.setMaxCardinality("1");
+        attribute.setMinCardinality(1);
+        attribute.setMaxCardinality(1);
         attribute.setPosition(1);
 
         return attribute;

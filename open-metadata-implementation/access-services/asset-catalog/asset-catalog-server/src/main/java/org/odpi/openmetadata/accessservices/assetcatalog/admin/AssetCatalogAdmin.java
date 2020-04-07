@@ -5,11 +5,13 @@ package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 import org.odpi.openmetadata.accessservices.assetcatalog.auditlog.AssetCatalogAuditCode;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ import java.util.List;
 public class AssetCatalogAdmin extends AccessServiceAdmin {
 
     public static final String SUPPORTED_TYPES_FOR_SEARCH = "SupportedTypesForSearch";
-    private OMRSAuditLog auditLog;
+    private AuditLog auditLog;
     private AssetCatalogServicesInstance instance;
     private String serverName;
 
@@ -37,22 +39,13 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
                            OMRSTopicConnector enterpriseOMRSTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog auditLog,
+                           AuditLog auditLog,
                            String serverUserName) throws OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
 
-        AssetCatalogAuditCode auditCode;
+        auditLog.logMessage(actionDescription, AssetCatalogAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         try {
-            auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZING;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
-
             this.auditLog = auditLog;
 
             List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions(),
@@ -64,29 +57,13 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
             instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog, serverName, supportedTypesForSearch);
             this.serverName = instance.getServerName();
 
-            auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(serverName),
-                    accessServiceConfigurationProperties.toString(),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
-        } catch (OMAGConfigurationErrorException error) {
-            throw error;
+            auditLog.logMessage(actionDescription, AssetCatalogAuditCode.SERVICE_INITIALIZED.getMessageDefinition());
         } catch (Exception error) {
-            auditCode = AssetCatalogAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logException(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(error.getMessage()),
-                    accessServiceConfigurationProperties.toString(),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    error);
+            auditLog.logException(actionDescription, AssetCatalogAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(), error);
+
+            super.throwUnexpectedInitializationException(actionDescription, AccessServiceDescription.ASSET_CATALOG_OMAS.getAccessServiceFullName(), error);
         }
     }
-
 
     /**
      * Shutdown the access service.
@@ -99,25 +76,18 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
         if (auditLog != null) {
             final String actionDescription = "shutdown";
 
-            AssetCatalogAuditCode auditCode = AssetCatalogAuditCode.SERVICE_SHUTDOWN;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(serverName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, AssetCatalogAuditCode.SERVICE_SHUTDOWN.getMessageDefinition());
         }
     }
 
     private List<String> getSupportedTypesForSearchOption(AccessServiceConfig accessServiceConfigurationProperties) {
-        List<String> supportedTypesForSearch = null;
         if (accessServiceConfigurationProperties.getAccessServiceOptions() != null) {
             Object supportedTypesProperty = accessServiceConfigurationProperties.getAccessServiceOptions().get(SUPPORTED_TYPES_FOR_SEARCH);
-            if (supportedTypesProperty != null) {
-                supportedTypesForSearch = (List<String>) supportedTypesProperty;
+            if (supportedTypesProperty instanceof List) {
+                return (List<String>) supportedTypesProperty;
             }
         }
-        return supportedTypesForSearch;
+
+        return Collections.emptyList();
     }
 }

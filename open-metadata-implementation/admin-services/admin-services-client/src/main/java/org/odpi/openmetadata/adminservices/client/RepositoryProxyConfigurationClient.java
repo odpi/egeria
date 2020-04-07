@@ -86,7 +86,7 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -123,7 +123,7 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -160,7 +160,7 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
@@ -203,7 +203,7 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error);
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,

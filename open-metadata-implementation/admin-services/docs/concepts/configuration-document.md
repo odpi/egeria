@@ -3,8 +3,9 @@
 
 # Configuration Documents
 
-A configuration document provides the configuration parameters for a single
-[OMAG Server](omag-server.md).
+A configuration document provides the configuration details for a single
+[OMAG Server](omag-server.md).  It defines which subsystems are activated
+in the server and which connector implementations it should use.
 
 ## Configuration document structure
 

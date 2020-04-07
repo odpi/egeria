@@ -6,13 +6,12 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidP
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances.GlossaryAuthorViewServicesInstance;
 import org.odpi.openmetadata.viewservices.glossaryauthor.auditlog.GlossaryAuthorViewAuditCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 
 /**
  * GlossaryAuthorViewAdmin is the class that is called by the UI Server to initialize and terminate
@@ -23,8 +22,8 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
     private static final Logger log = LoggerFactory.getLogger(GlossaryAuthorViewAdmin.class);
 
     private ViewServiceConfig viewServiceConfig = null;
-    private OMRSAuditLog auditLog = null;
-    private String serverUserName = null;
+    private AuditLog          auditLog          = null;
+    private String            serverUserName    = null;
 
     private GlossaryAuthorViewServicesInstance instance = null;
     private String serverName = null;
@@ -46,7 +45,7 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
     @Override
-    public void initialize(String serverName, ViewServiceConfig viewServiceConfigurationProperties, OMRSAuditLog auditLog, String serverUserName, int maxPageSize) throws OMAGConfigurationErrorException {
+    public void initialize(String serverName, ViewServiceConfig viewServiceConfigurationProperties, AuditLog auditLog, String serverUserName, int maxPageSize) throws OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
         final String methodName = actionDescription;
         if (log.isDebugEnabled()) {
@@ -54,14 +53,8 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
         }
         //TODO validate the configuration and when invalid, throw OMAGConfigurationErrorException
 
-        GlossaryAuthorViewAuditCode auditCode = GlossaryAuthorViewAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                           GlossaryAuthorViewAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         try {
             this.viewServiceConfig = viewServiceConfigurationProperties;
@@ -74,38 +67,21 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
                                                                    maxPageSize,
                                                                    this.viewServiceConfig.getOMAGServerName(),
                                                                    this.viewServiceConfig.getOMAGServerPlatformRootURL());
-            auditCode = GlossaryAuthorViewAuditCode.SERVICE_INITIALIZED;
-            writeAuditLogPassingErrorMessage(auditLog, actionDescription, auditCode, serverName);
+            writeAuditLogPassingErrorMessage(auditLog, actionDescription, GlossaryAuthorViewAuditCode.SERVICE_INITIALIZED, serverName);
 
             if (log.isDebugEnabled()) {
                 log.debug("<== Method: " + methodName + ",userid=" + serverUserName);
             }
+            // todo - not valid to use private exception from SubjectArea OMAS
         } catch (InvalidParameterException iae) {
-            auditCode = GlossaryAuthorViewAuditCode.SERVICE_INSTANCE_FAILURE;
-            writeAuditLogPassingErrorMessage(auditLog, actionDescription, auditCode, iae.getMessage());
+            writeAuditLogPassingErrorMessage(auditLog, actionDescription, GlossaryAuthorViewAuditCode.SERVICE_INSTANCE_FAILURE, iae.getMessage());
             throw new OMAGConfigurationErrorException(iae.getReportedHTTPCode(), iae.getReportingClassName(), iae.getReportingActionDescription(), iae.getErrorMessage(), iae.getReportedSystemAction(), iae.getReportedUserAction());
         }
     }
 
-    private void writeAuditLogPassingErrorMessage(OMRSAuditLog auditLog, String actionDescription, GlossaryAuthorViewAuditCode auditCode, String message) {
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(message),
-                           null,
-                           auditCode.getSystemAction(),
-
-                           auditCode.getUserAction());
+    private void writeAuditLogPassingErrorMessage(AuditLog auditLog, String actionDescription, GlossaryAuthorViewAuditCode auditCode, String message) {
+        auditLog.logMessage(actionDescription, auditCode.getMessageDefinition(message));
     }
-
-//    private String extractRemoteServerURL(Map<String, Object> viewServiceOptions) {
-//        return (String)viewServiceOptions.get(remoteServerURL);
-//    }
-//
-//    private String extractRemoteServerName(Map<String, Object> viewServiceOptions) {
-//        return (String)viewServiceOptions.get(remoteServerName);
-//    }
 
     /**
      * Shutdown the subject area view service.

@@ -19,6 +19,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
 {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaRelationshipRESTServices.class);
     private static final String className = SubjectAreaRelationshipRESTServices.class.getName();
+    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
+
 
     /**
      * Default constructor
@@ -93,7 +95,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created TermHASARelationship
+     * @return response, when successful contains the updated TermHASARelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -118,7 +120,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the HAS A relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the term has a relationship with the requested guid
+     * @return response for a soft delete, the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -150,7 +152,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -167,7 +169,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName                          serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                              userId under which the request is performed
      * @param relatedTermRelationship the RelatedTerm relationship
-     * @return response, when successful contains the created Related Term relationship
+     * @return response, when successful contains the restored Related Term relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -215,7 +217,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId                  userId under which the request is performed
      * @param relatedTermRelationship the related term  relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created RelatedTerm
+     * @return response, when successful contains the updated RelatedTerm
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -240,14 +242,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Related term relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the related term relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -272,7 +274,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -299,7 +301,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> ClassificationException              Error processing a classification.</li>
      * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function is not supported.                 
+     * <li> FunctionNotSupportedException        Function is not supported.
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createSynonym(String serverName, String userId, Synonym synonym)
@@ -338,7 +340,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId              userId under which the request is performed
      * @param synonym the Synonym relationship
      * @param isReplace           flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created SynonymRelationship
+     * @return response, when successful contains the updated SynonymRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -363,14 +365,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Synonym relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the Synonym relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function is not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -395,7 +397,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function is not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -459,7 +461,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId              userId under which the request is performed
      * @param antonym the Antonym relationship
      * @param isReplace           flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created AntonymRelationship
+     * @return response, when successful contains the updated AntonymRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -484,14 +486,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Antonym relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the Antonym relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function is not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -516,7 +518,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> FunctionNotSupportedException        Function is not supported.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
@@ -581,7 +583,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId                  userId under which the request is performed
      * @param translationRelationship the Translation relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created TranslationRelationship
+     * @return response, when successful contains the updated TranslationRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -600,20 +602,20 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     }
 
     /**
-     * Delete a Translation relationshiptranslation relationship, which is a link between glossary terms to provide different natural language translation of the same concept.
+     * Delete a Translation relationship, which is a link between glossary terms to provide different natural language translation of the same concept.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Translation relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the Translation relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function is not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -638,7 +640,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -703,7 +705,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId                    userId under which the request is performed
      * @param usedInContextRelationship the UsedInContext relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created UsedInContextRelationship
+     * @return response, when successful contains the updated UsedInContextRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -727,14 +729,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the UsedInContext relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the UsedInContext relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -759,7 +761,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -824,7 +826,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId                    userId under which the request is performed
      * @param preferredTermRelationship the PreferredTerm relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created PreferredTermRelationship
+     * @return response, when successful contains the updated PreferredTermRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -850,14 +852,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the PreferredTerm relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the PreferredTerm relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -882,7 +884,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -948,7 +950,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId                 userId under which the request is performed
      * @param validValueRelationship the ValidValue relationship
      * @param isReplace              flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created ValidValueRelationship
+     * @return response, when successful contains the updated ValidValueRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -973,14 +975,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the ValidValue relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the ValidValue relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1005,7 +1007,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1095,14 +1097,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the ReplacementTerm relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the ReplacementTerm relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1127,7 +1129,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
@@ -1217,14 +1219,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the TermTYPEDBYRelationship relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the TermTYPEDBYRelationship relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1249,7 +1251,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1339,14 +1341,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the ISARelationship relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the ISARelationship relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1371,7 +1373,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1461,14 +1463,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the TermISATypeOFRelationship relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the TermISATypeOFRelationship relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1493,7 +1495,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1582,14 +1584,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermCategorizationRelationship relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the TermCategorizationRelationship relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1612,7 +1614,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreTermCategorizationRelationship( String serverName,  String userId, String guid)
@@ -1676,7 +1678,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermAnchorRelationship relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the TermAnchorRelationship relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -1768,7 +1770,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the CategoryAnchorRelationship relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the CategoryAnchorRelationship relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -1813,7 +1815,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
      * @param projectScope    the Synonym relationship
-     * @return response, when successful contains the created projectScope relationship
+     * @return response, restored projectScope relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1822,7 +1824,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> ClassificationException              Error processing a classification.</li>
      * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function is not supported.                 
+     * <li> FunctionNotSupportedException        Function is not supported.
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createProjectScopeRelationship(String serverName, String userId, ProjectScopeRelationship projectScope)
@@ -1861,7 +1863,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId              userId under which the request is performed
      * @param projectScope the ProjectScope relationship
      * @param isReplace           flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created ProjectScopeRelationship
+     * @return response, when successful contains the updated ProjectScopeRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1886,14 +1888,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the ProjectScope relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response which when successful contains the ProjectScope relationship with the requested guid
+     * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function is not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1918,7 +1920,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function is not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1928,7 +1930,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         String restAPIName = "restoreProjectScopeRelationship";
         return restoreLine(serverName, restAPIName, userId, ProjectScopeRelationship.class.getName(), guid);
     }
-    
+
     /**
      * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
      *
@@ -1950,4 +1952,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
          String restAPIName = "getSemanticAssignmentRelationship";
         return restoreLine(serverName, restAPIName, userId,SemanticAssignment.class.getName(), guid);
     }
+
+
 }

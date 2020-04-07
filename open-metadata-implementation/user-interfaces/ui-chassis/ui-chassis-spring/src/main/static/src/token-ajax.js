@@ -87,7 +87,7 @@ class TokenAjax extends PolymerElement {
 
     _go(){
         this.$.storage.reload();
-        console.debug('_go with token:'+this.token);
+        //console.debug('_go with token:'+this.token);
         if( typeof this.token !== 'undefined'){
             this.$.ajax.headers['content-type'] = 'application/json';
             this.$.ajax.headers['x-auth-token'] = this.token;
@@ -112,28 +112,29 @@ class TokenAjax extends PolymerElement {
         var status = evt.detail.request.xhr.status;
         var resp   = evt.detail.request.xhr.response;
         // Token is not valid, log out.
-        if (status === 401 || status === 403 || resp.exception == 'io.jsonwebtoken.ExpiredJwtException') {
-            console.log('Token invalid:'+ this.token);
-            this.dispatchEvent(new CustomEvent('logout', {
-                bubbles: true,
-                composed: true,
-                detail: {greeted: "Bye!", status: status}}));
-        }else{
-            console.log('Error Response:'+ resp);
-            window.dispatchEvent(new CustomEvent('show-feedback', {
-                bubbles: true,
-                composed: true,
-                detail: {message: "We are experiencing an unexpected error. Please try again later!", level: 'error'}}));
+        if(status > 299)
+            if (status === 401 || status === 403 || resp.exception == 'io.jsonwebtoken.ExpiredJwtException') {
+                console.log('Token invalid:'+ this.token);
+                this.dispatchEvent(new CustomEvent('logout', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {greeted: "Bye!", status: status}}));
+            }else{
+                console.log('Error Response:'+ resp);
+                window.dispatchEvent(new CustomEvent('show-feedback', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {message: "We are experiencing an unexpected error. Please try again later!", level: 'error'}}));
             }
-            this.$.backdrop.close();
+         this.$.backdrop.close();
     }
 
     _onLoadingChanged(){
-        console.debug('cn-loading changed... ' + this.loading);
+        //console.debug('cn-loading changed... ' + this.loading);
     }
 
     _loadingChanged(loading){
-        console.debug('loading changed... ' + this.loading);
+        //console.debug('loading changed... ' + this.loading);
         if(this.loading){
             this.$.backdrop.open();
         }else{

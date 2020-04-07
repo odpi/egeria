@@ -17,6 +17,8 @@ import java.util.Objects;
  */
 public class AssetClassification extends AssetPropertyBase
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Classification    classificationBean;
 
     /**
@@ -38,17 +40,10 @@ public class AssetClassification extends AssetPropertyBase
              * Build and throw exception.  This should not happen likely to be a problem in the
              * repository connector.
              */
-            OCFErrorCode errorCode = OCFErrorCode.NULL_CLASSIFICATION_NAME;
-            String       errorMessage = errorCode.getErrorMessageId()
-                                      + errorCode.getFormattedErrorMessage(super.getParentAssetName(),
-                                                                           super.getParentAssetTypeName());
-
-            throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+            throw new OCFRuntimeException(OCFErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(super.getParentAssetName(),
+                                                                                                     super.getParentAssetTypeName()),
                                           this.getClass().getName(),
-                                          "validateName",
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          "validateName");
         }
         else
         {
@@ -123,16 +118,9 @@ public class AssetClassification extends AssetPropertyBase
              * Build and throw exception.  This should not happen likely to be a problem in the
              * repository connector.
              */
-            OCFErrorCode errorCode = OCFErrorCode.NULL_CLASSIFICATION_NAME;
-            String       errorMessage = errorCode.getErrorMessageId()
-                                      + errorCode.getFormattedErrorMessage("<Unknown>");
-
-            throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+            throw new OCFRuntimeException(OCFErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition("<Unknown>"),
                                           this.getClass().getName(),
-                                          "Copy Constructor",
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          "Copy Constructor");
         }
         else
         {

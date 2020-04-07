@@ -15,8 +15,10 @@ import java.util.Iterator;
  * a new iterator.
  */
 public abstract class AssetSchemaImplementationQueries extends AssetPropertyIteratorBase
-        implements Iterator<AssetSchemaImplementationQuery>
+                                                       implements Iterator<AssetSchemaImplementationQuery>
 {
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *
@@ -99,18 +101,11 @@ public abstract class AssetSchemaImplementationQueries extends AssetPropertyIter
     @Override
     public void remove()
     {
-        OCFErrorCode errorCode = OCFErrorCode.UNABLE_TO_REMOVE;
-        String       errorMessage = errorCode.getErrorMessageId()
-                                  + errorCode.getFormattedErrorMessage(this.getParentAssetTypeName(),
-                                                                       this.getParentAssetName(),
-                                                                       this.getClass().getName());
-
-        throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+        throw new OCFRuntimeException(OCFErrorCode.UNABLE_TO_REMOVE.getMessageDefinition(this.getParentAssetTypeName(),
+                                                                                         this.getParentAssetName(),
+                                                                                         this.getClass().getName()),
                                       this.getClass().getName(),
-                                      "remove",
-                                      errorMessage,
-                                      errorCode.getSystemAction(),
-                                      errorCode.getUserAction());
+                                      "remove");
     }
 
 

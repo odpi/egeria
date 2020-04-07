@@ -26,8 +26,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -186,15 +184,19 @@ public class DataEngineSchemaTypeHandler {
         Optional<EntityDetail> targetSchemaAttributeEntity = findSchemaAttributeEntity(userId, targetSchemaAttributeQualifiedName);
 
         if (!sourceSchemaAttributeEntity.isPresent()) {
-            throwInvalidParameterException(sourceSchemaAttributeQualifiedName, methodName);
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
+                    sourceSchemaAttributeQualifiedName);
+            return;
         }
         if (!targetSchemaAttributeEntity.isPresent()) {
-            throwInvalidParameterException(targetSchemaAttributeQualifiedName, methodName);
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
+                    targetSchemaAttributeQualifiedName);
+            return;
         }
 
-        dataEngineCommonHandler.addExternalRelationshipRelationship(userId, sourceSchemaAttributeEntity.get().getGUID(),
+        dataEngineCommonHandler.createOrUpdateExternalRelationship(userId, sourceSchemaAttributeEntity.get().getGUID(),
                 targetSchemaAttributeEntity.get().getGUID(), SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME,
-                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, externalSourceName);
+                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, externalSourceName, null);
     }
 
     /**
@@ -224,6 +226,32 @@ public class DataEngineSchemaTypeHandler {
         removeTabularSchemaType(userId, schemaTypeGUID);
     }
 
+    /**
+     * Updates the schema attribute with anchorGUID property set to process GUID
+     *
+     * @param userId      the name of the calling user
+     * @param attribute   the properties of the schema attribute
+     * @param processGUID the GUID of the process
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void addAnchorGUID(String userId, Attribute attribute, String processGUID) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                                             PropertyServerException {
+        final String methodName = "addAnchorGUID";
+
+        SchemaAttribute schemaAttribute = createTabularColumn(attribute);
+        schemaAttribute.setAnchorGUID(processGUID);
+
+        Optional<EntityDetail> schemaAttributeEntity = findSchemaAttributeEntity(userId, attribute.getQualifiedName());
+        if (!schemaAttributeEntity.isPresent()) {
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName);
+        } else {
+            schemaTypeHandler.updateSchemaAttribute(userId, schemaAttributeEntity.get().getGUID(), schemaAttribute);
+        }
+    }
+
     private void createOrUpdateSchemaAttributes(String userId, String schemaTypeGUID, List<Attribute> attributeList, String externalSourceName) throws
                                                                                                                                                 InvalidParameterException,
                                                                                                                                                 PropertyServerException,
@@ -248,12 +276,11 @@ public class DataEngineSchemaTypeHandler {
         }
     }
 
-    private EntityDetail buildSchemaAttributeEntityDetail(String schemaAttributeGUID, SchemaAttribute schemaAttribute) throws InvalidParameterException {
+    private EntityDetail buildSchemaAttributeEntityDetail(String schemaAttributeGUID, SchemaAttribute schemaAttribute) throws
+                                                                                                                       InvalidParameterException {
         String methodName = "buildSchemaAttributeEntityDetail";
 
-        SchemaAttributeBuilder builder = new SchemaAttributeBuilder(schemaAttribute.getQualifiedName(), schemaAttribute.getAttributeName(),
-                schemaAttribute.getElementPosition(), schemaAttribute.getCardinality(), schemaAttribute.getDefaultValueOverride(),
-                schemaAttribute.getAdditionalProperties(), schemaAttribute.getExtendedProperties(), repositoryHelper, serviceName, serverName);
+        SchemaAttributeBuilder builder = schemaTypeHandler.getSchemaAttributeBuilder(schemaAttribute);
 
         return dataEngineCommonHandler.buildEntityDetail(schemaAttributeGUID, builder.getInstanceProperties(methodName));
     }
@@ -340,32 +367,12 @@ public class DataEngineSchemaTypeHandler {
         schemaAttribute.setAttributeName(displayName);
         schemaAttribute.setDefaultValueOverride(attribute.getDefaultValueOverride());
         schemaAttribute.setElementPosition(attribute.getPosition());
-
-        Map<String, String> attributeProperties = buildSchemaAttributeProperties(attribute);
-        schemaAttribute.setAdditionalProperties(attributeProperties);
+        schemaAttribute.setMaxCardinality(attribute.getMaxCardinality());
+        schemaAttribute.setMaxCardinality(attribute.getMinCardinality());
+        schemaAttribute.setAllowsDuplicateValues(attribute.getAllowsDuplicateValues());
+        schemaAttribute.setOrderedValues(attribute.getOrderedValues());
 
         return schemaAttribute;
-    }
-
-    private Map<String, String> buildSchemaAttributeProperties(Attribute attribute) {
-        //TODO add these values as regular properties in ocf SchemaAttribute
-        Map<String, String> additionalProperties = new HashMap<>();
-
-        if (attribute.getMaxCardinality() != null) {
-            additionalProperties.put(SchemaTypePropertiesMapper.MAX_CARDINALITY, attribute.getMaxCardinality());
-        }
-        if (attribute.getMinCardinality() != null) {
-            additionalProperties.put(SchemaTypePropertiesMapper.MIN_CARDINALITY, attribute.getMinCardinality());
-        }
-        if (attribute.getAllowsDuplicateValues() != null) {
-            additionalProperties.put(SchemaTypePropertiesMapper.ALLOWS_DUPLICATES, attribute.getAllowsDuplicateValues());
-        }
-
-        if (attribute.getOrderedValues() != null) {
-            additionalProperties.put(SchemaTypePropertiesMapper.ORDERED_VALUES, attribute.getOrderedValues());
-        }
-
-        return additionalProperties;
     }
 
     private SchemaType createTabularSchemaType(String qualifiedName, String displayName, String author, String encodingStandard, String usage,
@@ -397,13 +404,5 @@ public class DataEngineSchemaTypeHandler {
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException {
         dataEngineCommonHandler.removeEntity(userId, schemaTypeGUID, SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME);
-    }
-
-    private void throwInvalidParameterException(String qualifiedName, String methodName) throws InvalidParameterException {
-        DataEngineErrorCode errorCode = DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(qualifiedName);
-
-        throw new InvalidParameterException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,
-                errorCode.getSystemAction(), errorCode.getUserAction(), SchemaTypePropertiesMapper.GUID_PROPERTY_NAME);
     }
 }

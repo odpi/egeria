@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.auditlog;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-
-import java.text.MessageFormat;
 
 /**
  * The AssetConsumerAuditCode is used to define the message content for the OMRS Audit Log.
@@ -19,7 +19,8 @@ import java.text.MessageFormat;
  * <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum AssetCatalogAuditCode {
+public enum AssetCatalogAuditCode implements AuditLogMessageSet {
+    
     SERVICE_INITIALIZED("OMAS-ASSET-CATALOG-0001",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Catalog Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
@@ -44,17 +45,14 @@ public enum AssetCatalogAuditCode {
             "The local server has requested shut down of an Asset Catalog OMAS instance.",
             "No action is required.  This is part of the normal operation of the service.");
 
-    private String logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String logMessage;
-    private String systemAction;
-    private String userAction;
+
+    private AuditLogMessageDefinition messageDefinition;
 
     /**
-     * The constructor for OMRSAuditCode expects to be passed one of the enumeration rows defined in
-     * OMRSAuditCode above.   For example:
+     * The constructor for AssetCatalogAuditCode expects to be passed one of the enumeration rows defined in
+     * AssetCatalogAuditCode above.   For example:
      * <p>
-     * OMRSAuditCode   auditCode = OMRSAuditCode.SERVER_NOT_AVAILABLE;
+     * AssetCatalogAuditCode   auditCode = AssetCatalogAuditCode.SERVER_NOT_AVAILABLE;
      * <p>
      * This will expand out to the 4 parameters shown below.
      *
@@ -64,63 +62,48 @@ public enum AssetCatalogAuditCode {
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction   - instructions for resolving the situation, if any
      */
-    AssetCatalogAuditCode(String messageId, OMRSAuditLogRecordSeverity severity, String message,
-                          String systemAction, String userAction) {
-        this.logMessageId = messageId;
-        this.severity = severity;
-        this.logMessage = message;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
+    AssetCatalogAuditCode(String messageId,
+                          OMRSAuditLogRecordSeverity severity,
+                          String message,
+                          String systemAction,
+                          String userAction) {
+        messageDefinition = new AuditLogMessageDefinition(messageId,
+                severity,
+                message,
+                systemAction,
+                userAction);
     }
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
      *
-     * @return logMessageId
+     * @return message definition object.
      */
-    public String getLogMessageId() {
-        return logMessageId;
-    }
-
-
-    /**
-     * Return the severity of the audit log record.
-     *
-     * @return OMRSAuditLogRecordSeverity enum
-     */
-    public OMRSAuditLogRecordSeverity getSeverity() {
-        return severity;
-    }
-
-    /**
-     * Returns the log message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the logMessage
-     * @return logMessage (formatted with supplied parameters)
-     */
-    public String getFormattedLogMessage(String... params) {
-        MessageFormat mf = new MessageFormat(logMessage);
-        return mf.format(params);
+    public AuditLogMessageDefinition getMessageDefinition() {
+        return messageDefinition;
     }
 
 
     /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
+     * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
-     * @return systemAction String
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public String getSystemAction() {
-        return systemAction;
+    public AuditLogMessageDefinition getMessageDefinition(String... params) {
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
     }
 
-
     /**
-     * Returns instructions of how to resolve the issue reported in this exception.
+     * JSON-style toString
      *
-     * @return userAction String
+     * @return string of property names and values for this enum
      */
-    public String getUserAction() {
-        return userAction;
+    @Override
+    public String toString() {
+        return "AssetCatalogAuditCode{" +
+                "messageDefinition=" + messageDefinition +
+                '}';
     }
 }

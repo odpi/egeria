@@ -52,7 +52,6 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.*
  * Asset Catalog Handler supports the lookup of the assets from the repositories.
  * It runs on the server-side of the Asset Catalog OMAS, fetches the entities using the RepositoryHandler.
  */
-
 public class AssetCatalogHandler {
 
     private static final Logger log = LoggerFactory.getLogger(AssetCatalogHandler.class);
@@ -65,8 +64,7 @@ public class AssetCatalogHandler {
     private final CommonHandler commonHandler;
     private AssetConverter assetConverter;
     private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
-    private List<String> defaultTypesForSearch = new ArrayList<>(Arrays.asList(GLOSSARY_TERM, ASSET, SCHEMA_ELEMENT));
-    private List<String> supportedTypesForSearch;
+    private List<String> supportedTypesForSearch = new ArrayList<>(Arrays.asList(GLOSSARY_TERM, ASSET, SCHEMA_ELEMENT));
 
     private List<String> supportedZones;
 
@@ -91,7 +89,9 @@ public class AssetCatalogHandler {
         this.errorHandler = errorHandler;
         this.supportedZones = supportedZones;
         this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper, errorHandler);
-        this.supportedTypesForSearch = supportedTypesForSearch;
+        if (CollectionUtils.isNotEmpty(supportedTypesForSearch)) {
+            this.supportedTypesForSearch = supportedTypesForSearch;
+        }
         this.assetConverter = new AssetConverter(repositoryHelper);
     }
 
@@ -125,14 +125,14 @@ public class AssetCatalogHandler {
      * @param assetGUID     the asset identifier
      * @param assetTypeName the asset type name
      * @return a list of Relationships
-     * @throws UserNotAuthorizedException                                                     is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
-     * @throws PropertyServerException                                                        reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
-     * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException is thrown by the OMAG Service when a parameter is null or an invalid value.
+     * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
+     * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
+     * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      */
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getRelationshipsByEntityGUID(String userId,
                                                                                                                    String assetGUID,
                                                                                                                    String assetTypeName)
-            throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String methodName = "getRelationshipsByEntityGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -199,8 +199,10 @@ public class AssetCatalogHandler {
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
-    public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getLinkingRelationshipsBetweenAssets(
-            String serverName, String userId, String startAssetGUID, String endAssetGUID)
+    public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getLinkingRelationshipsBetweenAssets(String serverName,
+                                                                                                                           String userId,
+                                                                                                                           String startAssetGUID,
+                                                                                                                           String endAssetGUID)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
         String methodName = "getLinkingRelationshipsBetweenAssets";
 
@@ -248,16 +250,16 @@ public class AssetCatalogHandler {
      * @param from                 offset
      * @param pageSize             limit the number of the assets returned
      * @return the list of relationships for the given asset
-     * @throws UserNotAuthorizedException                                                     is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
-     * @throws PropertyServerException                                                        reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
-     * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException is thrown by the OMAG Service when a parameter is null or an invalid value.
+     * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
+     * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
+     * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      */
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getRelationships(String userId,
                                                                                                        String assetGUID,
                                                                                                        String assetTypeName,
                                                                                                        String relationshipTypeName,
                                                                                                        Integer from, Integer pageSize)
-            throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
 
         String methodName = "getRelationships";
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -373,25 +375,6 @@ public class AssetCatalogHandler {
         return getAssetDescriptionsAfterValidation(methodName, entities);
     }
 
-    private List<AssetDescription> getAssetDescriptionsAfterValidation(String methodName,
-                                                                       List<EntityDetail> entities)
-            throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
-        List<AssetDescription> result = new ArrayList<>();
-
-        for (EntityDetail asset : entities) {
-
-            invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
-                    GUID_PARAMETER,
-                    commonHandler.getAssetZoneMembership(asset.getClassifications()),
-                    supportedZones,
-                    ASSET_CATALOG_OMAS,
-                    methodName);
-
-            result.add(assetConverter.getAssetDescription(asset));
-        }
-        return result;
-    }
-
     /**
      * @param userId           user identifier that issues the call
      * @param searchCriteria   search criteria string used for finding the entities
@@ -406,14 +389,14 @@ public class AssetCatalogHandler {
      *                                                                                            or relationship instance do not match the TypeDefs for the metadata collection.
      * @throws TypeErrorException                                                                 - is thrown by an OMRS Connector when the requested type for an instance is not represented by a known TypeDef.
      * @throws PagingErrorException                                                               - is thrown by an OMRS Connector when the caller has passed invalid paging attributes on a search call.
-     * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException     - is thrown by the OMAG Service when a parameter is null or an invalid value.
+     * @throws InvalidParameterException                                                          - is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws RepositoryErrorException                                                           - there is a problem communicating with the metadata repository.
      */
     public List<AssetElements> searchByType(String userId, String searchCriteria, SearchParameters searchParameters)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             PropertyErrorException, TypeErrorException, PagingErrorException,
-            org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, RepositoryErrorException {
+            InvalidParameterException, RepositoryErrorException {
 
         String methodName = "searchByType";
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -454,18 +437,16 @@ public class AssetCatalogHandler {
      * @param entityGUID        the identifier of the entity
      * @param entityTypeDefName the type name of the entity
      * @return the context of the given entity
-     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException - is thrown by the OCF when a userId passed on a request is not
-     *                                                                                     authorized to perform the requested action.
-     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException    - provides a checked exception for reporting errors when connecting to a
-     *                                                                                     metadata repository to retrieve properties about the connection and/or connector.
-     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException  -  is thrown by the OMAS when a parameter is null or an invalid value.
+     * @throws UserNotAuthorizedException - is thrown by the OCF when a userId passed on a request is not
+     *                                    authorized to perform the requested action.
+     * @throws PropertyServerException    - provides a checked exception for reporting errors when connecting to a
+     *                                    metadata repository to retrieve properties about the connection and/or connector.
+     * @throws InvalidParameterException  -  is thrown by the OMAS when a parameter is null or an invalid value.
      */
     public AssetElements buildContextByType(String userId,
                                             String entityGUID,
                                             String entityTypeDefName)
-            throws org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-            org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-            org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
 
         String methodName = "buildContextByType";
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -511,6 +492,41 @@ public class AssetCatalogHandler {
         }
     }
 
+    /**
+     * Returns supported types for search with all sub-types.
+     * If type name is provided, it returns the type itself and the list of sub-types for it
+     *
+     * @param userId   user identifier that issues the call
+     * @param typeName optional type name
+     * @return a list of types
+     */
+    public List<Type> getSupportedTypes(String userId, String typeName) {
+        if (typeName != null && !typeName.isEmpty()) {
+            return getSupportedTypesCollector(userId, Arrays.asList(typeName));
+        }
+
+        return getSupportedTypesCollector(userId, supportedTypesForSearch);
+    }
+
+    private List<AssetDescription> getAssetDescriptionsAfterValidation(String methodName,
+                                                                       List<EntityDetail> entities)
+            throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+        List<AssetDescription> result = new ArrayList<>();
+
+        for (EntityDetail asset : entities) {
+
+            invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
+                    GUID_PARAMETER,
+                    commonHandler.getAssetZoneMembership(asset.getClassifications()),
+                    supportedZones,
+                    ASSET_CATALOG_OMAS,
+                    methodName);
+
+            result.add(assetConverter.getAssetDescription(asset));
+        }
+        return result;
+    }
+
     private EntityDetail getEntity(String userId,
                                    String assetGUID,
                                    String assetTypeName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -520,15 +536,14 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
 
         EntityDetail entityByGUID = commonHandler.getEntityByGUID(userId, assetGUID, assetTypeName);
-        if (entityByGUID == null) {
-            return entityByGUID;
+        if (entityByGUID != null) {
+            invalidParameterHandler.validateAssetInSupportedZone(entityByGUID.getGUID(),
+                    GUID_PARAMETER,
+                    commonHandler.getAssetZoneMembership(entityByGUID.getClassifications()),
+                    supportedZones,
+                    ASSET_CATALOG_OMAS,
+                    methodName);
         }
-        invalidParameterHandler.validateAssetInSupportedZone(entityByGUID.getGUID(),
-                GUID_PARAMETER,
-                commonHandler.getAssetZoneMembership(entityByGUID.getClassifications()),
-                supportedZones,
-                ASSET_CATALOG_OMAS,
-                methodName);
 
         return entityByGUID;
     }
@@ -597,7 +612,8 @@ public class AssetCatalogHandler {
         return assetElements;
     }
 
-    private AssetElement addSchemaForGlossaryTerm(String userId, EntityDetail schema) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private AssetElement addSchemaForGlossaryTerm(String userId, EntityDetail schema)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         AssetElement assetElement = new AssetElement();
         List<Element> elements = new ArrayList<>();
         elements.add(assetConverter.buildAssetElements(schema));
@@ -611,7 +627,7 @@ public class AssetCatalogHandler {
     private void getContextForDeployedAPI(String userId,
                                           EntityDetail entityDetail,
                                           AssetElement assetElement)
-            throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForDeployedAPI";
 
         List<EntityDetail> endpoints = repositoryHandler.getEntitiesForRelationshipType(
@@ -1038,7 +1054,7 @@ public class AssetCatalogHandler {
     private void getConnectionContext(String userId,
                                       EntityDetail endpoint,
                                       AssetElement assetElement)
-            throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String methodName = "getConnectionContext";
 
         List<EntityDetail> connections = repositoryHandler.getEntitiesForRelationshipType(
@@ -1130,7 +1146,8 @@ public class AssetCatalogHandler {
         }
     }
 
-    private boolean processSchemaAttribute(String userId, AssetElement assetElement, String method, EntityDetail schemaAttribute) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private boolean processSchemaAttribute(String userId, AssetElement assetElement, String method, EntityDetail schemaAttribute)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         if (isComplexSchemaType(schemaAttribute.getType().getTypeDefName()).isPresent()) {
             setAssetDetails(userId, assetElement, schemaAttribute);
             return true;
@@ -1140,7 +1157,8 @@ public class AssetCatalogHandler {
         return false;
     }
 
-    private void processPrimitiveSchema(String userId, AssetElement assetElement, String method, EntityDetail schemaAttribute) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private void processPrimitiveSchema(String userId, AssetElement assetElement, String method, EntityDetail schemaAttribute)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         List<EntityDetail> schemaAttributeTypeEntities = repositoryHandler.getEntitiesForRelationshipType(
                 userId,
                 schemaAttribute.getGUID(),
@@ -1437,18 +1455,6 @@ public class AssetCatalogHandler {
         }
 
         return entityNeighborhood;
-    }
-
-    public List<Type> getSupportedTypes(String userId, String typeName) {
-        if (typeName != null && !typeName.isEmpty()) {
-            return getSupportedTypesCollector(userId, Arrays.asList(typeName));
-        }
-
-        if (CollectionUtils.isNotEmpty(supportedTypesForSearch)) {
-            return getSupportedTypesCollector(userId, supportedTypesForSearch);
-        } else {
-            return getSupportedTypesCollector(userId, defaultTypesForSearch);
-        }
     }
 
     private List<Type> getSupportedTypesCollector(String userId, List<String> supportedTypesForSearch) {

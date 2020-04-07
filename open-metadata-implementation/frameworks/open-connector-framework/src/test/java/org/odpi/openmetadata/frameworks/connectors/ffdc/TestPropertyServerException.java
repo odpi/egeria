@@ -18,12 +18,9 @@ public class TestPropertyServerException
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */
-    private int       reportedHTTPCode = 404;
+    private int       reportedHTTPCode = 400;
     private String    reportingClassName = "TestClassName";
     private String    reportingActionDescription = "TestActionDescription";
-    private String    reportedErrorMessage = "TestErrorMessage";
-    private String    reportedSystemAction = "TestSystemAction";
-    private String    reportedUserAction = "TestUserAction";
     private Throwable reportedCaughtException = new Exception("TestReportedCaughtException");
 
     /**
@@ -39,19 +36,13 @@ public class TestPropertyServerException
      */
     @Test public void testNewException()
     {
-        PropertyServerException exception = new PropertyServerException(reportedHTTPCode,
+        PropertyServerException exception = new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                                                         reportingClassName,
-                                                                        reportingActionDescription,
-                                                                        reportedErrorMessage,
-                                                                        reportedSystemAction,
-                                                                        reportedUserAction);
+                                                                        reportingActionDescription);
 
         assertTrue(exception.getReportedHTTPCode() == reportedHTTPCode);
         assertTrue(exception.getReportingClassName().equals(reportingClassName));
         assertTrue(exception.getReportingActionDescription().equals(reportingActionDescription));
-        assertTrue(exception.getErrorMessage().equals(reportedErrorMessage));
-        assertTrue(exception.getReportedSystemAction().equals(reportedSystemAction));
-        assertTrue(exception.getReportedUserAction().equals(reportedUserAction));
         assertTrue(exception.getReportedCaughtException() == null);
     }
 
@@ -61,20 +52,14 @@ public class TestPropertyServerException
      */
     @Test public void testWrappingException()
     {
-        PropertyServerException exception = new PropertyServerException(reportedHTTPCode,
+        PropertyServerException exception = new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                                                         reportingClassName,
                                                                         reportingActionDescription,
-                                                                        reportedErrorMessage,
-                                                                        reportedSystemAction,
-                                                                        reportedUserAction,
                                                                         reportedCaughtException);
 
         assertTrue(exception.getReportedHTTPCode() == reportedHTTPCode);
         assertTrue(exception.getReportingClassName().equals(reportingClassName));
         assertTrue(exception.getReportingActionDescription().equals(reportingActionDescription));
-        assertTrue(exception.getErrorMessage().equals(reportedErrorMessage));
-        assertTrue(exception.getReportedSystemAction().equals(reportedSystemAction));
-        assertTrue(exception.getReportedUserAction().equals(reportedUserAction));
         assertFalse(exception.getReportedCaughtException().equals(null));
         assertTrue(exception.getReportedCaughtException().getMessage().equals("TestReportedCaughtException"));
     }
@@ -85,20 +70,14 @@ public class TestPropertyServerException
      */
     @Test public void testHashCode()
     {
-        PropertyServerException exception = new PropertyServerException(reportedHTTPCode,
+        PropertyServerException exception = new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                                                         reportingClassName,
                                                                         reportingActionDescription,
-                                                                        reportedErrorMessage,
-                                                                        reportedSystemAction,
-                                                                        reportedUserAction,
                                                                         reportedCaughtException);
 
-        PropertyServerException exception2 = new PropertyServerException(reportedHTTPCode,
+        PropertyServerException exception2 = new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                                                          reportingClassName,
                                                                          reportingActionDescription,
-                                                                         reportedErrorMessage,
-                                                                         reportedSystemAction,
-                                                                         reportedUserAction,
                                                                          reportedCaughtException);
 
 

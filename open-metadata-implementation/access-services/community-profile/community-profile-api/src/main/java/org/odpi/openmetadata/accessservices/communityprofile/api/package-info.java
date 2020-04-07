@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.api;
 
 /**
  * The Community Profile Open Metadata Access Service (OMAS) is used by tools and administrators to
@@ -22,3 +21,4 @@ package org.odpi.openmetadata.accessservices.communityprofile.api;
  *     <li>CommunityManagementInterface covers the administrator's role in setting up and shutting down communities.</li>
  * </ul>
  */
+package org.odpi.openmetadata.accessservices.communityprofile.api;

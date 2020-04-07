@@ -15,6 +15,7 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc.OMAGOCFE
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
@@ -24,7 +25,6 @@ import org.odpi.openmetadata.frameworks.discovery.DiscoveryConfigurationServer;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.RegisteredDiscoveryService;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.List;
 import java.util.Map;
@@ -43,7 +43,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
     private NullRequestBody         nullRequestBody         = new NullRequestBody();
 
     private DiscoveryEngineOutTopicClientConnector configurationEventTopicConnector = null;
-    private OMRSAuditLog                           auditLog = null;
+    private AuditLog                               auditLog = null;
 
 
     /**
@@ -108,7 +108,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                         String        serverPlatformURLRoot,
                                         ODFRESTClient restClient,
                                         int           maxPageSize,
-                                        OMRSAuditLog  auditLog) throws InvalidParameterException
+                                        AuditLog      auditLog) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
@@ -120,6 +120,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
         this.restClient = restClient;
         this.auditLog = auditLog;
     }
+
 
 
     /**
@@ -179,20 +180,12 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
 
             if (connector == null)
             {
-                OMAGOCFErrorCode errorCode = OMAGOCFErrorCode.NULL_CONNECTOR_RETURNED;
-                String           errorMessage = errorCode.getErrorMessageId()
-                                              + errorCode.getFormattedErrorMessage(topicConnection.getQualifiedName(),
-                                                                                   serviceName,
-                                                                                   serverName,
-                                                                                   serverPlatformURLRoot);
-
-                throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+                throw new ConnectorCheckedException(OMAGOCFErrorCode.NULL_CONNECTOR_RETURNED.getMessageDefinition(topicConnection.getQualifiedName(),
+                                                                                                                  serviceName,
+                                                                                                                  serverName,
+                                                                                                                  serverPlatformURLRoot),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction(),
-                                                    null);
+                                                    methodName);
             }
 
             if (connector instanceof DiscoveryEngineOutTopicClientConnector)
@@ -203,21 +196,13 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
             }
             else
             {
-                OMAGOCFErrorCode errorCode = OMAGOCFErrorCode.WRONG_TYPE_OF_CONNECTOR;
-                String           errorMessage = errorCode.getErrorMessageId()
-                                              + errorCode.getFormattedErrorMessage(topicConnection.getQualifiedName(),
-                                                                                   serviceName,
-                                                                                   serverName,
-                                                                                   serverPlatformURLRoot,
-                                                                                   DiscoveryEngineOutTopicClientConnector.class.getName());
-
-                throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+                throw new ConnectorCheckedException(OMAGOCFErrorCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(topicConnection.getQualifiedName(),
+                                                                                                                  serviceName,
+                                                                                                                  serverName,
+                                                                                                                  serverPlatformURLRoot,
+                                                                                                                  DiscoveryEngineOutTopicClientConnector.class.getName()),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction(),
-                                                    null);
+                                                    methodName);
             }
         }
 
@@ -266,9 +251,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                   serverName,
                                                                   userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGUID();
     }
@@ -303,9 +288,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                                                            userId,
                                                                                                            guid);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getDiscoveryEngineProperties();
     }
@@ -340,9 +325,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                                                            userId,
                                                                                                            name);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getDiscoveryEngineProperties();
     }
@@ -379,9 +364,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                                                Integer.toString(startingFrom),
                                                                                                Integer.toString(maximumResults));
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getDiscoveryEngines();
     }
@@ -449,9 +434,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                   userId,
                                                                   guid);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
     }
 
 
@@ -492,9 +477,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                   userId,
                                                                   guid);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
     }
 
 
@@ -543,9 +528,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                   serverName,
                                                                   userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGUID();
     }
@@ -581,9 +566,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                                                              userId,
                                                                                                              guid);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getDiscoveryServiceProperties();
     }
@@ -619,9 +604,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                                                              userId,
                                                                                                              name);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getDiscoveryServiceProperties();
     }
@@ -659,9 +644,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                                                  Integer.toString(startingFrom),
                                                                                                  Integer.toString(maximumResults));
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getDiscoveryServices();
     }
@@ -697,9 +682,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                          userId,
                                                                          discoveryServiceGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGUIDs();
     }
@@ -775,9 +760,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                   userId,
                                                                   guid);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
     }
 
 
@@ -819,9 +804,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                   userId,
                                                                   guid);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
     }
 
 
@@ -869,9 +854,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                   userId,
                                                                   discoveryEngineGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
     }
 
 
@@ -910,9 +895,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                                                              discoveryEngineGUID,
                                                                                                              discoveryServiceGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getRegisteredDiscoveryService();
     }
@@ -955,9 +940,9 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                          startingFrom,
                                                                          maximumResults);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGUIDs();
     }
@@ -997,8 +982,8 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                                                   discoveryEngineGUID,
                                                                   discoveryServiceGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
     }
 }

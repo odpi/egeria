@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +30,7 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a consumer should correct the error</li>
  * </ul>
  */
-public enum OpenMetadataSecurityErrorCode
+public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
 {
     BAD_PLATFORM_SECURITY_CONNECTION(400, "OMAG-PLATFORM-SECURITY-400-001 ",
                                      "The OMAG server platform has been configured with a bad connection to its platform security connector.  Error message is {0}. Connection is {1}",
@@ -139,13 +141,8 @@ public enum OpenMetadataSecurityErrorCode
 
     ;
 
-    private int    httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
+    private ExceptionMessageDefinition messageDefinition;
 
-    private static final Logger log = LoggerFactory.getLogger(OpenMetadataSecurityErrorCode.class);
 
 
     /**
@@ -156,89 +153,43 @@ public enum OpenMetadataSecurityErrorCode
      *
      * This will expand out to the 5 parameters shown below.
      *
-     * @param newHTTPErrorCode   error code to use over REST calls
-     * @param newErrorMessageId   unique Id for the message
-     * @param newErrorMessage   text for the message
-     * @param newSystemAction   description of the action taken by the system when the error condition happened
-     * @param newUserAction   instructions for resolving the error
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique Id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
      */
-    OpenMetadataSecurityErrorCode(int  newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction, String newUserAction)
+    OpenMetadataSecurityErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.httpErrorCode = newHTTPErrorCode;
-        this.errorMessageId = newErrorMessageId;
-        this.errorMessage = newErrorMessage;
-        this.systemAction = newSystemAction;
-        this.userAction = newUserAction;
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                errorMessageId,
+                                                                errorMessage,
+                                                                systemAction,
+                                                                userAction);
     }
 
-
-    public int getHTTPErrorCode()
+    /**
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
+     *
+     * @return message definition object.
+     */
+    public ExceptionMessageDefinition getMessageDefinition()
     {
-        return httpErrorCode;
+        return messageDefinition;
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
-     * @return errorMessageId
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public String getErrorMessageId()
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
-        return errorMessageId;
-    }
+        messageDefinition.setMessageParameters(params);
 
-
-    /**
-     * Returns the error message with placeholders for specific details.
-     *
-     * @return errorMessage (unformatted)
-     */
-    public String getUnformattedErrorMessage()
-    {
-        return errorMessage;
-    }
-
-
-    /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params   strings that plug into the placeholders in the errorMessage
-     * @return errorMessage (formatted with supplied parameters)
-     */
-    public String getFormattedErrorMessage(String... params)
-    {
-        log.debug(String.format("<== OpenMetadataSecurityErrorCode.getMessage(%s)", Arrays.toString(params)));
-
-        MessageFormat mf = new MessageFormat(errorMessage);
-        String result = mf.format(params);
-
-        log.debug(String.format("==> OpenMetadataSecurityErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-
-        return result;
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        return messageDefinition;
     }
 
 
@@ -251,11 +202,7 @@ public enum OpenMetadataSecurityErrorCode
     public String toString()
     {
         return "OpenMetadataSecurityErrorCode{" +
-                "httpErrorCode=" + httpErrorCode +
-                ", errorMessageId='" + errorMessageId + '\'' +
-                ", errorMessage='" + errorMessage + '\'' +
-                ", systemAction='" + systemAction + '\'' +
-                ", userAction='" + userAction + '\'' +
+                "messageDefinition=" + messageDefinition +
                 '}';
     }
 }

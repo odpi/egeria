@@ -6,17 +6,23 @@ import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServ
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import static org.odpi.openmetadata.accessservices.dataplatform.utils.Constants.DATA_PLATFORM_OMAS_NAME;
 import static org.odpi.openmetadata.accessservices.dataplatform.utils.Constants.DATA_PLATFORM_USER_ID;
-import static org.odpi.openmetadata.accessservices.dataplatform.utils.SoftwareServerCapabilityMapper.*;
+import static org.odpi.openmetadata.accessservices.dataplatform.utils.SoftwareServerCapabilityMapper.NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.accessservices.dataplatform.utils.SoftwareServerCapabilityMapper.PATCH_LEVEL__PROPERTY_NAME;
+import static org.odpi.openmetadata.accessservices.dataplatform.utils.SoftwareServerCapabilityMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.accessservices.dataplatform.utils.SoftwareServerCapabilityMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
+import static org.odpi.openmetadata.accessservices.dataplatform.utils.SoftwareServerCapabilityMapper.SOURCE_PROPERTY_NAME;
+import static org.odpi.openmetadata.accessservices.dataplatform.utils.SoftwareServerCapabilityMapper.TYPE_PROPERTY_NAME;
+import static org.odpi.openmetadata.accessservices.dataplatform.utils.SoftwareServerCapabilityMapper.VERSION__PROPERTY_NAME;
 
 
 /**

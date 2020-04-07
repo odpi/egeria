@@ -6,7 +6,6 @@ import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationF
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
@@ -207,19 +206,12 @@ public class OMAGServerAdminStoreServices
         }
         catch (Throwable   error)
         {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_CONFIG_FILE;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(serverName,
-                                                                            methodName,
-                                                                            error.getClass().getName(),
-                                                                            error.getMessage());
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.BAD_CONFIG_FILE.getMessageDefinition(serverName,
+                                                                                                            methodName,
+                                                                                                            error.getClass().getName(),
+                                                                                                            error.getMessage()),
                                                     this.getClass().getName(),
                                                     methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction(),
                                                     error);
         }
     }
@@ -256,7 +248,7 @@ public class OMAGServerAdminStoreServices
             }
             catch (UserNotAuthorizedException error)
             {
-                throw new OMAGNotAuthorizedException(error);
+                throw new OMAGNotAuthorizedException(error.getReportedErrorMessage(), error);
             }
 
             serverConfig = new OMAGServerConfig();
@@ -278,23 +270,17 @@ public class OMAGServerAdminStoreServices
                 if (compatibleVersion.equals(versionId))
                 {
                     isCompatibleVersion = true;
+                    break;
                 }
             }
 
             if (!isCompatibleVersion)
             {
-                OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.INCOMPATIBLE_CONFIG_FILE;
-                String errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(serverName,
-                                                             versionId,
-                                                             OMAGServerConfig.COMPATIBLE_VERSIONS.toString());
-
-                throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                throw new OMAGInvalidParameterException(OMAGAdminErrorCode.INCOMPATIBLE_CONFIG_FILE.getMessageDefinition(serverName,
+                                                                                                                         versionId,
+                                                                                                                         OMAGServerConfig.COMPATIBLE_VERSIONS.toString()),
                                                         this.getClass().getName(),
-                                                        methodName,
-                                                        errorMessage,
-                                                        errorCode.getSystemAction(),
-                                                        errorCode.getUserAction());
+                                                        methodName);
             }
 
             validateConfigServerName(serverName, serverConfig.getLocalServerName(), methodName);
@@ -312,11 +298,11 @@ public class OMAGServerAdminStoreServices
             }
             catch (InvalidParameterException error)
             {
-                throw new OMAGInvalidParameterException(error);
+                throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
             }
             catch (UserNotAuthorizedException error)
             {
-                throw new OMAGNotAuthorizedException(error);
+                throw new OMAGNotAuthorizedException(error.getReportedErrorMessage(), error);
             }
         }
 
@@ -375,16 +361,10 @@ public class OMAGServerAdminStoreServices
     {
         if (! serverName.equals(configServerName))
         {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.INCOMPATIBLE_SERVER_NAMES;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                            configServerName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                      this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.INCOMPATIBLE_SERVER_NAMES.getMessageDefinition(serverName,
+                                                                                                                      configServerName),
+                                                    this.getClass().getName(),
+                                                    methodName);
 
         }
     }

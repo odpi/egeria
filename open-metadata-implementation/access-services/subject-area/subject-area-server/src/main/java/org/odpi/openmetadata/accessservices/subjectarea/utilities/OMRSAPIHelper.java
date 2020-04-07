@@ -53,12 +53,19 @@ public class OMRSAPIHelper {
         return omrsRepositoryHelper;
     }
 
-    /**
-     * Set the OMRS repository connector
-     * @param connector connector cannot be null
-     * @param restAPIName rest API name
-     * @throws MetadataServerUncontactableException Metadata server not contactable
-     */
+    public void setOMRSMetadataCollection(OMRSMetadataCollection oMRSMetadataCollection) {
+        this.oMRSMetadataCollection = oMRSMetadataCollection;
+    }
+
+    public void setOmrsRepositoryHelper(OMRSRepositoryHelper omrsRepositoryHelper) {
+        this.omrsRepositoryHelper = omrsRepositoryHelper;
+    }
+    //    /**
+//     * Set the OMRS repository connector
+//     * @param connector connector cannot be null
+//     * @param restAPIName rest API name
+//     * @throws MetadataServerUncontactableException Metadata server not contactable
+//     */
     public void setOMRSRepositoryConnector(OMRSRepositoryConnector connector, String restAPIName) throws MetadataServerUncontactableException {
         String methodName = "setOMRSRepositoryConnector";
         if (log.isDebugEnabled()) {
@@ -1303,8 +1310,8 @@ public class OMRSAPIHelper {
         } catch (RepositoryErrorException e)
         {
             // check to see if the method is not implemented. in this case do not error.
-            String method_not_implemented_msg_id = OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getErrorMessageId();
-            if (!e.getErrorMessage().startsWith(method_not_implemented_msg_id)) {
+            String method_not_implemented_msg_id = OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition().getMessageId();
+            if (!e.getReportedErrorMessage().startsWith(method_not_implemented_msg_id)) {
                response =  this.errorHandler.handleRepositoryError(e, restAPIName, serverName, serviceName);
             }
         } catch (TypeErrorException e)

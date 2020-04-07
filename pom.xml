@@ -23,7 +23,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.7-SNAPSHOT</version>
 
     <url>https://egeria.odpi.org</url>
 
@@ -124,29 +124,29 @@
         <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
-        <junit.platform.version>1.6.0</junit.platform.version>
-        <junit.jupiter.version>5.6.0</junit.jupiter.version>
+        <junit.platform.version>1.6.1</junit.platform.version>
+        <junit.jupiter.version>5.6.1</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
-        <mockito.version>3.3.0</mockito.version>
+        <mockito.version>3.3.3</mockito.version>
         <testng.version>7.1.0</testng.version>
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.10.3</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
-        <kafka.version>2.4.0</kafka.version>
-        <janus.version>0.4.1</janus.version>
+        <kafka.version>2.4.1</kafka.version>
+        <janus.version>0.5.0</janus.version>
         <gremlin.version>3.4.6</gremlin.version>
-        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
-        <spring.version>5.2.4.RELEASE</spring.version>
-        <spring-security.version>5.3.0.RELEASE</spring-security.version>
-        <spring-data.version>2.2.5.RELEASE</spring-data.version>
-        <tomcat.version>9.0.31</tomcat.version>
+        <netty.version>4.1.48.Final</netty.version>
+        <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
+        <spring.version>5.2.5.RELEASE</spring.version>
+        <spring-security.version>5.3.1.RELEASE</spring-security.version>
+        <spring-data.version>2.2.6.RELEASE</spring-data.version>
+        <tomcat.version>9.0.33</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
-        <commons-lang.version>3.9</commons-lang.version>
-        <springfox.version>2.9.2</springfox.version>
+        <commons-lang.version>3.10</commons-lang.version>
         <h2-database.version>1.4.200</h2-database.version>
         <jwt.version>0.9.1</jwt.version>
         <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
@@ -159,34 +159,37 @@
         <ranger.version>1.2.0</ranger.version>
         <plexus.version>3.3.0</plexus.version>
         <quartz.version>2.3.2</quartz.version>
-        <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
+        <lucene-analyzers-common.version>7.7.2</lucene-analyzers-common.version>
         <guava.version>23.0</guava.version>
-        <tink.version>1.3.0-rc4</tink.version>
+        <tink.version>1.3.0</tink.version>
         <jsonld.version>0.13.0</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.14</commons-codec.version>
         <json-sanitizer.version>1.2.0</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <oss.version>4.5.0</oss.version>
-        <spotbugs-annotations.version>4.0.0</spotbugs-annotations.version>
+        <oss.version>4.5.1</oss.version>
+        <spotbugs-annotations.version>4.0.1</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.5</joda.version>
         <jackson-asl.version>1.9.13</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.7.3</snappy.version>
+        <springdoc.version>1.3.0</springdoc.version>
+        <classgraph.version>4.8.67</classgraph.version>
+        <swagger.version>2.1.2</swagger.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
-        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-shade.version>3.2.2</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.13.0</maven-pmd.version>
-        <owasp.version>5.3.1</owasp.version>
-        <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
-        <spotbugs.version>4.0.0</spotbugs.version>
+        <owasp.version>5.3.2</owasp.version>
+        <spotbugs-maven.version>4.0.0</spotbugs-maven.version>
+        <spotbugs.version>4.0.1</spotbugs.version>
         <maven-download.version>1.5.0</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
@@ -197,12 +200,13 @@
         <exec.plugin.version>1.6.0</exec.plugin.version>
         <resources.plugin.version>3.1.0</resources.plugin.version>
         <rat-plugin.version>0.13</rat-plugin.version>
-        <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
+        <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
+        <springdoc-plugin.version>0.3</springdoc-plugin.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -297,41 +301,6 @@
                 <artifactId>jjwt</artifactId>
                 <scope>compile</scope>
                 <version>${jwt.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-core</artifactId>
-                <scope>compile</scope>
-                <version>${springfox.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-spi</artifactId>
-                <scope>compile</scope>
-                <version>${springfox.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-spring-web</artifactId>
-                <scope>compile</scope>
-                <version>${springfox.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <scope>compile</scope>
-                <version>${springfox.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <scope>compile</scope>
-                <version>${springfox.version}</version>
             </dependency>
 
             <dependency>
@@ -459,6 +428,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-driver</artifactId>
+                <version>${janus.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>commons-logging</groupId>
                 <artifactId>commons-logging</artifactId>
                 <version>${commons-logging.version}</version>
@@ -496,6 +471,48 @@
                 <artifactId>janusgraph-lucene</artifactId>
                 <version>${janus.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-buffer</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-common</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-handler</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-resolver</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport</artifactId>
+                <version>${netty.version}</version>
             </dependency>
 
             <dependency>
@@ -1436,6 +1453,14 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-ut</artifactId>
+                <scope>test</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>platform-services-api</artifactId>
@@ -2076,6 +2101,24 @@
                 <scope>runtime</scope>
             </dependency>
 
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.classgraph</groupId>
+                <artifactId>classgraph</artifactId>
+                <version>${classgraph.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger.version}</version>
+        </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -2297,6 +2340,12 @@
                     <groupId>pl.project13.maven</groupId>
                     <artifactId>git-commit-id-plugin</artifactId>
                     <version>4.0.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.springdoc</groupId>
+                    <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                    <version>${springdoc-plugin.version}</version>
                 </plugin>
 
             </plugins>

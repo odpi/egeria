@@ -11,9 +11,10 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.UnexpectedExce
 import org.odpi.openmetadata.accessservices.subjectarea.responses.UserNotAuthorizedExceptionResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
-import org.odpi.openmetadata.commonservices.ffdc.auditlog.OMAGCommonAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.viewservices.glossaryauthor.auditlog.GlossaryAuthorViewAuditCode;
 import org.odpi.openmetadata.viewservices.glossaryauthor.initialization.GlossaryAuthorViewInstanceHandler;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +33,7 @@ abstract public class BaseGlossaryAuthorView {
      * @param methodName - calling method's name
      * @return response corresponding to the error.
      */
-    protected SubjectAreaOMASAPIResponse getResponseForError(Throwable error, OMRSAuditLog auditLog, String methodName) {
+    protected SubjectAreaOMASAPIResponse getResponseForError(Throwable error, AuditLog auditLog, String methodName) {
         SubjectAreaOMASAPIResponse response = null;
         if (error instanceof OCFCheckedExceptionBase) {
             response = getResponseFromOCFCheckedExceptionBase(( OCFCheckedExceptionBase)error);
@@ -42,14 +43,8 @@ abstract public class BaseGlossaryAuthorView {
             response = new UnexpectedExceptionResponse(methodName, error.getMessage());
             if (auditLog != null)
             {
-                OMAGCommonAuditCode auditCode = OMAGCommonAuditCode.UNEXPECTED_EXCEPTION;
                 auditLog.logException(methodName,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(error.getClass().getName(), methodName, error.getMessage()),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction(),
+                        GlossaryAuthorViewAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(), methodName, error.getMessage()),
                         error);
             }
         }

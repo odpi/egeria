@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.viewservices.glossaryauthor.server;
 
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -13,12 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
- * The GlossaryAuthorRESTServicesInstance provides the org.odpi.openmetadata.viewervices.glossaryauthor.server  implementation of the Glossary Author Open Metadata
+ * The GlossaryAuthorRESTServicesInstance provides the org.odpi.openmetadata.viewservices.glossaryauthor.server  implementation of the Glossary Author Open Metadata
  * View Service (OMVS) for projects.  This interface provides project authoring interfaces for subject area experts.
  */
 
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}/projects")
+
+@Tag(name="Glossary Author OMVS", description="Develop a definition of a subject area by authoring glossaries, including terms for use by a user interface.", externalDocs=@ExternalDocumentation(description="Glossary Author View Services (OMVS)",url="https://egeria.odpi.org/open-metadata-implementation/view-services/glossary-author-view/"))
 
 public class GlossaryAuthorViewProjectRESTResource {
 
@@ -162,10 +166,6 @@ public class GlossaryAuthorViewProjectRESTResource {
     /**
      * Update a Project
      * <p>
-     * If the caller has chosen to incorporate the project name in their Project Terms or Categories qualified name, renaming the project will cause those
-     * qualified names to mismatch the Project name.
-     * If the caller has chosen to incorporate the project qualifiedName in their Project Terms or Categories qualified name, changing the qualified name of the project will cause those
-     * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
      * @param serverName      local UI server name

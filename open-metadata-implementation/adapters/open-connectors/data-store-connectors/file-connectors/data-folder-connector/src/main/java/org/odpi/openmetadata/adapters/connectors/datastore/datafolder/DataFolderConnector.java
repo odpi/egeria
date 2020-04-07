@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.datafolder;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStore;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.ffdc.DataFolderConnectorErrorCode;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
@@ -20,7 +21,7 @@ import java.io.File;
  */
 public class DataFolderConnector extends ConnectorBase implements BasicFileStore
 {
-    protected String dataFolderName = null;
+    private String dataFolderName = null;
 
     /*
      * Variables used for logging and debug.
@@ -66,36 +67,29 @@ public class DataFolderConnector extends ConnectorBase implements BasicFileStore
                                 String                       fileStoreName,
                                 Throwable                    caughtException) throws FileException
     {
-        String  errorMessage;
+        ExceptionMessageDefinition messageDefinition;
 
         if (fileStoreName == null)
         {
-            errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(super.connectionBean.getQualifiedName());
+            messageDefinition = errorCode.getMessageDefinition(super.connectionBean.getQualifiedName());
         }
         else
         {
-            errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(fileStoreName,
-                                                                                              super.connectionBean.getQualifiedName());
+            messageDefinition = errorCode.getMessageDefinition(fileStoreName, super.connectionBean.getQualifiedName());
         }
 
         if (caughtException == null)
         {
-            throw new FileException(errorCode.getHTTPErrorCode(),
+            throw new FileException(messageDefinition,
                                     this.getClass().getName(),
                                     methodName,
-                                    errorMessage,
-                                    errorCode.getSystemAction(),
-                                    errorCode.getUserAction(),
                                     fileStoreName);
         }
         else
         {
-            throw new FileException(errorCode.getHTTPErrorCode(),
+            throw new FileException(messageDefinition,
                                     this.getClass().getName(),
                                     methodName,
-                                    errorMessage,
-                                    errorCode.getSystemAction(),
-                                    errorCode.getUserAction(),
                                     caughtException,
                                     fileStoreName);
         }
@@ -123,7 +117,7 @@ public class DataFolderConnector extends ConnectorBase implements BasicFileStore
      * @return File object
      * @throws FileException problem accessing the file
      */
-    protected File  getFile(String methodName) throws FileException
+    private File  getFile(String methodName) throws FileException
     {
         try
         {

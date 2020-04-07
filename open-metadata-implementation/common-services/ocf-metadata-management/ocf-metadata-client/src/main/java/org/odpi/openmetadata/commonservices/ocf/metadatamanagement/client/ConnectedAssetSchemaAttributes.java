@@ -147,9 +147,9 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                                                                                              cacheStartPointer,
                                                                                              maximumSize);
 
-            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(restResult);
 
             List<SchemaAttribute> schemaAttributes = restResult.getList();
             if ((schemaAttributes == null) || (schemaAttributes.isEmpty()))
@@ -164,28 +164,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                 {
                     if (schemaAttribute != null)
                     {
-                        SchemaType schemaTypeBean = schemaAttribute.getAttributeType();
-                        SchemaLink schemaLinkBean = schemaAttribute.getExternalAttributeType();
-
-                        if (schemaTypeBean != null)
-                        {
-                            AssetSchemaType assetSchemaType = connectedAsset.getAssetSchemaType(serviceName,
-                                                                                                serverName,
-                                                                                                omasServerURL,
-                                                                                                userId,
-                                                                                                schemaTypeBean,
-                                                                                                restClient);
-
-                            resultList.add(new AssetSchemaAttribute(connectedAsset,
-                                                                    schemaAttribute,
-                                                                    assetSchemaType));
-                        }
-                        else if (schemaLinkBean != null)
-                        {
-                            resultList.add(new AssetSchemaAttribute(connectedAsset,
-                                                                    schemaAttribute,
-                                                                    new AssetSchemaLink(schemaLinkBean)));
-                        }
+                        resultList.add(new AssetSchemaAttribute(connectedAsset, schemaAttribute));
                     }
                 }
 

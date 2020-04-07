@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gloss
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.GlossaryHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The GlossaryAuthoraViewGlossaryRESTServices provides the org.odpi.openmetadata.viewservices.glossaryauthor.services implementation of the GlossaryAuthora Open Metadata
+ * The GlossaryAuthorViewGlossaryRESTServices provides the org.odpi.openmetadata.viewservices.glossaryauthor.services implementation of the GlossaryAuthor Open Metadata
  * View Service (OMVS). This interface provides view glossary authoring interfaces for subject area experts.
  */
 
@@ -63,7 +63,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied glossary - the calling layer should not allow this.
         try {
@@ -104,7 +104,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
@@ -154,7 +154,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
@@ -174,6 +174,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
                     sequencingProperty);
             GlossariesResponse glossariesResponse = new GlossariesResponse();
             glossariesResponse.setGlossaries(glossaries);
+            response = glossariesResponse;
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, methodName);
         }
@@ -219,7 +220,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
@@ -270,7 +271,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied glossary - the calling layer should not allow this.
         try {
@@ -335,7 +336,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied glossary - the calling layer should not allow this.
         try {
@@ -388,7 +389,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse response = null;
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         // should not be called without a supplied glossary - the calling layer should not allow this.
         try {

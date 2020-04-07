@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.admin;
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.auditlog.ITInfrastructureAuditCode;
+import org.odpi.openmetadata.accessservices.itinfrastructure.ffdc.ITInfrastructureAuditCode;
 import org.odpi.openmetadata.accessservices.itinfrastructure.listener.ITInfrastructureOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.itinfrastructure.server.ITInfrastructureServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -21,9 +21,9 @@ import java.util.List;
  */
 public class ITInfrastructureAdmin extends AccessServiceAdmin
 {
-    private OMRSAuditLog                      auditLog            = null;
-    private ITInfrastructureServicesInstance  instance            = null;
-    private String                            serverName          = null;
+    private AuditLog                         auditLog   = null;
+    private ITInfrastructureServicesInstance instance   = null;
+    private String                           serverName = null;
 
     /**
      * Default constructor
@@ -46,20 +46,12 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      omrsTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog            auditLog,
+                           AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
-        final String               actionDescription = "initialize";
-        ITInfrastructureAuditCode auditCode;
+        final String actionDescription = "initialize";
 
-        auditCode = ITInfrastructureAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, ITInfrastructureAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         this.auditLog = auditLog;
 
@@ -96,14 +88,9 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
                                                   auditLog);
             }
 
-            auditCode = ITInfrastructureAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(serverName),
-                               accessServiceConfig.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                ITInfrastructureAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                accessServiceConfig.toString());
         }
         catch (OMAGConfigurationErrorException error)
         {
@@ -111,14 +98,9 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
         }
         catch (Throwable error)
         {
-            auditCode = ITInfrastructureAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  ITInfrastructureAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
                                   accessServiceConfig.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
                                   error);
 
             super.throwUnexpectedInitializationException(actionDescription,
@@ -133,21 +115,13 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
      */
     public void shutdown()
     {
-        final String            actionDescription = "shutdown";
-        ITInfrastructureAuditCode  auditCode;
+        final String actionDescription = "shutdown";
 
         if (instance != null)
         {
             this.instance.shutdown();
         }
 
-        auditCode = ITInfrastructureAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(serverName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, ITInfrastructureAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
     }
 }

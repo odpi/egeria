@@ -2,12 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class RepositoryHandler
     private RepositoryErrorHandler errorHandler;
     private OMRSMetadataCollection metadataCollection;
     private int                    maxPageSize;
-    private OMRSAuditLog           auditLog;
+    private AuditLog               auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(RepositoryHandler.class);
 
@@ -37,7 +38,7 @@ public class RepositoryHandler
      * @param metadataCollection  access to the repository content.
      * @param maxPageSize maximum number of instances that can be returned on a single call
      */
-    public RepositoryHandler(OMRSAuditLog            auditLog,
+    public RepositoryHandler(AuditLog                auditLog,
                              RepositoryErrorHandler  errorHandler,
                              OMRSMetadataCollection  metadataCollection,
                              int                     maxPageSize)
@@ -933,18 +934,12 @@ public class RepositoryHandler
         try
         {
             metadataCollection.purgeEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
-            RepositoryHandlerAuditCode auditCode = RepositoryHandlerAuditCode.ENTITY_PURGED;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(obsoleteEntityGUID,
-                                                                entityTypeName,
-                                                                entityTypeGUID,
-                                                                methodName,
-                                                                metadataCollection.getMetadataCollectionId(userId)),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                RepositoryHandlerAuditCode.ENTITY_PURGED.getMessageDefinition(obsoleteEntityGUID,
+                                                                                              entityTypeName,
+                                                                                              entityTypeGUID,
+                                                                                              methodName,
+                                                                                              metadataCollection.getMetadataCollectionId(userId)));
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -1196,6 +1191,62 @@ public class RepositoryHandler
         {
             return results;
         }
+    }
+
+    /**
+     * Return the list of entities by the requested classification type.
+     *
+     * @param userId               user making the request
+     * @param entityEntityTypeGUID starting entity's GUID
+     * @param classificationName   type name for the classification to follow
+     * @param startingFrom         initial position in the stored list.
+     * @param pageSize             maximum number of definitions to return on this call.
+     * @param methodName           name of calling method
+     * @return retrieved entities or null
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<EntityDetail> getEntitiesForClassificationType(String userId,
+                                                               String entityEntityTypeGUID,
+                                                               String classificationName,
+                                                               int startingFrom,
+                                                               int pageSize,
+                                                               String methodName) throws    UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        try
+        {
+            List<EntityDetail> entitiesByClassification = metadataCollection.findEntitiesByClassification(userId,
+                                                                                                          entityEntityTypeGUID,
+                                                                                                          classificationName,
+                                                                                                          null,
+                                                                                                          MatchCriteria.ALL,
+                                                                                                          startingFrom,
+                                                                                                          null,
+                                                                                                          null,
+                                                                                                          null,
+                                                                                                           SequencingOrder.ANY,
+                                                                                                           pageSize);
+
+            if (entitiesByClassification != null)
+            {
+                return entitiesByClassification;
+            }
+            else
+            {
+                log.debug("No entities of type {} with classification {}.", entityEntityTypeGUID, classificationName);
+            }
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+
+        return new ArrayList<>();
     }
 
 
@@ -2608,18 +2659,12 @@ public class RepositoryHandler
                                                  relationshipTypeName,
                                                  relationshipGUID);
 
-            RepositoryHandlerAuditCode auditCode = RepositoryHandlerAuditCode.RELATIONSHIP_PURGED;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(relationshipGUID,
-                                                                relationshipTypeName,
-                                                                relationshipTypeGUID,
-                                                                methodName,
-                                                                metadataCollection.getMetadataCollectionId(userId)),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                RepositoryHandlerAuditCode.RELATIONSHIP_PURGED.getMessageDefinition(relationshipGUID,
+                                                                                                    relationshipTypeName,
+                                                                                                    relationshipTypeGUID,
+                                                                                                    methodName,
+                                                                                                    metadataCollection.getMetadataCollectionId(userId)));
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {

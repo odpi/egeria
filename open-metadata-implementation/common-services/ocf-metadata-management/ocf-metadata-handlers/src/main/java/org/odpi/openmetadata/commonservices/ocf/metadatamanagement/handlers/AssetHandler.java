@@ -562,7 +562,7 @@ public class AssetHandler
      * Save any associated schema type.
      *
      * @param userId calling user
-     * @param asset unique identifier of the asset
+     * @param asset properties of the asset
      * @param schemaType schema Type object or null
      * @param schemaAttributes list of nested schema attribute objects or null
      * @param methodName calling method
@@ -609,6 +609,54 @@ public class AssetHandler
                                                          methodName);
                 }
             }
+        }
+    }
+
+
+    /**
+     * Validate that the user is able to make changes to the a.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public void validateUserForAssetAttachmentUpdate(String userId,
+                                                     String assetGUID,
+                                                     String methodName) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        final String  assetGUIDParameter = "assetGUID";
+
+        Asset asset = this.retrieveAssetFromRepositoryByGUID(userId,
+                                                             assetGUID,
+                                                             assetGUIDParameter,
+                                                             null,
+                                                             methodName);
+
+        if (asset != null)
+        {
+            invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
+                                                                 assetGUIDParameter,
+                                                                 asset.getZoneMembership(),
+                                                                 this.getSupportedZones(userId, serviceName),
+                                                                 serviceName,
+                                                                 methodName);
+
+            securityVerifier.validateUserForAssetAttachmentUpdate(userId, asset);
+        }
+        else
+        {
+            invalidParameterHandler.throwUnknownElement(userId,
+                                                        assetGUID,
+                                                        AssetMapper.ASSET_TYPE_NAME,
+                                                        serviceName,
+                                                        serverName,
+                                                        methodName);
         }
     }
 

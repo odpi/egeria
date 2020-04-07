@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.outtopic;
 
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryEnginePropertiesMapper;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -35,7 +35,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
     public DiscoveryEngineOMRSTopicListener(String                   serviceName,
                                             DiscoveryEnginePublisher eventPublisher,
                                             OMRSRepositoryHelper     repositoryHelper,
-                                            OMRSAuditLog             auditLog)
+                                            AuditLog                 auditLog)
     {
         super(serviceName, auditLog);
 

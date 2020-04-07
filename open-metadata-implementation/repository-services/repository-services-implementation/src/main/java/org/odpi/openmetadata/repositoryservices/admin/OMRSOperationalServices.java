@@ -15,7 +15,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAc
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
 import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveManager;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
@@ -169,14 +169,7 @@ public class OMRSOperationalServices
                 omrsRepositoryConnector.setCallingServiceName(callingServiceName);
                 omrsRepositoryConnector.setMaxPageSize(maxPageSize);
 
-                OMRSAuditCode auditCode = OMRSAuditCode.NEW_ENTERPRISE_CONNECTOR;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(callingServiceName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(actionDescription, OMRSAuditCode.NEW_ENTERPRISE_CONNECTOR.getMessageDefinition(callingServiceName));
 
                 omrsRepositoryConnector.start();
 
@@ -184,16 +177,10 @@ public class OMRSOperationalServices
             }
             catch (Throwable error)
             {
-                OMRSAuditCode auditCode = OMRSAuditCode.ENTERPRISE_CONNECTOR_FAILED;
                 auditLog.logException(actionDescription,
-                                      auditCode.getLogMessageId(),
-                                      auditCode.getSeverity(),
-                                      auditCode.getFormattedLogMessage(callingServiceName,
-                                                                       error.getClass().getName(),
-                                                                       error.getMessage()),
-                                      null,
-                                      auditCode.getSystemAction(),
-                                      auditCode.getUserAction(),
+                                      OMRSAuditCode.ENTERPRISE_CONNECTOR_FAILED.getMessageDefinition(callingServiceName,
+                                                                                                     error.getClass().getName(),
+                                                                                                     error.getMessage()),
                                       error);
             }
         }
@@ -250,22 +237,15 @@ public class OMRSOperationalServices
     {
         final String   actionDescription = "Initialize Open Metadata Repository Operational Services Audit Log";
         final String   methodName        = "initializeAuditLog";
-        OMRSAuditCode  auditCode;
 
         if (repositoryServicesConfig == null)
         {
             /*
              * Throw exception as without configuration information the OMRS can not start.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_CONFIG;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+           throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CONFIG.getMessageDefinition(localServerName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         if (repositoryServicesConfig.getAuditLogConnections() == null)
@@ -273,15 +253,9 @@ public class OMRSOperationalServices
             /*
              * Throw exception as without audit log, the OMRS refuses to start.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_AUDIT_LOG_DESTINATIONS;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NO_AUDIT_LOG_DESTINATIONS.getMessageDefinition(localServerName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         /*
@@ -297,14 +271,7 @@ public class OMRSOperationalServices
         /*
          * Log that the OMRS has started.
          */
-        auditCode = OMRSAuditCode.OMRS_AUDIT_LOG_READY;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(serverTypeClassification, localServerName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_AUDIT_LOG_READY.getMessageDefinition(serverTypeClassification, localServerName));
     }
 
 
@@ -318,22 +285,15 @@ public class OMRSOperationalServices
     {
         final String   actionDescription = "Initialize Repository Services for Cohort Member";
         final String   methodName        = "initializeCohortMember";
-        OMRSAuditCode  auditCode;
 
         if (repositoryServicesConfig == null)
         {
             /*
              * Throw exception as without configuration information the OMRS can not start.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_CONFIG;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CONFIG.getMessageDefinition(localServerName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         if (auditLog == null)
@@ -341,29 +301,16 @@ public class OMRSOperationalServices
             /*
              * Throw exception as without audit log, the OMRS refuses to start.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_AUDIT_LOG;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_AUDIT_LOG.getMessageDefinition(),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         /*
          * Log that the OMRS is starting.  There is another Audit log message logged at the end of this method
          * to confirm that all of the pieces started successfully.
          */
-        auditCode = OMRSAuditCode.OMRS_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_INITIALIZING.getMessageDefinition());
 
 
         /*
@@ -418,14 +365,9 @@ public class OMRSOperationalServices
                 localMetadataCollectionName = localServerName;
             }
 
-            auditCode = OMRSAuditCode.LOCAL_REPOSITORY_INITIALIZING;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(localMetadataCollectionName, localMetadataCollectionId),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.LOCAL_REPOSITORY_INITIALIZING.getMessageDefinition(localMetadataCollectionName,
+                                                                                                 localMetadataCollectionId));
 
             /*
              * Supports outbound events from the local repository
@@ -467,14 +409,8 @@ public class OMRSOperationalServices
             }
             catch (Throwable error)
             {
-                auditCode = OMRSAuditCode.LOCAL_REPOSITORY_FAILED_TO_START;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(error.getMessage()),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(actionDescription,
+                                    OMRSAuditCode.LOCAL_REPOSITORY_FAILED_TO_START.getMessageDefinition(error.getMessage()));
             }
         }
 
@@ -515,14 +451,7 @@ public class OMRSOperationalServices
          */
         if (cohortConfigList != null)
         {
-            auditCode = OMRSAuditCode.METADATA_HIGHWAY_INITIALIZING;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, OMRSAuditCode.METADATA_HIGHWAY_INITIALIZING.getMessageDefinition());
 
             metadataHighwayManager = initializeCohorts(localServerName,
                                                        localServerType,
@@ -561,14 +490,7 @@ public class OMRSOperationalServices
         /*
          * All done and no exceptions :)
          */
-        auditCode = OMRSAuditCode.OMRS_INITIALIZED;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_INITIALIZED.getMessageDefinition());
     }
 
 
@@ -612,22 +534,14 @@ public class OMRSOperationalServices
                                         String                   actionDescription,
                                         String                   methodName)
     {
-        OMRSAuditCode  auditCode;
-
         if (repositoryServicesConfig == null)
         {
             /*
              * Throw exception as without configuration information the OMRS can not start.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_CONFIG;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+           throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CONFIG.getMessageDefinition(localServerName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         if (auditLog == null)
@@ -635,29 +549,16 @@ public class OMRSOperationalServices
             /*
              * Throw exception as without audit log, the OMRS refuses to start.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_AUDIT_LOG;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_AUDIT_LOG.getMessageDefinition(),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         /*
          * Log that the OMRS is starting.  There is another Audit log message logged at the end of this method
          * to confirm that all of the pieces started successfully.
          */
-        auditCode = OMRSAuditCode.OMRS_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_INITIALIZING.getMessageDefinition());
 
 
         /*
@@ -675,14 +576,7 @@ public class OMRSOperationalServices
         /*
          * All done and no exceptions :)
          */
-        auditCode = OMRSAuditCode.OMRS_INITIALIZED;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_INITIALIZED.getMessageDefinition());
     }
 
 
@@ -749,14 +643,7 @@ public class OMRSOperationalServices
              */
             final String   actionDescription = "Initialize Repository Operational Services";
 
-            OMRSAuditCode auditCode = OMRSAuditCode.ENTERPRISE_ACCESS_INITIALIZING;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, OMRSAuditCode.ENTERPRISE_ACCESS_INITIALIZING.getMessageDefinition());
 
             enterpriseConnectorManager = new OMRSEnterpriseConnectorManager(true,
                                                                             maxPageSize,
@@ -965,14 +852,7 @@ public class OMRSOperationalServices
          * to confirm that all of the pieces disconnected successfully.
          */
         final String   actionDescription = "Disconnect Repository Operational Services";
-        OMRSAuditCode auditCode = OMRSAuditCode.OMRS_DISCONNECTING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_DISCONNECTING.getMessageDefinition());
 
         OMRSRepositoryRESTServices.stopInboundRESTCalls(localServerName);
 
@@ -989,14 +869,7 @@ public class OMRSOperationalServices
             }
             catch (Throwable  error)
             {
-                auditCode = OMRSAuditCode.ENTERPRISE_TOPIC_DISCONNECT_ERROR;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(error.getMessage()),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(actionDescription, OMRSAuditCode.ENTERPRISE_TOPIC_DISCONNECT_ERROR.getMessageDefinition());
             }
         }
 
@@ -1010,16 +883,9 @@ public class OMRSOperationalServices
                 enterpriseConnectorManager.disconnect();
             }
             catch (Throwable  error)
-                {
-                    auditCode = OMRSAuditCode.ENTERPRISE_CONNECTOR_DISCONNECT_ERROR;
-                    auditLog.logRecord(actionDescription,
-                            auditCode.getLogMessageId(),
-                            auditCode.getSeverity(),
-                            auditCode.getFormattedLogMessage(error.getMessage()),
-                            null,
-                            auditCode.getSystemAction(),
-                            auditCode.getUserAction());
-                }
+            {
+                auditLog.logMessage(actionDescription, OMRSAuditCode.ENTERPRISE_CONNECTOR_DISCONNECT_ERROR.getMessageDefinition(error.getMessage()));
+            }
         }
 
         if (archiveManager != null)
@@ -1027,14 +893,7 @@ public class OMRSOperationalServices
             archiveManager.close();
         }
 
-        auditCode = OMRSAuditCode.OMRS_DISCONNECTED;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_DISCONNECTED.getMessageDefinition());
 
         return true;
     }
@@ -1092,26 +951,13 @@ public class OMRSOperationalServices
             /*
              * Throw runtime exception to indicate that the audit log is not available.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_AUDIT_LOG_STORE;
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(localServerName);
-
-            OMRSAuditCode auditCode = OMRSAuditCode.BAD_AUDIT_LOG_DESTINATION;
             auditLog.logException(methodName,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
-                                  null,
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
+                                  OMRSAuditCode.BAD_AUDIT_LOG_DESTINATION.getMessageDefinition(error.getClass().getName(), error.getMessage()),
                                   error);
 
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSConfigErrorException(OMRSErrorCode.NULL_AUDIT_LOG_STORE.getMessageDefinition(localServerName),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
         }
     }
@@ -1147,25 +993,12 @@ public class OMRSOperationalServices
 
             log.debug("Unable to create topic connector: " + error.toString());
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(sourceName);
+           auditLog.logMessage(methodName,
+                                OMRSAuditCode.BAD_TOPIC_CONNECTION.getMessageDefinition(sourceName, error.getClass().getName(), error.getMessage()));
 
-            OMRSAuditCode auditCode = OMRSAuditCode.BAD_TOPIC_CONNECTION;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(sourceName, error.getClass().getName(), error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
-
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSConfigErrorException(OMRSErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(sourceName),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
 
         }
@@ -1205,25 +1038,11 @@ public class OMRSOperationalServices
             /*
              * Throw runtime exception to indicate that the open metadata archive store is not available.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_ARCHIVE_STORE;
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(localServerName);
+            auditLog.logMessage(methodName, OMRSAuditCode.BAD_ARCHIVE_STORE.getMessageDefinition(error.getClass().getName(), error.getMessage()));
 
-            OMRSAuditCode auditCode = OMRSAuditCode.BAD_ARCHIVE_STORE;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
-
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSConfigErrorException(OMRSErrorCode.NULL_ARCHIVE_STORE.getMessageDefinition(localServerName),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
         }
     }
@@ -1272,25 +1091,12 @@ public class OMRSOperationalServices
             /*
              * Throw runtime exception to indicate that the local repository's event mapper is not available.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_EVENT_MAPPER;
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(localServerName);
+           auditLog.logMessage(methodName,
+                                OMRSAuditCode.BAD_REAL_LOCAL_EVENT_MAPPER.getMessageDefinition(error.getClass().getName(), error.getMessage()));
 
-            OMRSAuditCode auditCode = OMRSAuditCode.BAD_REAL_LOCAL_EVENT_MAPPER;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
-
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSConfigErrorException(OMRSErrorCode.NULL_EVENT_MAPPER.getMessageDefinition(localServerName),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
         }
     }
@@ -1344,25 +1150,14 @@ public class OMRSOperationalServices
              */
             String  connectionName = connection.getQualifiedName();
 
-            OMRSErrorCode errorCode = OMRSErrorCode.INVALID_OMRS_CONNECTION;
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(connectionName);
-
-            OMRSAuditCode auditCode = OMRSAuditCode.BAD_REAL_LOCAL_REPOSITORY_CONNECTOR;
             auditLog.logException(methodName,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
-                                  null,
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
+                                  OMRSAuditCode.BAD_REAL_LOCAL_REPOSITORY_CONNECTOR.getMessageDefinition(error.getClass().getName(),
+                                                                                                         error.getMessage()),
                                   error);
 
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSConfigErrorException(OMRSErrorCode.INVALID_OMRS_CONNECTION.getMessageDefinition(connectionName),
                                                this.getClass().getName(),
-                                               methodName, errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
+                                               methodName,
                                                error);
         }
     }

@@ -92,10 +92,7 @@ public class AssetsResponse extends PagedResponse
     {
         this.assets = assets;
     }
-
-
-
-
+    
 
     /**
      * JSON-style toString

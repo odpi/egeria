@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.events.*;
@@ -9,8 +12,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
@@ -35,6 +37,8 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 {
     final private static String  localOMRSInstanceEventProcessorName = "Local Repository Inbound Instance Events";
 
+    final private static MessageFormatter messageFormatter = new MessageFormatter();
+
     private String                          localMetadataCollectionId;
     private String                          localServerName;
     private OMRSRepositoryConnector         localRepositoryConnector;
@@ -48,9 +52,9 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private OMRSAuditLog auditLog;
+    private AuditLog auditLog;
 
-    private static final Logger       log      = LoggerFactory.getLogger(LocalOMRSInstanceEventProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(LocalOMRSInstanceEventProcessor.class);
 
 
     /**
@@ -73,7 +77,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                     OMRSRepositoryValidator         repositoryValidator,
                                     OMRSRepositoryEventExchangeRule saveExchangeRule,
                                     OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor,
-                                    OMRSAuditLog                    auditLog)
+                                    AuditLog                        auditLog)
     {
         super(localOMRSInstanceEventProcessorName);
 
@@ -154,16 +158,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                   OMRSInstanceEvent     instanceEvent,
                                   String                methodName)
     {
-        OMRSAuditCode auditCode = OMRSAuditCode.PROCESS_INCOMING_EVENT;
-        auditLog.logRecord(methodName,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(instanceEventType.getName(),
-                                                            instanceGUID,
-                                                            instanceEventOriginator.toString()),
-                           instanceEvent.toString(),
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(methodName,
+                           OMRSAuditCode.PROCESS_INCOMING_EVENT.getMessageDefinition(instanceEventType.getName(), 
+                                                                                     instanceGUID, 
+                                                                                     instanceEventOriginator.toString()),
+                           instanceEvent.toString());
     }
 
 
@@ -1740,22 +1739,17 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     {
         final String methodName = "processConflictingInstancesEvent";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.DUPLICATE_INSTANCES_FOR_GUID;
-        auditLog.logRecord(methodName,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(originatorServerName,
-                                                            originatorMetadataCollectionId,
-                                                            otherInstanceGUID,
-                                                            otherMetadataCollectionId,
-                                                            otherTypeDefSummary.toString(),
-                                                            otherOrigin.getName(),
-                                                            targetMetadataCollectionId,
-                                                            targetTypeDefSummary.toString(),
-                                                            errorMessage),
-                           sourceName,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(methodName,
+                            OMRSAuditCode.DUPLICATE_INSTANCES_FOR_GUID.getMessageDefinition(originatorServerName,
+                                                                                            originatorMetadataCollectionId,
+                                                                                            otherInstanceGUID,
+                                                                                            otherMetadataCollectionId,
+                                                                                            otherTypeDefSummary.toString(),
+                                                                                            otherOrigin.getName(),
+                                                                                            targetMetadataCollectionId,
+                                                                                            targetTypeDefSummary.toString(),
+                                                                                            errorMessage),
+                           sourceName);
 
         /*
          * This repository has been targeted to act.
@@ -1786,34 +1780,22 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                    newGUID);
                 }
 
-                auditCode = OMRSAuditCode.INSTANCE_SUCCESSFULLY_REIDENTIFIED;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(localServerName,
-                                                                    localMetadataCollectionId,
-                                                                    otherTypeDefSummary.getName(),
-                                                                    targetInstanceGUID,
-                                                                    newGUID),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(methodName,
+                                    OMRSAuditCode.INSTANCE_SUCCESSFULLY_REIDENTIFIED.getMessageDefinition(localServerName,
+                                                                                                          localMetadataCollectionId,
+                                                                                                          otherTypeDefSummary.getName(),
+                                                                                                          targetInstanceGUID,
+                                                                                                          newGUID));
             }
             catch (Throwable error)
             {
-                auditCode = OMRSAuditCode.UNABLE_TO_RE_IDENTIFY_INSTANCE;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(localServerName,
-                                                                    localMetadataCollectionId,
-                                                                    otherTypeDefSummary.getName(),
-                                                                    targetInstanceGUID,
-                                                                    error.getClass().getName(),
-                                                                    error.getMessage()),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(methodName,
+                                    OMRSAuditCode.UNABLE_TO_RE_IDENTIFY_INSTANCE.getMessageDefinition(localServerName,
+                                                                                                      localMetadataCollectionId,
+                                                                                                      otherTypeDefSummary.getName(),
+                                                                                                      targetInstanceGUID,
+                                                                                                      error.getClass().getName(),
+                                                                                                      error.getMessage()));
             }
         }
         else
@@ -1860,37 +1842,25 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
         if (localMetadataCollectionId.equals(targetMetadataCollectionId))
         {
-            OMRSAuditCode auditCode = OMRSAuditCode.LOCAL_INSTANCE_WITH_CONFLICTING_TYPES;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(originatorServerName,
-                                                                originatorMetadataCollectionId,
-                                                                targetInstanceGUID,
-                                                                otherTypeDefSummary.toString(),
-                                                                targetMetadataCollectionId,
-                                                                targetTypeDefSummary.toString(),
-                                                                errorMessage),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OMRSAuditCode.LOCAL_INSTANCE_WITH_CONFLICTING_TYPES.getMessageDefinition(originatorServerName,
+                                                                                                         originatorMetadataCollectionId,
+                                                                                                         targetInstanceGUID,
+                                                                                                         otherTypeDefSummary.toString(),
+                                                                                                         targetMetadataCollectionId,
+                                                                                                         targetTypeDefSummary.toString(),
+                                                                                                         errorMessage));
         }
         else
         {
-            OMRSAuditCode auditCode = OMRSAuditCode.INSTANCES_WITH_CONFLICTING_TYPES;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(originatorServerName,
-                                                                originatorMetadataCollectionId,
-                                                                targetInstanceGUID,
-                                                                otherTypeDefSummary.toString(),
-                                                                targetMetadataCollectionId,
-                                                                targetTypeDefSummary.toString(),
-                                                                errorMessage),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OMRSAuditCode.INSTANCES_WITH_CONFLICTING_TYPES.getMessageDefinition(originatorServerName,
+                                                                                                    originatorMetadataCollectionId,
+                                                                                                    targetInstanceGUID,
+                                                                                                    otherTypeDefSummary.toString(),
+                                                                                                    targetMetadataCollectionId,
+                                                                                                    targetTypeDefSummary.toString(),
+                                                                                                    errorMessage));
 
             removeReferenceCopyOfInstance(targetTypeDefSummary,
                                           targetInstanceGUID,
@@ -2098,19 +2068,14 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         }
         catch (Throwable error)
         {
-            OMRSAuditCode auditCode = OMRSAuditCode.UNABLE_TO_REMOVE_REFERENCE_COPY;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(localServerName,
-                                                                localMetadataCollectionId,
-                                                                typeDefSummary.getName(),
-                                                                instanceGUID,
-                                                                error.getClass().getName(),
-                                                                error.getMessage()),
-                               error.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OMRSAuditCode.UNABLE_TO_REMOVE_REFERENCE_COPY.getMessageDefinition(localServerName,
+                                                                                                   localMetadataCollectionId,
+                                                                                                   typeDefSummary.getName(),
+                                                                                                   instanceGUID,
+                                                                                                   error.getClass().getName(),
+                                                                                                   error.getMessage()),
+                               error.toString());
         }
     }
 
@@ -2228,28 +2193,19 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                             if (!incomingInstance.getMetadataCollectionId().equals(
                                     storedInstance.getMetadataCollectionId()))
                             {
-                                OMRSAuditCode auditCode = OMRSAuditCode.NEW_HOME_INFORMATION;
-                                auditLog.logRecord(methodName,
-                                                   auditCode.getLogMessageId(),
-                                                   auditCode.getSeverity(),
-                                                   auditCode.getFormattedLogMessage(
-                                                           Long.toString(incomingInstance.getVersion()),
-                                                           incomingInstance.getGUID(),
-                                                           originatorServerName,
-                                                           incomingInstance.getMetadataCollectionId(),
-                                                           storedInstance.getMetadataCollectionId()),
-                                                   incomingInstance.toString(),
-                                                   auditCode.getSystemAction(),
-                                                   auditCode.getUserAction());
+                                auditLog.logMessage(methodName,
+                                                    OMRSAuditCode.NEW_HOME_INFORMATION.getMessageDefinition(Long.toString(incomingInstance.getVersion()),
+                                                                                                            incomingInstance.getGUID(),
+                                                                                                            originatorServerName,
+                                                                                                            incomingInstance.getMetadataCollectionId(),
+                                                                                                            storedInstance.getMetadataCollectionId()),
+                                                   incomingInstance.toString());
                             }
 
                             if (!incomingInstanceType.getTypeDefName().equals(storedInstanceType.getTypeDefName()))
                             {
-                                OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_INFORMATION;
-                                auditLog.logRecord(methodName,
-                                                   auditCode.getLogMessageId(),
-                                                   auditCode.getSeverity(),
-                                                   auditCode.getFormattedLogMessage(
+                                auditLog.logMessage(methodName,
+                                                    OMRSAuditCode.NEW_TYPE_INFORMATION.getMessageDefinition(
                                                            Long.toString(incomingInstance.getVersion()),
                                                            incomingInstance.getGUID(),
                                                            originatorServerName,
@@ -2258,9 +2214,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                            incomingInstanceType.getTypeDefGUID(),
                                                            storedInstanceType.getTypeDefName(),
                                                            storedInstanceType.getTypeDefGUID()),
-                                                   incomingInstance.toString(),
-                                                   auditCode.getSystemAction(),
-                                                   auditCode.getUserAction());
+                                                   incomingInstance.toString());
                             }
 
                             return true;
@@ -2275,8 +2229,8 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                              */
                             try
                             {
-                                OMRSAuditCode auditCode = OMRSAuditCode.PROCESS_INSTANCE_TYPE_CONFLICT;
-                                String errorMessage = auditCode.getFormattedLogMessage(storedInstance.getGUID(),
+                                AuditLogMessageDefinition messageDefinition = OMRSAuditCode.PROCESS_INSTANCE_TYPE_CONFLICT.getMessageDefinition(
+                                                                                       storedInstance.getGUID(),
                                                                                        originatorServerName,
                                                                                        storedInstance.getMetadataCollectionId(),
                                                                                        storedInstanceType.getTypeDefName(),
@@ -2299,7 +2253,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                                                      "storedInstanceType",
                                                                                                      storedInstanceType.getTypeDefGUID(),
                                                                                                      methodName),
-                                                                                             errorMessage);
+                                                                                             messageFormatter.getFormattedMessage(messageDefinition));
                             }
                             catch (Throwable error)
                             {
@@ -2322,8 +2276,8 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                 {
                     try
                     {
-                        OMRSAuditCode auditCode = OMRSAuditCode.PROCESS_INSTANCE_GUID_CONFLICT;
-                        String errorMessage = auditCode.getFormattedLogMessage(incomingInstanceType.getTypeDefName(),
+                        AuditLogMessageDefinition messageDefinition = OMRSAuditCode.PROCESS_INSTANCE_GUID_CONFLICT.getMessageDefinition(
+                                                                               incomingInstanceType.getTypeDefName(),
                                                                                incomingInstanceType.getTypeDefName(),
                                                                                originatorServerName,
                                                                                incomingInstance.getMetadataCollectionId(),
@@ -2350,7 +2304,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                                                   storedInstanceType.getTypeDefGUID(),
                                                                                                   methodName),
                                                                                           storedInstance.getGUID(),
-                                                                                          errorMessage);
+                                                                                          messageFormatter.getFormattedMessage(messageDefinition));
                     }
                     catch (Throwable error)
                     {
@@ -2427,80 +2381,44 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     {
         if (localMetadataCollectionId == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_LOCAL_METADATA_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_LOCAL_METADATA_COLLECTION.getMessageDefinition(),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         if (localRepositoryConnector == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NO_LOCAL_REPOSITORY;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NO_LOCAL_REPOSITORY.getMessageDefinition(),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
-        if (repositoryHelper ==null)
+        if (repositoryHelper == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_REPOSITORY_HELPER;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_REPOSITORY_HELPER.getMessageDefinition(),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         if (repositoryValidator == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_REPOSITORY_VALIDATOR;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_REPOSITORY_VALIDATOR.getMessageDefinition(),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         if (saveExchangeRule == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_EXCHANGE_RULE;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_EXCHANGE_RULE.getMessageDefinition(methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
 
         if (localMetadataCollection == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -2518,17 +2436,12 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                 String     originatorServerName,
                                                 String     originatorMetadataCollectionId)
     {
-        OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_EVENT;
-        auditLog.logRecord(methodName,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(methodName,
-                                                            originatorServerName,
-                                                            originatorMetadataCollectionId,
-                                                            error.getMessage()),
-                           error.toString(),
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(methodName,
+                            OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_EVENT.getMessageDefinition(methodName,
+                                                                                               originatorServerName,
+                                                                                               originatorMetadataCollectionId,
+                                                                                               error.getMessage()),
+                            error.toString());
     }
 
     /**

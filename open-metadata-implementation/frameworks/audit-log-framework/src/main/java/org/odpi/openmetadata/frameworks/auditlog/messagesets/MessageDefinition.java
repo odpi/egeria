@@ -3,12 +3,22 @@
 
 package org.odpi.openmetadata.frameworks.auditlog.messagesets;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 /**
  * MessageDefinition is a container that describes a single instance of a message.
  * It is in fact the superclass of a message for an exception and for the audit log
  * and as such, defines the values that are common to both.  The concrete subclasses
  * have the additional fields relevant to their specific definition.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public abstract class MessageDefinition
 {
     private String messageId;

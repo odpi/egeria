@@ -5,7 +5,7 @@ package org.odpi.openmetadata.commonservices.multitenant;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -49,7 +49,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
     @Deprecated
     public OCFOMASServiceInstance(String                  serviceName,
                                   OMRSRepositoryConnector repositoryConnector,
-                                  OMRSAuditLog            auditLog) throws NewInstanceException
+                                  AuditLog                auditLog) throws NewInstanceException
     {
         this(serviceName, repositoryConnector, null, null, auditLog, null, 500);
     }
@@ -70,7 +70,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                   OMRSRepositoryConnector repositoryConnector,
                                   List<String>            supportedZones,
                                   List<String>            defaultZones,
-                                  OMRSAuditLog            auditLog) throws NewInstanceException
+                                  AuditLog                auditLog) throws NewInstanceException
     {
         this(serviceName, repositoryConnector, supportedZones, defaultZones, auditLog, null, 500);
     }
@@ -88,7 +88,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
      */
     public OCFOMASServiceInstance(String                  serviceName,
                                   OMRSRepositoryConnector repositoryConnector,
-                                  OMRSAuditLog            auditLog,
+                                  AuditLog                auditLog,
                                   String                  localServerUserId,
                                   int                     maxPageSize) throws NewInstanceException
     {
@@ -118,7 +118,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                   OMRSRepositoryConnector repositoryConnector,
                                   List<String>            supportedZones,
                                   List<String>            defaultZones,
-                                  OMRSAuditLog            auditLog,
+                                  AuditLog                auditLog,
                                   String                  localServerUserId,
                                   int                     maxPageSize) throws NewInstanceException
     {

@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.viewservices.glossaryauthor.server;
 
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -19,6 +21,8 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}/terms")
+
+@Tag(name="Glossary Author OMVS", description="Develop a definition of a subject area by authoring glossaries, including terms for use by a user interface.", externalDocs=@ExternalDocumentation(description="Glossary Author View Services (OMVS)",url="https://egeria.odpi.org/open-metadata-implementation/view-services/glossary-author-view/"))
 
 public class GlossaryAuthorViewTermRESTResource {
 
@@ -160,10 +164,6 @@ public class GlossaryAuthorViewTermRESTResource {
     /**
      * Update a Term
      * <p>
-     * If the caller has chosen to incorporate the term name in their Term Terms or Categories qualified name, renaming the term will cause those
-     * qualified names to mismatch the Term name.
-     * If the caller has chosen to incorporate the term qualifiedName in their Term Terms or Categories qualified name, changing the qualified name of the term will cause those
-     * qualified names to mismatch the Term name.
      * Status is not updated using this call.
      *
      * @param serverName   local UI server name

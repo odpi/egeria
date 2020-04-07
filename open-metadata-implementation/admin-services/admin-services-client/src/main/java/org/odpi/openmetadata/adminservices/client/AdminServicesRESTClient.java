@@ -46,16 +46,9 @@ class AdminServicesRESTClient
         }
         catch (Throwable     error)
         {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
                                                     this.getClass().getName(),
                                                     methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction(),
                                                     error);
         }
     }
@@ -91,16 +84,9 @@ class AdminServicesRESTClient
         }
         catch (Throwable     error)
         {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
                                                     this.getClass().getName(),
                                                     methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction(),
                                                     error);
         }
     }
@@ -132,7 +118,7 @@ class AdminServicesRESTClient
                                                          requestBody,
                                                          params);
 
-        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
 
         return restResult;
     }
@@ -162,7 +148,7 @@ class AdminServicesRESTClient
                                                          null,
                                                          params);
 
-        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
 
         return restResult;
     }
@@ -188,7 +174,7 @@ class AdminServicesRESTClient
     {
         StringResponse restResult = this.callGetRESTCall(methodName, StringResponse.class, urlTemplate, params);
 
-        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
 
         return restResult;
     }
@@ -214,7 +200,7 @@ class AdminServicesRESTClient
     {
         GUIDResponse restResult = this.callGetRESTCall(methodName, GUIDResponse.class, urlTemplate, params);
 
-        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
 
         return restResult;
     }
@@ -240,7 +226,7 @@ class AdminServicesRESTClient
     {
         StringMapResponse restResult = this.callGetRESTCall(methodName, StringMapResponse.class, urlTemplate, params);
 
-        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
 
         return restResult;
     }
@@ -266,7 +252,7 @@ class AdminServicesRESTClient
     {
         OMAGServerConfigResponse restResult = this.callGetRESTCall(methodName, OMAGServerConfigResponse.class, urlTemplate, params);
 
-        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
 
         return restResult;
     }
@@ -292,7 +278,7 @@ class AdminServicesRESTClient
     {
         ConnectionResponse restResult = this.callGetRESTCall(methodName, ConnectionResponse.class, urlTemplate, params);
 
-        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
 
         return restResult;
     }
@@ -318,7 +304,7 @@ class AdminServicesRESTClient
     {
         ServerTypeClassificationResponse restResult = this.callGetRESTCall(methodName, ServerTypeClassificationResponse.class, urlTemplate, params);
 
-        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
 
         return restResult;
     }
@@ -344,7 +330,7 @@ class AdminServicesRESTClient
     {
         DiscoveryEngineServicesConfigResponse restResult = this.callGetRESTCall(methodName, DiscoveryEngineServicesConfigResponse.class, urlTemplate, params);
 
-        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
 
         return restResult;
     }
@@ -370,7 +356,7 @@ class AdminServicesRESTClient
     {
         StewardshipEngineServicesConfigResponse restResult = this.callGetRESTCall(methodName, StewardshipEngineServicesConfigResponse.class, urlTemplate, params);
 
-        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
 
         return restResult;
     }
@@ -396,7 +382,7 @@ class AdminServicesRESTClient
     {
         RegisteredOMAGServicesResponse restResult = this.callGetRESTCall(methodName, RegisteredOMAGServicesResponse.class, urlTemplate, params);
 
-        exceptionHandler.detectAndThrowAdminExceptions(methodName, restResult);
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
 
         return restResult;
     }

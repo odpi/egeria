@@ -3,12 +3,12 @@
 
 package org.odpi.openmetadata.adapters.connectors.discoveryservices;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,9 @@ import java.util.List;
 /**
  * AuditableDiscoveryService is a base class for discovery services that wish to use the audit log.
  */
-public abstract class AuditableDiscoveryService extends DiscoveryService implements AuditableConnector
+public abstract class AuditableDiscoveryService extends DiscoveryService implements AuditLoggingComponent
 {
-    protected OMRSAuditLog  auditLog = null;
+    protected AuditLog auditLog = null;
 
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
@@ -26,7 +26,7 @@ public abstract class AuditableDiscoveryService extends DiscoveryService impleme
      *
      * @param auditLog audit log object
      */
-    public void setAuditLog(OMRSAuditLog auditLog)
+    public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
     }
@@ -43,16 +43,10 @@ public abstract class AuditableDiscoveryService extends DiscoveryService impleme
     protected void logNoAsset(String    assetGUID,
                               String    methodName) throws ConnectorCheckedException
     {
-        DiscoveryServiceErrorCode errorCode    = DiscoveryServiceErrorCode.NO_ASSET;
-        String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(assetGUID,
-                                                                                                                    discoveryServiceName);
-
-        throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+        throw new ConnectorCheckedException(DiscoveryServiceErrorCode.NO_ASSET.getMessageDefinition(assetGUID,
+                                                                                                    discoveryServiceName),
                                              this.getClass().getName(),
-                                             methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction());
+                                             methodName);
     }
 
 
@@ -70,18 +64,12 @@ public abstract class AuditableDiscoveryService extends DiscoveryService impleme
                                        String    supportedAssetType,
                                        String    methodName) throws ConnectorCheckedException
     {
-        DiscoveryServiceErrorCode errorCode    = DiscoveryServiceErrorCode.INVALID_ASSET_TYPE;
-        String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(assetGUID,
-                                                                                                                    assetType,
-                                                                                                                    discoveryServiceName,
-                                                                                                                    supportedAssetType);
-
-        throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+        throw new ConnectorCheckedException(DiscoveryServiceErrorCode.INVALID_ASSET_TYPE.getMessageDefinition(assetGUID,
+                                                                                                              assetType,
+                                                                                                              discoveryServiceName,
+                                                                                                              supportedAssetType),
                                             this.getClass().getName(),
-                                            methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction());
+                                            methodName);
     }
 
 
@@ -103,16 +91,9 @@ public abstract class AuditableDiscoveryService extends DiscoveryService impleme
             return elementType.getElementTypeName();
         }
 
-        DiscoveryServiceErrorCode errorCode    = DiscoveryServiceErrorCode.NO_ASSET_TYPE;
-        String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(asset.toString(),
-                                                                                                                    discoveryServiceName);
-
-        throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+        throw new ConnectorCheckedException(DiscoveryServiceErrorCode.NO_ASSET_TYPE.getMessageDefinition(asset.toString(), discoveryServiceName),
                                             this.getClass().getName(),
-                                            methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction());
+                                            methodName);
     }
 
 

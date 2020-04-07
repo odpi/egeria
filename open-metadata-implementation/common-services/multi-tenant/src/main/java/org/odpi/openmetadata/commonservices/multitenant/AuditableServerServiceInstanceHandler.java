@@ -5,7 +5,7 @@ package org.odpi.openmetadata.commonservices.multitenant;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 public abstract class AuditableServerServiceInstanceHandler extends OMAGServerServiceInstanceHandler
 {
@@ -32,11 +32,11 @@ public abstract class AuditableServerServiceInstanceHandler extends OMAGServerSe
      * @throws PropertyServerException the service name is not known or the metadata collection is
      *                                 not available - indicating a logic error
      */
-    public OMRSAuditLog getAuditLog(String userId,
-                                    String serverName,
-                                    String serviceOperationName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public AuditLog getAuditLog(String userId,
+                                String serverName,
+                                String serviceOperationName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         AuditableServerServiceInstance instance = (AuditableServerServiceInstance) super.getServerServiceInstance(userId,
                                                                                                                   serverName,
