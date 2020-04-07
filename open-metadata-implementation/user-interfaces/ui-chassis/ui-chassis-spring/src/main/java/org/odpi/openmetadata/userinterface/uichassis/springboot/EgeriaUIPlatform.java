@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
+import org.odpi.openmetadata.accessservices.glossaryview.client.GlossaryViewClient;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
@@ -57,6 +58,12 @@ public class EgeriaUIPlatform {
     public SubjectArea getSubjectArea(@Value("${omas.server.url}") String serverUrl,
                                       @Value("${omas.server.name}") String serverName) throws InvalidParameterException {
         return new SubjectAreaImpl(serverName, serverUrl);
+    }
+
+    @Bean
+    public GlossaryViewClient getGlossaryViewClient(@Value("${omas.server.url}") String serverUrl,
+                                             @Value("${omas.server.name}") String serverName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+        return new GlossaryViewClient(serverName, serverUrl);
     }
 
     @Bean
