@@ -180,6 +180,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-view language="[[language]]" name="asset-catalog" route="{{tail}}"></asset-view>
+                    <glossary-view language="[[language]]" name="glossary
+                    " route="{{tail}}"></glossary-view>
                     <about-view language="[[language]]" name="about"></about-view>
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
                     <asset-lineage-view language="[[language]]" name="asset-lineage"  route="{{tail}}"></asset-lineage-view>
