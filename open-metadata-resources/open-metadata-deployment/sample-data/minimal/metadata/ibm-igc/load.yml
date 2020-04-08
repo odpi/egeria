@@ -125,15 +125,6 @@
       Cookie: "{{ __minimal_lineage.set_cookie }}"
   when: ('ibm_information_server_domain' in group_names) and __minimal_lineage.json['items'][0].include_for_lineage == "setToFalse"
 
-- name: close session
-  uri:
-    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/logout/"
-    method: GET
-    validate_certs: no
-    headers:
-      Cookie: "{{ __minimal_lineage.set_cookie }}"
-  when: ('ibm_information_server_domain' in group_names)
-
 - import_role: name=IBM.infosvr-import-export
   vars:
     ingest:
@@ -146,6 +137,43 @@
           into_project: minimal
           with_options:
             overwrite: True
+
+- name: get list of all job RIDs
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}\
+            /ibm/iis/igc-rest/v1/search"
+    method: POST
+    body: '{"types":["dsjob"],"properties":["name"],"where":{"conditions":[{"property":"transformation_project.name","operator":"=","value":"minimal"}],"operator":"and"},"pageSize":100}'
+    body_format: json
+    validate_certs: no
+    status_code: 200
+    headers:
+      Content-Type: "application/json"
+      Cookie: "{{ __minimal_lineage.set_cookie }}"
+  register: __minimal_job_list
+  when: ('ibm_information_server_domain' in group_names)
+
+- name: re-run lineage detection on all jobs
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}\
+            /ibm/iis/igc-rest/v1/flows/detectFlows/dsjob/{{ item._id }}"
+    method: GET
+    validate_certs: no
+    status_code: 202
+    headers:
+      Content-Type: "application/json"
+      Cookie: "{{ __minimal_lineage.set_cookie }}"
+  with_items: "{{ __minimal_job_list.json['items'] }}"
+  when: ('ibm_information_server_domain' in group_names)
+
+- name: close session
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/logout/"
+    method: GET
+    validate_certs: no
+    headers:
+      Cookie: "{{ __minimal_lineage.set_cookie }}"
+  when: ('ibm_information_server_domain' in group_names)
 
 - name: remove cached files
   file:

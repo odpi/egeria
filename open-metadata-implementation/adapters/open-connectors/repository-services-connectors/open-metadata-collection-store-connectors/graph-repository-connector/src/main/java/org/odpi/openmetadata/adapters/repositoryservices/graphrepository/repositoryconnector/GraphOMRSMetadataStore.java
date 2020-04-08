@@ -91,6 +91,9 @@ class GraphOMRSMetadataStore {
     private OMRSRepositoryHelper repositoryHelper;
 
     // The instance graph is used to store entities (vertices) and relationships (edges).
+
+    GraphOMRSGraphFactory graphFactory;
+
     private JanusGraph instanceGraph;
     private GraphOMRSRelationshipMapper relationshipMapper;
     private GraphOMRSEntityMapper entityMapper;
@@ -123,9 +126,12 @@ class GraphOMRSMetadataStore {
         this.repositoryName = repositoryName;
         this.repositoryHelper = repositoryHelper;
 
+
+
         try {
+            graphFactory = new GraphOMRSGraphFactory();
             synchronized (GraphOMRSMetadataStore.class) {
-                instanceGraph = GraphOMRSGraphFactory.open(metadataCollectionId, repositoryName, auditLog, storageProperties);
+                instanceGraph = graphFactory.open(metadataCollectionId, repositoryName, auditLog, storageProperties);
             }
         }
         catch (RepositoryErrorException e) {
@@ -1473,7 +1479,8 @@ class GraphOMRSMetadataStore {
 
 
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
-        Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
         Set<String> typeDefinedPropertyNames = qualifiedPropertyNames.keySet();
 
@@ -1724,15 +1731,29 @@ class GraphOMRSMetadataStore {
 
     }
 
+    /*
+     * This method converts an Egeria regex into an expression that can be used with the JanusGraph
+     * text predicates.
+     */
     private String convertSearchStringToJanusRegex(String str) {
 
         if (str == null || str.length() ==0)
             return null;
 
+        boolean caseInsensitive = false;
+
+        if (str.startsWith("(?i)")) {
+            caseInsensitive = true;
+            str = str.substring(4, str.length());
+        }
+
         boolean prefixed   = false;
 
-        // A string may consist only of '.*' in which case it is referred to as suffixed rather than prefixed
-        // This is to ensure that we don't double the prefix/suffix in the resultant string
+        /*
+         * A string may consist only of '.*' in which case it is referred to as suffixed rather than prefixed
+         * This is to ensure that we don't double the prefix/suffix in the resultant string
+         */
+
         boolean suffixed   = str.endsWith(".*");
         if (!suffixed || str.length()>2) {
             prefixed = str.startsWith(".*");
@@ -1748,27 +1769,70 @@ class GraphOMRSMetadataStore {
             innerString = innerString.substring(2);
         }
         if (innerString.length() ==0 ) {
-            // There is nothing left after removing any suffix and prefix - return the original string
+            /*
+             * There is nothing left after removing any suffix and prefix - return the original string
+             */
             return str;
         }
 
-        // There is at least some some substance to the inner string.
-        // Check whether it has been entirely literalised
-        String literalisedString;
+        /*
+         * There is at least some some substance to the inner string.
+         * Check whether it has been entirely literalised
+         */
 
+        String outputString;
+
+        boolean literalized = false;
         if (repositoryHelper.isExactMatchRegex(innerString)) {
-            if (innerString.length()==4) {
-                // Although the innerString is wrapped as by exact match qualifiers, there is nothing else
+            if (innerString.length() == 4) {
+                /*
+                 * Although the innerString is wrapped as by exact match qualifiers, there is nothing else
+                 */
                 return null;
-            }
-            else {
+            } else {
+                literalized = true;
                 innerString = innerString.substring(2, innerString.length() - 2);
-                StringBuilder literalisedStringBldr = new StringBuilder();
-                // Literalise individual special chars
-                for (int i = 0; i < innerString.length(); i++) {
-                    Character c = innerString.charAt(i);
-                    // No need to escape a '-' char as it is only significant if inside '[]' brackets, and these will be escaped,
-                    // so the '-' character has no special meaning
+            }
+        }
+
+        /*
+         * innerString now contains just the string that may need to be made case-insensitive and/or literalized
+         */
+        if (!caseInsensitive && !literalized) {
+            /*
+             * There is nothing more to do - just use the innerString as-is...
+             */
+            outputString = innerString;
+        }
+        else {
+            /*
+             * There is at least some work to do; characters may need to be literalized and/or makde case-insensitive
+             */
+            StringBuilder outputStringBldr = new StringBuilder();
+
+            // Process chars
+            for (int i = 0; i < innerString.length(); i++) {
+                Character c = innerString.charAt(i);
+                /*
+                 * No need to escape a '-' char as it is only significant if inside '[]' brackets, and these will be escaped,
+                 * so the '-' character has no special meaning
+                 */
+
+                /*
+                 * Handle case where neither literalized nor case-insensitive are active
+                 */
+                if (!literalized && !caseInsensitive) {
+                    outputStringBldr.append(c);
+                }
+
+                else {
+                    /*
+                     * At least one of literalized or caseInsensitive is active
+                     */
+
+                    /*
+                     * Handle special chars - disjoint from alphas
+                     */
                     switch (c) {
                         case '.':
                         case '[':
@@ -1784,34 +1848,54 @@ class GraphOMRSMetadataStore {
                         case '+':
                         case '?':
                         case '\\':  // single backslash escaped for Java
-                            literalisedStringBldr.append('\\').append(c);
-                            break;
-                        default:
-                            literalisedStringBldr.append(c);
+                            if (literalized) {
+                                outputStringBldr.append('\\').append(c);
+                            } else {
+                                outputStringBldr.append(c);
+                            }
+                            continue;  // process the next character
+                    }
+
+                    /*
+                     * Handle alphas - disjoint from specials
+                     */
+                    if (c >= 'a' && c <= 'z') {
+                        if (caseInsensitive) {
+                            outputStringBldr.append("[").append(c).append(Character.toUpperCase(c)).append("]");
+                        } else {
+                            outputStringBldr.append(c);
+                        }
+                    }
+                    else if (c >= 'A' && c <= 'Z') {
+                        if (caseInsensitive) {
+                            outputStringBldr.append("[").append(Character.toLowerCase(c)).append(c).append("]");
+                        } else {
+                            outputStringBldr.append(c);
+                        }
+                    }
+                    else {
+                        /*
+                         * The character is not special, not an alpha, just append it...
+                         */
+                        outputStringBldr.append(c);
                     }
                 }
-                literalisedString = literalisedStringBldr.toString();
             }
-        }
-        else {
-            // Not exact match - leave innerString as is
-            // i.e. add no escaping - treat the inner string as a regex
-            literalisedString = innerString;
+            outputString = outputStringBldr.toString();
         }
 
 
-
-        // Re-frame depending on whether suffixed or prefixed
+        /*
+         * Re-frame depending on whether suffixed or prefixed
+         */
         if (suffixed) {
-            literalisedString = literalisedString + ".*";
+            outputString = outputString + ".*";
         }
         if (prefixed) {
-            literalisedString = ".*" + literalisedString;
+            outputString = ".*" + outputString;
         }
 
-
-
-        return literalisedString;
+        return outputString;
 
     }
 
@@ -1884,7 +1968,8 @@ class GraphOMRSMetadataStore {
 
 
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
-        Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
         Set<String> typeDefinedPropertyNames = qualifiedPropertyNames.keySet();
 
@@ -2252,7 +2337,8 @@ class GraphOMRSMetadataStore {
         // MatchProperties are expressed using the short property name for each property.
         // Properties are stored in the graph with qualified property names - so we need to map to those in order to hit the indexes.
         // For the type of the entity, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
-        Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
         List<TypeDefAttribute> propertyDefs = typeDef.getPropertiesDefinition();
         if (propertyDefs == null || propertyDefs.isEmpty()) {
@@ -2287,7 +2373,7 @@ class GraphOMRSMetadataStore {
                         else
                             mapping = GraphOMRSGraphFactory.MixedIndexMapping.Default;
 
-                        GraphOMRSGraphFactory.createMixedIndexForVertexProperty(
+                        graphFactory.createMixedIndexForVertexProperty(
                                 qualifiedPropertyName,
                                 getPropertyKeyEntity(qualifiedPropertyName),
                                 primDefCat.getJavaClassName(),
@@ -2311,7 +2397,8 @@ class GraphOMRSMetadataStore {
         // MatchProperties are expressed using the short property name for each property.
         // Properties are stored in the graph with qualified property names - so we need to map to those in order to hit the indexes.
         // For the type of the classification, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
-        Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
 
         List<TypeDefAttribute> propertyDefs = typeDef.getPropertiesDefinition();
@@ -2346,7 +2433,7 @@ class GraphOMRSMetadataStore {
                         else
                             mapping = GraphOMRSGraphFactory.MixedIndexMapping.Default;
 
-                        GraphOMRSGraphFactory.createMixedIndexForVertexProperty(
+                        graphFactory.createMixedIndexForVertexProperty(
                                 qualifiedPropertyName,
                                 getPropertyKeyClassification(qualifiedPropertyName),
                                 primDefCat.getJavaClassName(),
@@ -2377,7 +2464,8 @@ class GraphOMRSMetadataStore {
         // Properties are stored in the graph with qualified property names - so we need to map to those in order to hit the indexes.
         // For the type of the relationship, construct a map of short prop name -> qualified prop name. There is no type hierarchy for
         // relationships - but that doesn't matter, the util method will handle types for which superType is null.
-        Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
 
         log.debug("{} create edge indexes for type {}", methodName, typeDef.getName());
@@ -2406,7 +2494,7 @@ class GraphOMRSMetadataStore {
                         else
                             mapping = GraphOMRSGraphFactory.MixedIndexMapping.Default;
 
-                        GraphOMRSGraphFactory.createMixedIndexForEdgeProperty(
+                        graphFactory.createMixedIndexForEdgeProperty(
                                 qualifiedPropertyName,
                                 getPropertyKeyRelationship(qualifiedPropertyName),
                                 primDefCat.getJavaClassName(),
@@ -2451,7 +2539,8 @@ class GraphOMRSMetadataStore {
          */
 
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, classificationName);
-        Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
 
         // This relies on the graph to enforce property validity - it does not pre-check that classification match properties are valid for requested type.
