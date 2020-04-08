@@ -13,7 +13,7 @@ export const ItemViewBehavior = {
             this.dispatchEvent(new CustomEvent('push-crumb', {
                 bubbles: true,
                 composed: true,
-                detail: {label: this._itemName(item), href: '/view/' + item.guid}
+                detail: {label: this._itemName(item), href: null}
             }));
         }
         this._attributes(item);
