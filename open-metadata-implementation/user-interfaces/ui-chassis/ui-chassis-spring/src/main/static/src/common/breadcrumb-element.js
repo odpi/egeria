@@ -13,68 +13,48 @@ import "../../node_modules/@vaadin/vaadin-element-mixin/vaadin-element-mixin.js"
 class BreadCrumbElement extends ElementMixin(ThemableMixin(PolymerElement)){
     static get template() {
         return html`
-     <style include="lumo-typography">
-       .hidden {
-          display: none;
-        }
-
-        :host(:last-of-type) [part='separator']
-        {
-           display: none;
-        }
-          
-       [part='separator']::after {
-        content: '>';
-        speak: none;
-        color: var(--app-secondary-color);
-        }
+             <style include="lumo-typography">
+               .hidden {
+                  display: none;
+                }
         
-        [part='crumb'] {
-                padding: 4px;
-                cursor: default;
-                color: var(--egeria-secondary-color);
-                --lumo-text-field-size: var(--lumo-size-m);
-                font-weight: bold;
-        }
-        .host(:last-of-type) [part='crumb']
-        {
-           display: none;
-           color: var(--egeria-primary-color);
-        }
-    </style>
-          <span part="link">
-                <span id="label" tabindex="0" class="hidden"></span>
-                <a id="link" href="[[href]]" on-click="_onActivateCrumb"><slot  id="pageLabel" part="crumb">[[label]]</slot></a>
-          </span>
-          <span class="crumb-separator" part="separator"></span>
+                :host(:last-of-type) [part='separator']
+                {
+                   display: none;
+                }
+                  
+                [part='separator']::after {
+                    content: '>';
+                    speak: none;
+                    color: var(--app-secondary-color);
+                }
+                a:hover, a:active{
+                text-decoration: none;
+                }
+                [part='crumb'] {
+                    padding: 4px;
+                    color: var(--egeria-secondary-color);
+                    --lumo-text-field-size: var(--lumo-size-m);
+                    font-weight: bold;
+                    text-decoration: none;
+                }
+                .host(:last-of-type) [part='crumb']
+                {
+                   display: none;
+                   color: var(--egeria-primary-color);
+                }
+            </style>
+              <span part="link">
+                  <dom-if if="[[href]]"><template> 
+                        <a href="[[href]]" ><slot  id="pageLabel" part="crumb">[[label]]</slot></a>
+                  </template></dom-if>
+                  <dom-if if="[[!href]]"><template> 
+                        <slot  id="pageLabel" part="crumb">[[label]]</slot>
+                  </template></dom-if>
+              </span>
+              <span class="crumb-separator" part="separator"></span>
 `;
     }
-
-    static get properties() {
-        return {
-            label: {
-                type: String
-            },
-            href: {
-                type: String
-            }
-        };
-    }
-
-    ready() {
-        super.ready();
-        // this.setAttribute('aria-label', 'breadcrumb');
-        // this.setAttribute('role', 'navigation');
-    }
-
-    attached() {
-
-    }
-
-    _onActivateCrumb(event){
-     window.location.href = this.href;
-     window.location.reload();
-}
 }
 
 window.customElements.define('breadcrumb-element', BreadCrumbElement);
