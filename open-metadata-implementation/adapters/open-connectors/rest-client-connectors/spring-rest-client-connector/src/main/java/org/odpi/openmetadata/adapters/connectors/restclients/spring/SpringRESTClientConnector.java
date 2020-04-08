@@ -57,6 +57,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
         restTemplate = new RestTemplate();
         restTemplate.setUriTemplateHandler(builderFactory);
 
+        /* Ensure that the REST template always uses UTF-8 */
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
         converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
         converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
