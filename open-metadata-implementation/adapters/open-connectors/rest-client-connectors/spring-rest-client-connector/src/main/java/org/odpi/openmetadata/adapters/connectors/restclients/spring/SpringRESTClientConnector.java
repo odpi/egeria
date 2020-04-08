@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -55,9 +54,13 @@ public class SpringRESTClientConnector extends RESTClientConnector
          */
         DefaultUriBuilderFactory builderFactory = new DefaultUriBuilderFactory();
         builderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
-        restTemplate = new RestTemplateBuilder()
-                .uriTemplateHandler(builderFactory)
-                .build();
+        //restTemplate = new RestTemplateBuilder()
+        //        .uriTemplateHandler(builderFactory)
+        //        .build();
+        restTemplate = new RestTemplate();
+        restTemplate.setUriTemplateHandler(builderFactory);
+
+
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
         converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
         converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
