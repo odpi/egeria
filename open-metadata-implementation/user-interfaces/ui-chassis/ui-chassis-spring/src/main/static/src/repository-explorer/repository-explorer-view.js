@@ -59,6 +59,8 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
 
             <body>
 
+                <app-route route="{{route}}" pattern="/:serverName/:serverURLRoot_base64/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
+
                 <rex-type-manager id="rexTypeManager"></rex-type-manager>
 
                 <div>
@@ -444,7 +446,12 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
             theTypeManager: Object,
             theInstanceRetriever: Object,
             theConnectionManager: Object,
-            theDiagramManager : Object
+            theDiagramManager : Object,
+
+            autoLoad : {
+                type  : Object,
+                value : null
+            }
         };
     }
 
@@ -467,6 +474,22 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
          */
         this.theDiagramManager.setInstanceRetriever(this.theInstanceRetriever);
 
+        if (this.autoLoad !== null) {
+            var serverName = this.autoLoad['serverName'];
+            var serverURLRoot = this.autoLoad['serverURLRoot'];
+            var guid = this.autoLoad['guid'];
+            /*
+             * Pass the server details to the connection-manager. Set the enterpriseOption
+             * because the server used by the previous page may not host the home metadataCollection
+             * of the object with the given GUID.
+             */
+            if (this.theConnectionManager !== undefined) {
+                this.theConnectionManager.setServerDetails(serverName, serverURLRoot, true);
+                this.theConnectionManager.doConnect();
+                this.theInstanceRetriever.loadEntity(guid);
+            }
+
+        }
     }
 
     initialise() {
@@ -573,6 +596,35 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
     aboutRex() {
         this.$.aboutDialog.open();
     }
+
+    static get observers() {
+        return [
+            '_routeChanged(routeData)'
+        ];
+    }
+
+    _routeChanged(routeData) {
+
+        var serverName = this.routeData.serverName;
+        var serverURLRoot_base64 = this.routeData.serverURLRoot_base64;
+        var serverURLRoot = atob(serverURLRoot_base64);
+        var guid = this.routeData.guid;
+
+        /*
+         * It is not possible to connect to the specified server and load the GUID yet,
+         * because the repository-explorer-view component has not finished loading yet - its
+         * ready() method has not been called.
+         * To facilitate the connect and load, package the details into the autoLoad property
+         * which is inspected at the end of ready() and will initiate the connection to the
+         * specified server and try to load the object with the given GUID.
+         */
+        this.autoLoad = {};
+        this.autoLoad['serverName'] = serverName;
+        this.autoLoad['serverURLRoot'] = serverURLRoot;
+        this.autoLoad['guid'] = guid;
+
+    }
+
 }
 
 window.customElements.define('repository-explorer-view', RepositoryExplorerView);
