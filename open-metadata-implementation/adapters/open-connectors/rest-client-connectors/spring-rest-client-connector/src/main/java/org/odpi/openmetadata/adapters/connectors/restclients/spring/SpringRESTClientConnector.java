@@ -54,12 +54,8 @@ public class SpringRESTClientConnector extends RESTClientConnector
          */
         DefaultUriBuilderFactory builderFactory = new DefaultUriBuilderFactory();
         builderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
-        //restTemplate = new RestTemplateBuilder()
-        //        .uriTemplateHandler(builderFactory)
-        //        .build();
         restTemplate = new RestTemplate();
         restTemplate.setUriTemplateHandler(builderFactory);
-
 
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
         converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
