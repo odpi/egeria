@@ -785,6 +785,62 @@ public class LocalRepositoryServicesResource
 
 
     /**
+     * Return a list of entities that match the supplied conditions.  The results can be returned over many pages.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/entities")
+    public  EntityListResponse findEntities(@PathVariable String            serverName,
+                                            @PathVariable String            userId,
+                                            @RequestBody  EntityFindRequest findRequestParameters)
+    {
+        return restAPI.findEntities(serverName, userId, findRequestParameters);
+    }
+
+
+    /**
+     * Return a list of entities that match the supplied conditions.  The results can be returned over many pages.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/entities/history")
+    public  EntityListResponse findEntitiesByHistory(@PathVariable String                      serverName,
+                                                     @PathVariable String                      userId,
+                                                     @RequestBody  EntityHistoricalFindRequest findRequestParameters)
+    {
+        return restAPI.findEntitiesByHistory(serverName, userId, findRequestParameters);
+    }
+
+
+    /**
      * Return a list of entities that match the supplied properties according to the match criteria.  The results
      * can be returned over many pages.
      *

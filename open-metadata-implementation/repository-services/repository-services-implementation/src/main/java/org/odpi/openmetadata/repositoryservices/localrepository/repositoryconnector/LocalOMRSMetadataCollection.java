@@ -5,6 +5,8 @@ package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconne
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataSecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -1929,6 +1931,64 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                    sequencingOrder,
                                                                    pageSize);
 
+
+        return this.securityVerifyReadEntityList(userId,
+                                                 setLocalProvenanceInEntityList(resultList));
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<EntityDetail> findEntities(String                    userId,
+                                           String                    entityTypeGUID,
+                                           SearchProperties          matchProperties,
+                                           int                       fromEntityElement,
+                                           List<InstanceStatus>      limitResultsByStatus,
+                                           SearchClassifications     matchClassifications,
+                                           Date                      asOfTime,
+                                           String                    sequencingProperty,
+                                           SequencingOrder           sequencingOrder,
+                                           int                       pageSize) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException,
+                                                                                      PagingErrorException,
+                                                                                      FunctionNotSupportedException,
+                                                                                      UserNotAuthorizedException
+    {
+        /*
+         * Validate parameters
+         */
+        super.findEntitiesParameterValidation(userId,
+                                              entityTypeGUID,
+                                              matchProperties,
+                                              fromEntityElement,
+                                              limitResultsByStatus,
+                                              matchClassifications,
+                                              asOfTime,
+                                              sequencingProperty,
+                                              sequencingOrder,
+                                              pageSize);
+        /*
+         * Perform operation
+         */
+        List<EntityDetail> resultList;
+
+        /*
+         * Perform operation
+         */
+        resultList = realMetadataCollection.findEntities(userId,
+                                                         entityTypeGUID,
+                                                         matchProperties,
+                                                         fromEntityElement,
+                                                         limitResultsByStatus,
+                                                         matchClassifications,
+                                                         asOfTime,
+                                                         sequencingProperty,
+                                                         sequencingOrder,
+                                                         pageSize);
 
         return this.securityVerifyReadEntityList(userId,
                                                  setLocalProvenanceInEntityList(resultList));

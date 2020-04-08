@@ -7,6 +7,8 @@ import org.odpi.openmetadata.adminservices.configuration.registration.CommonServ
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -2236,6 +2238,258 @@ public class OMRSRepositoryRESTServices
         catch (TypeErrorException error)
         {
             captureTypeErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of entities that match the supplied conditions.  The results can be returned over many pages.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  EntityListResponse findEntities(String            serverName,
+                                            String            userId,
+                                            EntityFindRequest findRequestParameters)
+    {
+        final  String   methodName = "findEntities";
+
+        log.debug("Calling method: " + methodName);
+
+        String                entityTypeGUID               = null;
+        SearchProperties      matchProperties              = null;
+        int                   fromEntityElement            = 0;
+        List<InstanceStatus>  limitResultsByStatus         = null;
+        SearchClassifications matchClassifications         = null;
+        String                sequencingProperty           = null;
+        SequencingOrder       sequencingOrder              = null;
+        int                   pageSize                     = 0;
+
+        EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            fromEntityElement                 = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            matchClassifications              = findRequestParameters.getMatchClassifications();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            List<EntityDetail>  entities = metadataCollection.findEntities(userId,
+                    entityTypeGUID,
+                    matchProperties,
+                    fromEntityElement,
+                    limitResultsByStatus,
+                    matchClassifications,
+                    null,
+                    sequencingProperty,
+                    sequencingOrder,
+                    pageSize);
+            response.setEntities(entities);
+            if (entities != null)
+            {
+                response.setOffset(fromEntityElement);
+                response.setPageSize(pageSize);
+                if (entities.size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/entities";
+
+                    EntityFindRequest nextFindRequestParameters = new EntityFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                            serverName,
+                            userId,
+                            urlTemplate,
+                            nextFindRequestParameters,
+                            userId));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of entities that match the supplied conditions.  The results can be returned over many pages.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  EntityListResponse findEntitiesByHistory(String                      serverName,
+                                                     String                      userId,
+                                                     EntityHistoricalFindRequest findRequestParameters)
+    {
+        final  String   methodName = "findEntitiesByHistory";
+
+        log.debug("Calling method: " + methodName);
+
+        String                    entityTypeGUID                    = null;
+        SearchProperties          matchProperties                   = null;
+        int                       fromEntityElement                 = 0;
+        List<InstanceStatus>      limitResultsByStatus              = null;
+        SearchClassifications     matchClassifications              = null;
+        Date                      asOfTime                          = null;
+        String                    sequencingProperty                = null;
+        SequencingOrder           sequencingOrder                   = null;
+        int                       pageSize                          = 0;
+
+        EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            fromEntityElement                 = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            matchClassifications              = findRequestParameters.getMatchClassifications();
+            asOfTime                          = findRequestParameters.getAsOfTime();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            List<EntityDetail>  entities = metadataCollection.findEntities(userId,
+                    entityTypeGUID,
+                    matchProperties,
+                    fromEntityElement,
+                    limitResultsByStatus,
+                    matchClassifications,
+                    asOfTime,
+                    sequencingProperty,
+                    sequencingOrder,
+                    pageSize);
+            response.setEntities(entities);
+            if (entities != null)
+            {
+                response.setOffset(fromEntityElement);
+                response.setPageSize(pageSize);
+                if (entities.size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/entities/history";
+
+                    EntityHistoricalFindRequest nextFindRequestParameters = new EntityHistoricalFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                            serverName,
+                            userId,
+                            urlTemplate,
+                            nextFindRequestParameters,
+                            userId));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
         }
         catch (PagingErrorException error)
         {

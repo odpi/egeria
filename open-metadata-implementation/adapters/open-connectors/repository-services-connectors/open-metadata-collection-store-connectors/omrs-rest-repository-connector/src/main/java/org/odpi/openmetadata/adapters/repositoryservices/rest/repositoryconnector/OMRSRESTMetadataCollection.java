@@ -5,6 +5,8 @@ package org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnect
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.clients.LocalRepositoryServicesClient;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -973,6 +975,43 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                     sequencingProperty,
                                                     sequencingOrder,
                                                     pageSize);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<EntityDetail> findEntities(String                    userId,
+                                           String                    entityTypeGUID,
+                                           SearchProperties          matchProperties,
+                                           int                       fromEntityElement,
+                                           List<InstanceStatus>      limitResultsByStatus,
+                                           SearchClassifications     matchClassifications,
+                                           Date                      asOfTime,
+                                           String                    sequencingProperty,
+                                           SequencingOrder           sequencingOrder,
+                                           int                       pageSize) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException,
+                                                                                      PagingErrorException,
+                                                                                      FunctionNotSupportedException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String       methodName = "findEntities";
+
+        validateClient(methodName);
+        return omrsClient.findEntities(userId,
+                                       entityTypeGUID,
+                                       matchProperties,
+                                       fromEntityElement,
+                                       limitResultsByStatus,
+                                       matchClassifications,
+                                       asOfTime,
+                                       sequencingProperty,
+                                       sequencingOrder,
+                                       pageSize);
     }
 
 

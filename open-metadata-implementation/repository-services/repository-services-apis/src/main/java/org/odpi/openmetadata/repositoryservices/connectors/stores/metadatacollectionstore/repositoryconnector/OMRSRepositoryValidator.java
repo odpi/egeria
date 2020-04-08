@@ -4,6 +4,8 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
@@ -880,6 +882,36 @@ public interface OMRSRepositoryValidator
 
 
     /**
+     * Validate the property-based search conditions.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param parameterName  name of the parameter that passed the property-based conditions
+     * @param matchProperties  property-based conditions
+     * @param methodName  method receiving the call
+     * @throws InvalidParameterException  property-based conditions are invalid
+     */
+    void validateSearchProperties(String sourceName,
+                                  String parameterName,
+                                  SearchProperties matchProperties,
+                                  String methodName) throws InvalidParameterException;
+
+
+    /**
+     * Validate the classification-based search conditions.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param parameterName  name of the parameter that passed the classification-based conditions
+     * @param matchClassifications  classification-based conditions
+     * @param methodName  method receiving the call
+     * @throws InvalidParameterException  classification-based conditions are invalid
+     */
+    void validateSearchClassifications(String sourceName,
+                                       String parameterName,
+                                       SearchClassifications matchClassifications,
+                                       String methodName) throws InvalidParameterException;
+
+
+    /**
      * Validate that the properties for a metadata instance match its TypeDef.
      *
      * @param sourceName  source of the request (used for logging)
@@ -1290,6 +1322,32 @@ public interface OMRSRepositoryValidator
                                                  InstanceAuditHeader instanceHeader,
                                                  InstanceProperties  instanceProperties,
                                                  MatchCriteria       matchCriteria) throws InvalidParameterException;
+
+
+    /**
+     * Determine if the instance properties match the property-based conditions.
+     *
+     * @param matchProperties  the property-based conditions to match.
+     * @param instanceHeader the header of the instance.
+     * @param instanceProperties  the properties from the instance.
+     * @return boolean flag indicating whether the two sets of properties match
+     * @throws InvalidParameterException invalid search criteria
+     */
+    boolean verifyMatchingInstancePropertyValues(SearchProperties    matchProperties,
+                                                 InstanceAuditHeader instanceHeader,
+                                                 InstanceProperties  instanceProperties) throws InvalidParameterException;
+
+
+    /**
+     * Determine if the instance properties match the classification-based conditions.
+     *
+     * @param matchClassifications  the classification-based conditions to match.
+     * @param entity  the entity instance.
+     * @return boolean flag indicating whether the classifications match
+     * @throws InvalidParameterException invalid search criteria
+     */
+    boolean verifyMatchingClassifications(SearchClassifications matchClassifications,
+                                          EntitySummary         entity) throws InvalidParameterException;
 
 
     /**
