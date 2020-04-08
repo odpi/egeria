@@ -3490,6 +3490,250 @@ public class OMRSRepositoryRESTServices
 
 
     /**
+     * Return a list of relationships that match the requested conditions.  The results can be broken into pages.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * a list of relationships.  Null means no matching relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  RelationshipListResponse findRelationships(String              serverName,
+                                                       String              userId,
+                                                       InstanceFindRequest findRequestParameters)
+    {
+        final  String   methodName = "findRelationships";
+
+        log.debug("Calling method: " + methodName);
+
+        String                    relationshipTypeGUID     = null;
+        SearchProperties          matchProperties          = null;
+        int                       fromRelationshipElement  = 0;
+        List<InstanceStatus>      limitResultsByStatus     = null;
+        String                    sequencingProperty       = null;
+        SequencingOrder           sequencingOrder          = null;
+        int                       pageSize                 = 0;
+
+        RelationshipListResponse response = new RelationshipListResponse();
+
+        if (findRequestParameters != null)
+        {
+            relationshipTypeGUID              = findRequestParameters.getTypeGUID();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            fromRelationshipElement           = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            List<Relationship>  relationships = metadataCollection.findRelationships(userId,
+                                                                                     relationshipTypeGUID,
+                                                                                     matchProperties,
+                                                                                     fromRelationshipElement,
+                                                                                     limitResultsByStatus,
+                                                                                     null,
+                                                                                     sequencingProperty,
+                                                                                     sequencingOrder,
+                                                                                     pageSize);
+            response.setRelationships(relationships);
+            if (relationships != null)
+            {
+                response.setOffset(fromRelationshipElement);
+                response.setPageSize(pageSize);
+                if (response.getRelationships().size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/relationships";
+
+                    InstanceFindRequest nextFindRequestParameters = new InstanceFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
+                                                              userId,
+                                                              urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested conditions.  The results can be broken into pages.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * a list of relationships.  Null means no matching relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  RelationshipListResponse findRelationshipsByHistory(String                         serverName,
+                                                                String                         userId,
+                                                                InstanceHistoricalFindRequest  findRequestParameters)
+    {
+        final  String   methodName = "findRelationshipsByHistory";
+
+        log.debug("Calling method: " + methodName);
+
+        String                    relationshipTypeGUID     = null;
+        SearchProperties          matchProperties          = null;
+        int                       fromRelationshipElement  = 0;
+        List<InstanceStatus>      limitResultsByStatus     = null;
+        Date                      asOfTime                 = null;
+        String                    sequencingProperty       = null;
+        SequencingOrder           sequencingOrder          = null;
+        int                       pageSize                 = 0;
+
+        RelationshipListResponse response = new RelationshipListResponse();
+
+        if (findRequestParameters != null)
+        {
+            relationshipTypeGUID              = findRequestParameters.getTypeGUID();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            fromRelationshipElement           = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            asOfTime                          = findRequestParameters.getAsOfTime();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            List<Relationship>  relationships = metadataCollection.findRelationships(userId,
+                                                                                     relationshipTypeGUID,
+                                                                                     matchProperties,
+                                                                                     fromRelationshipElement,
+                                                                                     limitResultsByStatus,
+                                                                                     asOfTime,
+                                                                                     sequencingProperty,
+                                                                                     sequencingOrder,
+                                                                                     pageSize);
+            response.setRelationships(relationships);
+            if (relationships != null)
+            {
+                response.setOffset(fromRelationshipElement);
+                response.setPageSize(pageSize);
+                if (response.getRelationships().size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/relationships/history";
+
+                    InstanceHistoricalFindRequest nextFindRequestParameters = new InstanceHistoricalFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
+                                                              userId,
+                                                              urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Return a list of relationships that match the requested properties by the matching criteria.   The results
      * can be broken into pages.
      *

@@ -1680,6 +1680,75 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize) throws InvalidParameterException,
+                                                                                            TypeErrorException,
+                                                                                            RepositoryErrorException,
+                                                                                            PropertyErrorException,
+                                                                                            PagingErrorException,
+                                                                                            FunctionNotSupportedException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String  methodName = "findRelationships";
+
+        /*
+         * Validate parameters
+         */
+        super.findRelationshipsParameterValidation(userId,
+                                                   relationshipTypeGUID,
+                                                   matchProperties,
+                                                   fromRelationshipElement,
+                                                   limitResultsByStatus,
+                                                   asOfTime,
+                                                   sequencingProperty,
+                                                   sequencingOrder,
+                                                   pageSize);
+
+        /*
+         * Validation complete, ok to continue with request
+         *
+         * The list of cohort connectors are retrieved for each request to ensure that any changes in
+         * the shape of the cohort are reflected immediately.
+         */
+        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
+
+        FederationControl         federationControl = new ParallelFederationControl(userId, cohortConnectors, methodName);
+        FindRelationshipsExecutor executor          = new FindRelationshipsExecutor(userId,
+                                                                                    relationshipTypeGUID,
+                                                                                    matchProperties,
+                                                                                    fromRelationshipElement,
+                                                                                    limitResultsByStatus,
+                                                                                    asOfTime,
+                                                                                    sequencingProperty,
+                                                                                    sequencingOrder,
+                                                                                    pageSize,
+                                                                                    localMetadataCollectionId,
+                                                                                    auditLog,
+                                                                                    repositoryValidator,
+                                                                                    methodName);
+
+        /*
+         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
+         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
+         * there are no positive results from any repository.
+         */
+        federationControl.executeCommand(executor);
+
+        return executor.getResults(enterpriseParentConnector);
+    }
+
+
+    /**
      * Return a list of relationships that match the requested properties by the matching criteria.   The results
      * can be received as a series of pages.
      *

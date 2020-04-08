@@ -840,6 +840,77 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize) throws InvalidParameterException,
+                                                                                            TypeErrorException,
+                                                                                            RepositoryErrorException,
+                                                                                            PropertyErrorException,
+                                                                                            PagingErrorException,
+                                                                                            FunctionNotSupportedException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String  methodName = "findRelationships";
+        final String  guidParameterName = "relationshipTypeGUID";
+
+        /*
+         * Validate parameters
+         */
+        super.findRelationshipsParameterValidation(userId,
+                                                   relationshipTypeGUID,
+                                                   matchProperties,
+                                                   fromRelationshipElement,
+                                                   limitResultsByStatus,
+                                                   asOfTime,
+                                                   sequencingProperty,
+                                                   sequencingOrder,
+                                                   pageSize);
+
+
+        /*
+         * Perform operation
+         *
+         * This is a brute force implementation of locating a relationship since it iterates through all of
+         * the stored entities.
+         */
+        List<Relationship>         foundRelationships = new ArrayList<>();
+        Map<String, Relationship>  relationshipStore = repositoryStore.timeWarpRelationshipStore(asOfTime);
+
+        for (Relationship  relationship : relationshipStore.values())
+        {
+            if (relationship != null)
+            {
+                if ((relationship.getStatus() != InstanceStatus.DELETED) &&
+                        (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationship)) &&
+                        (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
+                        (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
+                                relationship,
+                                relationship.getProperties()
+                        )))
+                {
+                    foundRelationships.add(relationship);
+                }
+            }
+        }
+
+        return repositoryHelper.formatRelationshipResults(foundRelationships,
+                fromRelationshipElement,
+                sequencingProperty,
+                sequencingOrder,
+                pageSize);
+    }
+
+
+    /**
      * Return a list of relationships that match the requested properties by the matching criteria.   The results
      * can be received as a series of pages.
      *

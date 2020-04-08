@@ -1881,6 +1881,110 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
+     * Return a list of relationships that match the requested conditions.  The results can be received as a series of
+     * pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param matchProperties Optional list of relationship property conditions to match.
+     * @param fromRelationshipElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize) throws InvalidParameterException,
+                                                                                            TypeErrorException,
+                                                                                            RepositoryErrorException,
+                                                                                            PropertyErrorException,
+                                                                                            PagingErrorException,
+                                                                                            FunctionNotSupportedException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName  = "findRelationships";
+        RelationshipListResponse restResult;
+
+        if (asOfTime == null)
+        {
+            final String operationSpecificURL = "instances/relationships";
+
+            InstanceFindRequest  findRequestParameters = new InstanceFindRequest();
+
+            findRequestParameters.setTypeGUID(relationshipTypeGUID);
+            findRequestParameters.setMatchProperties(matchProperties);
+            findRequestParameters.setOffset(fromRelationshipElement);
+            findRequestParameters.setLimitResultsByStatus(limitResultsByStatus);
+            findRequestParameters.setSequencingOrder(sequencingOrder);
+            findRequestParameters.setSequencingProperty(sequencingProperty);
+            findRequestParameters.setPageSize(pageSize);
+
+            restResult = this.callRelationshipListPostRESTCall(methodName,
+                    restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                    findRequestParameters,
+                    userId);
+        }
+        else
+        {
+            final String operationSpecificURL = "instances/relationships/history";
+
+            InstanceHistoricalFindRequest  findRequestParameters = new InstanceHistoricalFindRequest();
+
+            findRequestParameters.setTypeGUID(relationshipTypeGUID);
+            findRequestParameters.setMatchProperties(matchProperties);
+            findRequestParameters.setAsOfTime(asOfTime);
+            findRequestParameters.setOffset(fromRelationshipElement);
+            findRequestParameters.setLimitResultsByStatus(limitResultsByStatus);
+            findRequestParameters.setSequencingOrder(sequencingOrder);
+            findRequestParameters.setSequencingProperty(sequencingProperty);
+            findRequestParameters.setPageSize(pageSize);
+
+            restResult = this.callRelationshipListPostRESTCall(methodName,
+                    restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                    findRequestParameters,
+                    userId);
+        }
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getRelationships();
+    }
+
+
+    /**
      * Return a list of relationships that match the requested properties by the matching criteria.   The results
      * can be received as a series of pages.
      *

@@ -2145,6 +2145,43 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
+     * Validate the parameters passed to findRelationships.
+     * @see #findRelationships(String, String, SearchProperties, int, List, Date, String, SequencingOrder, int)
+     */
+    protected void findRelationshipsParameterValidation(String                    userId,
+                                                        String                    relationshipTypeGUID,
+                                                        SearchProperties          matchProperties,
+                                                        int                       fromRelationshipElement,
+                                                        List<InstanceStatus>      limitResultsByStatus,
+                                                        Date                      asOfTime,
+                                                        String                    sequencingProperty,
+                                                        SequencingOrder           sequencingOrder,
+                                                        int                       pageSize) throws InvalidParameterException,
+                                                                                                   TypeErrorException,
+                                                                                                   RepositoryErrorException,
+                                                                                                   PropertyErrorException,
+                                                                                                   PagingErrorException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName                   = "findRelationships";
+        final String matchCriteriaParameterName   = "matchCriteria";
+        final String matchPropertiesParameterName = "matchProperties";
+        final String guidParameterName            = "relationshipTypeGUID";
+        final String asOfTimeParameter            = "asOfTime";
+        final String pageSizeParameter            = "pageSize";
+
+        /*
+         * Validate parameters
+         */
+        super.basicRequestValidation(userId, methodName);
+        repositoryValidator.validateOptionalTypeGUID(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
+        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+        repositoryValidator.validateSearchProperties(repositoryName, matchPropertiesParameterName, matchProperties, methodName);
+    }
+
+
+    /**
      * Validate the parameters passed to findRelationshipsByProperty.
      *
      * @param userId unique identifier for requesting user.
@@ -3072,6 +3109,46 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
          */
         reportUnsupportedAsOfTimeFunction(methodName, asOfTime);
 
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize) throws InvalidParameterException,
+                                                                                            TypeErrorException,
+                                                                                            RepositoryErrorException,
+                                                                                            PropertyErrorException,
+                                                                                            PagingErrorException,
+                                                                                            FunctionNotSupportedException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String  methodName = "findRelationships";
+
+        this.findRelationshipsParameterValidation(userId,
+                                                  relationshipTypeGUID,
+                                                  matchProperties,
+                                                  fromRelationshipElement,
+                                                  limitResultsByStatus,
+                                                  asOfTime,
+                                                  sequencingProperty,
+                                                  sequencingOrder,
+                                                  pageSize);
+
+        /*
+         * Perform operation
+         */
+        reportUnsupportedOptionalFunction(methodName);
         return null;
     }
 

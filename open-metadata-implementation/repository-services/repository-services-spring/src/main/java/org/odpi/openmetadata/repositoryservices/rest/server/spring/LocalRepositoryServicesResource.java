@@ -1105,6 +1105,60 @@ public class LocalRepositoryServicesResource
 
 
     /**
+     * Return a list of relationships that match the requested conditions.  The results can be broken into pages.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * a list of relationships.  Null means no matching relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/relationships")
+    public  RelationshipListResponse findRelationships(@PathVariable String              serverName,
+                                                       @PathVariable String              userId,
+                                                       @RequestBody  InstanceFindRequest findRequestParameters)
+    {
+        return restAPI.findRelationships(serverName, userId, findRequestParameters);
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested conditions.  The results can be broken into pages.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * a list of relationships.  Null means no matching relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/relationships/history")
+    public  RelationshipListResponse findRelationshipsByHistory(@PathVariable String                        serverName,
+                                                                @PathVariable String                        userId,
+                                                                @RequestBody  InstanceHistoricalFindRequest findRequestParameters)
+    {
+        return restAPI.findRelationshipsByHistory(serverName, userId, findRequestParameters);
+    }
+
+
+    /**
      * Return a list of relationships that match the requested properties by the matching criteria.   The results
      * can be broken into pages.
      *

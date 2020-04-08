@@ -1311,6 +1311,41 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize) throws InvalidParameterException,
+                                                                                            TypeErrorException,
+                                                                                            RepositoryErrorException,
+                                                                                            PropertyErrorException,
+                                                                                            PagingErrorException,
+                                                                                            FunctionNotSupportedException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName  = "findRelationships";
+
+        validateClient(methodName);
+        return omrsClient.findRelationships(userId,
+                                            relationshipTypeGUID,
+                                            matchProperties,
+                                            fromRelationshipElement,
+                                            limitResultsByStatus,
+                                            asOfTime,
+                                            sequencingProperty,
+                                            sequencingOrder,
+                                            pageSize);
+    }
+
+
+    /**
      * Return a list of relationships that match the requested properties by the matching criteria.   The results
      * can be received as a series of pages.
      *

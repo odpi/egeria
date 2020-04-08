@@ -2328,6 +2328,60 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize) throws InvalidParameterException,
+                                                                                            TypeErrorException,
+                                                                                            RepositoryErrorException,
+                                                                                            PropertyErrorException,
+                                                                                            PagingErrorException,
+                                                                                            FunctionNotSupportedException,
+                                                                                            UserNotAuthorizedException
+    {
+        /*
+         * Validate parameters
+         */
+        super.findRelationshipsParameterValidation(userId,
+                                                   relationshipTypeGUID,
+                                                   matchProperties,
+                                                   fromRelationshipElement,
+                                                   limitResultsByStatus,
+                                                   asOfTime,
+                                                   sequencingProperty,
+                                                   sequencingOrder,
+                                                   pageSize);
+
+
+        /*
+         * Perform operation
+         */
+        List<Relationship> resultList;
+
+        resultList = realMetadataCollection.findRelationships(userId,
+                                                              relationshipTypeGUID,
+                                                              matchProperties,
+                                                              fromRelationshipElement,
+                                                              limitResultsByStatus,
+                                                              asOfTime,
+                                                              sequencingProperty,
+                                                              sequencingOrder,
+                                                              pageSize);
+
+        return this.securityVerifyReadRelationshipList(userId,
+                setLocalProvenanceInRelationshipList(resultList));
+    }
+
+
+    /**
      * Return a list of relationships that match the requested properties by the matching criteria.   The results
      * can be received as a series of pages.
      *
