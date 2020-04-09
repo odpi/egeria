@@ -183,7 +183,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
                     <asset-lineage-view language="[[language]]" name="asset-lineage"  route="{{tail}}"></asset-lineage-view>
                     <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
-                    <repository-explorer-view language="[[language]]" name="repository-explorer"></repository-explorer-view>
+                    <repository-explorer-view language="[[language]]" name="repository-explorer"  route="{{tail}}"></repository-explorer-view>
                     <my-view404 name="view404"></my-view404>
                   </iron-pages>
 
