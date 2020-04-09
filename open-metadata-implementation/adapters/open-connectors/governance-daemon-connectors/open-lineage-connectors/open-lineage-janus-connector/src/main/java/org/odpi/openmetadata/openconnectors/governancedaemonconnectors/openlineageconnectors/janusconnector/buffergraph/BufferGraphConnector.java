@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.addE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
@@ -191,6 +190,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                 log.error("An exception happened when trying to create vertices and relationships in BufferGraph. The error is {}", e);
             }
         });
+
     }
 
 
@@ -212,11 +212,15 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      * @param lineageEntity - Entity to be created
      */
     private  Vertex addVertex(GraphTraversalSource g,LineageEntity lineageEntity) throws JanusConnectorException{
-        Iterator<Vertex> vertexIt = g.V()
-                                     .has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid())
-                                     .has(PROPERTY_KEY_ENTITY_VERSION,lineageEntity.getVersion());
-        Vertex vertex;
+        //TODO test the updated queries
+//        Iterator<Vertex> vertexIt = g.V()
+//                                     .has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid())
+//                                     .has(PROPERTY_KEY_ENTITY_VERSION,lineageEntity.getVersion());
+//        Vertex vertex;
 
+        Iterator<Vertex> vertexIt = g.V()
+                .has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid())
+        Vertex vertex;
         if(!vertexIt.hasNext()){
             vertex = g.addV(lineageEntity.getTypeDefName()).next();
             addPropertiesToVertex(g,vertex,lineageEntity);
@@ -281,7 +285,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     }
 
     /**
-     * Updates a vertex
+     * Updates the properties of a vertex
      * @param lineageEntity - LineageEntity object that has the updated values
      */
     @Override
@@ -290,27 +294,26 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
         Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID,lineageEntity.getGuid());
         if(!vertex.hasNext()){
-            log.debug("when trying to update, vertex was not found with guid {} ", lineageEntity.getGuid());
+            log.debug("when trying to update, vertex with guid {} was not found  ", lineageEntity.getGuid());
             g.tx().rollback();
         }
-
-        addOrUpdateProperties(g,vertex.next(),lineageEntity);
-        g.tx().commit();
+        addOrUpdatePropertiesVertex(g,vertex.next(),lineageEntity);
     }
 
     /**
-     * Updates an edge
+     * Updates the properties of an edge
      * @param lineageRelationship - lineageRelationship object that has the updated values
      */
     @Override
     public void updateRelationship(LineageRelationship lineageRelationship){
-//        GraphTraversalSource g = bufferGraph.traversal();
-//
-//        Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID,lineageRelationship.getGuid());
-//        if(!edge.hasNext()){
-//            log.debug("when trying to update, edge was not found with guid {} ", lineageRelationship.getGuid());
-//            g.tx().rollback();
-//        }
+        GraphTraversalSource g = bufferGraph.traversal();
+
+        Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID,lineageRelationship.getGuid());
+        if(!edge.hasNext()){
+            log.debug("when trying to update, edge with guid {} was not found", lineageRelationship.getGuid());
+            g.tx().rollback();
+        }
+        addOrUpdatePropertiesEdge(g,lineageRelationship);
     }
 
     @Override
@@ -335,12 +338,11 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      * @param vertex - vertex to be updated
      * @param lineageEntity - LineageEntity object that has the updates values
      */
-    private void addOrUpdateProperties(GraphTraversalSource g,Vertex vertex,LineageEntity lineageEntity){
+    private void addOrUpdatePropertiesVertex(GraphTraversalSource g,Vertex vertex,LineageEntity lineageEntity){
 
         Map<String, Object> properties  = lineageEntity.getProperties().entrySet().stream().collect(Collectors.toMap(
-               e -> PROPERTY_KEY_PREFIX_ELEMENT+PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+e.getKey(),
-               Map.Entry::getValue
-        ));
+                                           e -> PROPERTY_KEY_PREFIX_ELEMENT+PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+e.getKey(),
+                                           Map.Entry::getValue));
 
         properties.put(PROPERTY_KEY_ENTITY_GUID,lineageEntity.getGuid());
         properties.put(PROPERTY_KEY_ENTITY_CREATE_TIME,lineageEntity.getCreateTime());
@@ -360,11 +362,56 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                             .unfold()
                             .as("kv")
                             .select("v")
-                            .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))
-                            .iterate()).next();
+                            .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values)))
+                    .iterate();
+            g.tx().commit();
         }
         catch (Exception e){
             log.error("An exception happened during update of the properties with exception: {}",e);
+            g.tx().rollback();
+        }
+    }
+
+    /**
+     * Adds or updates properties of an edge.
+     * @param g - Graph traversal object
+     * @param lineageRelationship - LineageEntity object that has the updates values
+     */
+    private void addOrUpdatePropertiesEdge(GraphTraversalSource g,LineageRelationship lineageRelationship){
+
+        Map<String, Object> properties  = lineageRelationship.getProperties().entrySet().stream().collect(Collectors.toMap(
+                e -> PROPERTY_KEY_PREFIX_ELEMENT+PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+e.getKey(),
+                Map.Entry::getValue
+        ));
+
+        properties.put(PROPERTY_KEY_RELATIONSHIP_GUID,lineageRelationship.getGuid());
+        properties.put(PROPERTY_KEY_RELATIONSHIP_CREATE_TIME,lineageRelationship.getCreateTime());
+        properties.put(PROPERTY_KEY_RELATIONSHIP_CREATED_BY,lineageRelationship.getCreatedBy());
+        properties.put(PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME,lineageRelationship.getUpdateTime());
+        properties.put(PROPERTY_KEY_RELATIONSHIP_UPDATED_BY,lineageRelationship.getUpdatedBy());
+        properties.put(PROPERTY_KEY_RELATIONSHIP_DISPLAY_NAME,lineageRelationship.getTypeDefName());
+        properties.put(PROPERTY_KEY_RELATIONSHIP_VERSION,lineageRelationship.getVersion());
+
+
+        try {
+
+            g.inject(properties)
+                    .as("properties")
+                    .V(lineageRelationship.getFirstEndGUID())
+                    .outE()
+                    .where(inV().hasId(lineageRelationship.getSecondEndGUID()))
+                    .as("edge")
+                    .sideEffect(__.select("properties")
+                            .unfold()
+                            .as("kv")
+                            .select("edge")
+                            .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values)))
+                    .iterate();
+            g.tx().commit();
+        }
+        catch (Exception e){
+            log.debug("An exception happened during update of the properties with error: {}",e);
+            g.tx().rollback();
         }
 
     }
