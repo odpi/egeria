@@ -292,12 +292,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         var crumb = allCrumbs.get(page);
         if (crumb) {
             crumbs.push(crumb);
-            if (page == 'asset-lineage' && this.subview && this.subview.path && allCrumbs.get(this.subviewData.subview)) {
-                crumbs.push(allCrumbs.get(this.subviewData.subview));
-            }
-            // if(page == 'asset-lineage' && this.subroute2 && this.subroute2.path){
-            //     crumbs.push({label: this.subrouteData2.guid, href:  "/" + this.subrouteData2.guid });
-            // }//TODO to create new service to get displayName instead of displaying the gui
         }
         this.crumbs = crumbs;
 
