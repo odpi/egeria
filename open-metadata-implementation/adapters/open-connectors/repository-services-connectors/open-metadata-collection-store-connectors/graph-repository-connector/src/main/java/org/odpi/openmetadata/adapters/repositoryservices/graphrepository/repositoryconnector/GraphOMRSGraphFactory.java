@@ -85,7 +85,7 @@ public class GraphOMRSGraphFactory {
             storageProperties = getBerkleyStorageProperties();
         }
         JanusGraphFactory.Builder build = JanusGraphFactory.build();
-        storageProperties.forEach((k, v) -> build.set(k, v));
+        storageProperties.forEach(build::set);
 
         try {
 
