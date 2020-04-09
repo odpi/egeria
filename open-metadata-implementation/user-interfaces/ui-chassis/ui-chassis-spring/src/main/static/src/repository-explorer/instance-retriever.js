@@ -357,6 +357,16 @@ class InstanceRetriever extends PolymerElement {
 
     }
 
+    /*
+     * The following method is only intended to be called from the page load of the
+     * top level repository explorer page. It is not a normal way to alter the focus
+     */
+    loadEntity(entityGUID) {
+        this.getInstanceGUID = entityGUID;
+        this.getInstanceCategory = "Entity";
+        this.doGet();
+    }
+
 
     // UI handlers
 
@@ -1289,7 +1299,7 @@ class InstanceRetriever extends PolymerElement {
 
                 // Store the expanded relationship into focusInstance, using the gen from above.
                 this.focusInstance.GUID = relationshipGUID;
-                this.focusInstance.category = "relationship";
+                this.focusInstance.category = "Relationship";
                 this.focusInstance.expRelationship = newValue.expandedRelationship;
                 this.focusInstance.expRelationship.relationshipDigest.gen = gen;
                 this.focusInstance.expEntity = undefined;

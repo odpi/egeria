@@ -183,7 +183,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
                     <asset-lineage-view language="[[language]]" name="asset-lineage"  route="{{tail}}"></asset-lineage-view>
                     <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
-                    <repository-explorer-view language="[[language]]" name="repository-explorer"></repository-explorer-view>
+                    <repository-explorer-view language="[[language]]" name="repository-explorer"  route="{{tail}}"></repository-explorer-view>
                     <my-view404 name="view404"></my-view404>
                   </iron-pages>
 
@@ -223,8 +223,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             allCrumbs: {
                 type: Object,
                 value:{
-                    'home': {label: 'Home', href: this.rootPath + '#'},
-                    'asset-catalog': {label: 'Asset Catalog', href: "/asset"},
+                    'home': {label: 'Home', href: '/#'},
+                    'asset-catalog': {label: 'Asset Catalog', href: "/asset-catalog/search"},
                     'subject-area': {label: 'Subject Area', href: "/subject-area"},
                     'asset-lineage': {label: 'Asset Lineage', href: "/asset-lineage"},
                     'type-explorer': {label: 'Type Explorer', href: "/type-explorer"},
@@ -361,12 +361,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 break;
             case 'view404':
                 import('./asset-catalog/my-view404.js');
-                break;
-            case 'asset-search' :
-                import('./asset-catalog/asset-search-view.js');
-                break;
-            case 'asset-catalog' :
-                import('./asset-catalog/asset-catalog-view.js');
                 break;
             case 'asset-catalog' :
                 import('./asset-catalog/asset-catalog-view.js');
