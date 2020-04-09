@@ -23,7 +23,7 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest ODPi Egeria release:
 
-* [Release 1.6](release-notes-1-6.md) - Planned March 2020
+* [Release 1.6](release-notes-1-6.md) - March 2020
 
     * Audit Log Framework (ALF) technical preview
     * Repository Explorer (TEX) 
