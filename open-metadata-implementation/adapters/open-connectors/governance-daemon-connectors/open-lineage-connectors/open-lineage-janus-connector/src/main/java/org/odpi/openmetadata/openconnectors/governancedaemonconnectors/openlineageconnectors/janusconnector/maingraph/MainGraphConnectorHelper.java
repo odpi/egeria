@@ -370,9 +370,11 @@ public class MainGraphConnectorHelper {
      * @param originalQueriedVertex The vertex which guid was queried by the user as the original Tinkerpop object.
      * @param queriedVertex         The vertex which guid was queried by the user as an Open Lineage vertex object.
      */
-    private void addDestinationCondensation
-    (List<Vertex> destinationsList, Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges, Vertex
-            originalQueriedVertex, LineageVertex queriedVertex) {
+    private void addDestinationCondensation(List<Vertex> destinationsList,
+                                            Set<LineageVertex> lineageVertices,
+                                            Set<LineageEdge> lineageEdges,
+                                            Vertex originalQueriedVertex,
+                                            LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
         if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID))) {

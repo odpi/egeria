@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -41,11 +42,26 @@ public class SpringRESTClientConnector extends RESTClientConnector
     public SpringRESTClientConnector()
     {
         super();
+
+        /*
+         * Rather than creating a RestTemplate directly, the RestTemplateBuilder is used so that the
+         * uriTemplateHandler can be specified. The URI encoding is set to VALUES_ONLY so that the
+         * '+' character, which is used in queryParameters conveying searchCriteria, which can be a
+         * regex, is encoded as '+' and not converted to a space character.
+         * Prior to this change a regex containing a '+' character would be split into two space
+         * separated words. For example, the regex "name_0+7" (which would match name_07, name_007,
+         * name_0007, etc) would be sent to the server as "name_0 7".
+         */
+        DefaultUriBuilderFactory builderFactory = new DefaultUriBuilderFactory();
+        builderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
         restTemplate = new RestTemplate();
+        restTemplate.setUriTemplateHandler(builderFactory);
+
         /* Ensure that the REST template always uses UTF-8 */
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
         converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
         converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+
     }
 
 
