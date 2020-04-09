@@ -1299,7 +1299,7 @@ class InstanceRetriever extends PolymerElement {
 
                 // Store the expanded relationship into focusInstance, using the gen from above.
                 this.focusInstance.GUID = relationshipGUID;
-                this.focusInstance.category = "relationship";
+                this.focusInstance.category = "Relationship";
                 this.focusInstance.expRelationship = newValue.expandedRelationship;
                 this.focusInstance.expRelationship.relationshipDigest.gen = gen;
                 this.focusInstance.expEntity = undefined;
