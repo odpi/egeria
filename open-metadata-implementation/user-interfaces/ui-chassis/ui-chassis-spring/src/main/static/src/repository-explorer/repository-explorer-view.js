@@ -605,26 +605,48 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
 
     _routeChanged(routeData) {
 
-        var serverName = this.routeData.serverName;
-        var serverURLRoot_base64 = this.routeData.serverURLRoot_base64;
-        var serverURLRoot = atob(serverURLRoot_base64);
-        var guid = this.routeData.guid;
+        /*
+         * Whether the caller has appended to the URI or not, routeData will be
+         * non-null - it is always an object. But if the caller has used the
+         * plain repository-explorer URI with no tail, the serverName and other
+         * fields will be undefined.
+         *
+         * A note on routeData - it is accessible both as the raw arg or through 'this'
+         * The following code uses the raw arg.
+         */
 
         /*
-         * It is not possible to connect to the specified server and load the GUID yet,
-         * because the repository-explorer-view component has not finished loading yet - its
-         * ready() method has not been called.
-         * To facilitate the connect and load, package the details into the autoLoad property
-         * which is inspected at the end of ready() and will initiate the connection to the
-         * specified server and try to load the object with the given GUID.
+         * If there is no route data we need to ensure autoLoad is null.
          */
-        this.autoLoad = {};
-        this.autoLoad['serverName'] = serverName;
-        this.autoLoad['serverURLRoot'] = serverURLRoot;
-        this.autoLoad['guid'] = guid;
+        this.autoLoad = null;
 
+        if (routeData.serverName           !== undefined &&
+            routeData.serverURLRoot_base64 !== undefined &&
+            routeData.guid                 !== undefined) {
+
+            /* We have everything we think we need */
+            var serverName           = routeData.serverName;
+            var serverURLRoot_base64 = routeData.serverURLRoot_base64;
+            var serverURLRoot        = atob(serverURLRoot_base64);
+            var guid                 = routeData.guid;
+
+            console.log("routeData is serverName "+serverName+" serverURLRoot "+serverURLRoot+" guid "+guid);
+
+            /*
+             * It is not possible to connect to the specified server and load the GUID yet,
+             * because the repository-explorer-view component has not finished loading yet - its
+             * ready() method has not been called.
+             * To facilitate the connect and load, package the details into the autoLoad property
+             * which is inspected at the end of ready() and will initiate the connection to the
+             * specified server and try to load the object with the given GUID.
+             */
+            this.autoLoad = {};
+            this.autoLoad['serverName']    = serverName;
+            this.autoLoad['serverURLRoot'] = serverURLRoot;
+            this.autoLoad['guid']          = guid;
+
+        }
     }
-
 }
 
 window.customElements.define('repository-explorer-view', RepositoryExplorerView);
