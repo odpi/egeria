@@ -630,8 +630,6 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
             var serverURLRoot        = atob(serverURLRoot_base64);
             var guid                 = routeData.guid;
 
-            console.log("routeData is serverName "+serverName+" serverURLRoot "+serverURLRoot+" guid "+guid);
-
             /*
              * It is not possible to connect to the specified server and load the GUID yet,
              * because the repository-explorer-view component has not finished loading yet - its
