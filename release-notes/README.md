@@ -23,13 +23,18 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest ODPi Egeria release:
 
-* [Release 1.5 (February 2020)](release-notes-1-5.md) 
-    * Metadata de-duplication identification and notification
-    * Data Engine OMAS
-    * Data Engine Proxy Server
+* [Release 1.6](release-notes-1-6.md) - March 2020
+
+    * Audit Log Framework (ALF) technical preview
+    * Repository Explorer (TEX) 
 
 ## Older Releases
 
+* [Release 1.5 (February 2020)](release-notes-1-5.md) 
+    * Metadata de-duplication identification and notification
+    * Data Engine OMAS Technical Preview
+    * Data Engine Proxy Server Technical Preview
+    
 * [Release 1.4 (January 2020)](release-notes-1-4.md) 
     * Bug fixes, documentation
     
@@ -61,18 +66,11 @@ This way you can monitor and feedback on future items as they are developed.
 
 The draft release notes for our future planned releases are below:
     
-* [Release 1.6](release-notes-1-6.md) - Planned March 2020
-    * Governance Roles, Profiles and Collaboration
-    * Automatic cataloguing of Apache Cassandra data sources
-    * Glossaries, reference data and model support
-    * Asset catalog search (with UI) technical preview
-    * Design Lineage technical preview
-    * Audit Log Framework (ALF) technical preview
-    
 * [Release 1.7](release-notes-1-7.md) - Planned April 2020
     * Automated metadata discovery and stewardship
     * PostgreSQL data connector technical preview
     * Data quality management
+    
  
 * [Release 1.8](release-notes-1-8.md) - Planned May 2020
     * IT Infrastructure cataloging maintained through DevOps pipelines
