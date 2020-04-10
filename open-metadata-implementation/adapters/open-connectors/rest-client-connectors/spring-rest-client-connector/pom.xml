@@ -52,6 +52,7 @@
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
         </dependency>
+
         <!-- JSON processing -->
 
     </dependencies>

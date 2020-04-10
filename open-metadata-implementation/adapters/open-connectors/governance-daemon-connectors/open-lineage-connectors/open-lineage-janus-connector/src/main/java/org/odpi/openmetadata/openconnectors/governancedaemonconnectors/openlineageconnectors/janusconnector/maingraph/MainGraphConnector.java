@@ -43,10 +43,9 @@ public class MainGraphConnector extends MainGraphConnectorBase {
      * {@inheritDoc}
      */
     public void initializeGraphDB() throws OpenLineageException {
-        String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         GraphFactory graphFactory = new GraphFactory();
         try {
-            this.mainGraph = graphFactory.openGraph(graphDB, connectionProperties);
+            this.mainGraph = graphFactory.openGraph(connectionProperties);
         } catch (JanusConnectorException error) {
             log.error("The Main graph could not be initialized due to an error", error);
             throw new OpenLineageException(500,
