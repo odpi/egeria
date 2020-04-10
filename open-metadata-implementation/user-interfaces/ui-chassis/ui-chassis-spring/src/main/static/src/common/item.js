@@ -47,7 +47,9 @@ export const ItemViewBehavior = {
     _camelCaseToSentence(val){
         return val
             .replace(/([A-Z])/g, ' $1')
-            .replace(/^./, function(str){ return str.toUpperCase(); })
+            .replace(/([A-Z]+\s+)/g, c => c.trim() )
+            .replace(/_/g, ' ') // replace underscores with spaces
+            .replace(/^\w/, c => c.toUpperCase()); //uppercase first letter
     }
 
 
