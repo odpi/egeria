@@ -23,12 +23,6 @@ class AssetCatalogView extends PolymerElement {
     `;
     }
 
-    static get properties() {
-        return {
-
-        };
-    }
-
     static get observers() {
         return [
             '_routeChanged(routeData.usecase)'
