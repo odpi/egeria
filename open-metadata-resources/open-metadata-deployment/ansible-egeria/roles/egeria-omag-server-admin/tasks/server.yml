@@ -1,0 +1,110 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: prep server url base
+  set_fact:
+    server_base_url: "{{ config.value.url }}/open-metadata/admin-services/users/{{ config.value.user }}/servers/{{ config.key }}"
+
+- name: make sure server is reachable
+  wait_for:
+    host: "{{ app_host }}"
+    port: "{{ app_port }}"
+    state: started         
+    delay: 0               
+    timeout: 30
+
+- name: "{{ config.key }} set url"
+  uri:
+    url: "{{ server_base_url }}/server-url-root?url={{ config.value.url }}"
+    method: POST
+    headers:
+      Content-Type: application/json
+    validate_certs: no
+  when: "config.value.url is defined"
+
+- name: "{{ config.key }} connection to eventbus"
+  uri:
+    url: "{{ server_base_url }}/event-bus?connectorProvider=org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider&topicURLRoot={{ config.value.cohort_topic }}"
+    method: POST
+    body_format: json
+    body:
+      producer:
+        bootstrap.servers: "{{ config.value.producer }}"
+      consumer:
+        bootstrap.servers: "{{ config.value.consumer }}"
+    headers:
+      Content-Type: application/json
+    validate_certs: no
+  when: "config.value.cohort_topic is defined"
+
+- name:  "{{ config.key }} set cohort name"
+  uri:
+    url: "{{ server_base_url }}/cohorts/{{ config.value.cohort}}"
+    method: POST
+    headers:
+      Content-Type: application/json
+    validate_certs: no
+  when: "config.value.cohort is defined"
+  
+- name: "{{ config.key }} configure open lineage service connectivity"
+  uri:
+    url: "{{ server_base_url }}/open-lineage/configuration"
+    method: POST
+    headers:
+      Content-Type: application/json
+    body_format: json
+    body:
+      class: OpenLineageConfig
+      openLineageDescription: Open Lineage Service is used for the storage and querying of lineage
+      inTopicName: "{{ config.value.assetlineage_topic }}"
+      openLineageWiki: wiki URL
+      openLineageBufferGraphConnection:
+        class: Connection
+        displayName: Buffer Graph Connection
+        description: Used for storing lineage in the Open Metadata format
+        connectorType:
+          class: ConnectorType
+          connectorProviderClassName: "{{ config.value.buffergraph_provider }}"
+        configurationProperties:
+          graphDB: "{{ config.value.buffergraph_db }}"
+          graphType: bufferGraph
+          storageBackend: "{{ config.value.buffergraph_storage }}"
+          indexSearchBackend: "{{ config.value.buffergraph_index }}"
+      openLineageMainGraphConnection:
+        class: Connection
+        displayName: Main Graph Connection
+        description: Used for storing lineage in a fomat optimized for querying lineage
+        connectorType:
+          class: ConnectorType
+          connectorProviderClassName: "{{ config.value.maingraph_provider }}"
+        configurationProperties:
+          graphDB: "{{ config.value.maingraph_db }}"
+          graphType: mainGraph
+          storageBackend: "{{ config.value.maingraph_storage }}"
+          indexSearchBackend: "{{ config.value.maingraph_index }}"
+  when: config.value.mode == 'open-lineage-service'
+
+- name: "{{ config.key }} data engine proxy service connectivity"
+  uri:
+    url: "{{ server_base_url }}/data-engine-proxy-service/configuration"
+    method: POST
+    body_format: json
+    body: 
+      class: DataEngineProxyConfig
+      accessServiceRootURL: "{{ config.value.access_service_url }}"
+      accessServiceServerName: "{{ config.value.access_service_name }}"
+      dataEngineConnection:
+        class: Connection
+        connectorType:
+          class: ConnectorType
+          connectorProviderClassName: "{{ config.value.connector_provider }}"
+        endpoint:
+          class: Endpoint
+          address: "{{ config.value.endpoint_address }}"
+          protocol: "{{ config.value.endpoint_protocol }}"
+        userId: "{{ config.value.user_id }}"
+        clearPassword: "{{ config.value.clear_password }}"
+        configurationProperties: "{{ config.value.configuration_properties }}"
+      pollIntervalInSeconds: "{{ config.value.pool_interval_seconds }}"
+  when: config.value.mode == 'data-engine-proxy-service'
