@@ -96,9 +96,9 @@ public class MainGraphMapper {
 
     private Vertex checkAssetVertex(GraphTraversalSource mainG,GraphTraversalSource bufferG,Vertex originalVertex){
         Vertex newColumn = mainG.addV(NODE_LABEL_COLUMN)
-                .property(PROPERTY_KEY_ENTITY_NODE_ID,
-                        originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value())
-                .next();
+                                .property(PROPERTY_KEY_ENTITY_NODE_ID,
+                                          originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value())
+                                .next();
 
         copyVertexProperties(originalVertex, newColumn);
         addExtraProperties(mainG,bufferG,originalVertex,newColumn);
@@ -325,6 +325,10 @@ public class MainGraphMapper {
         if(!columnVertex.hasNext()) {
             column.addEdge(EDGE_LABEL_INCLUDED_IN, table);
         }
+    }
+
+    public void updateVertex(Vertex vertex){
+
     }
 
 }

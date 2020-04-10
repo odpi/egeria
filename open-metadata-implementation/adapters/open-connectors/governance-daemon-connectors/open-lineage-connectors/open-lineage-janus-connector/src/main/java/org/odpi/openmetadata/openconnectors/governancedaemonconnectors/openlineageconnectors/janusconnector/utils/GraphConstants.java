@@ -123,7 +123,7 @@ public class GraphConstants {
         corePropertyTypes.put(PROPERTY_NAME_LABEL, JAVA_STRING);
         corePropertyTypes.put(PROPERTY_NAME_PROXY, "java.lang.Boolean");
         corePropertyTypes.put(PROPERTY_NAME_NODE_ID, JAVA_STRING);
-
+        corePropertyTypes.put(PROPERTY_NAME_METADATA_ID, JAVA_STRING);
     }
 
     public static final ImmutableMap<String, String> immutableCorePropertyTypes = ImmutableMap.copyOf(corePropertyTypes);

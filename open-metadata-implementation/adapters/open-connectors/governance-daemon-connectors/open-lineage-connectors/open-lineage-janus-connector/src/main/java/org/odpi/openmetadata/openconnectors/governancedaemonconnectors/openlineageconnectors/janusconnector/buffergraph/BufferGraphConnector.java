@@ -34,7 +34,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     private JanusGraph bufferGraph;
     private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
     private JanusGraph mainGraph;
-
+//    private MainGraphMapper mainGraphMapper;
     /**
      * Instantiates the graph based on the configuration passed.
      *
@@ -42,6 +42,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     public void initializeGraphDB() throws OpenLineageException {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         GraphFactory graphFactory = new GraphFactory();
+//        mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
+
         try {
             this.bufferGraph = graphFactory.openGraph(graphDB, connectionProperties);
         } catch (JanusConnectorException error) {
@@ -219,7 +221,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 //        Vertex vertex;
 
         Iterator<Vertex> vertexIt = g.V()
-                .has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid())
+                                     .has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
         Vertex vertex;
         if(!vertexIt.hasNext()){
             vertex = g.addV(lineageEntity.getTypeDefName()).next();
@@ -365,6 +367,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                             .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values)))
                     .iterate();
             g.tx().commit();
+
+//            mainGraphMapper.updateVertex(vertex);
         }
         catch (Exception e){
             log.error("An exception happened during update of the properties with exception: {}",e);

@@ -17,13 +17,13 @@ public abstract class BufferGraphConnectorBase extends ConnectorBase implements 
     public abstract void addEntity(LineageEvent lineageEvent);
 
     @Override
-    public void updateEntity(LineageEntity lineageEntity) {}
+    public abstract void updateEntity(LineageEntity lineageEntity);
 
     @Override
-    public void updateRelationship(LineageRelationship lineageRelationship){}
+    public abstract void updateRelationship(LineageRelationship lineageRelationship);
 
     @Override
-    public void deleteEntity(String guid,String version) {}
+    public abstract void deleteEntity(String guid,String version);
 
     @Override
     public abstract void schedulerTask();
