@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -29,26 +28,25 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
     }
 
     /**
+     * Receives kafka events that are publish out from Asset Lineage OMAS
      * @param assetLineageEvent contains all the information needed to build asset lineage like connection details, database
-     *                      name, schema name, table name, derived columns details
+     *                          name, schema name, table name, derived columns details
      */
     @Override
     public void processEvent(String assetLineageEvent) {
         try {
-//            event = OBJECT_MAPPER.readValue(eventAsString, AssetLineageEventHeader.class);
             log.info("Started processing OpenLineageEvent {}",assetLineageEvent);
-            if (assetLineageEvent == null) {
-                log.debug("Null instance event - ignoring event");
-            }
-            else {
+            if (assetLineageEvent != null) {
                 processEventBasedOnType(assetLineageEvent);
             }
+
+            log.debug("Null instance event found - ignoring event");
         }
         catch (JsonProcessingException e) {
             logException(assetLineageEvent,e);
         }
         catch (Throwable e) {
-            log.error("Exception processing event from in topic", e);
+            log.error("Exception processing the in topic event", e);
             OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.PROCESS_EVENT_EXCEPTION;
 
             auditLog.logException("processEvent",
@@ -82,6 +80,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                 case UPDATE_RELATIONSHIP_EVENT:
                     lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent,LineageRelationshipEvent.class);
                     storingServices.updateRelationship(lineageRelationshipEvent);
+                    break;
 //                case DELETE_ENTITY_EVENT:
 //                    storingServices.deleteEntity(event);
 //                    break;
@@ -89,9 +88,8 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                     break;
             }
 
-
+            log.debug("AssetLineageEventHeader is null since json cannot be de-serialized, parsing of the event cannot be done");
         }
-
     }
 
     private void logException(String assetLineageEvent, Exception e) {

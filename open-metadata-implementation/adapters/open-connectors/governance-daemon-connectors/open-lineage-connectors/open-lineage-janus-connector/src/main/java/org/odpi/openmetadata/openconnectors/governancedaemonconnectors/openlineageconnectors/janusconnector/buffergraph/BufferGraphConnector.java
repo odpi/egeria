@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
@@ -89,12 +89,12 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      * @param guid - The unique identifier of a Process
      */
     private void findInputColumns(GraphTraversalSource g,String guid) {
-            List<Vertex> inputPathsForColumns = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
-                    .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "INPUT_PORT")
-                    .out(PORT_SCHEMA).in(ATTRIBUTE_FOR_SCHEMA).out(LINEAGE_MAPPING)
-                    .or(__.out(ATTRIBUTE_FOR_SCHEMA).out(ASSET_SCHEMA_TYPE)
-                                    .has(PROPERTY_KEY_LABEL,DATA_FILE),
-                            __.out(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL,RELATIONAL_TABLE)).toList();
+        List<Vertex> inputPathsForColumns = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
+                .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "INPUT_PORT")
+                .out(PORT_SCHEMA).in(ATTRIBUTE_FOR_SCHEMA).out(LINEAGE_MAPPING)
+                .or(__.out(ATTRIBUTE_FOR_SCHEMA).out(ASSET_SCHEMA_TYPE)
+                                .has(PROPERTY_KEY_LABEL,DATA_FILE),
+                        __.out(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL,RELATIONAL_TABLE)).toList();
 
         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         inputPathsForColumns.stream().forEach(columnIn -> findOutputColumn(g, columnIn, process));
@@ -108,9 +108,9 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      */
     private void findOutputColumn(GraphTraversalSource g,Vertex columnIn,Vertex process){
         List<Vertex> schemaElementVertex = g.V()
-                                            .has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value())
-                                            .in(LINEAGE_MAPPING)
-                                            .toList();
+                .has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value())
+                .in(LINEAGE_MAPPING)
+                .toList();
 
         Vertex vertexToStart = null;
         if (schemaElementVertex != null) {
@@ -221,12 +221,15 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 //        Vertex vertex;
 
         Iterator<Vertex> vertexIt = g.V()
-                                     .has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
+                .has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
         Vertex vertex;
         if(!vertexIt.hasNext()){
+
             vertex = g.addV(lineageEntity.getTypeDefName()).next();
             addPropertiesToVertex(g,vertex,lineageEntity);
             g.tx().commit();
+            return vertex;
+
         }
         else {
             vertex = vertexIt.next();
@@ -234,8 +237,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                 log.debug("found existing vertex {} when trying to add it in bufferGraph", vertex);
             }
             g.tx().rollback();
+            return vertex;
         }
-        return vertex;
     }
 
     /**
@@ -247,7 +250,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         GraphTraversalSource g = bufferGraph.traversal();
 
         if (relationshipType == null) {
-            log.error("Relationship type name is missing");
+            log.debug("Relationship type name is missing, relationship cannot be created");
             throwException(JanusConnectorErrorCode.RELATIONSHIP_TYPE_NAME_NOT_KNOWN,relationshipGuid,methodName);
         }
 
@@ -255,7 +258,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             Iterator<Edge> edgeIt = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID, relationshipGuid);
             if (edgeIt.hasNext()) {
                 g.tx().rollback();
-                log.debug("found existing edge {}", edgeIt);
+                log.debug("found existing edge {} when trying to add a relationship", edgeIt);
                 return;
             }
 
@@ -264,6 +267,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         }
         catch (Exception e){
             g.tx().rollback();
+            log.debug("Something went wrong when trying to create a relationship on the graph check the exception: {}",e);
 
         }
 
@@ -298,6 +302,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         if(!vertex.hasNext()){
             log.debug("when trying to update, vertex with guid {} was not found  ", lineageEntity.getGuid());
             g.tx().rollback();
+            return;
         }
         addOrUpdatePropertiesVertex(g,vertex.next(),lineageEntity);
     }
@@ -314,6 +319,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         if(!edge.hasNext()){
             log.debug("when trying to update, edge with guid {} was not found", lineageRelationship.getGuid());
             g.tx().rollback();
+            return;
         }
         addOrUpdatePropertiesEdge(g,lineageRelationship);
     }
@@ -327,6 +333,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         if(!vertex.hasNext()){
             g.tx().rollback();
             log.debug("Vertex with guid did not delete {}",guid);
+            return;
         }
 
         g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).drop();
@@ -343,8 +350,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     private void addOrUpdatePropertiesVertex(GraphTraversalSource g,Vertex vertex,LineageEntity lineageEntity){
 
         Map<String, Object> properties  = lineageEntity.getProperties().entrySet().stream().collect(Collectors.toMap(
-                                           e -> PROPERTY_KEY_PREFIX_ELEMENT+PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+e.getKey(),
-                                           Map.Entry::getValue));
+                e -> PROPERTY_KEY_PREFIX_ELEMENT+PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+e.getKey(),
+                Map.Entry::getValue));
 
         properties.put(PROPERTY_KEY_ENTITY_GUID,lineageEntity.getGuid());
         properties.put(PROPERTY_KEY_ENTITY_CREATE_TIME,lineageEntity.getCreateTime());
@@ -353,6 +360,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         properties.put(PROPERTY_KEY_ENTITY_UPDATED_BY,lineageEntity.getUpdatedBy());
         properties.put(PROPERTY_KEY_DISPLAY_NAME,lineageEntity.getTypeDefName());
         properties.put(PROPERTY_KEY_ENTITY_VERSION,lineageEntity.getVersion());
+        properties.put(PROPERTY_KEY_METADATA_ID,lineageEntity.getMetadataCollectionId());
 
         try {
             g.inject(properties)
@@ -364,11 +372,12 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                             .unfold()
                             .as("kv")
                             .select("v")
-                            .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values)))
-                    .iterate();
+                            .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))) ;
             g.tx().commit();
 
-//            mainGraphMapper.updateVertex(vertex);
+            //TODO addcheck for type check in order to update(if it database or schema it needs extra checks)
+            MainGraphMapper mainGraphMapper  = new MainGraphMapper(bufferGraph,mainGraph);
+            mainGraphMapper.updateVertex(vertex,properties);
         }
         catch (Exception e){
             log.error("An exception happened during update of the properties with exception: {}",e);
@@ -409,8 +418,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                             .unfold()
                             .as("kv")
                             .select("edge")
-                            .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values)))
-                    .iterate();
+                            .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))) ;
             g.tx().commit();
         }
         catch (Exception e){
@@ -433,7 +441,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         try{
             Iterator<Vertex> end =  g.V(endingVertex.id())
                     .or(__.out(ATTRIBUTE_FOR_SCHEMA).out(ASSET_SCHEMA_TYPE)
-                            .has(PROPERTY_KEY_LABEL,DATA_FILE).store(VERTEX),
+                                    .has(PROPERTY_KEY_LABEL,DATA_FILE).store(VERTEX),
                             __.out(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL,RELATIONAL_TABLE)
                                     .store(VERTEX)).select(VERTEX).unfold();
 
@@ -446,11 +454,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                     }
                     nextVertex = vert;
                 }
-
-
                 return findPathForOutputAsset(nextVertex, g,endingVertex);
             }
-
             return endingVertex;
         }
         catch (Exception e){
@@ -472,10 +477,10 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                 this.getClass().getName());
 
         throw new JanusConnectorException(this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
     }
 
     @Override
@@ -484,3 +489,4 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         super.disconnect();
     }
 }
+

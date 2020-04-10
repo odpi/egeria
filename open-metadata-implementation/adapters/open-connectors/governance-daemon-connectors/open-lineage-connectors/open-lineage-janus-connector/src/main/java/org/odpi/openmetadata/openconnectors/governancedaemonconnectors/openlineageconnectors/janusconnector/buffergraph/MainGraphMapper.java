@@ -5,6 +5,7 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
+import org.apache.tinkerpop.gremlin.structure.Column;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.janusgraph.core.JanusGraph;
@@ -24,12 +25,17 @@ public class MainGraphMapper {
 
     private JanusGraph bufferGraph;
     private JanusGraph mainGraph;
+    private GraphTraversalSource bufferG;
+    private GraphTraversalSource mainG;
 
     public MainGraphMapper(){}
 
     public MainGraphMapper(JanusGraph bufferGraph,JanusGraph mainGraph){
         this.bufferGraph = bufferGraph;
         this.mainGraph = mainGraph;
+        this.bufferG = bufferGraph.traversal();
+        this.mainG = bufferGraph.traversal();
+
     }
 
     /**
@@ -327,8 +333,24 @@ public class MainGraphMapper {
         }
     }
 
-    public void updateVertex(Vertex vertex){
+    public void updateVertex(Vertex vertex, Map<String, Object> properties){
+        Iterator<Vertex> vertexMainIt = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID,vertex.property(PROPERTY_KEY_ENTITY_GUID).value());
+        if (!vertexMainIt.hasNext()){
+            log.debug("Vertex with guid {} does not exist in the mainGraph",vertex.property(PROPERTY_KEY_ENTITY_GUID).value());
+            return;
+        }
 
+        mainG.inject(properties)
+                .unfold()
+                .as("properties")
+                .V(vertexMainIt.next().id())
+                .as("v")
+                .sideEffect(__.select("properties")
+                        .unfold()
+                        .as("kv")
+                        .select("v")
+                        .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))) ;
+        mainG.tx().commit();
     }
 
 }
