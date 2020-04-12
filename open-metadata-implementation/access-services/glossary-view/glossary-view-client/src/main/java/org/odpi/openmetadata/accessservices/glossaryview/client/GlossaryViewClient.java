@@ -112,6 +112,7 @@ public class GlossaryViewClient extends OmasClient {
      * @param userId calling user
      * @param glossaryGUID glossary GUID
      *
+     *
      * @return EntityDetailResponse glossary
      *
      * @throws PropertyServerException if a problem occurs while serving the request
