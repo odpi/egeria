@@ -51,7 +51,7 @@ public class GlossaryViewController extends SecureController {
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/{glossaryGUID}")
-    public Glossary getGlossary(@PathVariable("categoryGUID") String glossaryGUID, HttpServletRequest request)
+    public Glossary getGlossary(@PathVariable("glossaryGUID") String glossaryGUID, HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
         String userId = getUser(request);
         return glossaryViewClient.getGlossary(userId, glossaryGUID);
