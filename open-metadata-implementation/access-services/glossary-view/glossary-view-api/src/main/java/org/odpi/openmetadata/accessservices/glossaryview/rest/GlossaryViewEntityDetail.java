@@ -32,7 +32,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        property = "typeDefName")
+        property = "typeDefName",
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        visible = true)
 public class GlossaryViewEntityDetail{
 
     private static final String QUALIFIED_NAME = "qualifiedName";
