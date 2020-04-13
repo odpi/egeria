@@ -38,4 +38,19 @@ public class Glossary extends GlossaryViewEntityDetail {
         return getProperties().get(LANGUAGE);
     }
 
+    public void setDisplayName(String displayName) {
+        getProperties().put(DISPLAY_NAME, displayName);
+    }
+
+    public void setUsage(String usage) {
+        getProperties().put(USAGE, usage);
+    }
+
+    public void setDescription(String description) {
+        getProperties().put(DESCRIPTION, description);
+    }
+
+    public void setLanguage(String language) {
+        getProperties().put(LANGUAGE, language);
+    }
 }

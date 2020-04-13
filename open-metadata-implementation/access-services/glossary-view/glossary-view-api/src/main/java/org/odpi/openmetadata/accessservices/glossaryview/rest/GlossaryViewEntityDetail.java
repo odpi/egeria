@@ -106,6 +106,10 @@ public class GlossaryViewEntityDetail{
         return properties.get(QUALIFIED_NAME);
     }
 
+    public void setQualifiedName(String qualifiedName){
+        properties.put(QUALIFIED_NAME, qualifiedName);
+    }
+
     public List<GlossaryViewClassification> getClassifications() {
         return classifications;
     }
