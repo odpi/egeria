@@ -108,7 +108,6 @@ public class GlossaryViewClient extends OmasClient {
 
     /**
      * Extract a glossary definition
-     *
      * @param userId calling user
      * @param glossaryGUID glossary GUID
      *
