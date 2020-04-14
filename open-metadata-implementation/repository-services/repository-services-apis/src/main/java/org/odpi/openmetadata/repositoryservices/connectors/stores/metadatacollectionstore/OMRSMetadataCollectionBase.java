@@ -1949,10 +1949,11 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
     /**
      * Validate the parameters for findEntities.
-     * @see #findEntities(String, String, SearchProperties, int, List, SearchClassifications, Date, String, SequencingOrder, int)
+     * @see #findEntities(String, String, List, SearchProperties, int, List, SearchClassifications, Date, String, SequencingOrder, int)
      */
     protected void findEntitiesParameterValidation(String                    userId,
                                                    String                    entityTypeGUID,
+                                                   List<String>              entitySubtypeGUIDs,
                                                    SearchProperties          matchProperties,
                                                    int                       fromEntityElement,
                                                    List<InstanceStatus>      limitResultsByStatus,
@@ -1969,13 +1970,14 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     {
         final String methodName                        = "findEntities";
         final String typeGUIDParameterName             = "entityTypeGUID";
+        final String subtypeGUIDsParameterName         = "entitySubtypeGUIDs";
         final String asOfTimeParameter                 = "asOfTime";
         final String pageSizeParameter                 = "pageSize";
         final String matchPropertiesParameterName      = "matchProperties";
         final String matchClassificationsParameterName = "matchClassifications";
 
         super.basicRequestValidation(userId, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, typeGUIDParameterName, entityTypeGUID, methodName);
+        repositoryValidator.validateOptionalTypeGUIDs(repositoryName, typeGUIDParameterName, entityTypeGUID, subtypeGUIDsParameterName, entitySubtypeGUIDs, methodName);
         repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
         repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
         repositoryValidator.validateSearchProperties(repositoryName, matchPropertiesParameterName, matchProperties, methodName);
@@ -2146,10 +2148,11 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
     /**
      * Validate the parameters passed to findRelationships.
-     * @see #findRelationships(String, String, SearchProperties, int, List, Date, String, SequencingOrder, int)
+     * @see #findRelationships(String, String, List, SearchProperties, int, List, Date, String, SequencingOrder, int)
      */
     protected void findRelationshipsParameterValidation(String                    userId,
                                                         String                    relationshipTypeGUID,
+                                                        List<String>              relationshipSubtypeGUIDs,
                                                         SearchProperties          matchProperties,
                                                         int                       fromRelationshipElement,
                                                         List<InstanceStatus>      limitResultsByStatus,
@@ -2164,9 +2167,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                    UserNotAuthorizedException
     {
         final String methodName                   = "findRelationships";
-        final String matchCriteriaParameterName   = "matchCriteria";
         final String matchPropertiesParameterName = "matchProperties";
         final String guidParameterName            = "relationshipTypeGUID";
+        final String subtypeGuidsParameterName    = "relationshipSubtypeGUIDs";
         final String asOfTimeParameter            = "asOfTime";
         final String pageSizeParameter            = "pageSize";
 
@@ -2174,7 +2177,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
          * Validate parameters
          */
         super.basicRequestValidation(userId, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
+        repositoryValidator.validateOptionalTypeGUIDs(repositoryName, guidParameterName, relationshipTypeGUID, subtypeGuidsParameterName, relationshipSubtypeGUIDs, methodName);
         repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
         repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
         repositoryValidator.validateSearchProperties(repositoryName, matchPropertiesParameterName, matchProperties, methodName);
@@ -2729,6 +2732,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     @Override
     public List<EntityDetail> findEntities(String                    userId,
                                            String                    entityTypeGUID,
+                                           List<String>              entitySubtypeGUIDs,
                                            SearchProperties          matchProperties,
                                            int                       fromEntityElement,
                                            List<InstanceStatus>      limitResultsByStatus,
@@ -2751,6 +2755,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
          */
         this.findEntitiesParameterValidation(userId,
                                              entityTypeGUID,
+                                             entitySubtypeGUIDs,
                                              matchProperties,
                                              fromEntityElement,
                                              limitResultsByStatus,
@@ -3119,6 +3124,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     @Override
     public  List<Relationship> findRelationships(String                    userId,
                                                  String                    relationshipTypeGUID,
+                                                 List<String>              relationshipSubtypeGUIDs,
                                                  SearchProperties          matchProperties,
                                                  int                       fromRelationshipElement,
                                                  List<InstanceStatus>      limitResultsByStatus,
@@ -3137,6 +3143,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
         this.findRelationshipsParameterValidation(userId,
                                                   relationshipTypeGUID,
+                                                  relationshipSubtypeGUIDs,
                                                   matchProperties,
                                                   fromRelationshipElement,
                                                   limitResultsByStatus,

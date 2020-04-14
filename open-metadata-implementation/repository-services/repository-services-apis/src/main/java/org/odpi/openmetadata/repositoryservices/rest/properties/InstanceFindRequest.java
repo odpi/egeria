@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = EntityFindRequest.class, name = "EntityFindRequest")
         })
-public class InstanceFindRequest extends TypeLimitedFindRequest
+public class InstanceFindRequest extends SubtypeLimitedFindRequest
 {
     private static final long    serialVersionUID = 1L;
 

@@ -801,6 +801,52 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public  void validateOptionalTypeGUIDs(String sourceName,
+                                           String guidParameterName,
+                                           String guid,
+                                           String subtypeParameterName,
+                                           List<String> subtypeGuids,
+                                           String methodName) throws TypeErrorException
+    {
+        validateOptionalTypeGUID(sourceName, guidParameterName, guid, methodName);
+        if (subtypeGuids != null)
+        {
+            List<String> invalidSubtypes = new ArrayList<>();
+            for (String subtype : subtypeGuids)
+            {
+                if (! isKnownTypeId(sourceName, subtype))
+                {
+                    throw new TypeErrorException(OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN.getMessageDefinition(subtype,
+                                                                                                         subtypeParameterName,
+                                                                                                         methodName,
+                                                                                                         sourceName),
+                                                 this.getClass().getName(),
+                                                 methodName);
+                }
+                else
+                {
+                    validateRepositoryContentManager(methodName);
+                    TypeDef subtypeDef = repositoryContentManager.getTypeDef(sourceName, subtypeParameterName, subtype, methodName);
+                    if (! repositoryContentManager.isTypeOfByGUID(sourceName, subtype, subtypeDef.getName(), guid))
+                    {
+                        invalidSubtypes.add(subtype);
+                    }
+                }
+            }
+            if (! invalidSubtypes.isEmpty())
+            {
+                throw new TypeErrorException(OMRSErrorCode.TYPEDEF_NOT_SUBTYPE.getMessageDefinition(invalidSubtypes.toString(), guid),
+                                             this.getClass().getName(),
+                                             methodName);
+            }
+        }
+    }
+
+
+    /**
      * Verify that a TypeDefPatch is not null and is for a recognized type.
      *
      * @param sourceName source of the request (used for logging)
@@ -2193,6 +2239,37 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         }
 
         return false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean verifyInstanceType(String         sourceName,
+                                      String         instanceTypeGUID,
+                                      List<String>   subtypeGUIDs,
+                                      InstanceHeader instance)
+    {
+        boolean soFar = verifyInstanceType(sourceName, instanceTypeGUID, instance);
+        if (soFar)
+        {
+            if (subtypeGUIDs != null)
+            {
+                boolean matchesASubtype = false;
+                for (String subtype : subtypeGUIDs)
+                {
+                    matchesASubtype = verifyInstanceType(sourceName, subtype, instance);
+                    if (matchesASubtype)
+                    {
+                        // Short-circuit out if we found a subtype match
+                        break;
+                    }
+                }
+                soFar = matchesASubtype;
+            }
+        }
+        return soFar;
     }
 
 

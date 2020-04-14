@@ -445,6 +445,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
     @Override
     public List<EntityDetail> findEntities(String                    userId,
                                            String                    entityTypeGUID,
+                                           List<String>              entitySubtypeGUIDs,
                                            SearchProperties          matchProperties,
                                            int                       fromEntityElement,
                                            List<InstanceStatus>      limitResultsByStatus,
@@ -464,6 +465,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          */
         super.findEntitiesParameterValidation(userId,
                                               entityTypeGUID,
+                                              entitySubtypeGUIDs,
                                               matchProperties,
                                               fromEntityElement,
                                               limitResultsByStatus,
@@ -487,7 +489,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             if (entity != null)
             {
                 if ((entity.getStatus() != InstanceStatus.DELETED) &&
-                        (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
+                        (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entitySubtypeGUIDs, entity)) &&
                         (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
                         (repositoryValidator.verifyMatchingClassifications(matchClassifications, entity)) &&
                         (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
@@ -845,6 +847,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
     @Override
     public  List<Relationship> findRelationships(String                    userId,
                                                  String                    relationshipTypeGUID,
+                                                 List<String>              relationshipSubtypeGUIDs,
                                                  SearchProperties          matchProperties,
                                                  int                       fromRelationshipElement,
                                                  List<InstanceStatus>      limitResultsByStatus,
@@ -867,6 +870,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          */
         super.findRelationshipsParameterValidation(userId,
                                                    relationshipTypeGUID,
+                                                   relationshipSubtypeGUIDs,
                                                    matchProperties,
                                                    fromRelationshipElement,
                                                    limitResultsByStatus,
@@ -890,7 +894,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             if (relationship != null)
             {
                 if ((relationship.getStatus() != InstanceStatus.DELETED) &&
-                        (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationship)) &&
+                        (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationshipSubtypeGUIDs, relationship)) &&
                         (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
                         (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
                                 relationship,

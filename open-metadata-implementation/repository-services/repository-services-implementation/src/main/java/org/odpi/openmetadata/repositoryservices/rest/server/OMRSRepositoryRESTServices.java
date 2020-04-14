@@ -2282,6 +2282,7 @@ public class OMRSRepositoryRESTServices
         log.debug("Calling method: " + methodName);
 
         String                entityTypeGUID               = null;
+        List<String>          entitySubtypeGUIDs           = null;
         SearchProperties      matchProperties              = null;
         int                   fromEntityElement            = 0;
         List<InstanceStatus>  limitResultsByStatus         = null;
@@ -2295,6 +2296,7 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            entitySubtypeGUIDs                = findRequestParameters.getSubtypeGUIDs();
             matchProperties                   = findRequestParameters.getMatchProperties();
             fromEntityElement                 = findRequestParameters.getOffset();
             limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
@@ -2309,15 +2311,16 @@ public class OMRSRepositoryRESTServices
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = metadataCollection.findEntities(userId,
-                    entityTypeGUID,
-                    matchProperties,
-                    fromEntityElement,
-                    limitResultsByStatus,
-                    matchClassifications,
-                    null,
-                    sequencingProperty,
-                    sequencingOrder,
-                    pageSize);
+                                                                           entityTypeGUID,
+                                                                           entitySubtypeGUIDs,
+                                                                           matchProperties,
+                                                                           fromEntityElement,
+                                                                           limitResultsByStatus,
+                                                                           matchClassifications,
+                                                                           null,
+                                                                           sequencingProperty,
+                                                                           sequencingOrder,
+                                                                           pageSize);
             response.setEntities(entities);
             if (entities != null)
             {
@@ -2407,6 +2410,7 @@ public class OMRSRepositoryRESTServices
         log.debug("Calling method: " + methodName);
 
         String                    entityTypeGUID                    = null;
+        List<String>              entitySubtypeGUIDs                = null;
         SearchProperties          matchProperties                   = null;
         int                       fromEntityElement                 = 0;
         List<InstanceStatus>      limitResultsByStatus              = null;
@@ -2421,6 +2425,7 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            entitySubtypeGUIDs                = findRequestParameters.getSubtypeGUIDs();
             matchProperties                   = findRequestParameters.getMatchProperties();
             fromEntityElement                 = findRequestParameters.getOffset();
             limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
@@ -2436,15 +2441,16 @@ public class OMRSRepositoryRESTServices
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = metadataCollection.findEntities(userId,
-                    entityTypeGUID,
-                    matchProperties,
-                    fromEntityElement,
-                    limitResultsByStatus,
-                    matchClassifications,
-                    asOfTime,
-                    sequencingProperty,
-                    sequencingOrder,
-                    pageSize);
+                                                                           entityTypeGUID,
+                                                                           entitySubtypeGUIDs,
+                                                                           matchProperties,
+                                                                           fromEntityElement,
+                                                                           limitResultsByStatus,
+                                                                           matchClassifications,
+                                                                           asOfTime,
+                                                                           sequencingProperty,
+                                                                           sequencingOrder,
+                                                                           pageSize);
             response.setEntities(entities);
             if (entities != null)
             {
@@ -3516,6 +3522,7 @@ public class OMRSRepositoryRESTServices
         log.debug("Calling method: " + methodName);
 
         String                    relationshipTypeGUID     = null;
+        List<String>              relationshipSubtypeGUIDs = null;
         SearchProperties          matchProperties          = null;
         int                       fromRelationshipElement  = 0;
         List<InstanceStatus>      limitResultsByStatus     = null;
@@ -3528,6 +3535,7 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             relationshipTypeGUID              = findRequestParameters.getTypeGUID();
+            relationshipSubtypeGUIDs          = findRequestParameters.getSubtypeGUIDs();
             matchProperties                   = findRequestParameters.getMatchProperties();
             fromRelationshipElement           = findRequestParameters.getOffset();
             limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
@@ -3542,6 +3550,7 @@ public class OMRSRepositoryRESTServices
 
             List<Relationship>  relationships = metadataCollection.findRelationships(userId,
                                                                                      relationshipTypeGUID,
+                                                                                     relationshipSubtypeGUIDs,
                                                                                      matchProperties,
                                                                                      fromRelationshipElement,
                                                                                      limitResultsByStatus,
@@ -3637,6 +3646,7 @@ public class OMRSRepositoryRESTServices
         log.debug("Calling method: " + methodName);
 
         String                    relationshipTypeGUID     = null;
+        List<String>              relationshipSubtypeGUIDs = null;
         SearchProperties          matchProperties          = null;
         int                       fromRelationshipElement  = 0;
         List<InstanceStatus>      limitResultsByStatus     = null;
@@ -3650,6 +3660,7 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             relationshipTypeGUID              = findRequestParameters.getTypeGUID();
+            relationshipSubtypeGUIDs          = findRequestParameters.getSubtypeGUIDs();
             matchProperties                   = findRequestParameters.getMatchProperties();
             fromRelationshipElement           = findRequestParameters.getOffset();
             limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
@@ -3665,6 +3676,7 @@ public class OMRSRepositoryRESTServices
 
             List<Relationship>  relationships = metadataCollection.findRelationships(userId,
                                                                                      relationshipTypeGUID,
+                                                                                     relationshipSubtypeGUIDs,
                                                                                      matchProperties,
                                                                                      fromRelationshipElement,
                                                                                      limitResultsByStatus,

@@ -24,6 +24,7 @@ import java.util.List;
 public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
 {
     private SearchProperties matchProperties;
+    private List<String>     instanceSubtypeGUIDs;
 
     private RelationshipAccumulator accumulator;
 
@@ -32,8 +33,10 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
      * combining the results.
      *
      * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.  Null means all types
+     * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -55,6 +58,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
      */
     public FindRelationshipsExecutor(String                    userId,
                                      String                    relationshipTypeGUID,
+                                     List<String>              relationshipSubtypeGUIDs,
                                      SearchProperties          matchProperties,
                                      int                       fromRelationshipElement,
                                      List<InstanceStatus>      limitResultsByStatus,
@@ -68,16 +72,17 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
                                      String                    methodName)
     {
         this(userId,
-                relationshipTypeGUID,
-                matchProperties,
-                fromRelationshipElement,
-                limitResultsByStatus,
-                asOfTime,
-                sequencingProperty,
-                sequencingOrder,
-                pageSize,
-                new RelationshipAccumulator(localMetadataCollectionId, auditLog, repositoryValidator),
-                methodName);
+             relationshipTypeGUID,
+             relationshipSubtypeGUIDs,
+             matchProperties,
+             fromRelationshipElement,
+             limitResultsByStatus,
+             asOfTime,
+             sequencingProperty,
+             sequencingOrder,
+             pageSize,
+             new RelationshipAccumulator(localMetadataCollectionId, auditLog, repositoryValidator),
+             methodName);
     }
 
 
@@ -88,6 +93,8 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
      * @param userId unique identifier for requesting user.
      * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -107,6 +114,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
      */
     private FindRelationshipsExecutor(String                    userId,
                                       String                    relationshipTypeGUID,
+                                      List<String>              relationshipSubtypeGUIDs,
                                       SearchProperties          matchProperties,
                                       int                       fromRelationshipElement,
                                       List<InstanceStatus>      limitResultsByStatus,
@@ -118,17 +126,18 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
                                       String                    methodName)
     {
         super(userId,
-                relationshipTypeGUID,
-                fromRelationshipElement,
-                limitResultsByStatus,
-                sequencingProperty,
-                sequencingOrder,
-                pageSize,
-                asOfTime,
-                accumulator,
-                methodName);
+              relationshipTypeGUID,
+              fromRelationshipElement,
+              limitResultsByStatus,
+              sequencingProperty,
+              sequencingOrder,
+              pageSize,
+              asOfTime,
+              accumulator,
+              methodName);
 
         this.matchProperties = matchProperties;
+        this.instanceSubtypeGUIDs = relationshipSubtypeGUIDs;
 
         this.accumulator = accumulator;
     }
@@ -145,6 +154,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
     {
         return new FindRelationshipsExecutor(userId,
                                              instanceTypeGUID,
+                                             instanceSubtypeGUIDs,
                                              matchProperties,
                                              startingElement,
                                              limitResultsByStatus,
@@ -174,6 +184,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
              */
             List<Relationship> results = metadataCollection.findRelationships(userId,
                                                                               instanceTypeGUID,
+                                                                              instanceSubtypeGUIDs,
                                                                               matchProperties,
                                                                               startingElement,
                                                                               limitResultsByStatus,
@@ -238,12 +249,12 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public List<Relationship>  getResults(EnterpriseOMRSRepositoryConnector  repositoryConnector) throws InvalidParameterException,
-            TypeErrorException,
-            RepositoryErrorException,
-            PropertyErrorException,
-            PagingErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                                         TypeErrorException,
+                                                                                                         RepositoryErrorException,
+                                                                                                         PropertyErrorException,
+                                                                                                         PagingErrorException,
+                                                                                                         FunctionNotSupportedException,
+                                                                                                         UserNotAuthorizedException
     {
         if (accumulator.resultsReturned())
         {

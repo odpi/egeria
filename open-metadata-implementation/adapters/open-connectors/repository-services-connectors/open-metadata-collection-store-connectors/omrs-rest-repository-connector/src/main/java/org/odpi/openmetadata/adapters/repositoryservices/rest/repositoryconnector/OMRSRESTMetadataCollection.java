@@ -984,6 +984,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     @Override
     public List<EntityDetail> findEntities(String                    userId,
                                            String                    entityTypeGUID,
+                                           List<String>              entitySubtypeGUIDs,
                                            SearchProperties          matchProperties,
                                            int                       fromEntityElement,
                                            List<InstanceStatus>      limitResultsByStatus,
@@ -1004,6 +1005,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         validateClient(methodName);
         return omrsClient.findEntities(userId,
                                        entityTypeGUID,
+                                       entitySubtypeGUIDs,
                                        matchProperties,
                                        fromEntityElement,
                                        limitResultsByStatus,
@@ -1316,6 +1318,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     @Override
     public  List<Relationship> findRelationships(String                    userId,
                                                  String                    relationshipTypeGUID,
+                                                 List<String>              relationshipSubtypeGUIDs,
                                                  SearchProperties          matchProperties,
                                                  int                       fromRelationshipElement,
                                                  List<InstanceStatus>      limitResultsByStatus,
@@ -1335,6 +1338,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         validateClient(methodName);
         return omrsClient.findRelationships(userId,
                                             relationshipTypeGUID,
+                                            relationshipSubtypeGUIDs,
                                             matchProperties,
                                             fromRelationshipElement,
                                             limitResultsByStatus,

@@ -1250,6 +1250,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     @Override
     public List<EntityDetail> findEntities(String                    userId,
                                            String                    entityTypeGUID,
+                                           List<String>              entitySubtypeGUIDs,
                                            SearchProperties          matchProperties,
                                            int                       fromEntityElement,
                                            List<InstanceStatus>      limitResultsByStatus,
@@ -1272,6 +1273,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         super.findEntitiesParameterValidation(userId,
                                               entityTypeGUID,
+                                              entitySubtypeGUIDs,
                                               matchProperties,
                                               fromEntityElement,
                                               limitResultsByStatus,
@@ -1292,6 +1294,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, methodName);
         FindEntitiesExecutor executor       = new FindEntitiesExecutor(userId,
                                                                        entityTypeGUID,
+                                                                       entitySubtypeGUIDs,
                                                                        matchProperties,
                                                                        fromEntityElement,
                                                                        limitResultsByStatus,
@@ -1685,6 +1688,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     @Override
     public  List<Relationship> findRelationships(String                    userId,
                                                  String                    relationshipTypeGUID,
+                                                 List<String>              relationshipSubtypeGUIDs,
                                                  SearchProperties          matchProperties,
                                                  int                       fromRelationshipElement,
                                                  List<InstanceStatus>      limitResultsByStatus,
@@ -1706,6 +1710,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         super.findRelationshipsParameterValidation(userId,
                                                    relationshipTypeGUID,
+                                                   relationshipSubtypeGUIDs,
                                                    matchProperties,
                                                    fromRelationshipElement,
                                                    limitResultsByStatus,
@@ -1725,6 +1730,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         FederationControl         federationControl = new ParallelFederationControl(userId, cohortConnectors, methodName);
         FindRelationshipsExecutor executor          = new FindRelationshipsExecutor(userId,
                                                                                     relationshipTypeGUID,
+                                                                                    relationshipSubtypeGUIDs,
                                                                                     matchProperties,
                                                                                     fromRelationshipElement,
                                                                                     limitResultsByStatus,

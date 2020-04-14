@@ -894,6 +894,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
      * @param matchProperties Optional list of entity property conditions to match.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -923,6 +925,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      */
     public  abstract List<EntityDetail> findEntities(String                    userId,
                                                      String                    entityTypeGUID,
+                                                     List<String>              entitySubtypeGUIDs,
                                                      SearchProperties          matchProperties,
                                                      int                       fromEntityElement,
                                                      List<InstanceStatus>      limitResultsByStatus,
@@ -1173,8 +1176,10 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * pages.
      *
      * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.  Null means all types
+     * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -1204,6 +1209,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      */
     public  abstract List<Relationship> findRelationships(String                    userId,
                                                           String                    relationshipTypeGUID,
+                                                          List<String>              relationshipSubtypeGUIDs,
                                                           SearchProperties          matchProperties,
                                                           int                       fromRelationshipElement,
                                                           List<InstanceStatus>      limitResultsByStatus,

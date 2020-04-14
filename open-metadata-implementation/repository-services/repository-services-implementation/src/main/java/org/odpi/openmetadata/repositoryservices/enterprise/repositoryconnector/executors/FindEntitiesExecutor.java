@@ -26,6 +26,7 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
 
     private SearchProperties      matchProperties;
     private SearchClassifications matchClassifications;
+    private List<String>          instanceSubtypeGUIDs;
 
     private EntityAccumulator  accumulator;
 
@@ -35,6 +36,8 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
      * @param matchProperties Optional list of entity properties to match (contains wildcards).
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -56,6 +59,7 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
      */
     public FindEntitiesExecutor(String                    userId,
                                 String                    entityTypeGUID,
+                                List<String>              entitySubtypeGUIDs,
                                 SearchProperties          matchProperties,
                                 int                       fromEntityElement,
                                 List<InstanceStatus>      limitResultsByStatus,
@@ -71,6 +75,7 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
     {
         this(userId,
              entityTypeGUID,
+             entitySubtypeGUIDs,
              matchProperties,
              fromEntityElement,
              limitResultsByStatus,
@@ -90,6 +95,8 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
      * @param matchProperties Optional list of entity properties to match (contains wildcards).
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -109,6 +116,7 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
      */
     private FindEntitiesExecutor(String                    userId,
                                  String                    entityTypeGUID,
+                                 List<String>              entitySubtypeGUIDs,
                                  SearchProperties          matchProperties,
                                  int                       fromEntityElement,
                                  List<InstanceStatus>      limitResultsByStatus,
@@ -133,6 +141,7 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
 
         this.matchProperties = matchProperties;
         this.matchClassifications = matchClassifications;
+        this.instanceSubtypeGUIDs = entitySubtypeGUIDs;
         this.accumulator = accumulator;
 
     }
@@ -149,6 +158,7 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
     {
         return new FindEntitiesExecutor(userId,
                                         instanceTypeGUID,
+                                        instanceSubtypeGUIDs,
                                         matchProperties,
                                         startingElement,
                                         limitResultsByStatus,
@@ -179,6 +189,7 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
              */
             List<EntityDetail> results = metadataCollection.findEntities(userId,
                                                                          instanceTypeGUID,
+                                                                         instanceSubtypeGUIDs,
                                                                          matchProperties,
                                                                          startingElement,
                                                                          limitResultsByStatus,

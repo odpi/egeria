@@ -1943,6 +1943,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     @Override
     public List<EntityDetail> findEntities(String                    userId,
                                            String                    entityTypeGUID,
+                                           List<String>              entitySubtypeGUIDs,
                                            SearchProperties          matchProperties,
                                            int                       fromEntityElement,
                                            List<InstanceStatus>      limitResultsByStatus,
@@ -1963,6 +1964,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         super.findEntitiesParameterValidation(userId,
                                               entityTypeGUID,
+                                              entitySubtypeGUIDs,
                                               matchProperties,
                                               fromEntityElement,
                                               limitResultsByStatus,
@@ -1981,6 +1983,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         resultList = realMetadataCollection.findEntities(userId,
                                                          entityTypeGUID,
+                                                         entitySubtypeGUIDs,
                                                          matchProperties,
                                                          fromEntityElement,
                                                          limitResultsByStatus,
@@ -2333,6 +2336,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     @Override
     public  List<Relationship> findRelationships(String                    userId,
                                                  String                    relationshipTypeGUID,
+                                                 List<String>              relationshipSubtypeGUIDs,
                                                  SearchProperties          matchProperties,
                                                  int                       fromRelationshipElement,
                                                  List<InstanceStatus>      limitResultsByStatus,
@@ -2352,6 +2356,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         super.findRelationshipsParameterValidation(userId,
                                                    relationshipTypeGUID,
+                                                   relationshipSubtypeGUIDs,
                                                    matchProperties,
                                                    fromRelationshipElement,
                                                    limitResultsByStatus,
@@ -2368,6 +2373,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         resultList = realMetadataCollection.findRelationships(userId,
                                                               relationshipTypeGUID,
+                                                              relationshipSubtypeGUIDs,
                                                               matchProperties,
                                                               fromRelationshipElement,
                                                               limitResultsByStatus,
