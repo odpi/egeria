@@ -34,16 +34,15 @@ public class GraphFactory extends IndexingFactory {
     /**
      * Set the config for Janus Graph.
      *
-     * @param graphDB              - type of backend to use for Janus Graph
      * @param connectionProperties - POJO for the configuration used to create the connector.
      * @return JanusGraph instance with schema and indexes
      */
-    public JanusGraph openGraph(String graphDB, ConnectionProperties connectionProperties) throws JanusConnectorException {
+    public JanusGraph openGraph(ConnectionProperties connectionProperties) throws JanusConnectorException {
         final String methodName = "openGraph";
         JanusGraph janusGraph;
 
-        String graphType = (String) connectionProperties.getConfigurationProperties().get("graphType");
-        JanusGraphFactory.Builder config = janusFactoryBeans.getJanusFactory(graphDB, connectionProperties, graphType);
+        final String graphType = (String) connectionProperties.getConfigurationProperties().get("graphType");
+        JanusGraphFactory.Builder config = janusFactoryBeans.getJanusFactory(connectionProperties);
 
         try {
             janusGraph = config.open();
@@ -77,18 +76,18 @@ public class GraphFactory extends IndexingFactory {
             Set<String> vertexLabels = new HashSet<>();
             Set<String> relationshipsLabels = new HashSet<>();
 
-            if (graphType.equals("bufferGraph")) {
+            if ("bufferGraph".equals(graphType)) {
                 vertexLabels = schemaBasedOnGraphType(VertexLabelsBufferGraph.class);
                 relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsBufferGraph.class);
             }
 
-            if (graphType.equals("mainGraph")) {
+            if ("mainGraph".equals(graphType)) {
                 vertexLabels = schemaBasedOnGraphType(VertexLabelsMainGraph.class);
                 relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsMainGraph.class);
             }
 
-            management = checkAndAddLabelVertexOrEdge(vertexLabels, management, "vertex");
-            management = checkAndAddLabelVertexOrEdge(relationshipsLabels, management, "edge");
+            checkAndAddLabelVertex(management, vertexLabels);
+            checkAndAddLabelEdge(management, relationshipsLabels);
 
             //TODO define properties
             management.commit();
@@ -115,37 +114,37 @@ public class GraphFactory extends IndexingFactory {
     }
 
     /**
-     * Set up the labels of the schema for the Janus Graph instance
+     * Set up the vertex labels of the schema for the Janus Graph instance
      *
      * @param labels     - set of labels
      * @param management - management instance of Janus Graph
-     * @param type       - type to be labeled
      */
-    private JanusGraphManagement checkAndAddLabelVertexOrEdge(Set<String> labels, JanusGraphManagement management, String type) {
-        if (type.equals("vertex")) {
-            for (String label : labels) {
-                if (management.getVertexLabel(label) == null)
-                    management.makeVertexLabel(label).make();
-            }
+    private void checkAndAddLabelVertex(final JanusGraphManagement management, Set<String> labels) {
+        for (String label : labels) {
+            if (management.getVertexLabel(label) == null)
+                management.makeVertexLabel(label).make();
         }
+    }
 
-        if (type.equals("edge")) {
-            for (String label : labels) {
-                if (management.getEdgeLabel(label) == null)
-                    management.makeEdgeLabel(label).make();
-            }
+    /**
+     * Set up the edge labels of the schema for the Janus Graph instance
+     *
+     * @param labels     - set of labels
+     * @param management - management instance of Janus Graph
+     */
+    private void checkAndAddLabelEdge(final JanusGraphManagement management, Set<String> labels) {
+        for (String label : labels) {
+            if (management.getEdgeLabel(label) == null)
+                management.makeEdgeLabel(label).make();
         }
-
-        return management;
-
     }
 
     private void createIndexes(JanusGraph janusGraph, String graphType) {
-        if (graphType.equals("bufferGraph")) {
+        if ("bufferGraph".equals(graphType)) {
             createIndexesBuffer(janusGraph);
         }
 
-        if (graphType.equals("mainGraph")) {
+        if ("mainGraph".equals(graphType)) {
             createIndexesMainGraph(janusGraph);
         }
     }

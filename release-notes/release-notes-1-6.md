@@ -1,38 +1,27 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.6 (Planned March 2020)
+# Release 1.6 (March 2020)
 
 Release 1.6 adds support for:
-    * Governance Roles, Profiles and Collaboration
-    * Automatic cataloguing of Apache Cassandra data sources
-    * Glossaries, reference data and model support
+   * Audit Log Framework (ALF) technical preview
+   * Repository Explorer (TEX) 
     
 Below are the highlights:
 
-* There are new access services:
-   * The [Subject Area OMAS](../open-metadata-implementation/access-services/subject-area) provides support for defining, reviewing and refining glossary content, reference data and rules for a subject area.
-   * The [Glossary View OMAS](../open-metadata-implementation/access-services/glossary-view) supports the browsing of glossary content.
-   * The [Design Model OMAS](../open-metadata-implementation/access-services/design-model) supports the management of data models.
-   * The [Community Profile OMAS](../open-metadata-implementation/access-services/community-profile) supports the personal profile and communities APIs.
-   * The [Data Platform OMAS](../open-metadata-implementation/access-services/data-platform) supports the cataloging of Assets from data platforms such as Apache Cassandra.
+* There is a new framework:
+   * The [Audit Log Framework](../open-metadata-implementation/frameworks/audit-log-framework) (ALF) provides interface definitions and classes to enable connectors to support natural language enabled diagnostics such as exception messages and audit log messages.
 
-* There are new governance servers that make use of the new access services:
-   * The Organization Sync Server loads user and organization information into the open metadata ecosystem.
-     It calls the Community Profile OMAS.
-   * The [Data Platform Server](../open-metadata-implementation/governance-servers/data-platform-services) supports the processing of notifications from data platforms such as Apache Cassandra in order
-     to automatically catalog the Assets stored on the data platform.  It calls the Data Platform OMAS.
+* There is a new user interface module:
+    * The [Repository Explorer](../open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/docs/RepositoryExplorer/RepositoryExplorerGuide.md) (Rex) can help you explore and visualize the metadata in a repository. It retrieves entities and relationships from the repository and displays them. A details panel also shows the properties and other information about an object. Each entity or relationship is added to a network diagram, which shows how they are connected.
 
-* The Egeria User Interface supports the definitions of subject areas.
+* The Swagger-based API documentation for the Egeria server chassis has been reorganized to align with our modules structure & to provide links into our other documentation which also will clarify if the module is released, in Tech Preview, or still in development. The docs can be found at `http://<server>:<port>/swagger-ui.htm`. Further enhancements will follow in future releases.
 
-* There is an extension to the Swagger tooling that integrates
-  the Egeria code API generation.
-
-* There are new [tutorials](../open-metadata-resources/open-metadata-tutorials),
-  [hands-on labs](../open-metadata-resources/open-metadata-labs),
-  [samples](../open-metadata-resources/open-metadata-samples) and
-  [open metadata archives](../open-metadata-resources/open-metadata-archives) demonstrating
-  these new capabilities of Egeria.
+* Many dependencies have been updated including:
+    * Kafka client upgraded to 2.4.1
+    * Spring updated to 5.2.4, spring boot to 2.2.5 & other spring components accordingly.
+  
+  For a full list refer to the git commit logs.
    
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -2055,20 +2055,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     break;
 
                 case MAP:
-                    if (propertyDefinitionType == AttributeTypeDefCategory.COLLECTION)
-                    {
-                        validPropertyType = true;
-                    }
-                    break;
-
-                case ARRAY:
-                    if (propertyDefinitionType == AttributeTypeDefCategory.COLLECTION)
-                    {
-                        validPropertyType = true;
-                    }
-                    break;
 
                 case STRUCT:
+
+                case ARRAY:
                     if (propertyDefinitionType == AttributeTypeDefCategory.COLLECTION)
                     {
                         validPropertyType = true;
