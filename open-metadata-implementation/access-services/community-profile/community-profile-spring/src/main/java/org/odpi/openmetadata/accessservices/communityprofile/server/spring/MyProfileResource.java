@@ -108,14 +108,13 @@ public class MyProfileResource
      */
     @PostMapping(path = "/my-assets/{assetGUID}")
 
-    public VoidResponse  addToMyAssets(@PathVariable String           serverName,
-                                       @PathVariable String           userId,
-                                       @PathVariable String           assetGUID,
-                                       @RequestBody  NullRequestBody  nullRequestBody)
+    public VoidResponse  addToMyAssets(@PathVariable                  String           serverName,
+                                       @PathVariable                  String           userId,
+                                       @PathVariable                  String           assetGUID,
+                                       @RequestBody(required = false) NullRequestBody  nullRequestBody)
     {
         return restAPI.addToMyAssets(serverName, userId, assetGUID, nullRequestBody);
     }
-
 
 
     /**
@@ -133,12 +132,11 @@ public class MyProfileResource
      */
     @PostMapping(path = "/my-assets/{assetGUID}/delete")
 
-    public VoidResponse  removeFromMyAssets(@PathVariable String           serverName,
-                                            @PathVariable String           userId,
-                                            @PathVariable String           assetGUID,
-                                            @RequestBody  NullRequestBody  nullRequestBody)
+    public VoidResponse  removeFromMyAssets(@PathVariable                  String           serverName,
+                                            @PathVariable                  String           userId,
+                                            @PathVariable                  String           assetGUID,
+                                            @RequestBody(required = false) NullRequestBody  nullRequestBody)
     {
         return restAPI.removeFromMyAssets(serverName, userId, assetGUID, nullRequestBody);
     }
-
 }
