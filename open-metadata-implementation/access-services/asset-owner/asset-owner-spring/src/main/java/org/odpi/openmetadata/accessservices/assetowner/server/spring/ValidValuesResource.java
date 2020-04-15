@@ -58,7 +58,7 @@ public class ValidValuesResource
 
     public GUIDResponse createValidValueSet(@PathVariable String                 serverName,
                                             @PathVariable String                 userId,
-                                            @RequestBody ValidValuesRequestBody requestBody)
+                                            @RequestBody  ValidValuesRequestBody requestBody)
     {
         return restAPI.createValidValueSet(serverName, userId, requestBody);
     }
@@ -155,11 +155,11 @@ public class ValidValuesResource
      */
     @PostMapping(path = "/valid-values/sets/{setGUID}/members/{validValueGUID}")
 
-    public VoidResponse    attachValidValueToSet(@PathVariable String          serverName,
-                                                 @PathVariable String          userId,
-                                                 @PathVariable String          setGUID,
-                                                 @PathVariable String          validValueGUID,
-                                                 @RequestBody  NullRequestBody requestBody)
+    public VoidResponse    attachValidValueToSet(@PathVariable                   String          serverName,
+                                                 @PathVariable                   String          userId,
+                                                 @PathVariable                   String          setGUID,
+                                                 @PathVariable                   String          validValueGUID,
+                                                 @RequestBody(required = false)  NullRequestBody requestBody)
     {
         return restAPI.attachValidValueToSet(serverName, userId, setGUID, validValueGUID, requestBody);
     }
@@ -181,170 +181,13 @@ public class ValidValuesResource
      */
     @PostMapping(path = "/valid-values/sets/{setGUID}/members/{validValueGUID}/delete")
 
-    public VoidResponse    detachValidValueFromSet(@PathVariable String          serverName,
-                                                   @PathVariable String          userId,
-                                                   @PathVariable String          setGUID,
-                                                   @PathVariable String          validValueGUID,
-                                                   @RequestBody  NullRequestBody requestBody)
+    public VoidResponse    detachValidValueFromSet(@PathVariable                  String          serverName,
+                                                   @PathVariable                  String          userId,
+                                                   @PathVariable                  String          setGUID,
+                                                   @PathVariable                  String          validValueGUID,
+                                                   @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.detachValidValueFromSet(serverName, userId, setGUID, validValueGUID, requestBody);
-    }
-
-
-    /**
-     * Link a valid value to an asset that provides the implementation.  Typically this method is
-     * used to link a valid value set to a code table.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param assetGUID unique identifier of the asset that implements the valid value.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    @PostMapping(path = "/valid-values/{validValueGUID}/implementations/{assetGUID}")
-
-    public VoidResponse  linkValidValueToImplementation(@PathVariable String          serverName,
-                                                        @PathVariable String          userId,
-                                                        @PathVariable String          validValueGUID,
-                                                        @PathVariable String          assetGUID,
-                                                        @RequestBody  NullRequestBody requestBody)
-    {
-        return restAPI.linkValidValueToImplementation(serverName, userId, validValueGUID, assetGUID, requestBody);
-    }
-
-
-    /**
-     * Add the ReferenceData classification to an asset.  IF the asset is already classified
-     * in this way, the method is a no-op.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param assetGUID unique identifier of the asset that contains reference data.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    @PostMapping(path = "/assets/{assetGUID}/classify-as-reference-data")
-
-    public VoidResponse  classifyAssetAsReferenceData(@PathVariable String          serverName,
-                                                      @PathVariable String          userId,
-                                                      @PathVariable String          assetGUID,
-                                                      @RequestBody  NullRequestBody requestBody)
-    {
-        return restAPI.classifyAssetAsReferenceData(serverName, userId, assetGUID, requestBody);
-    }
-
-
-    /**
-     * Remove the link between a valid value and an implementing asset.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param assetGUID unique identifier of the asset that used to implement the valid value.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    @PostMapping(path = "/valid-values/{validValueGUID}/implementations/{assetGUID}/delete")
-
-    public VoidResponse  unlinkValidValueFromImplementation(@PathVariable String          serverName,
-                                                            @PathVariable String          userId,
-                                                            @PathVariable String          validValueGUID,
-                                                            @PathVariable String          assetGUID,
-                                                            @RequestBody  NullRequestBody requestBody)
-    {
-        return restAPI.unlinkValidValueFromImplementation(serverName, userId, validValueGUID, assetGUID, requestBody);
-    }
-
-
-    /**
-     * Remove the ReferenceData classification form an Asset.  If the asset was not classified in this way,
-     * this call is a no-op.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param assetGUID unique identifier of asset.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    @PostMapping(path = "/assets/{assetGUID}/declassify-as-reference-data")
-
-    public VoidResponse  declassifyAssetAsReferenceData(@PathVariable String          serverName,
-                                                        @PathVariable String          userId,
-                                                        @PathVariable String          assetGUID,
-                                                        @RequestBody  NullRequestBody requestBody)
-    {
-
-        return restAPI.declassifyAssetAsReferenceData(serverName, userId, assetGUID, requestBody);
-    }
-
-
-    /**
-     * Link a valid value typically to a schema element or glossary term to show that it uses
-     * the valid values.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param consumerGUID unique identifier of the element to link to.
-     * @param requestBody boolean request body supplied to pass the strictRequirement flag
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    @PostMapping(path = "/valid-values/{validValueGUID}/consumers/{consumerGUID}")
-
-    public VoidResponse    assignValidValueToConsumer(@PathVariable String             serverName,
-                                                      @PathVariable String             userId,
-                                                      @PathVariable String             validValueGUID,
-                                                      @PathVariable String             consumerGUID,
-                                                      @RequestBody  BooleanRequestBody requestBody)
-    {
-        return restAPI.assignValidValueToConsumer(serverName, userId, validValueGUID, consumerGUID, requestBody);
-    }
-
-
-    /**
-     * Remove the link between a valid value and a consumer.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param consumerGUID unique identifier of the element to remove the link from.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    @PostMapping(path = "/valid-values/{validValueGUID}/consumers/{consumerGUID}/delete")
-
-    public VoidResponse unassignValidValueFromConsumer(@PathVariable String          serverName,
-                                                       @PathVariable String          userId,
-                                                       @PathVariable String          validValueGUID,
-                                                       @PathVariable String          consumerGUID,
-                                                       @RequestBody  NullRequestBody requestBody)
-    {
-        return restAPI.unassignValidValueFromConsumer(serverName, userId, validValueGUID, consumerGUID, requestBody);
     }
 
 
@@ -469,57 +312,5 @@ public class ValidValuesResource
                                                     @RequestParam int     pageSize)
     {
         return restAPI.getSetsForValidValue(serverName, userId, validValueGUID, startFrom, pageSize);
-    }
-
-
-    /**
-     * Page through the list of consumers for a valid value.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of valid value to query
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     *
-     * @return list of consumers beans or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    @GetMapping(path = "/valid-values/{validValueGUID}/consumers")
-
-    public ValidValueConsumersResponse getValidValuesConsumers(@PathVariable String  serverName,
-                                                               @PathVariable String  userId,
-                                                               @PathVariable String  validValueGUID,
-                                                               @RequestParam int     startFrom,
-                                                               @RequestParam int     pageSize)
-    {
-        return restAPI.getValidValuesConsumers(serverName, userId, validValueGUID, startFrom, pageSize);
-    }
-
-
-    /**
-     * Pag through the list of implementations for a valid value.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of valid value to query
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     *
-     * @return list of asset beans or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    @GetMapping(path = "/valid-values/{validValueGUID}/implementations")
-
-    public AssetsResponse getValidValuesImplementations(@PathVariable String  serverName,
-                                                        @PathVariable String  userId,
-                                                        @PathVariable String  validValueGUID,
-                                                        @RequestParam int     startFrom,
-                                                        @RequestParam int     pageSize)
-    {
-        return restAPI.getValidValuesImplementations(serverName, userId, validValueGUID, startFrom, pageSize);
     }
 }

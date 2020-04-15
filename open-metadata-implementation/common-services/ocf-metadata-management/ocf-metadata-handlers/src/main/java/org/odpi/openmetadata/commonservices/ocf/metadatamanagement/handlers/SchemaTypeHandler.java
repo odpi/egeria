@@ -1036,7 +1036,6 @@ public class SchemaTypeHandler
         {
             final String guidParameterName = "schemaAttribute.getExternalAttributeType().getLinkedSchemaTypeGUID()";
             SchemaLink schemaLink = schemaAttribute.getExternalAttributeType();
-            InstanceProperties properties = new InstanceProperties();
 
             SchemaType linkedType = this.getSchemaType(userId,
                                                        schemaLink.getLinkedSchemaTypeGUID(),
@@ -1045,7 +1044,27 @@ public class SchemaTypeHandler
 
             if (linkedType != null)
             {
-                // todo
+                SchemaLinkBuilder builder = new SchemaLinkBuilder(schemaLink.getQualifiedName(),
+                                                                  schemaLink.getDisplayName(),
+                                                                  repositoryHelper,
+                                                                  serviceName,
+                                                                  serverName);
+
+                String schemaLinkGUID = repositoryHandler.createEntity(userId,
+                                                                       SchemaElementMapper.SCHEMA_LINK_TYPE_GUID,
+                                                                       SchemaElementMapper.SCHEMA_LINK_TYPE_NAME,
+                                                                       builder.getInstanceProperties(methodName),
+                                                                       methodName);
+
+                if (schemaLinkGUID != null)
+                {
+                    repositoryHandler.createRelationship(userId,
+                                                         SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                         schemaLinkGUID,
+                                                         schemaType.getGUID(),
+                                                         null,
+                                                         methodName);
+                }
             }
         }
 
@@ -1074,15 +1093,94 @@ public class SchemaTypeHandler
     {
         final String methodName = "addExternalSchemaAttribute";
 
-        SchemaAttributeBuilder builder = this.getSchemaAttributeBuilder(schemaAttribute);
+        SchemaAttributeBuilder schemaAttributeBuilder = this.getSchemaAttributeBuilder(schemaAttribute);
 
-        return repositoryHandler.createExternalEntity(userId,
-                                                      this.getSchemaAttributeTypeGUID(schemaAttribute),
-                                                      this.getSchemaAttributeTypeName(schemaAttribute),
-                                                      externalSourceGUID,
-                                                      externalSourceName,
-                                                      builder.getInstanceProperties(methodName),
-                                                      methodName);
+        String schemaAttributeGUID = repositoryHandler.createExternalEntity(userId,
+                                                                            this.getSchemaAttributeTypeGUID(schemaAttribute),
+                                                                            this.getSchemaAttributeTypeName(schemaAttribute),
+                                                                            externalSourceGUID,
+                                                                            externalSourceName,
+                                                                            schemaAttributeBuilder.getInstanceProperties(methodName),
+                                                                            methodName);
+
+        SchemaType schemaType = schemaAttribute.getAttributeType();
+
+        if (schemaType != null)
+        {
+            if ((schemaType.getExtendedProperties() == null) &&
+                    ((schemaType instanceof ComplexSchemaType) ||
+                            (schemaType instanceof LiteralSchemaType) ||
+                            (schemaType instanceof SimpleSchemaType)))
+            {
+                /*
+                 * The schema type can be represented as a classification on the schema attribute.
+                 */
+                SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(schemaType);
+
+                repositoryHandler.classifyEntity(userId,
+                                                 schemaAttributeGUID,
+                                                 SchemaElementMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
+                                                 SchemaElementMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                                 schemaTypeBuilder.getInstanceProperties(methodName),
+                                                 methodName);
+            }
+            else
+            {
+                String schemaTypeGUID = addSchemaType(userId, schemaType);
+                if (schemaTypeGUID != null)
+                {
+                    repositoryHandler.createExternalRelationship(userId,
+                                                                 SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 schemaAttributeGUID,
+                                                                 schemaTypeGUID,
+                                                                 null,
+                                                                 methodName);
+                }
+            }
+        }
+        else if (schemaAttribute.getExternalAttributeType() != null)
+        {
+            final String guidParameterName = "schemaAttribute.getExternalAttributeType().getLinkedSchemaTypeGUID()";
+            SchemaLink schemaLink = schemaAttribute.getExternalAttributeType();
+
+            SchemaType linkedType = this.getSchemaType(userId,
+                                                       schemaLink.getLinkedSchemaTypeGUID(),
+                                                       guidParameterName,
+                                                       methodName);
+
+            if (linkedType != null)
+            {
+                SchemaLinkBuilder builder = new SchemaLinkBuilder(schemaLink.getQualifiedName(),
+                                                                  schemaLink.getDisplayName(),
+                                                                  repositoryHelper,
+                                                                  serviceName,
+                                                                  serverName);
+
+                String schemaLinkGUID = repositoryHandler.createExternalEntity(userId,
+                                                                               SchemaElementMapper.SCHEMA_LINK_TYPE_GUID,
+                                                                               SchemaElementMapper.SCHEMA_LINK_TYPE_NAME,
+                                                                               externalSourceGUID,
+                                                                               externalSourceName,
+                                                                               builder.getInstanceProperties(methodName),
+                                                                               methodName);
+
+                if (schemaLinkGUID != null)
+                {
+                    repositoryHandler.createExternalRelationship(userId,
+                                                                 SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 schemaLinkGUID,
+                                                                 schemaType.getGUID(),
+                                                                 null,
+                                                                 methodName);
+                }
+            }
+        }
+
+        return schemaAttributeGUID;
     }
 
 
@@ -1132,6 +1230,7 @@ public class SchemaTypeHandler
         {
             builder = new SchemaAttributeBuilder(schemaAttribute.getQualifiedName(),
                                                  schemaAttribute.getAttributeName(),
+                                                 schemaAttribute.getDescription(),
                                                  schemaAttribute.getElementPosition(),
                                                  schemaAttribute.getMinCardinality(),
                                                  schemaAttribute.getMaxCardinality(),

@@ -469,11 +469,11 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/meanings/{glossaryTermGUID}/delete")
 
-    VoidResponse  removeSemanticAssignment(@PathVariable                  String          serverName,
-                                           @PathVariable                  String          userId,
-                                           @PathVariable                  String          assetGUID,
-                                           @PathVariable                  String          glossaryTermGUID,
-                                           @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse  removeSemanticAssignment(@PathVariable                  String          serverName,
+                                                  @PathVariable                  String          userId,
+                                                  @PathVariable                  String          assetGUID,
+                                                  @PathVariable                  String          glossaryTermGUID,
+                                                  @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.removeSemanticAssignment(serverName, userId, assetGUID, glossaryTermGUID, requestBody);
     }
