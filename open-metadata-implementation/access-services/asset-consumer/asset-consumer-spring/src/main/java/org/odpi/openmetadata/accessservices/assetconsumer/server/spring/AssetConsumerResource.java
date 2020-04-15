@@ -358,7 +358,7 @@ public class AssetConsumerResource
      */
     @GetMapping(path = "/assets/by-tag/{tagGUID}")
 
-    GUIDListResponse getAssetsByTag(@PathVariable String serverName,
+    public GUIDListResponse getAssetsByTag(@PathVariable String serverName,
                                     @PathVariable String userId,
                                     @PathVariable String tagGUID,
                                     @RequestParam int    startFrom,
