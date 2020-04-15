@@ -38,10 +38,11 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_LABEL = "label";
     public static final String PROPERTY_NAME_PROXY = "proxy";
     public static final String PROPERTY_NAME_GLOSSARY_TERM = "glossaryTerm";
-    public static final String PROPERTY_NAME_HOST_DISPLAY_NAME = "displayname";
-    public static final String PROPERTY_NAME_DATABASE_DISPLAY_NAME = "databaseDisplayname";
-    public static final String PROPERTY_NAME_SCHEMA_DISPLAY_NAME = "schemaDisplayNname";
+    public static final String PROPERTY_NAME_HOST_DISPLAY_NAME = "displayName";
+    public static final String PROPERTY_NAME_DATABASE_DISPLAY_NAME = "databaseDisplayName";
+    public static final String PROPERTY_NAME_SCHEMA_DISPLAY_NAME = "databaseSchemaDisplayName";
     public static final String PROPERTY_NAME_TABLE_DISPLAY_NAME = "tableDisplayName";
+    public static final String PROPERTY_NAME_SCHEMA_TYPE_DISPLAY_NAME = "schemaTypeDisplayName";
     public static final String PROPERTY_NAME_FORMULA = "formula";
     public static final String PROPERTY_NAMEPROCESS_DESCRIPTION_URI = "descriptionURI";
     public static final String PROPERTY_NAME_PROCESS_TYPE = "processType";
@@ -83,6 +84,8 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_ENTITY_UPDATE_TIME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_UPDATE_TIME;
     public static final String PROPERTY_KEY_SCHEMA_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_SCHEMA_DISPLAY_NAME;
     public static final String PROPERTY_KEY_TABLE_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_TABLE_DISPLAY_NAME;
+    public static final String PROPERTY_KEY_SCHEMA_TYPE_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_SCHEMA_TYPE_DISPLAY_NAME;
+    public static final String PROPERTY_KEY_DATABASE_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_DATABASE_DISPLAY_NAME;
 
     public static final String PROPERTY_KEY_RELATIONSHIP_GUID = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_RELATIONSHIP_VERSION = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_VERSION;

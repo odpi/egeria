@@ -25,6 +25,7 @@ public final class Constants {
     public static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
     public static final String DATA_FILE = "DataFile";
     public static final String FILE_FOLDER = "FileFolder";
+    public static final String CONNECTION = "Connection";
 
     //Relationships Type
     public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";

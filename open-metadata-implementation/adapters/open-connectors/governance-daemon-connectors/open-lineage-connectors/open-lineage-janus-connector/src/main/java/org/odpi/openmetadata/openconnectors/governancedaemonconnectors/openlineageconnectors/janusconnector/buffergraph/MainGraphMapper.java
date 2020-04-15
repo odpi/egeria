@@ -133,24 +133,41 @@ public class MainGraphMapper {
      * @param newVertex - Vertex to add the copied properties
      * */
     private void addExtraProperties(GraphTraversalSource mainG,GraphTraversalSource bufferG,Vertex originalVertex,Vertex newVertex){
-
+        //TODO make this generic
         Iterator<Vertex> tableAsset = bufferG.V(originalVertex.id()).
                                                 emit().
                                                 repeat(bothE().
                                                         otherV().
                                                         simplePath()).
                                                 times(2).
-                                                or(hasLabel(RELATIONAL_TABLE),hasLabel("DataFile"));
+                                                or(hasLabel(RELATIONAL_TABLE),hasLabel(DATA_FILE));
 
-        Iterator<Vertex> schema = bufferG.V(originalVertex.id()).emit().repeat(bothE().inV().simplePath()).times(3).
-                or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE),hasLabel(FILE_FOLDER));
+        Iterator<Vertex> databaseSchemaType = bufferG.V(originalVertex.id()).emit().repeat(bothE().inV().simplePath()).times(1).
+                or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE),hasLabel(TABULAR_SCHEMA_TYPE));
+
+        Iterator<Vertex> databaseSchema = bufferG.V(originalVertex.id()).emit().repeat(bothE().inV().simplePath()).times(3).
+                or(hasLabel(DEPLOYED_DB_SCHEMA_TYPE),hasLabel(FILE_FOLDER));
+
+        Iterator<Vertex> database = bufferG.V(originalVertex.id()).emit().repeat(bothE().inV().simplePath()).times(4).
+                or(hasLabel(DATABASE),hasLabel(FILE_FOLDER));
+
+        //TODO fix the query to find a Connection of a TabularColumn when we have test data for that
+        Iterator<Vertex> connection = bufferG.V(originalVertex.id()).emit().repeat(bothE().inV().simplePath()).times(5).hasLabel(CONNECTION);
 
         if(tableAsset.hasNext()){
             newVertex.property(PROPERTY_KEY_TABLE_DISPLAY_NAME,tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value());
         }
 
-        if(schema.hasNext()){
-            newVertex.property(PROPERTY_KEY_SCHEMA_DISPLAY_NAME,schema.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value());
+        if(databaseSchemaType.hasNext()){
+            newVertex.property(PROPERTY_KEY_SCHEMA_TYPE_DISPLAY_NAME,databaseSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value());
+        }
+
+        if(databaseSchema.hasNext()){
+            newVertex.property(PROPERTY_KEY_SCHEMA_DISPLAY_NAME,databaseSchema.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value());
+        }
+
+        if(database.hasNext()){
+            newVertex.property(PROPERTY_KEY_DATABASE_DISPLAY_NAME,database.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value());
         }
 
         getGlossaryTerm(mainG,bufferG,newVertex);
