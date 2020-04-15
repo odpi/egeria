@@ -36,11 +36,9 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
     public void processEvent(String assetLineageEvent) {
         try {
             log.info("Started processing OpenLineageEvent {}",assetLineageEvent);
-            if (assetLineageEvent != null) {
+            if (!assetLineageEvent.isEmpty()) {
                 processEventBasedOnType(assetLineageEvent);
             }
-
-            log.debug("Null instance event found - ignoring event");
         }
         catch (JsonProcessingException e) {
             logException(assetLineageEvent,e);
@@ -88,7 +86,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                     break;
             }
 
-            log.debug("AssetLineageEventHeader is null since json cannot be de-serialized, parsing of the event cannot be done");
+//            log.debug("AssetLineageEventHeader is null since json cannot be de-serialized, parsing of the event cannot be done");
         }
     }
 

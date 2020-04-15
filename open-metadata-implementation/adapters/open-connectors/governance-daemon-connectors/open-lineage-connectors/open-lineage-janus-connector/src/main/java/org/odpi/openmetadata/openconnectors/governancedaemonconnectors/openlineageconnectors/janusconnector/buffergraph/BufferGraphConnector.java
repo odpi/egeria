@@ -460,7 +460,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         }
         catch (Exception e){
             if (log.isDebugEnabled()) {
-                log.debug("Vertex does not exist {}",startingVertex.id());
+                log.debug("Vertex does not exist with guid {} and display name {}",startingVertex.id(),startingVertex.property(PROPERTY_KEY_DISPLAY_NAME).value());
             }
             return null;
         }
