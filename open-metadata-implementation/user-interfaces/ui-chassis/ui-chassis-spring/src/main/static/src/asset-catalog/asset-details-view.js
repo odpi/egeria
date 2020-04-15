@@ -41,7 +41,9 @@ class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement
           padding: 0;
           margin: 0 10pt;
         }
-        
+        h3{
+            font-weight: normal;
+        }
         @media (max-width: 640px) {
           :host {
             --app-grid-columns: 1;
@@ -81,7 +83,7 @@ class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement
           
           <dom-if if="[[ _hasKey(item,'classifications')]]"> 
            <template> 
-              <h3 style="margin-left: 20pt; text-align: center;">Classifications</h3>
+              <h3 style="text-align: center;">Classifications</h3>
               <ul class="app-grid" style="margin: 0; padding: 0">
                   <dom-repeat items="[[item.classifications]]">
                     <template>
