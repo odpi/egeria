@@ -475,7 +475,7 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/meanings/{glossaryTermGUID}/delete")
 
-    VoidResponse  removeSemanticAssignment(@PathVariable                  String          serverName,
+    public VoidResponse  removeSemanticAssignment(@PathVariable                  String          serverName,
                                            @PathVariable                  String          userId,
                                            @PathVariable                  String          assetGUID,
                                            @PathVariable                  String          glossaryTermGUID,

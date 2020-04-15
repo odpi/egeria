@@ -24,7 +24,14 @@ public class GraphOMRSMapperUtils {
 
     private static final Logger log = LoggerFactory.getLogger(GraphOMRSMapperUtils.class);
 
-    public static InstanceProvenanceType mapProvenanceOrdinalToEnum(Integer provenanceOrdinal)
+    /*
+     * Default CTOR
+     */
+    public GraphOMRSMapperUtils() {
+
+    }
+
+    public InstanceProvenanceType mapProvenanceOrdinalToEnum(Integer provenanceOrdinal)
     {
         if (provenanceOrdinal == null) {
             return null;
@@ -60,7 +67,7 @@ public class GraphOMRSMapperUtils {
     }
 
 
-    public static InstanceStatus mapStatusOrdinalToEnum(Integer statusOrdinal)
+    public InstanceStatus mapStatusOrdinalToEnum(Integer statusOrdinal)
     {
         if (statusOrdinal == null) {
             return null;
@@ -130,7 +137,7 @@ public class GraphOMRSMapperUtils {
 
 
 
-    public static ClassificationOrigin mapClassificationOriginOrdinalToEnum(Integer originOrdinal)
+    public ClassificationOrigin mapClassificationOriginOrdinalToEnum(Integer originOrdinal)
     {
         if (originOrdinal == null) {
             return null;
@@ -152,7 +159,7 @@ public class GraphOMRSMapperUtils {
 
 
 
-    public static Map<String,String> getQualifiedPropertyNamesForTypeDef(TypeDef typeDef, String repositoryName, OMRSRepositoryHelper repositoryHelper) {
+    public Map<String,String> getQualifiedPropertyNamesForTypeDef(TypeDef typeDef, String repositoryName, OMRSRepositoryHelper repositoryHelper) {
 
         final  String QUALIFIED_PROPERTY_SEPARATOR = "x";
 

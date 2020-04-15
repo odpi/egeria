@@ -17,7 +17,7 @@ class PropsTable extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
       <style include="shared-styles">
         :host {
           display: block;
-          padding: 10pt 20pt;
+          padding: 10px 24px;
         }
        
         .rTable {
@@ -54,6 +54,7 @@ class PropsTable extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
         
         .label {
             font-weight: bold;
+            width: 200px;
         }
         
       </style>

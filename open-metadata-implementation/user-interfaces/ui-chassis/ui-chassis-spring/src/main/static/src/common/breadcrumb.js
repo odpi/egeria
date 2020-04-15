@@ -55,7 +55,7 @@ class BreadCrumb extends ElementMixin(ThemableMixin(PolymerElement)){
 
         items.forEach(function(item, idx) {
             var href = item.href;
-            if(idx > 0){
+            if(idx > 0 && item.href){
                 href = crumbs[idx -1].href + item.href;
             }
             crumbs.push({

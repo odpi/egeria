@@ -124,7 +124,8 @@ public class GraphOMRSClassificationMapper {
             TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeName);
 
             // For the type of the entity, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
-            Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+            GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+            Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
             // This is a full property update - any defined properties that are not in the instanceProperties are cleared.
 
@@ -423,20 +424,22 @@ public class GraphOMRSClassificationMapper {
                     methodName);
         }
 
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+
         Integer provenanceOrdinal = (Integer) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_PROVENANCE_TYPE);
-        InstanceProvenanceType instanceProvenanceType = GraphOMRSMapperUtils.mapProvenanceOrdinalToEnum(provenanceOrdinal);
+        InstanceProvenanceType instanceProvenanceType = mapperUtils.mapProvenanceOrdinalToEnum(provenanceOrdinal);
         classification.setInstanceProvenanceType(instanceProvenanceType);
 
         Integer statusOrdinal = (Integer) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_STATUS);
-        InstanceStatus instanceStatus = GraphOMRSMapperUtils.mapStatusOrdinalToEnum(statusOrdinal);
+        InstanceStatus instanceStatus = mapperUtils.mapStatusOrdinalToEnum(statusOrdinal);
         classification.setStatus(instanceStatus);
 
         Integer statusOnDeleteOrdinal = (Integer) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_STATUS_ON_DELETE);
-        InstanceStatus instanceStatusOnDelete = GraphOMRSMapperUtils.mapStatusOrdinalToEnum(statusOnDeleteOrdinal);
+        InstanceStatus instanceStatusOnDelete = mapperUtils.mapStatusOrdinalToEnum(statusOnDeleteOrdinal);
         classification.setStatusOnDelete(instanceStatusOnDelete);
 
         Integer originOrdinal = (Integer) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN);
-        ClassificationOrigin classificationOrigin = GraphOMRSMapperUtils.mapClassificationOriginOrdinalToEnum(originOrdinal);
+        ClassificationOrigin classificationOrigin = mapperUtils.mapClassificationOriginOrdinalToEnum(originOrdinal);
         classification.setClassificationOrigin(classificationOrigin);
 
         // maintainedBy

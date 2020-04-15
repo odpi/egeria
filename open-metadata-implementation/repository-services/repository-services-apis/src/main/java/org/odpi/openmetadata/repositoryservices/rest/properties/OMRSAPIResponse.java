@@ -344,7 +344,7 @@ public abstract class OMRSAPIResponse implements Serializable
                 ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                ", exceptionProperties=" + exceptionProperties +
+                ", exceptionProperties=" + exceptionProperties + '\'' +
                 '}';
     }
 
