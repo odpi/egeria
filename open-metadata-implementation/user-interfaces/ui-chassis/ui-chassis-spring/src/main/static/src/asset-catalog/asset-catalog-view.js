@@ -25,22 +25,23 @@ class AssetCatalogView extends PolymerElement {
 
     static get observers() {
         return [
-            '_routeChanged(routeData.usecase)'
+            '_routeChanged(route)'
         ];
     }
 
-    _routeChanged(usecase) {
-        console.debug('asset-catalog usecase is:' + usecase);
-        switch (usecase) {
-            case 'search' :
-                import('./asset-search-view');
-                break;
-            case 'view' :
-                import('./asset-details-view');
-                break;
-            default :
-                import('./asset-search-view');
-                break;
+    _routeChanged(route) {
+        if (route.prefix === '/asset-catalog') {
+            switch (this.routeData.usecase) {
+                case 'search' :
+                    import('./asset-search-view');
+                    break;
+                case 'view' :
+                    import('./asset-details-view');
+                    break;
+                default :
+                    import('./asset-search-view');
+                    break;
+            }
         }
     }
 

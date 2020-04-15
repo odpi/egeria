@@ -135,7 +135,7 @@
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.10.3</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
-        <kafka.version>2.4.1</kafka.version>
+        <kafka.version>2.5.0</kafka.version>
         <janus.version>0.5.0</janus.version>
         <gremlin.version>3.4.6</gremlin.version>
         <netty.version>4.1.48.Final</netty.version>
@@ -183,7 +183,7 @@
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-shade.version>3.2.2</maven-shade.version>
+        <maven-shade.version>3.2.3</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>

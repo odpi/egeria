@@ -10,13 +10,23 @@ export const ItemViewBehavior = {
     _itemChanged(item) {
         console.debug('details items changed');
         if (item) {
+            this._pushCrumb(this._itemName(item));
+            this._attributes(item);
+        }else{
+            window.dispatchEvent(new CustomEvent('show-feedback', {
+                bubbles: true,
+                composed: true,
+                detail: {message: "Item not found!", level: 'error'}}));
+        }
+    },
+
+    _pushCrumb(val) {
             this.dispatchEvent(new CustomEvent('push-crumb', {
                 bubbles: true,
                 composed: true,
-                detail: {label: this._itemName(item), href: null}
+                detail: {label: val, href: null}
             }));
-        }
-        this._attributes(item);
+
     },
 
     _itemName(item) {
@@ -42,6 +52,10 @@ export const ItemViewBehavior = {
 
     _hasKeys(obj){
       return Object.keys(obj).length > 0;
+    },
+
+    _hasKey(obj,key){
+        return key in obj;
     },
 
     _camelCaseToSentence(val){
