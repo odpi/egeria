@@ -13,7 +13,7 @@ export const ItemViewBehavior = {
             this.dispatchEvent(new CustomEvent('push-crumb', {
                 bubbles: true,
                 composed: true,
-                detail: {label: this._itemName(item), href: '/view/' + item.guid}
+                detail: {label: this._itemName(item), href: null}
             }));
         }
         this._attributes(item);
@@ -40,10 +40,16 @@ export const ItemViewBehavior = {
         return arr;
     },
 
+    _hasKeys(obj){
+      return Object.keys(obj).length > 0;
+    },
+
     _camelCaseToSentence(val){
         return val
             .replace(/([A-Z])/g, ' $1')
-            .replace(/^./, function(str){ return str.toUpperCase(); })
+            .replace(/([A-Z]+\s+)/g, c => c.trim() )
+            .replace(/_/g, ' ') // replace underscores with spaces
+            .replace(/^\w/, c => c.toUpperCase()); //uppercase first letter
     }
 
 
