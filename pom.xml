@@ -124,8 +124,8 @@
         <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
-        <junit.platform.version>1.6.1</junit.platform.version>
-        <junit.jupiter.version>5.6.1</junit.jupiter.version>
+        <junit.platform.version>1.6.2</junit.platform.version>
+        <junit.jupiter.version>5.6.2</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
         <mockito.version>3.3.3</mockito.version>
@@ -135,7 +135,7 @@
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.10.3</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
-        <kafka.version>2.4.1</kafka.version>
+        <kafka.version>2.5.0</kafka.version>
         <janus.version>0.5.0</janus.version>
         <gremlin.version>3.4.6</gremlin.version>
         <netty.version>4.1.48.Final</netty.version>
@@ -175,15 +175,15 @@
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.7.3</snappy.version>
         <snakeyaml.version>1.26</snakeyaml.version>
-        <springdoc.version>1.3.1</springdoc.version>
-        <classgraph.version>4.8.68</classgraph.version>
+        <springdoc.version>1.3.2</springdoc.version>
+        <classgraph.version>4.8.69</classgraph.version>
         <swagger.version>2.1.2</swagger.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-shade.version>3.2.2</maven-shade.version>
+        <maven-shade.version>3.2.3</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>

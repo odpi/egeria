@@ -3,6 +3,7 @@
 import { PolymerElement, html } from '@polymer/polymer';
 
 import '../shared-styles.js';
+import './asset-search-view'
 
 class AssetCatalogView extends PolymerElement {
     static get template() {
@@ -25,22 +26,22 @@ class AssetCatalogView extends PolymerElement {
 
     static get observers() {
         return [
-            '_routeChanged(routeData.usecase)'
+            '_routeChanged(route)'
         ];
     }
 
-    _routeChanged(usecase) {
-        console.debug('asset-catalog usecase is:' + usecase);
-        switch (usecase) {
-            case 'search' :
-                import('./asset-search-view');
-                break;
-            case 'view' :
-                import('./asset-details-view');
-                break;
-            default :
-                import('./asset-search-view');
-                break;
+    _routeChanged(route) {
+        if (route.prefix === '/asset-catalog') {
+            /**
+             * keeping the switch for later add cases
+             */
+            switch (this.routeData.usecase) {
+                case 'view' :
+                    import('./asset-details-view');
+                    break;
+
+
+            }
         }
     }
 
