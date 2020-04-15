@@ -85,7 +85,11 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>multi-tenant</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.10.3</version>
+        </dependency>
     </dependencies>
 
 

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.scheduler.JobConfiguration;
 import org.slf4j.Logger;
@@ -32,7 +33,19 @@ public class StoringServices {
      * Delegates the call for the update of an entity to the connector
      *
      */
-    public void updateEntity(LineageEvent lineageEvent){}
+    public void updateEntity(LineageEvent lineageEvent){
+        log.debug("Open Lineage Services is processing a UpdateEntity event which contains the following entity with guid : {}", lineageEvent.getLineageEntity().getGuid());
+        bufferGraph.updateEntity(lineageEvent.getLineageEntity());
+    }
+
+    /**
+     * Delegates the call for the update of a relationship to the connector
+     *
+     */
+    public void updateRelationship(LineageRelationshipEvent lineageRelationshipEvent){
+        log.debug("Open Lineage Services is processing a UpdateRelationshipEvent event which contains the following relantionhsip with guid: {}", lineageRelationshipEvent.getLineageRelationship().getGuid());
+        bufferGraph.updateRelationship(lineageRelationshipEvent.getLineageRelationship());
+    }
 
     /**
      * Delegates the call for the deletion of an entity to the connector
