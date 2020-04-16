@@ -1,19 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import { PolymerElement, html } from '@polymer/polymer';
-import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
-import { ItemViewBehavior} from '../common/item';
-import '@polymer/paper-listbox/paper-listbox.js';
-import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-item/paper-item-body';
-import '@polymer/paper-styles/paper-styles';
-import '@vaadin/vaadin-icons/vaadin-icons';
-import '@polymer/app-layout/app-grid/app-grid-style';
 
 import '../shared-styles.js';
 import '../common/props-table';
 
-class AssetTools extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
+class AssetTools extends PolymerElement {
     static get template() {
         return html`
       
