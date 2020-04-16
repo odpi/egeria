@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.glossaryview.converters;
 
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewClassification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
 import java.util.function.Function;
 
@@ -24,9 +25,10 @@ class ClassificationToGlossaryViewClassification implements Function<Classificat
         glossaryViewClassification.setUpdateTime(classification.getUpdateTime());
         glossaryViewClassification.setStatus(classification.getStatus().getName());
 
-        if(classification.getProperties().getInstanceProperties() != null) {
-            classification.getProperties().getInstanceProperties()
-                    .forEach((key, value) -> glossaryViewClassification.addProperty(key, value.valueAsString()));
+        InstanceProperties properties = classification.getProperties();
+        if(properties != null && properties.getInstanceProperties() != null) {
+            properties.getInstanceProperties().forEach(
+                    (key, value) -> glossaryViewClassification.addProperty(key, value.valueAsString()));
         }
 
         return glossaryViewClassification;
