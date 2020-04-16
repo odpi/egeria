@@ -76,12 +76,6 @@ class GlossaryView extends PolymerElement {
     `;
     }
 
-    _retrieve_all_glossaries() {
-        console.debug('searching: '+ this.q);
-        this.$.tokenAjax.url = '/api/glossaries';
-        this.$.tokenAjax._go();
-    }
-
     static get observers() {
         return [
             '_routeChanged(route)'
