@@ -78,12 +78,6 @@ class GlossaryView extends PolymerElement {
 
     _retrieve_all_glossaries() {
         console.debug('searching: '+ this.q);
-        var types = [];
-
-        this.$.combo.selectedItems.forEach(function(item){
-            types.push( item.name);
-        });
-
         this.$.tokenAjax.url = '/api/glossaries';
         this.$.tokenAjax._go();
     }
@@ -100,7 +94,6 @@ class GlossaryView extends PolymerElement {
             this.$.tokenAjaxDetails._go();
         }
     }
-
 
     connectedCallback() {
         super.connectedCallback();
