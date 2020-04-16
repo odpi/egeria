@@ -141,6 +141,7 @@ public class OpenMetadataTypesArchive
         update0045ServersAndAssets();
         update0424GovernanceZones();
         update042SubjectAreas();
+        add0435PolicyManagementCapabilities();
         update0438NamingStandards();
         update0440OrganizationalControls();
         update0450GovernanceRollout();
@@ -446,13 +447,306 @@ public class OpenMetadataTypesArchive
         return relationshipDef;
     }
 
+    /**
+     * 0435 - Add classifications for policy management capabilities
+     */
+    private void add0435PolicyManagementCapabilities()
+    {
+        this.archiveBuilder.addClassificationDef(getPolicyAdministrationPointClassification());
+        this.archiveBuilder.addClassificationDef(getPolicyDecisionPointClassification());
+        this.archiveBuilder.addClassificationDef(getPolicyEnforcementPointClassification());
+        this.archiveBuilder.addClassificationDef(getPolicyInformationPointClassification());
+        this.archiveBuilder.addClassificationDef(getPolicyRetrievalPointClassification());
+    }
+
+
+    private ClassificationDef getPolicyAdministrationPointClassification()
+    {
+        final String guid = "4f13baa3-31b3-4a85-985e-2abc784900b8";
+
+        final String name            = "PolicyAdministrationPoint";
+        final String description     = "Describes the capability where policies are maintained.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Referenceable";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+
+        final String attribute1Name            = "name";
+        final String attribute1Description     = "Unique name of the policy administration point.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description of the policy administration point.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "type";
+        final String attribute3Description     = "Descriptive type information about the policy administration point.";
+        final String attribute3DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
+
+    private ClassificationDef getPolicyDecisionPointClassification()
+    {
+        final String guid = "bf521975-bfec-4115-a8e3-ed0fee7d4a43";
+
+        final String name            = "PolicyDecisionPoint";
+        final String description     = "Describes the capability where policies are evaluated for a specific situation.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Referenceable";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+
+        final String attribute1Name            = "name";
+        final String attribute1Description     = "Unique name of the policy decision point.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description of the policy decision point.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "type";
+        final String attribute3Description     = "Descriptive type information about the policy decision point.";
+        final String attribute3DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
+
+    private ClassificationDef getPolicyEnforcementPointClassification()
+    {
+        final String guid = "9a68b20b-3f84-4d7d-bc9e-790c4b27e685";
+
+        final String name            = "PolicyEnforcementPoint";
+        final String description     = "Describes the capability where the result of a policy decision are enforced.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Referenceable";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+
+        final String attribute1Name            = "name";
+        final String attribute1Description     = "Unique name of the policy enforcement point.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description of the policy enforcement point.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "type";
+        final String attribute3Description     = "Descriptive type information about the policy enforcement point.";
+        final String attribute3DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
+
+    private ClassificationDef getPolicyInformationPointClassification()
+    {
+        final String guid = "2058ab6f-ddbf-45f9-9136-47354544e282";
+
+        final String name            = "PolicyInformationPoint";
+        final String description     = "Describes the capability where additional information used in a policy decision are stored.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Referenceable";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+
+        final String attribute1Name            = "name";
+        final String attribute1Description     = "Unique name of the policy information point.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description of the policy information point.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "type";
+        final String attribute3Description     = "Descriptive type information about the policy information point.";
+        final String attribute3DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
+
+    private ClassificationDef getPolicyRetrievalPointClassification()
+    {
+        final String guid = "d7367412-7ba6-409f-84db-42b51e859367";
+
+        final String name            = "PolicyRetrievalPoint";
+        final String description     = "Describes the capability where policies are retrieved.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Referenceable";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+
+        final String attribute1Name            = "name";
+        final String attribute1Description     = "Unique name of the policy retrieval point.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description of the policy retrieval point.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "type";
+        final String attribute3Description     = "Descriptive type information about the policy retrieval point.";
+        final String attribute3DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
 
     /**
-     * 0458 - Modifier classification was defined as NamingConventionRule - typo in 1.2.
+     * 0438 - Modifier classification was defined as NamingConventionRule - typo in 1.2.
+     *        A new classification is defined for Modifier, NamingConventionRule is deprecated
+     *        and PrimeWord and ClassWord are changed to link to Referenceable so that
+     *        Valid Values can be used to build a naming standard rule set.
      */
     private void update0438NamingStandards()
     {
         this.archiveBuilder.addClassificationDef(getModifierClassification());
+        this.archiveBuilder.addTypeDefPatch(updateNamingConventionRuleClassification());
+        this.archiveBuilder.addTypeDefPatch(updatePrimeWordClassification());
+        this.archiveBuilder.addTypeDefPatch(updateClassWordClassification());
     }
 
     private ClassificationDef getModifierClassification()
@@ -462,7 +756,7 @@ public class OpenMetadataTypesArchive
         final String description     = "Describes modifying noun or adverb, used in naming standards.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "GlossaryTerm";
+        final String linkedToEntity = "Referenceable";
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
@@ -471,6 +765,67 @@ public class OpenMetadataTypesArchive
                                                   descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(linkedToEntity),
                                                   false);
+    }
+
+
+    private TypeDefPatch updateNamingConventionRuleClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "NamingConventionRule";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updatePrimeWordClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "PrimeWord";
+        final String typeLinkName = "Referenceable";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefLink> validEntityDefs = new ArrayList<>();
+        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(typeLinkName)));
+
+        typeDefPatch.setValidEntityDefs(validEntityDefs);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateClassWordClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ClassWord";
+        final String typeLinkName = "Referenceable";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefLink> validEntityDefs = new ArrayList<>();
+        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(typeLinkName)));
+
+        typeDefPatch.setValidEntityDefs(validEntityDefs);
+
+        return typeDefPatch;
     }
 
 

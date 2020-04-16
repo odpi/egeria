@@ -23,7 +23,7 @@ that the governance program has a positive effect.
 * **[0424 Governance Zones](0424-Governance-Zones.md)**
 * **[0425 Subject Areas](0425-Subject-Areas.md)**
 * **[0430 Technical Controls](0430-Technical-Controls.md)**
-* **[0435 Security Capabilities](0435-Security-Capabilities.md)**
+* **[0435 Policy Management Capabilities](0435-Policy-Management-Capabilities.md)**
 * **[0438 Naming Standards](0438-Naming-Standards.md)**
 * **[0440 Organizational Controls](0440-Organizational-Controls.md)**
 * **[0442 Project Charter](0442-Project-Charter.md)**
