@@ -1,11 +1,14 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project. -->
+<!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-# 0470 Digital Services
 
-![UML](0470-Digital-Services.png#pagewidth)
+# 0710 Digital Service
 
-Return to [Area 4](Area-4-models.md).
+
+![UML](0710-Digital-Service.png#pagewidth)
+
+
+Return to [Area 7](Area-7-models.md).
 
 
 ----
