@@ -21,41 +21,58 @@ class GlossaryView extends PolymerElement {
       <token-ajax id="tokenAjaxDetails" last-response="{{glossaries}}" url="/api/glossaries" auto></token-ajax>
 
       <div class="container">
-        <div>[[glossaries]]</div>
-      </div>
        <vaadin-grid id="grid" items="[[glossaries]]" theme="row-stripes"
                            column-reordering-allowed multi-sort>
           <vaadin-grid-column width="10em" resizable>
               <template class="header">
                   <vaadin-grid-sorter path="displayName">Name</vaadin-grid-sorter>
               </template>
-              <template>
-                [[item.typeDefName]]
-              </template>
+              <template>[[item.displayName]]</template>
           </vaadin-grid-column>
-
-           <vaadin-grid-column width="6em" resizable>
-              <template class="header">
-                  <vaadin-grid-sorter path="createdBy">Created By</vaadin-grid-sorter>
-              </template>
-              <template>[[item.createdBy]]</template>
-          </vaadin-grid-column>
-
 
           <vaadin-grid-column width="15em" resizable>
+              <template class="header">
+                  <vaadin-grid-sorter path="qualifiedName">Qualified Name</vaadin-grid-sorter>
+              </template>
+              <template>[[item.qualifiedName]]</template>
+          </vaadin-grid-column>
+
+          <vaadin-grid-column width="5em" resizable>
               <template class="header">
                   <vaadin-grid-sorter path="status">Status</vaadin-grid-sorter>
               </template>
               <template>[[item.status]]</template>
           </vaadin-grid-column>
 
-          <vaadin-grid-column width="15em" resizable>
+         <vaadin-grid-column width="6em" resizable>
               <template class="header">
-                  <vaadin-grid-sorter path="qualifiedName">QualifiedName</vaadin-grid-sorter>
+                  <vaadin-grid-sorter path="createdBy">Created By</vaadin-grid-sorter>
               </template>
-              <template>[[item.qualifiedName]]</template>
+              <template>[[item.createdBy]]</template>
+          </vaadin-grid-column>
+
+         <vaadin-grid-column width="6em" resizable>
+              <template class="header">
+                  <vaadin-grid-sorter path="createTime">Create Time</vaadin-grid-sorter>
+              </template>
+              <template>[[item.createTime]]</template>
+          </vaadin-grid-column>
+
+         <vaadin-grid-column width="6em" resizable>
+              <template class="header">
+                  <vaadin-grid-sorter path="updatedBy">Updated By</vaadin-grid-sorter>
+              </template>
+              <template>[[item.updatedBy]]</template>
+          </vaadin-grid-column>
+
+         <vaadin-grid-column width="6em" resizable>
+              <template class="header">
+                  <vaadin-grid-sorter path="updateTime">Updated Time</vaadin-grid-sorter>
+              </template>
+              <template>[[item.updateTime]]</template>
           </vaadin-grid-column>
       </vaadin-grid>
+      </div>
     `;
     }
 
