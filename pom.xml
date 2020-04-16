@@ -190,9 +190,9 @@
         <maven-pmd.version>3.13.0</maven-pmd.version>
         <owasp.version>5.3.2</owasp.version>
         <spotbugs-maven.version>4.0.0</spotbugs-maven.version>
-        <spotbugs.version>4.0.1</spotbugs.version>
+        <spotbugs.version>4.0.2</spotbugs.version>
         <maven-download.version>1.5.1</maven-download.version>
-        <maven-antrun.version>1.8</maven-antrun.version>
+        <maven-antrun.version>3.0.0</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
         <jacoco-plugin.version>0.8.5</jacoco-plugin.version>
