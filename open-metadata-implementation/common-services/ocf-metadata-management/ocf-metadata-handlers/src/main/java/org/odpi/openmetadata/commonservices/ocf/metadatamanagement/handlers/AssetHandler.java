@@ -1204,6 +1204,7 @@ public class AssetHandler
      *
      * @param userId calling user.
      * @param assetGUID unique identifier of the asset that contains reference data.
+     * @param supportedZones list of visible zones.
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is invalid.

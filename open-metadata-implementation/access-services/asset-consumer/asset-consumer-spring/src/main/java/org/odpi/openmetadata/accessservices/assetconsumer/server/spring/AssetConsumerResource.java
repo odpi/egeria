@@ -346,6 +346,7 @@ public class AssetConsumerResource
      * Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one
      * of its schema elements.
      *
+     * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
      * @param tagGUID unique identifier of tag.
      * @param startFrom  index of the list to start from (0 for start)

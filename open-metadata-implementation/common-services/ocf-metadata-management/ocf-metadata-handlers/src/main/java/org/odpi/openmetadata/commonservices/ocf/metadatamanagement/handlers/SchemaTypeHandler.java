@@ -681,6 +681,7 @@ public class SchemaTypeHandler
      * @param parentGUID anchor object
      * @param schemaAttribute schema attribute object with embedded type
      * @param methodName calling method
+     * @return guid of new schema
      *
      * @throws InvalidParameterException the guid or bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -743,6 +744,7 @@ public class SchemaTypeHandler
      * @param schemaTypeGUID anchor object
      * @param schemaAttribute schema attribute object with embedded type
      * @param methodName calling method
+     * @return guid of new schema
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -784,6 +786,7 @@ public class SchemaTypeHandler
      * @param parentSchemaAttributeGUID anchor object
      * @param nestedSchemaAttribute schema attribute object with embedded type
      * @param methodName calling method
+     * @return guid of new schema
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
