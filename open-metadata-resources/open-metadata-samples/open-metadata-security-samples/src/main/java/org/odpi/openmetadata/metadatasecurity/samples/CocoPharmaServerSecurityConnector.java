@@ -492,8 +492,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
          */
         if ((assetZones == null) || (assetZones.isEmpty()))
         {
-            testZones = new ArrayList<>();
-            testZones.add(quarantineZoneName);
+            testZones = defaultZoneMembership;
         }
         else
         {
@@ -783,13 +782,11 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                                              Asset         asset) throws InvalidParameterException,
                                                                          PropertyServerException
     {
-        if (asset != null)
+        if ((defaultZones == null) || (defaultZones.isEmpty()))
         {
-            if (asset.getZoneMembership() == null)
-            {
-                return defaultZoneMembership;
-            }
+            return super.initializeAssetZones(defaultZoneMembership, asset);
         }
+
         return super.initializeAssetZones(defaultZones, asset);
     }
 

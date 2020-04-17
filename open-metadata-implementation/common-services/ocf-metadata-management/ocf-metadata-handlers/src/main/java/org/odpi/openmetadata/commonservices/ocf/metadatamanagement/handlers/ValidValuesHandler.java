@@ -1561,11 +1561,11 @@ public class ValidValuesHandler
                     {
                         try
                         {
-                            implementationAsset.setReferenceDataAsset(assetHandler.getAsset(userId,
-                                                                                            supportedZones,
-                                                                                            end2.getGUID(),
-                                                                                            serviceName,
-                                                                                            methodName));
+                            implementationAsset.setReferenceDataAsset(assetHandler.getValidatedVisibleAsset(userId,
+                                                                                                            supportedZones,
+                                                                                                            end2.getGUID(),
+                                                                                                            serviceName,
+                                                                                                            methodName));
                             /*
                              * Only report about the asset if it is in a supported zone.
                              */

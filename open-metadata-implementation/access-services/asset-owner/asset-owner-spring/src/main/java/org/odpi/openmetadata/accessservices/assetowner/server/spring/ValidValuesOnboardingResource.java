@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * ValidValuesResource provides the API operations to create and maintain lists of valid
+ * ValidValuesOnboardingResource provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
  * the same attributes and so inherit from ValidValue where all of the attributes are defined.
  *
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
-public class ValidValuesResource
+public class ValidValuesOnboardingResource
 {
     private ValidValuesRESTServices restAPI = new ValidValuesRESTServices();
 
@@ -30,7 +30,7 @@ public class ValidValuesResource
     /**
      * Default constructor
      */
-    public ValidValuesResource()
+    public ValidValuesOnboardingResource()
     {
     }
 
