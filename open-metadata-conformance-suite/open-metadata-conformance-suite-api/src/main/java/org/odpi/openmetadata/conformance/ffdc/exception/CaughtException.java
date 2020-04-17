@@ -7,6 +7,8 @@ package org.odpi.openmetadata.conformance.ffdc.exception;
  */
 public class CaughtException extends ConformanceException
 {
+    private static final long    serialVersionUID = 1L;
+
     Throwable    caughtException;
 
     /**
