@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminSecurityServices;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}")
+
+@Tag(name="Administration Services", description="The administration services support the configuration of the open metadata and governance services within the OMAG Server Platform This configuration determines which of the open metadata and governance services are active.", externalDocs=@ExternalDocumentation(description="Administration Services",url="https://egeria.odpi.org/open-metadata-implementation/admin-services/"))
+
 public class ConfigOpenMetadataSecurityResource
 {
     private static OMAGServerAdminSecurityServices adminSecurityAPI = new OMAGServerAdminSecurityServices();

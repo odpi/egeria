@@ -151,7 +151,8 @@ public class GraphOMRSEntityMapper {
             TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeName);
 
             // For the type of the entity, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
-            Map<String,String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+            GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+            Map<String,String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
             // This is a full property update - any defined properties that are not in the instanceProperties are cleared.
 
@@ -212,7 +213,8 @@ public class GraphOMRSEntityMapper {
             TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeName);
 
             // For the type of the entity, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
-            Map<String,String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+            GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+            Map<String,String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
             // This is a full property update - any defined properties that are not in the instanceProperties are cleared.
             List<TypeDefAttribute> propertiesDef = repositoryHelper.getAllPropertiesForTypeDef(repositoryName, typeDef, methodName);
@@ -597,16 +599,18 @@ public class GraphOMRSEntityMapper {
                     methodName, e);
         }
 
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+
         Integer provenanceOrdinal = (Integer) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_PROVENANCE_TYPE);
-        InstanceProvenanceType instanceProvenanceType = GraphOMRSMapperUtils.mapProvenanceOrdinalToEnum(provenanceOrdinal);
+        InstanceProvenanceType instanceProvenanceType = mapperUtils.mapProvenanceOrdinalToEnum(provenanceOrdinal);
         entity.setInstanceProvenanceType(instanceProvenanceType);
 
         Integer statusOrdinal = (Integer) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_STATUS);
-        InstanceStatus instanceStatus = GraphOMRSMapperUtils.mapStatusOrdinalToEnum(statusOrdinal);
+        InstanceStatus instanceStatus = mapperUtils.mapStatusOrdinalToEnum(statusOrdinal);
         entity.setStatus(instanceStatus);
 
         Integer statusOnDeleteOrdinal = (Integer) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_STATUS_ON_DELETE);
-        InstanceStatus statusOnDelete = GraphOMRSMapperUtils.mapStatusOrdinalToEnum(statusOnDeleteOrdinal);
+        InstanceStatus statusOnDelete = mapperUtils.mapStatusOrdinalToEnum(statusOnDeleteOrdinal);
         entity.setStatusOnDelete(statusOnDelete);
 
 

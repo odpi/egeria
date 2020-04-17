@@ -539,8 +539,17 @@ public class RepositoryExplorerController extends SecureController
                  *   a map of relationshipGUID --> { relationshipGUID, end1GUID, end2GUID, idx, label, gen }
                  */
 
-                // gex stores the instance graph and root GUID and depth.
-                // Reformat the results into a RexTraversalResponse including digests
+                /*
+                 * An InstanceGraph contains relationships and entities that are homed by the repository that
+                 * created the InstanceGraph. The relationships may refer to entities that are not homed by that
+                 * repository, so those entities will not be included in the 'entities' portion of the InstanceGraph.
+                 * Since our RexTraversal needs to be 'complete' - i.e. we have an EntityDigest for each end of
+                 * every relationship, we must generate digests not just from the entities lit, but also spot any
+                 * relationship ends that are NOT in the list and generate a digest for each of them as well.
+                 * Start by processing the homed entities.
+                 * Then process the relationships and check fr each end of each relationship whether we need to
+                 * augment the RexTraversal entityDigestMap.
+                 */
                 List<EntityDetail> entities = instGraph.getEntities();
                 Map<String, RexEntityDigest> entityDigestMap = null;
                 if (entities != null && !entities.isEmpty()) {
@@ -554,8 +563,7 @@ public class RepositoryExplorerController extends SecureController
                         // Pass the typeExplorer to the labeller so that it can traverse...
                         String entLabel = this.chooseLabelForEntity(entityDetail, typeExplorer);
 
-
-                        RexEntityDigest red = new RexEntityDigest(entGUID, entLabel, gen,entityDetail.getMetadataCollectionName());
+                        RexEntityDigest red = new RexEntityDigest(entGUID, entLabel, gen, entityDetail.getMetadataCollectionName());
                         entityDigestMap.put(entGUID, red);
                     }
 
@@ -574,6 +582,24 @@ public class RepositoryExplorerController extends SecureController
                         String relLabel = this.chooseLabelForRelationship(relationship);
                         String end1GUID = relationship.getEntityOneProxy().getGUID();
                         String end2GUID = relationship.getEntityTwoProxy().getGUID();
+
+                        /* check for proxies... */
+                        if (entityDigestMap.get(end1GUID) == null) {
+                            /* add a digest for this proxy... */
+                            EntityProxy end1Proxy = relationship.getEntityOneProxy();
+                            String end1Label = this.chooseLabelForEntityProxy(end1Proxy, typeExplorer);
+                            RexEntityDigest red = new RexEntityDigest(end1GUID, end1Label, gen, end1Proxy.getMetadataCollectionName());
+                            entityDigestMap.put(end1GUID, red);
+                        }
+                        if (entityDigestMap.get(end2GUID) == null) {
+                            /* add a digest for this proxy... */
+                            EntityProxy end2Proxy = relationship.getEntityTwoProxy();
+                            String end2Label = this.chooseLabelForEntityProxy(end2Proxy, typeExplorer);
+                            RexEntityDigest red = new RexEntityDigest(end2GUID, end2Label, gen, end2Proxy.getMetadataCollectionName());
+                            entityDigestMap.put(end2GUID, red);
+                        }
+
+
                         int idx = 0;
 
                         RexRelationshipDigest rrd = new RexRelationshipDigest(relGUID, relLabel, end1GUID, end2GUID, idx,

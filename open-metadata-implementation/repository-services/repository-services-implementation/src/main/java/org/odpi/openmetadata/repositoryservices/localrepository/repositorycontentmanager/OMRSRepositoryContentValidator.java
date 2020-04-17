@@ -1800,6 +1800,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             }
 
             AttributeTypeDefCategory  propertyDefinitionType = null;
+            AttributeTypeDef          attributeTypeDef = null;
             boolean                   recognizedProperty = false;
 
             for (TypeDefAttribute typeDefAttribute : typeDefAttributes)
@@ -1810,10 +1811,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     {
                         recognizedProperty = true;
 
-                        AttributeTypeDef  attributeTypeDef = typeDefAttribute.getAttributeType();
+                        attributeTypeDef = typeDefAttribute.getAttributeType();
                         if (attributeTypeDef == null)
                         {
-                            propertyDefinitionType = AttributeTypeDefCategory.PRIMITIVE;
+                            propertyDefinitionType = AttributeTypeDefCategory.UNKNOWN_DEF;
                         }
                         else
                         {
@@ -1863,6 +1864,26 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 case PRIMITIVE:
                     if (propertyDefinitionType == AttributeTypeDefCategory.PRIMITIVE)
                     {
+                        /*
+                         * Ensure that primitive definition category is a perfect match...
+                         */
+                        PrimitivePropertyValue primPropertyValue = (PrimitivePropertyValue)propertyValue;
+                        PrimitiveDefCategory propertyDefCat = primPropertyValue.getPrimitiveDefCategory();
+                        PrimitiveDef primAttributeDef = (PrimitiveDef) attributeTypeDef;
+                        PrimitiveDefCategory attributeDefCat = primAttributeDef.getPrimitiveDefCategory();
+                        if (propertyDefCat == attributeDefCat) {
+                            validPropertyType = true;
+                        }
+                        else {
+                            validPropertyTypeName = attributeDefCat.getName();
+                        }
+                    }
+                    else if (propertyDefinitionType == AttributeTypeDefCategory.UNKNOWN_DEF) {
+                        /*
+                         * This property definition type may have been adopted above due to the
+                         * attributeTypeDef being null. Permit primitive definition category to
+                         * be a sloppy match...
+                         */
                         validPropertyType = true;
                     }
                     break;
@@ -1875,20 +1896,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     break;
 
                 case MAP:
-                    if (propertyDefinitionType == AttributeTypeDefCategory.COLLECTION)
-                    {
-                        validPropertyType = true;
-                    }
-                    break;
-
-                case ARRAY:
-                    if (propertyDefinitionType == AttributeTypeDefCategory.COLLECTION)
-                    {
-                        validPropertyType = true;
-                    }
-                    break;
 
                 case STRUCT:
+
+                case ARRAY:
                     if (propertyDefinitionType == AttributeTypeDefCategory.COLLECTION)
                     {
                         validPropertyType = true;

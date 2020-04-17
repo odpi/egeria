@@ -1222,7 +1222,7 @@ public class SchemaTypeHandler
      * @param schemaAttribute object with properties
      * @return builder object.
      */
-    private SchemaAttributeBuilder  getSchemaAttributeBuilder(SchemaAttribute  schemaAttribute)
+    public SchemaAttributeBuilder  getSchemaAttributeBuilder(SchemaAttribute schemaAttribute)
     {
         SchemaAttributeBuilder builder = null;
 
@@ -1239,6 +1239,7 @@ public class SchemaTypeHandler
                                                  schemaAttribute.isAllowsDuplicateValues(),
                                                  schemaAttribute.isOrderedValues(),
                                                  schemaAttribute.getSortOrder(),
+                                                 schemaAttribute.getAnchorGUID(),
                                                  schemaAttribute.getMinimumLength(),
                                                  schemaAttribute.getLength(),
                                                  schemaAttribute.getSignificantDigits(),

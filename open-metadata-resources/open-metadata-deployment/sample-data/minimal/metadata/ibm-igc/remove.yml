@@ -82,6 +82,12 @@
       - { property: "name", operator: "=", value: "MINIMAL" }
       - { property: "host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
 
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: information_governance_rule
+    conditions:
+      - { property: "name", operator: "=", value: "Job metadata will be periodically synced through ODPi Egeria's Data Engine OMAS" }
+
 - name: close session
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/logout/"

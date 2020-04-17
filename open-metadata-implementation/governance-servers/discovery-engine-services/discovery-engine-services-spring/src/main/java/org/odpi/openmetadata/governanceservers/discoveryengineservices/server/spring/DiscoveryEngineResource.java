@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.discoveryengineservices.server.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
@@ -19,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/discovery-server/users/{userId}/discovery-engines/{discoveryEngineName}")
+
+@Tag(name="Discovery Engine Services", description="The discovery engine services provide the core subsystem for a discovery server. A discovery server is an OMAG Server that hosts automated metadata discovery.", externalDocs=@ExternalDocumentation(description="Discovery Engine Services",url="https://egeria.odpi.org/open-metadata-implementation/governance-servers/discovery-engine-services/"))
+
 public class DiscoveryEngineResource
 {
     private DiscoveryServerRESTServices restAPI = new DiscoveryServerRESTServices();

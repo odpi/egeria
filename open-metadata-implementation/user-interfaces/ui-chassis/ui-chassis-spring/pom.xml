@@ -10,7 +10,7 @@
     <parent>
         <artifactId>ui-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.6-SNAPSHOT</version>
+        <version>1.7-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -284,7 +284,14 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>audit-log-framework</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>glossary-view-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>glossary-view-api</artifactId>
+        </dependency>
     </dependencies>
 
     <profiles>

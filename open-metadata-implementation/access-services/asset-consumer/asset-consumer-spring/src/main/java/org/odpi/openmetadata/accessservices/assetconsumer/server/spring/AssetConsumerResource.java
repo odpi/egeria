@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server.spring;
 
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermListResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermResponse;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}")
+
+@Tag(name="Asset Consumer OMAS", description="The Asset Consumer OMAS provides services to an individual who wants to work with assets such as: data stores, data sets and data feeds, reports, APIs, functions such as analytical services", externalDocs=@ExternalDocumentation(description="Asset Consumer Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/asset-consumer/"))
+
 public class AssetConsumerResource
 {
     private AssetConsumerRESTServices  restAPI = new AssetConsumerRESTServices();
@@ -360,6 +363,7 @@ public class AssetConsumerResource
                                            @PathVariable String tagGUID,
                                            @RequestParam int    startFrom,
                                            @RequestParam int    pageSize)
+
     {
         return restAPI.getAssetsByTag(serverName, userId, tagGUID, startFrom, pageSize);
     }

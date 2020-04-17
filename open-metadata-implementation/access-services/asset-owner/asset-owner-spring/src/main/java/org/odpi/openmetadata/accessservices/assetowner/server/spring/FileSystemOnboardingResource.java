@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.accessservices.assetowner.server.FileSystemRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -16,6 +18,10 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
+
+@Tag(name="Asset Owner OMAS", description="The Asset Owner OMAS provides APIs and notifications for tools and applications supporting the work of Asset Owners in protecting and enhancing their assets.\n" +
+        "\n", externalDocs=@ExternalDocumentation(description="Asset Owner Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/asset-owner/"))
+
 public class FileSystemOnboardingResource
 {
     private FileSystemRESTServices restAPI = new FileSystemRESTServices();
