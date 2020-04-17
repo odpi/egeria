@@ -6,12 +6,14 @@ package org.odpi.openmetadata.accessservices.assetowner.events;
 /**
  * MockAccessServiceEventHeader provides a concrete class to test the access service's event header
  */
-public class MockAccessServiceEventHeader extends AssetOwnerEventHeader
+class MockAccessServiceEventHeader extends AssetOwnerEventHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */
-    public MockAccessServiceEventHeader()
+    MockAccessServiceEventHeader()
     {
         super();
     }
@@ -22,7 +24,7 @@ public class MockAccessServiceEventHeader extends AssetOwnerEventHeader
      *
      * @param template object to clone
      */
-    public MockAccessServiceEventHeader(MockAccessServiceEventHeader template)
+    MockAccessServiceEventHeader(MockAccessServiceEventHeader template)
     {
         super(template);
     }

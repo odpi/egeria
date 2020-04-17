@@ -19,7 +19,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAssetSchemaLink
 {
-    private Map<String, Object> linkProperties = new HashMap<>();
+    private Map<String, String> linkProperties = new HashMap<>();
 
 
     /**
@@ -40,7 +40,6 @@ public class TestAssetSchemaLink
     {
         SchemaLink testObject = new SchemaLink();
 
-        testObject.setLinkGUID("TestLinkGUID");
         testObject.setLinkName("TestLinkName");
         testObject.setLinkType("TestLinkType");
         testObject.setLinkedSchemaTypeGUID("TestLinkSchemaTypeGUID");
@@ -61,7 +60,6 @@ public class TestAssetSchemaLink
         AssetSummary parentAsset = new AssetSummary(new Asset());
         SchemaLink   testObject  = new SchemaLink();
 
-        testObject.setLinkGUID("TestLinkGUID");
         testObject.setLinkName("TestLinkName");
         testObject.setLinkType("TestLinkType");
         testObject.setLinkedSchemaTypeGUID("TestLinkSchemaTypeGUID");
@@ -81,7 +79,6 @@ public class TestAssetSchemaLink
     {
         SchemaLink testObject = new SchemaLink();
 
-        testObject.setLinkGUID("TestLinkGUID");
         testObject.setLinkName("TestLinkName");
         testObject.setLinkType("TestDifferentLinkType");
         testObject.setLinkedSchemaTypeGUID("TestLinkSchemaTypeGUID");
@@ -174,13 +171,12 @@ public class TestAssetSchemaLink
         linkGUIDs.add("TestGUID1");
         linkGUIDs.add("TestGUID2");
 
-        Map<String, Object> linkProperties = new HashMap<>();
+        Map<String, String> linkProperties = new HashMap<>();
         linkProperties.put("PropertyName", "PropertyValue");
 
         AssetSummary parentAsset = new AssetSummary(new Asset());
         SchemaLink   testObject  = new SchemaLink();
 
-        testObject.setLinkGUID("TestLinkGUID");
         testObject.setLinkName("TestLinkName");
         testObject.setLinkType("TestLinkType");
         testObject.setLinkedSchemaTypeGUID("TestLinkGUID");

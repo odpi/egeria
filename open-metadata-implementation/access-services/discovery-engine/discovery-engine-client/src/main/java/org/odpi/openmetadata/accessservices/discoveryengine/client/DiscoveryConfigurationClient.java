@@ -703,6 +703,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @param description new value for the description.
      * @param owner new owner of the discovery service.
      * @param ownerType new type for the owner of the discovery service.
+     * @param origin properties describing the origin of the discovery service.
      * @param latestChange short description of this update.
      * @param zoneMembership new list of zones for this discovery service.
      * @param connection connection used to create an instance of this discovery service.
@@ -722,6 +723,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                            String                owner,
                                            OwnerType             ownerType,
                                            List<String>          zoneMembership,
+                                           Map<String, String>   origin,
                                            String                latestChange,
                                            Connection            connection,
                                            Map<String, String>   additionalProperties,
@@ -748,6 +750,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
         requestBody.setOwner(owner);
         requestBody.setOwnerType(ownerType);
         requestBody.setZoneMembership(zoneMembership);
+        requestBody.setOrigin(origin);
         requestBody.setLatestChange(latestChange);
         requestBody.setConnection(connection);
         requestBody.setAdditionalProperties(additionalProperties);

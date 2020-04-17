@@ -231,6 +231,17 @@ public class AssetSummary extends AssetDescriptor
 
 
     /**
+     * Return the properties that characterize where this asset is from.
+     *
+     * @return map of name value pairs, all strings
+     */
+    public Map<String, String> getOrigins()
+    {
+        return assetBean.getOrigin();
+    }
+
+
+    /**
      * Return a short description of the last change to the asset.
      *
      * @return string description

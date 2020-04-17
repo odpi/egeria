@@ -58,6 +58,8 @@ public enum AssetOwnerAuditCode implements AuditLogMessageSet
              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
     ;
 
+    private static final long    serialVersionUID = 1L;
+
     private AuditLogMessageDefinition messageDefinition;
 
 

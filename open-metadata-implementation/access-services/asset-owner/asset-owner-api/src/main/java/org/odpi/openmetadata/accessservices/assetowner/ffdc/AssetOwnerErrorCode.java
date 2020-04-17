@@ -190,6 +190,8 @@ public enum AssetOwnerErrorCode implements ExceptionMessageSet
             "If the server is supposed to have this access service activated, correct the server configuration and restart the server.")
     ;
 
+    private static final long    serialVersionUID = 1L;
+
     private ExceptionMessageDefinition messageDefinition;
 
 

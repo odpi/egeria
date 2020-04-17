@@ -5,13 +5,11 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingValidValues;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.ValidValueConsumer;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ValidValue;
 
 import java.util.List;
@@ -238,6 +236,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * @param usage how/when should this value be used.
      * @param scope what is the scope of the values.
      * @param preferredValue the value that should be used in an implementation if possible.
+     * @param isDeprecated is this value deprecated?
      * @param additionalProperties additional properties for this valid value.
      * @param extendedProperties properties that need to be populated into a subtype.
      *
@@ -253,16 +252,19 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                     String              usage,
                                     String              scope,
                                     String              preferredValue,
+                                    boolean             isDeprecated,
                                     Map<String, String> additionalProperties,
                                     Map<String, Object> extendedProperties) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
         final String   methodName = "updateValidValue";
+        final String   guidParameter = "validValueGUID";
         final String   nameParameter = "qualifiedName";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(validValueGUID, guidParameter, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
         ValidValuesRequestBody requestBody = new ValidValuesRequestBody();
@@ -303,10 +305,12 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                                                    PropertyServerException
     {
         final String   methodName = "deleteValidValue";
+        final String   guidParameter = "validValueGUID";
         final String   nameParameter = "qualifiedName";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(validValueGUID, guidParameter, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
@@ -388,221 +392,6 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                         userId,
                                         setGUID,
                                         validValueGUID);
-    }
-
-
-    /**
-     * Link a valid value to an asset that provides the implementation.  Typically this method is
-     * used to link a valid value set to a code table.
-     *
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param assetGUID unique identifier of the asset that implements the valid value.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public void  linkValidValueToImplementation(String   userId,
-                                                String   validValueGUID,
-                                                String   assetGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        final String   methodName = "linkValidValueToImplementation";
-        final String   validValueGUIDParameter = "validValueGUID";
-        final String   assetGUIDParameter = "assetGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/implementations/{3}";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        validValueGUID,
-                                        assetGUID);
-    }
-
-
-    /**
-     * Add the ReferenceData classification to an asset.  If the asset is already classified
-     * in this way, the method is a no-op.
-     *
-     * @param userId calling user.
-     * @param assetGUID unique identifier of the asset that contains reference data.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public void  classifyAssetAsReferenceData(String  userId,
-                                              String  assetGUID) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
-    {
-        final String   methodName = "classifyAssetAsReferenceData";
-        final String   assetGUIDParameter = "assetGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/classify-as-reference-data";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        assetGUID);
-    }
-
-
-    /**
-     * Remove the link between a valid value and an implementing asset.
-     *
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param assetGUID unique identifier of the asset that used to implement the valid value.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public void  unlinkValidValueFromImplementation(String   userId,
-                                                    String   validValueGUID,
-                                                    String   assetGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        final String   methodName = "unlinkValidValueFromImplementation";
-        final String   validValueGUIDParameter = "validValueGUID";
-        final String   assetGUIDParameter = "assetGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/implementations/{3}/delete";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        validValueGUID,
-                                        assetGUID);
-    }
-
-
-    /**
-     * Remove the ReferenceData classification form an Asset.  If the asset was not classified in this way,
-     * this call is a no-op.
-     *
-     * @param userId calling user.
-     * @param assetGUID unique identifier of asset.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public void  declassifyAssetAsReferenceData(String  userId,
-                                                String  assetGUID) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
-    {
-        final String   methodName = "declassifyAssetAsReferenceData";
-        final String   assetGUIDParameter = "assetGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/declassify-as-reference-data";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        assetGUID);
-    }
-
-
-    /**
-     * Link a valid value typically to a schema element or glossary term to show that it uses
-     * the valid values.
-     *
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param consumerGUID unique identifier of the element to link to.
-     * @param strictRequirement the valid values defines the only values that are permitted.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public void    assignValidValueToConsumer(String   userId,
-                                              String   validValueGUID,
-                                              String   consumerGUID,
-                                              boolean  strictRequirement) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
-    {
-        final String   methodName = "assignValidValueToConsumer";
-        final String   validValueGUIDParameter = "validValueGUID";
-        final String   consumerGUIDParameter = "consumerGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/consumers/{3}";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
-        invalidParameterHandler.validateGUID(consumerGUID, consumerGUIDParameter, methodName);
-
-        BooleanRequestBody requestBody = new BooleanRequestBody();
-        requestBody.setFlag(strictRequirement);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        validValueGUID,
-                                        consumerGUID);
-    }
-
-
-    /**
-     * Remove the link between a valid value and a consumer.
-     *
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param consumerGUID unique identifier of the element to remove the link from.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public void    unassignValidValueFromConsumer(String   userId,
-                                                  String   validValueGUID,
-                                                  String   consumerGUID) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        final String   methodName = "unassignValidValueFromConsumer";
-        final String   validValueGUIDParameter = "validValueGUID";
-        final String   consumerGUIDParameter = "consumerGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/consumers/{3}/delete";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
-        invalidParameterHandler.validateGUID(consumerGUID, consumerGUIDParameter, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        validValueGUID,
-                                        consumerGUID);
     }
 
 
@@ -702,6 +491,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
                                                                                 serverPlatformRootURL + urlTemplate,
@@ -740,6 +530,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueSetGUID, validValueGUIDParameter, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
                                                                                serverPlatformRootURL + urlTemplate,
@@ -779,6 +570,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
                                                                                serverPlatformRootURL + urlTemplate,
@@ -788,83 +580,5 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                                                                Integer.toString(startFrom),
                                                                                Integer.toString(pageSize));
         return restResult.getValidValues();
-    }
-
-
-    /**
-     * Page through the list of consumers for a valid value.
-     *
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of valid value to query
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     *
-     * @return list of referenceable beans
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public List<ValidValueConsumer> getValidValuesConsumers(String   userId,
-                                                            String   validValueGUID,
-                                                            int      startFrom,
-                                                            int      pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
-    {
-        final String   methodName = "getSetsForValidValue";
-        final String   validValueGUIDParameter = "validValueSetGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/consumers?startFrom={3}&pageSize={4}";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
-
-        ValidValueConsumersResponse restResult = restClient.callValidValueConsumersGetRESTCall(methodName,
-                                                                                               serverPlatformRootURL + urlTemplate,
-                                                                                               serverName,
-                                                                                               userId,
-                                                                                               validValueGUID,
-                                                                                               Integer.toString(startFrom),
-                                                                                               Integer.toString(pageSize));
-        return restResult.getValidValueConsumers();
-    }
-
-
-    /**
-     * Pag through the list of implementations for a valid value.
-     *
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of valid value to query
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     *
-     * @return list of asset beans
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public List<Asset> getValidValuesImplementations(String   userId,
-                                                     String   validValueGUID,
-                                                     int      startFrom,
-                                                     int      pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        final String   methodName = "getSetsForValidValue";
-        final String   validValueGUIDParameter = "validValueSetGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/implementations?startFrom={3}&pageSize={4}";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
-
-        AssetsResponse restResult = restClient.callAssetsGetRESTCall(methodName,
-                                                                     serverPlatformRootURL + urlTemplate,
-                                                                     serverName,
-                                                                     userId,
-                                                                     validValueGUID,
-                                                                     Integer.toString(startFrom),
-                                                                     Integer.toString(pageSize));
-        return restResult.getAssets();
     }
 }

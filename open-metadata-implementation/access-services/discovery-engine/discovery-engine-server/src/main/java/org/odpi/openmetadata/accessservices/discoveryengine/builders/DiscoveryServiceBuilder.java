@@ -37,6 +37,7 @@ public class DiscoveryServiceBuilder extends AssetBuilder
      * @param ownerType type of owner
      * @param zoneMembership list of zones that this discovery service belongs to.
      * @param latestChange description of the last change to the entity.
+     * @param origin properties that describe the origin of the asset.
      * @param additionalProperties additional properties
      * @param extendedProperties  properties from the subtype.
      * @param repositoryHelper helper methods
@@ -49,6 +50,7 @@ public class DiscoveryServiceBuilder extends AssetBuilder
                                    String               owner,
                                    OwnerType            ownerType,
                                    List<String>         zoneMembership,
+                                   Map<String, String>  origin,
                                    String               latestChange,
                                    Map<String, String>  additionalProperties,
                                    Map<String, Object>  extendedProperties,
@@ -56,6 +58,18 @@ public class DiscoveryServiceBuilder extends AssetBuilder
                                    String               serviceName,
                                    String               serverName)
     {
-        super(qualifiedName, displayName, description, owner, ownerType, zoneMembership, latestChange, additionalProperties, extendedProperties, repositoryHelper, serviceName, serverName);
+        super(qualifiedName,
+              displayName,
+              description,
+              owner,
+              ownerType,
+              zoneMembership,
+              origin,
+              latestChange,
+              additionalProperties,
+              extendedProperties,
+              repositoryHelper,
+              serviceName,
+              serverName);
     }
 }
