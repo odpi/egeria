@@ -115,4 +115,17 @@ public class SchemaAttributesRequestBody extends AssetOwnerOMASAPIRequestBody
         SchemaAttributesRequestBody that = (SchemaAttributesRequestBody) objectToCompare;
         return Objects.equals(schemaAttributeProperties, that.schemaAttributeProperties);
     }
+
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(schemaAttributeProperties);
+    }
 }

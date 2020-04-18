@@ -346,6 +346,7 @@ public class AssetConsumerResource
      * Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one
      * of its schema elements.
      *
+     * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
      * @param tagGUID unique identifier of tag.
      * @param startFrom  index of the list to start from (0 for start)
@@ -359,10 +360,11 @@ public class AssetConsumerResource
     @GetMapping(path = "/assets/by-tag/{tagGUID}")
 
     public GUIDListResponse getAssetsByTag(@PathVariable String serverName,
-                                    @PathVariable String userId,
-                                    @PathVariable String tagGUID,
-                                    @RequestParam int    startFrom,
-                                    @RequestParam int    pageSize)
+                                           @PathVariable String userId,
+                                           @PathVariable String tagGUID,
+                                           @RequestParam int    startFrom,
+                                           @RequestParam int    pageSize)
+
     {
         return restAPI.getAssetsByTag(serverName, userId, tagGUID, startFrom, pageSize);
     }
@@ -602,11 +604,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/comments/{commentGUID}/delete")
 
-    public VoidResponse removeCommentFromAsset(@PathVariable String          serverName,
-                                               @PathVariable String          userId,
-                                               @PathVariable String          assetGUID,
-                                               @PathVariable String          commentGUID,
-                                               @RequestBody  NullRequestBody requestBody)
+    public VoidResponse removeCommentFromAsset(@PathVariable                  String          serverName,
+                                               @PathVariable                  String          userId,
+                                               @PathVariable                  String          assetGUID,
+                                               @PathVariable                  String          commentGUID,
+                                               @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.removeCommentFromAsset(serverName, userId, assetGUID, commentGUID, requestBody);
     }
@@ -627,10 +629,10 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/likes/delete")
 
-    public VoidResponse   removeLikeFromAsset(@PathVariable String          serverName,
-                                              @PathVariable String          userId,
-                                              @PathVariable String          assetGUID,
-                                              @RequestBody  NullRequestBody requestBody)
+    public VoidResponse   removeLikeFromAsset(@PathVariable                  String          serverName,
+                                              @PathVariable                  String          userId,
+                                              @PathVariable                  String          assetGUID,
+                                              @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.removeLikeFromAsset(serverName, userId, assetGUID, requestBody);
     }
@@ -651,10 +653,10 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/ratings/delete")
 
-    public VoidResponse   removeRatingFromAsset(@PathVariable String          serverName,
-                                                @PathVariable String          userId,
-                                                @PathVariable String          assetGUID,
-                                                @RequestBody  NullRequestBody requestBody)
+    public VoidResponse   removeRatingFromAsset(@PathVariable                  String          serverName,
+                                                @PathVariable                  String          userId,
+                                                @PathVariable                  String          assetGUID,
+                                                @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.removeRatingFromAsset(serverName, userId, assetGUID, requestBody);
     }
@@ -676,11 +678,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/tags/{tagGUID}/delete")
 
-    public VoidResponse   removeTagFromAsset(@PathVariable String          serverName,
-                                             @PathVariable String          userId,
-                                             @PathVariable String          assetGUID,
-                                             @PathVariable String          tagGUID,
-                                             @RequestBody  NullRequestBody requestBody)
+    public VoidResponse   removeTagFromAsset(@PathVariable                  String          serverName,
+                                             @PathVariable                  String          userId,
+                                             @PathVariable                  String          assetGUID,
+                                             @PathVariable                  String          tagGUID,
+                                             @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.removeTagFromAsset(serverName, userId, assetGUID, tagGUID, requestBody);
     }

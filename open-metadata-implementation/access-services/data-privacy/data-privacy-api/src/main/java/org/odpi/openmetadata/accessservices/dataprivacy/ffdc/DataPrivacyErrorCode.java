@@ -34,6 +34,7 @@ public enum DataPrivacyErrorCode implements ExceptionMessageSet
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
     ;
 
+    private static final long    serialVersionUID = 1L;
 
 
     private ExceptionMessageDefinition messageDefinition;
