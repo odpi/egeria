@@ -9,13 +9,14 @@ import java.util.ArrayList;
 
 public class JanusFactoryBeans {
 
-    public JanusGraphFactory.Builder getJanusFactory(String graphDB,ConnectionProperties connectionProperties,String graphType){
+    public JanusGraphFactory.Builder getJanusFactory(ConnectionProperties connectionProperties){
+        final String graphDB = (String) connectionProperties.getConfigurationProperties().get("graphDB");
 
-        if(graphDB.equals("berkeleydb")){
-            return janusFactoryBerkley(connectionProperties,graphType);
+        if("berkeleydb".equals(graphDB)){
+            return janusFactoryBerkley(connectionProperties);
         }
 
-        if(graphDB.equals("cassandra")){
+        if("cassandra".equals(graphDB)){
             return janusFactoryCassandra(connectionProperties);
         }
 
@@ -37,8 +38,8 @@ public class JanusFactoryBeans {
                 set("index.search.hostname",connectionProperties.getConfigurationProperties().get("indexSearchHostname"));
     }
 
-    private JanusGraphFactory.Builder janusFactoryBerkley(ConnectionProperties connectionProperties,String graphType){
-
+    private JanusGraphFactory.Builder janusFactoryBerkley(ConnectionProperties connectionProperties){
+        final String graphType = (String) connectionProperties.getConfigurationProperties().get("graphType");
         final String storagePath = "./egeria-lineage-repositories/"+graphType+"/berkeley";
         final String indexPath = "./egeria-lineage-repositories/"+graphType+"/searchindex";
 

@@ -17,7 +17,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestSchemaLink
 {
-    private Map<String, Object> linkProperties       = new HashMap<>();
+    private Map<String, String> linkProperties       = new HashMap<>();
 
 
     /**
@@ -38,7 +38,6 @@ public class TestSchemaLink
     {
         SchemaLink testObject = new SchemaLink();
 
-        testObject.setLinkGUID("TestLinkGUID");
         testObject.setLinkName("TestLinkName");
         testObject.setLinkType("TestLinkType");
         testObject.setLinkedSchemaTypeGUID("TestAttribute");
@@ -55,7 +54,6 @@ public class TestSchemaLink
      */
     private void validateResultObject(SchemaLink resultObject)
     {
-        assertTrue(resultObject.getLinkGUID().equals("TestLinkGUID"));
         assertTrue(resultObject.getLinkName().equals("TestLinkName"));
         assertTrue(resultObject.getLinkType().equals("TestLinkType"));
         assertTrue(resultObject.getLinkedSchemaTypeGUID().equals("TestAttribute"));
@@ -70,7 +68,6 @@ public class TestSchemaLink
     {
         SchemaLink nullObject = new SchemaLink();
 
-        assertTrue(nullObject.getLinkGUID() == null);
         assertTrue(nullObject.getLinkName() == null);
         assertTrue(nullObject.getLinkType() == null);
         assertTrue(nullObject.getLinkedSchemaTypeGUID() == null);
@@ -78,7 +75,6 @@ public class TestSchemaLink
 
         nullObject = new SchemaLink(null);
 
-        assertTrue(nullObject.getLinkGUID() == null);
         assertTrue(nullObject.getLinkName() == null);
         assertTrue(nullObject.getLinkType() == null);
         assertTrue(nullObject.getLinkedSchemaTypeGUID() == null);

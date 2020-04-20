@@ -1680,6 +1680,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             updatedTypeDef.setUpdatedBy(typeDefPatch.getUpdatedBy());
             updatedTypeDef.setUpdateTime(typeDefPatch.getUpdateTime());
 
+            if (typeDefPatch.getTypeDefStatus() != null)
+            {
+                updatedTypeDef.setStatus(typeDefPatch.getTypeDefStatus());
+            }
+
             if (typeDefPatch.getDescription() != null)
             {
                 updatedTypeDef.setDescription(typeDefPatch.getDescription());

@@ -268,6 +268,7 @@ public abstract class DiscoveryConfigurationServer
      * @param owner new owner of the discovery service.
      * @param ownerType new type for the owner of the discovery service.
      * @param zoneMembership new list of zones for this discovery service.
+     * @param origin properties describing the origin of the discovery service.
      * @param latestChange short description of this update.
      * @param connection connection used to create an instance of this discovery service.
      * @param additionalProperties additional properties for the discovery engine.
@@ -286,6 +287,7 @@ public abstract class DiscoveryConfigurationServer
                                                    String                owner,
                                                    OwnerType             ownerType,
                                                    List<String>          zoneMembership,
+                                                   Map<String, String>   origin,
                                                    String                latestChange,
                                                    Connection            connection,
                                                    Map<String, String>   additionalProperties,

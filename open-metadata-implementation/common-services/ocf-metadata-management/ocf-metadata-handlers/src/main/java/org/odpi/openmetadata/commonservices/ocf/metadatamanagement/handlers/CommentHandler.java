@@ -251,8 +251,6 @@ public class CommentHandler extends FeedbackHandlerBase
                                                  commentGUID,
                                                  builder.getRelationshipInstanceProperties(methodName),
                                                  methodName);
-
-
         }
 
         return commentGUID;

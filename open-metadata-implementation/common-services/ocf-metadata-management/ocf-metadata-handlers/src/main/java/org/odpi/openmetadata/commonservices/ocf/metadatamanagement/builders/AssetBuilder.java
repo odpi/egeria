@@ -17,12 +17,13 @@ import java.util.Map;
  */
 public class AssetBuilder extends ReferenceableBuilder
 {
-    private String       displayName;
-    private String       description;
-    private String       owner          = null;
-    private OwnerType    ownerType      = null;
-    private List<String> zoneMembership = null;
-    private String       latestChange   = null;
+    private String              displayName;
+    private String              description;
+    private String              owner          = null;
+    private OwnerType           ownerType      = null;
+    private List<String>        zoneMembership = null;
+    private String              latestChange   = null;
+    private Map<String, String> origin         = null;
 
 
     /**
@@ -72,7 +73,7 @@ public class AssetBuilder extends ReferenceableBuilder
 
 
     /**
-     * Constructor supporting all properties.
+     * Constructor supporting all properties but origin.
      *
      * @param qualifiedName unique name
      * @param displayName new value for the display name.
@@ -87,6 +88,7 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
+    @Deprecated
     public AssetBuilder(String               qualifiedName,
                         String               displayName,
                         String               description,
@@ -113,6 +115,54 @@ public class AssetBuilder extends ReferenceableBuilder
         this.ownerType = ownerType;
         this.zoneMembership = zoneMembership;
         this.latestChange = latestChange;
+    }
+
+
+    /**
+     * Constructor supporting all properties.
+     *
+     * @param qualifiedName unique name
+     * @param displayName new value for the display name.
+     * @param description new description for the asset.
+     * @param owner name of the owner.
+     * @param ownerType type of owner.
+     * @param zoneMembership list of zones that this asset belongs to.
+     * @param origin properties that describe the origin of the asset.
+     * @param latestChange description of the last change to the asset.
+     * @param additionalProperties additional properties
+     * @param extendedProperties  properties from the subtype.
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    public AssetBuilder(String               qualifiedName,
+                        String               displayName,
+                        String               description,
+                        String               owner,
+                        OwnerType            ownerType,
+                        List<String>         zoneMembership,
+                        Map<String, String>  origin,
+                        String               latestChange,
+                        Map<String, String>  additionalProperties,
+                        Map<String, Object>  extendedProperties,
+                        OMRSRepositoryHelper repositoryHelper,
+                        String               serviceName,
+                        String               serverName)
+    {
+        super(qualifiedName,
+              additionalProperties,
+              extendedProperties,
+              repositoryHelper,
+              serviceName,
+              serverName);
+
+        this.displayName = displayName;
+        this.description = description;
+        this.owner = owner;
+        this.ownerType = ownerType;
+        this.zoneMembership = zoneMembership;
+        this.latestChange = latestChange;
+        this.origin = origin;
     }
 
 
@@ -229,9 +279,8 @@ public class AssetBuilder extends ReferenceableBuilder
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
      */
-    public InstanceProperties getZoneMembershipProperties(String  methodName) throws InvalidParameterException
+    public InstanceProperties getZoneMembershipProperties(String  methodName)
     {
         InstanceProperties properties = null;
 
@@ -254,16 +303,15 @@ public class AssetBuilder extends ReferenceableBuilder
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
      */
-    public InstanceProperties getOwnerProperties(String  methodName) throws InvalidParameterException
+    public InstanceProperties getOwnerProperties(String  methodName)
     {
         InstanceProperties properties = null;
 
         if (owner != null)
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
+                                                                      null,
                                                                       AssetMapper.OWNER_PROPERTY_NAME,
                                                                       owner,
                                                                       methodName);
@@ -272,6 +320,49 @@ public class AssetBuilder extends ReferenceableBuilder
         if (ownerType != null)
         {
             properties = this.addOwnerTypeToProperties(properties, methodName);
+        }
+
+        return properties;
+    }
+
+    /**
+     * Return the bean properties describing the asset's owner in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    public InstanceProperties getOriginProperties(String  methodName)
+    {
+        InstanceProperties properties = null;
+
+        if (origin != null)
+        {
+            if (origin.get(AssetMapper.ORGANIZATION_GUID_PROPERTY_NAME) != null)
+            {
+                properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                          null,
+                                                                          AssetMapper.ORGANIZATION_GUID_PROPERTY_NAME,
+                                                                          origin.get(AssetMapper.ORGANIZATION_GUID_PROPERTY_NAME),
+                                                                          methodName);
+                origin.remove(AssetMapper.ORGANIZATION_GUID_PROPERTY_NAME);
+            }
+            if (origin.get(AssetMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME) != null)
+            {
+                properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                          null,
+                                                                          AssetMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME,
+                                                                          origin.get(AssetMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME),
+                                                                          methodName);
+                origin.remove(AssetMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME);
+            }
+            if (! origin.isEmpty())
+            {
+                properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                             properties,
+                                                                             AssetMapper.OTHER_ORIGIN_VALUES_PROPERTY_NAME,
+                                                                             origin,
+                                                                             methodName);
+            }
         }
 
         return properties;

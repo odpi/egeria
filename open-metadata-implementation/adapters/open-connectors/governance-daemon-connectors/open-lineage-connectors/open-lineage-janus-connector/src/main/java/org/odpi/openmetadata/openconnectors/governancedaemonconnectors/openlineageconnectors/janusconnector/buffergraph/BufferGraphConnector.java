@@ -40,10 +40,9 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      *
      */
     public void initializeGraphDB() throws OpenLineageException {
-        String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         GraphFactory graphFactory = new GraphFactory();
         try {
-            this.bufferGraph = graphFactory.openGraph(graphDB, connectionProperties);
+            this.bufferGraph = graphFactory.openGraph(connectionProperties);
         } catch (JanusConnectorException error) {
             log.error("The Buffer graph could not be initialized due to an error", error);
             throw new OpenLineageException(500,
@@ -73,7 +72,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             List<Vertex> vertices = g.V().has(PROPERTY_KEY_LABEL, "Process").toList();
             List<String> guidList = vertices.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
 
-            guidList.stream().forEach(process -> findInputColumns(g,process));
+            guidList.forEach(process -> findInputColumns(g,process));
             g.tx().commit();
         }catch (Exception e){
             log.error("Something went wrong when trying to map a process from bufferGraph to the mainGraph. The error is {}",e.getMessage());
@@ -95,7 +94,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                             __.out(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL,RELATIONAL_TABLE)).toList();
 
         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
-        inputPathsForColumns.stream().forEach(columnIn -> findOutputColumn(g, columnIn, process));
+        inputPathsForColumns.forEach(columnIn -> findOutputColumn(g, columnIn, process));
     }
 
     /**
@@ -173,21 +172,19 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         GraphTraversalSource g =  bufferGraph.traversal();
 
         Set<GraphContext> verticesToBeAdded = new HashSet<>();
-        lineageEvent.getAssetContext().entrySet().stream().forEach(entry ->
-                {
-                    if(entry.getValue().size()>1){
-                        verticesToBeAdded.addAll(entry.getValue());
-                    }else {
-                        verticesToBeAdded.add(entry.getValue().stream().findFirst().get());
-                    }
-                }
-        );
+        lineageEvent.getAssetContext().forEach((key, value) -> {
+            if (value.size() > 1) {
+                verticesToBeAdded.addAll(value);
+            } else {
+                verticesToBeAdded.add(value.stream().findFirst().get());
+            }
+        });
 
-        verticesToBeAdded.stream().forEach(entry -> {
+        verticesToBeAdded.forEach(entry -> {
             try {
                 addVerticesAndRelationship(g, entry);
             } catch (JanusConnectorException e) {
-                log.error("An exception happened when trying to create vertices and relationships in BufferGraph. The error is {}", e);
+                log.error("An exception happened when trying to create vertices and relationships in BufferGraph. The error is", e);
             }
         });
     }

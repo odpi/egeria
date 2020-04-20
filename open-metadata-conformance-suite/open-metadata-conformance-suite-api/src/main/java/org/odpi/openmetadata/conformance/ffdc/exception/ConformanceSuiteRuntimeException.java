@@ -12,6 +12,8 @@ import java.util.Objects;
  */
 public class ConformanceSuiteRuntimeException extends RuntimeException
 {
+    private static final long    serialVersionUID = 1L;
+
     private int                 reportedHTTPCode;
     private String              reportingClassName;
     private String              reportingActionDescription;

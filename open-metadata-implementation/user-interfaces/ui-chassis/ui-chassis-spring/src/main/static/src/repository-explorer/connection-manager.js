@@ -212,6 +212,16 @@ class RexConnectionManager extends PolymerElement {
         return serverDetails;
     }
 
+    /*
+     * The following method is only intended to be called by the routing handler
+     * when the top level repository explorer page is loaded.
+     */
+    setServerDetails(serverName, serverURLRoot, enterpriseOption) {
+        this.serverName = serverName;
+        this.serverURLRoot = serverURLRoot;
+        this.enterpriseOption = enterpriseOption;
+    }
+
 
 }
 

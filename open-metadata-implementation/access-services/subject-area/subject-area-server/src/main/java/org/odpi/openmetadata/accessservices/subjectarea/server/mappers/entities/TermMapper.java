@@ -153,7 +153,7 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
      */
     @Override
     protected List<Classification> getInlinedClassifications(Node node) {
-        List inlinedClassifications = new ArrayList<>();
+        List<Classification> inlinedClassifications = new ArrayList<>();
         Term term = (Term) node;
         GovernanceActions governanceActions = term.getGovernanceActions();
         if (governanceActions !=null) {
@@ -182,7 +182,7 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
             inlinedClassifications.add(new SpineAttribute());
         }
         if (term.isObjectIdentifier()) {
-            inlinedClassifications.add(new SpineObject());
+            inlinedClassifications.add(new ObjectIdentifier());
         }
         return inlinedClassifications;
     }
