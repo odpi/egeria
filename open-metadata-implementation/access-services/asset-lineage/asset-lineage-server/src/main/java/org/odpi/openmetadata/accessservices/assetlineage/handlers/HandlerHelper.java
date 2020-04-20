@@ -40,7 +40,6 @@ public class HandlerHelper {
     private InvalidParameterHandler invalidParameterHandler;
 
     /**
-     *
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
@@ -95,7 +94,7 @@ public class HandlerHelper {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGuid, GUID_PARAMETER, methodName);
 
-        String typeGuid = getTypeName(userId, relationshipTypeName);
+        String typeGuid = getTypeByName(userId, relationshipTypeName);
 
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                 assetGuid,
@@ -118,7 +117,7 @@ public class HandlerHelper {
      * @param typeDefName type of the Entity
      * @return Guid of the type if found, null String if not found
      */
-    String getTypeName(String userId, String typeDefName) {
+    String getTypeByName(String userId, String typeDefName) {
         final TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
 
         if (typeDefByName != null) {
@@ -171,7 +170,7 @@ public class HandlerHelper {
     EntityDetail buildGraphEdgeByRelationship(String userId, EntityDetail startEntity,
                                               Relationship relationship, AssetContext graph, boolean changeDirection) throws OCFCheckedExceptionBase {
 
-        Converter converter = new Converter();
+        Converter converter = new Converter(repositoryHelper);
         EntityDetail endEntity = getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);
 
         if (endEntity == null) return null;
