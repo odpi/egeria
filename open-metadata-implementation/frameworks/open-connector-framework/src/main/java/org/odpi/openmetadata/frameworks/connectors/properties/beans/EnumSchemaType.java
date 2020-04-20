@@ -22,6 +22,7 @@ public class EnumSchemaType extends SimpleSchemaType
 {
     private static final long     serialVersionUID = 1L;
 
+    private String    validValueSetGUID = null;
 
     /**
      * Default constructor used by subclasses
@@ -40,6 +41,33 @@ public class EnumSchemaType extends SimpleSchemaType
     public EnumSchemaType(EnumSchemaType template)
     {
         super(template);
+
+        if (template != null)
+        {
+            validValueSetGUID = template.getValidValueSetGUID();
+        }
+    }
+
+
+    /**
+     * Return the unique identifier of the valid value set that lists the valid values of this enumeration.
+     *
+     * @return string guid
+     */
+    public String getValidValueSetGUID()
+    {
+        return validValueSetGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the valid value set that lists the valid values of this enumeration.
+     *
+     * @param validValueSetGUID string guid
+     */
+    public void setValidValueSetGUID(String validValueSetGUID)
+    {
+        this.validValueSetGUID = validValueSetGUID;
     }
 
 
@@ -76,23 +104,25 @@ public class EnumSchemaType extends SimpleSchemaType
     public String toString()
     {
         return "EnumSchemaType{" +
-                "dataType='" + dataType + '\'' +
-                ", defaultValue='" + defaultValue + '\'' +
-                ", versionNumber='" + versionNumber + '\'' +
-                ", author='" + author + '\'' +
-                ", usage='" + usage + '\'' +
-                ", encodingStandard='" + encodingStandard + '\'' +
-                ", namespace='" + namespace + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", meanings=" + meanings +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties +
+                "validValueSetGUID='" + validValueSetGUID + '\'' +
+                ", dataType='" + getDataType() + '\'' +
+                ", defaultValue='" + getDefaultValue() + '\'' +
+                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", author='" + getAuthor() + '\'' +
+                ", usage='" + getUsage() + '\'' +
+                ", encodingStandard='" + getEncodingStandard() + '\'' +
+                ", namespace='" + getNamespace() + '\'' +
+                ", deprecated=" + isDeprecated() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", meanings=" + getMeanings() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", classifications=" + getClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 }

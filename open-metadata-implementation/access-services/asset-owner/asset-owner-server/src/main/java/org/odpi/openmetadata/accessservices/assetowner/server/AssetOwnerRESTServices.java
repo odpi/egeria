@@ -497,7 +497,7 @@ public class AssetOwnerRESTServices
                 SchemaAttribute   schemaAttribute = requestBody.getSchemaAttributeProperties().cloneProperties(null);
 
                 assetHandler.validateUserForAssetAttachmentUpdate(userId, assetGUID, methodName);
-                schemaTypeHandler.saveSchemaAttribute(userId, parentGUID, schemaAttribute, methodName);
+                response.setGUID(schemaTypeHandler.saveSchemaAttribute(userId, parentGUID, schemaAttribute, methodName));
             }
             else
             {

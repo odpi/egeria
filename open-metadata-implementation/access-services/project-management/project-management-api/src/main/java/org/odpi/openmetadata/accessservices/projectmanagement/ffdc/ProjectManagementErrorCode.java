@@ -35,6 +35,7 @@ public enum ProjectManagementErrorCode implements ExceptionMessageSet
     ;
 
 
+    private static final long    serialVersionUID = 1L;
 
     private ExceptionMessageDefinition messageDefinition;
 

@@ -4736,7 +4736,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                   Class<T>  returnClass,
                                   String    operationSpecificURL) throws RepositoryErrorException
     {
-        return this.callGetRESTCall(methodName, returnClass, operationSpecificURL, null);
+        return this.callGetRESTCall(methodName, returnClass, operationSpecificURL, (Object[])null);
     }
 
 

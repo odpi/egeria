@@ -8,6 +8,8 @@ package org.odpi.openmetadata.conformance.ffdc.exception;
  */
 public class ConformanceException extends Exception
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Normal constructor for a conformance exception
      *

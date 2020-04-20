@@ -9,6 +9,8 @@ import java.util.Objects;
  */
 public class InvalidParameterException extends ConformanceSuiteCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     private   String  parameterName;
 
     /**
