@@ -2198,8 +2198,24 @@ public class OpenMetadataTypesArchive
 
         entityDef.setPropertiesDefinition(properties);
 
+        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+        validInstanceStatusList.add(InstanceStatus.DRAFT);
+        validInstanceStatusList.add(InstanceStatus.PREPARED);
+        validInstanceStatusList.add(InstanceStatus.PROPOSED);
+        validInstanceStatusList.add(InstanceStatus.APPROVED);
+        validInstanceStatusList.add(InstanceStatus.REJECTED);
+        validInstanceStatusList.add(InstanceStatus.ACTIVE);
+        validInstanceStatusList.add(InstanceStatus.DISABLED);
+        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
+        validInstanceStatusList.add(InstanceStatus.OTHER);
+        validInstanceStatusList.add(InstanceStatus.DELETED);
+        entityDef.setValidInstanceStatusList(validInstanceStatusList);
+
+        entityDef.setInitialStatus(InstanceStatus.DRAFT);
+
         return entityDef;
     }
+
 
     private EntityDef getInformationSupplyChainSegmentEntity()
     {
@@ -2270,6 +2286,21 @@ public class OpenMetadataTypesArchive
 
         entityDef.setPropertiesDefinition(properties);
 
+        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+        validInstanceStatusList.add(InstanceStatus.DRAFT);
+        validInstanceStatusList.add(InstanceStatus.PREPARED);
+        validInstanceStatusList.add(InstanceStatus.PROPOSED);
+        validInstanceStatusList.add(InstanceStatus.APPROVED);
+        validInstanceStatusList.add(InstanceStatus.REJECTED);
+        validInstanceStatusList.add(InstanceStatus.ACTIVE);
+        validInstanceStatusList.add(InstanceStatus.DISABLED);
+        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
+        validInstanceStatusList.add(InstanceStatus.OTHER);
+        validInstanceStatusList.add(InstanceStatus.DELETED);
+        entityDef.setValidInstanceStatusList(validInstanceStatusList);
+
+        entityDef.setInitialStatus(InstanceStatus.DRAFT);
+
         return entityDef;
     }
 
@@ -2328,6 +2359,7 @@ public class OpenMetadataTypesArchive
 
         return relationshipDef;
     }
+
 
     private RelationshipDef getInformationSupplyChainImplementationRelationship()
     {
@@ -2447,6 +2479,21 @@ public class OpenMetadataTypesArchive
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
+
+        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+        validInstanceStatusList.add(InstanceStatus.DRAFT);
+        validInstanceStatusList.add(InstanceStatus.PREPARED);
+        validInstanceStatusList.add(InstanceStatus.PROPOSED);
+        validInstanceStatusList.add(InstanceStatus.APPROVED);
+        validInstanceStatusList.add(InstanceStatus.REJECTED);
+        validInstanceStatusList.add(InstanceStatus.ACTIVE);
+        validInstanceStatusList.add(InstanceStatus.DISABLED);
+        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
+        validInstanceStatusList.add(InstanceStatus.OTHER);
+        validInstanceStatusList.add(InstanceStatus.DELETED);
+        entityDef.setValidInstanceStatusList(validInstanceStatusList);
+
+        entityDef.setInitialStatus(InstanceStatus.DRAFT);
 
         return entityDef;
     }
@@ -2740,6 +2787,21 @@ public class OpenMetadataTypesArchive
 
         entityDef.setPropertiesDefinition(properties);
 
+        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+        validInstanceStatusList.add(InstanceStatus.DRAFT);
+        validInstanceStatusList.add(InstanceStatus.PREPARED);
+        validInstanceStatusList.add(InstanceStatus.PROPOSED);
+        validInstanceStatusList.add(InstanceStatus.APPROVED);
+        validInstanceStatusList.add(InstanceStatus.REJECTED);
+        validInstanceStatusList.add(InstanceStatus.ACTIVE);
+        validInstanceStatusList.add(InstanceStatus.DISABLED);
+        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
+        validInstanceStatusList.add(InstanceStatus.OTHER);
+        validInstanceStatusList.add(InstanceStatus.DELETED);
+        entityDef.setValidInstanceStatusList(validInstanceStatusList);
+
+        entityDef.setInitialStatus(InstanceStatus.DRAFT);
+
         return entityDef;
     }
 
@@ -2990,6 +3052,21 @@ public class OpenMetadataTypesArchive
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
+
+        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+        validInstanceStatusList.add(InstanceStatus.DRAFT);
+        validInstanceStatusList.add(InstanceStatus.PREPARED);
+        validInstanceStatusList.add(InstanceStatus.PROPOSED);
+        validInstanceStatusList.add(InstanceStatus.APPROVED);
+        validInstanceStatusList.add(InstanceStatus.REJECTED);
+        validInstanceStatusList.add(InstanceStatus.ACTIVE);
+        validInstanceStatusList.add(InstanceStatus.DISABLED);
+        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
+        validInstanceStatusList.add(InstanceStatus.OTHER);
+        validInstanceStatusList.add(InstanceStatus.DELETED);
+        entityDef.setValidInstanceStatusList(validInstanceStatusList);
+
+        entityDef.setInitialStatus(InstanceStatus.DRAFT);
 
         return entityDef;
     }
