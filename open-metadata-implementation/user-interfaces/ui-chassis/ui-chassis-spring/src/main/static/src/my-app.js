@@ -59,9 +59,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         app-header paper-icon-button {
           --paper-icon-button-ink-color: white;
         };
-        .drawer-list {
-          margin: 0 20px;
-        };
         .drawer-list a {
           display: block;
           padding: 0 16px;
@@ -138,7 +135,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             
             <app-drawer-layout id="drawerLayout" flex forceNarrow  narrow="{{narrow}}" fullbleed="">
                 <app-drawer id="drawer" slot="drawer"  swipe-open="[[narrow]]">
-                  <img src="../images/Logo_trademark.jpg" height="60" style="margin: auto; display: block; margin-top: 15pt;"/>
+                  <div id="logo"></div>
                   <iron-selector selected="[[page]]" attr-for-selected="name"
                         class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
                     <div name="asset-catalog" language="[[language]]"><a href="[[rootPath]]#/asset-catalog/search">Asset Catalog</a></div>
