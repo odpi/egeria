@@ -28,6 +28,7 @@ public class UpdateDiscoveryServiceRequestBody extends NewDiscoveryServiceReques
     private String              owner                = null;
     private OwnerType           ownerType            = null;
     private List<String>        zoneMembership       = null;
+    private Map<String, String> origin               = null;
     private String              latestChange         = null;
     private Map<String, String> additionalProperties = null;
     private Map<String, Object> extendedProperties   = null;
@@ -57,6 +58,7 @@ public class UpdateDiscoveryServiceRequestBody extends NewDiscoveryServiceReques
             owner = template.getOwner();
             ownerType = template.getOwnerType();
             zoneMembership = template.getZoneMembership();
+            origin = template.getOrigin();
             latestChange = template.getLatestChange();
             additionalProperties = template.getAdditionalProperties();
             extendedProperties = template.getExtendedProperties();
@@ -163,6 +165,39 @@ public class UpdateDiscoveryServiceRequestBody extends NewDiscoveryServiceReques
 
 
     /**
+     * Set up the properties that describe the origin of the discovery service.
+     *
+     * @param origin map object
+     */
+    public void setOrigin(Map<String, String> origin)
+    {
+        this.origin = origin;
+    }
+
+
+    /**
+     * Return the properties that describe the origin of the discovery service.
+     *
+     * @return map
+     */
+    public Map<String, String> getOrigin()
+    {
+        if (origin == null)
+        {
+            return null;
+        }
+        else if (origin.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(origin);
+        }
+    }
+
+
+    /**
      * Return a short description of the last change to the asset.
      *
      * @return string description
@@ -216,6 +251,7 @@ public class UpdateDiscoveryServiceRequestBody extends NewDiscoveryServiceReques
         }
     }
 
+
     /**
      * Set up properties from subclasses properties.
      *
@@ -262,6 +298,7 @@ public class UpdateDiscoveryServiceRequestBody extends NewDiscoveryServiceReques
                 ", owner='" + owner + '\'' +
                 ", ownerType=" + ownerType +
                 ", zoneMembership=" + zoneMembership +
+                ", origin=" + origin +
                 ", latestChange=" + latestChange +
                 ", additionalProperties=" + additionalProperties +
                 ", extendedProperties=" + extendedProperties +
@@ -299,6 +336,7 @@ public class UpdateDiscoveryServiceRequestBody extends NewDiscoveryServiceReques
                 Objects.equals(getOwner(), that.getOwner()) &&
                 getOwnerType() == that.getOwnerType() &&
                 Objects.equals(getZoneMembership(), that.getZoneMembership()) &&
+                Objects.equals(getOrigin(), that.getOrigin()) &&
                 Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
                 Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
                 Objects.equals(getLatestChange(), that.getLatestChange());
@@ -314,6 +352,6 @@ public class UpdateDiscoveryServiceRequestBody extends NewDiscoveryServiceReques
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), getShortDescription(), getOwner(), getOwnerType(), getZoneMembership(),
-                            getLatestChange(), getAdditionalProperties(), getExtendedProperties());
+                            getOrigin(), getLatestChange(), getAdditionalProperties(), getExtendedProperties());
     }
 }

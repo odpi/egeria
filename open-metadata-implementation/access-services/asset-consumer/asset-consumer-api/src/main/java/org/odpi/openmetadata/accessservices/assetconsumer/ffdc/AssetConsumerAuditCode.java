@@ -66,6 +66,8 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
 
     ;
 
+    private static final long    serialVersionUID = 1L;
+
     private AuditLogMessageDefinition messageDefinition;
 
 

@@ -7748,7 +7748,6 @@ public class OpenMetadataTypesArchive1_2
         this.add0210DataStores();
         this.add0212DeployedAPIs();
         this.add0215SoftwareComponents();
-        this.add0217AutomatedProcesses();
         this.add0220FilesAndFolders();
         this.add0221DocumentStores();
         this.add0222GraphStores();
@@ -7759,10 +7758,6 @@ public class OpenMetadataTypesArchive1_2
         this.add0230CodeTables();
         this.add0235InformationView();
         this.add0239Reports();
-        this.add0260Transformations();
-        this.add0265AnalyticsAssets();
-        this.add0270IoTAssets();
-        this.add0280ModelAssets();
         this.add0290Ports();
     }
 
@@ -8598,18 +8593,6 @@ public class OpenMetadataTypesArchive1_2
         return entityDef;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0217 Automated Processes defines a Process is automated (as opposed to manual procedure).
-     */
-    private void add0217AutomatedProcesses()
-    {
-        /* placeholder */
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -10338,47 +10321,6 @@ public class OpenMetadataTypesArchive1_2
         return entityDef;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0260Transformations()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void add0265AnalyticsAssets()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void add0270IoTAssets()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0280ModelAssets()
-    {
-        /* placeholder */
-    }
 
     private void add0290Ports()
     {
@@ -13487,18 +13429,13 @@ public class OpenMetadataTypesArchive1_2
         this.add0423SecurityTags();
         this.add0424GovernanceZones();
         this.add0430TechnicalControls();
-        this.add0435GovernanceRules();
         this.add0438NamingStandards();
         this.add0440OrganizationalControls();
         this.add0442ProjectCharter();
         this.add0445GovernanceRoles();
-        this.add0447GovernanceProcesses();
         this.add0450GovernanceRollout();
-        this.add0452GovernanceDaemons();
         this.add0455ExceptionManagement();
         this.add0460GovernanceActions();
-        this.add0470DigitalServices();
-        this.add0480RightsManagement();
         this.add0481Licenses();
         this.add0482Certifications();
     }
@@ -15652,18 +15589,6 @@ public class OpenMetadataTypesArchive1_2
      */
 
     /**
-     * 0435 Governance Rules define details of a governance rule implementation.
-     */
-    private void add0435GovernanceRules()
-    {
-        /* placeholder */
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
      * 0438 Naming Standards provides definitions for laying our naming standards for schemas and assets.
      */
     private void add0438NamingStandards()
@@ -16625,14 +16550,6 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0447GovernanceProcesses()
-    {
-        /* placeholder */
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -16891,15 +16808,6 @@ public class OpenMetadataTypesArchive1_2
         return classificationDef;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0452GovernanceDaemons()
-    {
-        /* placeholder */
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -17226,23 +17134,6 @@ public class OpenMetadataTypesArchive1_2
                                                   false);
     }
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0470DigitalServices()
-    {
-        /* placeholder */
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0480RightsManagement()
-    {
-        /* placeholder */
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -17665,8 +17556,6 @@ public class OpenMetadataTypesArchive1_2
         this.add0536APISchemas();
         this.add0540DataClasses();
         this.add0545ReferenceData();
-        this.add0550LogicSpecificationModel();
-        this.add0560MappingModel();
         this.add0565DesignModelElements();
         this.add0566DesignModelOrganization();
         this.add0568DesignModelScoping();
@@ -21097,23 +20986,7 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
 
-    private void add0550LogicSpecificationModel()
-    {
-        /* placeholder */
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0560MappingModel()
-    {
-        /* placeholder */
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

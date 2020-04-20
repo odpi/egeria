@@ -6,7 +6,6 @@ import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesRequestBo
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -25,10 +24,10 @@ import org.slf4j.LoggerFactory;
  */
 public class ValidValuesRESTServices
 {
-    private static AssetOwnerInstanceHandler   instanceHandler     = new AssetOwnerInstanceHandler();
-    private static RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(ValidValuesRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static AssetOwnerInstanceHandler   instanceHandler      = new AssetOwnerInstanceHandler();
+    private static RESTExceptionHandler        restExceptionHandler = new RESTExceptionHandler();
+    private static RESTCallLogger              restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(ValidValuesRESTServices.class),
+                                                                                         instanceHandler.getServiceName());
 
 
     /**
@@ -83,6 +82,7 @@ public class ValidValuesRESTServices
                                                              requestBody.getDescription(),
                                                              requestBody.getUsage(),
                                                              requestBody.getScope(),
+                                                             false,
                                                              requestBody.getAdditionalProperties(),
                                                              requestBody.getExtendedProperties(),
                                                              methodName));
@@ -143,6 +143,7 @@ public class ValidValuesRESTServices
                                                                     requestBody.getUsage(),
                                                                     requestBody.getScope(),
                                                                     requestBody.getPreferredValue(),
+                                                                    false,
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getExtendedProperties(),
                                                                     methodName));
@@ -205,6 +206,7 @@ public class ValidValuesRESTServices
                                          requestBody.getUsage(),
                                          requestBody.getScope(),
                                          requestBody.getPreferredValue(),
+                                         false,
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getExtendedProperties(),
                                          methodName);
@@ -293,6 +295,7 @@ public class ValidValuesRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse    attachValidValueToSet(String          serverName,
                                                  String          userId,
                                                  String          setGUID,
@@ -338,6 +341,7 @@ public class ValidValuesRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse    detachValidValueFromSet(String          serverName,
                                                    String          userId,
                                                    String          setGUID,
@@ -358,276 +362,6 @@ public class ValidValuesRESTServices
             ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
             handler.detachValidValueFromSet(userId, setGUID, validValueGUID, methodName);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Link a valid value to an asset that provides the implementation.  Typically this method is
-     * used to link a valid value set to a code table.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param assetGUID unique identifier of the asset that implements the valid value.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public VoidResponse  linkValidValueToImplementation(String          serverName,
-                                                        String          userId,
-                                                        String          validValueGUID,
-                                                        String          assetGUID,
-                                                        NullRequestBody requestBody)
-    {
-        final String   methodName = "linkValidValueToImplementation";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            handler.linkValidValueToImplementation(userId, validValueGUID, assetGUID, methodName);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Add the ReferenceData classification to an asset.  IF the asset is already classified
-     * in this way, the method is a no-op.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param assetGUID unique identifier of the asset that contains reference data.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public VoidResponse  classifyAssetAsReferenceData(String          serverName,
-                                                      String          userId,
-                                                      String          assetGUID,
-                                                      NullRequestBody requestBody)
-    {
-        final String   methodName = "classifyAssetAsReferenceData";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            handler.classifyAssetAsReferenceData(userId, assetGUID, methodName);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the link between a valid value and an implementing asset.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param assetGUID unique identifier of the asset that used to implement the valid value.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public VoidResponse  unlinkValidValueFromImplementation(String          serverName,
-                                                            String          userId,
-                                                            String          validValueGUID,
-                                                            String          assetGUID,
-                                                            NullRequestBody requestBody)
-    {
-        final String   methodName = "unlinkValidValueFromImplementation";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            handler.unlinkValidValueFromImplementation(userId, validValueGUID, assetGUID, methodName);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the ReferenceData classification form an Asset.  If the asset was not classified in this way,
-     * this call is a no-op.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param assetGUID unique identifier of asset.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public VoidResponse  declassifyAssetAsReferenceData(String          serverName,
-                                                        String          userId,
-                                                        String          assetGUID,
-                                                        NullRequestBody requestBody)
-    {
-        final String   methodName = "declassifyAssetAsReferenceData";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            handler.declassifyAssetAsReferenceData(userId, assetGUID, methodName);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Link a valid value typically to a schema element or glossary term to show that it uses
-     * the valid values.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param consumerGUID unique identifier of the element to link to.
-     * @param requestBody boolean request body supplied to pass the strictRequirement flag
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public VoidResponse    assignValidValueToConsumer(String             serverName,
-                                                      String             userId,
-                                                      String             validValueGUID,
-                                                      String             consumerGUID,
-                                                      BooleanRequestBody requestBody)
-    {
-        final String   methodName = "assignValidValueToConsumer";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            handler.assignValidValueToConsumer(userId, validValueGUID, consumerGUID, methodName);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the link between a valid value and a consumer.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param consumerGUID unique identifier of the element to remove the link from.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public VoidResponse unassignValidValueFromConsumer(String          serverName,
-                                                       String          userId,
-                                                       String          validValueGUID,
-                                                       String          consumerGUID,
-                                                       NullRequestBody requestBody)
-    {
-        final String   methodName = "unassignValidValueFromConsumer";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            handler.unassignValidValueFromConsumer(userId, validValueGUID, consumerGUID, methodName);
         }
         catch (Throwable error)
         {
@@ -861,104 +595,6 @@ public class ValidValuesRESTServices
                                                                  startFrom,
                                                                  pageSize,
                                                                  methodName));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Page through the list of consumers for a valid value.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of valid value to query
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     *
-     * @return list of consumers beans or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public ValidValueConsumersResponse getValidValuesConsumers(String   serverName,
-                                                               String   userId,
-                                                               String   validValueGUID,
-                                                               int      startFrom,
-                                                               int      pageSize)
-    {
-        final String   methodName = "getValidValuesConsumers";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        ValidValueConsumersResponse response = new ValidValueConsumersResponse();
-        AuditLog                    auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            response.setValidValueConsumers(handler.getValidValuesConsumers(userId,
-                                                                            validValueGUID,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            methodName));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Pag through the list of implementations for a valid value.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of valid value to query
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     *
-     * @return list of asset beans or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public AssetsResponse getValidValuesImplementations(String   serverName,
-                                                        String   userId,
-                                                        String   validValueGUID,
-                                                        int      startFrom,
-                                                        int      pageSize)
-    {
-        final String   methodName = "getValidValuesImplementations";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        AssetsResponse response = new AssetsResponse();
-        AuditLog       auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            response.setAssets(handler.getValidValuesImplementations(userId,
-                                                                     validValueGUID,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     methodName));
         }
         catch (Throwable error)
         {

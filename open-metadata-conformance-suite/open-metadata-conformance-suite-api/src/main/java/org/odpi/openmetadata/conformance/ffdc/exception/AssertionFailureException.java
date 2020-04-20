@@ -7,6 +7,8 @@ package org.odpi.openmetadata.conformance.ffdc.exception;
  */
 public class AssertionFailureException extends ConformanceException
 {
+    private static final long    serialVersionUID = 1L;
+
     private String assertionId;
 
 

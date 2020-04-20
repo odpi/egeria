@@ -20,14 +20,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SchemaLink extends PropertyBase
+public class SchemaLink extends SchemaElement
 {
     private static final long     serialVersionUID = 1L;
 
-    protected String              linkGUID             = null;
     protected String              linkType             = null;
     protected String              linkName             = null;
-    protected Map<String, Object> linkProperties       = null;
+    protected Map<String, String> linkProperties       = null;
     protected String              linkedSchemaTypeGUID = null;
     protected String              linkedSchemaTypeName = null;
 
@@ -52,7 +51,6 @@ public class SchemaLink extends PropertyBase
 
         if (template != null)
         {
-            linkGUID = template.getLinkGUID();
             linkName = template.getLinkName();
             linkType = template.getLinkType();
             linkProperties = template.getLinkProperties();
@@ -61,26 +59,15 @@ public class SchemaLink extends PropertyBase
         }
     }
 
-
     /**
-     * Return the identifier for the schema link.
+     * Returns a clone of this object as the abstract SchemaElement class.
      *
-     * @return String guid
+     * @return SchemaElement
      */
-    public String getLinkGUID()
+    @Override
+    public SchemaElement cloneSchemaElement()
     {
-        return linkGUID;
-    }
-
-
-    /**
-     * Set up the identifier for the schema link.
-     *
-     * @param linkGUID String guid
-     */
-    public void setLinkGUID(String linkGUID)
-    {
-        this.linkGUID = linkGUID;
+        return new SchemaLink(this);
     }
 
 
@@ -133,7 +120,7 @@ public class SchemaLink extends PropertyBase
      *
      * @return property map
      */
-    public Map<String, Object> getLinkProperties()
+    public Map<String, String> getLinkProperties()
     {
         if (linkProperties == null)
         {
@@ -155,7 +142,7 @@ public class SchemaLink extends PropertyBase
      *
      * @param linkProperties property map
      */
-    public void setLinkProperties(Map<String, Object> linkProperties)
+    public void setLinkProperties(Map<String, String> linkProperties)
     {
         this.linkProperties = linkProperties;
     }
@@ -213,12 +200,22 @@ public class SchemaLink extends PropertyBase
     public String toString()
     {
         return "SchemaLink{" +
-                "linkGUID='" + linkGUID + '\'' +
-                ", linkType='" + linkType + '\'' +
+                "linkType='" + linkType + '\'' +
                 ", linkName='" + linkName + '\'' +
                 ", linkProperties=" + linkProperties +
-                ", linkedSchemaTypeGUID=" + linkedSchemaTypeGUID +
-                ", linkedSchemaTypeName=" + linkedSchemaTypeName +
+                ", linkedSchemaTypeGUID='" + linkedSchemaTypeGUID + '\'' +
+                ", linkedSchemaTypeName='" + linkedSchemaTypeName + '\'' +
+                ", deprecated=" + isDeprecated() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", meanings=" + getMeanings() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", classifications=" + getClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 
@@ -241,8 +238,7 @@ public class SchemaLink extends PropertyBase
             return false;
         }
         SchemaLink that = (SchemaLink) objectToCompare;
-        return Objects.equals(getLinkGUID(), that.getLinkGUID()) &&
-                Objects.equals(getLinkType(), that.getLinkType()) &&
+        return Objects.equals(getLinkType(), that.getLinkType()) &&
                 Objects.equals(getLinkName(), that.getLinkName()) &&
                 Objects.equals(getLinkProperties(), that.getLinkProperties()) &&
                 Objects.equals(getLinkedSchemaTypeGUID(), that.getLinkedSchemaTypeGUID()) &&
@@ -258,8 +254,7 @@ public class SchemaLink extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(getLinkGUID(),
-                            getLinkType(),
+        return Objects.hash(getLinkType(),
                             getLinkName(),
                             getLinkProperties(),
                             getLinkedSchemaTypeGUID());
