@@ -6,15 +6,18 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.Refer
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
- * LicenseConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
- * EntityDetail object into an License bean.
+ * SchemaAttributeConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
+ * EntityDetail object into an SchemaAttribute bean.
  */
 public class SchemaAttributeConverter extends ReferenceableConverter
 {
@@ -73,7 +76,10 @@ public class SchemaAttributeConverter extends ReferenceableConverter
 
             if (instanceProperties != null)
             {
-
+                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName,
+                                                                            ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                            instanceProperties,
+                                                                            methodName));
                 bean.setAttributeName(repositoryHelper.removeStringProperty(serviceName,
                                                                             SchemaElementMapper.ATTRIBUTE_NAME_PROPERTY_NAME,
                                                                             instanceProperties,
@@ -96,12 +102,56 @@ public class SchemaAttributeConverter extends ReferenceableConverter
                                                                           SchemaElementMapper.CARDINALITY_PROPERTY_NAME,
                                                                           instanceProperties,
                                                                           methodName));
-
+                bean.setMinCardinality(repositoryHelper.removeIntProperty(serviceName,
+                                                                          SchemaElementMapper.MIN_CARDINALITY_PROPERTY_NAME,
+                                                                          instanceProperties,
+                                                                          methodName));
+                bean.setMaxCardinality(repositoryHelper.removeIntProperty(serviceName,
+                                                                          SchemaElementMapper.MAX_CARDINALITY_PROPERTY_NAME,
+                                                                          instanceProperties,
+                                                                          methodName));
+                bean.setDeprecated(repositoryHelper.removeBooleanProperty(serviceName,
+                                                                          SchemaElementMapper.IS_DEPRECATED_PROPERTY_NAME,
+                                                                          instanceProperties,
+                                                                          methodName));
                 bean.setDefaultValueOverride(repositoryHelper.removeStringProperty(serviceName,
                                                                                    SchemaElementMapper.DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME,
                                                                                    instanceProperties,
                                                                                    methodName));
+                bean.setAllowsDuplicateValues(repositoryHelper.removeBooleanProperty(serviceName,
+                                                                          SchemaElementMapper.ALLOWS_DUPLICATES_PROPERTY_NAME,
+                                                                          instanceProperties,
+                                                                          methodName));
+                bean.setOrderedValues(repositoryHelper.removeBooleanProperty(serviceName,
+                                                                          SchemaElementMapper.ORDERED_VALUES_PROPERTY_NAME,
+                                                                          instanceProperties,
+                                                                          methodName));
+                bean.setSortOrder(this.removeSortOrderFromProperties(instanceProperties));
+                bean.setMinimumLength(repositoryHelper.removeIntProperty(serviceName,
+                                                                         SchemaElementMapper.MIN_LENGTH_PROPERTY_NAME,
+                                                                         instanceProperties,
+                                                                         methodName));
+                bean.setLength(repositoryHelper.removeIntProperty(serviceName,
+                                                                  SchemaElementMapper.LENGTH_PROPERTY_NAME,
+                                                                  instanceProperties,
+                                                                  methodName));
+                bean.setSignificantDigits(repositoryHelper.removeIntProperty(serviceName,
+                                                                             SchemaElementMapper.SIGNIFICANT_DIGITS_PROPERTY_NAME,
+                                                                             instanceProperties,
+                                                                             methodName));
+                bean.setNullable(repositoryHelper.removeBooleanProperty(serviceName,
+                                                                        SchemaElementMapper.IS_NULLABLE_PROPERTY_NAME,
+                                                                        instanceProperties,
+                                                                        methodName));
 
+                bean.setNativeJavaClass(repositoryHelper.removeStringProperty(serviceName,
+                                                                              SchemaElementMapper.NATIVE_CLASS_PROPERTY_NAME,
+                                                                              instanceProperties,
+                                                                              methodName));
+                bean.setAliases(repositoryHelper.removeStringArrayProperty(serviceName,
+                                                                           SchemaElementMapper.ALIASES_PROPERTY_NAME,
+                                                                           instanceProperties,
+                                                                           methodName));
                 bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName,
                                                                                           ReferenceableMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
                                                                                           instanceProperties,
@@ -112,5 +162,75 @@ public class SchemaAttributeConverter extends ReferenceableConverter
         }
 
         return bean;
+    }
+
+
+    /**
+     * Retrieve the DataItemSortOrder enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return DataItemSortOrder  enum value
+     */
+    private DataItemSortOrder getSortOrderFromProperties(InstanceProperties   properties)
+    {
+        DataItemSortOrder sortOrder = DataItemSortOrder.UNKNOWN;
+
+        if (properties != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
+
+            if (instancePropertiesMap != null)
+            {
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(SchemaElementMapper.SORT_ORDER_PROPERTY_NAME);
+
+                if (instancePropertyValue instanceof EnumPropertyValue)
+                {
+                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
+
+                    switch (enumPropertyValue.getOrdinal())
+                    {
+                        case 0:
+                            sortOrder = DataItemSortOrder.ASCENDING;
+                            break;
+
+                        case 1:
+                            sortOrder = DataItemSortOrder.DESCENDING;
+                            break;
+
+                        case 99:
+                            sortOrder = DataItemSortOrder.UNSORTED;
+                            break;
+                    }
+                }
+            }
+        }
+
+        return sortOrder;
+    }
+
+
+    /**
+     * Retrieve the DataItemSortOrder enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return DataItemSortOrder  enum value
+     */
+    private DataItemSortOrder removeSortOrderFromProperties(InstanceProperties   properties)
+    {
+        DataItemSortOrder sortOrder = this.getSortOrderFromProperties(properties);
+
+        if (properties != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
+
+            if (instancePropertiesMap != null)
+            {
+                instancePropertiesMap.remove(SchemaElementMapper.SORT_ORDER_PROPERTY_NAME);
+            }
+
+            properties.setInstanceProperties(instancePropertiesMap);
+        }
+
+        return sortOrder;
     }
 }

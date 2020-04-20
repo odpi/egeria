@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.service;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
@@ -40,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -718,6 +720,10 @@ public class DataEngineRESTServices {
             String processGUID;
             if (!processEntity.isPresent()) {
                 processGUID = processHandler.createProcess(userId, process, externalSourceName);
+
+                List<Attribute> schemaAttributes = getAttributes(portImplementations);
+
+                addAnchorGUID(userId, serverName, processGUID, schemaAttributes);
             } else {
                 processGUID = processEntity.get().getGUID();
                 processHandler.updateProcess(userId, processEntity.get(), process);
@@ -748,6 +754,26 @@ public class DataEngineRESTServices {
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
 
         return response;
+    }
+
+    private List<Attribute> getAttributes(List<PortImplementation> portImplementations) {
+        if (CollectionUtils.isEmpty(portImplementations)) {
+            return new ArrayList<>();
+        }
+        return portImplementations.stream().map(portImplementation -> portImplementation.getSchemaType().getAttributeList())
+                .flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    private void addAnchorGUID(String userId, String serverName, String processGUID, List<Attribute> schemaAttributes) throws
+                                                                                                                       InvalidParameterException,
+                                                                                                                       PropertyServerException,
+                                                                                                                       UserNotAuthorizedException {
+        final String methodName = "addAnchorGUID";
+
+        DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
+        for (Attribute attribute : schemaAttributes) {
+            dataEngineSchemaTypeHandler.addAnchorGUID(userId, attribute, processGUID);
+        }
     }
 
     private void addProcessHierarchyRelationships(String userId, String serverName, List<Process> processes, ProcessListResponse response,

@@ -66,6 +66,8 @@ import java.util.Objects;
  */
 public class ConnectionProperties extends AssetReferenceable
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Connection    connectionBean;
 
 

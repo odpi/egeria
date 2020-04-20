@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ComplexSchemaType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
 import java.util.Objects;
 
@@ -12,8 +11,11 @@ import java.util.Objects;
  * An asset's schema provides information about how the asset structures the data it supports.
  * The AssetComplexSchemaType object describes a nested structure of schema attributes and types.
  */
-public class AssetComplexSchemaType extends AssetSchemaType
+public  class AssetComplexSchemaType extends AssetSchemaType
 {
+    private static final long     serialVersionUID = 1L;
+
+    protected ComplexSchemaType     complexSchemaTypeBean = null;
     protected AssetSchemaAttributes schemaAttributes      = null;
 
 
@@ -33,14 +35,12 @@ public class AssetComplexSchemaType extends AssetSchemaType
      * Bean constructor
      *
      * @param schemaBean bean containing the schema properties
-     * @param schemaAttributes the attributes that make up this schema
      */
-    public AssetComplexSchemaType(SchemaType            schemaBean,
-                                  AssetSchemaAttributes schemaAttributes)
+    public AssetComplexSchemaType(ComplexSchemaType schemaBean)
     {
         super(schemaBean);
 
-        this.schemaAttributes = schemaAttributes;
+        this.complexSchemaTypeBean = schemaBean;
     }
 
 
@@ -49,15 +49,13 @@ public class AssetComplexSchemaType extends AssetSchemaType
      *
      * @param parentAsset descriptor for parent asset
      * @param schemaBean bean containing the schema properties
-     * @param schemaAttributes the attributes that make up this schema
      */
     public AssetComplexSchemaType(AssetDescriptor       parentAsset,
-                                  ComplexSchemaType     schemaBean,
-                                  AssetSchemaAttributes schemaAttributes)
+                                  ComplexSchemaType     schemaBean)
     {
         super(parentAsset, schemaBean);
 
-        this.schemaAttributes = schemaAttributes;
+        this.complexSchemaTypeBean = schemaBean;
     }
 
 
@@ -67,15 +65,16 @@ public class AssetComplexSchemaType extends AssetSchemaType
      * asset clone and not the original asset.
      *
      * @param parentAsset description of the asset that this schema is attached to.
-     * @param templateSchema template object to copy.
+     * @param template template object to copy.
      */
-    public AssetComplexSchemaType(AssetDescriptor parentAsset, AssetComplexSchemaType templateSchema)
+    public AssetComplexSchemaType(AssetDescriptor parentAsset, AssetComplexSchemaType template)
     {
-        super(parentAsset, templateSchema);
+        super(parentAsset, template);
 
-        if (templateSchema != null)
+        if (template != null)
         {
-            this.schemaAttributes = templateSchema.getSchemaAttributes(super.getParentAsset());
+            this.complexSchemaTypeBean = template.getComplexSchemaTypeBean();
+            this.schemaAttributes = template.getSchemaAttributes(parentAsset);
         }
     }
 
@@ -92,6 +91,17 @@ public class AssetComplexSchemaType extends AssetSchemaType
 
 
     /**
+     * Return the bean with all of the properties.
+     *
+     * @return complex element bean
+     */
+    protected ComplexSchemaType getComplexSchemaTypeBean()
+    {
+        return complexSchemaTypeBean;
+    }
+
+
+    /**
      * Return the list of schema attributes in this schema.
      *
      * @return SchemaAttributes
@@ -102,10 +112,8 @@ public class AssetComplexSchemaType extends AssetSchemaType
         {
             return null;
         }
-        else
-        {
-            return schemaAttributes.cloneIterator(super.getParentAsset());
-        }
+
+        return getSchemaAttributes(parentAsset);
     }
 
 

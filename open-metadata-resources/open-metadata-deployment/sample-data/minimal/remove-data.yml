@@ -3,14 +3,48 @@
 # Copyright Contributors to the ODPi Egeria project.
 
 - name: remove Minimal sample data
-  hosts: egeria_samples_db_host
+  hosts: all
   any_errors_fatal: true
   vars_files:
     - defaults/main.yml
-    - vars/databases.yml
+    - vars/data.yml
   tasks:
     - name: remove sample data files
       include_tasks: data-files/remove.yml
+      when: ('egeria_samples_db_host' in group_names) or ('ibm_information_server_engine' in group_names)
 
     - name: remove sample databases
       include_tasks: "database/{{ egeria_samples_minimal_db_type }}/drop-databases.yml"
+      when: ('egeria_samples_db_host' in group_names)
+
+    - name: setup Information Server variables
+      import_role:
+        name: IBM.infosvr
+        tasks_from: setup_vars.yml
+      when: ('ibm_information_server_engine' in group_names)
+
+    - name: remote database catalog status
+      shell: "source ~/.bashrc && db2 list database directory"
+      args:
+        executable: /bin/bash
+      become_user: "{{ ibm_infosvr_users.db2inst1 }}"
+      become: yes
+      ignore_errors: yes
+      register: __minimal_db2catalog_completion
+      changed_when: False
+      when: >
+        ('ibm_information_server_engine' in group_names)
+        and (egeria_samples_minimal_db_type == 'ibm-db2')
+
+    - name: uncatalog databases
+      shell: >
+        source ~/.bashrc &&
+        db2 uncatalog database MINIMAL
+      args:
+        executable: /bin/bash
+      become: yes
+      become_user: "{{ egeria_samples_db_credentials.owner }}"
+      when: >
+        ('ibm_information_server_engine' in group_names)
+        and (egeria_samples_minimal_db_type == 'ibm-db2')
+        and __minimal_db2catalog_completion.stdout.find('MINIMAL') > 0

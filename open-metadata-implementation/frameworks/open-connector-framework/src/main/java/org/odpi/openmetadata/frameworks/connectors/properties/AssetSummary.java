@@ -36,6 +36,7 @@ import java.util.Map;
  */
 public class AssetSummary extends AssetDescriptor
 {
+    private static final long     serialVersionUID = 1L;
 
     /**
      * Default constructor only for subclasses
@@ -226,6 +227,17 @@ public class AssetSummary extends AssetDescriptor
                 return assetClassifications;
             }
         }
+    }
+
+
+    /**
+     * Return the properties that characterize where this asset is from.
+     *
+     * @return map of name value pairs, all strings
+     */
+    public Map<String, String> getOrigins()
+    {
+        return assetBean.getOrigin();
     }
 
 

@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.Classification;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.DigitalService;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -20,9 +19,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class DigitalArchitectureEventTest
 {
-    private DigitalArchitectureEventType eventType              = DigitalArchitectureEventType.NEW_DIGITAL_SERVICE_EVENT;
-    private DigitalService               originalDigitalService = new DigitalService();
-    private DigitalService               digitalService         = new DigitalService();
+    private DigitalArchitectureEventType eventType              = DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT;
     private String                       url                    = "TestURL";
     private String                       guid                   = "TestGUID";
     private String                       typeId                 = "TestTypeId";
@@ -43,17 +40,6 @@ public class DigitalArchitectureEventTest
      */
     public DigitalArchitectureEventTest()
     {
-        digitalService.setURL(url);
-        digitalService.setGUID(guid);
-        digitalService.setTypeId(typeId);
-        digitalService.setTypeName(typeName);
-        digitalService.setTypeVersion(typeVersion);
-        digitalService.setTypeDescription(typeDescription);
-        digitalService.setQualifiedName(qualifiedName);
-        digitalService.setDisplayName(displayName);
-        digitalService.setDescription(description);
-        digitalService.setAdditionalProperties(additionalProperties);
-        digitalService.setClassifications(classifications);
 
         additionalProperties.put("TestAdditionalPropertyName", "TestAdditionalPropertyValue");
 
@@ -74,8 +60,6 @@ public class DigitalArchitectureEventTest
         DigitalArchitectureEvent testObject = new DigitalArchitectureEvent();
 
         testObject.setEventType(eventType);
-        testObject.setOriginalDigitalService(originalDigitalService);
-        testObject.setDigitalService(digitalService);
 
         return testObject;
     }
@@ -89,8 +73,6 @@ public class DigitalArchitectureEventTest
     private void validateResultObject(DigitalArchitectureEvent resultObject)
     {
         assertTrue(resultObject.getEventType().equals(eventType));
-        assertTrue(resultObject.getOriginalDigitalService().equals(originalDigitalService));
-        assertTrue(resultObject.getDigitalService().equals(digitalService));
     }
 
 
@@ -102,14 +84,12 @@ public class DigitalArchitectureEventTest
         DigitalArchitectureEvent nullObject = new DigitalArchitectureEvent();
 
         assertTrue(nullObject.getEventType() == null);
-        assertTrue(nullObject.getOriginalDigitalService() == null);
-        assertTrue(nullObject.getDigitalService() == null);
+
 
         nullObject = new DigitalArchitectureEvent(null);
 
         assertTrue(nullObject.getEventType() == null);
-        assertTrue(nullObject.getOriginalDigitalService() == null);
-        assertTrue(nullObject.getDigitalService() == null);
+
     }
 
 
@@ -125,10 +105,6 @@ public class DigitalArchitectureEventTest
 
         DigitalArchitectureEvent sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
-
-        DigitalArchitectureEvent differentObject = getTestObject();
-        differentObject.setDigitalService(new DigitalService());
-        assertFalse(getTestObject().equals(differentObject));
 
         DigitalArchitectureEvent anotherObject = getTestObject();
         anotherObject.setEventVersionId(3773L);
@@ -149,7 +125,7 @@ public class DigitalArchitectureEventTest
 
         DigitalArchitectureEvent differentObject = getTestObject();
 
-        differentObject.setDigitalService(null);
+        differentObject.setEventType(null);
 
         assertFalse(testObject.hashCode() == differentObject.hashCode());
     }

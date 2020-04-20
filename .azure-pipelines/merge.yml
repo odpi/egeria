@@ -5,6 +5,7 @@ trigger:
   branches:
     include:
       - master
+      - egeria-release-*
 pr: none
 
 variables:
@@ -37,7 +38,10 @@ stages:
             inputs:
               command: login
               containerRegistry: odpi-dockerhub
+            # Normal build for master - note we have the '-Ddocker.taglatest' set
+            # This can likely be refactored using variables. 
           - task: ArtifactoryMaven@1
+            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
               mavenPomFile: 'pom.xml'
               javaHomeOption: 'JDKVersion'
@@ -67,7 +71,40 @@ stages:
                   -Ddocker.registry=docker.io
                   -Ddocker.images=core
                   -Ddockerfile.googleContainerRegistryEnabled=false
+            # build for other releases - note we DO NOT have the '-Ddocker.taglatest' set
+          - task: ArtifactoryMaven@1
+            condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+            inputs:
+              mavenPomFile: 'pom.xml'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '1.8'
+              jdkArchitectureOption: 'x64'
+              artifactoryResolverService: 'ODPiArtifactory'
+              targetResolveReleaseRepo: 'egeria-staging'
+              targetResolveSnapshotRepo: 'egeria-snapshot'
+              artifactoryDeployService: 'ODPiArtifactory'
+              targetDeployReleaseRepo: 'egeria-staging'
+              targetDeploySnapshotRepo: 'egeria-snapshot'
+              collectBuildInfo: true
+              buildName: 'Egeria'
+              buildNumber: '$(Build.BuildNumber)'
+              includeEnvVars: true
+              goals: 'clean install'
+              options: >-
+                  --batch-mode
+                  -e
+                  -s .m2/settings.xml
+                  -Dmerge
+                  -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+                  -P artifactory
+                  -Ddocker
+                  -Ddocker.repo=odpi
+                  -Ddocker.registry=docker.io
+                  -Ddocker.images=core
+                  -Ddockerfile.googleContainerRegistryEnabled=false
+            # Only publish to artifactory if we are running a master build
           - task: ArtifactoryPublishBuildInfo@1
+            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
               artifactoryService: ODPiArtifactory
               buildName: 'Egeria'

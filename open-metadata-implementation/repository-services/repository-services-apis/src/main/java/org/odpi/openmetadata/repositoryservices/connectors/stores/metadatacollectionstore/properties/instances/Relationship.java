@@ -136,7 +136,9 @@ public class Relationship extends InstanceHeader
         {
             return null;
         }
-        else if (relationshipProperties.getInstanceProperties() == null)
+        else if ((relationshipProperties.getInstanceProperties() == null) &&
+                 (relationshipProperties.getEffectiveFromTime() == null) &&
+                 (relationshipProperties.getEffectiveToTime() == null))
         {
             return null;
         }

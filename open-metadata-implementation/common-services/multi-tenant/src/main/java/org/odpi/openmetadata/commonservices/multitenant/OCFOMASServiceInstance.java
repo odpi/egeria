@@ -171,9 +171,11 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                                           ratingHandler,
                                                           relatedMediaHandler,
                                                           schemaTypeHandler,
+                                                          validValuesHandler,
                                                           supportedZones,
                                                           defaultZones);
 
+        validValuesHandler.setAssetHandler(assetHandler);
 
         if (securityVerifier != null)
         {

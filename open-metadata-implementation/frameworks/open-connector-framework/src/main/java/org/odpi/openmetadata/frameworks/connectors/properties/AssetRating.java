@@ -21,6 +21,8 @@ import java.util.Objects;
  */
 public class AssetRating extends AssetElementHeader
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Rating ratingBean;
 
 
