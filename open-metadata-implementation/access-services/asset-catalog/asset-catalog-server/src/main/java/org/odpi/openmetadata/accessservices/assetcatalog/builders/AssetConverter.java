@@ -315,12 +315,13 @@ public class AssetConverter {
                 if (!key.equals(ADDITIONAL_PROPERTIES_PROPERTY_NAME)) {
                     if (value instanceof ArrayPropertyValue) {
                         List<String> stringArrayProperty = repositoryHelper.getStringArrayProperty(ASSET_CATALOG_OMAS, key, instanceProperties, methodName);
-                        value = listToString(stringArrayProperty);
+                        properties.put(key, listToString(stringArrayProperty));
                     } else if (value instanceof MapPropertyValue) {
                         Map<String, Object> mapProperty = repositoryHelper.getMapFromProperty(ASSET_CATALOG_OMAS, key, instanceProperties, methodName);
-                        value = mapToString(mapProperty);
+                        properties.put(key, mapToString(mapProperty));
+                    } else {
+                        properties.put(key, String.valueOf(value));
                     }
-                    properties.put(key, String.valueOf(value));
                 }
             });
         }
