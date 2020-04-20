@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -1358,6 +1359,15 @@ public interface OMRSRepositoryValidator
                                                  InstanceAuditHeader instanceHeader,
                                                  InstanceProperties  instanceProperties,
                                                  MatchCriteria       matchCriteria) throws InvalidParameterException;
+
+
+    /**
+     * Retrieve a numeric representation of the provided value, or null if it cannot be converted to a number.
+     *
+     * @param value to convert
+     * @return BigDecimal
+     */
+    BigDecimal getNumericRepresentation(InstancePropertyValue value);
 
 
     /**

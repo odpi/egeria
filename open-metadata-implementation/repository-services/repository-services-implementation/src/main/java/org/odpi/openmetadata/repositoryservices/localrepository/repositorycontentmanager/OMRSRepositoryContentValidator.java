@@ -3865,7 +3865,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     }
 
 
-    private BigDecimal getNumericRepresentation(InstancePropertyValue value)
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BigDecimal getNumericRepresentation(InstancePropertyValue value)
     {
         if (value == null)
         {
