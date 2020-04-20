@@ -19,6 +19,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  *     <li>SystemAction - describes the result of the situation</li>
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
+ *
+ * @author wbittles
+ * @version $Id: $Id
  */
 public enum DigitalServiceAuditCode implements AuditLogMessageSet
 {

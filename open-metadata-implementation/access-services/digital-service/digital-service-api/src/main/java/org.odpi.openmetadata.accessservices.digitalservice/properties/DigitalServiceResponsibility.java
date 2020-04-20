@@ -87,6 +87,8 @@ public enum DigitalServiceResponsibility implements Serializable
 
 
     /**
+     * {@inheritDoc}
+     *
      * toString() JSON-style
      *
      * @return string description

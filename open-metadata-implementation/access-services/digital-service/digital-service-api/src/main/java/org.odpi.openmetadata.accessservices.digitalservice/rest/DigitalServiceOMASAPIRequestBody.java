@@ -10,6 +10,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * DigitalServiceOMASAPIRequestBody provides a common header for DigitalService OMAS request bodies for its REST API.
+ *
+ * @author wbittles
+ * @version $Id: $Id
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -44,9 +47,9 @@ public abstract class DigitalServiceOMASAPIRequestBody implements java.io.Serial
 
 
     /**
-     * JSON-like toString
+     * {@inheritDoc}
      *
-     * @return string containing the class name
+     * JSON-like toString
      */
     @Override
     public String toString()

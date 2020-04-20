@@ -30,9 +30,21 @@
     <packaging>pom</packaging>
     <modules>
         <module>digital-service-api</module>
-        <module>digital-service-client</module>
         <module>digital-service-server</module>
         <module>digital-service-spring</module>
     </modules>
 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>

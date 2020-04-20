@@ -16,6 +16,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * The Classification bean defines a single classification for an asset.  This can be used for REST calls and other
  * JSON based functions.
+ *
+ * @author wbittles
+ * @version $Id: $Id
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -107,9 +110,9 @@ public class Classification extends DigitalServiceElementHeader
 
 
     /**
-     * Standard toString method.
+     * {@inheritDoc}
      *
-     * @return print out of variables in a JSON-style
+     * Standard toString method.
      */
     @Override
     public String toString()
@@ -122,10 +125,9 @@ public class Classification extends DigitalServiceElementHeader
 
 
     /**
-     * Compare the values of the supplied object with those stored in the current object.
+     * {@inheritDoc}
      *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
+     * Compare the values of the supplied object with those stored in the current object.
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -145,9 +147,9 @@ public class Classification extends DigitalServiceElementHeader
 
 
     /**
-     * Create a hash code for this element type.
+     * {@inheritDoc}
      *
-     * @return int hash code
+     * Create a hash code for this element type.
      */
     @Override
     public int hashCode()

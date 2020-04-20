@@ -92,9 +92,9 @@ public enum DigitalServiceVisibility implements Serializable
 
 
     /**
-     * toString() JSON-style
+     * {@inheritDoc}
      *
-     * @return string description
+     * toString() JSON-style
      */
     @Override
     public String toString()

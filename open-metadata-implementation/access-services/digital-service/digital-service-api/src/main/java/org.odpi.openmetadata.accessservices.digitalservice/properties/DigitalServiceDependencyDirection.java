@@ -36,7 +36,6 @@ public enum DigitalServiceDependencyDirection implements Serializable
     BOTH_DIRECTIONS         (2,  "Both Directions",  "Both the dependent and depended on digital services.");
 
     private static final long serialVersionUID = 1L;
-
     private int            ordinal;
     private String         name;
     private String         description;
@@ -83,8 +82,6 @@ public enum DigitalServiceDependencyDirection implements Serializable
 
     /**
      * toString() JSON-style
-     *
-     * @return string description
      */
     @Override
     public String toString()

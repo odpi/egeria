@@ -28,11 +28,11 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum DigitalServiceErrorCode implements ExceptionMessageSet
 {
     OMRS_NOT_INITIALIZED(404, "OMAS-DIGITAL-SERVICE-404-001",
-                         "The open metadata repository services are not initialized for the {0} operation",
-                         "The system is unable to connect to an open metadata repository.",
-                         "Check that the server where the DigitalService OMAS is running initialized correctly.  " +
-                                 "Correct any errors discovered and retry the request when the open metadata services are available."),
-     ;
+            "The open metadata repository services are not initialized for the {0} operation",
+            "The system is unable to connect to an open metadata repository.",
+            "Check that the server where the Asset Consumer OMAS is running initialized correctly.  " +
+                    "Correct any errors discovered and retry the request when the open metadata services are available."),
+        ;
 
 
 
@@ -87,9 +87,9 @@ public enum DigitalServiceErrorCode implements ExceptionMessageSet
     }
 
     /**
-     * toString() JSON-style
+     * {@inheritDoc}
      *
-     * @return string description
+     * toString() JSON-style
      */
     @Override
     public String toString()

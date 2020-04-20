@@ -20,6 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * As the digital service moved through its lifecycle from implementation to deployment to use, more
  * information is attached to the digital service instance to support the correct management and compliance
  * of the service.
+ *
+ * @author wbittles
+ * @version $Id: $Id
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -436,9 +439,9 @@ public class DigitalService extends DigitalServiceElementHeader
 
 
     /**
-     * JSON-style toString
+     * {@inheritDoc}
      *
-     * @return return string containing the property names and values
+     * JSON-style toString
      */
     @Override
     public String toString()
@@ -460,10 +463,9 @@ public class DigitalService extends DigitalServiceElementHeader
 
 
     /**
-     * Return comparison result based on the content of the properties.
+     * {@inheritDoc}
      *
-     * @param objectToCompare test object
-     * @return result of comparison
+     * Return comparison result based on the content of the properties.
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -493,9 +495,9 @@ public class DigitalService extends DigitalServiceElementHeader
 
 
     /**
-     * Return hash code for this object
+     * {@inheritDoc}
      *
-     * @return int hash code
+     * Return hash code for this object
      */
     @Override
     public int hashCode()

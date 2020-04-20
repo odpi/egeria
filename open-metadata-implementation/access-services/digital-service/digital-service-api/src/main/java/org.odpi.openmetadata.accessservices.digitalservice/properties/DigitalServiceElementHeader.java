@@ -12,6 +12,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * DigitalServiceElementHeader provides a common base for all instance information from the access service.
  * It implements Serializable.
+ *
+ * @author wbittles
+ * @version $Id: $Id
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

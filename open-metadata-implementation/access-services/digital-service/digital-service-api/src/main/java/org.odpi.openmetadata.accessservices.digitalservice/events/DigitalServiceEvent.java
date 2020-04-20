@@ -14,6 +14,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * DigitalServiceEvent describes the structure of the events emitted by the Digital Service OMAS.
+ *
+ * @author wbittles
+ * @version $Id: $Id
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -134,9 +137,9 @@ public class DigitalServiceEvent extends DigitalServiceEventHeader
 
 
     /**
-     * JSON-style toString
+     * {@inheritDoc}
      *
-     * @return return string containing the property names and values
+     * JSON-style toString
      */
     @Override
     public String toString()
@@ -151,10 +154,9 @@ public class DigitalServiceEvent extends DigitalServiceEventHeader
 
 
     /**
-     * Return comparison result based on the content of the properties.
+     * {@inheritDoc}
      *
-     * @param objectToCompare test object
-     * @return result of comparison
+     * Return comparison result based on the content of the properties.
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -179,9 +181,9 @@ public class DigitalServiceEvent extends DigitalServiceEventHeader
 
 
     /**
-     * Return hash code for this object
+     * {@inheritDoc}
      *
-     * @return int hash code
+     * Return hash code for this object
      */
     @Override
     public int hashCode()

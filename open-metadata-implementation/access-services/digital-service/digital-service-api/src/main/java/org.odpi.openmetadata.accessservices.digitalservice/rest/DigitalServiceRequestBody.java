@@ -15,6 +15,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The request body of creating the new type of the asset deployed database schema.
+ *
+ * @author wbittles
+ * @version $Id: $Id
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -48,6 +51,7 @@ public class DigitalServiceRequestBody extends DigitalServiceOMASAPIRequestBody 
         this.digitalService = digitalService;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,11 +60,13 @@ public class DigitalServiceRequestBody extends DigitalServiceOMASAPIRequestBody 
         return Objects.equals(digitalService, that.digitalService);
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         return Objects.hash(digitalService);
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return "DigitalServiceRequestBody{" +

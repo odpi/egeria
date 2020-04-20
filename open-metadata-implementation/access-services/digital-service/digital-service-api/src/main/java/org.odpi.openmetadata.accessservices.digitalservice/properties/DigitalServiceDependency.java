@@ -4,6 +4,12 @@ package org.odpi.openmetadata.accessservices.digitalservice.properties;
 
 import java.util.Objects;
 
+/**
+ * <p>DigitalServiceDependency class.</p>
+ *
+ * @author wbittles
+ * @version $Id: $Id
+ */
 public class DigitalServiceDependency extends DigitalServiceElementHeader
 {
     private static final long    serialVersionUID = 1L;
@@ -11,11 +17,19 @@ public class DigitalServiceDependency extends DigitalServiceElementHeader
     private String  callerDigitalServiceGUID = null;
     private String  calledDigitalServiceGUID = null;
 
+    /**
+     * <p>Constructor for DigitalServiceDependency.</p>
+     */
     public DigitalServiceDependency()
     {
         super();
     }
 
+    /**
+     * <p>Constructor for DigitalServiceDependency.</p>
+     *
+     * @param template a {@link org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceDependency} object.
+     */
     public DigitalServiceDependency(DigitalServiceDependency template)
     {
         super(template);
@@ -27,26 +41,47 @@ public class DigitalServiceDependency extends DigitalServiceElementHeader
         }
     }
 
+    /**
+     * <p>Getter for the field <code>callerDigitalServiceGUID</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getCallerDigitalServiceGUID()
     {
         return callerDigitalServiceGUID;
     }
 
+    /**
+     * <p>Setter for the field <code>callerDigitalServiceGUID</code>.</p>
+     *
+     * @param callerDigitalServiceGUID a {@link java.lang.String} object.
+     */
     public void setCallerDigitalServiceGUID(String callerDigitalServiceGUID)
     {
         this.callerDigitalServiceGUID = callerDigitalServiceGUID;
     }
 
+    /**
+     * <p>Getter for the field <code>calledDigitalServiceGUID</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getCalledDigitalServiceGUID()
     {
         return calledDigitalServiceGUID;
     }
 
+    /**
+     * <p>Setter for the field <code>calledDigitalServiceGUID</code>.</p>
+     *
+     * @param calledDigitalServiceGUID a {@link java.lang.String} object.
+     */
     public void setCalledDigitalServiceGUID(String calledDigitalServiceGUID)
     {
         this.calledDigitalServiceGUID = calledDigitalServiceGUID;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString()
     {
@@ -57,6 +92,7 @@ public class DigitalServiceDependency extends DigitalServiceElementHeader
     }
 
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object objectToCompare)
     {
@@ -73,6 +109,7 @@ public class DigitalServiceDependency extends DigitalServiceElementHeader
                 Objects.equals(getCalledDigitalServiceGUID(), that.getCalledDigitalServiceGUID());
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode()
     {

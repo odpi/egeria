@@ -12,6 +12,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * DigitalServiceOMASAPIResponse provides a common header for DigitalService OMAS managed rest to its REST API.
  * It manages information about exceptions.  If no exception has been raised exceptionClassName is null.
+ *
+ * @author wbittles
+ * @version $Id: $Id
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -46,9 +49,9 @@ public abstract class DigitalServiceOMASAPIResponse extends FFDCResponseBase
 
 
     /**
-     * JSON-like toString
+     * {@inheritDoc}
      *
-     * @return string containing the property names and values
+     * JSON-like toString
      */
     @Override
     public String toString()

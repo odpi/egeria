@@ -59,9 +59,7 @@ public class DigitalServiceEntityHandler {
 
         String methodName = "create Digital Service Entity";
 
-        //TODO qualified name is garbage.
-        String qualifiedNameForDigitalService = digitalService.getQualifiedName();
-
+        //not sure which builder to use , this one feels cleaner
         InstanceProperties digitalServiceProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.URL, digitalService.getURL())
                 .withStringProperty(Constants.GUID, digitalService.getGUID())
@@ -69,15 +67,22 @@ public class DigitalServiceEntityHandler {
                 .withStringProperty(Constants.TYPE_NAME, digitalService.getTypeName())
                 .withLongProperty(Constants.TYPE_VERSION, digitalService.getTypeVersion())
                 .withStringProperty(Constants.TYPE_DESCRIPTION, digitalService.getTypeDescription())
-                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDigitalService)
+                .withStringProperty(Constants.QUALIFIED_NAME, digitalService.getQualifiedName())
                 .withStringProperty(Constants.DISPLAY_NAME, digitalService.getDisplayName())
                 .withStringProperty(Constants.DESCRIPTION, digitalService.getDescription())
                 .withIntegerProperty(Constants.IMPLEMENTATION_STYLE_ORDINAL, digitalService.getImplementationStyle().getOrdinal())
                 .withStringProperty(Constants.IMPLEMANTATION_STYLE_NAME, digitalService.getImplementationStyle().getName())
                 .withStringProperty(Constants.IMPLEMENTATION_STYLE_DISCRIPTION, digitalService.getImplementationStyle().getDescription())
+                .withIntegerProperty(Constants.STATUS_ORDINAL, digitalService.getStatus().getOrdinal())
+                .withStringProperty(Constants.STATUS_NAME, digitalService.getStatus().getName())
+                .withStringProperty(Constants.STATUS_DESCRIPTION, digitalService.getStatus().getDescription())
+                .withIntegerProperty(Constants.VISIBILITY_ORDINAL, digitalService.getVisibility().getOrdinal())
+                .withStringProperty(Constants.VISIBILITY_NAME, digitalService.getVisibility().getName())
+                .withStringProperty(Constants.VISIBILITY_DESCRIPTION, digitalService.getVisibility().getDescription())
+                .withIntegerProperty(Constants.RESPONSIBILITY_ORDINAL, digitalService.getResponsibility().getOrdinal())
+                .withStringProperty(Constants.RESPONSIBILITY_NAME, digitalService.getResponsibility().getName())
+                .withStringProperty(Constants.RESPONSIBILITY_DESCRIPTION, digitalService.getResponsibility().getDescription())
                 .build();
-                //TODO check handling of embeded types before adding
-
         return repositoryHandler.createEntity(
                 DIGITAL_SERVICE_USER_ID,
                 repositoryHelper.getTypeDefByName(DIGITAL_SERVICE_USER_ID, Constants.DIGITAL_SERVICE).getGUID(),

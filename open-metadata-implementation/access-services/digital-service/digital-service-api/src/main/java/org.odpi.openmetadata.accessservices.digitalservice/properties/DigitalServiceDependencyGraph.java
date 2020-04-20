@@ -6,6 +6,9 @@ import java.util.List;
 
 /**
  * The DigitalServiceDependencyGraph is used to return a dependency graph for a digital service.
+ *
+ * @author wbittles
+ * @version $Id: $Id
  */
 public class DigitalServiceDependencyGraph extends DigitalServiceElementHeader
 {

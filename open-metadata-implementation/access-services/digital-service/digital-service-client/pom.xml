@@ -29,6 +29,10 @@
     <artifactId>digital-service-client</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>digital-service-api</artifactId>
+        </dependency>
 
     </dependencies>
 

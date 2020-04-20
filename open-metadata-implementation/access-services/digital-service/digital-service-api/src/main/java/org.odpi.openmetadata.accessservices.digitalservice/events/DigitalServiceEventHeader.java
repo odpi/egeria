@@ -13,6 +13,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * DigitalServiceEventHeader provides a common base for all events from the access service.
  * It implements Serializable and a version Id.
+ *
+ * @author wbittles
+ * @version $Id: $Id
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -80,9 +83,9 @@ public abstract class DigitalServiceEventHeader implements Serializable
 
 
     /**
-     * JSON-style toString
+     * {@inheritDoc}
      *
-     * @return return string containing the property names and values
+     * JSON-style toString
      */
     @Override
     public String toString()
@@ -94,10 +97,9 @@ public abstract class DigitalServiceEventHeader implements Serializable
 
 
     /**
-     * Return comparison result based on the content of the properties.
+     * {@inheritDoc}
      *
-     * @param objectToCompare test object
-     * @return result of comparison
+     * Return comparison result based on the content of the properties.
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -116,9 +118,9 @@ public abstract class DigitalServiceEventHeader implements Serializable
 
 
     /**
-     * Return hash code for this object
+     * {@inheritDoc}
      *
-     * @return int hash code
+     * Return hash code for this object
      */
     @Override
     public int hashCode()
