@@ -10,6 +10,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -95,6 +96,55 @@ public class SearchClassifications implements Serializable
     public void setMatchCriteria(MatchCriteria matchCriteria)
     {
         this.matchCriteria = matchCriteria;
+    }
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "SearchClassifications{" +
+                "matchCriteria=" + matchCriteria +
+                ", conditions=" + conditions +
+                '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof SearchClassifications))
+        {
+            return false;
+        }
+        SearchClassifications that = (SearchClassifications) objectToCompare;
+        return getMatchCriteria() == that.getMatchCriteria() &&
+                Objects.equals(getConditions(), that.getConditions());
+    }
+
+
+    /**
+     * Return a hash code based on the property values
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getMatchCriteria(), getConditions());
     }
 
 }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -89,6 +90,55 @@ public class ClassificationCondition implements Serializable
     public void setMatchProperties(SearchProperties matchProperties)
     {
         this.matchProperties = matchProperties;
+    }
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "ClassificationCondition{" +
+                "name='" + name +
+                "', matchProperties=" + matchProperties +
+                '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof ClassificationCondition))
+        {
+            return false;
+        }
+        ClassificationCondition that = (ClassificationCondition) objectToCompare;
+        return Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getMatchProperties(), that.getMatchProperties());
+    }
+
+
+    /**
+     * Return a hash code based on the property values
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getName(), getMatchProperties());
     }
 
 }

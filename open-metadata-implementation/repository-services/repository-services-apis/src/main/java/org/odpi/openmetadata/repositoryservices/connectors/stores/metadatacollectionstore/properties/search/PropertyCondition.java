@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -136,6 +137,59 @@ public class PropertyCondition implements Serializable
     public void setNestedConditions(SearchProperties nestedConditions)
     {
         this.nestedConditions = nestedConditions;
+    }
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "PropertyCondition{" +
+                "property='" + property +
+                "', operator='" + operator +
+                "', value=" + value +
+                ", nestedConditions=" + nestedConditions +
+                '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof PropertyCondition))
+        {
+            return false;
+        }
+        PropertyCondition that = (PropertyCondition) objectToCompare;
+        return getOperator() == that.getOperator() &&
+                Objects.equals(getProperty(), that.getProperty()) &&
+                Objects.equals(getValue(), that.getValue()) &&
+                Objects.equals(getNestedConditions(), that.getNestedConditions());
+    }
+
+
+    /**
+     * Return a hash code based on the property values
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getOperator(), getProperty(), getValue(), getNestedConditions());
     }
 
 }
