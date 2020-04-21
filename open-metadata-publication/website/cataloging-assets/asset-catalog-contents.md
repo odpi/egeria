@@ -8,20 +8,20 @@ for your organization.  This page describes the different types of information
 that can be stored about an asset and the capabilities that each new piece of information
 enables.
 
-* [Basic Asset Properties](#Basic Asset Properties)
-* [Asset Connections](#Asset Connections)
-* [Asset Schemas](#Asset Schemas)
-* [Asset Ownership](#Asset Ownership)
-* [Asset Zone Membership](#Asset Zone Membership)
-* [Asset Location](#Asset Location)
-* [Asset External Identifiers](#Asset External Identifiers)
-* [Asset Licenses and Certifications](#Asset Licenses and Certifications)
-* [Asset Classifiers](#Asset Classifiers)
-* [Asset Feedback](#Asset Feedback)
-* [Asset Note Logs](#Asset Note Logs)
-* [Asset External Descriptions](#Asset External Descriptions)
-* [Asset Lineage](#Asset Lineage)
-* [Related Assets](#Related Assets)
+* [Basic Asset Properties](#Basic-Asset-Properties)
+* [Asset Connections](#Asset-Connections)
+* [Asset Schemas](#Asset-Schemas)
+* [Asset Ownership](#Asset-Ownership)
+* [Asset Zone Membership](#Asset-Zone-Membership)
+* [Asset Location](#Asset-Location)
+* [Asset External Identifiers](#Asset-External-Identifiers)
+* [Asset Licenses and Certifications](#Asset-Licenses-and-Certifications)
+* [Asset Classifiers](#Asset-Classifiers)
+* [Asset Feedback](#Asset-Feedback)
+* [Asset Note Logs](#Asset-Note-Logs)
+* [Asset External Descriptions](#Asset-External-Descriptions)
+* [Asset Lineage](#Asset-Lineage)
+* [Related Assets](#Related-Assets)
 
 In general, additional information in the catalog aims to provide at least one of the
 following benefits:
