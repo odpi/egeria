@@ -38,7 +38,7 @@ public class SchemaTypeConverter extends ReferenceableConverter
     {
         super(null, repositoryHelper, serviceName);
 
-        this.typeName = typeName;
+        super.typeName = typeName;
         this.schemaTypeProperties = properties;
         this.schemaAttributeCount = schemaAttributeCount;
     }
@@ -161,6 +161,10 @@ public class SchemaTypeConverter extends ReferenceableConverter
 
         if (instanceProperties != null)
         {
+            bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName,
+                                                                        ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                        instanceProperties,
+                                                                        methodName));
             bean.setDisplayName(repositoryHelper.removeStringProperty(serviceName,
                                                                       SchemaElementMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                       instanceProperties,

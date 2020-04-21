@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -20,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Classification extends DigitalArchitectureElementHeader
+public class Classification implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
@@ -32,7 +33,6 @@ public class Classification extends DigitalArchitectureElementHeader
      */
     public Classification()
     {
-        super();
     }
 
 
@@ -43,8 +43,6 @@ public class Classification extends DigitalArchitectureElementHeader
      */
     public Classification(Classification templateClassification)
     {
-        super(templateClassification);
-
         if (templateClassification != null)
         {
             classificationName = templateClassification.getClassificationName();

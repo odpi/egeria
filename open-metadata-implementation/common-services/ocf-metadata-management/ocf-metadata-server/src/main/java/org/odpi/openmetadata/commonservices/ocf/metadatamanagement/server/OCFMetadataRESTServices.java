@@ -249,20 +249,20 @@ public class OCFMetadataRESTServices
 
             if (connectionGUID != null)
             {
-                response.setAsset(assetHandler.getAsset(userId,
-                                                        supportedZones,
-                                                        assetGUID,
-                                                        connectionGUID,
-                                                        instanceHandler.getServiceName(serviceURLName),
-                                                        methodName));
+                response.setAsset(assetHandler.getValidatedVisibleAsset(userId,
+                                                                        supportedZones,
+                                                                        assetGUID,
+                                                                        connectionGUID,
+                                                                        instanceHandler.getServiceName(serviceURLName),
+                                                                        methodName));
             }
             else
             {
-                response.setAsset(assetHandler.getAsset(userId,
-                                                        supportedZones,
-                                                        assetGUID,
-                                                        instanceHandler.getServiceName(serviceURLName),
-                                                        methodName));
+                response.setAsset(assetHandler.getValidatedVisibleAsset(userId,
+                                                                        supportedZones,
+                                                                        assetGUID,
+                                                                        instanceHandler.getServiceName(serviceURLName),
+                                                                        methodName));
             }
             response.setCertificationCount(assetHandler.getCertificationCount(userId, assetGUID, methodName));
             response.setCommentCount(assetHandler.getCommentCount(userId, assetGUID, methodName));

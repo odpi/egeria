@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.converters.Discovery
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.DiscoveryServicePropertiesConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.RegisteredDiscoveryServiceConverter;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.ConnectionHandler;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ConnectionMapper;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryEnginePropertiesMapper;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryServicePropertiesMapper;
@@ -760,6 +761,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
      * @param owner new owner of the discovery service.
      * @param ownerType new type for the owner of the discovery service.
      * @param zoneMembership new list of zones for this discovery service.
+     * @param origin properties describing the origin of the discovery service.
      * @param latestChange short description of this update.
      * @param connection connection used to create an instance of this discovery service.
      * @param additionalProperties additional properties for the discovery engine.
@@ -778,6 +780,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                            String                owner,
                                            OwnerType             ownerType,
                                            List<String>          zoneMembership,
+                                           Map<String, String>   origin,
                                            String                latestChange,
                                            Connection            connection,
                                            Map<String, String>   additionalProperties,
@@ -797,6 +800,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                       owner,
                                                                       ownerType,
                                                                       zoneMembership,
+                                                                      origin,
                                                                       latestChange,
                                                                       additionalProperties,
                                                                       extendedProperties,
@@ -851,11 +855,22 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
 
             if (assetConnectionRelationship == null)
             {
+                InstanceProperties relationshipProperties = null;
+
+                if (shortDescription != null)
+                {
+                    relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                          null,
+                                                                                          AssetMapper.SHORT_DESCRIPTION_PROPERTY_NAME,
+                                                                                          shortDescription,
+                                                                                          methodName);
+                }
+
                 repositoryHandler.createRelationship(userId,
                                                      DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                      connectionGUID,
                                                      guid,
-                                                     null,
+                                                     relationshipProperties,
                                                      methodName);
             }
             else

@@ -103,4 +103,6 @@ public class AssetMapper
     public static final String OWNER_PROPERTY_NAME                       = "owner";                                /* from Asset entity */
     public static final String OWNER_TYPE_PROPERTY_NAME                  = "ownerType";                            /* from Asset entity */
 
+    public static final String REFERENCE_DATA_CLASSIFICATION_GUID        = "55e5ae33-39c6-4834-9d05-ef0ae4e0163b";
+    public static final String REFERENCE_DATA_CLASSIFICATION_NAME        = "ReferenceData";
 }

@@ -592,11 +592,11 @@ public class FileSystemHandler
          * supported zones.
          */
         FileSystem fileSystem = getFileSystemByGUID(userId, fileSystemGUID, methodName);
-        Asset      folder = assetHandler.getAsset(userId,
-                                                  supportedZones,
-                                                  folderGUID,
-                                                  serviceName,
-                                                  methodName);
+        Asset      folder = assetHandler.getValidatedVisibleAsset(userId,
+                                                                  supportedZones,
+                                                                  folderGUID,
+                                                                  serviceName,
+                                                                  methodName);
 
         /*
          * Continue with operation if all is ok.
@@ -655,11 +655,11 @@ public class FileSystemHandler
          * supported zones.
          */
         FileSystem fileSystem = getFileSystemByGUID(userId, fileSystemGUID, methodName);
-        Asset      folder = assetHandler.getAsset(userId,
-                                                  supportedZones,
-                                                  folderGUID,
-                                                  serviceName,
-                                                  methodName);
+        Asset      folder = assetHandler.getValidatedVisibleAsset(userId,
+                                                                  supportedZones,
+                                                                  folderGUID,
+                                                                  serviceName,
+                                                                  methodName);
 
         /*
          * Continue with operation if all is ok.
@@ -718,16 +718,16 @@ public class FileSystemHandler
         /*
          * Check that the data file and folder are both known and visible through the supported zones.
          */
-        Asset      folder = assetHandler.getAsset(userId,
-                                                  supportedZones,
-                                                  folderGUID,
-                                                  serviceName,
-                                                  methodName);
-        Asset      dataFile = assetHandler.getAsset(userId,
-                                                    supportedZones,
-                                                    fileGUID,
-                                                    serviceName,
-                                                    methodName);
+        Asset      folder = assetHandler.getValidatedVisibleAsset(userId,
+                                                                  supportedZones,
+                                                                  folderGUID,
+                                                                  serviceName,
+                                                                  methodName);
+        Asset      dataFile = assetHandler.getValidatedVisibleAsset(userId,
+                                                                    supportedZones,
+                                                                    fileGUID,
+                                                                    serviceName,
+                                                                    methodName);
 
         /*
          * Continue with operation if all is ok.
@@ -786,16 +786,16 @@ public class FileSystemHandler
         /*
          * Check that the data file and folder are both known and visible through the supported zones.
          */
-        Asset      folder = assetHandler.getAsset(userId,
-                                                  supportedZones,
-                                                  folderGUID,
-                                                  serviceName,
-                                                  methodName);
-        Asset      dataFile = assetHandler.getAsset(userId,
-                                                    supportedZones,
-                                                    fileGUID,
-                                                    serviceName,
-                                                    methodName);
+        Asset      folder = assetHandler.getValidatedVisibleAsset(userId,
+                                                                  supportedZones,
+                                                                  folderGUID,
+                                                                  serviceName,
+                                                                  methodName);
+        Asset      dataFile = assetHandler.getValidatedVisibleAsset(userId,
+                                                                    supportedZones,
+                                                                    fileGUID,
+                                                                    serviceName,
+                                                                    methodName);
         /*
          * Continue with operation if all is ok.
          */
@@ -857,8 +857,8 @@ public class FileSystemHandler
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(fileGUID, fileGUIDParameterName, methodName);
 
-        Asset folder = assetHandler.getAsset(userId, supportedZones, folderGUID, serviceName, methodName);
-        Asset file   = assetHandler.getAsset(userId, supportedZones, fileGUID, serviceName, methodName);
+        Asset folder = assetHandler.getValidatedVisibleAsset(userId, supportedZones, folderGUID, serviceName, methodName);
+        Asset file   = assetHandler.getValidatedVisibleAsset(userId, supportedZones, fileGUID, serviceName, methodName);
 
         invalidParameterHandler.throwMethodNotSupported(userId, serviceName, serverName, methodName);
     }
@@ -891,8 +891,8 @@ public class FileSystemHandler
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(dataFolderGUID, dataFolderGUIDParameterName, methodName);
 
-        Asset folder = assetHandler.getAsset(userId, supportedZones, folderGUID, serviceName, methodName);
-        Asset dataFolder   = assetHandler.getAsset(userId, supportedZones, dataFolderGUID, serviceName, methodName);
+        Asset folder = assetHandler.getValidatedVisibleAsset(userId, supportedZones, folderGUID, serviceName, methodName);
+        Asset dataFolder   = assetHandler.getValidatedVisibleAsset(userId, supportedZones, dataFolderGUID, serviceName, methodName);
 
         invalidParameterHandler.throwMethodNotSupported(userId, serviceName, serverName, methodName);
     }
@@ -903,7 +903,8 @@ public class FileSystemHandler
      * structure is not catalogued already, this is created automatically using the createFolderStructureInCatalog() method.
      * For example, a pathName of "one/two/three/MyFile.txt" potentially creates 3 new folder assets, one called "one",
      * the next called "one/two" and the last one called "one/two/three" plus a file asset called
-     * "one/two/three/MyFile.txt".
+     * "one/two/three/MyFile.txt".  Care is taken to handle the case where the file system and file folders exist in the catalog
+     * but are not visible through the user's zones.
      *
      * @param userId calling user
      * @param fileAssetGUID unique identifier of file asset
@@ -1438,7 +1439,6 @@ public class FileSystemHandler
         Connection connection = new Connection();
 
         connection.setType(Connection.getConnectionType());
-        connection.setGUID(UUID.randomUUID().toString());
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
@@ -1495,7 +1495,6 @@ public class FileSystemHandler
         Connection connection = new Connection();
 
         connection.setType(Connection.getConnectionType());
-        connection.setGUID(UUID.randomUUID().toString());
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
@@ -1530,7 +1529,6 @@ public class FileSystemHandler
         Connection connection = new Connection();
 
         connection.setType(Connection.getConnectionType());
-        connection.setGUID(UUID.randomUUID().toString());
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
@@ -1555,7 +1553,6 @@ public class FileSystemHandler
         Endpoint endpoint = new Endpoint();
 
         endpoint.setType(Endpoint.getEndpointType());
-        endpoint.setGUID(UUID.randomUUID().toString());
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
         endpoint.setDescription(endpointDescription + fileName);
@@ -1847,8 +1844,8 @@ public class FileSystemHandler
             relatedAssets = assetHandler.getRelatedAssets(userId,
                                                           supportedZones,
                                                           anchorGUID,
-                                                          AssetMapper.FOLDER_HIERARCHY_TYPE_GUID,
-                                                          AssetMapper.FOLDER_HIERARCHY_TYPE_NAME,
+                                                          AssetMapper.FILE_FOLDER_TYPE_GUID,
+                                                          AssetMapper.FILE_FOLDER_TYPE_NAME,
                                                           startingFrom,
                                                           queryPageSize,
                                                           serviceName,
