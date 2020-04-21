@@ -2,7 +2,7 @@
 # Copyright Contributors to the Egeria project.
 
 FROM jupyter/base-notebook:latest
-ARG version=1.7-SNAPSHOT
+ARG version=1.8-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
