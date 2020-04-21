@@ -342,7 +342,7 @@ public class AssetConverter {
     }
 
     private String mapToString(Map<String, Object> map) {
-        return map.keySet().stream().map(key -> key + "=" + map.get(key))
+        return map.keySet().stream().map(key -> key + ": " + map.get(key))
                 .collect(Collectors.joining(", "));
     }
 }
