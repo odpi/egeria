@@ -8515,13 +8515,13 @@ public class OMRSRepositoryRESTServices
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
-        response.setExceptionCausedBy(error.getReportedCaughtExceptionClassName());
         response.setActionDescription(error.getReportingActionDescription());
         response.setExceptionErrorMessage(error.getReportedErrorMessage());
         response.setExceptionErrorMessageId(error.getReportedErrorMessageId());
         response.setExceptionErrorMessageParameters(error.getReportedErrorMessageParameters());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
+        response.setExceptionCausedBy(error.getReportedCaughtExceptionClassName());
         response.setExceptionProperties(exceptionProperties);
     }
 
