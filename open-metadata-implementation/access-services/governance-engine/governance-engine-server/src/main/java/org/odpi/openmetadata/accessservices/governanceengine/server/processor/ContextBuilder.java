@@ -14,10 +14,12 @@ import static org.odpi.openmetadata.accessservices.governanceengine.server.util.
 
 public class ContextBuilder {
 
+    private String serverUserName;
     private RepositoryHandler repositoryHandler;
     private OMRSRepositoryHelper repositoryHelper;
 
-    public ContextBuilder(RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
+    public ContextBuilder(String serverUserName, RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
+        this.serverUserName = serverUserName;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
     }
@@ -45,7 +47,7 @@ public class ContextBuilder {
 
         Context context = new Context();
 
-        String columnName = repositoryHelper.getStringProperty(GOVERNANCE_ENGINE, NAME, column.getProperties(), methodName);
+        String columnName = repositoryHelper.getStringProperty(serverUserName, NAME, column.getProperties(), methodName);
         context.setColumn(columnName);
         context.setTable(getTableName(userID, column.getGUID()));
         context.setSchema(DEFAULT_SCHEMA_NAME);
@@ -58,7 +60,7 @@ public class ContextBuilder {
         final EntityDetail relationalTable = getRelationalTable(userID, relationalColumnGuid);
 
         if (relationalTable != null && relationalTable.getProperties() != null) {
-            return repositoryHelper.getStringProperty(GOVERNANCE_ENGINE, NAME, relationalTable.getProperties(), methodName);
+            return repositoryHelper.getStringProperty(serverUserName, NAME, relationalTable.getProperties(), methodName);
         }
 
         return null;
