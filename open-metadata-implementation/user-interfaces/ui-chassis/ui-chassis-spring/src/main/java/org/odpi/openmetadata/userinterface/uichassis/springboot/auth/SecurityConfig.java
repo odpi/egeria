@@ -26,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anonymous().and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/error/**").permitAll()
                 .antMatchers("/service-worker.js").permitAll()
                 .antMatchers("/manifest.json").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
