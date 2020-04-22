@@ -2,8 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.rest.properties;
 
-
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 
 import java.util.Objects;
 
@@ -11,32 +13,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * TypeLimitedFindRequest extends the paged find request to allow the caller to request results from only
- * one type of instance.
+ * EntityFindRequest restricts a find request to entities with specific classifications.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = PropertyMatchFindRequest.class, name = "PropertyMatchFindRequest"),
-                @JsonSubTypes.Type(value = TypeLimitedHistoricalFindRequest.class, name = "TypeLimitedHistoricalFindRequest"),
-                @JsonSubTypes.Type(value = SubtypeLimitedFindRequest.class, name = "SubtypeLimitedFindRequest")
-        })
-public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
+public class EntityFindRequest extends InstanceFindRequest
 {
     private static final long    serialVersionUID = 1L;
 
-    private String                     typeGUID = null;
+    private SearchClassifications matchClassifications = null;
 
 
     /**
      * Default constructor
      */
-    public TypeLimitedFindRequest()
+    public EntityFindRequest()
     {
         super();
     }
@@ -47,36 +39,36 @@ public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
      *
      * @param template object to copy
      */
-    public TypeLimitedFindRequest(TypeLimitedFindRequest template)
+    public EntityFindRequest(EntityFindRequest template)
     {
         super(template);
 
         if (template != null)
         {
-            this.typeGUID = template.getTypeGUID();
+            this.matchClassifications = new SearchClassifications(template.getMatchClassifications());
         }
     }
 
 
     /**
-     * Return the type guid to limit the results of the find request.
+     * Return the list of classification search criteria.
      *
-     * @return String guid
+     * @return SearchClassifications
      */
-    public String getTypeGUID()
+    public SearchClassifications getMatchClassifications()
     {
-        return typeGUID;
+        return matchClassifications;
     }
 
 
     /**
-     * Set up the type guid to limit the results of the find request.
+     * Set the list of classification search criteria.
      *
-     * @param typeGUID String guid
+     * @param matchClassifications to set as search criteria
      */
-    public void setTypeGUID(String typeGUID)
+    public void setMatchClassifications(SearchClassifications matchClassifications)
     {
-        this.typeGUID = typeGUID;
+        this.matchClassifications = matchClassifications;
     }
 
 
@@ -88,8 +80,10 @@ public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
     @Override
     public String toString()
     {
-        return "TypeLimitedFindRequest{" +
-                "typeGUID='" + typeGUID + '\'' +
+        return "EntityFindRequest{" +
+                "matchClassifications=" + matchClassifications +
+                ", matchProperties=" + getMatchProperties() +
+                ", typeGUID='" + getTypeGUID() + '\'' +
                 ", sequencingProperty='" + getSequencingProperty() + '\'' +
                 ", sequencingOrder=" + getSequencingOrder() +
                 ", offset=" + getOffset() +
@@ -112,7 +106,7 @@ public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
         {
             return true;
         }
-        if (!(objectToCompare instanceof TypeLimitedFindRequest))
+        if (!(objectToCompare instanceof EntityFindRequest))
         {
             return false;
         }
@@ -120,9 +114,8 @@ public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
         {
             return false;
         }
-        TypeLimitedFindRequest
-                that = (TypeLimitedFindRequest) objectToCompare;
-        return Objects.equals(getTypeGUID(), that.getTypeGUID());
+        EntityFindRequest that = (EntityFindRequest) objectToCompare;
+        return Objects.equals(getMatchClassifications(), that.getMatchClassifications());
     }
 
 
@@ -134,7 +127,7 @@ public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(super.hashCode(), getTypeGUID());
+        return Objects.hash(super.hashCode(), getMatchClassifications());
     }
+
 }
