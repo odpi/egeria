@@ -12,6 +12,7 @@ import '@polymer/app-layout/app-grid/app-grid-style';
 
 import '../shared-styles.js';
 import '../common/props-table';
+import './asset-tools';
 
 class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
     static get template() {
@@ -22,7 +23,6 @@ class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement
           --app-grid-columns: 2;
           --app-grid-gutter: 1px;
           --app-grid-expandible-item-columns: 2;
-          --iron-icon-fill-color: var(--egeria-primary-color);
           display: block;
           margin: 10px 24px;
           padding: 5px;
@@ -36,11 +36,6 @@ class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             list-style: none;
         }
         
-        ul#menu, ul#menu li {
-          display:inline;
-          padding: 0;
-          margin: 0 10pt;
-        }
         h3{
             font-weight: normal;
         }
@@ -56,21 +51,7 @@ class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement
       
       <dom-if if="[[item]]" restamp> 
         <template> 
-        
-            <div style="border: solid 1px var(--egeria-primary-color); padding: 5pt; margin: 10pt;"> 
-                <ul id="menu"> 
-                    <li> 
-                        <a href="#/asset-lineage/ultimateSource/[[item.guid]]" title="Ultimate Source Lineage"><iron-icon icon="vaadin:connect-o" style="transform: rotate(180deg)"></iron-icon></a>
-                    </li>
-                    <li> 
-                        <a href="#/asset-lineage/endToEnd/[[item.guid]]" title="End2End Lineage"><iron-icon icon="vaadin:cluster"></iron-icon></a>
-                    </li>
-                    <li> 
-                        <a href="#/asset-lineage/ultimateDestination/[[item.guid]]" title="Ultimate Destination Lineage"><iron-icon icon="vaadin:connect-o"></iron-icon></a>
-                    </li>
-                </ul>
-            </div>
-    
+          <asset-tools guid="[[item.guid]]"></asset-tools>
           <props-table items="[[_attributes(item.properties)]]" title="Properties" with-row-stripes ></props-table>
           <props-table items="[[_attributes(item.type)]]"  title="Type" with-row-stripes ></props-table>
           <props-table items="[[_attributes(item)]]"  title="Attributes" with-row-stripes ></props-table>
@@ -97,7 +78,7 @@ class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         </template>
       </dom-if>
       
-      <dom-if if="[[ !item ]]" restamp> 
+      <dom-if if="[[ !item ]]" restamp > 
         <template> Item not found</template>
       </dom-if>
        
