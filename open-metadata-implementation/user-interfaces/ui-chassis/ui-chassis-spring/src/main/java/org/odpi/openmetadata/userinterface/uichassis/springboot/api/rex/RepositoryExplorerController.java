@@ -496,7 +496,7 @@ public class RepositoryExplorerController extends SecureController
         try {
             serverName          = body.getServerName();
             serverURLRoot       = body.getServerURLRoot();
-             enterpriseOption    = body.getEnterpriseOption();
+            enterpriseOption    = body.getEnterpriseOption();
             entityGUID          = body.getEntityGUID();
             depth               = body.getDepth();
             gen                 = body.getGen();
