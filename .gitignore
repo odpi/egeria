@@ -95,6 +95,8 @@ DataStoreConnectorTypes.json
 DataStoreConnectorsGUIDMap.json
 OpenMetadataTypes.json
 
+# Ignore any json files generated during junit
+open-metadata-resources/open-metadata-archives/design-model-archives/*.json
 
 # Ignore Subject Area OMAS older Generated output so it is not checked in.
 open-metadata-implementation/access-services/subject-area/subject-area-server/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/generated/**
