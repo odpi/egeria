@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class AssetElementType extends AssetPropertyElementBase
 {
+    private static final long     serialVersionUID = 1L;
+
     private ElementType elementTypeBean;
 
     /**

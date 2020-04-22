@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.accessservices.assetowner.server.FileSystemRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -16,6 +18,10 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
+
+@Tag(name="Asset Owner OMAS", description="The Asset Owner OMAS provides APIs and notifications for tools and applications supporting the work of Asset Owners in protecting and enhancing their assets.\n" +
+        "\n", externalDocs=@ExternalDocumentation(description="Asset Owner Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/asset-owner/"))
+
 public class FileSystemOnboardingResource
 {
     private FileSystemRESTServices restAPI = new FileSystemRESTServices();
@@ -123,11 +129,11 @@ public class FileSystemOnboardingResource
      */
     @PostMapping(path = "/file-systems/{fileSystemGUID}/folders/{fileSystemGUID}/attach")
 
-    public VoidResponse attachFolderToFileSystem(@PathVariable String          serverName,
-                                                 @PathVariable String          userId,
-                                                 @PathVariable String          fileSystemGUID,
-                                                 @PathVariable String          folderGUID,
-                                                 @RequestBody  NullRequestBody requestBody)
+    public VoidResponse attachFolderToFileSystem(@PathVariable                  String          serverName,
+                                                 @PathVariable                  String          userId,
+                                                 @PathVariable                  String          fileSystemGUID,
+                                                 @PathVariable                  String          folderGUID,
+                                                 @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.attachFolderToFileSystem(serverName, userId, fileSystemGUID, folderGUID, requestBody);
     }
@@ -149,11 +155,11 @@ public class FileSystemOnboardingResource
      */
     @PostMapping(path = "/file-systems/{fileSystemGUID}/folders/{fileSystemGUID}/detach")
 
-    public VoidResponse detachFolderFromFileSystem(@PathVariable String          serverName,
-                                                   @PathVariable String          userId,
-                                                   @PathVariable String          fileSystemGUID,
-                                                   @PathVariable String          folderGUID,
-                                                   @RequestBody  NullRequestBody requestBody)
+    public VoidResponse detachFolderFromFileSystem(@PathVariable                  String          serverName,
+                                                   @PathVariable                  String          userId,
+                                                   @PathVariable                  String          fileSystemGUID,
+                                                   @PathVariable                  String          folderGUID,
+                                                   @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.detachFolderFromFileSystem(serverName, userId, fileSystemGUID, folderGUID, requestBody);
     }
@@ -230,11 +236,11 @@ public class FileSystemOnboardingResource
      */
     @PostMapping(path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/attach")
 
-    public VoidResponse  attachDataFileAssetToFolder(@PathVariable String          serverName,
-                                                     @PathVariable String          userId,
-                                                     @PathVariable String          folderGUID,
-                                                     @PathVariable String          fileGUID,
-                                                     @RequestBody  NullRequestBody requestBody)
+    public VoidResponse  attachDataFileAssetToFolder(@PathVariable                  String          serverName,
+                                                     @PathVariable                  String          userId,
+                                                     @PathVariable                  String          folderGUID,
+                                                     @PathVariable                  String          fileGUID,
+                                                     @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.attachDataFileAssetToFolder(serverName, userId, folderGUID, fileGUID, requestBody);
     }
@@ -258,11 +264,11 @@ public class FileSystemOnboardingResource
      */
     @PostMapping(path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/detach")
 
-    public VoidResponse  detachDataFileAssetFromFolder(@PathVariable String          serverName,
-                                                       @PathVariable String          userId,
-                                                       @PathVariable String          folderGUID,
-                                                       @PathVariable String          fileGUID,
-                                                       @RequestBody  NullRequestBody requestBody)
+    public VoidResponse  detachDataFileAssetFromFolder(@PathVariable                  String          serverName,
+                                                       @PathVariable                  String          userId,
+                                                       @PathVariable                  String          folderGUID,
+                                                       @PathVariable                  String          fileGUID,
+                                                       @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.detachDataFileAssetFromFolder(serverName, userId, folderGUID, fileGUID, requestBody);
     }
@@ -285,11 +291,11 @@ public class FileSystemOnboardingResource
      */
     @PostMapping(path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/move-to")
 
-    public VoidResponse  moveDataFileInCatalog(@PathVariable String          serverName,
-                                               @PathVariable String          userId,
-                                               @PathVariable String          folderGUID,
-                                               @PathVariable String          fileGUID,
-                                               @RequestBody  NullRequestBody requestBody)
+    public VoidResponse  moveDataFileInCatalog(@PathVariable                  String          serverName,
+                                               @PathVariable                  String          userId,
+                                               @PathVariable                  String          folderGUID,
+                                               @PathVariable                  String          fileGUID,
+                                               @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.moveDataFileInCatalog(serverName, userId, folderGUID, fileGUID, requestBody);
     }
@@ -312,11 +318,11 @@ public class FileSystemOnboardingResource
      */
     @PostMapping(path = "/folders/{folderGUID}/assets/data-folders/{dataFolderGUID}/move-to")
 
-    public VoidResponse  moveDataFolderInCatalog(@PathVariable String          serverName,
-                                                 @PathVariable String          userId,
-                                                 @PathVariable String          folderGUID,
-                                                 @PathVariable String          dataFolderGUID,
-                                                 @RequestBody  NullRequestBody requestBody)
+    public VoidResponse  moveDataFolderInCatalog(@PathVariable                  String          serverName,
+                                                 @PathVariable                  String          userId,
+                                                 @PathVariable                  String          folderGUID,
+                                                 @PathVariable                  String          dataFolderGUID,
+                                                 @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.moveDataFolderInCatalog(serverName, userId, folderGUID, dataFolderGUID, requestBody);
     }

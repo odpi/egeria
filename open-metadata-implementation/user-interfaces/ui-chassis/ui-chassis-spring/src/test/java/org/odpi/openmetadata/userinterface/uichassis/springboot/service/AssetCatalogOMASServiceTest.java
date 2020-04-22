@@ -17,8 +17,8 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
@@ -56,8 +56,8 @@ class AssetCatalogOMASServiceTest {
     void testGetAssetDetails() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         AssetDescriptionResponse expectedResponse = mockAssetDescriptionResponse();
         when(assetCatalog.getAssetDetails(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
-        List<AssetDescription> resultList = assetCatalogOMASService.getAssetDetails(user, assetId, typeDef);
-        verifyAssetDescriptionResult(resultList);
+        AssetDescription response = assetCatalogOMASService.getAssetDetails(user, assetId, typeDef);
+        verifyAssetDescriptionResult(response);
     }
 
     @Test
@@ -65,14 +65,14 @@ class AssetCatalogOMASServiceTest {
     void testGetAssetUniverse() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         AssetDescriptionResponse expectedResponse = mockAssetDescriptionResponse();
         when(assetCatalog.getAssetUniverse(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
-        List<AssetDescription> resultList = assetCatalogOMASService.getAssetUniverse(user, assetId, typeDef);
-        verifyAssetDescriptionResult(resultList);
+        AssetDescription response = assetCatalogOMASService.getAssetUniverse(user, assetId, typeDef);
+        verifyAssetDescriptionResult(response);
     }
 
     @Test
     @DisplayName("Asset Relationships by type")
     void testGetAssetRelationships() throws PropertyServerException, InvalidParameterException {
-        RelationshipsResponse expectedResponse = mockRelationshipResponse();
+        RelationshipListResponse expectedResponse = mockRelationshipResponse();
         when(assetCatalog.getAssetRelationships(anyString(), anyString(), anyString(), anyString(), anyInt(), anyInt())).thenReturn(expectedResponse);
         List<Relationship> resultList = assetCatalogOMASService.getAssetRelationships(user, assetId, typeDef, relationshipTypeDef, 0, 1);
         verifyRelationshipResponse(resultList);
@@ -81,7 +81,7 @@ class AssetCatalogOMASServiceTest {
     @Test
     @DisplayName("Asset Classification")
     void testGetClassificationForAsset() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
-        ClassificationsResponse expectedResponse = mockClassificationsResponse();
+        ClassificationListResponse expectedResponse = mockClassificationsResponse();
         when(assetCatalog.getClassificationsForAsset(anyString(), anyString(), anyString(), anyString())).thenReturn(expectedResponse);
         List<Classification> resultList = assetCatalogOMASService.getClassificationsForAsset(user, assetId, typeDef, CONFIDENTIALITY);
         verifyClassificationResponse(resultList);
@@ -89,7 +89,7 @@ class AssetCatalogOMASServiceTest {
 
     private AssetDescriptionResponse mockAssetDescriptionResponse() {
         AssetDescriptionResponse expectedResponse = new AssetDescriptionResponse();
-        List<AssetDescription> expectedDescriptionList = new ArrayList<>();
+
         AssetDescription expectedDescription = new AssetDescription();
         expectedDescription.setGuid(assetId);
         Type type = mockType(typeDef);
@@ -98,13 +98,13 @@ class AssetCatalogOMASServiceTest {
         propertiesMap.put("summary", "Short description of term First Name");
         propertiesMap.put("displayName", "First Name");
         expectedDescription.setProperties(propertiesMap);
-        expectedDescriptionList.add(expectedDescription);
-        expectedResponse.setAssetDescriptionList(expectedDescriptionList);
+
+        expectedResponse.setAssetDescription(expectedDescription);
         return expectedResponse;
     }
 
-    private RelationshipsResponse mockRelationshipResponse() {
-        RelationshipsResponse expectedResponse = new RelationshipsResponse();
+    private RelationshipListResponse mockRelationshipResponse() {
+        RelationshipListResponse expectedResponse = new RelationshipListResponse();
 
         List<Relationship> expectedRelationshipList = new ArrayList<>();
         Relationship expectedRelationship = new Relationship();
@@ -132,8 +132,8 @@ class AssetCatalogOMASServiceTest {
         return type1;
     }
 
-    private ClassificationsResponse mockClassificationsResponse() {
-        ClassificationsResponse expectedResponse = new ClassificationsResponse();
+    private ClassificationListResponse mockClassificationsResponse() {
+        ClassificationListResponse expectedResponse = new ClassificationListResponse();
         List<Classification> expectedClassificationList = new ArrayList<>();
         Classification expectedClassification = new Classification();
         Type type = mockType(CONFIDENTIALITY);
@@ -143,9 +143,7 @@ class AssetCatalogOMASServiceTest {
         return expectedResponse;
     }
 
-    private void verifyAssetDescriptionResult(List<AssetDescription> resultList) {
-        assertFalse(resultList.isEmpty());
-        AssetDescription assetDescription = resultList.get(0);
+    private void verifyAssetDescriptionResult(AssetDescription assetDescription) {
         assertEquals(assetDescription.getGuid(), assetId);
         assertFalse(assetDescription.getProperties().isEmpty());
     }

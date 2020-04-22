@@ -11,6 +11,8 @@ import java.util.List;
 
 public class MockRelatedAssetProperties extends RelatedAssetProperties
 {
+    private static final long     serialVersionUID = 1L;
+
     private AssetExternalIdentifiers    externalIdentifiers    = null;
     private AssetRelatedMediaReferences relatedMediaReferences = null;
     private AssetNoteLogs               noteLogs               = null;

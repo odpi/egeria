@@ -45,6 +45,8 @@ import java.util.List;
  */
 public class AssetPagingIterator extends AssetPropertyBase implements Iterator<AssetPropertyBase>
 {
+    private static final long     serialVersionUID = 1L;
+
     protected int                       maxCacheSize         = 1;
 
     protected int                       totalElementCount    = 0;

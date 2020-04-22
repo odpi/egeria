@@ -8011,7 +8011,7 @@ public class OMRSRepositoryRESTServices
         response.setExceptionErrorMessageParameters(error.getReportedErrorMessageParameters());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
-        response.setExceptionClassName(error.getReportedCaughtExceptionClassName());
+        response.setExceptionCausedBy(error.getReportedCaughtExceptionClassName());
         response.setExceptionProperties(exceptionProperties);
     }
 

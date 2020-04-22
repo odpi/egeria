@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
+import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.OpenLineageServiceException;
@@ -94,6 +95,15 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         LOG.error(ex.getMessage(), ex);
         Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.USER_NOT_AUTHORIZED);
         return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(), UserInterfaceErrorCodes.USER_NOT_AUTHORIZED.getHttpErrorCode(), request);
+    }
+
+
+    @ExceptionHandler(value = {GlossaryViewOmasException.class})
+    protected ResponseEntity<Object> handleGlossaryViewOmasException(GlossaryViewOmasException ex, WebRequest request) {
+        LOG.error(ex.getMessage(), ex);
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.INVALID_REQUEST_FOR_GLOSSARY_VIEW);
+        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
+                UserInterfaceErrorCodes.INVALID_REQUEST_FOR_GLOSSARY_VIEW.getHttpErrorCode(), request);
     }
 
 }

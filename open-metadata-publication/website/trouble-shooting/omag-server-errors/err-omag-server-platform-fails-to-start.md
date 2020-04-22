@@ -50,7 +50,7 @@ address of `http://localhost:8080`.
 
 ```bash
 $ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform-origin
-ODPi Egeria OMAG Server Platform (version 1.6-SNAPSHOT)
+ODPi Egeria OMAG Server Platform (version 1.8-SNAPSHOT)
 ```
 
 If you get the `ODPi Egeria OMAG Server Platform (version `versionNumber`)` response then your OMAG server platform is already running.
@@ -69,6 +69,9 @@ If you get a response like this:
 Then a different type of server is running at the network address and you may need to consider
 [changing your OMAG Server's network address](../../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial/task-changing-the-omag-server-network-address.md).
 
+Many other applications may also default to port 8080. Consider using tools like `lsof`. For example on *nix `lsof -i TCP:8080` may work. However this is platform dependent.
+
+Current versions of Apache ZooKeeper also start AdminServer on port 8080 by default. See [zookeeper docs](https://zookeeper.apache.org/doc/r3.5.7/zookeeperAdmin.html). You may wish to disable this feature if running on the same machine.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

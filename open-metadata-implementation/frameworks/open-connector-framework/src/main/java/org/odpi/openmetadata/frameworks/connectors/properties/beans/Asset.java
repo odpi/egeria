@@ -48,13 +48,14 @@ public class Asset extends Referenceable
 {
     private static final long     serialVersionUID = 1L;
 
-    protected String             displayName        = null;
-    protected String             shortDescription   = null;
-    protected String             description        = null;
-    protected String             owner              = null;
-    protected OwnerType          ownerType          = null;
-    protected List<String>       zoneMembership     = null;
-    protected String             latestChange       = null;
+    protected String              displayName      = null;
+    protected String              shortDescription = null;
+    protected String              description      = null;
+    protected String              owner            = null;
+    protected OwnerType           ownerType        = null;
+    protected List<String>        zoneMembership   = null;
+    protected Map<String, String> origin           = null;
+    protected String              latestChange     = null;
 
 
     /**
@@ -76,13 +77,14 @@ public class Asset extends Referenceable
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
+            displayName      = template.getDisplayName();
             shortDescription = template.getShortDescription();
-            description = template.getDescription();
-            owner = template.getOwner();
-            ownerType = template.getOwnerType();
-            zoneMembership = template.getZoneMembership();
-            latestChange = template.getLatestChange();
+            description      = template.getDescription();
+            owner            = template.getOwner();
+            ownerType        = template.getOwnerType();
+            zoneMembership   = template.getZoneMembership();
+            origin           = template.getOrigin();
+            latestChange     = template.getLatestChange();
         }
     }
 
@@ -232,7 +234,41 @@ public class Asset extends Referenceable
 
 
     /**
-     * Return a short description of the last change to the asset.
+     * Return the properties that characterize where this asset is from.
+     *
+     * @return map of name value pairs, all strings
+     */
+    public Map<String, String> getOrigin()
+    {
+        if (origin == null)
+        {
+            return null;
+        }
+        else if (origin.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(origin);
+        }
+    }
+
+
+    /**
+     * Set up the properties that characterize where this asset is from.
+     *
+     * @param origin map of name value pairs, all strings
+     */
+    public void setOrigin(Map<String, String> origin)
+    {
+        this.origin = origin;
+    }
+
+
+    /**
+     * Return a short description of the last change to the asset.  If it is null it means
+     * the agent that last updated the asset did not provide a description.
      *
      * @return string description
      */
@@ -268,6 +304,7 @@ public class Asset extends Referenceable
                 ", owner='" + owner + '\'' +
                 ", ownerType='" + ownerType + '\'' +
                 ", zoneMembership=" + zoneMembership +
+                ", origins=" + origin +
                 ", latestChange=" + latestChange +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
@@ -309,6 +346,7 @@ public class Asset extends Referenceable
                 Objects.equals(getOwner(), asset.getOwner()) &&
                 getOwnerType() == asset.getOwnerType() &&
                 Objects.equals(getZoneMembership(), asset.getZoneMembership()) &&
+                Objects.equals(getOrigin(), asset.getOrigin()) &&
                 Objects.equals(getLatestChange(), asset.getLatestChange());
     }
 
@@ -323,6 +361,6 @@ public class Asset extends Referenceable
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), getDisplayName(), getShortDescription(), getDescription(), getOwner(),
-                            getOwnerType(), getZoneMembership(), getLatestChange());
+                            getOwnerType(), getZoneMembership(), getOrigin(), getLatestChange());
     }
 }

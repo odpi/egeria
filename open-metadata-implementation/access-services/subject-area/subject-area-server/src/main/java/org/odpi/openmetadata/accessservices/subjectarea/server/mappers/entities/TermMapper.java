@@ -38,7 +38,7 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
      * @return Term the equivalent Term to the supplied entityDetail.
      * @throws InvalidParameterException the entity with this guid is not of the right type
      */
-    public Node mapEntityDetailToNode(EntityDetail entityDetail) throws InvalidParameterException {
+    public Term mapEntityDetailToNode(EntityDetail entityDetail) throws InvalidParameterException {
         String methodName = "mapEntityDetailToNode";
 
         String entityTypeName = entityDetail.getType().getTypeDefName();
@@ -153,7 +153,7 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
      */
     @Override
     protected List<Classification> getInlinedClassifications(Node node) {
-        List inlinedClassifications = new ArrayList<>();
+        List<Classification> inlinedClassifications = new ArrayList<>();
         Term term = (Term) node;
         GovernanceActions governanceActions = term.getGovernanceActions();
         if (governanceActions !=null) {
@@ -182,7 +182,7 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
             inlinedClassifications.add(new SpineAttribute());
         }
         if (term.isObjectIdentifier()) {
-            inlinedClassifications.add(new SpineObject());
+            inlinedClassifications.add(new ObjectIdentifier());
         }
         return inlinedClassifications;
     }

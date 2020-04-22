@@ -8,11 +8,11 @@ contains a Java Archive (Jar) file for the server platform itself along with a d
 
 ```bash
 $ ls
-resources				server-chassis-spring-1.6-SNAPSHOT.jar
+resources				server-chassis-spring-1.8-SNAPSHOT.jar
 ```
 
 The name of the Java Archive (Jar) file will
-depend on the release of ODPi Egeria that you have installed.  In this example, the release is **1.6-SNAPSHOT**.
+depend on the release of ODPi Egeria that you have installed.  In this example, the release is **1.8-SNAPSHOT**.
 
 The [OMAG Server Platform](../../../open-metadata-publication/website/omag-server) is started with the **java** command.
 Ensure you have a Java runtime at Version 8 (Update 151) or above installed on your machine.
@@ -25,7 +25,7 @@ Start the OMAG server platform as follows - the `-Dserver.port` option is needed
 on different ports, as required by the tutorials.
 
 ```bash
-$ java -Dserver.port=8080 -jar server-chassis-spring-1.6-SNAPSHOT.jar
+$ java -Dserver.port=8080 -jar server-chassis-spring-1.8-SNAPSHOT.jar
 ```
 
 The OMAG server platform first displays this banner and then initializes itself.
@@ -47,7 +47,11 @@ When the initialization is complete, you will see this message:
 Thu Jan 31 13:15:26 GMT 2019 OMAG server platform ready for configuration
 ```
 
-This means your OMAG server platform is running.  Try the following command (replace 8080 accordingly if using a non standard port):
+This means your OMAG server platform is running. 
+
+If you get an error that the port is in use, check for any applications using the same port. Note that in current versions of zookeeper, an AdminServer uses port 8080 by default - see [zookeeper docs](https://zookeeper.apache.org/doc/r3.5.7/zookeeperAdmin.html)
+
+ Try the following command (replace 8080 accordingly if using a non standard port):
 
 ```bash
 $ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform/origin

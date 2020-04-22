@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -19,6 +21,9 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
+
+@Tag(name="Subject Area OMAS", description="The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs=@ExternalDocumentation(description="Subject Area Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
+
 public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInstance
 {
     private SubjectAreaGlossaryRESTServices restAPI = new SubjectAreaGlossaryRESTServices();
@@ -111,7 +116,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
     )  {
         return restAPI.findGlossary(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
     }
-    /*
+    /**
      * Get Glossary relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -144,7 +149,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
                                                             @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                             @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
     ) {
-        return restAPI.getGlossaryRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+        return restAPI.getGlossaryRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**

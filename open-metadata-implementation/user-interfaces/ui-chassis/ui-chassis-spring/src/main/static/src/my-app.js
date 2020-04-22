@@ -119,21 +119,16 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             text-transform: none;
             color: #eeff41;
           }
-        
+         
       </style>
      
       <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path query-params="{{queryParams}}"></app-location>
 
-      <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subview}}"></app-route>
-      
-      <app-route route="{{subview}}" pattern="[[rootPath]]:subview" data="{{subviewData}}" tail="{{subroute2}}"></app-route>
-      
-      <app-route route="{{subroute2}}" pattern="[[rootPath]]:guid" data="{{subrouteData2}}"></app-route>
+      <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{tail}}"></app-route>
        
-       
-       <toast-feedback duration="0"></toast-feedback> 
+      <toast-feedback duration="0"></toast-feedback> 
        
         <template is="dom-if" if="[[!token]]"  restamp="true">
             <login-view id="loginView" token="{{token}}"></login-view>
@@ -146,8 +141,9 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <img src="../images/Logo_trademark.jpg" height="60" style="margin: auto; display: block; margin-top: 15pt;"/>
                   <iron-selector selected="[[page]]" attr-for-selected="name"
                         class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
-                    <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset Search</a></div>
-                    <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage/[[subviewData.subview]]/[[subrouteData2.guid]]">Asset Lineage</a></div>
+                    <div name="asset-catalog" language="[[language]]"><a href="[[rootPath]]#/asset-catalog/search">Asset Catalog</a></div>
+                    <div name="glossary" language="[[language]]"><a href="[[rootPath]]#/glossary">Glossary View</a></div>
+                    <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
                     <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
                     <div name="repository-explorer"><a href="[[rootPath]]#/repository-explorer">Repository Explorer</a></div>
@@ -181,13 +177,15 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <div class="breadcrumb">
                      <bread-crumb id="breadcrumb" items="[[crumbs]]"></bread-crumb>
                   </div>
+                  
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
-                    <asset-search-view language="[[language]]" name="asset-search"></asset-search-view>
+                    <asset-view language="[[language]]" name="asset-catalog" route="[[tail]]"></asset-view>
+                    <glossary-view language="[[language]]" name="glossary" route="[[tail]]"></glossary-view>
                     <about-view language="[[language]]" name="about"></about-view>
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
-                    <asset-lineage-view language="[[language]]" name="asset-lineage" guid="[[subrouteData2.guid]]" usecase="[[subviewData.subview]]"></asset-lineage-view>
+                    <asset-lineage-view language="[[language]]" name="asset-lineage"  route="[[tail]]"></asset-lineage-view>
                     <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
-                    <repository-explorer-view language="[[language]]" name="repository-explorer"></repository-explorer-view>
+                    <repository-explorer-view language="[[language]]" name="repository-explorer"  route="[[tail]]"></repository-explorer-view>
                     <my-view404 name="view404"></my-view404>
                   </iron-pages>
 
@@ -206,27 +204,18 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 reflectToAttribute: true,
                 observer: '_pageChanged',
             },
-            guid: {
-                type: String,
-                reflectToAttribute: true
-            },
             token: {
                 type: Object,
                 notify: true,
                 observer: '_tokenChanged'
             },
             routeData: Object,
-            subview: {
-                type: String,
-                reflectToAttribute: true
-            },
-            subroute2: {
-                type: String,
-                reflectToAttribute: true
-            },
             pages: {
                 type: Array,
-                value: ['asset-search', 'subject-area', 'asset-lineage', 'type-explorer', 'repository-explorer', 'about' ]
+                value: [
+                    'asset-catalog', 'subject-area', 'asset-lineage',
+                    'type-explorer', 'repository-explorer', 'about',
+                    'glossary']
             },
             feedback: {
                 type: Object,
@@ -239,8 +228,9 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             allCrumbs: {
                 type: Object,
                 value:{
-                    'home': {label: 'Home', href: this.rootPath + '#'},
-                    'asset-search': {label: 'Asset Search', href: "/asset-search"},
+                    'home': {label: 'Home', href: '/#'},
+                    'asset-catalog': {label: 'Asset Catalog', href: "/asset-catalog/search"},
+                    'glossary': {label: 'Glossary', href: "/glossary"},
                     'subject-area': {label: 'Subject Area', href: "/subject-area"},
                     'asset-lineage': {label: 'Asset Lineage', href: "/asset-lineage"},
                     'type-explorer': {label: 'Type Explorer', href: "/type-explorer"},
@@ -258,7 +248,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
     static get observers() {
         return [
-            '_routePageChanged(routeData.page)'
+            '_routePageChanged(routeData.page)',
+            '_updateBreadcrumb(routeData.page)'
         ];
     }
 
@@ -267,6 +258,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         this.addEventListener('logout', this._onLogout);
         this.addEventListener('open-page', this._onPageChanged);
         this.addEventListener('set-title', this._onSetTitle);
+        this.addEventListener('push-crumb', this._onPushCrumb);
     }
 
     _getDrawer(){
@@ -286,20 +278,22 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         }
     }
 
-    _updateBreadcrumb(page){
+    _onPushCrumb(event) {
+        var crumbs = [].concat(this.crumbs);
+        crumbs.push( event.detail );
+        this.crumbs = crumbs;
+    }
+
+    _updateBreadcrumb(page) {
+        if (!page) return;
         var crumbs = [];
         var allCrumbs = new Map(Object.entries(this.allCrumbs));
 
         crumbs.push(allCrumbs.get('home'));
-        crumbs.push(allCrumbs.get(page));
-        if(page == 'asset-lineage' && this.subview && this.subview.path && allCrumbs.get(this.subviewData.subview) ){
-           crumbs.push(allCrumbs.get(this.subviewData.subview));
+        var crumb = allCrumbs.get(page);
+        if (crumb) {
+            crumbs.push(crumb);
         }
-        // if(page == 'asset-lineage' && this.subroute2 && this.subroute2.path){
-        //     crumbs.push({label: this.subrouteData2.guid, href:  "/" + this.subrouteData2.guid });
-        // }//TODO to create new service to get displayName instead of displaying the gui
-
-
         this.crumbs = crumbs;
 
     }
@@ -311,11 +305,11 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         // Show 'asset-search' in that case. And if the page doesn't exist, show 'view404'.
 
         if (!page) {
-            this.page = 'asset-search';
+            this.page = 'asset-catalog';
         } else if (this.pages.indexOf(page) !== -1) {
             this.page = page;
         } else {
-            this.page = 'asset-search';
+            this.page = 'view404';
         }
 
         // Close a non-persistent drawer when the page & route are changed.
@@ -324,7 +318,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             this._getDrawer().close();
 
         }
-        this._updateBreadcrumb(this.page);
+
     }
 
     _onPageChanged(event) {
@@ -367,14 +361,17 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             case 'repository-explorer':
                 import('./repository-explorer/repository-explorer-view.js');
                 break;
-            case 'view404':
-                import('./asset-search/my-view404.js');
+            case 'asset-catalog' :
+                import('./asset-catalog/asset-catalog-view.js');
                 break;
-            case 'asset-search' :
-                import('./asset-search/asset-search-view.js');
+            case 'glossary' :
+                import('./glossary/glossary-view.js');
                 break;
             case 'about' :
                 import('./about-view.js');
+                break;
+            case 'view404':
+                import('./error404.js');
                 break;
         }
 

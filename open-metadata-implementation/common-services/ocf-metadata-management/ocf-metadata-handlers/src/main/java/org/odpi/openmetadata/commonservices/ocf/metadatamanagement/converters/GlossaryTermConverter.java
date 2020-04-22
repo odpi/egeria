@@ -11,6 +11,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+/**
+ * GlossaryTermConverter takes a glossary term entity and turns it into a glossary term bean.
+ */
 public class GlossaryTermConverter extends ReferenceableConverter
 {
     /**

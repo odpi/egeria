@@ -65,31 +65,28 @@
   vars:
     type: database_table
     conditions:
-      - { property: "database_schema.database.name", operator: "=", value: "{{ db_name | upper }}" }
+      - { property: "database_schema.database.name", operator: "=", value: "MINIMAL" }
       - { property: "database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
-  with_items: "{{ egeria_samples_minimal_databases }}"
-  loop_control:
-    loop_var: db_name
 
 - include_tasks: query-and-remove-type.yml
   vars:
     type: database_schema
     conditions:
-      - { property: "database.name", operator: "=", value: "{{ db_name | upper }}" }
+      - { property: "database.name", operator: "=", value: "MINIMAL" }
       - { property: "database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
-  with_items: "{{ egeria_samples_minimal_databases }}"
-  loop_control:
-    loop_var: db_name
 
 - include_tasks: query-and-remove-type.yml
   vars:
     type: database
     conditions:
-      - { property: "name", operator: "=", value: "{{ db_name | upper }}" }
+      - { property: "name", operator: "=", value: "MINIMAL" }
       - { property: "host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
-  with_items: "{{ egeria_samples_minimal_databases }}"
-  loop_control:
-    loop_var: db_name
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: information_governance_rule
+    conditions:
+      - { property: "name", operator: "=", value: "Job metadata will be periodically synced through ODPi Egeria's Data Engine OMAS" }
 
 - name: close session
   uri:
@@ -158,21 +155,7 @@
     {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
     -u {{ ibm_infosvr_users.isadmin }}
     -w {{ ibm_infosvr_upwds.isadmin }}
-    -n Minimal_SampleFiles
-    -a delete
-    --type area
-  args:
-    executable: /bin/bash
-  when: >
-    ('ibm_information_server_engine' in group_names)
-    and __minimal_existing_import_areas.stdout.find('Minimal_SampleFiles') != -1
-
-- name: remove Metadata Asset Manager database import areas
-  shell: >
-    {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
-    -u {{ ibm_infosvr_users.isadmin }}
-    -w {{ ibm_infosvr_upwds.isadmin }}
-    -n Minimal_{{ item | upper }}
+    -n Minimal_{{ item }}
     -a delete
     --type area
   args:
@@ -180,31 +163,19 @@
   when: >
     ('ibm_information_server_engine' in group_names)
     and __minimal_existing_import_areas.stdout.find('Minimal_'~item) != -1
-  with_items: "{{ egeria_samples_minimal_databases }}"
+  with_items: "{{ egeria_samples_minimal_files }}"
 
-- name: remote database catalog status
-  shell: "source ~/.bashrc && db2 list database directory"
-  args:
-    executable: /bin/bash
-  become_user: "{{ ibm_infosvr_users.db2inst1 }}"
-  become: yes
-  ignore_errors: yes
-  register: __minimal_db2catalog_completion
-  changed_when: False
-  when: >
-    ('ibm_information_server_engine' in group_names)
-    and (egeria_samples_minimal_db_type == 'ibm-db2')
-
-- name: uncatalog databases
+- name: remove Metadata Asset Manager database import areas
   shell: >
-    source ~/.bashrc &&
-    db2 uncatalog database {{ item | upper }}
+    {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
+    -u {{ ibm_infosvr_users.isadmin }}
+    -w {{ ibm_infosvr_upwds.isadmin }}
+    -n Minimal_{{ item }}
+    -a delete
+    --type area
   args:
     executable: /bin/bash
-  become: yes
-  become_user: "{{ egeria_samples_db_credentials.owner }}"
   when: >
     ('ibm_information_server_engine' in group_names)
-    and (egeria_samples_minimal_db_type == 'ibm-db2')
-    and __minimal_db2catalog_completion.stdout.find(item) > 0
-  with_items: "{{ egeria_samples_minimal_databases }}"
+    and __minimal_existing_import_areas.stdout.find('Minimal_'~item) != -1
+  with_items: "{{ egeria_samples_minimal_tables }}"

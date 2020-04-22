@@ -7,7 +7,8 @@ import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHa
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -29,11 +30,11 @@ class AssetCatalogServicesInstance extends OCFOMASServiceInstance {
      * @param auditLog                logging destination
      * @param localServerUserId       userId used for server initiated actions
      * @param supportedTypesForSearch
-     * @throws org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException a problem occurred during initialization
+     * @throws NewInstanceException a problem occurred during initialization
      */
     AssetCatalogServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                 List<String> supportedZones, OMRSAuditLog auditLog,
-                                 String localServerUserId, List<String> supportedTypesForSearch) throws org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException {
+                                 List<String> supportedZones, AuditLog auditLog,
+                                 String localServerUserId, List<String> supportedTypesForSearch) throws NewInstanceException {
 
         super(description.getAccessServiceName() + " OMAS", repositoryConnector, auditLog, localServerUserId, repositoryConnector.getMaxPageSize());
         super.supportedZones = supportedZones;

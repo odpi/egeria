@@ -42,12 +42,12 @@ import './rex-styles.js';
 
 
 /**
-*
-* TypeExplorerView is the top level web component for the Type Explorer UI component.
-* It implements the controller component of the design.
-* It is responsible for creating the ConnectionManager, TypeManager components
-* It is responsible for creating the FocusManager, DiagramManager and DetailsPanel components
-*/
+ *
+ * TypeExplorerView is the top level web component for the Type Explorer UI component.
+ * It implements the controller component of the design.
+ * It is responsible for creating the ConnectionManager, TypeManager components
+ * It is responsible for creating the FocusManager, DiagramManager and DetailsPanel components
+ */
 
 class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     static get template() {
@@ -58,6 +58,8 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
             </style>
 
             <body>
+
+                <app-route route="{{route}}" pattern="/:serverName/:serverURLRoot_base64/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
 
                 <rex-type-manager id="rexTypeManager"></rex-type-manager>
 
@@ -444,7 +446,12 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
             theTypeManager: Object,
             theInstanceRetriever: Object,
             theConnectionManager: Object,
-            theDiagramManager : Object
+            theDiagramManager : Object,
+
+            autoLoad : {
+                type  : Object,
+                value : null
+            }
         };
     }
 
@@ -467,6 +474,22 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
          */
         this.theDiagramManager.setInstanceRetriever(this.theInstanceRetriever);
 
+        if (this.autoLoad !== null) {
+            var serverName = this.autoLoad['serverName'];
+            var serverURLRoot = this.autoLoad['serverURLRoot'];
+            var guid = this.autoLoad['guid'];
+            /*
+             * Pass the server details to the connection-manager. Set the enterpriseOption
+             * because the server used by the previous page may not host the home metadataCollection
+             * of the object with the given GUID.
+             */
+            if (this.theConnectionManager !== undefined) {
+                this.theConnectionManager.setServerDetails(serverName, serverURLRoot, true);
+                this.theConnectionManager.doConnect();
+                this.theInstanceRetriever.loadEntity(guid);
+            }
+
+        }
     }
 
     initialise() {
@@ -515,7 +538,7 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
         this.addEventListener('focus-entity-cleared', function (e) {
             this.$.rexDetailsPanel.inEvtFocusEntityCleared();
             this.$.rexInstanceRetriever.inEvtFocusEntityCleared();
-         });
+        });
 
         this.addEventListener('focus-relationship-changed', function (e) {
             var guid = e.detail.guid;
@@ -535,7 +558,7 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
         });
 
         this.addEventListener('pre-traversal-loaded', function (e) {
-             this.$.graphControls.inEvtPreTraversalLoaded();
+            this.$.graphControls.inEvtPreTraversalLoaded();
         });
 
         this.addEventListener('pre-traversal-not-loaded', function (e) {
@@ -544,19 +567,19 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
         });
 
         this.addEventListener('traversal-not-loaded', function (e) {
-             // Generate an alert for the error condition
-             alert( "Event :" + 'traversal-not-loaded' + ' from ' + e.detail.source);
+            // Generate an alert for the error condition
+            alert( "Event :" + 'traversal-not-loaded' + ' from ' + e.detail.source);
         });
 
         this.addEventListener('graph-cleared', function (e) {
-             this.$.rexInstanceRetriever.inEvtGraphCleared();
-             this.$.rexDiagramManager.inEvtGraphCleared();
-             this.$.rexDetailsPanel.inEvtGraphCleared();
-             this.$.graphControls.inEvtGraphCleared();
+            this.$.rexInstanceRetriever.inEvtGraphCleared();
+            this.$.rexDiagramManager.inEvtGraphCleared();
+            this.$.rexDetailsPanel.inEvtGraphCleared();
+            this.$.graphControls.inEvtGraphCleared();
         });
 
         this.addEventListener('undo', function (e) {
-             this.$.rexInstanceRetriever.inEvtUndoPhaseOne();
+            this.$.rexInstanceRetriever.inEvtUndoPhaseOne();
         });
 
         this.addEventListener('graph-being-reduced', function (e) {
@@ -572,6 +595,58 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
 
     aboutRex() {
         this.$.aboutDialog.open();
+    }
+
+    static get observers() {
+        return [
+            '_routeChanged(route)'
+        ];
+    }
+
+    _routeChanged(route) {
+
+        if (route.prefix === '/repository-explorer') {
+
+            /*
+             * Whether the caller has appended to the URI or not, routeData will be
+             * non-null - it is always an object. But if the caller has used the
+             * plain repository-explorer URI with no tail, the serverName and other
+             * fields will be undefined.
+             *
+             * A note on routeData - it is accessible both as the raw arg or through 'this'
+             * The following code uses the raw arg.
+             */
+
+            /*
+             * If there is no route data we need to ensure autoLoad is null.
+             */
+            this.autoLoad = null;
+
+            if (this.routeData.serverName           !== undefined &&
+                this.routeData.serverURLRoot_base64 !== undefined &&
+                this.routeData.guid                 !== undefined) {
+
+                /* We have everything we think we need */
+                var serverName           = this.routeData.serverName;
+                var serverURLRoot_base64 = this.routeData.serverURLRoot_base64;
+                var serverURLRoot        = atob(serverURLRoot_base64);
+                var guid                 = this.routeData.guid;
+
+                /*
+                 * It is not possible to connect to the specified server and load the GUID yet,
+                 * because the repository-explorer-view component has not finished loading yet - its
+                 * ready() method has not been called.
+                 * To facilitate the connect and load, package the details into the autoLoad property
+                 * which is inspected at the end of ready() and will initiate the connection to the
+                 * specified server and try to load the object with the given GUID.
+                 */
+                this.autoLoad = {};
+                this.autoLoad['serverName']    = serverName;
+                this.autoLoad['serverURLRoot'] = serverURLRoot;
+                this.autoLoad['guid']          = guid;
+
+            }
+        }
     }
 }
 

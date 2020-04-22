@@ -2,5 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the ODPi Egeria project.
 
-- import_playbook: remove-data.yml
-- import_playbook: remove-metadata.yml
+- name: remove Minimal sample metadata
+  hosts: all
+  any_errors_fatal: true
+  vars_files:
+    - defaults/main.yml
+    - vars/data.yml
+  tasks:
+    - name: remove sample metadata
+      include_tasks: "metadata/{{ egeria_samples_metadata_backend }}/remove.yml"

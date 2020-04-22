@@ -15,6 +15,8 @@ import java.util.Iterator;
 public abstract class AssetRelatedMediaReferences extends AssetPropertyIteratorBase
                                                   implements Iterator<AssetRelatedMediaReference>
 {
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *
