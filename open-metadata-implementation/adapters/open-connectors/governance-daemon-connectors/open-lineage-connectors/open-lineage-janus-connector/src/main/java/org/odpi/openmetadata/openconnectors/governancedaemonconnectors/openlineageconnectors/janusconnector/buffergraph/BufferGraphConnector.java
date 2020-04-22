@@ -77,7 +77,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             guidList.forEach(process -> findInputColumns(g,process));
             g.tx().commit();
         }catch (Exception e){
-            log.error("Something went wrong when trying to map a process from bufferGraph to the mainGraph. The error is {}",e.getMessage());
+            log.error("Something went wrong when trying to map a process from bufferGraph to the mainGraph. The error is {}",e);
             g.tx().rollback();
         }
     }
@@ -158,31 +158,90 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             String columnOutGuid = columnOut.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
             String columnInGuid = columnIn.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
             if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
-                MainGraphMapper mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
-                mainGraphMapper.checkBufferGraph(columnInGuid,columnOutGuid,process);
+
+                test(columnIn,columnOut,process);
+
+//                MainGraphMapper mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
+//                mainGraphMapper.checkBufferGraph(columnInGuid,columnOutGuid,process);
             }
         }
     }
 
+    private void test(Vertex columnIn,Vertex columnOut,Vertex process){
+
+        GraphTraversalSource g = bufferGraph.traversal();
+
+        final String processGuid = process.value(PROPERTY_KEY_ENTITY_GUID);
+        final String processName = process.value(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME);
+
+        //check if subprocess node exist
+        Iterator<Vertex> t = g.V(columnIn.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).has("processGuid",processGuid).inV().has(PROPERTY_KEY_ENTITY_GUID,columnOut.property(PROPERTY_KEY_ENTITY_GUID).value());
+
+        if(!t.hasNext()) {
+            Vertex subProcess = g.addV(NODE_LABEL_SUB_PROCESS)
+                    .property(PROPERTY_KEY_ENTITY_NODE_ID, UUID.randomUUID().toString())
+                    .property("processGuid", processGuid)
+                    .property(PROPERTY_KEY_DISPLAY_NAME, processName)
+                    .next();
+
+            columnIn.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, subProcess);
+            subProcess.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, columnOut);
+            subProcess.addEdge(EDGE_LABEL_INCLUDED_IN, process);
+            g.tx().commit();
+
+            addTableNode(columnIn, columnOut, process);
+        }
+    }
+
+    private void addTableNode(Vertex columnInVertex, Vertex columnOutVertex, Vertex process){
+        GraphTraversalSource bufferG = bufferGraph.traversal();
+
+
+        Vertex tableIn = getTable(bufferG,columnInVertex);
+        Vertex tableOut = getTable(bufferG,columnOutVertex);
+//
+//        if (tableIn == null || tableOut == null){
+//            bufferG.tx().rollback();
+//            mainG.tx().rollback();
+//            return;
+//        }
+
+        addTableRelationships(bufferG,tableIn,process,columnInVertex);
+        addTableRelationships(bufferG,tableOut,process,columnOutVertex);
+
+//        addColumns(bufferG,mainG,tableOut);
+
+        bufferG.tx().commit();
+    }
+
+    private Vertex getTable(GraphTraversalSource bufferG,Vertex asset){
+        Iterator<Vertex> table = bufferG.V().has(PROPERTY_KEY_ENTITY_GUID,asset.property(PROPERTY_KEY_ENTITY_GUID).value())
+                .emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(RELATIONAL_TABLE),hasLabel(DATA_FILE));
+
+        if (!table.hasNext()){
+            return null;
+        }
+
+        return table.next();
+    }
+
+    private void addTableRelationships(GraphTraversalSource bufferG,Vertex table,Vertex process,Vertex column){
+
+        Iterator<Vertex> tableVertex = bufferG.V(table.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).otherV();
+        if(!tableVertex.hasNext()){
+            table.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS,process);
+        }
+
+    }
     /**
      * Creates a new vertex if it does not exist
-     * @param lineageEvent - LineageEntity object to be created
+     * @param graphContext - graph Collection that contains vertices and edges to be stored
      */
     @Override
-    public void addEntity(LineageEvent lineageEvent){
+    public void addEntity(Set<GraphContext> graphContext){
 
         GraphTraversalSource g =  bufferGraph.traversal();
-
-        Set<GraphContext> verticesToBeAdded = new HashSet<>();
-        lineageEvent.getAssetContext().forEach((key, value) -> {
-            if (value.size() > 1) {
-                verticesToBeAdded.addAll(value);
-            } else {
-                verticesToBeAdded.add(value.stream().findFirst().get());
-            }
-        });
-
-        verticesToBeAdded.forEach(entry -> {
+        graphContext.forEach(entry -> {
             try {
                 addVerticesAndRelationship(g, entry);
             } catch (JanusConnectorException e) {
@@ -210,7 +269,9 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      * @param g - Graph traversal object
      * @param lineageEntity - Entity to be created
      */
-    private  Vertex addVertex(GraphTraversalSource g,LineageEntity lineageEntity) throws JanusConnectorException{
+    private  Vertex addVertex(GraphTraversalSource g,LineageEntity lineageEntity) throws JanusConnectorException {
+
+
         //TODO test the updated queries
 //        Iterator<Vertex> vertexIt = g.V()
 //                                     .has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid())
@@ -222,6 +283,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         Vertex vertex;
         if(!vertexIt.hasNext()){
 
+//        Vertex vertex;
             vertex = g.addV(lineageEntity.getTypeDefName()).next();
             addPropertiesToVertex(g,vertex,lineageEntity);
             g.tx().commit();
@@ -434,7 +496,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      */
     private Vertex findPathForOutputAsset(Vertex endingVertex, GraphTraversalSource g,Vertex startingVertex)  {
         final String VERTEX = "vertex";
-
+        //add null check for endingVertex
         try{
             Iterator<Vertex> end =  g.V(endingVertex.id())
                     .or(__.out(ATTRIBUTE_FOR_SCHEMA).out(ASSET_SCHEMA_TYPE)

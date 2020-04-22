@@ -2,11 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.buffergraph;
 
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
+
+import java.util.Set;
 
 public abstract class BufferGraphConnectorBase extends ConnectorBase implements BufferGraph {
 
@@ -14,7 +16,7 @@ public abstract class BufferGraphConnectorBase extends ConnectorBase implements 
     public abstract void initializeGraphDB() throws OpenLineageException;
 
     @Override
-    public abstract void addEntity(LineageEvent lineageEvent);
+    public abstract void addEntity(Set<GraphContext> graphContext);
 
     @Override
     public abstract void updateEntity(LineageEntity lineageEntity);

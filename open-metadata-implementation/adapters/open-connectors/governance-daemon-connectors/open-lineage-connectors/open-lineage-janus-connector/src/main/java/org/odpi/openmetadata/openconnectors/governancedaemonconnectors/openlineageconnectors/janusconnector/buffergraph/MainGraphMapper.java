@@ -351,6 +351,12 @@ public class MainGraphMapper {
     }
 
     public void updateVertex(Vertex vertex, Map<String, Object> properties){
+//        String type = properties.get(PROPERTY_KEY_DISPLAY_NAME).toString();
+//        //TODO add types for TabularColumns
+//        List<String> typesList = new ArrayList<>(Arrays.asList(RELATIONAL_DB_SCHEMA_TYPE,DEPLOYED_DB_SCHEMA_TYPE,DATABASE,CONNECTION));
+//        if(typesList.contains(type)){
+//
+//        }
         Iterator<Vertex> vertexMainIt = mainG.V().has(PROPERTY_KEY_ENTITY_NODE_ID,vertex.property(PROPERTY_KEY_ENTITY_GUID).value());
         if (!vertexMainIt.hasNext()){
             log.debug("Vertex with guid {} does not exist in the mainGraph",vertex.property(PROPERTY_KEY_ENTITY_GUID).value());

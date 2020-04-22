@@ -4,10 +4,14 @@ package org.odpi.openmetadata.governanceservers.openlineage.services;
 
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.scheduler.JobConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class StoringServices {
 
@@ -26,7 +30,17 @@ public class StoringServices {
      *
      */
     public void addEntity(LineageEvent lineageEvent){
-        bufferGraph.addEntity(lineageEvent);
+
+        Set<GraphContext> verticesToBeAdded = new HashSet<>();
+        lineageEvent.getAssetContext().forEach((key, value) -> {
+            if (value.size() > 1) {
+                verticesToBeAdded.addAll(value);
+            } else {
+                verticesToBeAdded.add(value.stream().findFirst().get());
+            }
+        });
+
+        bufferGraph.addEntity(verticesToBeAdded);
     }
 
     /**
