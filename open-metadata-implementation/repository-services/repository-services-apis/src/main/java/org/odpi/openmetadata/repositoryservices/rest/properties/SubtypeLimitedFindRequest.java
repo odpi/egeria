@@ -5,14 +5,16 @@ package org.odpi.openmetadata.repositoryservices.rest.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * TypeLimitedFindRequest extends the paged find request to allow the caller to request results from only
- * one type of instance.
+ * SubtypeLimitedFindRequest extends the type limited find request to allow the caller to request that only a restricted
+ * list of subtypes of the overall type are included in the results.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,21 +24,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = PropertyMatchFindRequest.class, name = "PropertyMatchFindRequest"),
-                @JsonSubTypes.Type(value = TypeLimitedHistoricalFindRequest.class, name = "TypeLimitedHistoricalFindRequest"),
-                @JsonSubTypes.Type(value = SubtypeLimitedFindRequest.class, name = "SubtypeLimitedFindRequest")
+                @JsonSubTypes.Type(value = InstanceFindRequest.class, name = "InstanceFindRequest")
         })
-public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
+public class SubtypeLimitedFindRequest extends TypeLimitedFindRequest
 {
     private static final long    serialVersionUID = 1L;
 
-    private String                     typeGUID = null;
+    private List<String>             subtypeGUIDs = null;
 
 
     /**
      * Default constructor
      */
-    public TypeLimitedFindRequest()
+    public SubtypeLimitedFindRequest()
     {
         super();
     }
@@ -47,36 +47,40 @@ public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
      *
      * @param template object to copy
      */
-    public TypeLimitedFindRequest(TypeLimitedFindRequest template)
+    public SubtypeLimitedFindRequest(SubtypeLimitedFindRequest template)
     {
         super(template);
 
         if (template != null)
         {
-            this.typeGUID = template.getTypeGUID();
+            List<String> subtypes = template.getSubtypeGUIDs();
+            if (subtypes != null && !subtypes.isEmpty())
+            {
+                this.subtypeGUIDs = new ArrayList<>(subtypes);
+            }
         }
     }
 
 
     /**
-     * Return the type guid to limit the results of the find request.
+     * Return the subtype guids to limit the results of the find request.
      *
-     * @return String guid
+     * @return {@code List<String>} guids
      */
-    public String getTypeGUID()
+    public List<String> getSubtypeGUIDs()
     {
-        return typeGUID;
+        return subtypeGUIDs;
     }
 
 
     /**
-     * Set up the type guid to limit the results of the find request.
+     * Set up the subtype guids to limit the results of the find request.
      *
-     * @param typeGUID String guid
+     * @param subtypeGUIDs {@code List<String>} guids
      */
-    public void setTypeGUID(String typeGUID)
+    public void setSubtypeGUIDs(List<String> subtypeGUIDs)
     {
-        this.typeGUID = typeGUID;
+        this.subtypeGUIDs = subtypeGUIDs;
     }
 
 
@@ -88,8 +92,9 @@ public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
     @Override
     public String toString()
     {
-        return "TypeLimitedFindRequest{" +
-                "typeGUID='" + typeGUID + '\'' +
+        return "SubtypeLimitedFindRequest{" +
+                "typeGUID='" + getTypeGUID() + '\'' +
+                ", subtypeGUIDs='" + getSubtypeGUIDs() + '\'' +
                 ", sequencingProperty='" + getSequencingProperty() + '\'' +
                 ", sequencingOrder=" + getSequencingOrder() +
                 ", offset=" + getOffset() +
@@ -120,9 +125,9 @@ public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
         {
             return false;
         }
-        TypeLimitedFindRequest
-                that = (TypeLimitedFindRequest) objectToCompare;
-        return Objects.equals(getTypeGUID(), that.getTypeGUID());
+        SubtypeLimitedFindRequest
+                that = (SubtypeLimitedFindRequest) objectToCompare;
+        return Objects.equals(getSubtypeGUIDs(), that.getSubtypeGUIDs());
     }
 
 
@@ -134,7 +139,7 @@ public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(super.hashCode(), getTypeGUID());
+        return Objects.hash(super.hashCode(), getSubtypeGUIDs());
     }
+
 }
