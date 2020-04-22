@@ -65,7 +65,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet {
 
     EVENT_PROCESSING_ERROR("OMAS-GOVERNANCE-ENGINE-0008",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The Governance Engine Open Metadata Access Service (OMAS) encounter an exception while processing incoming event {0}",
+            "The Governance Engine Open Metadata Access Service (OMAS) encounter an exception while processing event of type {0}",
             "The event could not be processed",
             "Review the exception to determine the source of the error and correct it.");
 
