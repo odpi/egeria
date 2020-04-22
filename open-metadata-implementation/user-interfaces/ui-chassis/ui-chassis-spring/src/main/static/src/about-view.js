@@ -15,66 +15,51 @@ class AboutView extends PolymerElement {
        <style include="shared-styles">
         :host {
           display: block;
-          padding: 10px 20px;
-          background-color:  var(--egeria-background-color);
+          margin: 10px 24px;
+          padding: 5px;
+          background-color: var(--egeria-background-color);
+          min-height: calc(100vh - 85px);
         }
-        div.container {
-          min-height: 10em;
-          vertical-align: middle;
-          margin-left: auto;
-          margin-right: auto;
-        }
-        
       </style>
     
       <token-ajax id="userAjax" last-response="{{a}}" url="/api/about" auto></token-ajax>
-        
-        <div class="container">
-        
-            <h2>About</h2>
-
-            <paper-listbox>
+        <h2>About</h2>
+        <div role="listbox">
+            <paper-item>
+              <paper-item-body two-line>
+                <div>Application name</div>
+                <div secondary>[[a.name]]</div>
+              </paper-item-body>
+            </paper-item>
             
-            <div role="listbox">
-              <paper-item>
-                <paper-item-body two-line>
-                  <div>Application name</div>
-                  <div secondary>[[a.name]]</div>
-                </paper-item-body>
-              </paper-item>
-              
-              <paper-item>
-                <paper-item-body two-line>
-                  <div>Maven group</div>
-                  <div secondary>[[a.group]]</div>
-                </paper-item-body>
-              </paper-item>
-              
-               <paper-item>
-                <paper-item-body two-line>
-                  <div>Maven artifact id</div>
-                  <div secondary>[[a.artifact]]</div>
-                </paper-item-body>
-              </paper-item>
-              
-              <paper-item>
-                <paper-item-body two-line>
-                  <div>Version</div>
-                  <div secondary>[[a.version]]</div>
-                </paper-item-body>
-              </paper-item>
-              
-               <paper-item>
-                <paper-item-body two-line>
-                  <div>Build time</div>
-                  <div secondary>[[a.time]]</div>
-                </paper-item-body>
-              </paper-item>
-              
-            </paper-listbox>
-            </div>
+            <paper-item>
+              <paper-item-body two-line>
+                <div>Maven group</div>
+                <div secondary>[[a.group]]</div>
+              </paper-item-body>
+            </paper-item>
             
-        </div>
+             <paper-item>
+              <paper-item-body two-line>
+                <div>Maven artifact id</div>
+                <div secondary>[[a.artifact]]</div>
+              </paper-item-body>
+            </paper-item>
+            
+            <paper-item>
+              <paper-item-body two-line>
+                <div>Version</div>
+                <div secondary>[[a.version]]</div>
+              </paper-item-body>
+            </paper-item>
+            
+             <paper-item>
+              <paper-item-body two-line>
+                <div>Build time</div>
+                <div secondary>[[a.time]]</div>
+              </paper-item-body>
+            </paper-item>
+         </div>
     `;
   }
 }
