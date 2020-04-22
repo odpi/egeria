@@ -34,7 +34,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
     private OMRSRepositoryHelper repositoryHelper;
     private OMRSRepositoryValidator repositoryValidator;
     private String componentName;
-    private String serverName;
+    private String serverUserName;
     private List<String> supportedZones;
     private GovernanceEnginePublisher publisher;
 
@@ -42,14 +42,14 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
                                              OMRSRepositoryHelper repositoryHelper,
                                              OMRSRepositoryValidator repositoryValidator,
                                              String componentName,
-                                             String serverName,
+                                             String serverUserName,
                                              List<String> supportedZones,
                                              AuditLog auditLog) {
         super(componentName, auditLog);
         this.repositoryHelper = repositoryHelper;
         this.repositoryValidator = repositoryValidator;
         this.componentName = componentName;
-        this.serverName = serverName;
+        this.serverUserName = serverUserName;
         this.supportedZones = supportedZones;
         publisher = new GovernanceEnginePublisher(openMetadataTopicConnector, auditLog);
     }
@@ -99,7 +99,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
         logEvent(eventTypeName, entity);
 
         try {
-            GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(componentName, serverName, methodName);
+            GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(serverUserName, serverUserName, methodName);
             if (!governedAssetHandler.isSchemaElement(entity.getType()) || !governedAssetHandler.containsGovernedClassification(entity)) {
                 logNoProcessEvent(eventTypeName, entity);
                 return;
@@ -108,7 +108,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
             GovernanceEngineEvent governanceEngineEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.NEW_CLASSIFIED_ASSET);
             publisher.publishEvent(governanceEngineEvent);
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
-            logExceptionToAudit(instanceEvent, e);
+            logExceptionToAudit(methodName, instanceEvent, e);
         }
     }
 
@@ -119,7 +119,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
         logEvent(eventTypeName, entity);
 
         try {
-            GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(componentName, serverName, methodName);
+            GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(serverUserName, serverUserName, methodName);
             if (governedAssetHandler != null && !governedAssetHandler.isSchemaElement(entity.getType())) {
                 logNoProcessEvent(eventTypeName, entity);
                 return;
@@ -129,7 +129,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
             publisher.publishEvent(governanceEngineEvent);
 
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-            logExceptionToAudit(instanceEvent, e);
+            logExceptionToAudit(methodName, instanceEvent, e);
         }
 
     }
@@ -142,7 +142,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
         logEvent(eventTypeName, entity);
 
         try {
-            GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(componentName, serverName, methodName);
+            GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(componentName, serverUserName, methodName);
             if (governedAssetHandler != null &&
                     (!governedAssetHandler.isSchemaElement(entity.getType()) || !governedAssetHandler.containsGovernedClassification(entity))) {
                 logNoProcessEvent(eventTypeName, entity);
@@ -152,7 +152,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
             GovernanceEngineEvent governanceEngineEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.DELETED_ASSET);
             publisher.publishEvent(governanceEngineEvent);
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-            logExceptionToAudit(instanceEvent, e);
+            logExceptionToAudit(methodName, instanceEvent, e);
         }
 
     }
@@ -164,7 +164,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
         logEvent(eventTypeName, entity);
 
         try {
-            GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(componentName, serverName, methodName);
+            GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(serverUserName, serverUserName, methodName);
 
             if (governedAssetHandler != null && !governedAssetHandler.isSchemaElement(entity.getType())) {
                 logNoProcessEvent(eventTypeName, entity);
@@ -174,7 +174,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
             GovernanceEngineEvent governanceEngineEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.DE_CLASSIFIED_ASSET);
             publisher.publishEvent(governanceEngineEvent);
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
-            logExceptionToAudit(instanceEvent, e);
+            logExceptionToAudit(methodName, instanceEvent, e);
         }
 
     }
@@ -182,7 +182,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
     private GovernanceEngineEvent getGovernanceEngineEvent(EntityDetail entityDetail,
                                                            GovernanceEngineEventType governanceEngineEventType) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getGovernanceEngineEvent";
-        GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(componentName, serverName, methodName);
+        GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(serverUserName, serverUserName, methodName);
 
         if (governedAssetHandler == null) {
             return null;
@@ -190,7 +190,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
 
         GovernanceEngineEvent governanceEvent = new GovernanceEngineEvent();
         governanceEvent.setEventType(governanceEngineEventType);
-        GovernedAsset governedAsset = governedAssetHandler.convertGovernedAsset(componentName, entityDetail);
+        GovernedAsset governedAsset = governedAssetHandler.convertGovernedAsset(serverUserName, entityDetail);
         governanceEvent.setGovernedAsset(governedAsset);
 
         return governanceEvent;
@@ -198,16 +198,18 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
 
     private void logEvent(String eventType, EntityDetail entityDetail) {
         log.debug("{} received event {} for entity GUID = {} - type = {}",
-                componentName, eventType, entityDetail.getGUID(), entityDetail.getType().getTypeDefName());
+                serverUserName, eventType, entityDetail.getGUID(), entityDetail.getType().getTypeDefName());
     }
 
     private void logNoProcessEvent(String eventTypeName, EntityDetail entityDetail) {
         log.debug("Event received {} for entity GUID = {} - type = {} is not processed by {}",
-                eventTypeName, entityDetail.getGUID(), entityDetail.getType().getTypeDefName(), componentName);
+                eventTypeName, entityDetail.getGUID(), entityDetail.getType().getTypeDefName(), serverUserName);
     }
 
-    private void logExceptionToAudit(OMRSInstanceEvent instanceEvent, Throwable e) {
-        auditLog.logMessage("Governance Engine OMAS is processing an OMRSTopic event.",
-                GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition());
+    private void logExceptionToAudit(String methodName, OMRSInstanceEvent instanceEvent, Throwable error) {
+        auditLog.logException(methodName,
+                GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(instanceEvent.getInstanceEventType().getName()),
+                "instanceEvent {" + instanceEvent.toString() + "}",
+                error);
     }
 }

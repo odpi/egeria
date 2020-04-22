@@ -64,7 +64,7 @@ public class GovernedAssetHandler {
         this.repositoryHandler = repositoryHandler;
         this.errorHandler = errorHandler;
         this.supportedZones = supportedZones;
-        contextBuilder = new ContextBuilder(repositoryHandler, repositoryHelper);
+        contextBuilder = new ContextBuilder(serverName, repositoryHandler, repositoryHelper);
     }
 
     public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier) {
@@ -135,7 +135,7 @@ public class GovernedAssetHandler {
             return false;
         }
 
-        return repositoryHelper.isTypeOf(GOVERNANCE_ENGINE, entityType.getTypeDefName(), SCHEMA_ATTRIBUTE);
+        return repositoryHelper.isTypeOf(serverName, entityType.getTypeDefName(), SCHEMA_ATTRIBUTE);
     }
 
     public String createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
@@ -174,8 +174,8 @@ public class GovernedAssetHandler {
 
         governedAsset.setGuid(entity.getGUID());
         governedAsset.setType(entity.getType().getTypeDefName());
-        governedAsset.setFullQualifiedName(repositoryHelper.getStringProperty(GOVERNANCE_ENGINE, QUALIFIED_NAME, entity.getProperties(), methodName));
-        governedAsset.setName(repositoryHelper.getStringProperty(GOVERNANCE_ENGINE, DISPLAY_NAME, entity.getProperties(), methodName));
+        governedAsset.setFullQualifiedName(repositoryHelper.getStringProperty(serverName, QUALIFIED_NAME, entity.getProperties(), methodName));
+        governedAsset.setName(repositoryHelper.getStringProperty(serverName, DISPLAY_NAME, entity.getProperties(), methodName));
         governedAsset.setContext(buildContext(userID, entity));
 
         if (entity.getClassifications() != null && !entity.getClassifications().isEmpty()) {
@@ -201,10 +201,10 @@ public class GovernedAssetHandler {
         InstanceProperties properties = classification.getProperties();
         if (properties != null) {
             governanceClassification.setSecurityLabels(
-                    repositoryHelper.getStringArrayProperty(GOVERNANCE_ENGINE, SECURITY_LABELS, properties, methodName));
+                    repositoryHelper.getStringArrayProperty(serverName, SECURITY_LABELS, properties, methodName));
 
             governanceClassification.setSecurityProperties(
-                    repositoryHelper.getStringMapFromProperty(GOVERNANCE_ENGINE, SECURITY_PROPERTIES, properties, methodName));
+                    repositoryHelper.getStringMapFromProperty(serverName, SECURITY_PROPERTIES, properties, methodName));
         }
 
         return governanceClassification;
@@ -285,11 +285,11 @@ public class GovernedAssetHandler {
         String methodName = "addStringProperty";
 
         if (propertyValue != null) {
-            repositoryHelper.addStringPropertyToInstance(GOVERNANCE_ENGINE, properties, propertyName, propertyValue, methodName);
+            repositoryHelper.addStringPropertyToInstance(serverName, properties, propertyName, propertyValue, methodName);
         }
     }
 
     private String getStringProperty(InstanceProperties properties, String propertyName, OMRSRepositoryHelper repositoryHelper) {
-        return repositoryHelper.getStringProperty(GOVERNANCE_ENGINE, propertyName, properties, "getStringProperty");
+        return repositoryHelper.getStringProperty(serverName, propertyName, properties, "getStringProperty");
     }
 }

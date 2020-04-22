@@ -27,7 +27,7 @@ which has an endpoint of `http://localhost:8080`.  Gary Geeke (`garygeeke`) is t
 
 ```bash
 $ curl -X GET http://localhost:8080/open-metadata/platform-services/users/garygeeke/server-platform-origin
-ODPi Egeria OMAG Server Platform (version 1.7-SNAPSHOT)
+ODPi Egeria OMAG Server Platform (version 1.8-SNAPSHOT)
 ```
 
 
