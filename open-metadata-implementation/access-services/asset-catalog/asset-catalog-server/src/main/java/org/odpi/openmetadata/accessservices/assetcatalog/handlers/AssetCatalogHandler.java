@@ -56,7 +56,8 @@ public class AssetCatalogHandler {
 
     private static final Logger log = LoggerFactory.getLogger(AssetCatalogHandler.class);
 
-    private final String serverName;
+    private final String serverUserName;
+    private final String sourceName;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
@@ -71,7 +72,8 @@ public class AssetCatalogHandler {
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param serverName              name of the local server
+     * @param serverUserName          name of the local server
+     * @param sourceName              name of the component
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
@@ -79,20 +81,21 @@ public class AssetCatalogHandler {
      * @param supportedZones          configurable list of zones that Asset Catalog is allowed to serve Assets from
      * @param supportedTypesForSearch configurable list of supported types used for search
      */
-    public AssetCatalogHandler(String serverName, InvalidParameterHandler invalidParameterHandler,
+    public AssetCatalogHandler(String serverUserName, String sourceName, InvalidParameterHandler invalidParameterHandler,
                                RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
                                RepositoryErrorHandler errorHandler, List<String> supportedZones, List<String> supportedTypesForSearch) {
-        this.serverName = serverName;
+        this.serverUserName = serverUserName;
+        this.sourceName = sourceName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.errorHandler = errorHandler;
         this.supportedZones = supportedZones;
-        this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper, errorHandler);
+        this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, errorHandler);
         if (CollectionUtils.isNotEmpty(supportedTypesForSearch)) {
             this.supportedTypesForSearch = supportedTypesForSearch;
         }
-        this.assetConverter = new AssetConverter(repositoryHelper);
+        this.assetConverter = new AssetConverter(sourceName, repositoryHelper);
     }
 
     /**
@@ -227,16 +230,9 @@ public class AssetCatalogHandler {
         }
 
         if (linkingEntities == null || CollectionUtils.isEmpty(linkingEntities.getRelationships())) {
-            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.LINKING_RELATIONSHIPS_NOT_FOUND;
-            String errorMessage = errorCode.getErrorMessageId() +
-                    errorCode.getFormattedErrorMessage(startAssetGUID, endAssetGUID, serverName);
-
-            throw new AssetCatalogException(errorCode.getHttpErrorCode(),
+            throw new AssetCatalogException(AssetCatalogErrorCode.LINKING_RELATIONSHIPS_NOT_FOUND.getMessageDefinition(methodName),
                     this.getClass().getName(),
-                    "getLinkingRelationshipsBetweenAssets",
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(), startAssetGUID, endAssetGUID);
+                    methodName);
         }
 
         return assetConverter.convertRelationships(linkingEntities.getRelationships());
@@ -320,16 +316,9 @@ public class AssetCatalogHandler {
         }
 
         if (linkingEntities == null || CollectionUtils.isEmpty(linkingEntities.getEntities())) {
-            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.LINKING_ASSETS_NOT_FOUND;
-            String errorMessage = errorCode.getErrorMessageId() +
-                    errorCode.getFormattedErrorMessage(startAssetGUID, endAssetGUID, serverName);
-
-            throw new AssetCatalogException(errorCode.getHttpErrorCode(),
+            throw new AssetCatalogException(AssetCatalogErrorCode.LINKING_ASSETS_NOT_FOUND.getMessageDefinition(methodName),
                     this.getClass().getName(),
-                    "getIntermediateAssets",
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(), startAssetGUID, endAssetGUID);
+                    methodName);
         }
 
         return getAssetDescriptionsAfterValidation(methodName, linkingEntities.getEntities());
@@ -360,16 +349,9 @@ public class AssetCatalogHandler {
 
         List<EntityDetail> entities = entityNeighborhood.getEntities();
         if (CollectionUtils.isEmpty(entities)) {
-            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.NO_ASSET_FROM_NEIGHBORHOOD_NOT_FOUND;
-            String errorMessage = errorCode.getErrorMessageId() +
-                    errorCode.getFormattedErrorMessage(assetGUID, serverName);
-
-            throw new AssetCatalogException(errorCode.getHttpErrorCode(),
+            throw new AssetCatalogException(AssetCatalogErrorCode.NO_ASSET_FROM_NEIGHBORHOOD_NOT_FOUND.getMessageDefinition(methodName),
                     this.getClass().getName(),
-                    "getEntitiesFromNeighborhood",
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(), assetGUID);
+                    methodName);
         }
 
         return getAssetDescriptionsAfterValidation(methodName, entities);
@@ -421,7 +403,7 @@ public class AssetCatalogHandler {
                         GUID_PARAMETER,
                         commonHandler.getAssetZoneMembership(entityDetail.getClassifications()),
                         supportedZones,
-                        ASSET_CATALOG_OMAS,
+                        serverUserName,
                         methodName);
                 AssetElements assetElements = assetConverter.buildAssetElements(entityDetail);
                 list.add(assetElements);
@@ -469,7 +451,7 @@ public class AssetCatalogHandler {
                     GUID_PARAMETER,
                     commonHandler.getAssetZoneMembership(entityDetail.getClassifications()),
                     supportedZones,
-                    ASSET_CATALOG_OMAS,
+                    serverUserName,
                     methodName);
 
             AssetElements assetElements = assetConverter.buildAssetElements(entityDetail);
@@ -502,10 +484,10 @@ public class AssetCatalogHandler {
      */
     public List<Type> getSupportedTypes(String userId, String typeName) {
         if (typeName != null && !typeName.isEmpty()) {
-            return getSupportedTypesCollector(userId, Arrays.asList(typeName));
+            return getSupportedTypesCollector(userId, typeName);
         }
 
-        return getSupportedTypesCollector(userId, supportedTypesForSearch);
+        return getSupportedTypesCollector(userId, supportedTypesForSearch.toArray(new String[0]));
     }
 
     private List<AssetDescription> getAssetDescriptionsAfterValidation(String methodName,
@@ -519,7 +501,7 @@ public class AssetCatalogHandler {
                     GUID_PARAMETER,
                     commonHandler.getAssetZoneMembership(asset.getClassifications()),
                     supportedZones,
-                    ASSET_CATALOG_OMAS,
+                    serverUserName,
                     methodName);
 
             result.add(assetConverter.getAssetDescription(asset));
@@ -541,7 +523,7 @@ public class AssetCatalogHandler {
                     GUID_PARAMETER,
                     commonHandler.getAssetZoneMembership(entityByGUID.getClassifications()),
                     supportedZones,
-                    ASSET_CATALOG_OMAS,
+                    serverUserName,
                     methodName);
         }
 
@@ -576,7 +558,7 @@ public class AssetCatalogHandler {
                                             EntityDetail entityDetail,
                                             AssetElement assetElement)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        findAsset(userId, Collections.singletonList(entityDetail), assetElement);
+        findAsset(userId, assetElement, entityDetail);
     }
 
     private AssetElements getContextForGlossaryTerm(String userId,
@@ -619,7 +601,7 @@ public class AssetCatalogHandler {
         elements.add(assetConverter.buildAssetElements(schema));
         assetElement.setContext(elements);
 
-        findAsset(userId, Collections.singletonList(schema), assetElement);
+        findAsset(userId, assetElement, schema);
 
         return assetElement;
     }
@@ -1099,7 +1081,7 @@ public class AssetCatalogHandler {
                     GUID_PARAMETER,
                     commonHandler.getAssetZoneMembership(asset.getClassifications()),
                     supportedZones,
-                    ASSET_CATALOG_OMAS,
+                    serverUserName,
                     methodName);
             elements.add(asset);
             elements.forEach(element -> assetConverter.addElement(assetElement, element));
@@ -1107,8 +1089,7 @@ public class AssetCatalogHandler {
     }
 
     private void findAsset(String userId,
-                           List<EntityDetail> entitiesByType,
-                           AssetElement assetElement)
+                           AssetElement assetElement, EntityDetail... entitiesByType)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
 
         String method = "findAsset";
@@ -1171,9 +1152,9 @@ public class AssetCatalogHandler {
 
         if (CollectionUtils.isNotEmpty(schemaAttributeTypeEntities)) {
             schemaAttributeTypeEntities.forEach(schemaAttributeTypeEntity -> assetConverter.addElement(assetElement, schemaAttributeTypeEntity));
-            findAsset(userId, schemaAttributeTypeEntities, assetElement);
+            findAsset(userId, assetElement, schemaAttributeTypeEntities.toArray(new EntityDetail[0]));
         } else {
-            findAsset(userId, Arrays.asList(schemaAttribute), assetElement);
+            findAsset(userId, assetElement, schemaAttribute);
         }
     }
 
@@ -1260,7 +1241,7 @@ public class AssetCatalogHandler {
                     GUID_PARAMETER,
                     commonHandler.getAssetZoneMembership(dataSet.getClassifications()),
                     supportedZones,
-                    ASSET_CATALOG_OMAS,
+                    serverUserName,
                     methodName);
 
             if (assetElement.getContext() != null) {
@@ -1312,7 +1293,7 @@ public class AssetCatalogHandler {
                             GUID_PARAMETER,
                             commonHandler.getAssetZoneMembership(asset.getClassifications()),
                             supportedZones,
-                            ASSET_CATALOG_OMAS,
+                            serverUserName,
                             methodName);
                     assetConverter.addElement(assetElement, asset);
                     setConnections(userId, assetElement, asset);
@@ -1359,8 +1340,7 @@ public class AssetCatalogHandler {
             for (EntityDetail entityDetail : connections) {
                 Connection connection = new Connection(
                         entityDetail.getGUID(),
-                        repositoryHelper.getStringProperty(ASSET_CATALOG_OMAS,
-                                QUALIFIED_NAME, entityDetail.getProperties(), methodName));
+                        repositoryHelper.getStringProperty(sourceName, QUALIFIED_NAME, entityDetail.getProperties(), methodName));
 
                 connectionList.add(connection);
             }
@@ -1380,7 +1360,7 @@ public class AssetCatalogHandler {
                 GUID_PARAMETER,
                 commonHandler.getAssetZoneMembership(entityDetails.getClassifications()),
                 supportedZones,
-                ASSET_CATALOG_OMAS,
+                userId,
                 methodName);
 
         return entityDetails.getClassifications();
@@ -1442,22 +1422,15 @@ public class AssetCatalogHandler {
         }
 
         if (entityNeighborhood == null) {
-            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.ASSET_NEIGHBORHOOD_NOT_FOUND;
-            String errorMessage = errorCode.getErrorMessageId() +
-                    errorCode.getFormattedErrorMessage(entityGUID, serverName);
-
-            throw new AssetCatalogException(errorCode.getHttpErrorCode(),
+            throw new AssetCatalogException(AssetCatalogErrorCode.ASSET_NEIGHBORHOOD_NOT_FOUND.getMessageDefinition(methodName),
                     this.getClass().getName(),
-                    "getAssetNeighborhood",
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(), entityGUID);
+                    methodName);
         }
 
         return entityNeighborhood;
     }
 
-    private List<Type> getSupportedTypesCollector(String userId, List<String> supportedTypesForSearch) {
+    private List<Type> getSupportedTypesCollector(String userId, String... supportedTypesForSearch) {
         List<Type> response = new ArrayList<>();
         for (String type : supportedTypesForSearch) {
             List<Type> typeContext = commonHandler.getTypeContext(userId, type);
