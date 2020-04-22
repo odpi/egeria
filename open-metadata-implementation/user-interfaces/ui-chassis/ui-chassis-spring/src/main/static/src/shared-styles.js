@@ -6,19 +6,8 @@ import '@polymer/polymer/polymer-element.js';
 const $_documentContainer = document.createElement('template');
 $_documentContainer.innerHTML = `<dom-module id="shared-styles">
   <template>
-    
     <style>
         :root{
-
-              --egeria-primary-color: #71ccdc;         /* aqua   */
-            /* --egeria-primary-color: #FF6200; */     /* orange */
-            /* --egeria-primary-color: #CC00FF; */     /* purple */
-
-            --egeria-secondary-color: #24272a;
-            --egeria-background-color: white;       
-            --egeria-stripes-color: #efefef;
-            --egeria-icon-color: var(--egeria-primary-color);          
-          
             --paper-input-container-focus-color: var(--egeria-primary-color);
             --lumo-primary-color: var(--egeria-primary-color);
             --lumo-primary-text-color: var(--egeria-primary-color);
@@ -30,8 +19,15 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             --app-secondary-color: var(--egeria-secondary-color);
             
             --paper-toast-background-color: var(--egeria-secondary-color);
-              
         }
+        #logo {
+            background: var(--app-logo-background);
+            width: var(--app-logo-width);
+            height: var(--app-logo-height);
+            background-size: var(--app-logo-background-size);
+            background-position: center;
+            text-indent:-9999px;
+          }
         .feedback {
             min-height: 1em;
             padding: 3px 6px;
