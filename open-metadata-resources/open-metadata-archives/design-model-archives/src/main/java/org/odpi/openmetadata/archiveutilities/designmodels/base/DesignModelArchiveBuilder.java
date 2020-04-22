@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * DesignModelArchiveBuilder creates the open metadata compliant instances for content
@@ -48,9 +49,17 @@ public class DesignModelArchiveBuilder
     private static final String CONCEPT_BEAD_ATTRIBUTE_TYPE_NAME         = "ConceptBeadAttribute";
     private static final String CONCEPT_BEAD_ATTRIBUTE_LINK_TYPE_NAME    = "ConceptBeadAttributeLink";
     private static final String CONCEPT_BEAD_RELATIONSHIP_TYPE_NAME      = "ConceptBeadRelationshipEnd";
+    private static final String SPINE_OBJECT_NAME                        = "SpineObject";
+    private static final String SPINE_ATTRIBUTE_NAME                     = "SpineAttribute";
+    private static final String ISA_RELATIONSHIP_NAME = "ISARelationship";
+    private static final String HAS_A_RELATIONSHIP_NAME = "TermHASARelationship";
+    private static final String IS_A_TYPE_OF_RELATIONSHIP_NAME           = "TermISATypeOFRelationship";
+    private static final String RELATED_TERM_RELATIONSHIP_NAME           = "RelatedTerm";
 
     private static final String QUALIFIED_NAME_PROPERTY  = "qualifiedName";
     private static final String DISPLAY_NAME_PROPERTY    = "displayName";
+    private static final String NAME_PROPERTY            = "Name";
+    private static final String EXAMPLES_PROPERTY        = "examples";
     private static final String TECHNICAL_NAME_PROPERTY  = "technicalName";
     private static final String DESCRIPTION_PROPERTY     = "description";
     private static final String LANGUAGE_PROPERTY        = "language";
@@ -60,7 +69,6 @@ public class DesignModelArchiveBuilder
     private static final String ORGANIZATION_PROPERTY    = "organization";
     private static final String VERSION_PROPERTY         = "version";
     private static final String VERSION_NUMBER_PROPERTY  = "versionNumber";
-    private static final String NAME_PROPERTY            = "name";
     private static final String STATUS_PROPERTY          = "status";
     private static final String CONFIDENCE_PROPERTY      = "confidence";
     private static final String AUTHOR_PROPERTY          = "author";
@@ -107,7 +115,24 @@ public class DesignModelArchiveBuilder
                                         long                       versionNumber,
                                         String                     versionName)
     {
-        List<OpenMetadataArchive>  dependentOpenMetadataArchives = new ArrayList<>();
+        initialize(archiveGUID, archiveName, archiveDescription, archiveType, archiveRootName, originatorName, originatorLicense, creationDate, versionNumber, versionName);
+    }
+    /**
+     * Typical constructor passes parameters used to build the open metadata archive's property header.
+     *
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveName name of the open metadata archive.
+     * @param archiveDescription description of the open metadata archive.
+     * @param archiveType enum describing the type of archive this is.
+     * @param archiveRootName non-spaced root name of the open metadata archive elements.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param originatorLicense license for the content.
+     * @param creationDate data that this archive was created.
+     * @param versionNumber version number of the archive.
+     * @param versionName version name for the archive.
+     */
+    protected void initialize(String archiveGUID, String archiveName, String archiveDescription, OpenMetadataArchiveType archiveType, String archiveRootName, String originatorName, String originatorLicense, Date creationDate, long versionNumber, String versionName) {
+        List<OpenMetadataArchive> dependentOpenMetadataArchives = new ArrayList<>();
 
         dependentOpenMetadataArchives.add(new OpenMetadataTypesArchive().getOpenMetadataArchive());
 
@@ -126,12 +151,18 @@ public class DesignModelArchiveBuilder
                                                    creationDate,
                                                    versionNumber,
                                                    versionName);
-
-        this.idToGUIDMap = new OMRSArchiveGUIDMap(archiveRootName + guidMapFileNamePostFix);
-
         this.archiveRootName = archiveRootName;
         this.originatorName = originatorName;
         this.versionName = versionName;
+
+        this.idToGUIDMap = new OMRSArchiveGUIDMap(archiveRootName + guidMapFileNamePostFix);
+    }
+
+    /**
+     * Default constructor
+     */
+    public DesignModelArchiveBuilder() {
+
     }
 
 
@@ -295,18 +326,65 @@ public class DesignModelArchiveBuilder
                              List<String> categoryIds,
                              String       qualifiedName,
                              String       displayName,
-                             String       description)
+                             String       description) {
+        return addTerm(glossaryId,categoryIds,qualifiedName,displayName,description,null,false,false,false);
+    }
+    /**
+     * Add a term and link it to the glossary and an arbitrary number of categories.
+     *
+     * @param glossaryId unique identifier of the glossary
+     * @param categoryIds unique identifiers of the categories
+     * @param qualifiedName unique name of the term
+     * @param displayName display name of the term
+     * @param description description of the term
+     * @param examples examples of the term
+     * @param isSpineObject term is a spine object
+     * @param isSpineAttribute term is a spine attribute
+     * @param categoriesAsNames when true the categories are specified as qualified names, otherwise they are guids.
+     * @return unique identifier of the term
+     */
+    protected String addTerm(String       glossaryId,
+                             List<String> categoryIds,
+                             String       qualifiedName,
+                             String       displayName,
+                             String       description,
+                             String       examples,
+                             boolean      isSpineObject,
+                             boolean      isSpineAttribute,
+                             boolean      categoriesAsNames )
     {
         final String methodName = "addTerm";
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        if (examples !=null) {
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, EXAMPLES_PROPERTY, examples, methodName);
+        }
+        List<Classification> classifications = null;
 
+        if (isSpineObject)
+        {
+            Classification  subjectAreaClassification = archiveHelper.getClassification(SPINE_OBJECT_NAME,
+                                                                                       null,
+                                                                                        InstanceStatus.ACTIVE);
+
+            classifications = new ArrayList<>();
+            classifications.add(subjectAreaClassification);
+        }
+        if (isSpineAttribute)
+        {
+            Classification  subjectAreaClassification = archiveHelper.getClassification(SPINE_ATTRIBUTE_NAME,
+                                                                                        null,
+                                                                                        InstanceStatus.ACTIVE);
+
+            classifications = new ArrayList<>();
+            classifications.add(subjectAreaClassification);
+        }
         EntityDetail  termEntity = archiveHelper.getEntityDetail(GLOSSARY_TERM_TYPE_NAME,
                                                                  idToGUIDMap.getGUID(qualifiedName),
                                                                  properties,
                                                                  InstanceStatus.ACTIVE,
-                                                                 null);
+                                                                 classifications);
 
         archiveBuilder.addEntity(termEntity);
 
@@ -326,6 +404,9 @@ public class DesignModelArchiveBuilder
             {
                 if (categoryId != null)
                 {
+                    if (categoriesAsNames) {
+                        categoryId = idToGUIDMap.getGUID(categoryId);
+                    }
                     end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(categoryId));
 
                     archiveBuilder.addRelationship(archiveHelper.getRelationship(TERM_CATEGORIZATION_TYPE_NAME,
@@ -754,6 +835,70 @@ public class DesignModelArchiveBuilder
                                                                      end2));
     }
 
+    /**
+     * Add an is a relationship
+     * @param specialTermQName qualified name of the specialized term
+     * @param generalizedTermQName qualified name of the generalized term
+     */
+    protected void addISARelationship (String specialTermQName , String generalizedTermQName) {
+
+        String specializedTermId = idToGUIDMap.getGUID(specialTermQName);
+        String generalizededTermId = idToGUIDMap.getGUID(generalizedTermQName);
+
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(generalizededTermId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(specializedTermId));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(ISA_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(generalizededTermId + "_to_" + specializedTermId),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+    protected void addHasARelationship(String conceptQName, String propertyQName) {
+        String conceptId = idToGUIDMap.getGUID(conceptQName);
+        String propertyId = idToGUIDMap.getGUID(propertyQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(propertyId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(conceptId));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(HAS_A_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(conceptId + "_to_" + propertyId + "_hasa"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+    protected void addRelatedTermRelationship(String conceptQName, String propertyQName) {
+        String conceptId = idToGUIDMap.getGUID(conceptQName);
+        String propertyId = idToGUIDMap.getGUID(propertyQName);
+
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(conceptId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(propertyId));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(RELATED_TERM_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(conceptId + "_to_" + propertyId + "_related"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+    /**
+     * Add Category hierarchy relationships
+     * @param childCategoryName name of the child category
+     * @param parentNames set of the names of the parent qualfied names categories
+     */
+    protected void addCategoryHierarchy(String childCategoryName, Set<String> parentNames) {
+        String childId= idToGUIDMap.getGUID(childCategoryName);
+        for (String parentName:parentNames) {
+            String parentId  = idToGUIDMap.getGUID(parentName);
+            addCategoryToCategory(parentId,childId);
+        }
+    }
+
 
     /**
      * Returns the open metadata type archive containing all of the content loaded by the subclass.
@@ -779,4 +924,5 @@ public class DesignModelArchiveBuilder
     {
         archiveBuilder.logBadArchiveContent(methodName);
     }
+
 }
