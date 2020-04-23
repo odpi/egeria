@@ -4,6 +4,10 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.settings;
 
 import java.io.Serializable;
 
+/**
+ * Encapsulates server base url and the serverName form the configuration.
+ * The purpose is to be consumed in order to compute the url for registry repository view
+ */
 public class OmasSettings implements Serializable {
     String serverName;
     String baseUrl;

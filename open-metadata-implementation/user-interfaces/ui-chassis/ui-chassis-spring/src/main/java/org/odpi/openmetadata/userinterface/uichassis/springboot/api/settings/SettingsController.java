@@ -19,11 +19,19 @@ public class SettingsController {
     @Value("${omas.server.url}")
     String serverUrl;
 
+    /**
+     *
+     * @return a redirectView to the theme URI css file
+     */
     @GetMapping( path = "/css/theme")
     public RedirectView getThemeCss(){
         return new RedirectView("/themes/" + theme + "/css/style.css");
     }
 
+    /**
+     *
+     * @return omas settings object
+     */
     @GetMapping( value = "/api/omas/settings")
     public OmasSettings getOmasSettings(){
         return new OmasSettings(serverName,serverUrl);
