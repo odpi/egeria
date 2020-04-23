@@ -31,7 +31,7 @@ import './token-ajax';
 import './toast-feedback';
 import './login-view.js';
 import './user-options-menu';
-import './shared-styles';
+import './shared-styles.js';
 import './common/breadcrumb.js';
 
 // Gesture events like tap and track generated from touch will not be
@@ -66,6 +66,9 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
           color: var(--app-secondary-color);
           line-height: 40px;
         };
+        .drawer-list div.iron-selected a {
+            color: white;
+        }
         .drawer-list-selected,
         .drawer-list div.iron-selected {
           font-weight: bold;
