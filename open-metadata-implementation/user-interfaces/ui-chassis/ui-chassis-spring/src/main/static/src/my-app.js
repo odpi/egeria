@@ -54,7 +54,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         };
         app-header {
           color: #fff;
-          background-color: var(--app-primary-color);
+          background-color: var(--egeria-primary-color);
         };
         app-header paper-icon-button {
           --paper-icon-button-ink-color: white;
@@ -63,17 +63,21 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
           display: block;
           padding: 0 16px;
           text-decoration: none;
-          color: var(--app-secondary-color);
+          color: var( --egeria-secondary-color );
           line-height: 40px;
         };
+        .drawer-list div:not(.iron-selected) a:hover{
+            background-color: var(--app-background-color);
+        }
+        }
         .drawer-list div.iron-selected a {
             color: white;
         }
         .drawer-list-selected,
         .drawer-list div.iron-selected {
           font-weight: bold;
-          color: var(--app-secondary-color);
-          background-color: var(--app-primary-color);
+          color: var(--egeria-secondary-color);
+          background-color: var(--egeria-primary-color);
         };
 
         paper-input.custom:hover {

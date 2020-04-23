@@ -16,13 +16,20 @@ class AssetTools extends PolymerElement {
           background-color:  var(--egeria-background-color);
           --iron-icon-fill-color: var(--egeria-primary-color);
         }
-        ul#menu, ul#menu li {
-          display:inline;
-          padding: 0;
-          margin: 0 10pt;
+        ul#menu {
+            margin: 0;
+            padding: 0;
+        }
+        ul#menu li {
+          display:inline-block;
+          padding: 10px;
+        }
+        ul#menu li:hover {
+            background-color: var(--app-background-color);
         }
       </style>
-
+    <token-ajax id="tokenAjaxSettings" last-response="{{omas}}" url="/api/omas/settings" auto></token-ajax>
+    
     <div style="border: solid 1px var(--egeria-primary-color); padding: 5pt;"> 
         <ul id="menu"> 
             <li> 
@@ -40,9 +47,16 @@ class AssetTools extends PolymerElement {
             <li> 
                 <a href="#/asset-lineage/sourceAndDestination/[[guid]]" title="Source and Destination Lineage"><iron-icon icon="vaadin:exchange"></iron-icon></a>
             </li>
+            <li> 
+                <a href="#/repository-explorer/[[omas.serverName]]/[[ _encode(omas.baseUrl) ]]/[[guid]]" title="Repository explorer"><iron-icon icon="vaadin:cogs"></iron-icon></a>
+            </li>
         </ul>
     </div>
     `;
+    }
+
+    _encode(val){
+        return btoa(val);
     }
 
 }
