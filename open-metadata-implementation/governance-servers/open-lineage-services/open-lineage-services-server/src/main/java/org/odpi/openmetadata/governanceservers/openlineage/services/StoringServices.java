@@ -5,7 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.services;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.scheduler.JobConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +17,11 @@ public class StoringServices {
 
     private static final Logger log = LoggerFactory.getLogger(StoringServices.class);
 
-    private BufferGraph bufferGraph;
+    private LineageGraph lineageGraph;
     private JobConfiguration jobConfiguration;
 
-    public StoringServices(BufferGraph graphStore) {
-        this.bufferGraph = graphStore;
+    public StoringServices(LineageGraph graphStore) {
+        this.lineageGraph = graphStore;
         this.jobConfiguration = new JobConfiguration(graphStore);
     }
 
@@ -40,7 +40,7 @@ public class StoringServices {
             }
         });
 
-        bufferGraph.addEntity(verticesToBeAdded);
+        lineageGraph.storeToGraph(verticesToBeAdded);
     }
 
     /**
@@ -49,7 +49,7 @@ public class StoringServices {
      */
     public void updateEntity(LineageEvent lineageEvent){
         log.debug("Open Lineage Services is processing a UpdateEntity event which contains the following entity with guid : {}", lineageEvent.getLineageEntity().getGuid());
-        bufferGraph.updateEntity(lineageEvent.getLineageEntity());
+        lineageGraph.updateEntity(lineageEvent.getLineageEntity());
     }
 
     /**
@@ -58,12 +58,19 @@ public class StoringServices {
      */
     public void updateRelationship(LineageRelationshipEvent lineageRelationshipEvent){
         log.debug("Open Lineage Services is processing a UpdateRelationshipEvent event which contains the following relantionhsip with guid: {}", lineageRelationshipEvent.getLineageRelationship().getGuid());
-        bufferGraph.updateRelationship(lineageRelationshipEvent.getLineageRelationship());
+        lineageGraph.updateRelationship(lineageRelationshipEvent.getLineageRelationship());
     }
 
     /**
      * Delegates the call for the deletion of an entity to the connector
      *
      */
-    public void deleteEntity(LineageEvent lineageEvent){}
+    public void deleteEntity(LineageEvent lineageEvent){
+
+        lineageGraph.deleteEntity(lineageEvent.getLineageEntity().getGuid(),lineageEvent.getLineageEntity().getVersion());
+    }
+
+    public void deleteRelationship(LineageRelationshipEvent lineageRelationshipEvent) {
+        lineageGraph.deleteRelationship(lineageRelationshipEvent.getLineageRelationship().getGuid());
+    }
 }

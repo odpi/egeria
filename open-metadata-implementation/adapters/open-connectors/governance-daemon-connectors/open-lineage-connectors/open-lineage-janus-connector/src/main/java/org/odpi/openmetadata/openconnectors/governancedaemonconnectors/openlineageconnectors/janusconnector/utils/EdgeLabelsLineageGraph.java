@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils;
 
-public enum EdgeLabelsBufferGraph {
+public enum EdgeLabelsLineageGraph {
     SEMANTIC_ASSIGNMENT,
     PROCESS_PORT,
     PORT_DELEGATION,
