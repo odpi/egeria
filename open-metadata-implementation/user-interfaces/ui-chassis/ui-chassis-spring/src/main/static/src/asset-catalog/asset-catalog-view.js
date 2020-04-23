@@ -9,9 +9,9 @@ class AssetCatalogView extends PolymerElement {
     static get template() {
         return html`
       <style include="shared-styles">
-        :host {
+       :host {
           display: block;
-          background-color:  var(--egeria-background-color);
+          margin: 0 24px;
           min-height: calc(100vh - 85px);
         }
          #useCases {
