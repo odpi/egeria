@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
  */
 public class TestOwlCanonicalGlossaryModelArchiveBuilder
 {
-    private String modelLocation = "src/test/resources/EgeriaSample1Ontology.json";
+    private String modelLocation = "src/test/resources/EgeriaSampleOntology.json";
     @Test
     public void testOpenMetadataArchiveLoad() throws Exception
     {

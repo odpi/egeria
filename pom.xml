@@ -294,7 +294,7 @@
             <dependency>
                 <groupId>org.apache.jena</groupId>
                 <artifactId>jena-arq</artifactId>
-                <scope>compile</scope>
+                <scope>runtime</scope>
                 <version>${jena.version}</version>
             </dependency>
 

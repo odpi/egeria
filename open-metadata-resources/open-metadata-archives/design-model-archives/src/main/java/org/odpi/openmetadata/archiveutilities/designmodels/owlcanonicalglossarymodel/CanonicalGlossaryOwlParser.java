@@ -47,29 +47,25 @@ class CanonicalGlossaryOwlParser {
      * @param modelLocation location of the model content
      */
     CanonicalGlossaryOwlParser(String modelLocation) throws IOException {
-        try {
-            System.out.println("\nModel file Name: " + modelLocation);
+        System.out.println("\nModel file Name: " + modelLocation);
 
-            File modelContent = new File(modelLocation);
+        File modelContent = new File(modelLocation);
 
-            if (modelContent.isDirectory()) {
-                System.out.println("\nDo not support directories");
-            } else {
-                parseSingleFile(modelLocation);
-                validate();
-                populateModel();
-                displaySummary();
-            }
+        if (modelContent.isDirectory()) {
+            System.out.println("\nDo not support directories");
+        } else {
+            parseSingleFile(modelLocation);
+            validate();
+            populateModel();
+            displaySummary();
+        }
 
-            /*
-             * Errors found during the processing are added to the error report.
-             */
-            if (!errorReport.isEmpty()) {
-                System.out.println("Error Report");
-                System.out.println(errorReport);
-            }
-        } catch (Throwable error) {
-            System.out.println("error is " + error.toString());
+        /*
+         * Errors found during the processing are added to the error report.
+         */
+        if (!errorReport.isEmpty()) {
+            System.out.println("Error Report");
+            System.out.println(errorReport);
         }
     }
 
@@ -200,26 +196,18 @@ class CanonicalGlossaryOwlParser {
                     }
                     break;
                 case "range":
+                    Map<String, Set<String>> rangesMap = glossaryModel.getRangesMap();
+                    Set<String> ranges = rangesMap.get(subjectURI);
+                    boolean createRangesMap = false;
+                    if (ranges == null) {
+                        ranges = new HashSet();
+                        createRangesMap = true;
+                    }
                     if (o.isResource()) {
-                        String rangeURI = o.asResource().getURI();
-                        /*
-                         * the ranges we are concerned with are those that have URIs pointing to classes.
-                         * this check ensure we do not pick up xsd content . Note there are more than one xsd identifier used produced on
-                         * different dates, so we are just checking the root URI.
-                         */
-                        if (!rangeURI.startsWith("http://www.w3.org/")) {
-                            Map<String, Set<String>> rangesMap = glossaryModel.getRangesMap();
-                            Set<String> ranges = rangesMap.get(subjectURI);
-                            boolean createRangesMap = false;
-                            if (ranges == null) {
-                                ranges = new HashSet();
-                                createRangesMap = true;
-                            }
-                            ranges.add(o.asResource().getURI());
-                            rangesMap.put(subjectURI, ranges);
-                            if (createRangesMap) {
-                                glossaryModel.setRangesMap(rangesMap);
-                            }
+                        ranges.add(o.asResource().getURI());
+                        rangesMap.put(subjectURI, ranges);
+                        if (createRangesMap) {
+                            glossaryModel.setRangesMap(rangesMap);
                         }
                     }
                     break;

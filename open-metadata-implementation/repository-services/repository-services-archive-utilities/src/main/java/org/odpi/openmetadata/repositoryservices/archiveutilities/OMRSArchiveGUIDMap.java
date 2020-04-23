@@ -8,7 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * OMRSArchiveGUIDMap is a utility to create a persisted list of GUIDs used by an archive builder.
@@ -21,7 +23,7 @@ public class OMRSArchiveGUIDMap
 
     private String              guidMapFileName;
     private Map<String, String> idToGUIDMap;
-    private Set<String> guids = new HashSet<>();
+
 
     /**
      * Constructor for the GUIDMap.
@@ -71,13 +73,11 @@ public class OMRSArchiveGUIDMap
     public  void setGUID(String  id, String  guid)
     {
         idToGUIDMap.put(id, guid);
-        // TODO if the supplied guid is a duplicate of one in the archive then there will be an issue
-        guids.add(guid);
     }
 
 
     /**
-     * Retrieve the guid for an element based on its id. The method ensures that guids in the archive are unique.
+     * Retrieve the guid for an element based on its id.
      *
      * @param id id of element
      * @return guid mapped to Id
@@ -88,21 +88,8 @@ public class OMRSArchiveGUIDMap
 
         if (guid == null)
         {
-            boolean duplicate =true;
-            int count =0;
-            while (duplicate) {
-                guid = UUID.randomUUID().toString();
-                if (guids.contains(guid)) {
-                    log.debug("Guid clash - generating a new one");
-                } else {
-                    duplicate = false;
-                }
-                if (count ==10) {
-                    throw new RuntimeException("Duplicate guid generated; tried 10 times");
-                }
-                count++;
-            }
-            guids.add(guid);
+            guid = UUID.randomUUID().toString();
+
             idToGUIDMap.put(id, guid);
         }
 

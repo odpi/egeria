@@ -39,7 +39,7 @@ Rdfs:SubClassOf
 Spine object to spine object ISA
 
 ###  
-We have provided [a sample jsonld file](EgeriaSample1Ontology.json), that can be used to familiarise yourself with the tags to use and how the model elements relate to each other.
+We have provided [a sample jsonld file](EgeriaSampleOntology.json), that can be used to familiarise yourself with the tags to use and how the model elements relate to each other.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -206,8 +206,15 @@ class CanonicalGlossaryOwlModelArchiveBuilder extends DesignModelArchiveBuilder 
         for (String nameOfProperty : relatedTermMap.keySet()) {
             Set<String> conceptSet = relatedTermMap.get(nameOfProperty);
             for (String nameOfConcept: conceptSet) {
+                /*
+                 * the ranges we are concerned with are those that have URIs pointing to classes.
+                 * this check ensure we do not pick up xsd content . Note there are more than one xsd identifier used produced on
+                 * different dates, so we are just checking the root URI.
+                 */
+                if (!nameOfConcept.startsWith("http://www.w3.org")) {
                     log.debug("Adding related nameOfConcept=" + nameOfConcept + " propertyName=" + nameOfProperty);
                     super.addRelatedTermRelationship(nameOfProperty, nameOfConcept);
+                }
             }
         }
 
