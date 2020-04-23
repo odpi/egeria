@@ -20,13 +20,12 @@ class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement
       <style include="app-grid-style"></style>
       <style include="shared-styles">
         :host {
+          display: block;
           --app-grid-columns: 2;
           --app-grid-gutter: 1px;
           --app-grid-expandible-item-columns: 2;
-          display: block;
-          margin: 10px 24px;
-          padding: 5px;
           background-color:  var(--egeria-background-color);
+          margin-top: 5px;
           min-height: calc(100vh - 115px);
           overflow-scrolling: auto;
           overflow: visible;
