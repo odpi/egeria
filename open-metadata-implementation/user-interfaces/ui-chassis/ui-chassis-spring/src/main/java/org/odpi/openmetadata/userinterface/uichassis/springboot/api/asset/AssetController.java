@@ -38,12 +38,25 @@ public class AssetController {
         return assetCatalogOMASService.searchAssets(user, searchCriteria, searchParameters);
     }
 
+    /**
+     *
+     * @return the supported types from AssetCatalog OMAS
+     * @throws PropertyServerException if a configuration on the backend
+     * @throws InvalidParameterException if parameter validation fails
+     */
     @GetMapping( path = "/types")
-    public List<Type> getTypes() throws PropertyServerException, InvalidParameterException {
+    public List<Type> getSupportedTypes() throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName( );
         return assetCatalogOMASService.getSupportedTypes(user);
     }
 
+    /**
+     *
+     * @param guid of the Entity to be retrieved
+     * @return the entity details
+     * @throws PropertyServerException if a configuration on the backend
+     * @throws InvalidParameterException if parameter validation fails
+     */
     @GetMapping( value = "/{guid}")
     public AssetDescription getAsset(@PathVariable("guid") String guid)
             throws PropertyServerException, InvalidParameterException {
@@ -51,6 +64,13 @@ public class AssetController {
         return assetCatalogOMASService.getAssetDetails(user, guid, "none");
     }
 
+    /**
+     *
+     * @param guid of the Entity to be retrieved
+     * @return the entity context
+     * @throws PropertyServerException if a configuration on the backend
+     * @throws InvalidParameterException if parameter validation fails
+     */
     @GetMapping( value = "/{guid}/context")
     public AssetElements getAssetContext(@PathVariable("guid") String guid)
             throws PropertyServerException, InvalidParameterException {
