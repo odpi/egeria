@@ -5,6 +5,8 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -1946,6 +1948,44 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
+     * Validate the parameters for findEntities.
+     * @see #findEntities(String, String, List, SearchProperties, int, List, SearchClassifications, Date, String, SequencingOrder, int)
+     */
+    protected void findEntitiesParameterValidation(String                    userId,
+                                                   String                    entityTypeGUID,
+                                                   List<String>              entitySubtypeGUIDs,
+                                                   SearchProperties          matchProperties,
+                                                   int                       fromEntityElement,
+                                                   List<InstanceStatus>      limitResultsByStatus,
+                                                   SearchClassifications     matchClassifications,
+                                                   Date                      asOfTime,
+                                                   String                    sequencingProperty,
+                                                   SequencingOrder           sequencingOrder,
+                                                   int                       pageSize) throws InvalidParameterException,
+                                                                                              RepositoryErrorException,
+                                                                                              TypeErrorException,
+                                                                                              PropertyErrorException,
+                                                                                              PagingErrorException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName                        = "findEntities";
+        final String typeGUIDParameterName             = "entityTypeGUID";
+        final String subtypeGUIDsParameterName         = "entitySubtypeGUIDs";
+        final String asOfTimeParameter                 = "asOfTime";
+        final String pageSizeParameter                 = "pageSize";
+        final String matchPropertiesParameterName      = "matchProperties";
+        final String matchClassificationsParameterName = "matchClassifications";
+
+        super.basicRequestValidation(userId, methodName);
+        repositoryValidator.validateOptionalTypeGUIDs(repositoryName, typeGUIDParameterName, entityTypeGUID, subtypeGUIDsParameterName, entitySubtypeGUIDs, methodName);
+        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+        repositoryValidator.validateSearchProperties(repositoryName, matchPropertiesParameterName, matchProperties, methodName);
+        repositoryValidator.validateSearchClassifications(repositoryName, matchClassificationsParameterName, matchClassifications, methodName);
+    }
+
+
+    /**
      * Validate the parameters for findEntitiesByClassification.
      *
      * @param userId unique identifier for requesting user.
@@ -2103,6 +2143,44 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         repositoryValidator.validateOptionalTypeGUID(repositoryName, typeGUIDParameter, entityTypeGUID, methodName);
         repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
         repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+    }
+
+
+    /**
+     * Validate the parameters passed to findRelationships.
+     * @see #findRelationships(String, String, List, SearchProperties, int, List, Date, String, SequencingOrder, int)
+     */
+    protected void findRelationshipsParameterValidation(String                    userId,
+                                                        String                    relationshipTypeGUID,
+                                                        List<String>              relationshipSubtypeGUIDs,
+                                                        SearchProperties          matchProperties,
+                                                        int                       fromRelationshipElement,
+                                                        List<InstanceStatus>      limitResultsByStatus,
+                                                        Date                      asOfTime,
+                                                        String                    sequencingProperty,
+                                                        SequencingOrder           sequencingOrder,
+                                                        int                       pageSize) throws InvalidParameterException,
+                                                                                                   TypeErrorException,
+                                                                                                   RepositoryErrorException,
+                                                                                                   PropertyErrorException,
+                                                                                                   PagingErrorException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName                   = "findRelationships";
+        final String matchPropertiesParameterName = "matchProperties";
+        final String guidParameterName            = "relationshipTypeGUID";
+        final String subtypeGuidsParameterName    = "relationshipSubtypeGUIDs";
+        final String asOfTimeParameter            = "asOfTime";
+        final String pageSizeParameter            = "pageSize";
+
+        /*
+         * Validate parameters
+         */
+        super.basicRequestValidation(userId, methodName);
+        repositoryValidator.validateOptionalTypeGUIDs(repositoryName, guidParameterName, relationshipTypeGUID, subtypeGuidsParameterName, relationshipSubtypeGUIDs, methodName);
+        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+        repositoryValidator.validateSearchProperties(repositoryName, matchPropertiesParameterName, matchProperties, methodName);
     }
 
 
@@ -2649,6 +2727,52 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<EntityDetail> findEntities(String                    userId,
+                                           String                    entityTypeGUID,
+                                           List<String>              entitySubtypeGUIDs,
+                                           SearchProperties          matchProperties,
+                                           int                       fromEntityElement,
+                                           List<InstanceStatus>      limitResultsByStatus,
+                                           SearchClassifications     matchClassifications,
+                                           Date                      asOfTime,
+                                           String                    sequencingProperty,
+                                           SequencingOrder           sequencingOrder,
+                                           int                       pageSize) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException,
+                                                                                      PagingErrorException,
+                                                                                      FunctionNotSupportedException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String  methodName                   = "findEntities";
+
+        /*
+         * Validate parameters
+         */
+        this.findEntitiesParameterValidation(userId,
+                                             entityTypeGUID,
+                                             entitySubtypeGUIDs,
+                                             matchProperties,
+                                             fromEntityElement,
+                                             limitResultsByStatus,
+                                             matchClassifications,
+                                             asOfTime,
+                                             sequencingProperty,
+                                             sequencingOrder,
+                                             pageSize);
+        /*
+         * Perform operation
+         */
+        reportUnsupportedOptionalFunction(methodName);
+        return null;
+    }
+
+
+    /**
      * Return a list of entities that match the supplied properties according to the match criteria.  The results
      * can be returned over many pages.
      *
@@ -2990,6 +3114,48 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
          */
         reportUnsupportedAsOfTimeFunction(methodName, asOfTime);
 
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 List<String>              relationshipSubtypeGUIDs,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize) throws InvalidParameterException,
+                                                                                            TypeErrorException,
+                                                                                            RepositoryErrorException,
+                                                                                            PropertyErrorException,
+                                                                                            PagingErrorException,
+                                                                                            FunctionNotSupportedException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String  methodName = "findRelationships";
+
+        this.findRelationshipsParameterValidation(userId,
+                                                  relationshipTypeGUID,
+                                                  relationshipSubtypeGUIDs,
+                                                  matchProperties,
+                                                  fromRelationshipElement,
+                                                  limitResultsByStatus,
+                                                  asOfTime,
+                                                  sequencingProperty,
+                                                  sequencingOrder,
+                                                  pageSize);
+
+        /*
+         * Perform operation
+         */
+        reportUnsupportedOptionalFunction(methodName);
         return null;
     }
 
