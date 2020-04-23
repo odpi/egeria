@@ -91,8 +91,10 @@ class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     }
 
     _routeChanged(guid) {
-        this.$.tokenAjaxDetails.url='/api/assets/' + guid;
-        this.$.tokenAjaxDetails._go();
+        if (this.route.prefix === '/asset-catalog/view') {
+            this.$.tokenAjaxDetails.url = '/api/assets/' + guid;
+            this.$.tokenAjaxDetails._go();
+        }
     }
 
 }

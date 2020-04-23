@@ -28,7 +28,8 @@ class AssetTools extends PolymerElement {
             background-color: var(--app-background-color);
         }
       </style>
-
+    <token-ajax id="tokenAjaxSettings" last-response="{{omas}}" url="/api/omas/settings" auto></token-ajax>
+    
     <div style="border: solid 1px var(--egeria-primary-color); padding: 5pt;"> 
         <ul id="menu"> 
             <li> 
@@ -47,11 +48,15 @@ class AssetTools extends PolymerElement {
                 <a href="#/asset-lineage/sourceAndDestination/[[guid]]" title="Source and Destination Lineage"><iron-icon icon="vaadin:exchange"></iron-icon></a>
             </li>
             <li> 
-                <a href="#/repository-explorer/sourceAndDestination/[[guid]]" title="Repository explorer"><iron-icon icon="vaadin:cogs"></iron-icon></a>
+                <a href="#/repository-explorer/[[omas.serverName]]/[[ _encode(omas.baseUrl) ]]/[[guid]]" title="Repository explorer"><iron-icon icon="vaadin:cogs"></iron-icon></a>
             </li>
         </ul>
     </div>
     `;
+    }
+
+    _encode(val){
+        return btoa(val);
     }
 
 }
