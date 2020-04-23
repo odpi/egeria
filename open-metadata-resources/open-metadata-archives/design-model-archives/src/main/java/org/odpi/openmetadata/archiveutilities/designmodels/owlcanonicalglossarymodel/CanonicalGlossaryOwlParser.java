@@ -4,13 +4,11 @@ package org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossary
 
 import org.apache.jena.rdf.model.*;
 import org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel.properties.GlossaryModel;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
-
 
 /**
  * CanonicalGlossaryOwlParser reads the CanonicalGlossaryOwlParserModel and parses it into a set of Java Beans
@@ -53,6 +51,7 @@ class CanonicalGlossaryOwlParser {
 
         if (modelContent.isDirectory()) {
             System.out.println("\nDo not support directories");
+            System.exit(-1);
         } else {
             parseSingleFile(modelLocation);
             validate();
@@ -90,7 +89,6 @@ class CanonicalGlossaryOwlParser {
             if (containerURIs != null) {
                 glossaryContentCount += containerURIs.size();
             }
-            // TODO remember when we account for classifications (which come through as containers) then we need to amend this check
             if (glossaryContentCount != isDefinedByMap.keySet().size()) {
                 System.err.println("Expecting the number of relationships (" + isDefinedByMap.keySet().size() + ")  and glossary elements (" +
                                            glossaryContentCount + ") to be equal.");
@@ -232,6 +230,9 @@ class CanonicalGlossaryOwlParser {
         }
     }
 
+    /**
+     * Summarize what we have found in the model. Write this content to standard out.
+     */
     private void displaySummary() {
 
         System.out.println("Found " + glossaryModel.getGlossaryLiteralMap().keySet().size() + " glossaries");
@@ -245,7 +246,7 @@ class CanonicalGlossaryOwlParser {
         Map<String, Set<String>> domainsMap = glossaryModel.getDomainsMap();
         Map<String, String> isDefinedByMap = glossaryModel.getIsDefinedByMap();
 
-        if (resourceSubClassMap == null) {
+        if (resourceSubClassMap != null) {
             System.out.println("No resourceSubClassMap");
         } else {
             System.out.println("Found " + resourceSubClassMap.keySet().size() + " resourceSubclasses");
@@ -275,42 +276,16 @@ class CanonicalGlossaryOwlParser {
         } else {
             System.out.println("Found " + memberMap.keySet().size() + " members Map");
         }
-
-        // we can create an archive from Glossaries, Categories, concept terms (spine Object) and property terms (Spine Attribute) and their label and comments
-        // Glossary anchor relationships from isDefined by
-        // rdf domain relationship is  has-a.
-        // is a from class to class subClass
-        // is a type of from property to class subclass
-        // for a property term that has a domain that is a resource then this is a has-a
-        // for a property term that has a domain that is a literal ignoring for now (or put in additional properties?)
-        // synonym ?
-        // example
-        // related term for other non has-a relationships between terms ?
-
-
-        // classification ???
-        // other relationships
-        // subject area content
-
-
     }
 
+    /**
+     * populate the model, this is picked up ny the archive builder to build the archive content
+     */
     private void populateModel() {
         String ontologyURI = ontologyURIs.iterator().next();
         glossaryModel.setModelTechnicalName(ontologyURI);
-
-
-        // TODO get from tags
         glossaryModel.setModelLanguage("us_en");
-
-        // this covers comment , label and class. Additional properties for unknowns?
-
-        // Member map include mapping of property term to the propertyClassification = spine attribute
-        // rdfs:class is a spine object
-
-
-        // Range has 2 types of entries
-        // primatives and relationships
+        glossaryModel.setModelScope("Owl Canonical Vocabulary");
         processLabels();
         processComments();
         processLicense();
@@ -329,6 +304,10 @@ class CanonicalGlossaryOwlParser {
         glossaryModel.setLicense((String) glossaryLicenseLiteral.getValue());
     }
 
+    /**
+     * Process members. Members have membership of a container. A container will be mapped to a Glossary Category.
+     * Member can be container (a glossary Category), a class (a Spine object) or an objectProperty a (Spine attribute).
+     */
     private void processMembers() {
         // split out the members
         for (String member : memberMap.keySet()) {
@@ -344,6 +323,9 @@ class CanonicalGlossaryOwlParser {
         }
     }
 
+    /**
+     * Process the license
+     */
     private void processLicense() {
         for (String subject : licenseMap.keySet()) {
             if (ontologyURIs.contains(subject)) {
@@ -357,6 +339,9 @@ class CanonicalGlossaryOwlParser {
         }
     }
 
+    /**
+     * Process comments - these will end up as descriptions in Egeria Entities.
+     */
     private void processComments() {
         for (String subject : commentMap.keySet()) {
             if (ontologyURIs.contains(subject)) {
@@ -400,6 +385,9 @@ class CanonicalGlossaryOwlParser {
         }
     }
 
+    /**
+     * Process lables - these will end up as display names in Egeria Entities
+     */
     private void processLabels() {
         // spin down each label and look at it literal and subject. Subject should match property, container or class
 
@@ -469,7 +457,6 @@ class CanonicalGlossaryOwlParser {
         literalMap.put("license", literal);
         return literalMap;
     }
-
 
     /**
      * Return the discovered content to the caller.

@@ -64,7 +64,6 @@ public class GlossaryModel
         return modelTechnicalName;
     }
 
-
     public void setModelTechnicalName(String modelTechnicalName)
     {
         this.modelTechnicalName = modelTechnicalName;
@@ -138,24 +137,13 @@ public class GlossaryModel
         return datatypePropertyTermLiteralMap;
     }
 
-    public void setDatatypePropertyTermLiteralMap(Map<String, Map<String, Literal>> datatypePropertyTermLiteralMap) {
-        this.datatypePropertyTermLiteralMap = datatypePropertyTermLiteralMap;
-    }
-
     public Map<String, Map<String, Literal>> getGlossaryLiteralMap() {
         return glossaryLiteralMap;
     }
 
-    public void setGlossaryLiteralMap(Map<String, Map<String, Literal>> glossaryLiteralMap) {
-        this.glossaryLiteralMap = glossaryLiteralMap;
-    }
 
     public Map<String, Map<String, Literal>> getCategoryLiteralMap() {
         return categoryLiteralMap;
-    }
-
-    public void setCategoryLiteralMap(Map<String, Map<String, Literal>> categoryLiteralMap) {
-        this.categoryLiteralMap = categoryLiteralMap;
     }
 
     public Map<String, Map<String, Literal>> getConceptTermLiteralMap() {

@@ -51,9 +51,8 @@ public class DesignModelArchiveBuilder
     private static final String CONCEPT_BEAD_RELATIONSHIP_TYPE_NAME      = "ConceptBeadRelationshipEnd";
     private static final String SPINE_OBJECT_NAME                        = "SpineObject";
     private static final String SPINE_ATTRIBUTE_NAME                     = "SpineAttribute";
-    private static final String ISA_RELATIONSHIP_NAME = "ISARelationship";
-    private static final String HAS_A_RELATIONSHIP_NAME = "TermHASARelationship";
-    private static final String IS_A_TYPE_OF_RELATIONSHIP_NAME           = "TermISATypeOFRelationship";
+    private static final String ISA_RELATIONSHIP_NAME                    = "ISARelationship";
+    private static final String HAS_A_RELATIONSHIP_NAME                  = "TermHASARelationship";
     private static final String RELATED_TERM_RELATIONSHIP_NAME           = "RelatedTerm";
 
     private static final String QUALIFIED_NAME_PROPERTY  = "qualifiedName";
@@ -357,7 +356,8 @@ public class DesignModelArchiveBuilder
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
-        if (examples !=null) {
+        if (examples !=null)
+        {
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, EXAMPLES_PROPERTY, examples, methodName);
         }
         List<Classification> classifications = null;
@@ -836,30 +836,29 @@ public class DesignModelArchiveBuilder
     }
 
     /**
-     * Add an is a relationship
+     * Add an isa relationship
      * @param specialTermQName qualified name of the specialized term
      * @param generalizedTermQName qualified name of the generalized term
      */
-    protected void addISARelationship (String specialTermQName , String generalizedTermQName) {
+    protected void addISARelationship (String specialTermQName , String generalizedTermQName)
+    {
 
         String specializedTermId = idToGUIDMap.getGUID(specialTermQName);
-        String generalizededTermId = idToGUIDMap.getGUID(generalizedTermQName);
-
-
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(generalizededTermId));
+        String generalizedTermId = idToGUIDMap.getGUID(generalizedTermQName);
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(generalizedTermId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(specializedTermId));
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(ISA_RELATIONSHIP_NAME,
-                                                                     idToGUIDMap.getGUID(generalizededTermId + "_to_" + specializedTermId),
+                                                                     idToGUIDMap.getGUID(generalizedTermId + "_to_" + specializedTermId),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
     }
-    protected void addHasARelationship(String conceptQName, String propertyQName) {
+    protected void addHasARelationship(String conceptQName, String propertyQName)
+    {
         String conceptId = idToGUIDMap.getGUID(conceptQName);
         String propertyId = idToGUIDMap.getGUID(propertyQName);
-
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(propertyId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(conceptId));
 
@@ -870,11 +869,10 @@ public class DesignModelArchiveBuilder
                                                                      end1,
                                                                      end2));
     }
-    protected void addRelatedTermRelationship(String conceptQName, String propertyQName) {
+    protected void addRelatedTermRelationship(String conceptQName, String propertyQName)
+    {
         String conceptId = idToGUIDMap.getGUID(conceptQName);
         String propertyId = idToGUIDMap.getGUID(propertyQName);
-
-
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(conceptId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(propertyId));
 
@@ -887,13 +885,15 @@ public class DesignModelArchiveBuilder
     }
 
     /**
-     * Add Category hierarchy relationships
+     * Add Category hierarchy relationship
      * @param childCategoryName name of the child category
-     * @param parentNames set of the names of the parent qualfied names categories
+     * @param parentNames set of the names of the parent categories qualified names
      */
-    protected void addCategoryHierarchy(String childCategoryName, Set<String> parentNames) {
+    protected void addCategoryHierarchy(String childCategoryName, Set<String> parentNames)
+    {
         String childId= idToGUIDMap.getGUID(childCategoryName);
-        for (String parentName:parentNames) {
+        for (String parentName:parentNames)
+        {
             String parentId  = idToGUIDMap.getGUID(parentName);
             addCategoryToCategory(parentId,childId);
         }

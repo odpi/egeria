@@ -5,30 +5,15 @@ package org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossary
 import java.util.*;
 
 /**
- * Attribute describes an attribute in the model
+ * Attribute describes an element in the model
  */
 public class ModelElement
 {
     private String guid          = null;
     private String id            = null;
     private String displayName   = null;
-    private String technicalName = null;
     private String description   = null;
     private String version       = null;
-    private Map<String, Link> domainOfLinks    = new HashMap<>();
-    private Map<String, Link>      rangeOfLinks     = new HashMap<>();
-
-
-    public ModelElement()
-    {
-    }
-
-
-    public String getGUID()
-    {
-        return guid;
-    }
-
 
     public void setGUID(String guid)
     {
@@ -59,19 +44,6 @@ public class ModelElement
         this.displayName = displayName;
     }
 
-
-    public String getTechnicalName()
-    {
-        return technicalName;
-    }
-
-
-    public void setTechnicalName(String technicalName)
-    {
-        this.technicalName = technicalName;
-    }
-
-
     public String getDescription()
     {
         return description;
@@ -88,102 +60,6 @@ public class ModelElement
     {
         return version;
     }
-
-
-    public void setVersion(String version)
-    {
-        this.version = version;
-    }
-
-    public void setDomainOfLink(String   linkId,
-                                Link     link)
-    {
-        domainOfLinks.put(linkId, link);
-    }
-
-    public Link getDomainLink(String  linkId)
-    {
-        if (domainOfLinks.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return domainOfLinks.get(linkId);
-        }
-    }
-
-    public List<Link> getDomainOfLinks()
-    {
-        if (domainOfLinks.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(domainOfLinks.values());
-        }
-    }
-
-
-    public List<String> getDomainOfLinkNames()
-    {
-        if (domainOfLinks.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(domainOfLinks.keySet());
-        }
-    }
-
-
-    public void setRangeOfLink(String  linkId,
-                               Link    link)
-    {
-        rangeOfLinks.put(linkId, link);
-    }
-
-
-    public List<Link> getRangeOfLinks()
-    {
-        if (rangeOfLinks.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(rangeOfLinks.values());
-        }
-    }
-
-
-    public List<String> getRangeOfLinkNames()
-    {
-        if (rangeOfLinks.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(rangeOfLinks.keySet());
-        }
-    }
-
-
-    public Link getRangeLink(String  linkId)
-    {
-        if (rangeOfLinks.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return rangeOfLinks.get(linkId);
-        }
-    }
-
 
     @Override
     public String toString()
