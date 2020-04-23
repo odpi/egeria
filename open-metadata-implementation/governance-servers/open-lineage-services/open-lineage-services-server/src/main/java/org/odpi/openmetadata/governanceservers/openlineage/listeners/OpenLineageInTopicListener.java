@@ -68,6 +68,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
             switch (assetLineageEventHeader.getAssetLineageEventType()) {
                 case PROCESS_CONTEXT_EVENT:
                 case TECHNICAL_ELEMENT_CONTEXT_EVENT:
+                case CLASSIFICATION_CONTEXT_EVENT:
                     lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
                     storingServices.addEntity(lineageEvent);
                     break;
@@ -80,6 +81,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
 //                    storingServices.updateRelationship(lineageRelationshipEvent);
 //                    break;
 ////                case DELETE_ENTITY_EVENT:
+//                case DECLASSIFIED_ENTITY_EVENT:
 //                    storingServices.deleteEntity(event);
 //                    break;
                 default:
