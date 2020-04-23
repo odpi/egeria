@@ -25,6 +25,9 @@ public abstract class LineageGraphConnectorBase extends ConnectorBase implements
     public abstract void updateRelationship(LineageRelationship lineageRelationship);
 
     @Override
-    public abstract void deleteEntity(String guid,String version);
+    public abstract void deleteRelationship(String guid);
+
+    @Override
+    public abstract void deleteEntity(String guid,Object version);
 
 }
