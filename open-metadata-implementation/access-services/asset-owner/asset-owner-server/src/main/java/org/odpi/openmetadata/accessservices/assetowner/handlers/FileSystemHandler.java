@@ -138,10 +138,7 @@ public class FileSystemHandler
                 {
                     result = new ArrayList<>();
 
-                    for (int i=startingToken; i<endingToken; i++)
-                    {
-                        result.add(tokens[i]);
-                    }
+                    result.addAll(Arrays.asList(tokens).subList(startingToken, endingToken));
                 }
             }
         }
@@ -1267,8 +1264,8 @@ public class FileSystemHandler
         }
 
         Map<String, Object> extendedProperties = new HashMap<>();
-        extendedProperties.put(AssetMapper.DELIMITER_CHARACTER_PROPERTY_NAME, delimiterCharacter);
-        extendedProperties.put(AssetMapper.QUOTE_CHARACTER_PROPERTY_NAME, quoteCharacter);
+        extendedProperties.put(AssetMapper.DELIMITER_CHARACTER_PROPERTY_NAME, delimiterCharacter.toString());
+        extendedProperties.put(AssetMapper.QUOTE_CHARACTER_PROPERTY_NAME, quoteCharacter.toString());
         extendedProperties.put(AssetMapper.FILE_TYPE_PROPERTY_NAME, fileType);
         asset.setExtendedProperties(extendedProperties);
 
