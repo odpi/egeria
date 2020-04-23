@@ -13,8 +13,21 @@ public class SettingsController {
     @Value("${theme:default}")
     String theme;
 
+    @Value("${omas.server.name}")
+    String serverName;
+
+    @Value("${omas.server.url}")
+    String serverUrl;
+
     @GetMapping( path = "/css/theme")
     public RedirectView getThemeCss(){
         return new RedirectView("/themes/" + theme + "/css/style.css");
     }
+
+    @GetMapping( value = "/api/omas/settings")
+    public OmasSettings getOmasSettings(){
+        return new OmasSettings(serverName,serverUrl);
+    }
+
+
 }
