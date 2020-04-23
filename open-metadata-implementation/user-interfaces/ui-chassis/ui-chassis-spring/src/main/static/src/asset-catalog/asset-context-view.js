@@ -12,14 +12,7 @@ class AssetContextView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         return html`
       <style include="app-grid-style"></style>
       <style include="shared-styles">
-        :host {
-          display: block;
-          margin: 10px 24px;
-          padding: 5px;
-          background-color:  var(--egeria-background-color);
-          min-height: calc(100vh - 115px);
-          
-        }
+       
       </style>
 
       <app-route route="{{route}}" pattern="/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
@@ -39,8 +32,10 @@ class AssetContextView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     }
 
     _routeChanged(guid) {
-        this.$.tokenAjaxDetails.url='/api/assets/' + guid;
-        this.$.tokenAjaxDetails._go();
+        if (this.route.prefix === '/asset-catalog/view') {
+            this.$.tokenAjaxDetails.url = '/api/assets/' + guid;
+            this.$.tokenAjaxDetails._go();
+        }
     }
 
 }
