@@ -862,9 +862,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                             FunctionNotSupportedException,
                                                                                             UserNotAuthorizedException
     {
-        final String  methodName = "findRelationships";
-        final String  guidParameterName = "relationshipTypeGUID";
-
         /*
          * Validate parameters
          */
