@@ -15,15 +15,14 @@ class AboutView extends PolymerElement {
        <style include="shared-styles">
         :host {
           display: block;
-          margin: 10px 24px;
-          padding: 5px;
+          margin: 0 24px;
           background-color: var(--egeria-background-color);
           min-height: calc(100vh - 85px);
         }
       </style>
     
       <token-ajax id="userAjax" last-response="{{a}}" url="/api/about" auto></token-ajax>
-        <h2>About</h2>
+       
         <div role="listbox">
             <paper-item>
               <paper-item-body two-line>
