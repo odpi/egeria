@@ -16,10 +16,16 @@ class AssetTools extends PolymerElement {
           background-color:  var(--egeria-background-color);
           --iron-icon-fill-color: var(--egeria-primary-color);
         }
-        ul#menu, ul#menu li {
-          display:inline;
-          padding: 0;
-          margin: 0 10pt;
+        ul#menu {
+            margin: 0;
+            padding: 0;
+        }
+        ul#menu li {
+          display:inline-block;
+          padding: 10px;
+        }
+        ul#menu li:hover {
+            background-color: var(--app-background-color);
         }
       </style>
 
@@ -39,6 +45,9 @@ class AssetTools extends PolymerElement {
             </li>
             <li> 
                 <a href="#/asset-lineage/sourceAndDestination/[[guid]]" title="Source and Destination Lineage"><iron-icon icon="vaadin:exchange"></iron-icon></a>
+            </li>
+            <li> 
+                <a href="#/repository-explorer/sourceAndDestination/[[guid]]" title="Repository explorer"><iron-icon icon="vaadin:cogs"></iron-icon></a>
             </li>
         </ul>
     </div>
