@@ -13,7 +13,7 @@ service:
     ui: 30443
 
 egeria:
-  version: 1.7-SNAPSHOT
+  version: 1.8-SNAPSHOT
 
 # Defaults for the images (can be overridden here or individually, see comment below)
 # Note for egeria provided images we use the version specified above

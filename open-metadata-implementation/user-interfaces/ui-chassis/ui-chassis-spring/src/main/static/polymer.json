@@ -3,6 +3,7 @@
   "shell": "src/my-app.js",
   "sources": [
     "images/**/*",
+    "themes/**/*",
     "locales/**/*",
     "properties/**/*"
   ],
