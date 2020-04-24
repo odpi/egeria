@@ -5,7 +5,7 @@ import {PolymerElement, html} from '@polymer/polymer';
 import '../shared-styles.js';
 import '../common/props-table';
 
-class GlossaryTermView extends PolymerElement {
+class GlossaryCategoryView extends PolymerElement {
     static get template() {
         return html`
        <style include="shared-styles">
@@ -19,10 +19,10 @@ class GlossaryTermView extends PolymerElement {
         
       </style>
       <app-route route="{{route}}" pattern="/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
-      <token-ajax id="tokenAjaxItems" last-response="{{terms}}"></token-ajax>
+      <token-ajax id="tokenAjaxItems" last-response="{{categories}}"></token-ajax>
       
      <div class="container">
-           <vaadin-grid id="termsGrid" items="[[terms]]" theme="row-stripes"
+           <vaadin-grid id="termsGrid" items="[[categories]]" theme="row-stripes"
                                column-reordering-allowed multi-sort>
               <vaadin-grid-column width="10em" resizable>
                   <template class="header">
@@ -86,15 +86,15 @@ class GlossaryTermView extends PolymerElement {
 
     _routeChanged(guid) {
         console.log(' called with guid ' + guid)
-        this.$.tokenAjaxItems.url = '/api/glossaries/' + guid + "/terms";
+        this.$.tokenAjaxItems.url = '/api/glossaries/' + guid + "/categories";
         this.$.tokenAjaxItems._go();
     }
 
     connectedCallback() {
         super.connectedCallback();
-        console.log('connect glossary-view');
+        console.log('connect glossary-category-view');
 
     }
 }
 
-window.customElements.define('glossary-terms', GlossaryTermView);
+window.customElements.define('glossary-categories', GlossaryCategoryView);
