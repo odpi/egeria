@@ -27,11 +27,13 @@ public class ValidValue extends Referenceable
 {
     private static final long     serialVersionUID = 1L;
 
-    protected String displayName    = null;
-    protected String description    = null;
-    protected String usage          = null;
-    protected String scope          = null;
-    protected String preferredValue = null;
+    protected String  displayName    = null;
+    protected String  description    = null;
+    protected String  usage          = null;
+    protected String  scope          = null;
+    protected String  preferredValue = null;
+    protected boolean isDeprecated   = false;
+
 
     /**
      * Constructor
@@ -57,6 +59,7 @@ public class ValidValue extends Referenceable
             usage = template.getUsage();
             scope = template.getScope();
             preferredValue = template.getPreferredValue();
+            isDeprecated = template.isDeprecated();
         }
     }
 
@@ -174,6 +177,27 @@ public class ValidValue extends Referenceable
 
 
     /**
+     * Is the valid value deprecated?
+     *
+     * @return boolean flag
+     */
+    public boolean isDeprecated()
+    {
+        return isDeprecated;
+    }
+
+
+    /**
+     * Set whether the valid value is deprecated or not.  Default is false.
+     *
+     * @param deprecated boolean flag
+     */
+    public void setDeprecated(boolean deprecated)
+    {
+        isDeprecated = deprecated;
+    }
+
+    /**
      * Generate a string containing the properties.
      *
      * @return string value
@@ -187,6 +211,7 @@ public class ValidValue extends Referenceable
                 ", usage='" + usage + '\'' +
                 ", scope='" + scope + '\'' +
                 ", preferredValue='" + preferredValue + '\'' +
+                ", isDeprecated='" + isDeprecated + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
                 ", meanings=" + meanings +
@@ -224,6 +249,7 @@ public class ValidValue extends Referenceable
                 Objects.equals(description, that.description) &&
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(scope, that.scope) &&
+                Objects.equals(isDeprecated, that.isDeprecated) &&
                 Objects.equals(preferredValue, that.preferredValue);
     }
 
@@ -236,6 +262,6 @@ public class ValidValue extends Referenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, usage, scope, preferredValue);
+        return Objects.hash(super.hashCode(), displayName, description, usage, scope, preferredValue, isDeprecated);
     }
 }

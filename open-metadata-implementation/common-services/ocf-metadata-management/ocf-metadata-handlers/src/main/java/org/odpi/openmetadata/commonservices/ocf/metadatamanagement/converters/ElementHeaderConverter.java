@@ -45,6 +45,7 @@ public class ElementHeaderConverter
         this.entity = entity;
         this.repositoryHelper = repositoryHelper;
         this.serviceName = serviceName;
+        this.setTypeName();
     }
 
 
@@ -65,6 +66,23 @@ public class ElementHeaderConverter
         this.relationship = relationship;
         this.repositoryHelper = repositoryHelper;
         this.serviceName = serviceName;
+        this.setTypeName();
+    }
+
+
+    /**
+     * Extract the type name from the entity (if not null).
+     */
+    protected void setTypeName()
+    {
+        if (entity != null)
+        {
+            InstanceType type = entity.getType();
+            if (type != null)
+            {
+                this.typeName = type.getTypeDefName();
+            }
+        }
     }
 
 

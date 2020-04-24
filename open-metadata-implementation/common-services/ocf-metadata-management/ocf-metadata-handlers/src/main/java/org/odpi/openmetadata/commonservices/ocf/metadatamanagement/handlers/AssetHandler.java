@@ -6,6 +6,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.AssetBuilder;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.ReferenceableConverter;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.*;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -50,6 +51,7 @@ public class AssetHandler
     private RatingHandler             ratingHandler;
     private RelatedMediaHandler       relatedMediaHandler;
     private SchemaTypeHandler         schemaTypeHandler;
+    private ValidValuesHandler        validValuesHandler;
 
     private OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
@@ -80,6 +82,7 @@ public class AssetHandler
      * @param ratingHandler  handler for rating objects
      * @param relatedMediaHandler  handler for related media objects
      * @param schemaTypeHandler  handler for schemaType objects
+     * @param validValuesHandler  handler for valid values and reference data objects
      * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
      * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
      */
@@ -103,6 +106,7 @@ public class AssetHandler
                         RatingHandler             ratingHandler,
                         RelatedMediaHandler       relatedMediaHandler,
                         SchemaTypeHandler         schemaTypeHandler,
+                        ValidValuesHandler        validValuesHandler,
                         List<String>              supportedZones,
                         List<String>              defaultZones)
     {
@@ -126,6 +130,7 @@ public class AssetHandler
         this.ratingHandler             = ratingHandler;
         this.relatedMediaHandler       = relatedMediaHandler;
         this.schemaTypeHandler         = schemaTypeHandler;
+        this.validValuesHandler        = validValuesHandler;
         this.supportedZones            = supportedZones;
         this.defaultZones              = defaultZones;
     }
@@ -1059,6 +1064,7 @@ public class AssetHandler
                                                          asset.getOwner(),
                                                          asset.getOwnerType(),
                                                          asset.getZoneMembership(),
+                                                         asset.getOrigin(),
                                                          asset.getLatestChange(),
                                                          asset.getAdditionalProperties(),
                                                          asset.getExtendedProperties(),
@@ -1071,6 +1077,16 @@ public class AssetHandler
                                                               assetTypeName,
                                                               assetBuilder.getInstanceProperties(methodName),
                                                               methodName);
+
+            asset.setGUID(assetGUID);
+
+            this.reclassifyAsset(userId,
+                                 null,
+                                 asset,
+                                 assetBuilder.getZoneMembershipProperties(methodName),
+                                 assetBuilder.getOwnerProperties(methodName),
+                                 assetBuilder.getOriginProperties(methodName),
+                                 methodName);
 
             this.saveAssociatedConnection(userId,
                                           assetGUID,
@@ -1141,6 +1157,7 @@ public class AssetHandler
                                                          updatedAsset.getOwner(),
                                                          updatedAsset.getOwnerType(),
                                                          updatedAsset.getZoneMembership(),
+                                                         updatedAsset.getOrigin(),
                                                          updatedAsset.getLatestChange(),
                                                          updatedAsset.getAdditionalProperties(),
                                                          updatedAsset.getExtendedProperties(),
@@ -1155,11 +1172,12 @@ public class AssetHandler
                                            methodName);
 
             this.reclassifyAsset(userId,
-                                originalAsset,
-                                updatedAsset,
-                                assetBuilder.getZoneMembershipProperties(methodName),
-                                assetBuilder.getOwnerProperties(methodName),
-                                methodName);
+                                 originalAsset,
+                                 updatedAsset,
+                                 assetBuilder.getZoneMembershipProperties(methodName),
+                                 assetBuilder.getOwnerProperties(methodName),
+                                 assetBuilder.getOriginProperties(methodName),
+                                 methodName);
 
             this.saveAssociatedConnection(userId,
                                           originalAsset,
@@ -1179,6 +1197,90 @@ public class AssetHandler
         return null;
     }
 
+
+    /**
+     * Add the ReferenceData classification to an asset.  IF the asset is already classified
+     * in this way, the method is a no-op.
+     *
+     * @param userId calling user.
+     * @param assetGUID unique identifier of the asset that contains reference data.
+     * @param supportedZones list of visible zones.
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public void  classifyAssetAsReferenceData(String       userId,
+                                              String       assetGUID,
+                                              List<String> supportedZones,
+                                              String       methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        final String   assetGUIDParameter = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        Asset asset = getValidatedVisibleAsset(userId, supportedZones, assetGUID, serviceName, methodName);
+        if (asset != null)
+        {
+            repositoryHandler.classifyEntity(userId,
+                                             assetGUID,
+                                             AssetMapper.REFERENCE_DATA_CLASSIFICATION_GUID,
+                                             AssetMapper.REFERENCE_DATA_CLASSIFICATION_NAME,
+                                             null,
+                                             methodName);
+        }
+        else
+        {
+            invalidParameterHandler.throwUnknownElement(userId, assetGUID, AssetMapper.ASSET_TYPE_NAME, serviceName, serverName, methodName);
+        }
+    }
+
+
+    /**
+     * Remove the ReferenceData classification form an Asset.  If the asset was not classified in this way,
+     * this call is a no-op.
+     *
+     * @param userId calling user.
+     * @param assetGUID unique identifier of asset.
+     * @param supportedZones list of visible zones.
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public void  declassifyAssetAsReferenceData(String       userId,
+                                                String       assetGUID,
+                                                List<String> supportedZones,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String   assetGUIDParameter = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        Asset asset = getValidatedVisibleAsset(userId, supportedZones, assetGUID, serviceName, methodName);
+        if (asset != null)
+        {
+            repositoryHandler.declassifyEntity(userId,
+                                               assetGUID,
+                                               AssetMapper.REFERENCE_DATA_CLASSIFICATION_GUID,
+                                               AssetMapper.REFERENCE_DATA_CLASSIFICATION_NAME,
+                                               methodName);
+        }
+        else
+        {
+            invalidParameterHandler.throwUnknownElement(userId, assetGUID, AssetMapper.ASSET_TYPE_NAME, serviceName, serverName, methodName);
+        }
+    }
+
+
     /**
      * Reclassifies an asset based on the new properties.
      *
@@ -1192,39 +1294,68 @@ public class AssetHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-     public void reclassifyAsset(String userId,
-                                 Asset originalAsset,
-                                 Asset updatedAsset,
+    @Deprecated
+    public void reclassifyAsset(String             userId,
+                                Asset              originalAsset,
+                                Asset              updatedAsset,
+                                InstanceProperties zoneMembershipProperties,
+                                InstanceProperties ownerProperties,
+                                String             methodName) throws UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        reclassifyAsset(userId, originalAsset, updatedAsset, zoneMembershipProperties, ownerProperties, null, methodName);
+    }
+
+
+    /**
+     * Reclassifies an asset based on the new properties.
+     *
+     * @param userId userId
+     * @param originalAsset current content of the asset
+     * @param updatedAsset new asset values
+     * @param zoneMembershipProperties zone membership properties
+     * @param ownerProperties owner properties
+     * @param originProperties origin properties
+     * @param methodName calling method
+     *
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+     public void reclassifyAsset(String             userId,
+                                 Asset              originalAsset,
+                                 Asset              updatedAsset,
                                  InstanceProperties zoneMembershipProperties,
                                  InstanceProperties ownerProperties,
-                                 String methodName) throws UserNotAuthorizedException,
-                                                           PropertyServerException
+                                 InstanceProperties originProperties,
+                                 String             methodName) throws UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
-        if (originalAsset.getZoneMembership() == null)
+        if ((originalAsset == null) || (originalAsset.getZoneMembership() == null))
         {
             if (updatedAsset.getZoneMembership() != null)
             {
                 repositoryHandler.classifyEntity(userId,
-                                                 originalAsset.getGUID(),
+                                                 updatedAsset.getGUID(),
                                                  AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
                                                  AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
                                                  zoneMembershipProperties,
                                                  methodName);
             }
         }
-        else {
+        else
+        {
             if (updatedAsset.getZoneMembership() == null)
             {
                 repositoryHandler.declassifyEntity(userId,
-                                                   originalAsset.getGUID(),
+                                                   updatedAsset.getGUID(),
                                                    AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
                                                    AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
                                                    methodName);
             }
-            if (!(originalAsset.getZoneMembership().equals(updatedAsset.getZoneMembership())))
+            else if (!(originalAsset.getZoneMembership().equals(updatedAsset.getZoneMembership())))
             {
                 repositoryHandler.reclassifyEntity(userId,
-                                                   originalAsset.getGUID(),
+                                                   updatedAsset.getGUID(),
                                                    AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
                                                    AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
                                                    zoneMembershipProperties,
@@ -1232,19 +1363,20 @@ public class AssetHandler
             }
         }
 
-        if (originalAsset.getOwner() == null)
+        if ((originalAsset == null) || (originalAsset.getOwner() == null))
         {
             if (updatedAsset.getOwner() != null)
             {
                 repositoryHandler.classifyEntity(userId,
-                                                 originalAsset.getGUID(),
+                                                 updatedAsset.getGUID(),
                                                  AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
                                                  AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
                                                  ownerProperties,
                                                  methodName);
             }
         }
-        else {
+        else
+        {
             if (updatedAsset.getOwner() == null)
             {
                 repositoryHandler.declassifyEntity(userId,
@@ -1253,14 +1385,46 @@ public class AssetHandler
                                                    AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
                                                    methodName);
             }
-
-            if (!(originalAsset.getOwner().equals(updatedAsset.getOwner())))
+            else if (! originalAsset.getOwner().equals(updatedAsset.getOwner()))
             {
                 repositoryHandler.reclassifyEntity(userId,
                                                    originalAsset.getGUID(),
                                                    AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
                                                    AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
                                                    ownerProperties,
+                                                   methodName);
+            }
+        }
+
+        if ((originalAsset == null) || (originalAsset.getOrigin() == null))
+        {
+            if (updatedAsset.getOrigin() != null)
+            {
+                repositoryHandler.classifyEntity(userId,
+                                                 updatedAsset.getGUID(),
+                                                 AssetMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
+                                                 AssetMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                 originProperties,
+                                                 methodName);
+            }
+        }
+        else
+        {
+            if (updatedAsset.getOrigin() == null)
+            {
+                repositoryHandler.declassifyEntity(userId,
+                                                   originalAsset.getGUID(),
+                                                   AssetMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
+                                                   AssetMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                   methodName);
+            }
+            else if (!(originalAsset.getOrigin().equals(updatedAsset.getOrigin())))
+            {
+                repositoryHandler.reclassifyEntity(userId,
+                                                   originalAsset.getGUID(),
+                                                   AssetMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
+                                                   AssetMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                   originProperties,
                                                    methodName);
             }
         }
@@ -1671,6 +1835,7 @@ public class AssetHandler
                                                      asset.getOwner(),
                                                      asset.getOwnerType(),
                                                      asset.getZoneMembership(),
+                                                     asset.getOrigin(),
                                                      latestChange,
                                                      asset.getAdditionalProperties(),
                                                      asset.getExtendedProperties(),
@@ -1708,11 +1873,11 @@ public class AssetHandler
         final String assetGUIDParameterName  = "assetGUID";
         final String validatingParameterName = "qualifiedName";
 
-        Asset asset = this.getAsset(userId,
-                                    this.getSupportedZones(userId, serviceName),
-                                    assetGUID,
-                                    serviceName,
-                                    methodName);
+        Asset asset = this.getValidatedVisibleAsset(userId,
+                                                    this.getSupportedZones(userId, serviceName),
+                                                    assetGUID,
+                                                    serviceName,
+                                                    methodName);
 
         if (asset != null)
         {
@@ -1852,12 +2017,60 @@ public class AssetHandler
 
 
     /**
-     * Retrieve the requested asset object.
+     * Determine if the retrieved entity is for an asset and if so, is it visible?.
      *
      * @param userId calling user
      * @param supportedZones supported zones
+     * @param guidParameterName parameter name for supplied guid
+     * @param retrievedEntity retrieved asset
+     * @param serviceName calling server
+     * @param methodName calling method
+     * @return asset
+     * @throws InvalidParameterException asset is not in the zone
+     * @throws UserNotAuthorizedException user is not authorized to access the asset.
+     * @throws PropertyServerException problem managing the supported zones.
+     */
+    protected  Referenceable  validatedVisibleReferenceable(String        userId,
+                                                            List<String>  supportedZones,
+                                                            String        guidParameterName,
+                                                            EntityDetail  retrievedEntity,
+                                                            String        serviceName,
+                                                            String        methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        Referenceable result = null;
+
+        if (retrievedEntity != null)
+        {
+            InstanceType type = retrievedEntity.getType();
+
+            if (type != null)
+            {
+                if (repositoryHelper.isTypeOf(serviceName, type.getTypeDefName(), AssetMapper.ASSET_TYPE_NAME))
+                {
+                    AssetConverter converter = new AssetConverter(retrievedEntity, null, repositoryHelper, serviceName);
+
+                    result = this.validatedVisibleAsset(userId ,supportedZones, guidParameterName, converter.getAssetBean(), serviceName, methodName);
+                }
+                else
+                {
+                    ReferenceableConverter converter = new ReferenceableConverter(retrievedEntity, repositoryHelper, serviceName);
+
+                    result = converter.getBean();
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Retrieve the requested asset object as long as it is visible to the user.
+     *
+     * @param userId calling user
      * @param assetGUID unique identifier of the asset object
-     * @param serviceName calling service
      * @param methodName calling method
      * @return Asset bean
      *
@@ -1865,13 +2078,11 @@ public class AssetHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public Asset getAsset(String                 userId,
-                          List<String>           supportedZones,
-                          String                 assetGUID,
-                          String                 serviceName,
-                          String                 methodName) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+    public Asset getAssetBean(String                 userId,
+                              String                 assetGUID,
+                              String                 methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
         final String  guidParameterName = "assetGUID";
 
@@ -1894,10 +2105,41 @@ public class AssetHandler
                                                            repositoryHelper,
                                                            methodName);
 
+        return assetConverter.getAssetBean();
+    }
+
+
+    /**
+     * Retrieve the requested asset object as long as it is visible to the user - the
+     * UserNotAuthorizedException exception is thrown if it is not visible.
+     *
+     * @param userId calling user
+     * @param supportedZones supported zones
+     * @param assetGUID unique identifier of the asset object
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @return Asset bean
+     *
+     * @throws InvalidParameterException the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public Asset getValidatedVisibleAsset(String                 userId,
+                                          List<String>           supportedZones,
+                                          String                 assetGUID,
+                                          String                 serviceName,
+                                          String                 methodName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String  guidParameterName = "assetGUID";
+
+        Asset assetBean = this.getAssetBean(userId, assetGUID, methodName);
+
         return validatedVisibleAsset(userId,
                                      supportedZones,
                                      guidParameterName,
-                                     assetConverter.getAssetBean(),
+                                     assetBean,
                                      serviceName,
                                      methodName);
     }
@@ -1917,13 +2159,13 @@ public class AssetHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public Asset getAsset(String                 userId,
-                          List<String>           supportedZones,
-                          Relationship           assetConnectionRelationship,
-                          String                 serviceName,
-                          String                 methodName) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+    public Asset getValidatedVisibleAsset(String                 userId,
+                                          List<String>           supportedZones,
+                                          Relationship           assetConnectionRelationship,
+                                          String                 serviceName,
+                                          String                 methodName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
         final String  guidParameterName = "assetGUID";
 
@@ -1977,14 +2219,14 @@ public class AssetHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public Asset getAsset(String                 userId,
-                          List<String>           supportedZones,
-                          String                 assetGUID,
-                          String                 connectionGUID,
-                          String                 serviceName,
-                          String                 methodName) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+    public Asset getValidatedVisibleAsset(String                 userId,
+                                          List<String>           supportedZones,
+                                          String                 assetGUID,
+                                          String                 connectionGUID,
+                                          String                 serviceName,
+                                          String                 methodName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
         final String  guidParameterName = "assetGUID";
 
@@ -2061,6 +2303,45 @@ public class AssetHandler
         }
 
         return null;
+    }
+
+
+    /**
+     * Page through the list of valid values used to maintain the contents of a asset.
+     *
+     * @param userId calling user.
+     * @param assetGUID unique identifier of asset to query
+     * @param supportedZones list of zones that the asset must belong to one of
+     * @param startFrom paging starting point
+     * @param pageSize maximum number of return values.
+     * @param methodName calling method
+     *
+     * @return list of valid value beans
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public List<ValidValueImplementationDefinition> getValidValuesImplementationDefinitions(String       userId,
+                                                                                            String       assetGUID,
+                                                                                            List<String> supportedZones,
+                                                                                            int          startFrom,
+                                                                                            int          pageSize,
+                                                                                            String       methodName) throws InvalidParameterException,
+                                                                                                                            UserNotAuthorizedException,
+                                                                                                                            PropertyServerException
+    {
+        Asset asset = this.getValidatedVisibleAsset(userId, supportedZones, assetGUID, serviceName, methodName);
+
+        if (asset != null)
+        {
+            return validValuesHandler.getValidValuesImplementationDefinitions(userId, assetGUID, startFrom, pageSize, methodName);
+        }
+        else
+        {
+            invalidParameterHandler.throwUnknownElement(userId, assetGUID, AssetMapper.ASSET_TYPE_NAME, serviceName, serverName, methodName);
+            return null;
+        }
     }
 
 
@@ -2740,11 +3021,11 @@ public class AssetHandler
                                         {
                                             if (connectionRelationship != null)
                                             {
-                                                Asset asset = this.getAsset(userId,
-                                                                            supportedZones,
-                                                                            connectionRelationship,
-                                                                            serviceName,
-                                                                            methodName);
+                                                Asset asset = this.getValidatedVisibleAsset(userId,
+                                                                                            supportedZones,
+                                                                                            connectionRelationship,
+                                                                                            serviceName,
+                                                                                            methodName);
 
                                                 if ((asset != null) && assets.size() <= queryPageSize)
                                                 {
@@ -2972,7 +3253,7 @@ public class AssetHandler
 
         repositoryHandler.validateEntityGUID(userId, assetGUID, AssetMapper.ASSET_TYPE_NAME, methodName, guidParameter);
 
-        Asset asset = getAsset(userId, supportedZones, assetGUID, serviceName, methodName);
+        Asset asset = getValidatedVisibleAsset(userId, supportedZones, assetGUID, serviceName, methodName);
 
         securityVerifier.validateUserForAssetFeedback(userId, asset);
     }
@@ -3775,11 +4056,20 @@ public class AssetHandler
 
                             relatedAsset.setTypeName(relatedEntityProxy.getType().getTypeDefName());
                             relatedAsset.setAttributeName(repositoryHelper.getOtherEndName(serviceName, anchorGUID, relationship));
-                            relatedAsset.setRelatedAsset(this.getAsset(userId,
-                                                                       supportedZones,
-                                                                       relatedEntityProxy.getGUID(),
-                                                                       serviceName,
-                                                                       methodName));
+                            try
+                            {
+                                relatedAsset.setRelatedAsset(this.getValidatedVisibleAsset(userId,
+                                                                                           supportedZones,
+                                                                                           relatedEntityProxy.getGUID(),
+                                                                                           serviceName,
+                                                                                           methodName));
+                            }
+                            catch (UserNotAuthorizedException  notVisible)
+                            {
+                                /*
+                                 * Ignore the asset that this user is not supposed to see.
+                                 */
+                            }
 
                             relatedAssets.add(relatedAsset);
                         }
@@ -3839,6 +4129,8 @@ public class AssetHandler
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
     {
+        this.getValidatedVisibleAsset(userId, supportedZones,  anchorGUID, serviceName, methodName);
+
         return schemaTypeHandler.getSchemaTypeForAsset(userId, anchorGUID, methodName);
     }
 }

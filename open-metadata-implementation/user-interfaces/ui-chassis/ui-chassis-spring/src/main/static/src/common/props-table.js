@@ -51,12 +51,14 @@ class PropsTable extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
         .rTableRowGroup {
            display: table-row-group;
         }
-        
         .label {
             font-weight: bold;
-            width: 200px;
+            width: 250px;
+            padding-left: 15px;
         }
-        
+        h3 {
+            font-weight: normal;
+        }        
       </style>
       
         <h3>[[title]]</h3>

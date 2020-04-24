@@ -13,11 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * SchemaAttributeBuilder creates repository entities and relationships from properties for a schema attribute.
+ * SchemaAttributeBuilder creates instance properties for a schema attribute.
  */
 public class SchemaAttributeBuilder extends ReferenceableBuilder
 {
     private String            attributeName;
+
+    private String            description           = null;
     private int               elementPosition       = 0;
     private int               minCardinality        = 0;
     private int               maxCardinality        = 0;
@@ -104,9 +106,11 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      *
      * @param qualifiedName unique name
      * @param attributeName new value for the display name.
+     * @param description new value for the description.
      * @param elementPosition position of the attribute in the parent schemaType.
      * @param minCardinality is the attribute optional?
      * @param maxCardinality does the attribute repeat?
+     * @param isDeprecated is this element deprecated?
      * @param defaultValueOverride override for the Type's default value.
      * @param allowsDuplicateValues unique values ?
      * @param orderedValues ordered values ?
@@ -126,6 +130,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      */
     public SchemaAttributeBuilder(String               qualifiedName,
                                   String               attributeName,
+                                  String               description,
                                   int                  elementPosition,
                                   int                  minCardinality,
                                   int                  maxCardinality,
@@ -155,6 +160,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
               serverName);
 
         this.attributeName = attributeName;
+        this.description = description;
         this.elementPosition = elementPosition;
         this.cardinality = null;
         this.minCardinality = minCardinality;
@@ -203,6 +209,15 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                       properties,
                                                                       SchemaElementMapper.ATTRIBUTE_NAME_PROPERTY_NAME,
                                                                       attributeName,
+                                                                      methodName);
+        }
+
+        if (description != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      SchemaElementMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      description,
                                                                       methodName);
         }
 
@@ -351,7 +366,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      SchemaElementMapper.ATTRIBUTE_NAME_PROPERTY_NAME,
                                                                       literalName,
                                                                       methodName);
         }

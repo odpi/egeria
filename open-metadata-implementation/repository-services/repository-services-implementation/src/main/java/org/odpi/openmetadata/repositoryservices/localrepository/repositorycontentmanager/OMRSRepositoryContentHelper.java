@@ -2,7 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.ClassificationCondition;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -2075,6 +2078,28 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         EntitySummaryDifferences differences = new EntitySummaryDifferences();
         getEntitySummaryDifferences(differences, left, right, ignoreModificationStamps);
         return differences;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchClassifications getSearchClassificationsFromList(List<String> classificationNames)
+    {
+        SearchClassifications sc = null;
+        if (classificationNames != null)
+        {
+            sc = new SearchClassifications();
+            sc.setMatchCriteria(MatchCriteria.ALL);
+            List<ClassificationCondition> conditions = new ArrayList<>();
+            for (String classificationName : classificationNames) {
+                ClassificationCondition cc = new ClassificationCondition();
+                cc.setName(classificationName);
+                conditions.add(cc);
+            }
+            sc.setConditions(conditions);
+        }
+        return sc;
     }
 
 

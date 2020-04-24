@@ -249,6 +249,8 @@ public abstract class ConnectorBase extends Connector
      */
     protected static class ProtectedConnection extends ConnectionProperties
     {
+        private static final long    serialVersionUID = 1L;
+
         ProtectedConnection(ConnectionProperties templateConnection)
         {
             super(templateConnection);
