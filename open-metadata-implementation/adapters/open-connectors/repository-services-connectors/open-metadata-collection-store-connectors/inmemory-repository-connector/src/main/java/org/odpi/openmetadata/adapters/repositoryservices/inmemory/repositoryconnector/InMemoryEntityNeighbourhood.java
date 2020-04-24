@@ -176,10 +176,12 @@ class InMemoryEntityNeighbourhood
             }
             if (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship))
             {
-                if (limitResultsByClassification == null || limitResultsByClassification != null && (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity1) && (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity2))))
+                if (limitResultsByClassification == null ||
+                    limitResultsByClassification != null &&
+                    (includeEntityClassificationEntityCheck(limitResultsByClassification, entity1)
+                     && (includeEntityClassificationEntityCheck(limitResultsByClassification, entity2))))
                 {
                     if (entityTypeGUIDs != null) {
-
                         if (graphEntities.contains(relationshipEnd1Guid)) {
                             validEntity1 = true;
                         }
@@ -250,6 +252,25 @@ class InMemoryEntityNeighbourhood
             valid = true;
         }
         return valid;
+    }
+
+    /**
+     * Check whether the supplied entities haveone or more of the required classifications.
+     * We should not be checking wentity if it is the root entity is classified as that is always returned.
+     * @param limitResultsByClassification classifications to check against
+     * @param entity to check
+     * @return whether to include this entity
+     */
+    private boolean includeEntityClassificationEntityCheck(List<String> limitResultsByClassification, EntityDetail entity)
+    {
+       boolean  includeEntity = true;
+
+       if (!entity.getGUID().equals(rootEntityGUID))
+       {
+           // returns true if classified
+           includeEntity =repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity);
+       }
+       return includeEntity;
     }
 
     /**
