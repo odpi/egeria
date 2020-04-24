@@ -10,8 +10,7 @@ class GlossaryView extends PolymerElement {
       <style include="shared-styles">
         :host {
           display: block;
-          margin: 10px 24px;
-          padding: 5px;
+          margin: 0 24px;
           background-color:  var(--egeria-background-color);
           min-height: calc(100vh - 85px);
         }

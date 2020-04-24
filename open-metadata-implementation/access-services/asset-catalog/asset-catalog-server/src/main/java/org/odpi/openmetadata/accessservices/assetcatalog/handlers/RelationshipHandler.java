@@ -22,24 +22,27 @@ public class RelationshipHandler {
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final RepositoryErrorHandler errorHandler;
+    private final String sourceName;
 
     private CommonHandler commonHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
      *
+     * @param sourceName           name of the component
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param errorHandler            provides common validation routines for the other handler classes
      */
-    public RelationshipHandler(InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler,
+    public RelationshipHandler(String sourceName, InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler,
                                OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
+        this.sourceName = sourceName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.errorHandler = errorHandler;
-        this.commonHandler = new CommonHandler(repositoryHandler, repositoryHelper, this.errorHandler);
+        this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, this.errorHandler);
     }
 
     /**
@@ -79,7 +82,7 @@ public class RelationshipHandler {
                 methodName);
 
         if (relationshipBetweenEntities != null) {
-            AssetConverter converter = new AssetConverter(repositoryHelper);
+            AssetConverter converter = new AssetConverter(sourceName, repositoryHelper);
             return converter.convertRelationship(relationshipBetweenEntities);
         }
 
