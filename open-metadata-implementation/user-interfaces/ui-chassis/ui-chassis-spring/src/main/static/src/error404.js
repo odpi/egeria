@@ -16,7 +16,8 @@ class Error404 extends PolymerElement {
         }
       </style>
 
-      Oops you hit a 404! <a href="/#[[rootPath]]">Head back to home.</a>
+      Oops, can't find what are you looking for! <br>
+      <a href="/#[[rootPath]]">Head back to home.</a>
     `;
   }
 }

@@ -12,10 +12,12 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -27,16 +29,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ADDITIONAL_PROPERTIES_PROPERTY_NAME;
-import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_CATALOG_OMAS;
 
 /**
  * AssetConverter is a helper class that maps the OMRS objects to Asset Catalog model.
  */
 public class AssetConverter {
 
+    private String sourceName;
     private OMRSRepositoryHelper repositoryHelper;
 
-    public AssetConverter(OMRSRepositoryHelper repositoryHelper) {
+    public AssetConverter(String sourceName, OMRSRepositoryHelper repositoryHelper) {
+        this.sourceName = sourceName;
         this.repositoryHelper = repositoryHelper;
     }
 
@@ -279,7 +282,7 @@ public class AssetConverter {
 
         asset.setGuid(entityProxy.getGUID());
         if (entityProxy.getUniqueProperties() != null) {
-            asset.setName(repositoryHelper.getStringProperty("userID", Constants.NAME, entityProxy.getUniqueProperties(), method));
+            asset.setName(repositoryHelper.getStringProperty(sourceName, Constants.NAME, entityProxy.getUniqueProperties(), method));
         }
         asset.setCreatedBy(entityProxy.getCreatedBy());
         asset.setCreateTime(entityProxy.getCreateTime());
@@ -306,11 +309,20 @@ public class AssetConverter {
     private Map<String, String> extractProperties(InstanceProperties instanceProperties) {
         Map<String, Object> instancePropertiesAsMap = repositoryHelper.getInstancePropertiesAsMap(instanceProperties);
         Map<String, String> properties = new HashMap<>();
+        String methodName = "extractProperties";
 
         if (MapUtils.isNotEmpty(instancePropertiesAsMap)) {
             instancePropertiesAsMap.forEach((key, value) -> {
                 if (!key.equals(ADDITIONAL_PROPERTIES_PROPERTY_NAME)) {
-                    properties.put(key, String.valueOf(value));
+                    if (value instanceof ArrayPropertyValue) {
+                        List<String> stringArrayProperty = repositoryHelper.getStringArrayProperty(sourceName, key, instanceProperties, methodName);
+                        properties.put(key, listToString(stringArrayProperty));
+                    } else if (value instanceof MapPropertyValue) {
+                        Map<String, Object> mapProperty = repositoryHelper.getMapFromProperty(sourceName, key, instanceProperties, methodName);
+                        properties.put(key, mapToString(mapProperty));
+                    } else {
+                        properties.put(key, String.valueOf(value));
+                    }
                 }
             });
         }
@@ -321,8 +333,17 @@ public class AssetConverter {
     private Map<String, String> extractAdditionalProperties(InstanceProperties instanceProperties) {
         String methodName = "extractAdditionalProperties";
 
-        return MapUtils.emptyIfNull(repositoryHelper.removeStringMapFromProperty(ASSET_CATALOG_OMAS,
+        return MapUtils.emptyIfNull(repositoryHelper.removeStringMapFromProperty(sourceName,
                 ADDITIONAL_PROPERTIES_PROPERTY_NAME,
                 instanceProperties, methodName));
+    }
+
+    private String listToString(List<String> list) {
+        return String.join(",", list);
+    }
+
+    private String mapToString(Map<String, Object> map) {
+        return map.keySet().stream().map(key -> key + ": " + map.get(key))
+                .collect(Collectors.joining(", "));
     }
 }

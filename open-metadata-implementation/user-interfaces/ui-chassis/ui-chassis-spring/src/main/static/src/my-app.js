@@ -31,7 +31,7 @@ import './token-ajax';
 import './toast-feedback';
 import './login-view.js';
 import './user-options-menu';
-import './shared-styles';
+import './shared-styles.js';
 import './common/breadcrumb.js';
 
 // Gesture events like tap and track generated from touch will not be
@@ -54,26 +54,30 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         };
         app-header {
           color: #fff;
-          background-color: var(--app-primary-color);
+          background-color: var(--egeria-primary-color);
         };
         app-header paper-icon-button {
           --paper-icon-button-ink-color: white;
-        };
-        .drawer-list {
-          margin: 0 20px;
         };
         .drawer-list a {
           display: block;
           padding: 0 16px;
           text-decoration: none;
-          color: var(--app-secondary-color);
+          color: var( --egeria-secondary-color );
           line-height: 40px;
         };
+        .drawer-list div:not(.iron-selected) a:hover{
+            background-color: var(--app-background-color);
+        }
+        }
+        .drawer-list div.iron-selected a {
+            color: white;
+        }
         .drawer-list-selected,
         .drawer-list div.iron-selected {
           font-weight: bold;
-          color: var(--app-secondary-color);
-          background-color: var(--app-primary-color);
+          color: var(--egeria-secondary-color);
+          background-color: var(--egeria-primary-color);
         };
 
         paper-input.custom:hover {
@@ -138,7 +142,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             
             <app-drawer-layout id="drawerLayout" flex forceNarrow  narrow="{{narrow}}" fullbleed="">
                 <app-drawer id="drawer" slot="drawer"  swipe-open="[[narrow]]">
-                  <img src="../images/Logo_trademark.jpg" height="60" style="margin: auto; display: block; margin-top: 15pt;"/>
+                  <div id="logo"></div>
                   <iron-selector selected="[[page]]" attr-for-selected="name"
                         class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
                     <div name="asset-catalog" language="[[language]]"><a href="[[rootPath]]#/asset-catalog/search">Asset Catalog</a></div>
