@@ -185,6 +185,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-view language="[[language]]" name="asset-catalog" route="[[tail]]"></asset-view>
                     <glossary-view language="[[language]]" name="glossary" route="[[tail]]"></glossary-view>
+                    <glossary-terms language="[[language]]" name="glossary-terms" route="{{tail}}"></glossary-terms>
+                    <glossary-categories language="[[language]]" name="glossary-categories" route="{{tail}}"></glossary-categories>
                     <about-view language="[[language]]" name="about"></about-view>
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
                     <asset-lineage-view language="[[language]]" name="asset-lineage"  route="[[tail]]"></asset-lineage-view>
@@ -219,7 +221,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 value: [
                     'asset-catalog', 'subject-area', 'asset-lineage',
                     'type-explorer', 'repository-explorer', 'about',
-                    'glossary']
+                    "glossary-terms", "glossary-categories" ,'glossary']
             },
             feedback: {
                 type: Object,
@@ -373,6 +375,12 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 break;
             case 'about' :
                 import('./about-view.js');
+                break;
+            case 'glossary-terms':
+                import('./glossary/glossary-term-view.js');
+                break;
+            case 'glossary-categories':
+                import('./glossary/glossary-category-view.js');
                 break;
             case 'view404':
                 import('./error404.js');

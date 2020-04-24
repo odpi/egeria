@@ -16,9 +16,9 @@ class GlossaryView extends PolymerElement {
         }
         
       </style>
-      <app-route route="{{route}}" pattern="/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
+      <app-route route="{{route}}" data="{{routeData}}" tail="{{tail}}"></app-route>
       <token-ajax id="tokenAjaxDetails" last-response="{{glossaries}}" url="/api/glossaries" auto></token-ajax>
-
+      
       <div class="container">
        <vaadin-grid id="grid" items="[[glossaries]]" theme="row-stripes"
                            column-reordering-allowed multi-sort>
@@ -26,14 +26,14 @@ class GlossaryView extends PolymerElement {
               <template class="header">
                   <vaadin-grid-sorter path="displayName">Name</vaadin-grid-sorter>
               </template>
-              <template>[[item.displayName]]</template>
+              <template><a href = "#/glossary-terms/[[item.guid]]">[[item.displayName]]</a></template>
           </vaadin-grid-column>
 
           <vaadin-grid-column width="15em" resizable>
               <template class="header">
                   <vaadin-grid-sorter path="qualifiedName">Qualified Name</vaadin-grid-sorter>
               </template>
-              <template>[[item.qualifiedName]]</template>
+              <template><a href = "#/glossary-categories/[[item.guid]]">[[item.qualifiedName]]</a></template>
           </vaadin-grid-column>
 
           <vaadin-grid-column width="5em" resizable>
@@ -75,6 +75,13 @@ class GlossaryView extends PolymerElement {
     `;
     }
 
+    retrieveTermsForGlossary(guid) {
+        console.debug(guid)
+        console.debug('retrieveTermsForGlossary: '+ guid);
+        this.$.tokenAjaxItems.url='/api/glossaries/' + guid + "/terms";
+        this.$.tokenAjaxItems._go();
+    }
+
     static get observers() {
         return [
             '_routeChanged(route)'
@@ -93,7 +100,6 @@ class GlossaryView extends PolymerElement {
         console.log('connect glossary-view');
 
     }
-
 }
 
 window.customElements.define('glossary-view', GlossaryView);
