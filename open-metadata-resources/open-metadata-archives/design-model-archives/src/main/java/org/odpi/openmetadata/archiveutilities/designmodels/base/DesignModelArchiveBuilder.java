@@ -87,6 +87,8 @@ public class DesignModelArchiveBuilder
     private String             archiveRootName;
     private String             originatorName;
     private String             versionName;
+    // used for junits as a flag to not write to disk during junit
+    protected boolean writeToFile = true;
 
 
     /**
@@ -908,8 +910,9 @@ public class DesignModelArchiveBuilder
     protected OpenMetadataArchive getOpenMetadataArchive()
     {
         System.out.println("GUIDs map size: " + idToGUIDMap.getSize());
-
-        idToGUIDMap.saveGUIDs();
+        if (writeToFile) {
+            idToGUIDMap.saveGUIDs();
+        }
 
         return archiveBuilder.getOpenMetadataArchive();
     }

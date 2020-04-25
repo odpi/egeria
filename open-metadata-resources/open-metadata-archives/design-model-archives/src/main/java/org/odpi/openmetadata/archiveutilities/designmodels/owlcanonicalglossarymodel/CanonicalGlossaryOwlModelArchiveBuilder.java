@@ -75,6 +75,11 @@ class CanonicalGlossaryOwlModelArchiveBuilder extends DesignModelArchiveBuilder 
         }
 
     }
+    CanonicalGlossaryOwlModelArchiveBuilder(CanonicalGlossaryOwlParser parser, boolean writeToFile) throws Exception {
+        this(parser);
+        this.writeToFile = writeToFile;
+    }
+
 
 
     /**
@@ -231,4 +236,5 @@ class CanonicalGlossaryOwlModelArchiveBuilder extends DesignModelArchiveBuilder 
          */
         return super.getOpenMetadataArchive();
     }
+
 }

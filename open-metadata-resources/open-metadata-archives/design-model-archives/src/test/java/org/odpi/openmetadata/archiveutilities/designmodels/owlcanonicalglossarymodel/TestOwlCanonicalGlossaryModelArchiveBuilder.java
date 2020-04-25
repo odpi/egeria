@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel;
 
-
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveInstanceStore;
 import org.testng.annotations.Test;
@@ -18,7 +17,7 @@ public class TestOwlCanonicalGlossaryModelArchiveBuilder
     public void testOpenMetadataArchiveLoad() throws Exception
     {
             CanonicalGlossaryOwlParser       parser  = new CanonicalGlossaryOwlParser(modelLocation);
-            CanonicalGlossaryOwlModelArchiveBuilder archive = new CanonicalGlossaryOwlModelArchiveBuilder(parser);
+            CanonicalGlossaryOwlModelArchiveBuilder archive = new CanonicalGlossaryOwlModelArchiveBuilder(parser,false);
 
             OpenMetadataArchive archiveProperties = archive.getOpenMetadataArchive();
             OpenMetadataArchiveInstanceStore instanceStore  = archiveProperties.getArchiveInstanceStore();
