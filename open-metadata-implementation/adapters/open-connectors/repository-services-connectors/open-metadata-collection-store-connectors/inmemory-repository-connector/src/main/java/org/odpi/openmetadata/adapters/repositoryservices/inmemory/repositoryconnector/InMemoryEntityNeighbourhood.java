@@ -178,8 +178,8 @@ class InMemoryEntityNeighbourhood
             {
                 if (limitResultsByClassification == null ||
                     limitResultsByClassification != null &&
-                    (includeEntityIfClassifiedAppropriatedly(limitResultsByClassification, entity1) &&
-                    (includeEntityIfClassifiedAppropriatedly(limitResultsByClassification, entity2))))
+                    (includeEntityIfClassifiedAppropriately(limitResultsByClassification, entity1) &&
+                    (includeEntityIfClassifiedAppropriately(limitResultsByClassification, entity2))))
                 {
                     if (entityTypeGUIDs != null) {
                         if (graphEntities.contains(relationshipEnd1Guid)) {
@@ -261,7 +261,7 @@ class InMemoryEntityNeighbourhood
      * @param entity entity to check for inclusion against the classification list.
      * @return whether to include this entity
      */
-    private boolean includeEntityIfClassifiedAppropriatedly(List<String> limitingClassifications, EntityDetail entity)
+    private boolean includeEntityIfClassifiedAppropriately(List<String> limitingClassifications, EntityDetail entity)
         {
        boolean  includeEntity = true;
 
