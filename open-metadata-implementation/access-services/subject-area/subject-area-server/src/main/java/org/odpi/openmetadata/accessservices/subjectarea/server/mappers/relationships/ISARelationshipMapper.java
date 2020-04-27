@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ISARelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Isa;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
@@ -36,7 +36,7 @@ public class ISARelationshipMapper extends LineMapper
      */
     @Override
     protected void mapLineToInstanceProperties(Line line, InstanceProperties instanceProperties) {
-        ISARelationship iSARelationship = (ISARelationship)line;
+        Isa iSARelationship = (Isa)line;
         if (iSARelationship.getDescription()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getDescription(), "description");
         }
@@ -66,7 +66,7 @@ public class ISARelationshipMapper extends LineMapper
     @Override
     protected boolean mapPrimitiveToLine(Line line, String propertyName, Object value) {
         String stringValue = (String) value;
-        ISARelationship iSARelationship = (ISARelationship) line;
+        Isa iSARelationship = (Isa) line;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
             iSARelationship.setDescription(stringValue);
@@ -89,7 +89,7 @@ public class ISARelationshipMapper extends LineMapper
     @Override
     protected boolean mapEnumToLine(Line line, String propertyName, EnumPropertyValue enumPropertyValue)
     {
-        ISARelationship iSARelationship = (ISARelationship) line;
+        Isa iSARelationship = (Isa) line;
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -108,7 +108,7 @@ public class ISARelationshipMapper extends LineMapper
     @Override
     protected String getProxy1Guid(Line line)
     {
-        ISARelationship iSARelationship = (ISARelationship) line;
+        Isa iSARelationship = (Isa) line;
         return iSARelationship.getTermGuid();
     }
 
@@ -121,7 +121,7 @@ public class ISARelationshipMapper extends LineMapper
     @Override
     protected String getProxy2Guid(Line line)
     {
-        ISARelationship iSARelationship = (ISARelationship) line;
+        Isa iSARelationship = (Isa) line;
         return iSARelationship.getSpecialisedTermGuid();
     }
 
@@ -136,21 +136,21 @@ public class ISARelationshipMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), ISA_RELATIONSHIP).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  ISA_RELATIONSHIP;
     }
     @Override
     protected Line getLineInstance() {
-        return new ISARelationship();
+        return new Isa();
     }
     @Override
     protected void setEnd1GuidInLine(Line line, String guid){
-        ISARelationship isaRelationship = (ISARelationship)line;
+        Isa isaRelationship = (Isa)line;
         isaRelationship.setTermGuid(guid);
     }
     @Override
     protected void setEnd2GuidInLine(Line line, String guid) {
-        ISARelationship isaRelationship = (ISARelationship)line;
+        Isa isaRelationship = (Isa)line;
         isaRelationship.setSpecialisedTermGuid(guid);
     }
 }

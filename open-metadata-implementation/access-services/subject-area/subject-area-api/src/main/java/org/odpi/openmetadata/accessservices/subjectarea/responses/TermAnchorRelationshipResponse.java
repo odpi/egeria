@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchorRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TermAnchorRelationshipResponse extends SubjectAreaOMASAPIResponse
 {
-    private TermAnchorRelationship termAnchorRelationship = null;
+    private TermAnchor termAnchorRelationship = null;
 
     /**
      * Default constructor
@@ -29,7 +29,7 @@ public class TermAnchorRelationshipResponse extends SubjectAreaOMASAPIResponse
     {
         this.setResponseCategory(ResponseCategory.TermAnchorRelationship);
     }
-    public TermAnchorRelationshipResponse(TermAnchorRelationship termAnchorRelationship)
+    public TermAnchorRelationshipResponse(TermAnchor termAnchorRelationship)
     {
         this();
         this.termAnchorRelationship = termAnchorRelationship;
@@ -40,12 +40,12 @@ public class TermAnchorRelationshipResponse extends SubjectAreaOMASAPIResponse
      *
      * @return TermAnchorRelationship
      */
-    public TermAnchorRelationship getTermAnchorRelationship()
+    public TermAnchor getTermAnchorRelationship()
     {
         return termAnchorRelationship;
     }
 
-    public void setTermAnchorRelationship(TermAnchorRelationship termAnchorRelationship)
+    public void setTermAnchorRelationship(TermAnchor termAnchorRelationship)
     {
         this.termAnchorRelationship = termAnchorRelationship;
     }
