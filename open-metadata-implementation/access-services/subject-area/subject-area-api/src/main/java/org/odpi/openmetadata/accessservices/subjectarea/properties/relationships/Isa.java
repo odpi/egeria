@@ -21,31 +21,30 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
- * TermCategorizationRelationship is a relationship between an entity of type GlossaryCategory and an entity of type GlossaryTerm.
- * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
- * The first entity proxy has categories as the proxy name for entity type GlossaryCategory.
- * The second entity proxy has terms as the proxy name for entity type GlossaryTerm.
- *
- * Each entity proxy also stores the entities guid.
-
- Links a glossary term into a glossary category.
+ * Link between a more general glossary term and a more specific definition.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermCategorizationRelationship extends Line {
-    private static final Logger log = LoggerFactory.getLogger(TermCategorizationRelationship.class);
-    private static final String className = TermCategorizationRelationship.class.getName();
+public class Isa extends Line {
+    private static final Logger log = LoggerFactory.getLogger(Isa.class);
+    private static final String className = Isa.class.getName();
 
       private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
           "description",
+          "expression",
           "status",
+          "steward",
+          "source",
 
       // Terminate the list
           null
       };
       private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
           "description",
+          "expression",
+          "steward",
+          "source",
 
        // Terminate the list
           null
@@ -65,17 +64,17 @@ public class TermCategorizationRelationship extends Line {
       private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
       private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
       private static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
-      private String categoryGuid;
+      private String specialisedTermGuid;
       private String termGuid;
 
 
-    public TermCategorizationRelationship() {
+    public Isa() {
         initialise();
     }
 
     private void initialise()
     {
-       name = "TermCategorization";
+       name = "Isa";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -83,21 +82,21 @@ public class TermCategorizationRelationship extends Line {
         catch (IllegalArgumentException e) {
            lineType = LineType.Unknown;
         }
-        entity1Name = "categories";
-        entity1Type = "GlossaryCategory";
-        entity2Name = "terms";
+        entity1Name = "classifies";
+        entity1Type = "GlossaryTerm";
+        entity2Name = "isA";
         entity2Type = "GlossaryTerm";
-        typeDefGuid = "696a81f5-ac60-46c7-b9fd-6979a1e7ad27";
+        typeDefGuid = "50fab7c7-68bc-452f-b8eb-ec76829cac85";
     }
 
-    public TermCategorizationRelationship(Line template) {
+    public Isa(Line template) {
         super(template);
         initialise();
     }
 
-    public TermCategorizationRelationship(Relationship omrsRelationship) {
+    public Isa(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "TermCategorizationRelationship";
+        name = "Isa";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -105,6 +104,32 @@ public class TermCategorizationRelationship extends Line {
         catch (IllegalArgumentException e) {
            lineType = LineType.Unknown;
         }
+    }
+    /**
+     * {@literal Get the guid of the more specialised Term. }
+     * @return {@code String }
+     */
+    public String getSpecialisedTermGuid()
+    {
+        return specialisedTermGuid;
+    }
+
+    public void setSpecialisedTermGuid(String specialisedTermGuid)
+    {
+        this.specialisedTermGuid = specialisedTermGuid;
+    }
+    /**
+     * {@literal Get the guid of the more general Term. }
+     * @return {@code String }
+     */
+    public String getTermGuid()
+    {
+        return termGuid;
+    }
+
+    public void setTermGuid(String termGuid)
+    {
+        this.termGuid = termGuid;
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -115,45 +140,41 @@ public class TermCategorizationRelationship extends Line {
           InstanceProperties instanceProperties = new InstanceProperties();
           EnumPropertyValue enumPropertyValue=null;
           enumPropertyValue = new EnumPropertyValue();
-          // status of the relationship.
+          // the status of or confidence in the relationship.
           enumPropertyValue.setOrdinal(status.ordinal());
           enumPropertyValue.setSymbolicName(status.name());
           instanceProperties.setProperty("status",enumPropertyValue);
           MapPropertyValue mapPropertyValue=null;
           PrimitivePropertyValue primitivePropertyValue=null;
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("description",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
+          primitivePropertyValue.setPrimitiveValue(null);
+          instanceProperties.setProperty("expression",primitivePropertyValue);
+          primitivePropertyValue = new PrimitivePropertyValue();
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("status",primitivePropertyValue);
+          primitivePropertyValue = new PrimitivePropertyValue();
+          
+          primitivePropertyValue.setPrimitiveValue(null);
+          instanceProperties.setProperty("steward",primitivePropertyValue);
+          primitivePropertyValue = new PrimitivePropertyValue();
+          
+          primitivePropertyValue.setPrimitiveValue(null);
+          instanceProperties.setProperty("source",primitivePropertyValue);
           if (log.isDebugEnabled()) {
                  log.debug("<== Method: " + methodName);
           }
           return instanceProperties;
     }
 
-    public String getCategoryGuid() {
-        return categoryGuid;
-    }
-
-    public void setCategoryGuid(String categoryGuid) {
-        this.categoryGuid = categoryGuid;
-    }
-
-    public String getTermGuid() {
-        return termGuid;
-    }
-
-    public void setTermGuid(String termGuid) {
-        this.termGuid = termGuid;
-    }
-
-    private String description;
+         private String description;
         /**
-            * {@literal Explanation of why this term is in this categorization. }
+            * {@literal Description of the relationship. }
             * @return {@code String }
             */
          public String getDescription() {
@@ -162,9 +183,20 @@ public class TermCategorizationRelationship extends Line {
          public void setDescription(String description)  {
             this.description = description;
         }
+         private String expression;
+        /**
+            * {@literal An expression that explains the relationship. }
+            * @return {@code String }
+            */
+         public String getExpression() {
+             return this.expression;
+         }
+         public void setExpression(String expression)  {
+            this.expression = expression;
+        }
          private TermRelationshipStatus status;
         /**
-            * {@literal Status of the relationship. }
+            * {@literal The status of or confidence in the relationship. }
             * @return {@code TermRelationshipStatus }
             */
          public TermRelationshipStatus getStatus() {
@@ -172,6 +204,28 @@ public class TermCategorizationRelationship extends Line {
          }
          public void setStatus(TermRelationshipStatus status)  {
             this.status = status;
+        }
+         private String steward;
+        /**
+            * {@literal Person responsible for the relationship. }
+            * @return {@code String }
+            */
+         public String getSteward() {
+             return this.steward;
+         }
+         public void setSteward(String steward)  {
+            this.steward = steward;
+        }
+         private String source;
+        /**
+            * {@literal Person, organization or automated process that created the relationship. }
+            * @return {@code String }
+            */
+         public String getSource() {
+             return this.source;
+         }
+         public void setSource(String source)  {
+            this.source = source;
         }
 
       @Override
@@ -181,10 +235,13 @@ public class TermCategorizationRelationship extends Line {
              {
                  sb = new StringBuilder();
              }
-             sb.append(" TermCategorizationRelationship=");
+             sb.append(" Isa=");
              sb.append(super.toString(sb));
-             sb.append(" TermCategorizationRelationship Attributes{");
+             sb.append(" Isa Attributes{");
              sb.append("description=" + this.description +",");
+             sb.append("expression=" + this.expression +",");
+             sb.append("steward=" + this.steward +",");
+             sb.append("source=" + this.source +",");
              if ( status!=null) {
                  sb.append("status=" + status.name());
              }

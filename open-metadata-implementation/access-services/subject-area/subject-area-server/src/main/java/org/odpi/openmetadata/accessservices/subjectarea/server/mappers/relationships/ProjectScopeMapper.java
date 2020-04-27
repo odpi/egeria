@@ -3,11 +3,9 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Antonym;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScopeRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScope;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.Logger;
@@ -36,7 +34,7 @@ public class ProjectScopeMapper extends LineMapper
     @Override
     protected String getProxy1Guid(Line line)
     {
-        ProjectScopeRelationship projectScope = (ProjectScopeRelationship) line;
+        ProjectScope projectScope = (ProjectScope) line;
         return projectScope.getProjectGuid();
     }
 
@@ -49,7 +47,7 @@ public class ProjectScopeMapper extends LineMapper
     @Override
     protected String getProxy2Guid(Line line)
     {
-        ProjectScopeRelationship projectScope = (ProjectScopeRelationship) line;
+        ProjectScope projectScope = (ProjectScope) line;
         return projectScope.getNodeGuid();
     }
 
@@ -64,21 +62,21 @@ public class ProjectScopeMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), PROJECT_SCOPE).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  PROJECT_SCOPE;
     }
     @Override
     protected Line getLineInstance() {
-        return new ProjectScopeRelationship();
+        return new ProjectScope();
     }
     @Override
     protected void setEnd1GuidInLine(Line line, String guid){
-        ProjectScopeRelationship ProjectScopeRelationship = (ProjectScopeRelationship)line;
+        ProjectScope ProjectScopeRelationship = (ProjectScope)line;
         ProjectScopeRelationship.setProjectGuid(guid);
     }
     @Override
     protected void setEnd2GuidInLine(Line line, String guid) {
-        ProjectScopeRelationship ProjectScopeRelationship = (ProjectScopeRelationship)line;
+        ProjectScope ProjectScopeRelationship = (ProjectScope)line;
         ProjectScopeRelationship.setNodeGuid(guid);
     }
     /**
@@ -88,7 +86,7 @@ public class ProjectScopeMapper extends LineMapper
      */
     @Override
     protected void mapLineToInstanceProperties(Line line, InstanceProperties instanceProperties) {
-        ProjectScopeRelationship projectScope  = (ProjectScopeRelationship)line;
+        ProjectScope projectScope  = (ProjectScope)line;
         if (projectScope.getScopeDescription()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, projectScope.getScopeDescription(), "scopeDescription");
         }
@@ -103,7 +101,7 @@ public class ProjectScopeMapper extends LineMapper
     @Override
     protected boolean mapPrimitiveToLine(Line line, String propertyName, Object value) {
         String stringValue = (String) value;
-        ProjectScopeRelationship projectScope = (ProjectScopeRelationship)line;
+        ProjectScope projectScope = (ProjectScope)line;
         boolean foundProperty = false;
         if (propertyName.equals("scopeDescription")) {
             projectScope.setScopeDescription(stringValue);

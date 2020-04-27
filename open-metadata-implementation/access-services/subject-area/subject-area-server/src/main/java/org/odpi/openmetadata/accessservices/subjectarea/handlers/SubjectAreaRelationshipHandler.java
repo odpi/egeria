@@ -283,8 +283,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         try {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             StringTokenizer st = new StringTokenizer(className, ".");
-
-            String typeName = bundle.getTypeName();
+            String typeName = mapper.getTypeName();
             String source = oMRSAPIHelper.getServiceName();
             String typeGuid = repositoryHelper.getTypeDefByName(source, typeName).getGUID();
             if (isPurge) {

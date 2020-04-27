@@ -26,9 +26,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermTYPEDBYRelationship extends Line {
-    private static final Logger log = LoggerFactory.getLogger(TermTYPEDBYRelationship.class);
-    private static final String className = TermTYPEDBYRelationship.class.getName();
+public class TypedBy extends Line {
+    private static final Logger log = LoggerFactory.getLogger(TypedBy.class);
+    private static final String className = TypedBy.class.getName();
 
       private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
           "description",
@@ -65,13 +65,13 @@ public class TermTYPEDBYRelationship extends Line {
       private String attributeGuid;
       private String typeGuid;
 
-    public TermTYPEDBYRelationship() {
+    public TypedBy() {
         initialise();
     }
 
     private void initialise()
     {
-       name = "TermTYPEDBYRelationship";
+       name = "TypedBy";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -86,14 +86,14 @@ public class TermTYPEDBYRelationship extends Line {
         typeDefGuid = "669e8aa4-c671-4ee7-8d03-f37d09b9d006";
     }
 
-    public TermTYPEDBYRelationship(Line template) {
+    public TypedBy(Line template) {
         super(template);
         initialise();
     }
 
-    public TermTYPEDBYRelationship(Relationship omrsRelationship) {
+    public TypedBy(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "TermTYPEDBYRelationship";
+        name = "TypedBy";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -217,9 +217,9 @@ public class TermTYPEDBYRelationship extends Line {
              {
                  sb = new StringBuilder();
              }
-             sb.append(" TermTYPEDBYRelationship=");
+             sb.append(" TypedBy=");
              sb.append(super.toString(sb));
-             sb.append(" TermTYPEDBYRelationship Attributes{");
+             sb.append(" TypedBy Attributes{");
              sb.append("description=" + this.description +",");
              sb.append("steward=" + this.steward +",");
              sb.append("source=" + this.source +",");

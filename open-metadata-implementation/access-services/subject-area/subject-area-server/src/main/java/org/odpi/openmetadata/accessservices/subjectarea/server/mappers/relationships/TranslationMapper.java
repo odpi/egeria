@@ -122,7 +122,7 @@ public class TranslationMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), TRANSLATION).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  TRANSLATION;
     }
     @Override
