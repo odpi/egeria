@@ -134,7 +134,7 @@ public class PreferredTermMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), PREFERRED_TERM).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  PREFERRED_TERM;
     }
     @Override
