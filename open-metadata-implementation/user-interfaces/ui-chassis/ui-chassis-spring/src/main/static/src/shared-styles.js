@@ -27,7 +27,10 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             background-size: var(--app-logo-background-size);
             background-position: center;
             text-indent:-9999px;
-          }
+        }
+        .displayName{
+            color: var(--egeria-primary-color);
+        }
         .feedback {
             min-height: 1em;
             padding: 3px 6px;
