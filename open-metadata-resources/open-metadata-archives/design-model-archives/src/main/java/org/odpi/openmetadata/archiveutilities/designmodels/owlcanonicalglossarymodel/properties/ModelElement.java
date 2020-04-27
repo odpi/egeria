@@ -5,57 +5,56 @@ package org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossary
 import java.util.*;
 
 /**
- * Attribute describes an element in the model
+ * The Owl RDF Canonical Glossary models are jsonld files. This content is parsed and mapped into
+ * ModelElements. These model elements contain identifying information, a description and a version.
+ * This ModelElement is subclassed
  */
-public class ModelElement
+abstract public class ModelElement
 {
-    private String guid          = null;
     private String id            = null;
     private String displayName   = null;
     private String description   = null;
     private String version       = null;
 
-    public void setGUID(String guid)
-    {
-        this.guid = guid;
-    }
-
-
+    /**
+     * Get the unique Name for this element
+     * @return uniqueName
+     */
     public String getId()
     {
         return id;
     }
 
-
+    /**
+     * Set the unique Name for this element
+     * @param id unique name to set
+     */
     public void setId(String id)
     {
         this.id = id;
     }
 
-
+    /**
+     * Get the display name for this element
+     * @return the display name
+     */
     public String getDisplayName()
     {
         return displayName;
     }
-
-
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
+    /**
+     * Get the description for this element
+     * @return the description
+     */
     public String getDescription()
     {
         return description;
     }
 
-
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
+    /**
+     * Get the version of this element
+     * @return version
+     */
     public String getVersion()
     {
         return version;
@@ -65,7 +64,7 @@ public class ModelElement
     public String toString()
     {
         return "ModelElement{" +
-                       "guid='" + guid + '\'' +
+
                        ", id='" + id + '\'' +
                        ", technicalName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
@@ -86,8 +85,7 @@ public class ModelElement
             return false;
         }
         ModelElement that = (ModelElement) objectToCompare;
-        return Objects.equals(guid, that.guid) &&
-                       Objects.equals(getId(), that.getId()) &&
+        return         Objects.equals(getId(), that.getId()) &&
                        Objects.equals(getDisplayName(), that.getDisplayName()) &&
                        Objects.equals(getDescription(), that.getDescription()) &&
                        Objects.equals(getVersion(), that.getVersion());
@@ -97,6 +95,6 @@ public class ModelElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid, getId(), getDisplayName(), getDescription(), getVersion());
+        return Objects.hash(getId(), getDisplayName(), getDescription(), getVersion());
     }
 }
