@@ -407,7 +407,8 @@ public class DesignModelArchiveBuilder
             {
                 if (categoryId != null)
                 {
-                    if (categoriesAsNames) {
+                    if (categoriesAsNames)
+                    {
                         categoryId = idToGUIDMap.getGUID(categoryId);
                     }
                     end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(categoryId));
