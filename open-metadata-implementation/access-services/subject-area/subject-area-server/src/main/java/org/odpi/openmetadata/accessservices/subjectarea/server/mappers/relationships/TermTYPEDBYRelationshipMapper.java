@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermTYPEDBYRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TypedBy;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
@@ -34,7 +34,7 @@ public class TermTYPEDBYRelationshipMapper extends LineMapper
      */
     @Override
     protected void mapLineToInstanceProperties(Line line, InstanceProperties instanceProperties) {
-        TermTYPEDBYRelationship termTYPEDBYRelationship = (TermTYPEDBYRelationship)line;
+        TypedBy termTYPEDBYRelationship = (TypedBy)line;
         if (termTYPEDBYRelationship.getDescription()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getDescription(), "description");
         }
@@ -60,7 +60,7 @@ public class TermTYPEDBYRelationshipMapper extends LineMapper
     @Override
     protected boolean mapPrimitiveToLine(Line line, String propertyName, Object value) {
         String stringValue = (String) value;
-       TermTYPEDBYRelationship termTYPEDBYRelationship = (TermTYPEDBYRelationship) line;
+       TypedBy termTYPEDBYRelationship = (TypedBy) line;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
             termTYPEDBYRelationship.setDescription(stringValue);
@@ -79,7 +79,7 @@ public class TermTYPEDBYRelationshipMapper extends LineMapper
     @Override
     protected boolean mapEnumToLine(Line line, String propertyName, EnumPropertyValue enumPropertyValue)
     {
-        TermTYPEDBYRelationship termTYPEDBYRelationship = (TermTYPEDBYRelationship) line;
+        TypedBy termTYPEDBYRelationship = (TypedBy) line;
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -98,7 +98,7 @@ public class TermTYPEDBYRelationshipMapper extends LineMapper
     @Override
     protected String getProxy1Guid(Line line)
     {
-        TermTYPEDBYRelationship termTYPEDBYRelationship = (TermTYPEDBYRelationship) line;
+        TypedBy termTYPEDBYRelationship = (TypedBy) line;
         return termTYPEDBYRelationship.getAttributeGuid();
     }
 
@@ -111,7 +111,7 @@ public class TermTYPEDBYRelationshipMapper extends LineMapper
     @Override
     protected String getProxy2Guid(Line line)
     {
-        TermTYPEDBYRelationship termTYPEDBYRelationship = (TermTYPEDBYRelationship) line;
+        TypedBy termTYPEDBYRelationship = (TypedBy) line;
         return termTYPEDBYRelationship.getTypeGuid();
     }
 
@@ -126,21 +126,21 @@ public class TermTYPEDBYRelationshipMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), TERM_TYPEDBY_RELATIONSHIP).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  TERM_TYPEDBY_RELATIONSHIP;
     }
     @Override
     protected Line getLineInstance() {
-        return new TermTYPEDBYRelationship();
+        return new TypedBy();
     }
     @Override
     protected void setEnd1GuidInLine(Line line, String guid){
-        TermTYPEDBYRelationship termTYPEDBYRelationship = (TermTYPEDBYRelationship)line;
+        TypedBy termTYPEDBYRelationship = (TypedBy)line;
         termTYPEDBYRelationship.setAttributeGuid(guid);
     }
     @Override
     protected void setEnd2GuidInLine(Line line, String guid) {
-        TermTYPEDBYRelationship termTYPEDBYRelationship = (TermTYPEDBYRelationship)line;
+        TypedBy termTYPEDBYRelationship = (TypedBy)line;
         termTYPEDBYRelationship.setTypeGuid(guid);
     }
 }

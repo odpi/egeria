@@ -14,7 +14,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.categ
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchorRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
@@ -174,7 +174,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                     // get the associated glossary
                     Glossary associatedGlossary = ((GlossaryResponse) glossaryResponse).getGlossary();
                     String glossaryGuid = associatedGlossary.getSystemAttributes().getGUID();
-                    CategoryAnchorRelationship categoryAnchor = new CategoryAnchorRelationship();
+                    CategoryAnchor categoryAnchor = new CategoryAnchor();
                     categoryAnchor.setGlossaryGuid(glossaryGuid);
                     categoryAnchor.setCategoryGuid(categoryGuid);
                     Relationship categoryAnchorRelationship = new CategoryAnchorMapper(oMRSAPIHelper).mapLineToRelationship(categoryAnchor);
@@ -242,7 +242,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                     List<Relationship> glossaryRelationships = relationshipsResponse.getRelationships();
                     if (glossaryRelationships.iterator().hasNext()) {
                         Relationship glossaryRelationship = glossaryRelationships.iterator().next();
-                        CategoryAnchorRelationship categoryAnchor = (CategoryAnchorRelationship) new CategoryAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
+                        CategoryAnchor categoryAnchor = (CategoryAnchor) new CategoryAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
                         response = SubjectAreaUtils.getGlossarySummaryForCategory(methodName, userId, oMRSAPIHelper, categoryAnchor);
                         if (response.getResponseCategory().equals(ResponseCategory.GlossarySummary)) {
                             GlossarySummaryResponse glossarySummaryResponse = (GlossarySummaryResponse) response;

@@ -4,8 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Synonym;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermHASARelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Hasa;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
@@ -34,7 +33,7 @@ public class TermHASARelationshipMapper extends LineMapper
      */
     @Override
     protected void mapLineToInstanceProperties(Line line, InstanceProperties instanceProperties) {
-        TermHASARelationship termHASARelationship = (TermHASARelationship) line;
+        Hasa termHASARelationship = (Hasa) line;
         if (termHASARelationship.getDescription()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHASARelationship.getDescription(), "description");
         }
@@ -61,7 +60,7 @@ public class TermHASARelationshipMapper extends LineMapper
     @Override
     protected boolean mapPrimitiveToLine(Line line, String propertyName, Object value) {
         String stringValue = (String) value;
-        TermHASARelationship termHASARelationship = (TermHASARelationship) line;
+        Hasa termHASARelationship = (Hasa) line;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
             termHASARelationship.setDescription(stringValue);
@@ -80,7 +79,7 @@ public class TermHASARelationshipMapper extends LineMapper
     @Override
     protected boolean mapEnumToLine(Line line, String propertyName, EnumPropertyValue enumPropertyValue)
     {
-        TermHASARelationship termHASARelationship = (TermHASARelationship) line;
+        Hasa termHASARelationship = (Hasa) line;
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -99,7 +98,7 @@ public class TermHASARelationshipMapper extends LineMapper
     @Override
     protected String getProxy1Guid(Line line)
     {
-        TermHASARelationship termHASARelationship = (TermHASARelationship) line;
+        Hasa termHASARelationship = (Hasa) line;
         return termHASARelationship.getOwningTermGuid();
     }
 
@@ -112,7 +111,7 @@ public class TermHASARelationshipMapper extends LineMapper
     @Override
     protected String getProxy2Guid(Line line)
     {
-        TermHASARelationship termHASARelationship = (TermHASARelationship) line;
+        Hasa termHASARelationship = (Hasa) line;
         return termHASARelationship.getOwnedTermGuid();
     }
 
@@ -127,21 +126,21 @@ public class TermHASARelationshipMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), TERM_HASA_RELATIONSHIP).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  TERM_HASA_RELATIONSHIP;
     }
     @Override
     protected Line getLineInstance() {
-        return new TermHASARelationship();
+        return new Hasa();
     }
     @Override
     protected void setEnd1GuidInLine(Line line, String guid){
-        TermHASARelationship termHASARelationship = (TermHASARelationship)line;
+        Hasa termHASARelationship = (Hasa)line;
         termHASARelationship.setOwningTermGuid(guid);
     }
     @Override
     protected void setEnd2GuidInLine(Line line, String guid) {
-        TermHASARelationship termHASARelationship = (TermHASARelationship)line;
+        Hasa termHASARelationship = (Hasa)line;
         termHASARelationship.setOwnedTermGuid(guid);
     }
 }

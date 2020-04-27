@@ -28,7 +28,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_CATALOG_OMAS;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_ZONE_MEMBERSHIP;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.REFERENCEABLE;
@@ -41,6 +40,7 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.R
 public class CommonHandler {
 
     public static final String ZONE_MEMBERSHIP = "zoneMembership";
+    private final String sourceName;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final RepositoryErrorHandler errorHandler;
@@ -48,11 +48,13 @@ public class CommonHandler {
     /**
      * Construct the handler information needed to interact with the repository services
      *
+     * @param sourceName        the name of the component
      * @param repositoryHandler manages calls to the repository services
      * @param repositoryHelper  provides utilities for manipulating the repository services objects
      * @param errorHandler      provides common validation routines for the other handler classes
      */
-    CommonHandler(RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
+    CommonHandler(String sourceName, RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
+        this.sourceName = sourceName;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
         this.errorHandler = errorHandler;
@@ -72,7 +74,7 @@ public class CommonHandler {
     List<Type> getTypeContext(String userId, String typeDefName) {
         List<Type> response = new ArrayList<>();
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
-        AssetConverter converter = new AssetConverter(repositoryHelper);
+        AssetConverter converter = new AssetConverter(sourceName, repositoryHelper);
 
         if (typeDefByName != null) {
             if (repositoryHelper.getKnownTypeDefGallery() == null
@@ -123,7 +125,7 @@ public class CommonHandler {
         Optional<Classification> assetZoneMembership = getAssetZoneMembershipClassification(classifications);
 
         if (assetZoneMembership.isPresent()) {
-            List<String> zoneMembership = repositoryHelper.getStringArrayProperty(ASSET_CATALOG_OMAS,
+            List<String> zoneMembership = repositoryHelper.getStringArrayProperty(sourceName,
                     ZONE_MEMBERSHIP, assetZoneMembership.get().getProperties(), methodName);
 
             if (CollectionUtils.isNotEmpty(zoneMembership)) {
@@ -190,7 +192,7 @@ public class CommonHandler {
 
     private List<Type> getSubTypes(List<TypeDef> activeTypeDefs, Type type) {
         String typeName = type.getName();
-        AssetConverter converter = new AssetConverter(repositoryHelper);
+        AssetConverter converter = new AssetConverter(sourceName, repositoryHelper);
 
         List<Type> subTypes = new ArrayList<>();
         for (TypeDef typeDef : activeTypeDefs) {
