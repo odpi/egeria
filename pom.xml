@@ -170,7 +170,7 @@
         <oss.version>4.5.1</oss.version>
         <spotbugs-annotations.version>4.0.2</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
-        <joda.version>2.10.5</joda.version>
+        <joda.version>2.10.6</joda.version>
         <jackson-asl.version>1.9.13</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.7.3</snappy.version>
