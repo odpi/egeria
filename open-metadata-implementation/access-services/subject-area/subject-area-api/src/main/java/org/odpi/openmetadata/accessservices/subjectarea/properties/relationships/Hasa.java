@@ -26,9 +26,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermHASARelationship extends Line {
-    private static final Logger log = LoggerFactory.getLogger(TermHASARelationship.class);
-    private static final String className = TermHASARelationship.class.getName();
+public class Hasa extends Line {
+    private static final Logger log = LoggerFactory.getLogger(Hasa.class);
+    private static final String className = Hasa.class.getName();
 
     private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
             "description",
@@ -66,13 +66,13 @@ public class TermHASARelationship extends Line {
     private String ownedTermGuid;
 
 
-    public TermHASARelationship() {
+    public Hasa() {
         initialise();
     }
 
     private void initialise()
     {
-        name = "TermHASARelationship";
+        name = "Hasa";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -87,14 +87,14 @@ public class TermHASARelationship extends Line {
         typeDefGuid = "d67f16d1-5348-419e-ba38-b0bb6fe4ad6c";
     }
 
-    public TermHASARelationship(Line template) {
+    public Hasa(Line template) {
         super(template);
         initialise();
     }
 
-    public TermHASARelationship(Relationship omrsRelationship) {
+    public Hasa(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "TermHASARelationship";
+        name = "Hasa";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -218,9 +218,9 @@ public class TermHASARelationship extends Line {
         {
             sb = new StringBuilder();
         }
-        sb.append(" TermHASARelationship=");
+        sb.append(" Hasa=");
         sb.append(super.toString(sb));
-        sb.append(" TermHASARelationship Attributes{");
+        sb.append(" Hasa Attributes{");
         sb.append("description=" + this.description +",");
         sb.append("steward=" + this.steward +",");
         sb.append("source=" + this.source +",");

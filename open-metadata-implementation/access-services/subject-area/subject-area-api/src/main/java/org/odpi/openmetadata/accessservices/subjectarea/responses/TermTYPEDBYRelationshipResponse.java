@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermTYPEDBYRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TypedBy;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -13,14 +13,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * TermTYPEDBYRelationshipResponse is the response structure used on the Subject Area OMAS REST API calls that returns a
- * TermTYPEDBYRelationship object as a response.
+ * TypedBy object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TermTYPEDBYRelationshipResponse extends SubjectAreaOMASAPIResponse
 {
-    private TermTYPEDBYRelationship termTYPEDBYRelationship= null;
+    private TypedBy termTYPEDBYRelationship= null;
 
     /**
      * Default constructor
@@ -29,7 +29,7 @@ public class TermTYPEDBYRelationshipResponse extends SubjectAreaOMASAPIResponse
     {
         this.setResponseCategory(ResponseCategory.TermTYPEDBYRelationship);
     }
-    public TermTYPEDBYRelationshipResponse(TermTYPEDBYRelationship termTYPEDBYRelationship)
+    public TermTYPEDBYRelationshipResponse(TypedBy termTYPEDBYRelationship)
     {
         this();
         this.termTYPEDBYRelationship=termTYPEDBYRelationship;
@@ -37,16 +37,16 @@ public class TermTYPEDBYRelationshipResponse extends SubjectAreaOMASAPIResponse
 
 
     /**
-     * Return the TermTYPEDBYRelationship object.
+     * Return the TypedBy object.
      *
      * @return termTYPEDBYRelationshipResponse
      */
-    public TermTYPEDBYRelationship getTermTYPEDBYRelationship()
+    public TypedBy getTermTYPEDBYRelationship()
     {
         return termTYPEDBYRelationship;
     }
 
-    public void setTermTYPEDBYRelationship(TermTYPEDBYRelationship termTYPEDBYRelationship)
+    public void setTermTYPEDBYRelationship(TypedBy termTYPEDBYRelationship)
     {
         this.termTYPEDBYRelationship = termTYPEDBYRelationship;
     }

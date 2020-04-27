@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermISATypeOFRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsaTypeOf;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TermISATYPEOFRelationshipResponse extends SubjectAreaOMASAPIResponse
 {
-    private TermISATypeOFRelationship termISATYPEOFRelationship= null;
+    private IsaTypeOf termISATYPEOFRelationship= null;
 
     /**
      * Default constructor
@@ -29,7 +29,7 @@ public class TermISATYPEOFRelationshipResponse extends SubjectAreaOMASAPIRespons
     {
         this.setResponseCategory(ResponseCategory.TermISATYPEOFRelationship);
     }
-    public TermISATYPEOFRelationshipResponse(TermISATypeOFRelationship termISATYPEOFRelationship)
+    public TermISATYPEOFRelationshipResponse(IsaTypeOf termISATYPEOFRelationship)
     {
         this();
         this.termISATYPEOFRelationship=termISATYPEOFRelationship;
@@ -41,12 +41,12 @@ public class TermISATYPEOFRelationshipResponse extends SubjectAreaOMASAPIRespons
      *
      * @return termISATYPEOFRelationshipResponse
      */
-    public TermISATypeOFRelationship getTermISATYPEOFRelationship()
+    public IsaTypeOf getTermISATYPEOFRelationship()
     {
         return termISATYPEOFRelationship;
     }
 
-    public void setTermISATYPEOFRelationship(TermISATypeOFRelationship termISATYPEOFRelationship)
+    public void setTermISATYPEOFRelationship(IsaTypeOf termISATYPEOFRelationship)
     {
         this.termISATYPEOFRelationship = termISATYPEOFRelationship;
     }
