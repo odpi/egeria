@@ -225,6 +225,37 @@ public class TermFVT
         if (glossarySummary.getToRelationshipEffectivityTime() !=null) {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary summary null relationship to time", "", "");
         }
+        Term term5 = new Term();
+        term5.setSpineObject(true);
+        term5.setName("Term5");
+        glossarySummary = new GlossarySummary();
+        glossarySummary.setGuid(glossaryGuid);
+        term5.setGlossary(glossarySummary);
+        Term createdTerm5 = issueCreateTerm(term5);
+        if (createdTerm5.isSpineObject() == false) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected isSpineObject to be true ", "", "");
+        }
+        Term term6 = new Term();
+        term6.setSpineAttribute(true);
+        term6.setName("Term6");
+        glossarySummary = new GlossarySummary();
+        glossarySummary.setGuid(glossaryGuid);
+        term6.setGlossary(glossarySummary);
+        Term createdTerm6 = issueCreateTerm(term6);
+        if (createdTerm6.isSpineAttribute() == false) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected isSpineAttribute to be true ", "", "");
+        }
+        Term term7 = new Term();
+        term7.setObjectIdentifier(true);
+        term7.setName("Term7");
+        glossarySummary = new GlossarySummary();
+        glossarySummary.setGuid(glossaryGuid);
+        term7.setGlossary(glossarySummary);
+        Term createdTerm7 = issueCreateTerm(term7);
+        if (createdTerm7.isObjectIdentifier() == false) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected isObjectIdentifier to be true ", "", "");
+        }
+
     }
 
     public  Term createTerm(String termName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase

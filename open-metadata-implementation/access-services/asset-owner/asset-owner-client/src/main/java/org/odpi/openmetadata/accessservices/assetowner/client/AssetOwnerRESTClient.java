@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.rest.FileSystemResponse;
 import org.odpi.openmetadata.accessservices.assetowner.rest.FolderResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValueConsumersResponse;
+import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValueConsumersResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValueResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValuesResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;

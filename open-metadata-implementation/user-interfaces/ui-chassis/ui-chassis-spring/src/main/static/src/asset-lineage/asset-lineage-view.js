@@ -23,13 +23,18 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     <style include="shared-styles">
         :host {
           display: block;
-          padding: 2px 20px;
+          margin: 0 24px;
         }
         
         .container {
           margin: auto; 
           height: calc(100vh - 130px);
           background-color: white;
+        }
+        #useCases {
+            color: var(--egeria-primary-color);
+            width: fit-content;
+            margin: auto;
         }
     </style>
     
@@ -38,7 +43,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
     <token-ajax id="tokenAjaxDetails" last-response="{{items}}" ></token-ajax>
     
-    <vaadin-tabs id ="useCases" selected="[[_getUseCase(routeData.usecase)]]" style="left: -20px; color: var(--egeria-primary-color);" >
+    <vaadin-tabs id ="useCases" selected="[[_getUseCase(routeData.usecase)]]" >
       <vaadin-tab value="ultimateSource">
         <a href="[[rootPath]]#/asset-lineage/ultimateSource/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
             Ultimate Source

@@ -98,7 +98,7 @@ public class AssetSchemaLink extends AssetPropertyBase
      *
      * @return String guid
      */
-    public String getLinkGUID() { return schemaLinkBean.getLinkGUID(); }
+    public String getLinkGUID() { return schemaLinkBean.getGUID(); }
 
 
     /**
@@ -122,7 +122,7 @@ public class AssetSchemaLink extends AssetPropertyBase
      *
      * @return map of properties
      */
-    public  Map<String, Object> getLinkProperties()
+    public  Map<String, String> getLinkProperties()
     {
         return schemaLinkBean.getLinkProperties();
     }

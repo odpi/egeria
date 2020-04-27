@@ -37,7 +37,7 @@
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="My App">
+    <meta name="apple-mobile-web-app-title" content="Egeria UI">
 
     <!-- Homescreen icons -->
     <link rel="apple-touch-icon" href="images/manifest/icon-48x48.png">
@@ -90,24 +90,42 @@
     <style>
       body {
         margin: 0;
-        font-family: "Roboto", "Noto", sans-serif;
+        font-family: sans-serif;
         line-height: 1.5;
         min-height: 100vh;
-        background-color: #eeeeee;
+        background-color: var( --app-background-color );
+        color: var( --egeria-secondary-color);
       }
 
       iron-overlay-backdrop {
         --iron-overlay-backdrop-background-color: #24272a;
         --iron-overlay-backdrop-opacity: 0.2;
       }
+      :root{
+        --egeria-primary-color: #71ccdc;         /* aqua   */
+        /*--egeria-primary-color: #FF6200;           !* orange *!*/
+        /* --egeria-primary-color: #CC00FF; */     /* purple */
+
+        --egeria-secondary-color: #24272a;
+        --egeria-background-color: white;
+        --egeria-stripes-color: #efefef;
+        --egeria-icon-color: var(--egeria-primary-color);
+
+        --app-background-color: #eeeeee;
+        --app-logo-background: url(images/Logo_transparent.png) no-repeat top left;
+        --app-logo-width: 256px;
+        --app-logo-height: 64px;
+        --app-logo-background-size: 120px auto;
+      }
 
     </style>
+    <link href="/css/theme" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <my-app id="my-app"></my-app>
-    <noscript>
-      Please enable JavaScript to view this website.
-    </noscript>
-    <!-- Built with love using Polymer Starter Kit -->
+  <my-app id="my-app"></my-app>
+  <noscript>
+    Please enable JavaScript to view this website.
+  </noscript>
+  <!-- Built with love using Polymer Starter Kit -->
   </body>
 </html>

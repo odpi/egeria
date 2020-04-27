@@ -5,6 +5,8 @@ package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconne
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataSecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -1936,6 +1938,67 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<EntityDetail> findEntities(String                    userId,
+                                           String                    entityTypeGUID,
+                                           List<String>              entitySubtypeGUIDs,
+                                           SearchProperties          matchProperties,
+                                           int                       fromEntityElement,
+                                           List<InstanceStatus>      limitResultsByStatus,
+                                           SearchClassifications     matchClassifications,
+                                           Date                      asOfTime,
+                                           String                    sequencingProperty,
+                                           SequencingOrder           sequencingOrder,
+                                           int                       pageSize) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException,
+                                                                                      PagingErrorException,
+                                                                                      FunctionNotSupportedException,
+                                                                                      UserNotAuthorizedException
+    {
+        /*
+         * Validate parameters
+         */
+        super.findEntitiesParameterValidation(userId,
+                                              entityTypeGUID,
+                                              entitySubtypeGUIDs,
+                                              matchProperties,
+                                              fromEntityElement,
+                                              limitResultsByStatus,
+                                              matchClassifications,
+                                              asOfTime,
+                                              sequencingProperty,
+                                              sequencingOrder,
+                                              pageSize);
+        /*
+         * Perform operation
+         */
+        List<EntityDetail> resultList;
+
+        /*
+         * Perform operation
+         */
+        resultList = realMetadataCollection.findEntities(userId,
+                                                         entityTypeGUID,
+                                                         entitySubtypeGUIDs,
+                                                         matchProperties,
+                                                         fromEntityElement,
+                                                         limitResultsByStatus,
+                                                         matchClassifications,
+                                                         asOfTime,
+                                                         sequencingProperty,
+                                                         sequencingOrder,
+                                                         pageSize);
+
+        return this.securityVerifyReadEntityList(userId,
+                                                 setLocalProvenanceInEntityList(resultList));
+    }
+
+
+    /**
      * Return a list of entities that have the requested type of classifications attached.
      *
      * @param userId unique identifier for requesting user.
@@ -2264,6 +2327,63 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
 
         return relationship;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 List<String>              relationshipSubtypeGUIDs,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize) throws InvalidParameterException,
+                                                                                            TypeErrorException,
+                                                                                            RepositoryErrorException,
+                                                                                            PropertyErrorException,
+                                                                                            PagingErrorException,
+                                                                                            FunctionNotSupportedException,
+                                                                                            UserNotAuthorizedException
+    {
+        /*
+         * Validate parameters
+         */
+        super.findRelationshipsParameterValidation(userId,
+                                                   relationshipTypeGUID,
+                                                   relationshipSubtypeGUIDs,
+                                                   matchProperties,
+                                                   fromRelationshipElement,
+                                                   limitResultsByStatus,
+                                                   asOfTime,
+                                                   sequencingProperty,
+                                                   sequencingOrder,
+                                                   pageSize);
+
+
+        /*
+         * Perform operation
+         */
+        List<Relationship> resultList;
+
+        resultList = realMetadataCollection.findRelationships(userId,
+                                                              relationshipTypeGUID,
+                                                              relationshipSubtypeGUIDs,
+                                                              matchProperties,
+                                                              fromRelationshipElement,
+                                                              limitResultsByStatus,
+                                                              asOfTime,
+                                                              sequencingProperty,
+                                                              sequencingOrder,
+                                                              pageSize);
+
+        return this.securityVerifyReadRelationshipList(userId,
+                setLocalProvenanceInRelationshipList(resultList));
     }
 
 

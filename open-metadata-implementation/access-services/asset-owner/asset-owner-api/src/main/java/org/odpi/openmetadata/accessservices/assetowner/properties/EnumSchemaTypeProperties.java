@@ -22,6 +22,8 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
 {
     private static final long     serialVersionUID = 1L;
 
+    private String  validValueSet = null;
+
     /**
      * Default constructor
      */
@@ -64,6 +66,28 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
 
 
     /**
+     * Return the unique identifier of the valid value set that describes the enum values for this schema element.
+     *
+     * @return string guid
+     */
+    public String getValidValueSet()
+    {
+        return validValueSet;
+    }
+
+
+    /**
+     * Set up the unique identifier of the value set that describes the enum values for this schema element.
+     *
+     * @param validValueSet string guid
+     */
+    public void setValidValueSet(String validValueSet)
+    {
+        this.validValueSet = validValueSet;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -72,7 +96,8 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
     public String toString()
     {
         return "EnumSchemaTypeProperties{" +
-                "dataType='" + getDataType() + '\'' +
+                "validValueSet='" + validValueSet + '\'' +
+                ", dataType='" + getDataType() + '\'' +
                 ", defaultValue='" + getDefaultValue() + '\'' +
                 ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +
@@ -81,6 +106,7 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
                 ", namespace='" + getNamespace() + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
+                ", deprecated=" + isDeprecated() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", classifications=" + getClassifications() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
