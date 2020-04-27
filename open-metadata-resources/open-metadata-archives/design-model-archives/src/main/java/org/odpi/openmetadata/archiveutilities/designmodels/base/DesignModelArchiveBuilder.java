@@ -327,7 +327,8 @@ public class DesignModelArchiveBuilder
                              List<String> categoryIds,
                              String       qualifiedName,
                              String       displayName,
-                             String       description) {
+                             String       description)
+    {
         return addTerm(glossaryId,categoryIds,qualifiedName,displayName,description,null,false,false,false);
     }
     /**
