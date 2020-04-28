@@ -32,9 +32,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermAnchorRelationship extends Line {
-    private static final Logger log = LoggerFactory.getLogger(TermAnchorRelationship.class);
-    private static final String className = TermAnchorRelationship.class.getName();
+public class TermAnchor extends Line {
+    private static final Logger log = LoggerFactory.getLogger(TermAnchor.class);
+    private static final String className = TermAnchor.class.getName();
 
       private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
 
@@ -64,7 +64,7 @@ public class TermAnchorRelationship extends Line {
       private String glossaryGuid;
 
 
-    public TermAnchorRelationship() {
+    public TermAnchor() {
         initialise();
     }
 
@@ -85,12 +85,12 @@ public class TermAnchorRelationship extends Line {
         typeDefGuid = "1d43d661-bdc7-4a91-a996-3239b8f82e56";
     }
 
-    public TermAnchorRelationship(Line template) {
+    public TermAnchor(Line template) {
         super(template);
         initialise();
     }
 
-    public TermAnchorRelationship(Relationship omrsRelationship) {
+    public TermAnchor(Relationship omrsRelationship) {
         super(omrsRelationship);
         name = "TermAnchor";
        // set the LineType if this is a LineType enum value.

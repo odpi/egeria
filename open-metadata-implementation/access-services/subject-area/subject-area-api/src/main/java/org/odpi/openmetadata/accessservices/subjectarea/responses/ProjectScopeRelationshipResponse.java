@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScopeRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScope;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProjectScopeRelationshipResponse extends SubjectAreaOMASAPIResponse
 {
-    private ProjectScopeRelationship projectScope = null;
+    private ProjectScope projectScope = null;
 
     /**
      * Default constructor
@@ -29,7 +29,7 @@ public class ProjectScopeRelationshipResponse extends SubjectAreaOMASAPIResponse
     {
         this.setResponseCategory(ResponseCategory.ProjectScopeRelationship);
     }
-    public ProjectScopeRelationshipResponse(ProjectScopeRelationship projectScope)
+    public ProjectScopeRelationshipResponse(ProjectScope projectScope)
     {
         this();
         this.projectScope =projectScope;
@@ -40,12 +40,12 @@ public class ProjectScopeRelationshipResponse extends SubjectAreaOMASAPIResponse
      *
      * @return ProjectScopeRelationshipResponse
      */
-    public ProjectScopeRelationship getProjectScope()
+    public ProjectScope getProjectScope()
     {
         return projectScope;
     }
 
-    public void setProjectScope(ProjectScopeRelationship projectScope)
+    public void setProjectScope(ProjectScope projectScope)
     {
         this.projectScope = projectScope;
     }

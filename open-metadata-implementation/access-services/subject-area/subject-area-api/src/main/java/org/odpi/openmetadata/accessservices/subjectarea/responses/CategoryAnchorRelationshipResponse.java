@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchorRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CategoryAnchorRelationshipResponse extends SubjectAreaOMASAPIResponse
 {
-    private CategoryAnchorRelationship categoryAnchorRelationship = null;
+    private CategoryAnchor categoryAnchorRelationship = null;
 
     /**
      * Default constructor
@@ -29,7 +29,7 @@ public class CategoryAnchorRelationshipResponse extends SubjectAreaOMASAPIRespon
     {
         this.setResponseCategory(ResponseCategory.CategoryAnchorRelationship);
     }
-    public CategoryAnchorRelationshipResponse(CategoryAnchorRelationship categoryAnchorRelationship)
+    public CategoryAnchorRelationshipResponse(CategoryAnchor categoryAnchorRelationship)
     {
         this();
         this.categoryAnchorRelationship = categoryAnchorRelationship;
@@ -40,12 +40,12 @@ public class CategoryAnchorRelationshipResponse extends SubjectAreaOMASAPIRespon
      *
      * @return CategoryAnchorRelationship
      */
-    public CategoryAnchorRelationship getCategoryAnchorRelationship()
+    public CategoryAnchor getCategoryAnchorRelationship()
     {
         return categoryAnchorRelationship;
     }
 
-    public void setCategoryAnchorRelationship(CategoryAnchorRelationship CategoryAnchorRelationship)
+    public void setCategoryAnchorRelationship(CategoryAnchor CategoryAnchorRelationship)
     {
         this.categoryAnchorRelationship = CategoryAnchorRelationship;
     }

@@ -133,7 +133,7 @@ public class RelatedTermMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), RELATED_TERM).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  RELATED_TERM;
     }
     @Override
