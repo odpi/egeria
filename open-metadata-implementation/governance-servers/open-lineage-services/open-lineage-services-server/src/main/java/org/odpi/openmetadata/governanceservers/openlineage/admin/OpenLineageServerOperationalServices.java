@@ -16,7 +16,6 @@ import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGra
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.OpenLineageInTopicListener;
-import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServerInstance;
 import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -42,7 +41,6 @@ public class OpenLineageServerOperationalServices {
     private OpenLineageServerInstance openLineageServerInstance = null;
     private OMRSAuditLog auditLog = null;
     private BufferGraph bufferGraphConnector;
-    private MainGraph mainGraphConnector;
     private OpenMetadataTopicConnector inTopicConnector;
 
     /**
@@ -97,11 +95,10 @@ public class OpenLineageServerOperationalServices {
         Connection inTopicConnection = openLineageServerConfig.getInTopicConnection();
 
         this.bufferGraphConnector = (BufferGraph) getConnector(bufferGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_BUFFER_GRAPH_CONNECTOR, OpenLineageServerAuditCode.ERROR_OBTAINING_BUFFER_GRAPH_CONNNECTOR);
-        this.mainGraphConnector = (MainGraph) getConnector(mainGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_MAIN_GRAPH_CONNECTOR, OpenLineageServerAuditCode.ERROR_OBTAINING_MAIN_GRAPH_CONNNECTOR);
         this.inTopicConnector = (OpenMetadataTopicConnector) getConnector(inTopicConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR, OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR);
 
         initializeAndStartConnectors();
-        OpenLineageHandler openLineageHandler = new OpenLineageHandler(mainGraphConnector);
+        OpenLineageHandler openLineageHandler = new OpenLineageHandler(bufferGraphConnector);
 
         this.openLineageServerInstance = new
                 OpenLineageServerInstance(
@@ -149,25 +146,10 @@ public class OpenLineageServerOperationalServices {
                 "initializeBufferGraphConnector"
         );
 
-        initializeGraphConnectorDB(
-                mainGraphConnector,
-                OpenLineageServerErrorCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR_DB,
-                OpenLineageServerAuditCode.ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR_DB,
-                "initializeMainGraphConnector"
-        );
-
-        Object mainGraph = mainGraphConnector.getMainGraph();
-        bufferGraphConnector.setMainGraph(mainGraph);
-
         startGraphConnector(bufferGraphConnector,
                 OpenLineageServerErrorCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR,
                 "startBufferGraphConnector");
-
-        startGraphConnector(mainGraphConnector,
-                OpenLineageServerErrorCode.ERROR_OBTAINING_MAIN_GRAPH_CONNECTOR,
-                OpenLineageServerAuditCode.ERROR_STARTING_MAIN_GRAPH_CONNECTOR,
-                "startMainGraphConnector");
 
         startIntopicConnector();
     }
@@ -331,12 +313,6 @@ public class OpenLineageServerOperationalServices {
                 OpenLineageServerErrorCode.ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR,
                 "Disconnecting the Buffergraph connection.");
-
-        disconnectGraphConnector(mainGraphConnector,
-                OpenLineageServerErrorCode.ERROR_DISCONNECTING_MAIN_GRAPH_CONNECTOR,
-                OpenLineageServerAuditCode.ERROR_DISCONNECTING_MAIN_GRAPH_CONNECTOR,
-                "Disconnecting the Maingraph connection.");
-
 
         if (openLineageServerInstance != null)
             openLineageServerInstance.shutdown();
