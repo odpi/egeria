@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.LineageGraphProviderBase;
+import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraphProviderBase;
 
 public class LineageGraphConnectorProvider extends LineageGraphProviderBase {
 
