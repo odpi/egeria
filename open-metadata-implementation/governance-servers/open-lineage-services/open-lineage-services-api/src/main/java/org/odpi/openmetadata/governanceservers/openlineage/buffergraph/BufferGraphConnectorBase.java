@@ -27,10 +27,4 @@ public abstract class BufferGraphConnectorBase extends ConnectorBase implements 
     @Override
     public abstract void deleteEntity(String guid,String version);
 
-    @Override
-    public abstract void schedulerTask();
-
-    @Override
-    public abstract void setMainGraph(Object mainGraph);
-
 }
