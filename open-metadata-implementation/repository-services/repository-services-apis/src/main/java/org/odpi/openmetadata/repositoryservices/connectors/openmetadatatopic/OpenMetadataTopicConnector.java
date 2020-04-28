@@ -49,7 +49,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
     private List<OpenMetadataTopicListener> topicListeners     = new ArrayList<>();
     private String                          listenerThreadName = defaultThreadName;
     private String                          topicName          = defaultTopicName;
-    private int                             sleepTime          = 100;
+    protected int                             sleepTime          = 100;
 
     protected AuditLog auditLog = null;
 
