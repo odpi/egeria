@@ -119,7 +119,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
                                                 @RequestParam(value = "offset", required=false) Integer offset,
                                                 @RequestParam(value = "pageSize", required=false) Integer pageSize,
                                                 @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
-                                                @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
+                                                @RequestParam(value = "sequencingProperty", required=false) String sequencingProperty
     )  {
         return restAPI.findCategory(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
     }
@@ -154,7 +154,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
                                                             @RequestParam(value = "offset", required=false) Integer offset,
                                                             @RequestParam(value = "pageSize", required=false) Integer pageSize,
                                                             @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
-                                                            @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
+                                                            @RequestParam(value = "sequencingProperty", required=false) String sequencingProperty
     ) {
         return restAPI.getCategoryRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
     }
