@@ -113,7 +113,7 @@ public class GlossaryAuthorViewTermRESTResource {
             @RequestParam(value = "offset", required = false) Integer offset,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-            @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
+            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
                                               ) {
         return restAPI.findTerm(serverName, userId, asOfTime, searchCriteria, offset, pageSize, sequencingOrder, sequencingProperty);
     }
@@ -147,7 +147,7 @@ public class GlossaryAuthorViewTermRESTResource {
             @RequestParam(value = "offset", required = false) Integer offset,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-            @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
+            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
 
                                                           ) {
         return restAPI.getTermRelationships(serverName,
