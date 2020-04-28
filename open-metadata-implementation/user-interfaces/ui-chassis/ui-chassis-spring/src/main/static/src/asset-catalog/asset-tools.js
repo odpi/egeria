@@ -3,7 +3,10 @@
 import { PolymerElement, html } from '@polymer/polymer';
 
 import '../shared-styles.js';
-import '../common/props-table';
+import '@polymer/paper-item/paper-item.js';
+import '@polymer/paper-item/paper-item-body.js';
+import '@polymer/paper-styles/paper-styles.js';
+import '@vaadin/vaadin-icons/vaadin-icons.js';
 
 class AssetTools extends PolymerElement {
     static get template() {
