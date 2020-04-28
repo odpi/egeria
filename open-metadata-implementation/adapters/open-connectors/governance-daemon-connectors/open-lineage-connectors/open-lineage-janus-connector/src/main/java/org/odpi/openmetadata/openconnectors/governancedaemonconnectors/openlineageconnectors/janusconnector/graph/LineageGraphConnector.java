@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.LineageGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
@@ -73,7 +73,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_VERSION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PORT_TYPE;
 
-public class LineageGraphConnector extends BufferGraphConnectorBase {
+public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     private static final Logger log = LoggerFactory.getLogger(LineageGraphConnector.class);
     private JanusGraph lineageGraph;

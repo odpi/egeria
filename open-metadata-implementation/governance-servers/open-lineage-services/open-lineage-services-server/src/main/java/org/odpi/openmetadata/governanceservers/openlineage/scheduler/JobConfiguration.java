@@ -2,8 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
-import org.quartz.*;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.LineageGraph;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +21,10 @@ public class JobConfiguration {
     private static final Logger log = LoggerFactory.getLogger(JobConfiguration.class);
 
     private static Scheduler scheduler;
-    private static BufferGraph bufferGraph;
+    private static LineageGraph lineageGraph;
 
-    public JobConfiguration(BufferGraph bufferGraph){
-        this.bufferGraph = bufferGraph;
+    public JobConfiguration(LineageGraph lineageGraph){
+        this.lineageGraph = lineageGraph;
         schedule();
     }
 
@@ -43,12 +49,12 @@ public class JobConfiguration {
 
     private static void scheduleJob(Trigger trigger) throws Exception {
 
-        if(bufferGraph != null) {
+        if(lineageGraph != null) {
             JobDetail jobDetail = JobBuilder.
-                    newJob(BufferGraphJob.class).
+                    newJob(LineageGraphJob.class).
                     withIdentity("BufferGraphJob", GROUP).
                     build();
-            jobDetail.getJobDataMap().put("openLineageGraphStore", bufferGraph);
+            jobDetail.getJobDataMap().put("openLineageGraphStore", lineageGraph);
             scheduler.scheduleJob(jobDetail, trigger);
         }
 

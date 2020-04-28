@@ -10,8 +10,8 @@ import org.janusgraph.core.schema.JanusGraphManagement;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.EdgeLabelsBufferGraph;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.VertexLabelsBufferGraph;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.EdgeLabelsLineageGraph;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.VertexLabelsLineageGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,8 +76,8 @@ public class GraphFactory extends IndexingFactory {
         try {
             JanusGraphManagement management = janusGraph.openManagement();
 
-            Set<String> vertexLabels = schemaBasedOnGraphType(VertexLabelsBufferGraph.class);
-            Set<String> relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsBufferGraph.class);
+            Set<String> vertexLabels = schemaBasedOnGraphType(VertexLabelsLineageGraph.class);
+            Set<String> relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsLineageGraph.class);
 
             checkAndAddLabelVertex(management, vertexLabels);
             checkAndAddLabelEdge(management, relationshipsLabels);

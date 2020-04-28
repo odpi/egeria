@@ -2,17 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.handlers;
 
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.LineageGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
 public class OpenLineageHandler {
 
-    private BufferGraph bufferGraph;
+    private LineageGraph lineageGraph;
 
-    public OpenLineageHandler(BufferGraph bufferGraph) {
-        this.bufferGraph = bufferGraph;
+    public OpenLineageHandler(LineageGraph lineageGraph) {
+        this.lineageGraph = lineageGraph;
     }
 
     /**
@@ -25,7 +25,7 @@ public class OpenLineageHandler {
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
-        return bufferGraph.lineage(scope, guid, displayNameMustContain, includeProcesses);
+        return lineageGraph.lineage(scope, guid, displayNameMustContain, includeProcesses);
     }
 
 }
