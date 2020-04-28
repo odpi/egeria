@@ -40,7 +40,7 @@ public class OpenLineageServerOperationalServices {
     private OpenLineageServerConfig openLineageServerConfig;
     private OpenLineageServerInstance openLineageServerInstance = null;
     private OMRSAuditLog auditLog = null;
-    private BufferGraph bufferGraphConnector;
+    private BufferGraph lineageGraphConnector;
     private OpenMetadataTopicConnector inTopicConnector;
 
     /**
@@ -90,15 +90,14 @@ public class OpenLineageServerOperationalServices {
 
     private void initializeOLS(OpenLineageServerConfig openLineageServerConfig) throws OMAGConfigurationErrorException {
         final String actionDescription = "Initialize Open lineage Services";
-        Connection bufferGraphConnection = openLineageServerConfig.getOpenLineageBufferGraphConnection();
-        Connection mainGraphConnection = openLineageServerConfig.getOpenLineageMainGraphConnection();
+        Connection lineageGraphConnection = openLineageServerConfig.getLineageGraphConnection();
         Connection inTopicConnection = openLineageServerConfig.getInTopicConnection();
 
-        this.bufferGraphConnector = (BufferGraph) getConnector(bufferGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_BUFFER_GRAPH_CONNECTOR, OpenLineageServerAuditCode.ERROR_OBTAINING_BUFFER_GRAPH_CONNNECTOR);
+        this.lineageGraphConnector = (BufferGraph) getConnector(lineageGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_BUFFER_GRAPH_CONNECTOR, OpenLineageServerAuditCode.ERROR_OBTAINING_BUFFER_GRAPH_CONNNECTOR);
         this.inTopicConnector = (OpenMetadataTopicConnector) getConnector(inTopicConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR, OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR);
 
         initializeAndStartConnectors();
-        OpenLineageHandler openLineageHandler = new OpenLineageHandler(bufferGraphConnector);
+        OpenLineageHandler openLineageHandler = new OpenLineageHandler(lineageGraphConnector);
 
         this.openLineageServerInstance = new
                 OpenLineageServerInstance(
@@ -140,16 +139,16 @@ public class OpenLineageServerOperationalServices {
      */
     private void initializeAndStartConnectors() throws OMAGConfigurationErrorException {
         initializeGraphConnectorDB(
-                bufferGraphConnector,
+                lineageGraphConnector,
                 OpenLineageServerErrorCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR_DB,
                 OpenLineageServerAuditCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR_DB,
-                "initializeBufferGraphConnector"
+                "initializeLineageGraphConnector"
         );
 
-        startGraphConnector(bufferGraphConnector,
+        startGraphConnector(lineageGraphConnector,
                 OpenLineageServerErrorCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR,
-                "startBufferGraphConnector");
+                "startLineageGraphConnector");
 
         startIntopicConnector();
     }
@@ -204,7 +203,7 @@ public class OpenLineageServerOperationalServices {
         final String methodName = "startIntopicConnector";
         final OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.ERROR_STARTING_IN_TOPIC_CONNECTOR;
         inTopicConnector.setAuditLog(auditLog);
-        StoringServices storingServices = new StoringServices(bufferGraphConnector);
+        StoringServices storingServices = new StoringServices(lineageGraphConnector);
         OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices, auditLog);
         inTopicConnector.registerListener(openLineageInTopicListener);
         try {
@@ -309,7 +308,7 @@ public class OpenLineageServerOperationalServices {
 
         disconnectInTopicConnector();
 
-        disconnectGraphConnector(bufferGraphConnector,
+        disconnectGraphConnector(lineageGraphConnector,
                 OpenLineageServerErrorCode.ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR,
                 "Disconnecting the Buffergraph connection.");
