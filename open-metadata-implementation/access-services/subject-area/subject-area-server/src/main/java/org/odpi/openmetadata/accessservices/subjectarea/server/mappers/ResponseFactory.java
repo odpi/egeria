@@ -26,10 +26,10 @@ public class ResponseFactory
        } else if (bundleName.equals(Antonym.class.getName())){
            response = new AntonymRelationshipResponse((Antonym) line);
 
-       } else  if (bundleName.equals(TermCategorizationRelationship.class.getName())){
-           response = new TermCategorizationRelationshipResponse((TermCategorizationRelationship) line);
-       } else if (bundleName.equals(ISARelationship.class.getName())){
-           response = new TermISARelationshipResponse((ISARelationship) line);
+       } else  if (bundleName.equals(Categorization.class.getName())){
+           response = new TermCategorizationRelationshipResponse((Categorization) line);
+       } else if (bundleName.equals(Isa.class.getName())){
+           response = new TermISARelationshipResponse((Isa) line);
 
        } else if (bundleName.equals(PreferredTerm.class.getName())){
            response = new PreferredTermRelationshipResponse((PreferredTerm) line);
@@ -40,23 +40,23 @@ public class ResponseFactory
        } else if (bundleName.equals(ReplacementTerm.class.getName())){
            response = new ReplacementRelationshipResponse((ReplacementTerm) line);
 
-       } else if (bundleName.equals(TermTYPEDBYRelationship.class.getName())){
-           response = new TermTYPEDBYRelationshipResponse((TermTYPEDBYRelationship) line);
+       } else if (bundleName.equals(TypedBy.class.getName())){
+           response = new TermTYPEDBYRelationshipResponse((TypedBy) line);
 
        } else if (bundleName.equals(SemanticAssignment.class.getName())){
            response = new SemanticAssignementRelationshipResponse((SemanticAssignment) line);
 
-       } else if (bundleName.equals(TermCategorizationRelationship.class.getName())){
-           response = new TermCategorizationRelationshipResponse((TermCategorizationRelationship) line);
+       } else if (bundleName.equals(Categorization.class.getName())){
+           response = new TermCategorizationRelationshipResponse((Categorization) line);
 
-       } else if (bundleName.equals(TermHASARelationship.class.getName())){
-           response = new TermHASARelationshipResponse((TermHASARelationship) line);
+       } else if (bundleName.equals(Hasa.class.getName())){
+           response = new TermHASARelationshipResponse((Hasa) line);
 
-       } else if (bundleName.equals(ISARelationship.class.getName())){
-           response = new TermISARelationshipResponse((ISARelationship) line);
+       } else if (bundleName.equals(Isa.class.getName())){
+           response = new TermISARelationshipResponse((Isa) line);
 
-       } else if (bundleName.equals(TermISATypeOFRelationship.class.getName())){
-           response = new TermISATYPEOFRelationshipResponse((TermISATypeOFRelationship) line);
+       } else if (bundleName.equals(IsaTypeOf.class.getName())){
+           response = new TermISATYPEOFRelationshipResponse((IsaTypeOf) line);
 
        }    else if (bundleName.equals(Translation.class.getName()))
        {
@@ -70,17 +70,17 @@ public class ResponseFactory
        {
            response = new ValidValueRelationshipResponse((ValidValue) line);
 
-       } else if (bundleName.equals(TermAnchorRelationship.class.getName()))
+       } else if (bundleName.equals(TermAnchor.class.getName()))
        {
-        response = new TermAnchorRelationshipResponse((TermAnchorRelationship) line);
+        response = new TermAnchorRelationshipResponse((TermAnchor) line);
 
-       } else if (bundleName.equals(CategoryAnchorRelationship.class.getName()))
+       } else if (bundleName.equals(CategoryAnchor.class.getName()))
        {
-           response = new CategoryAnchorRelationshipResponse((CategoryAnchorRelationship) line);
+           response = new CategoryAnchorRelationshipResponse((CategoryAnchor) line);
 
-       } else if (bundleName.equals(ProjectScopeRelationship.class.getName()))
+       } else if (bundleName.equals(ProjectScope.class.getName()))
        {
-           response = new ProjectScopeRelationshipResponse((ProjectScopeRelationship) line);
+           response = new ProjectScopeRelationshipResponse((ProjectScope) line);
        }
        return response;
    }

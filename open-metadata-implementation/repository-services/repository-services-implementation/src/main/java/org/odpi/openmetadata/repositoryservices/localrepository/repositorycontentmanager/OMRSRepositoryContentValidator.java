@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +13,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory.ENUM;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory.PRIMITIVE;
-import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.*;
 
 /**
  * OMRSRepositoryContentValidator provides methods to validate TypeDefs and Instances returned from
@@ -790,6 +793,52 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                                                                      guidParameterName,
                                                                                                      methodName,
                                                                                                      sourceName),
+                                             this.getClass().getName(),
+                                             methodName);
+            }
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public  void validateOptionalTypeGUIDs(String sourceName,
+                                           String guidParameterName,
+                                           String guid,
+                                           String subtypeParameterName,
+                                           List<String> subtypeGuids,
+                                           String methodName) throws TypeErrorException
+    {
+        validateOptionalTypeGUID(sourceName, guidParameterName, guid, methodName);
+        if (subtypeGuids != null)
+        {
+            List<String> invalidSubtypes = new ArrayList<>();
+            for (String subtype : subtypeGuids)
+            {
+                if (! isKnownTypeId(sourceName, subtype))
+                {
+                    throw new TypeErrorException(OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN.getMessageDefinition(subtype,
+                                                                                                         subtypeParameterName,
+                                                                                                         methodName,
+                                                                                                         sourceName),
+                                                 this.getClass().getName(),
+                                                 methodName);
+                }
+                else
+                {
+                    validateRepositoryContentManager(methodName);
+                    TypeDef subtypeDef = repositoryContentManager.getTypeDef(sourceName, subtypeParameterName, subtype, methodName);
+                    if (! repositoryContentManager.isTypeOfByGUID(sourceName, subtype, subtypeDef.getName(), guid))
+                    {
+                        invalidSubtypes.add(subtype);
+                    }
+                }
+            }
+            if (! invalidSubtypes.isEmpty())
+            {
+                throw new TypeErrorException(OMRSErrorCode.TYPEDEF_NOT_SUBTYPE.getMessageDefinition(invalidSubtypes.toString(), guid),
                                              this.getClass().getName(),
                                              methodName);
             }
@@ -1723,6 +1772,162 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validateSearchProperties(String sourceName,
+                                         String parameterName,
+                                         SearchProperties matchProperties,
+                                         String methodName) throws InvalidParameterException
+    {
+        if (matchProperties == null)
+        {
+            return;
+        }
+        for (PropertyCondition condition : matchProperties.getConditions())
+        {
+            SearchProperties nestedConditions = condition.getNestedConditions();
+            String propertyName = condition.getProperty();
+            PropertyComparisonOperator operator = condition.getOperator();
+            InstancePropertyValue value = condition.getValue();
+            if (nestedConditions == null)
+            {
+                // If there are no nested conditions, there must be at least property and operator
+                if (propertyName == null || operator == null)
+                {
+                    throw new InvalidParameterException(OMRSErrorCode.INVALID_PROPERTY_SEARCH.getMessageDefinition(),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        parameterName);
+                }
+                else if (value == null)
+                {
+                    // ... and if the operator is not a null-oriented operator, there must also be a value
+                    if (!operator.equals(PropertyComparisonOperator.IS_NULL) && !operator.equals(PropertyComparisonOperator.NOT_NULL))
+                    {
+                        throw new InvalidParameterException(OMRSErrorCode.INVALID_PROPERTY_SEARCH.getMessageDefinition(),
+                                                            this.getClass().getName(),
+                                                            methodName,
+                                                            parameterName);
+                    }
+                }
+                else
+                {
+                    // If these are all present, ensure that the types are as expected:
+                    switch(operator)
+                    {
+                        case IN:
+                            // For the IN operator, only an ArrayPropertyValue is allowed
+                            if (!(value instanceof ArrayPropertyValue))
+                            {
+                                throw new InvalidParameterException(OMRSErrorCode.INVALID_LIST_CONDITION.getMessageDefinition(),
+                                                                    this.getClass().getName(),
+                                                                    methodName,
+                                                                    parameterName);
+                            }
+                            break;
+                        case LIKE:
+                            // For the LIKE operator, only a PrimitivePropertyValue of type string is allowed
+                            if (value instanceof PrimitivePropertyValue)
+                            {
+                                PrimitivePropertyValue ppv = (PrimitivePropertyValue) value;
+                                if (!ppv.getPrimitiveDefCategory().equals(OM_PRIMITIVE_TYPE_STRING))
+                                {
+                                    throw new InvalidParameterException(OMRSErrorCode.INVALID_LIKE_CONDITION.getMessageDefinition(),
+                                                                        this.getClass().getName(),
+                                                                        methodName,
+                                                                        parameterName);
+                                }
+                            }
+                            else
+                            {
+                                throw new InvalidParameterException(OMRSErrorCode.INVALID_LIKE_CONDITION.getMessageDefinition(),
+                                                                    this.getClass().getName(),
+                                                                    methodName,
+                                                                    parameterName);
+                            }
+                            break;
+                        case LT:
+                        case LTE:
+                        case GT:
+                        case GTE:
+                            // For the <, <=, >=, > operators, only numeric or date types are allowed
+                            if (value instanceof PrimitivePropertyValue)
+                            {
+                                PrimitivePropertyValue ppv = (PrimitivePropertyValue) value;
+                                PrimitiveDefCategory pdc = ppv.getPrimitiveDefCategory();
+                                if (! (pdc.equals(OM_PRIMITIVE_TYPE_DATE)
+                                        || pdc.equals(OM_PRIMITIVE_TYPE_SHORT)
+                                        || pdc.equals(OM_PRIMITIVE_TYPE_INT)
+                                        || pdc.equals(OM_PRIMITIVE_TYPE_LONG)
+                                        || pdc.equals(OM_PRIMITIVE_TYPE_FLOAT)
+                                        || pdc.equals(OM_PRIMITIVE_TYPE_DOUBLE)
+                                        || pdc.equals(OM_PRIMITIVE_TYPE_BIGINTEGER)
+                                        || pdc.equals(OM_PRIMITIVE_TYPE_BIGDECIMAL)))
+                                {
+                                    throw new InvalidParameterException(OMRSErrorCode.INVALID_NUMERIC_CONDITION.getMessageDefinition(operator.getName()),
+                                                                        this.getClass().getName(),
+                                                                        methodName,
+                                                                        parameterName);
+                                }
+                            }
+                            else
+                            {
+                                throw new InvalidParameterException(OMRSErrorCode.INVALID_NUMERIC_CONDITION.getMessageDefinition(operator.getName()),
+                                                                    this.getClass().getName(),
+                                                                    methodName,
+                                                                    parameterName);
+                            }
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                // If nestedConditions is present, there cannot be any property, operator or value
+                if (propertyName != null || operator != null || value != null)
+                {
+                    throw new InvalidParameterException(OMRSErrorCode.INVALID_PROPERTY_SEARCH.getMessageDefinition(),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        parameterName);
+                }
+                // Recurse on the nested properties
+                validateSearchProperties(sourceName, parameterName, nestedConditions, methodName);
+            }
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validateSearchClassifications(String sourceName,
+                                              String parameterName,
+                                              SearchClassifications matchClassifications,
+                                              String methodName) throws InvalidParameterException
+    {
+        if (matchClassifications == null)
+        {
+            return;
+        }
+        for (ClassificationCondition condition : matchClassifications.getConditions())
+        {
+            String classificationName = condition.getName();
+            if (classificationName == null || classificationName.equals(""))
+            {
+                throw new InvalidParameterException(OMRSErrorCode.INVALID_CLASSIFICATION_SEARCH.getMessageDefinition(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
+            }
+            validateSearchProperties(sourceName, parameterName, condition.getMatchProperties(), methodName);
+        }
+    }
+
+
+    /**
      * Validate that the properties for a metadata instance match its TypeDef.
      *
      * @param sourceName source of the request (used for logging)
@@ -2034,6 +2239,37 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         }
 
         return false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean verifyInstanceType(String         sourceName,
+                                      String         instanceTypeGUID,
+                                      List<String>   subtypeGUIDs,
+                                      InstanceHeader instance)
+    {
+        boolean soFar = verifyInstanceType(sourceName, instanceTypeGUID, instance);
+        if (soFar)
+        {
+            if (subtypeGUIDs != null)
+            {
+                boolean matchesASubtype = false;
+                for (String subtype : subtypeGUIDs)
+                {
+                    matchesASubtype = verifyInstanceType(sourceName, subtype, instance);
+                    if (matchesASubtype)
+                    {
+                        // Short-circuit out if we found a subtype match
+                        break;
+                    }
+                }
+                soFar = matchesASubtype;
+            }
+        }
+        return soFar;
     }
 
 
@@ -2992,6 +3228,42 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
+     * Return a boolean indicating whether the supplied entity is classified with the supplied classification.
+     *
+     * @param requiredClassification required classification; null means that there are no specific
+     *                               classification requirements and so results in a true response.
+     * @param entity entity to test.
+     * @return boolean result
+     */
+    private boolean verifyEntityIsClassified(String        requiredClassification,
+                                             EntitySummary entity)
+    {
+        if (requiredClassification != null)
+        {
+            List<Classification> entityClassifications = entity.getClassifications();
+            if (entityClassifications != null)
+            {
+                for (Classification entityClassification : entityClassifications)
+                {
+                    if (entityClassification != null)
+                    {
+                        if (requiredClassification.equals(entityClassification.getName()))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
      * Return a boolean indicating whether the supplied entity is classified with one or more of the supplied
      * classifications.
      *
@@ -3589,6 +3861,248 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             return true;
         }
 
+        return false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BigDecimal getNumericRepresentation(InstancePropertyValue value)
+    {
+        if (value == null)
+        {
+            return null;
+        }
+        InstancePropertyCategory category = value.getInstancePropertyCategory();
+        if (category.equals(PRIMITIVE))
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) value;
+            switch (ppv.getPrimitiveDefCategory())
+            {
+                case OM_PRIMITIVE_TYPE_DATE:
+                case OM_PRIMITIVE_TYPE_LONG:
+                    return BigDecimal.valueOf((Long)ppv.getPrimitiveValue());
+                case OM_PRIMITIVE_TYPE_SHORT:
+                    return BigDecimal.valueOf((Short)ppv.getPrimitiveValue());
+                case OM_PRIMITIVE_TYPE_INT:
+                    return BigDecimal.valueOf((Integer)ppv.getPrimitiveValue());
+                case OM_PRIMITIVE_TYPE_FLOAT:
+                    return BigDecimal.valueOf((Float) ppv.getPrimitiveValue());
+                case OM_PRIMITIVE_TYPE_DOUBLE:
+                    return BigDecimal.valueOf((Double) ppv.getPrimitiveValue());
+                case OM_PRIMITIVE_TYPE_BIGINTEGER:
+                    return new BigDecimal((BigInteger)ppv.getPrimitiveValue());
+                case OM_PRIMITIVE_TYPE_BIGDECIMAL:
+                    return (BigDecimal) ppv.getPrimitiveValue();
+                default:
+                    return null;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean verifyMatchingInstancePropertyValues(SearchProperties    matchProperties,
+                                                        InstanceAuditHeader instanceHeader,
+                                                        InstanceProperties  instanceProperties) throws InvalidParameterException
+    {
+        final String methodName = "verifyMatchingInstancePropertyValues";
+        if (matchProperties == null)
+        {
+            return true;
+        }
+        List<PropertyCondition> conditions = matchProperties.getConditions();
+        int conditionMatchCount = 0;
+        for (PropertyCondition condition : conditions)
+        {
+            // Simplest way: this will also short-circuit to true immediately if nested conditions is null
+            boolean matchesNested = verifyMatchingInstancePropertyValues(condition.getNestedConditions(), instanceHeader, instanceProperties);
+            String propertyName = condition.getProperty();
+            InstancePropertyValue testValue = condition.getValue();
+            InstancePropertyValue actualValue = instanceProperties.getPropertyValue(propertyName);
+            boolean matchesProperties = true;
+            BigDecimal testBD = getNumericRepresentation(testValue);
+            BigDecimal actualBD = getNumericRepresentation(actualValue);
+            switch (condition.getOperator())
+            {
+                case EQ:
+                    matchesProperties = Objects.equals(actualValue, testValue);
+                    break;
+                case NEQ:
+                    matchesProperties = !Objects.equals(actualValue, testValue);
+                    break;
+                case LT:
+                    // Should only apply to numbers and dates
+                    matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) < 0);
+                    break;
+                case LTE:
+                    // Should only apply to numbers and dates
+                    matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) <= 0);
+                    break;
+                case GT:
+                    // Should only apply to numbers and dates
+                    matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) > 0);
+                    break;
+                case GTE:
+                    // Should only apply to numbers and dates
+                    matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) >= 0);
+                    break;
+                case IN:
+                    // The value to test against must be a list (ArrayPropertyValue)
+                    if (testValue instanceof ArrayPropertyValue)
+                    {
+                        ArrayPropertyValue apv = (ArrayPropertyValue) testValue;
+                        InstanceProperties values = apv.getArrayValues();
+                        if (values == null)
+                        {
+                            // Impossible to match against an empty list, so always return false
+                            matchesProperties = false;
+                        }
+                        else
+                        {
+                            Iterator<String> names = values.getPropertyNames();
+                            matchesProperties = false;
+                            while (names.hasNext() && !matchesProperties)
+                            {
+                                String index = names.next();
+                                InstancePropertyValue oneTestValue = values.getPropertyValue(index);
+                                if (oneTestValue != null)
+                                {
+                                    matchesProperties = oneTestValue.equals(actualValue);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new InvalidParameterException(OMRSErrorCode.INVALID_LIST_CONDITION.getMessageDefinition(),
+                                                            this.getClass().getName(),
+                                                            methodName,
+                                                            "matchProperties");
+                    }
+                    break;
+                case IS_NULL:
+                    matchesProperties = (actualValue == null);
+                    break;
+                case NOT_NULL:
+                    matchesProperties = (actualValue != null);
+                    break;
+                case LIKE:
+                    // Should only apply to strings
+                    if (testValue instanceof PrimitivePropertyValue && ( (PrimitivePropertyValue) testValue).getPrimitiveDefCategory().equals(OM_PRIMITIVE_TYPE_STRING))
+                    {
+                        String test = testValue.valueAsString();
+                        if (actualValue == null)
+                        {
+                            matchesProperties = false;
+                        }
+                        else
+                        {
+                            String actual = actualValue.valueAsString();
+                            matchesProperties = actual.matches(test);
+                        }
+                    }
+                    else
+                    {
+                        throw new InvalidParameterException(OMRSErrorCode.INVALID_LIKE_CONDITION.getMessageDefinition(),
+                                                            this.getClass().getName(),
+                                                            methodName,
+                                                            "matchProperties");
+                    }
+                    break;
+                default:
+                    matchesProperties = true;
+                    break;
+            }
+            conditionMatchCount += (matchesNested && matchesProperties) ? 1 : 0;
+        }
+        // TODO: we may want to move this into the loop above to short-circuit (for performance)
+        switch (matchProperties.getMatchCriteria())
+        {
+            case ALL:
+                if (conditionMatchCount == conditions.size())
+                {
+                    return true;
+                }
+                break;
+            case ANY:
+                if (conditionMatchCount > 0)
+                {
+                    return true;
+                }
+                break;
+            case NONE:
+                if (conditionMatchCount == 0)
+                {
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean verifyMatchingClassifications(SearchClassifications matchClassifications,
+                                                 EntitySummary         entity) throws InvalidParameterException
+    {
+        if (matchClassifications == null)
+        {
+            return true;
+        }
+        List<ClassificationCondition> conditions = matchClassifications.getConditions();
+        if (conditions == null)
+        {
+            return true;
+        }
+        int matchingClassificationCount = 0;
+        List<Classification> classifications = entity.getClassifications();
+        for (ClassificationCondition condition : conditions)
+        {
+            String classificationName = condition.getName();
+            boolean isClassified = verifyEntityIsClassified(classificationName, entity);
+            SearchProperties properties = condition.getMatchProperties();
+            boolean classificationMatches = false;
+            for (Classification classification : classifications)
+            {
+                if (classificationName.equals(classification.getName()))
+                {
+                    classificationMatches = verifyMatchingInstancePropertyValues(properties, entity, classification.getProperties());
+                }
+            }
+            matchingClassificationCount += (isClassified && classificationMatches) ? 1 : 0;
+        }
+        // TODO: we may want to move this into the loop above to short-circuit (for performance)
+        switch (matchClassifications.getMatchCriteria())
+        {
+            case ALL:
+                if (matchingClassificationCount == conditions.size())
+                {
+                    return true;
+                }
+                break;
+            case ANY:
+                if (matchingClassificationCount > 0)
+                {
+                    return true;
+                }
+                break;
+            case NONE:
+                if (matchingClassificationCount == 0)
+                {
+                    return true;
+                }
+                break;
+        }
         return false;
     }
 

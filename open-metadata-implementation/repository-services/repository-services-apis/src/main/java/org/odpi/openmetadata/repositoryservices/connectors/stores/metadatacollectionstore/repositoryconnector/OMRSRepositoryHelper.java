@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -1041,6 +1042,15 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @return EntitySummaryDifferences
      */
     EntitySummaryDifferences getEntitySummaryDifferences(EntitySummary left, EntitySummary right, boolean ignoreModificationStamps);
+
+
+    /**
+     * Convert the provided list of classification names into an equivalent SearchClassifications object.
+     *
+     * @param classificationNames list of classification names
+     * @return SearchClassifications
+     */
+    SearchClassifications getSearchClassificationsFromList(List<String> classificationNames);
 
 
 }
