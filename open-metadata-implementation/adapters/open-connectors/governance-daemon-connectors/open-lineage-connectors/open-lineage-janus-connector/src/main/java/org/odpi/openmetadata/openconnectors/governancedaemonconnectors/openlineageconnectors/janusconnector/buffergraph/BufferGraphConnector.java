@@ -8,33 +8,78 @@ import org.apache.tinkerpop.gremlin.structure.Column;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.bothE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLabel;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_DELEGATION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_IMPLEMENTATION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_SCHEMA;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS_PORT;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_DATAFLOW_WITH_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_INCLUDED_IN;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_CREATED_BY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_CREATE_TIME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_UPDATED_BY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_UPDATE_TIME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_VERSION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_METADATA_ID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_CREATED_BY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_CREATE_TIME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_UPDATED_BY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_VERSION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PORT_TYPE;
 
 public class BufferGraphConnector extends BufferGraphConnectorBase {
 
     private static final Logger log = LoggerFactory.getLogger(BufferGraphConnector.class);
     private JanusGraph bufferGraph;
     private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
-    private JanusGraph mainGraph;
-//    private MainGraphMapper mainGraphMapper;
+    private BufferGraphConnectorHelper helper;
+
     /**
      * Instantiates the graph based on the configuration passed.
      *
@@ -55,17 +100,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                     error.getReportedUserAction()
             );
         }
+        this.helper = new BufferGraphConnectorHelper(bufferGraph);
     }
-
-    /**
-     * Retrieves the mainGraph instance.
-     *
-     */
-    @Override
-    public void setMainGraph(Object mainGraph) {
-        this.mainGraph = (JanusGraph) mainGraph;
-    }
-
 
     @Override
     public void schedulerTask(){
@@ -435,8 +471,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             g.tx().commit();
 
             //TODO addcheck for type check in order to update(if it database or schema it needs extra checks)
-            MainGraphMapper mainGraphMapper  = new MainGraphMapper(bufferGraph,mainGraph);
-            mainGraphMapper.updateVertex(vertex,properties);
+//            MainGraphMapper mainGraphMapper  = new MainGraphMapper(bufferGraph,mainGraph);
+//            mainGraphMapper.updateVertex(vertex,properties);
         }
         catch (Exception e){
             log.error("An exception happened during update of the properties with exception: {}",e);
@@ -547,5 +583,56 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         this.bufferGraph.close();
         super.disconnect();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
+        String methodName = "lineage";
+
+        GraphTraversalSource g = bufferGraph.traversal();
+        try {
+            g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
+        } catch (NoSuchElementException e) {
+            log.debug("Requested element was not found", e);
+            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.NODE_NOT_FOUND;
+            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorCode.getFormattedErrorMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+
+        List<String> edgeLabels = new ArrayList<>();
+        edgeLabels.add(EDGE_LABEL_SEMANTIC);
+        edgeLabels.add(includeProcesses ? EDGE_LABEL_DATAFLOW_WITH_PROCESS : EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = null;
+
+        switch (scope) {
+            case SOURCE_AND_DESTINATION:
+                lineageVerticesAndEdges = helper.sourceAndDestination(guid, edgeLabels.toArray(new String[edgeLabels.size()]));
+                break;
+            case END_TO_END:
+                lineageVerticesAndEdges = helper.endToEnd(guid, edgeLabels.toArray(new String[edgeLabels.size()]));
+                break;
+            case ULTIMATE_SOURCE:
+                lineageVerticesAndEdges = helper.ultimateSource(guid, edgeLabels.toArray(new String[edgeLabels.size()]));
+                break;
+            case ULTIMATE_DESTINATION:
+                lineageVerticesAndEdges = helper.ultimateDestination(guid, edgeLabels.toArray(new String[edgeLabels.size()]));
+                break;
+            case GLOSSARY:
+                lineageVerticesAndEdges = helper.glossary(guid);
+                break;
+        }
+        if (!displayNameMustContain.isEmpty())
+            helper.filterDisplayName(lineageVerticesAndEdges, displayNameMustContain);
+        return new LineageResponse(lineageVerticesAndEdges);
+    }
+
+
 }
 

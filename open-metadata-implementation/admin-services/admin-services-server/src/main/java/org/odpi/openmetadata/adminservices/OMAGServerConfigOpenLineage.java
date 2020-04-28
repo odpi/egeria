@@ -44,7 +44,6 @@ public class OMAGServerConfigOpenLineage {
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validatePropertyNotNull(openLineageServerConfig.getInTopicName(), "inTopicName", serverName, methodName);
             errorHandler.validatePropertyNotNull(openLineageServerConfig.getOpenLineageBufferGraphConnection(), "bufferGraphConnection", serverName, methodName);
-            errorHandler.validatePropertyNotNull(openLineageServerConfig.getOpenLineageMainGraphConnection(), "mainGraphConnection", serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
