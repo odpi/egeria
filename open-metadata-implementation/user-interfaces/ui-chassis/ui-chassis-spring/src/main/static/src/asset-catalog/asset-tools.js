@@ -13,7 +13,6 @@ class AssetTools extends PolymerElement {
         :host {
           display: block;
           padding: 10px 24px;
-          background-color:  var(--egeria-background-color);
           --iron-icon-fill-color: var(--egeria-primary-color);
         }
         ul#menu {
@@ -27,10 +26,14 @@ class AssetTools extends PolymerElement {
         ul#menu li:hover {
             background-color: var(--app-background-color);
         }
+        .container {
+            border: solid 1px var(--egeria-primary-color); 
+            padding: 5pt;
+        }
       </style>
     <token-ajax id="tokenAjaxSettings" last-response="{{omas}}" url="/api/omas/settings" auto></token-ajax>
     
-    <div style="border: solid 1px var(--egeria-primary-color); padding: 5pt;"> 
+    <div class="container"> 
         <ul id="menu"> 
             <li> 
                 <a href="#/asset-lineage/ultimateSource/[[guid]]" title="Ultimate Source Lineage"><iron-icon icon="vaadin:connect-o" style="transform: rotate(180deg)"></iron-icon></a>
