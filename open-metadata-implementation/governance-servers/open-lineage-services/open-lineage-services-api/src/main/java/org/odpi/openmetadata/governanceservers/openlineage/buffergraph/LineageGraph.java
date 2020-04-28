@@ -9,7 +9,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConne
 
 import java.util.Set;
 
-public interface BufferGraph extends OpenLineageGraphConnector {
+public interface LineageGraph extends OpenLineageGraphConnector {
 
     /**
      * Stores a lineage event into the Buffergraph database

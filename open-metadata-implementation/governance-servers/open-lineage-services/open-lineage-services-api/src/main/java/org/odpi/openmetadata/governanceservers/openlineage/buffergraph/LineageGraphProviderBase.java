@@ -4,7 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.buffergraph;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 
-public class BufferGraphProviderBase extends ConnectorProviderBase {
+public class LineageGraphProviderBase extends ConnectorProviderBase {
 
-    public BufferGraphProviderBase(){super();}
+    public LineageGraphProviderBase(){super();}
 }
