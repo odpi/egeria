@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
@@ -42,12 +42,12 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.immutableReturnedPropertiesWhiteList;
 
-public class BufferGraphConnectorHelper {
+public class LineageGraphConnectorHelper {
 
-    private JanusGraph mainGraph;
+    private JanusGraph lineageGraph;
 
-    public BufferGraphConnectorHelper(JanusGraph mainGraph) {
-        this.mainGraph = mainGraph;
+    public LineageGraphConnectorHelper(JanusGraph lineageGraph) {
+        this.lineageGraph = lineageGraph;
     }
 
     /**
@@ -60,7 +60,7 @@ public class BufferGraphConnectorHelper {
      */
     LineageVerticesAndEdges ultimateSource(String guid, String... edgeLabels) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateSource";
-        GraphTraversalSource g = mainGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(inE(edgeLabels).count().is(0)).
@@ -93,7 +93,7 @@ public class BufferGraphConnectorHelper {
      */
     LineageVerticesAndEdges ultimateDestination(String guid, String... edgeLabels) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateDestination";
-        GraphTraversalSource g = mainGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(outE(edgeLabels).count().is(0)).
@@ -124,7 +124,7 @@ public class BufferGraphConnectorHelper {
      * @param edgeLabels Traversed edges
      */
     LineageVerticesAndEdges endToEnd(String guid, String... edgeLabels) {
-        GraphTraversalSource g = mainGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         Graph endToEndGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).
@@ -149,7 +149,7 @@ public class BufferGraphConnectorHelper {
      */
     LineageVerticesAndEdges sourceAndDestination(String guid, String... edgeLabels ) throws OpenLineageException {
         String methodName = "MainGraphConnector.sourceAndDestination";
-        GraphTraversalSource g = mainGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
                 until(inE(edgeLabels).count().is(0)).
@@ -188,7 +188,7 @@ public class BufferGraphConnectorHelper {
      * @return a subgraph in the GraphSON format.
      */
     LineageVerticesAndEdges glossary(String guid) {
-        GraphTraversalSource g = mainGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         Graph subGraph = (Graph)
                 g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid)

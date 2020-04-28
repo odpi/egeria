@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -30,8 +29,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     private String lineageServerURL;
     private String inTopicName;
     private Connection inTopicConnection;
-    private Connection openLineageBufferGraphConnection;
-    private Connection openLineageMainGraphConnection;
+    private Connection lineageGraphConnection;
 
     /**
      * Default constructor
@@ -56,8 +54,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
             lineageServerURL = template.lineageServerURL;
             inTopicName = template.inTopicName;
             inTopicConnection = template.inTopicConnection;
-            openLineageBufferGraphConnection = template.openLineageBufferGraphConnection;
-            openLineageMainGraphConnection = template.openLineageMainGraphConnection;
+            lineageGraphConnection = template.lineageGraphConnection;
         }
     }
 
@@ -175,41 +172,22 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the Connection for BufferGraph that will be used for Open Lineage
+     * Return the Connection for LineageGraph that will be used for Open Lineage
      *
-     * @return Connection for bufferGraph
+     * @return Connection for lineageGraph
      */
-    public Connection getOpenLineageBufferGraphConnection() {
-        return openLineageBufferGraphConnection;
+    public Connection getLineageGraphConnection() {
+        return lineageGraphConnection;
     }
 
     /**
-     * Set up the Open Lineage bufferGraph Connection
+     * Set up the Open Lineage Graph Connection
      *
-     * @param openLineageBufferGraphConnection Connection for bufferGraph
+     * @param lineageGraphConnection Connection for LineageGraph
      */
-    public void setOpenLineageBufferGraphConnection(Connection openLineageBufferGraphConnection) {
-        this.openLineageBufferGraphConnection = openLineageBufferGraphConnection;
+    public void setLineageGraphConnection(Connection lineageGraphConnection) {
+        this.lineageGraphConnection = lineageGraphConnection;
     }
-
-    /**
-     * Return the Connection for mainGraph that will be used for Open Lineage
-     *
-     * @return Connection for mainGraph
-     */
-    public Connection getOpenLineageMainGraphConnection() {
-        return openLineageMainGraphConnection;
-    }
-
-    /**
-     * Set up the Open Lineage mainGraph Connection
-     *
-     * @param openLineageMainGraphConnection Connection for mainGraph
-     */
-    public void setOpenLineageMainGraphConnection(Connection openLineageMainGraphConnection) {
-        this.openLineageMainGraphConnection = openLineageMainGraphConnection;
-    }
-
 
     @Override
     public String toString() {
@@ -220,8 +198,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 ", lineageServerURL='" + lineageServerURL + '\'' +
                 ", inTopicName='" + inTopicName + '\'' +
                 ", inTopicConnection=" + inTopicConnection +
-                ", openLineageBufferGraphConnection=" + openLineageBufferGraphConnection +
-                ", openLineageMainGraphConnection=" + openLineageMainGraphConnection +
+                ", openLineageBufferGraphConnection=" + lineageGraphConnection +
                 '}';
     }
 
@@ -236,15 +213,13 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 Objects.equals(lineageServerURL, that.lineageServerURL) &&
                 Objects.equals(inTopicName, that.inTopicName) &&
                 Objects.equals(inTopicConnection, that.inTopicConnection) &&
-                Objects.equals(openLineageBufferGraphConnection, that.openLineageBufferGraphConnection) &&
-                Objects.equals(openLineageMainGraphConnection, that.openLineageMainGraphConnection);
+                Objects.equals(lineageGraphConnection, that.lineageGraphConnection);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(openLineageId, openLineageName,
                 openLineageDescription, lineageServerURL,
-                inTopicName, inTopicConnection, openLineageBufferGraphConnection,
-                openLineageMainGraphConnection);
+                inTopicName, inTopicConnection, lineageGraphConnection);
     }
 }
