@@ -5,9 +5,9 @@ import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import { ItemViewBehavior} from '../common/item';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-item/paper-item-body';
-import '@polymer/paper-styles/paper-styles';
-import '@polymer/app-layout/app-grid/app-grid-style';
+import '@polymer/paper-item/paper-item-body.js';
+import '@polymer/paper-styles/paper-styles.js';
+import '@polymer/app-layout/app-grid/app-grid-style.js';
 
 import '../shared-styles.js';
 
