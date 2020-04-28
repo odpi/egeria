@@ -198,7 +198,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 ", lineageServerURL='" + lineageServerURL + '\'' +
                 ", inTopicName='" + inTopicName + '\'' +
                 ", inTopicConnection=" + inTopicConnection +
-                ", openLineageBufferGraphConnection=" + lineageGraphConnection +
+                ", openLineageGraphConnection=" + lineageGraphConnection +
                 '}';
     }
 
