@@ -5,7 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.services;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.LineageGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.scheduler.JobConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

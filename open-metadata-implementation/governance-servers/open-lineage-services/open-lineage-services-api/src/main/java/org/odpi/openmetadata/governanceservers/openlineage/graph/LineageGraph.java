@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.buffergraph;
+package org.odpi.openmetadata.governanceservers.openlineage.graph;
 
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
@@ -12,7 +12,7 @@ import java.util.Set;
 public interface LineageGraph extends OpenLineageGraphConnector {
 
     /**
-     * Stores a lineage event into the Buffergraph database
+     * Stores a lineage event into the lineage graph database
      *
      * @param graphContext graph Collection
      */

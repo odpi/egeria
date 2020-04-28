@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.LineageGraphConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
@@ -90,7 +90,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         try {
             this.lineageGraph = graphFactory.openGraph(connectionProperties);
         } catch (JanusConnectorException error) {
-            log.error("The Buffer graph could not be initialized due to an error", error);
+            log.error("The Lineage graph could not be initialized due to an error", error);
             throw new OpenLineageException(500,
                     error.getReportingClassName(),
                     error.getReportingActionDescription(),
@@ -276,7 +276,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             try {
                 addVerticesAndRelationship(g, entry);
             } catch (JanusConnectorException e) {
-                log.error("An exception happened when trying to create vertices and relationships in BufferGraph. The error is", e);
+                log.error("An exception happened when trying to create vertices and relationships in LineageGraph. The error is", e);
             }
         });
 
@@ -324,7 +324,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         else {
             vertex = vertexIt.next();
             if (log.isDebugEnabled()) {
-                log.debug("found existing vertex {} when trying to add it in bufferGraph", vertex);
+                log.debug("found existing vertex {} when trying to add it in LineageGraph", vertex);
             }
             g.tx().rollback();
             return vertex;
@@ -332,7 +332,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     /**
-     * Creates new Relationships and it's properties in bufferGraph and mainGraph related to Lineage.
+     * Creates new Relationships and it's properties in lineage graph
      *
      */
     private void addRelationship(String relationshipGuid,String relationshipType,Vertex fromVertex,Vertex toVertex) throws JanusConnectorException{
