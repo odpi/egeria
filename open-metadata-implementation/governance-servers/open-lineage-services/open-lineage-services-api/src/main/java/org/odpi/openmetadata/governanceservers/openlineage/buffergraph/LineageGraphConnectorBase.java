@@ -10,7 +10,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageExcep
 
 import java.util.Set;
 
-public abstract class BufferGraphConnectorBase extends ConnectorBase implements BufferGraph {
+public abstract class LineageGraphConnectorBase extends ConnectorBase implements LineageGraph {
 
     @Override
     public abstract void initializeGraphDB() throws OpenLineageException;
