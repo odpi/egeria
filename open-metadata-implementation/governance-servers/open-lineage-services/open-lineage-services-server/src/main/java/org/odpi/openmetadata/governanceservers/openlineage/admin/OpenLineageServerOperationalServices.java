@@ -12,8 +12,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.LineageGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
+import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.OpenLineageInTopicListener;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServerInstance;
@@ -93,8 +93,10 @@ public class OpenLineageServerOperationalServices {
         Connection lineageGraphConnection = openLineageServerConfig.getLineageGraphConnection();
         Connection inTopicConnection = openLineageServerConfig.getInTopicConnection();
 
-        this.lineageGraphConnector = (LineageGraph) getConnector(lineageGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_BUFFER_GRAPH_CONNECTOR, OpenLineageServerAuditCode.ERROR_OBTAINING_BUFFER_GRAPH_CONNNECTOR);
-        this.inTopicConnector = (OpenMetadataTopicConnector) getConnector(inTopicConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR, OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR);
+        this.lineageGraphConnector = (LineageGraph) getConnector(lineageGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR,
+                OpenLineageServerAuditCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR);
+        this.inTopicConnector = (OpenMetadataTopicConnector) getConnector(inTopicConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR,
+                OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR);
 
         initializeAndStartConnectors();
         OpenLineageHandler openLineageHandler = new OpenLineageHandler(lineageGraphConnector);
@@ -140,14 +142,14 @@ public class OpenLineageServerOperationalServices {
     private void initializeAndStartConnectors() throws OMAGConfigurationErrorException {
         initializeGraphConnectorDB(
                 lineageGraphConnector,
-                OpenLineageServerErrorCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNECTOR_DB,
-                OpenLineageServerAuditCode.ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR_DB,
+                OpenLineageServerErrorCode.ERROR_INITIALIZING_LINEAGE_GRAPH_CONNECTOR_DB,
+                OpenLineageServerAuditCode.ERROR_INITIALIZING_LINEAGE_GRAPH_CONNECTOR_DB,
                 "initializeLineageGraphConnector"
         );
 
         startGraphConnector(lineageGraphConnector,
-                OpenLineageServerErrorCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR,
-                OpenLineageServerAuditCode.ERROR_STARTING_BUFFER_GRAPH_CONNECTOR,
+                OpenLineageServerErrorCode.ERROR_STARTING_LINEAGE_GRAPH_CONNECTOR,
+                OpenLineageServerAuditCode.ERROR_STARTING_LINEAGE_GRAPH_CONNECTOR,
                 "startLineageGraphConnector");
 
         startIntopicConnector();
@@ -309,9 +311,9 @@ public class OpenLineageServerOperationalServices {
         disconnectInTopicConnector();
 
         disconnectGraphConnector(lineageGraphConnector,
-                OpenLineageServerErrorCode.ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR,
-                OpenLineageServerAuditCode.ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR,
-                "Disconnecting the Buffergraph connection.");
+                OpenLineageServerErrorCode.ERROR_DISCONNECTING_LINEAGE_GRAPH_CONNECTOR,
+                OpenLineageServerAuditCode.ERROR_DISCONNECTING_LINEAGE_GRAPH_CONNECTOR,
+                "Disconnecting lineage graph connection.");
 
         if (openLineageServerInstance != null)
             openLineageServerInstance.shutdown();

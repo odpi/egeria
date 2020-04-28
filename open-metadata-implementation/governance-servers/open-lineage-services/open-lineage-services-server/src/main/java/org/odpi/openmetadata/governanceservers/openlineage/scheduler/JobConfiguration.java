@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.LineageGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -35,7 +35,7 @@ public class JobConfiguration {
             scheduler = new StdSchedulerFactory().getScheduler();
             scheduler.start();
         } catch (SchedulerException e) {
-            log.error("{} could not run the job for bufferGraph", methodName);
+            log.error("{} could not run the job for LineageGraph", methodName);
         }
 
         Trigger trigger = buildSimpleSchedulerTrigger();
@@ -52,7 +52,7 @@ public class JobConfiguration {
         if(lineageGraph != null) {
             JobDetail jobDetail = JobBuilder.
                     newJob(LineageGraphJob.class).
-                    withIdentity("BufferGraphJob", GROUP).
+                    withIdentity("LineageGraphJob", GROUP).
                     build();
             jobDetail.getJobDataMap().put("openLineageGraphStore", lineageGraph);
             scheduler.scheduleJob(jobDetail, trigger);
@@ -67,7 +67,7 @@ public class JobConfiguration {
         //TODO Remove after development
         int INTERVAL_SECONDS = 10;
 
-        return TriggerBuilder.newTrigger().withIdentity("BufferGraphJob", GROUP)
+        return TriggerBuilder.newTrigger().withIdentity("LineageGraphJob", GROUP)
                 .withSchedule(
                         SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(INTERVAL_SECONDS).repeatForever())
                 .build();
