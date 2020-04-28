@@ -16,7 +16,6 @@ class AssetTools extends PolymerElement {
         :host {
           display: block;
           padding: 10px 24px;
-          --iron-icon-fill-color: var(--egeria-primary-color);
         }
         ul#menu {
             margin: 0;

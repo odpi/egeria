@@ -28,11 +28,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         vaadin-grid {
           height: calc(100vh - 160px);
         }
-        a {
-            color : var(--egeria-primary-color);
-            text-decoration: none;
-            cursor: hand;
-        }
+       
         
         .level0{ color: inherit;}
         .level1{ color: inherit;}

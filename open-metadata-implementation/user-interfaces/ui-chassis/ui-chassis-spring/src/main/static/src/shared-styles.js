@@ -19,6 +19,13 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             --app-secondary-color: var(--egeria-secondary-color);
             
             --paper-toast-background-color: var(--egeria-secondary-color);
+            
+            --iron-icon-fill-color: var(--egeria-primary-color);
+        }
+        a {
+            color : var(--egeria-primary-color);
+            text-decoration: none;
+            cursor: pointer;
         }
         #logo {
             background: var(--app-logo-background);
