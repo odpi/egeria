@@ -8,14 +8,17 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,20 +27,33 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.bothE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLabel;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CONNECTION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATABASE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DEPLOYED_DB_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FILE_FOLDER;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_DB_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.CONDENSED_NODE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CONDENSED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_CONDENSED;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DATABASE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_SCHEMA_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_SCHEMA_TYPE_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_TABLE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.immutableReturnedPropertiesWhiteList;
@@ -56,20 +72,21 @@ public class LineageGraphConnectorHelper {
      *
      * @param guid       The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @param edgeLabels Traversed edges
+     *
      * @return a subgraph in the GraphSON format.
      */
     LineageVerticesAndEdges ultimateSource(String guid, String... edgeLabels) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateSource";
         GraphTraversalSource g = lineageGraph.traversal();
 
-        List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
+        List<Vertex> sourcesList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                 until(inE(edgeLabels).count().is(0)).
                 repeat(inE(edgeLabels).outV().simplePath()).
                 dedup().toList();
 
         detectProblematicCycle(methodName, sourcesList);
 
-        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
+        Vertex originalQueriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
 
         Set<LineageVertex> lineageVertices = new HashSet<>();
 
@@ -79,30 +96,33 @@ public class LineageGraphConnectorHelper {
         lineageVertices.add(queriedVertex);
 
         addSourceCondensation(sourcesList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
-        LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-        return lineageVerticesAndEdges;
+
+        addColumnProperties(lineageVertices);
+
+        return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
     }
 
     /**
      * Returns a subgraph containing all leaf nodes of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param guid      The guid of the node of which the lineage is queried of. This can be a column or table node.
+     * @param guid       The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @param edgeLabels Traversed edges
+     *
      * @return a subgraph in the GraphSON format.
      */
     LineageVerticesAndEdges ultimateDestination(String guid, String... edgeLabels) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateDestination";
         GraphTraversalSource g = lineageGraph.traversal();
 
-        List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
+        List<Vertex> destinationsList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                 until(outE(edgeLabels).count().is(0)).
                 repeat(outE(edgeLabels).inV().simplePath()).
                 dedup().toList();
 
         detectProblematicCycle(methodName, destinationsList);
 
-        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
+        Vertex originalQueriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
 
         Set<LineageVertex> lineageVertices = new HashSet<>();
@@ -111,23 +131,26 @@ public class LineageGraphConnectorHelper {
         lineageVertices.add(queriedVertex);
 
         addDestinationCondensation(destinationsList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
-        LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-        return lineageVerticesAndEdges;
+
+        addColumnProperties(lineageVertices);
+
+        return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
     }
 
     /**
      * Returns a subgraph containing all paths leading from any root node to the queried node, and all of the paths
      * leading from the queried node to any leaf nodes. The queried node can be a column or table.
-     * @return a subgraph in the GraphSON format.
      *
      * @param guid       The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @param edgeLabels Traversed edges
+     *
+     * @return a subgraph in the GraphSON format.
      */
     LineageVerticesAndEdges endToEnd(String guid, String... edgeLabels) {
         GraphTraversalSource g = lineageGraph.traversal();
 
         Graph endToEndGraph = (Graph)
-                g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).
+                g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                         union(
                                 until(inE(edgeLabels).count().is(0)).
                                         repeat((Traversal) inE(edgeLabels).subgraph("subGraph").outV().simplePath()),
@@ -135,8 +158,7 @@ public class LineageGraphConnectorHelper {
                                         repeat((Traversal) outE(edgeLabels).subgraph("subGraph").inV().simplePath())
                         ).cap("subGraph").next();
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = getLineageVerticesAndEdges(endToEndGraph);
-        return lineageVerticesAndEdges;
+        return getLineageVerticesAndEdges(endToEndGraph);
     }
 
     /**
@@ -145,18 +167,19 @@ public class LineageGraphConnectorHelper {
      *
      * @param guid       The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @param edgeLabels Traversed edges
+     *
      * @return a subgraph in the GraphSON format.
      */
-    LineageVerticesAndEdges sourceAndDestination(String guid, String... edgeLabels ) throws OpenLineageException {
+    LineageVerticesAndEdges sourceAndDestination(String guid, String... edgeLabels) throws OpenLineageException {
         String methodName = "MainGraphConnector.sourceAndDestination";
         GraphTraversalSource g = lineageGraph.traversal();
 
-        List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
+        List<Vertex> sourcesList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                 until(inE(edgeLabels).count().is(0)).
                 repeat(inE(edgeLabels).outV().simplePath()).
                 dedup().toList();
 
-        List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).
+        List<Vertex> destinationsList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                 until(outE(edgeLabels).count().is(0)).
                 repeat(outE(edgeLabels).inV().simplePath()).
                 dedup().toList();
@@ -165,7 +188,7 @@ public class LineageGraphConnectorHelper {
         detectProblematicCycle(methodName, destinationsList);
 
 
-        Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
+        Vertex originalQueriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
 
         Set<LineageVertex> lineageVertices = new HashSet<>();
@@ -175,9 +198,9 @@ public class LineageGraphConnectorHelper {
 
         addDestinationCondensation(destinationsList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
+        addColumnProperties(lineageVertices);
 
-        return lineageVerticesAndEdges;
+        return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
     }
 
     /**
@@ -185,20 +208,20 @@ public class LineageGraphConnectorHelper {
      * columns or tables connected to synonyms of the queried glossary term.
      *
      * @param guid The guid of the glossary term of which the lineage is queried of.
+     *
      * @return a subgraph in the GraphSON format.
      */
     LineageVerticesAndEdges glossary(String guid) {
         GraphTraversalSource g = lineageGraph.traversal();
 
         Graph subGraph = (Graph)
-                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID, guid)
+                g.V().has(PROPERTY_KEY_ENTITY_GUID, guid)
                         .emit().
                         repeat(bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).subgraph("subGraph").simplePath().otherV())
                         .inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV()
                         .cap("subGraph").next();
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = getLineageVerticesAndEdges(subGraph);
-        return lineageVerticesAndEdges;
+        return getLineageVerticesAndEdges(subGraph);
     }
 
     /**
@@ -234,11 +257,12 @@ public class LineageGraphConnectorHelper {
      * Map a Tinkerpop vertex to the Open Lineage format.
      *
      * @param originalVertex The vertex to be mapped.
+     *
      * @return The vertex in the Open Lineage format.
      */
     private LineageVertex abstractVertex(Vertex originalVertex) {
-        String nodeID = originalVertex.property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
         String nodeType = originalVertex.label();
+        String nodeID = getNodeID(originalVertex);
         LineageVertex lineageVertex = new LineageVertex(nodeID, nodeType);
 
         if (originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).isPresent()) {
@@ -261,17 +285,28 @@ public class LineageGraphConnectorHelper {
         return lineageVertex;
     }
 
+    private String getNodeID(Vertex vertex) {
+        String nodeID;
+        if (vertex.label().equalsIgnoreCase("subProcess")) {
+            nodeID = vertex.property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
+        } else {
+            nodeID = vertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
+        }
+        return nodeID;
+    }
+
     /**
      * Map a Tinkerpop edge to the Open Lineage format.
      *
      * @param originalEdge The edge to be mapped
+     *
      * @return The edge in the Open Lineage format.
      */
     private LineageEdge abstractEdge(Edge originalEdge) {
-        String sourceNodeID = originalEdge.outVertex().property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
-        String destinationNodeId = originalEdge.inVertex().property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
-        LineageEdge lineageEdge = new LineageEdge(originalEdge.label(), sourceNodeID, destinationNodeId);
-        return lineageEdge;
+        String sourceNodeID = getNodeID(originalEdge.outVertex());
+        String destinationNodeId =  getNodeID(originalEdge.outVertex());
+
+        return new LineageEdge(originalEdge.label(), sourceNodeID, destinationNodeId);
     }
 
     /**
@@ -279,13 +314,14 @@ public class LineageGraphConnectorHelper {
      * properties that should not be returned to a UI.
      *
      * @param originalVertex
+     *
      * @return
      */
     private Map<String, String> retrieveProperties(Vertex originalVertex) {
         Map<String, String> newNodeProperties = new HashMap<>();
-        Iterator originalProperties = originalVertex.properties();
+        Iterator<VertexProperty<Object>> originalProperties = originalVertex.properties();
         while (originalProperties.hasNext()) {
-            Property originalProperty = (Property) originalProperties.next();
+            Property<Object> originalProperty = originalProperties.next();
             if (immutableReturnedPropertiesWhiteList.contains(originalProperty.key())) {
                 String newPropertyKey = originalProperty.key().
                         replace(PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY, "").
@@ -304,6 +340,7 @@ public class LineageGraphConnectorHelper {
      *
      * @param methodName The name of the calling method.
      * @param vertexList The to be validated result of the Gremlin query.
+     *
      * @throws OpenLineageException
      */
     private void detectProblematicCycle(String methodName, List<Vertex> vertexList) throws OpenLineageException {
@@ -336,7 +373,7 @@ public class LineageGraphConnectorHelper {
                                        LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
-        if (sourcesList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID)))
+        if (sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID)))
             return;
         LineageVertex condensedVertex = new LineageVertex(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE, NODE_LABEL_CONDENSED);
         condensedVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
@@ -377,7 +414,7 @@ public class LineageGraphConnectorHelper {
                                             LineageVertex queriedVertex) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
-        if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_NODE_ID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_NODE_ID))) {
+        if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
             LineageVertex condensedDestinationVertex = new LineageVertex(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION, NODE_LABEL_CONDENSED);
             condensedDestinationVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
             for (Vertex originalVertex : destinationsList) {
@@ -405,6 +442,7 @@ public class LineageGraphConnectorHelper {
      * Map a tinkerpop Graph object to an Open Lineage specific format.
      *
      * @param subGraph The graph to be mapped.
+     *
      * @return The graph in in an Open Lineage specific format.
      */
     private LineageVerticesAndEdges getLineageVerticesAndEdges(Graph subGraph) {
@@ -422,8 +460,59 @@ public class LineageGraphConnectorHelper {
             LineageEdge newLineageEdge = abstractEdge(originalEdges.next());
             lineageEdges.add(newLineageEdge);
         }
-        LineageVerticesAndEdges lineageVerticesAndEdges = new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-        return lineageVerticesAndEdges;
+
+        addColumnProperties(lineageVertices);
+
+        return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
     }
 
+    private void addColumnProperties(Set<LineageVertex> lineageVertices) {
+        //TODO  WIP - test and update queries
+        GraphTraversalSource g = mainGraph.traversal();
+        lineageVertices.stream().filter(this::isColumnVertex).forEach(lineageVertex -> {
+            Vertex graphVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageVertex.getGuid()).next();
+
+            Object vertexId = graphVertex.id();
+            Iterator<Vertex> tableAsset = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2).
+                    or(hasLabel(RELATIONAL_TABLE), hasLabel(DATA_FILE));
+
+            Iterator<Vertex> databaseSchemaType = g.V(vertexId).emit().repeat(bothE().inV().simplePath()).times(1).
+                    or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE), hasLabel(TABULAR_SCHEMA_TYPE));
+
+            Iterator<Vertex> databaseSchema = g.V(vertexId).emit().repeat(bothE().inV().simplePath()).times(3).
+                    or(hasLabel(DEPLOYED_DB_SCHEMA_TYPE), hasLabel(FILE_FOLDER));
+
+            Iterator<Vertex> database = g.V(vertexId).emit().repeat(bothE().inV().simplePath()).times(4).
+                    or(hasLabel(DATABASE), hasLabel(FILE_FOLDER));
+
+            Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().inV().simplePath()).times(5).hasLabel(CONNECTION);
+
+            Map<String, String> properties = new HashMap<>();
+            if (tableAsset.hasNext()) {
+                properties.put(PROPERTY_KEY_TABLE_DISPLAY_NAME,
+                        tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            }
+
+            if (databaseSchemaType.hasNext()) {
+                properties.put(PROPERTY_KEY_SCHEMA_TYPE_DISPLAY_NAME,
+                        databaseSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            }
+
+            if (databaseSchema.hasNext()) {
+                properties.put(PROPERTY_KEY_SCHEMA_DISPLAY_NAME,
+                        databaseSchema.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            }
+
+            if (database.hasNext()) {
+                properties.put(PROPERTY_KEY_DATABASE_DISPLAY_NAME,
+                        database.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            }
+
+            lineageVertex.setProperties(properties);
+        });
+    }
+
+    private boolean isColumnVertex(LineageVertex lineageVertex) {
+        return Arrays.asList(Constants.TABULAR_COLUMN, Constants.RELATIONAL_COLUMN).contains(lineageVertex.getNodeType());
+    }
 }
