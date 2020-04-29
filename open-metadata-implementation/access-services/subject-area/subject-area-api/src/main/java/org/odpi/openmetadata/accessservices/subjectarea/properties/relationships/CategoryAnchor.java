@@ -32,9 +32,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CategoryAnchorRelationship extends Line {
-    private static final Logger log = LoggerFactory.getLogger(CategoryAnchorRelationship.class);
-    private static final String className = CategoryAnchorRelationship.class.getName();
+public class CategoryAnchor extends Line {
+    private static final Logger log = LoggerFactory.getLogger(CategoryAnchor.class);
+    private static final String className = CategoryAnchor.class.getName();
 
       private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
 
@@ -64,7 +64,7 @@ public class CategoryAnchorRelationship extends Line {
       private String glossaryGuid;
 
 
-    public CategoryAnchorRelationship() {
+    public CategoryAnchor() {
         initialise();
     }
 
@@ -85,12 +85,12 @@ public class CategoryAnchorRelationship extends Line {
         typeDefGuid = "c628938e-815e-47db-8d1c-59bb2e84e028";
     }
 
-    public CategoryAnchorRelationship(Line template) {
+    public CategoryAnchor(Line template) {
         super(template);
         initialise();
     }
 
-    public CategoryAnchorRelationship(Relationship omrsRelationship) {
+    public CategoryAnchor(Relationship omrsRelationship) {
         super(omrsRelationship);
         name = "CategoryAnchor";
        // set the LineType if this is a LineType enum value.

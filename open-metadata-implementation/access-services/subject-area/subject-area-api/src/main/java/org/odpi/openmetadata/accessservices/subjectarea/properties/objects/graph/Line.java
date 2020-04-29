@@ -31,21 +31,21 @@ import java.util.Map;
         {
 
                 // term to term relationship responses
-                @JsonSubTypes.Type(value = TermHASARelationship.class, name = "TermHASARelationship"),
+                @JsonSubTypes.Type(value = Hasa.class, name = "Hasa"),
                 @JsonSubTypes.Type(value = RelatedTerm.class, name = "RelatedTerm"),
                 @JsonSubTypes.Type(value = Synonym.class, name = "Synonym"),
                 @JsonSubTypes.Type(value = Antonym.class, name = "Antonym"),
                 @JsonSubTypes.Type(value = PreferredTerm.class, name = "PreferredTerm"),
                 @JsonSubTypes.Type(value = ReplacementTerm.class, name = "ReplacementTerm"),
                 @JsonSubTypes.Type(value = Translation.class, name = "Translation"),
-                @JsonSubTypes.Type(value = ISARelationship.class, name = "ISARelationship"),
+                @JsonSubTypes.Type(value = Isa.class, name = "Isa"),
                 @JsonSubTypes.Type(value = ValidValue.class, name = "ValidValue"),
                 @JsonSubTypes.Type(value = UsedInContext.class, name = "UsedInContext"),
-                @JsonSubTypes.Type(value = TermISATypeOFRelationship.class, name = "TermISATYPEOFRelationship"),
-                @JsonSubTypes.Type(value = TermTYPEDBYRelationship.class, name = "TermTYPEDBYRelationship"),
-                @JsonSubTypes.Type(value = TermAnchorRelationship.class, name = "TermAnchor"),
-                @JsonSubTypes.Type(value = CategoryAnchorRelationship.class, name = "CategoryAnchor"),
-                @JsonSubTypes.Type(value = TermCategorizationRelationship.class, name = "TermCategorizationRelationship"),
+                @JsonSubTypes.Type(value = IsaTypeOf.class, name = "IsaTypeOf"),
+                @JsonSubTypes.Type(value = TypedBy.class, name = "TypedBy"),
+                @JsonSubTypes.Type(value = TermAnchor.class, name = "TermAnchor"),
+                @JsonSubTypes.Type(value = CategoryAnchor.class, name = "CategoryAnchor"),
+                @JsonSubTypes.Type(value = Categorization.class, name = "Categorization"),
 
         })
             

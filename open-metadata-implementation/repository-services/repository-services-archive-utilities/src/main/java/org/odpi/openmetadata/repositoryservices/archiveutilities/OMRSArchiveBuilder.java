@@ -1239,7 +1239,7 @@ public class OMRSArchiveBuilder
 
             if (duplicateElement != null)
             {
-                throw new OMRSLogicErrorException(OMRSErrorCode.DUPLICATE_INSTANCE_IN_ARCHIVE.getMessageDefinition(TypeDefCategory.ENTITY_DEF.getName(),
+                throw new OMRSLogicErrorException(OMRSErrorCode.DUPLICATE_INSTANCE_IN_ARCHIVE.getMessageDefinition(TypeDefCategory.RELATIONSHIP_DEF.getName(),
                                                                                                                    relationship.getGUID(),
                                                                                                                    duplicateElement.toString(),
                                                                                                                    relationship.toString()),

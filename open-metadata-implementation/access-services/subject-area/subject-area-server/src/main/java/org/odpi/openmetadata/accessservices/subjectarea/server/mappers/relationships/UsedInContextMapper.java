@@ -133,7 +133,7 @@ public class UsedInContextMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), USED_IN_CONTEXT).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return USED_IN_CONTEXT;
     }
     @Override

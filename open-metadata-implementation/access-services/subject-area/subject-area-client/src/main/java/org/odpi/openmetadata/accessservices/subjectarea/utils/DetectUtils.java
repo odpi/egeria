@@ -422,9 +422,9 @@ public class DetectUtils {
         );
     }
 
-    public static TermHASARelationship detectAndReturnTermHASARelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
+    public static Hasa detectAndReturnTermHASARelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
     {
-        TermHASARelationship termHASARelationship = null;
+        Hasa termHASARelationship = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermHASARelationship)) {
             TermHASARelationshipResponse termHASARelationshipResponse = (TermHASARelationshipResponse)restResponse;
             termHASARelationship = termHASARelationshipResponse.getTermHASARelationship();
@@ -524,9 +524,9 @@ public class DetectUtils {
         }
         return replacementTerm;
     }
-    public static TermTYPEDBYRelationship detectAndReturnTermTYPEDBYRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
+    public static TypedBy detectAndReturnTermTYPEDBYRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
     {
-        TermTYPEDBYRelationship termTYPEDBYRelationship = null;
+        TypedBy termTYPEDBYRelationship = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermTYPEDBYRelationship)) {
             TermTYPEDBYRelationshipResponse termTYPEDBYRelationshipResponse = (TermTYPEDBYRelationshipResponse) restResponse;
             termTYPEDBYRelationship = termTYPEDBYRelationshipResponse.getTermTYPEDBYRelationship();
@@ -535,9 +535,9 @@ public class DetectUtils {
         }
         return termTYPEDBYRelationship;
     }
-    public static ISARelationship detectAndReturnISARelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
+    public static Isa detectAndReturnISARelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
     {
-        ISARelationship isa = null;
+        Isa isa = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermISARelationship)) {
             TermISARelationshipResponse isaResponse = (TermISARelationshipResponse)restResponse;
             isa = isaResponse.getTermISARelationship();
@@ -546,9 +546,9 @@ public class DetectUtils {
         }
         return isa;
     }
-    public static TermISATypeOFRelationship detectAndReturnTermISATypeOFRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
+    public static IsaTypeOf detectAndReturnTermISATypeOFRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
     {
-        TermISATypeOFRelationship termISATypeOFRelationship = null;
+        IsaTypeOf termISATypeOFRelationship = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermISATYPEOFRelationship)) {
             TermISATYPEOFRelationshipResponse TermISATypeOFRelationshipResponse = (TermISATYPEOFRelationshipResponse)restResponse;
             termISATypeOFRelationship = TermISATypeOFRelationshipResponse.getTermISATYPEOFRelationship();
@@ -569,8 +569,8 @@ public class DetectUtils {
         return semanticAssignment;
     }
 
-    public static TermCategorizationRelationship detectAndReturnTermCategorizationRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
-        TermCategorizationRelationship termCategorizationRelationship = null;
+    public static Categorization detectAndReturnTermCategorizationRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        Categorization termCategorizationRelationship = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermCategorizationRelationship)) {
             TermCategorizationRelationshipResponse relationshipResponse = (TermCategorizationRelationshipResponse) restResponse;
             termCategorizationRelationship= relationshipResponse.getTermCategorization();
@@ -580,8 +580,8 @@ public class DetectUtils {
         return termCategorizationRelationship;
     }
 
-    public static TermAnchorRelationship detectAndReturnTermAnchorRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
-        TermAnchorRelationship termAnchorRelationship = null;
+    public static TermAnchor detectAndReturnTermAnchorRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        TermAnchor termAnchorRelationship = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermAnchorRelationship)) {
             TermAnchorRelationshipResponse relationshipResponse = (TermAnchorRelationshipResponse) restResponse;
             termAnchorRelationship= relationshipResponse.getTermAnchorRelationship();
@@ -591,8 +591,8 @@ public class DetectUtils {
         return termAnchorRelationship;
     }
 
-    public static CategoryAnchorRelationship detectAndReturnCategoryAnchorRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
-        CategoryAnchorRelationship categoryAnchorRelationship = null;
+    public static CategoryAnchor detectAndReturnCategoryAnchorRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        CategoryAnchor categoryAnchorRelationship = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.CategoryAnchorRelationship)) {
             CategoryAnchorRelationshipResponse relationshipResponse = (CategoryAnchorRelationshipResponse) restResponse;
             categoryAnchorRelationship= relationshipResponse.getCategoryAnchorRelationship();
@@ -601,8 +601,8 @@ public class DetectUtils {
         }
         return categoryAnchorRelationship;
     }
-    public static ProjectScopeRelationship detectAndReturnProjectScope(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
-        ProjectScopeRelationship projectScopeRelationship = null;
+    public static ProjectScope detectAndReturnProjectScope(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        ProjectScope projectScopeRelationship = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.ProjectScopeRelationship)) {
             ProjectScopeRelationshipResponse relationshipResponse = (ProjectScopeRelationshipResponse) restResponse;
             projectScopeRelationship= relationshipResponse.getProjectScope();

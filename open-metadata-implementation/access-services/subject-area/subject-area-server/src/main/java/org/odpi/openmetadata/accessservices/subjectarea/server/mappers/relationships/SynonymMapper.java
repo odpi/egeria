@@ -141,7 +141,7 @@ public class SynonymMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), SYNONYM).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  SYNONYM;
     }
     @Override
