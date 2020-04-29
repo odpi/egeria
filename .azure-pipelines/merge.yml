@@ -104,7 +104,6 @@ stages:
               artifactoryService: ODPiArtifactory
               buildName: 'Egeria'
           - publish: target
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
             artifact: target-$(Build.BuildNumber)
             condition: always()
             # Take this extra step for non-master builds and publish artifact to pipelines
