@@ -4069,17 +4069,23 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         for (ClassificationCondition condition : conditions)
         {
             String classificationName = condition.getName();
-            boolean isClassified = verifyEntityIsClassified(classificationName, entity);
-            SearchProperties properties = condition.getMatchProperties();
-            boolean classificationMatches = false;
-            for (Classification classification : classifications)
+            if (classificationName != null)
             {
-                if (classificationName.equals(classification.getName()))
+                // Only attempt to match if a classification name has been provided: if not, we cannot match against
+                // the requested classification (as no definition of a classification has been provided that we should
+                // attempt to match against)
+                boolean isClassified = verifyEntityIsClassified(classificationName, entity);
+                SearchProperties properties = condition.getMatchProperties();
+                boolean classificationMatches = false;
+                for (Classification classification : classifications)
                 {
-                    classificationMatches = verifyMatchingInstancePropertyValues(properties, entity, classification.getProperties());
+                    if (classificationName.equals(classification.getName()))
+                    {
+                        classificationMatches = verifyMatchingInstancePropertyValues(properties, entity, classification.getProperties());
+                    }
                 }
+                matchingClassificationCount += (isClassified && classificationMatches) ? 1 : 0;
             }
-            matchingClassificationCount += (isClassified && classificationMatches) ? 1 : 0;
         }
         // TODO: we may want to move this into the loop above to short-circuit (for performance)
         switch (matchClassifications.getMatchCriteria())
