@@ -58,6 +58,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         };
         app-header paper-icon-button {
           --paper-icon-button-ink-color: white;
+          --iron-icon-fill-color: white;
         };
         .drawer-list a {
           display: block;
