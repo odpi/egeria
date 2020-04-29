@@ -1,14 +1,16 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
+![Technical Preview](../../../open-metadata-publication/website/images/egeria-content-status-tech-preview.png)
 
 # Design Model Archives
 
 The Design Model Archives provide utilities for loading common/standard design models from third parties.
-Currently Egeria has one example:
+Currently Egeria has two examples:
 
 * [The Cloud Information Model](https://cloudinformationmodel.org) that provides an open source data model and glossary
 related to commerce activities.
-
+* [The Owl Canonical Glossary model](docs/owlcanonicalglossarymodel/README.md) that The Owl Canonical Glossary model that provides the ability to 
+create an Egeria Archive from a Canonical Glossary defined using open standards like [Owl](https://www.w3.org/OWL/). 
 
 Each model has a `writer` class that generates an [Open Metadata Archive](..)
 This can be loaded into an open metadata repository either at each server start
