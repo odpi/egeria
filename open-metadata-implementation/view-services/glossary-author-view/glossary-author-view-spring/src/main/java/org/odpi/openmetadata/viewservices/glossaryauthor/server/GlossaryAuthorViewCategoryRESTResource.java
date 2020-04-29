@@ -114,7 +114,7 @@ public class GlossaryAuthorViewCategoryRESTResource {
             @RequestParam(value = "offset", required = false) Integer offset,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-            @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
+            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
                                               ) {
         return restAPI.findCategory(serverName, userId, asOfTime, searchCriteria, offset, pageSize, sequencingOrder, sequencingProperty);
     }
@@ -148,7 +148,7 @@ public class GlossaryAuthorViewCategoryRESTResource {
             @RequestParam(value = "offset", required = false) Integer offset,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-            @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
+            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
 
                                                           ) {
         return restAPI.getCategoryRelationships(serverName,

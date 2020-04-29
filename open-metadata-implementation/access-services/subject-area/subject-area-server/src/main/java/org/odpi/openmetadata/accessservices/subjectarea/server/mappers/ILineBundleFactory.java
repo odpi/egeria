@@ -35,30 +35,30 @@ public class ILineBundleFactory
                     new AntonymMapper(omrsapiHelper),
                     bundleName,
                     "Antonym");
-        } else  if (bundleName.equals(TermCategorizationRelationship.class.getName())){
+        } else  if (bundleName.equals(Categorization.class.getName())){
             bundle = new LineBundle(
                     new TermCategorizationMapper(omrsapiHelper),
                     bundleName,
                     "TermCategorization");
-        } else if (bundleName.equals(CategoryAnchorRelationship.class.getName())){
+        } else if (bundleName.equals(CategoryAnchor.class.getName())){
             bundle = new LineBundle(
                     new CategoryAnchorMapper(omrsapiHelper),
                     bundleName,
                     "CategoryAnchor");
-        } else if (bundleName.equals(TermAnchorRelationship.class.getName())){
+        } else if (bundleName.equals(TermAnchor.class.getName())){
             bundle = new LineBundle(
                     new TermAnchorMapper(omrsapiHelper),
                     bundleName,
                     "TermAnchor");
-        } else if (bundleName.equals(TermTYPEDBYRelationship.class.getName())){
+        } else if (bundleName.equals(TypedBy.class.getName())){
             bundle = new LineBundle(
                     new TermTYPEDBYRelationshipMapper(omrsapiHelper),
                     bundleName,
-                    "TermTYPEDBYRelationship");
-        } else if (bundleName.equals(ISARelationship.class.getName())){
+                    "TypedBy");
+        } else if (bundleName.equals(Isa.class.getName())){
             bundle = new LineBundle(
                     new ISARelationshipMapper(omrsapiHelper),
-                    bundleName,"ISARelationship"
+                    bundleName,"Isa"
                     );
         } else if (bundleName.equals(PreferredTerm.class.getName())){
             bundle = new LineBundle(
@@ -80,33 +80,33 @@ public class ILineBundleFactory
                     bundleName,
                     "SemanticAssignment");
 
-        } else if (bundleName.equals(TermCategorizationRelationship.class.getName())){
+        } else if (bundleName.equals(Categorization.class.getName())){
             bundle = new LineBundle(
                     new TermCategorizationMapper(omrsapiHelper),
                     bundleName,
                     "TermCategorization");
-        } else if (bundleName.equals(TermHASARelationship.class.getName())){
+        } else if (bundleName.equals(Hasa.class.getName())){
             bundle = new LineBundle(
                     new TermHASARelationshipMapper(omrsapiHelper),
                     bundleName,
-                    "TermHASARelationship");
-        } else if (bundleName.equals(ISARelationship.class.getName())){
+                    "Hasa");
+        } else if (bundleName.equals(Isa.class.getName())){
             bundle = new LineBundle(
                     new ISARelationshipMapper(omrsapiHelper),
                     bundleName,
                     "TermISARelationship"
                     );
-        } else if (bundleName.equals(TermISATypeOFRelationship.class.getName())){
+        } else if (bundleName.equals(IsaTypeOf.class.getName())){
             bundle = new LineBundle(
                     new TermISATypeOFRelationshipMapper(omrsapiHelper),
                     bundleName,
-                    "TermISATypeOFRelationship");
+                    "IsaTypeOf");
         }    else if (bundleName.equals(Translation.class.getName())) {
             bundle = new LineBundle(
                     new TranslationMapper(omrsapiHelper),
                     bundleName,
                     "Translation");
-        }    else if (bundleName.equals(ProjectScopeRelationship.class.getName()))
+        }    else if (bundleName.equals(ProjectScope.class.getName()))
         {
             bundle = new LineBundle(
                     new ProjectScopeMapper(omrsapiHelper),

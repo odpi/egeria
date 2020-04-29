@@ -110,7 +110,7 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
                                                 @RequestParam(value = "offset", required=false) Integer offset,
                                                 @RequestParam(value = "pageSize", required=false) Integer pageSize,
                                                 @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
-                                                @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
+                                                @RequestParam(value = "sequencingProperty", required=false) String sequencingProperty
     )  {
         return restAPI.findProject(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
     }
@@ -145,7 +145,7 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
                                                             @RequestParam(value = "offset", required=false) Integer offset,
                                                             @RequestParam(value = "pageSize", required=false) Integer pageSize,
                                                             @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
-                                                            @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
+                                                            @RequestParam(value = "sequencingProperty", required=false) String sequencingProperty
     ) {
         return restAPI.getProjectRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
     }

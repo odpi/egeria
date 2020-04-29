@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermISATypeOFRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsaTypeOf;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
@@ -34,7 +34,7 @@ public class TermISATypeOFRelationshipMapper extends LineMapper
      */
     @Override
     protected void mapLineToInstanceProperties(Line line, InstanceProperties instanceProperties) {
-        TermISATypeOFRelationship termISATypeOFRelationship = (TermISATypeOFRelationship)line;
+        IsaTypeOf termISATypeOFRelationship = (IsaTypeOf)line;
         if (termISATypeOFRelationship.getDescription()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termISATypeOFRelationship.getDescription(), "description");
         }
@@ -60,7 +60,7 @@ public class TermISATypeOFRelationshipMapper extends LineMapper
     @Override
     protected boolean mapPrimitiveToLine(Line line, String propertyName, Object value) {
         String stringValue = (String) value;
-       TermISATypeOFRelationship termISATypeOFRelationship = (TermISATypeOFRelationship) line;
+       IsaTypeOf termISATypeOFRelationship = (IsaTypeOf) line;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
             termISATypeOFRelationship.setDescription(stringValue);
@@ -79,7 +79,7 @@ public class TermISATypeOFRelationshipMapper extends LineMapper
     @Override
     protected boolean mapEnumToLine(Line line, String propertyName, EnumPropertyValue enumPropertyValue)
     {
-        TermISATypeOFRelationship termISATypeOFRelationship = (TermISATypeOFRelationship) line;
+        IsaTypeOf termISATypeOFRelationship = (IsaTypeOf) line;
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -98,7 +98,7 @@ public class TermISATypeOFRelationshipMapper extends LineMapper
     @Override
     protected String getProxy1Guid(Line line)
     {
-        TermISATypeOFRelationship termISATypeOFRelationship = (TermISATypeOFRelationship) line;
+        IsaTypeOf termISATypeOFRelationship = (IsaTypeOf) line;
         return termISATypeOFRelationship.getSuperTypeGuid();
     }
 
@@ -111,7 +111,7 @@ public class TermISATypeOFRelationshipMapper extends LineMapper
     @Override
     protected String getProxy2Guid(Line line)
     {
-        TermISATypeOFRelationship termISATypeOFRelationship = (TermISATypeOFRelationship) line;
+        IsaTypeOf termISATypeOFRelationship = (IsaTypeOf) line;
         return termISATypeOFRelationship.getSubTypeGuid();
     }
 
@@ -126,21 +126,21 @@ public class TermISATypeOFRelationshipMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), TERM_ISA_TYPE_OF_RELATIONSHIP).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  TERM_ISA_TYPE_OF_RELATIONSHIP;
     }
     @Override
     protected Line getLineInstance() {
-        return new TermISATypeOFRelationship();
+        return new IsaTypeOf();
     }
     @Override
     protected void setEnd1GuidInLine(Line line, String guid){
-        TermISATypeOFRelationship termISATypeOFRelationship = (TermISATypeOFRelationship)line;
+        IsaTypeOf termISATypeOFRelationship = (IsaTypeOf)line;
         termISATypeOFRelationship.setSuperTypeGuid(guid);
     }
     @Override
     protected void setEnd2GuidInLine(Line line, String guid) {
-        TermISATypeOFRelationship termISATypeOFRelationship = (TermISATypeOFRelationship)line;
+        IsaTypeOf termISATypeOFRelationship = (IsaTypeOf)line;
         termISATypeOFRelationship.setSubTypeGuid(guid);
     }
 }

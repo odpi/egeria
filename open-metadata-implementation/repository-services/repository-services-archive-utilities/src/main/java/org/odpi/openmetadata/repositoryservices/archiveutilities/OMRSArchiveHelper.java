@@ -1363,7 +1363,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
     {
         Classification  classification = new Classification();
         InstanceType    type = this.getInstanceType(typeName);
-
+        classification.setName(typeName);
         this.setInstanceAuditHeader(classification, type, status);
         classification.setProperties(properties);
 

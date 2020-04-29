@@ -133,7 +133,7 @@ public class ReplacementTermMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), REPLACEMENT_TERM).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  REPLACEMENT_TERM;
     }
     @Override

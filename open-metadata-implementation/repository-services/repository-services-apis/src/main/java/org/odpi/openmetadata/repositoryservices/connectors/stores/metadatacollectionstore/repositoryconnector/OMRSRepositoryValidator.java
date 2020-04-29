@@ -4,9 +4,12 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -416,6 +419,25 @@ public interface OMRSRepositoryValidator
                                   String guidParameterName,
                                   String guid,
                                   String methodName) throws TypeErrorException;
+
+
+    /**
+     * Validate that the types and subtypes (if specified) fit each other.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param guidParameterName  name of the parameter that passed the guid
+     * @param guid  unique identifier for a type passed on the request
+     * @param subtypeParameterName  name of the parameter that passed a list of subtype guids
+     * @param subtypeGuids  list of unique identifiers for the subtypes passed on the request
+     * @param methodName  method receiving the call
+     * @throws TypeErrorException  unknown type guid, or subtype guids that are not subtypes of the provided guid
+     */
+    void validateOptionalTypeGUIDs(String sourceName,
+                                   String guidParameterName,
+                                   String guid,
+                                   String subtypeParameterName,
+                                   List<String> subtypeGuids,
+                                   String methodName) throws TypeErrorException;
 
 
     /**
@@ -880,6 +902,36 @@ public interface OMRSRepositoryValidator
 
 
     /**
+     * Validate the property-based search conditions.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param parameterName  name of the parameter that passed the property-based conditions
+     * @param matchProperties  property-based conditions
+     * @param methodName  method receiving the call
+     * @throws InvalidParameterException  property-based conditions are invalid
+     */
+    void validateSearchProperties(String sourceName,
+                                  String parameterName,
+                                  SearchProperties matchProperties,
+                                  String methodName) throws InvalidParameterException;
+
+
+    /**
+     * Validate the classification-based search conditions.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param parameterName  name of the parameter that passed the classification-based conditions
+     * @param matchClassifications  classification-based conditions
+     * @param methodName  method receiving the call
+     * @throws InvalidParameterException  classification-based conditions are invalid
+     */
+    void validateSearchClassifications(String sourceName,
+                                       String parameterName,
+                                       SearchClassifications matchClassifications,
+                                       String methodName) throws InvalidParameterException;
+
+
+    /**
      * Validate that the properties for a metadata instance match its TypeDef.
      *
      * @param sourceName  source of the request (used for logging)
@@ -945,6 +997,23 @@ public interface OMRSRepositoryValidator
      */
     boolean verifyInstanceType(String         sourceName,
                                String         instanceTypeGUID,
+                               InstanceHeader instance);
+
+
+    /**
+     * Verify whether the instance passed to this method is of the type indicated by the type guid and restricted by
+     * the list of subtype guids.
+     * A null type guid matches all instances (ie result is true).  A null instance returns false.
+     *
+     * @param sourceName  name of caller.
+     * @param instanceTypeGUID  unique identifier of the type (or null).
+     * @param subtypeGUIDs  list of unique identifiers of the subtypes to include (or null).
+     * @param instance  instance to test.
+     * @return boolean
+     */
+    boolean verifyInstanceType(String         sourceName,
+                               String         instanceTypeGUID,
+                               List<String>   subtypeGUIDs,
                                InstanceHeader instance);
 
 
@@ -1290,6 +1359,41 @@ public interface OMRSRepositoryValidator
                                                  InstanceAuditHeader instanceHeader,
                                                  InstanceProperties  instanceProperties,
                                                  MatchCriteria       matchCriteria) throws InvalidParameterException;
+
+
+    /**
+     * Retrieve a numeric representation of the provided value, or null if it cannot be converted to a number.
+     *
+     * @param value to convert
+     * @return BigDecimal
+     */
+    BigDecimal getNumericRepresentation(InstancePropertyValue value);
+
+
+    /**
+     * Determine if the instance properties match the property-based conditions.
+     *
+     * @param matchProperties  the property-based conditions to match.
+     * @param instanceHeader the header of the instance.
+     * @param instanceProperties  the properties from the instance.
+     * @return boolean flag indicating whether the two sets of properties match
+     * @throws InvalidParameterException invalid search criteria
+     */
+    boolean verifyMatchingInstancePropertyValues(SearchProperties    matchProperties,
+                                                 InstanceAuditHeader instanceHeader,
+                                                 InstanceProperties  instanceProperties) throws InvalidParameterException;
+
+
+    /**
+     * Determine if the instance properties match the classification-based conditions.
+     *
+     * @param matchClassifications  the classification-based conditions to match.
+     * @param entity  the entity instance.
+     * @return boolean flag indicating whether the classifications match
+     * @throws InvalidParameterException invalid search criteria
+     */
+    boolean verifyMatchingClassifications(SearchClassifications matchClassifications,
+                                          EntitySummary         entity) throws InvalidParameterException;
 
 
     /**

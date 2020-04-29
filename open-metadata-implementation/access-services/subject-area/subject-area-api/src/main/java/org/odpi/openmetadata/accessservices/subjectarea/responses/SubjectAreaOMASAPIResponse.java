@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.LibraryTermReference;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScopeRelationship;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;

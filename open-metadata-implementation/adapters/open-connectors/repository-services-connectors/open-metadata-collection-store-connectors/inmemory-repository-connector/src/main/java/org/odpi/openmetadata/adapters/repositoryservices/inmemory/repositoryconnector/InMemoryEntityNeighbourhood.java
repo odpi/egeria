@@ -176,20 +176,22 @@ class InMemoryEntityNeighbourhood
             }
             if (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship))
             {
-                if (limitResultsByClassification == null || limitResultsByClassification != null && (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity1) && (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity2))))
+                if (limitResultsByClassification == null ||
+                    limitResultsByClassification != null &&
+                    (includeEntityIfClassifiedAppropriately(limitResultsByClassification, entity1) &&
+                    (includeEntityIfClassifiedAppropriately(limitResultsByClassification, entity2))))
                 {
                     if (entityTypeGUIDs != null) {
-
                         if (graphEntities.contains(relationshipEnd1Guid)) {
                             validEntity1 = true;
                         }
                         else {
                             /*
                              * If the entity is already included there is no need to test the type of this end entity.
-                             * By omitting the test there is no need to include the root entitiy type GUID in the
-                             * entityTypeGUIDs filtering list. This is beneficial because , although it could be included
-                             * and the relationship validation would work correctly, if the rot type is high level (in
-                             * hierarchy terms) inclsuion of its tyoe in the filter list will admit all other entities
+                             * By omitting the test there is no need to include the root entity type GUID in the
+                             * entityTypeGUIDs filtering list. This is beneficial because, although it could be included
+                             * and the relationship validation would work correctly, if the root type is a higher level (in
+                             * hierarchy terms), inclusion of its type in the filter list will admit all other entities
                              * of that type or any of its subtypes. A finer-grain graph can be achieved by not
                              * including the root type and instead not validating the types of entities already visited
                              * and included in the graph.
@@ -215,9 +217,9 @@ class InMemoryEntityNeighbourhood
                             /*
                              * If the entity is already included there is no need to test the type of this end entity.
                              * By omitting the test there is no need to include the root entity type GUID in the
-                             * entityTypeGUIDs filtering list. This is beneficial because , although it could be included
-                             * and the relationship validation would work correctly, if the rot type is high level (in
-                             * hierarchy terms) inclsuion of its tyoe in the filter list will admit all other entities
+                             * entityTypeGUIDs filtering list. This is beneficial because, although it could be included
+                             * and the relationship validation would work correctly, if the root type is a higher level (in
+                             * hierarchy terms) inclusion of its type in the filter list will admit all other entities
                              * of that type or any of its subtypes. A finer-grain graph can be achieved by not
                              * including the root type and instead not validating the types of entities already visited
                              * and included in the graph.
@@ -253,6 +255,25 @@ class InMemoryEntityNeighbourhood
     }
 
     /**
+     * Check whether the supplied entities have one or more of the required classifications.
+     * The root entity is always always included, irrespective of whether it matches the classifications.
+     * @param limitingClassifications classification names that limit the entity
+     * @param entity entity to check for inclusion against the classification list.
+     * @return whether to include this entity
+     */
+    private boolean includeEntityIfClassifiedAppropriately(List<String> limitingClassifications, EntityDetail entity)
+        {
+       boolean  includeEntity = true;
+
+       if (!entity.getGUID().equals(rootEntityGUID))
+       {
+           // returns true if entity is classified appropriately
+           includeEntity =repositoryValidator.verifyEntityIsClassified(limitingClassifications, entity);
+       }
+       return includeEntity;
+    }
+
+    /**
      * Validate the relationship proxy types against the entity types that are scoping the graph
      * @param relationship to validate
      * @return flag indicating whether the relationships proxy types are includes
@@ -266,9 +287,9 @@ class InMemoryEntityNeighbourhood
          * If we have entityType Guids specified then they will scope this relationship. So we need to check that the relationship
          * entity types of the ends are in scope
          *
-         * This check is relaced for an entity that has already been added to the graph. This is slightly more efficient, but
-         * more importantly it meas the root entity is always included and entity type filters are only evaluated against the
-         * other (non-root) neigbor entities.
+         * This check is replaced for an entity that has already been added to the graph. This is slightly more efficient, but
+         * more importantly it means the root entity is always included and entity type filters are only evaluated against the
+         * other (non-root) neighbour entities.
          */
 
         boolean found1 = false;
@@ -388,7 +409,7 @@ class InMemoryEntityNeighbourhood
                                 graphEntities.add(end1Guid);
                                 graphEntities.add(end2Guid);
                                 /*
-                                 * if we have not see the other end then we need to traverse to it.
+                                 * if we have not seen the other end then we need to traverse to it.
                                  */
                                 if (end1Guid.equals(entityGuid) && !visitedEntities.contains(end2Guid)) {
                                     nextEntitySet.add(end2Guid);
