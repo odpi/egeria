@@ -388,6 +388,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 int sleepTime = Integer.parseInt(connectionProperties.getProperty("bring.up.sleepTime"));
 
                 while (count < napCount) {
+
+                    auditLog.logMessage("waitForBrokers", KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_CONNECTION_RETRY.getMessageDefinition(String.valueOf(count+1)));
+
                     if (getRunningBrokers(connectionProperties)) {
                         //we were returned a list of running brokers
                         //so end retry loop
