@@ -16,6 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DatabaseSource extends Source {
 
+    private static final long     serialVersionUID = 1L;
+
     private String name;
     private EndpointSource endpointSource;
 

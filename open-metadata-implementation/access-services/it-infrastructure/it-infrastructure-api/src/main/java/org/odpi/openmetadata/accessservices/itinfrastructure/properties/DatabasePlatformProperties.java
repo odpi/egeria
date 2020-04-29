@@ -1,29 +1,27 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataplatform.properties;
 
+package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.io.Serializable;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
+/**
+ * DatabasePlatformProperties is a class for representing a database platform.
+ */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class DataPlatformProperties extends SoftwareServerCapabilitiesProperties
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class DatabasePlatformProperties extends SoftwareServerCapabilitiesProperties
 {
-    private static final long serialVersionUID = 1L;
+    private static final long    serialVersionUID = 1L;
 
     /**
      * Default constructor
      */
-    public DataPlatformProperties()
+    public DatabasePlatformProperties()
     {
         super();
     }
@@ -34,7 +32,7 @@ public class DataPlatformProperties extends SoftwareServerCapabilitiesProperties
      *
      * @param template object to copy
      */
-    public DataPlatformProperties(DataPlatformProperties template)
+    public DatabasePlatformProperties(DatabasePlatformProperties template)
     {
         super(template);
     }
@@ -48,7 +46,7 @@ public class DataPlatformProperties extends SoftwareServerCapabilitiesProperties
     @Override
     public String toString()
     {
-        return "DataPlatformProperties{" +
+        return "DatabasePlatformProperties{" +
                 "displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", typeDescription='" + getTypeDescription() + '\'' +
@@ -59,7 +57,6 @@ public class DataPlatformProperties extends SoftwareServerCapabilitiesProperties
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", meanings=" + getMeanings() +
                 ", classifications=" + getClassifications() +
-                ", vendorProperties=" + getVendorProperties() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';

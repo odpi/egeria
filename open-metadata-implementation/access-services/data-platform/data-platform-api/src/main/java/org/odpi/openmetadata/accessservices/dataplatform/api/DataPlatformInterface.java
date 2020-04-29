@@ -1,49 +1,32 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataplatform;
+package org.odpi.openmetadata.accessservices.dataplatform.api;
 
-import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 /**
- * DataPlatformInterface provides the interface for managing information about data assets hosted on a data platform.
- * The DataInfrastructureInterface provides methods for describing the infrastructure of the data platform.
+ * DataPlatformInterface provides the interface for retrieving the identity of an external data platform.
+ * It is used when the data platform itself is able to call the Data Platform OMAS directly.
+ * The definition of the external data platform is created using the IT Infrastructure OMAS.
  */
-public interface DataPlatformInterface {
-
+public interface DataPlatformInterface
+{
     /**
-     * Create the software server capability entity for registering data platforms as external source.
+     * Retrieve the unique identifier of the external data platform.
      *
-     * @param userId                   the name of the calling user
-     * @param softwareServerCapability the software server capability bean
-     * @return unique identifier of the server in the repository
+     * @param userId calling user
+     * @param qualifiedName unique name of the integration daemon
+     *
+     * @return unique identifier of the integration daemon's software server capability
+     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    GUIDResponse createExternalDataPlatform(String userId, SoftwareServerCapability softwareServerCapability) throws
-            InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException;
-
-
-    /**
-     * Create deployed database schema asset.
-     *
-     * @param userId                 the user id
-     * @param deployedDatabaseSchema the deployed database schema
-     * @return the string
-     * @throws InvalidParameterException  the invalid parameter exception
-     * @throws UserNotAuthorizedException the user not authorized exception
-     * @throws PropertyServerException    the property server exception
-     */
-    GUIDResponse createDeployedDatabaseSchema(String userId, DeployedDatabaseSchema deployedDatabaseSchema)throws
-            InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException;
-
+    String  getExternalDataPlatformGUID(String  userId,
+                                        String  qualifiedName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 }

@@ -1,29 +1,29 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataplatform.properties;
-
+package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
+/**
+ * DatabaseServerProperties defines the server that supports one of more databases.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataPlatformProperties extends SoftwareServerCapabilitiesProperties
+public class DatabaseServerProperties extends SoftwareServerProperties
 {
-    private static final long serialVersionUID = 1L;
+    private static final long    serialVersionUID = 1L;
 
     /**
      * Default constructor
      */
-    public DataPlatformProperties()
+    public DatabaseServerProperties()
     {
         super();
     }
@@ -34,7 +34,7 @@ public class DataPlatformProperties extends SoftwareServerCapabilitiesProperties
      *
      * @param template object to copy
      */
-    public DataPlatformProperties(DataPlatformProperties template)
+    public DatabaseServerProperties(DatabaseServerProperties template)
     {
         super(template);
     }
@@ -48,18 +48,22 @@ public class DataPlatformProperties extends SoftwareServerCapabilitiesProperties
     @Override
     public String toString()
     {
-        return "DataPlatformProperties{" +
-                "displayName='" + getDisplayName() + '\'' +
+        return "DatabaseServerProperties{" +
+                "softwareServerType='" + getSoftwareServerType() + '\'' +
+                ", softwareServerVersion='" + getSoftwareServerVersion() + '\'' +
+                ", softwareServerSource='" + getSoftwareServerSource() + '\'' +
+                ", softwareServerUserId='" + getSoftwareServerUserId() + '\'' +
+                ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                ", version='" + getVersion() + '\'' +
-                ", patchLevel='" + getPatchLevel() + '\'' +
-                ", source='" + getSource() + '\'' +
+                ", owner='" + getOwner() + '\'' +
+                ", ownerCategory=" + getOwnerCategory() +
+                ", zoneMembership=" + getZoneMembership() +
+                ", origin=" + getOrigin() +
+                ", latestChange='" + getLatestChange() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", meanings=" + getMeanings() +
                 ", classifications=" + getClassifications() +
-                ", vendorProperties=" + getVendorProperties() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';

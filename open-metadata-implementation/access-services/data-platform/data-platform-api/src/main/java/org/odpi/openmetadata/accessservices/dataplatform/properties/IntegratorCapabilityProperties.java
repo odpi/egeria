@@ -1,29 +1,28 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.accessservices.dataplatform.properties;
 
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.io.Serializable;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
+/**
+ * IntegratorCapabilityProperties is a class for representing a integration daemon is managing the
+ * metadata for one or more data platforms.
+ */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class DataPlatformProperties extends SoftwareServerCapabilitiesProperties
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class IntegratorCapabilityProperties extends SoftwareServerCapabilitiesProperties
 {
-    private static final long serialVersionUID = 1L;
+    private static final long    serialVersionUID = 1L;
 
     /**
      * Default constructor
      */
-    public DataPlatformProperties()
+    public IntegratorCapabilityProperties()
     {
         super();
     }
@@ -34,7 +33,7 @@ public class DataPlatformProperties extends SoftwareServerCapabilitiesProperties
      *
      * @param template object to copy
      */
-    public DataPlatformProperties(DataPlatformProperties template)
+    public IntegratorCapabilityProperties(IntegratorCapabilityProperties template)
     {
         super(template);
     }
@@ -48,7 +47,7 @@ public class DataPlatformProperties extends SoftwareServerCapabilitiesProperties
     @Override
     public String toString()
     {
-        return "DataPlatformProperties{" +
+        return "IntegratorCapabilityProperties{" +
                 "displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", typeDescription='" + getTypeDescription() + '\'' +
