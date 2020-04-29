@@ -136,9 +136,8 @@ public class FileSystemHandler
 
                 if (startingToken != endingToken)
                 {
-                    result = new ArrayList<>();
 
-                    result.addAll(Arrays.asList(tokens).subList(startingToken, endingToken));
+                    result = new ArrayList<>(Arrays.asList(tokens).subList(startingToken, endingToken));
                 }
             }
         }

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.odpi.openmetadata.accessservices.assetowner.mappers.FileSystemMapper;
 import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.ReferenceableConverter;
@@ -74,7 +75,7 @@ public class FileSystemConverter extends ReferenceableConverter
             if (instanceProperties != null)
             {
                 bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName,
-                                                                            FileSystemMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                            ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                             instanceProperties,
                                                                             methodName));
                 bean.setDisplayName(repositoryHelper.removeStringProperty(serviceName,
