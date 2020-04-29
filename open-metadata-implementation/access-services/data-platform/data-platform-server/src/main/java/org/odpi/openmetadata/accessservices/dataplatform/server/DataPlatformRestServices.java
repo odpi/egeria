@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.dataplatform.server;
 
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.DeployedDatabaseSchemaAssetHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.RegistrationHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatformProperties;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
@@ -59,9 +59,9 @@ public class DataPlatformRestServices {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
                 return response;
             }
-            RegistrationHandler handler = dataPlatformInstanceHandler.getRegistrationHandler(userId, serverName, methodName);
-            SoftwareServerCapability softwareServerCapability = dataPlatformRegistrationRequestBody.getSoftwareServerCapability();
-            response.setGUID(handler.createSoftwareServerCapability(softwareServerCapability));
+            RegistrationHandler    handler                = dataPlatformInstanceHandler.getRegistrationHandler(userId, serverName, methodName);
+            DataPlatformProperties dataPlatformProperties = dataPlatformRegistrationRequestBody.getDataPlatformProperties();
+            response.setGUID(handler.createSoftwareServerCapability(dataPlatformProperties));
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -92,7 +92,7 @@ public class DataPlatformRestServices {
 
         try {
             RegistrationHandler handler = dataPlatformInstanceHandler.getRegistrationHandler(userId, serverName, methodName);
-            response.setSoftwareServerCapability(handler.getSoftwareServerCapabilityByQualifiedName(userId, qualifiedName));
+            response.setDataPlatformProperties(handler.getSoftwareServerCapabilityByQualifiedName(userId, qualifiedName));
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
