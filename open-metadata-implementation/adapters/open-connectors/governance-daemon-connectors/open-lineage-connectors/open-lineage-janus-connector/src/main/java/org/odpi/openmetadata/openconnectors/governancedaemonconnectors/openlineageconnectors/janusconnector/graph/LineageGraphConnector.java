@@ -112,7 +112,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             guidList.forEach(process -> findInputColumns(g,process));
             g.tx().commit();
         }catch (Exception e){
-            log.error("Something went wrong when trying to map a process from bufferGraph to the mainGraph. The error is {}",e);
+            log.error("Something went wrong when trying to map a process from bufferGraph to the mainGraph. The error is",e);
             g.tx().rollback();
         }
     }
@@ -146,7 +146,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 .in(LINEAGE_MAPPING)
                 .toList();
 
-        Vertex vertexToStart = null;
+        Vertex vertexToStart;
         if (schemaElementVertex != null) {
             Vertex columnOut = null;
             vertexToStart = getProcessForTheSchemaElement(g,schemaElementVertex,process);
@@ -206,8 +206,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         final String processName = process.value(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME);
 
         //check if subprocess node exist
-        Iterator<Vertex> t = g.V(columnIn.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).has("processGuid",processGuid).inV().has(PROPERTY_KEY_ENTITY_GUID,columnOut.property(PROPERTY_KEY_ENTITY_GUID).value());
-
+        Iterator<Vertex> t = g.V(columnIn.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).inV().has("processGuid",processGuid);
         if(!t.hasNext()) {
             Vertex subProcess = g.addV(NODE_LABEL_SUB_PROCESS)
                     .property(PROPERTY_KEY_ENTITY_NODE_ID, UUID.randomUUID().toString())
@@ -357,7 +356,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         }
         catch (Exception e){
             g.tx().rollback();
-            log.debug("Something went wrong when trying to create a relationship on the graph check the exception: {}",e);
+            log.debug("Something went wrong when trying to create a relationship on the graph check the exception: ",e);
 
         }
 
@@ -470,7 +469,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 //            mainGraphMapper.updateVertex(vertex,properties);
         }
         catch (Exception e){
-            log.error("An exception happened during update of the properties with exception: {}",e);
+            log.error("An exception happened during update of the properties with exception: ",e);
             g.tx().rollback();
         }
     }
@@ -512,7 +511,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             g.tx().commit();
         }
         catch (Exception e){
-            log.debug("An exception happened during update of the properties with error: {}",e);
+            log.debug("An exception happened during update of the properties with error: ",e);
             g.tx().rollback();
         }
 
@@ -587,7 +586,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
         GraphTraversalSource g = lineageGraph.traversal();
         try {
-            g.V().has(PROPERTY_KEY_ENTITY_NODE_ID, guid).next();
+            g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         } catch (NoSuchElementException e) {
             log.debug("Requested element was not found", e);
             OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.NODE_NOT_FOUND;
@@ -606,18 +605,19 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
         LineageVerticesAndEdges lineageVerticesAndEdges = null;
 
+        String[] edgeLabelsArray = edgeLabels.toArray(new String[0]);
         switch (scope) {
             case SOURCE_AND_DESTINATION:
-                lineageVerticesAndEdges = helper.sourceAndDestination(guid, edgeLabels.toArray(new String[edgeLabels.size()]));
+                lineageVerticesAndEdges = helper.sourceAndDestination(guid, edgeLabelsArray);
                 break;
             case END_TO_END:
-                lineageVerticesAndEdges = helper.endToEnd(guid, edgeLabels.toArray(new String[edgeLabels.size()]));
+                lineageVerticesAndEdges = helper.endToEnd(guid, edgeLabelsArray);
                 break;
             case ULTIMATE_SOURCE:
-                lineageVerticesAndEdges = helper.ultimateSource(guid, edgeLabels.toArray(new String[edgeLabels.size()]));
+                lineageVerticesAndEdges = helper.ultimateSource(guid, edgeLabelsArray);
                 break;
             case ULTIMATE_DESTINATION:
-                lineageVerticesAndEdges = helper.ultimateDestination(guid, edgeLabels.toArray(new String[edgeLabels.size()]));
+                lineageVerticesAndEdges = helper.ultimateDestination(guid, edgeLabelsArray);
                 break;
             case GLOSSARY:
                 lineageVerticesAndEdges = helper.glossary(guid);
