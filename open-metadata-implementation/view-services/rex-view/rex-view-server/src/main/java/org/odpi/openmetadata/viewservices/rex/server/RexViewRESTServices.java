@@ -12,6 +12,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityDetailResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityRequestBody;
+import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipRequestBody;
+import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexSearchBody;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexSearchResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexTypesRequestBody;
@@ -156,6 +158,60 @@ public class RexViewRESTServices {
         return response;
     }
 
+    /**
+     * Get relationship by GUID
+     *
+     * @param serverName    name of the local view server.
+     * @param userId        userId under which the request is performed
+     * @param requestBody   request body
+     * @return the created category.
+     *
+     * <ul>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.
+     * </ul>
+     */
+
+    public RexRelationshipResponse getRelationship(String serverName, String userId, RexRelationshipRequestBody requestBody)
+    {
+
+        final String methodName = "getRelationship";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RexRelationshipResponse response = new RexRelationshipResponse();
+
+        AuditLog auditLog = null;
+
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null) {
+                RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+
+                response.setExpandedRelationship(handler.getRelationship(userId,
+                                                                         requestBody.getServerName(),
+                                                                         requestBody.getServerURLRoot(),
+                                                                         requestBody.getEnterpriseOption(),
+                                                                         requestBody.getRelationshipGUID(),
+                                                                         methodName));
+            }
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        } catch (Throwable error) {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
 
     /**
      * Find entities using searchText
@@ -220,6 +276,7 @@ public class RexViewRESTServices {
 
         return response;
     }
+
 
 
 }

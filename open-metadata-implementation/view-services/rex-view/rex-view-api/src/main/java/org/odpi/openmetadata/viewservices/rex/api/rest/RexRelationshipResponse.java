@@ -7,41 +7,80 @@ package org.odpi.openmetadata.viewservices.rex.api.rest;
 
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedRelationship;
 
-public class RexRelationshipResponse {
+import java.util.Arrays;
 
-    private Integer       httpStatusCode;
-    private String        exceptionText;
+public class RexRelationshipResponse extends RexViewOMVSAPIResponse {
+
     private RexExpandedRelationship expandedRelationship;
 
-    public RexRelationshipResponse(Integer statusCode, String exceptionText, RexExpandedRelationship expandedRelationship) {
+    /**
+     * Default constructor
+     */
+    public RexRelationshipResponse()
+    {
+        super();
+    }
 
-        this.httpStatusCode       = statusCode;
-        this.exceptionText        = exceptionText;
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public RexRelationshipResponse(RexRelationshipResponse template)
+    {
+        super(template);
+
+        if (template != null) {
+            this.expandedRelationship = template.getExpandedRelationship();
+        }
+    }
+
+
+    /**
+     * Return the expandedRelationship result.
+     *
+     * @return bean
+     */
+    public RexExpandedRelationship getExpandedRelationship()
+    {
+        return expandedRelationship;
+    }
+
+
+    /**
+     * Set the expandedRelationship result.
+     *
+     * @param expandedRelationship - bean
+     */
+    public void setExpandedRelationship(RexExpandedRelationship expandedRelationship)
+    {
         this.expandedRelationship = expandedRelationship;
-
     }
 
-    public Integer getHttpStatusCode() {
-        return this.httpStatusCode;
-    }
 
-    public String getExceptionText() {
-        return this.exceptionText;
-    }
-
-    public RexExpandedRelationship getExpandedRelationship() {
-        return this.expandedRelationship;
-    }
-
-    public void setHttpStatusCode(Integer httpStatusCode)
+    /**
+     * JSON-style toString
+     *
+     * @return return string containing the property names and values
+     */
+    @Override
+    public String toString()
     {
-        this.httpStatusCode = httpStatusCode;
+        return "RexRelationshipResponse{" +
+                "expandedRelationship=" + expandedRelationship +
+                ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                ", actionDescription='" + getActionDescription() + '\'' +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
+                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
+                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
+                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
+                ", exceptionProperties=" + getExceptionProperties() +
+                '}';
     }
 
-    public void setExceptionText(String exceptionText)
-    {
-        this.exceptionText = exceptionText;
-    }
 
-    public void setExpandedRelationship(RexExpandedRelationship expandedRelationship) { this.expandedRelationship = expandedRelationship;  }
+
 }

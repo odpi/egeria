@@ -5,6 +5,8 @@ package org.odpi.openmetadata.viewservices.rex.server;
 
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityDetailResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityRequestBody;
+import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipRequestBody;
+import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexSearchBody;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexSearchResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexTypesRequestBody;
@@ -78,6 +80,30 @@ public class RexViewRESTResource {
                                              @PathVariable String               userId,
                                              @RequestBody  RexEntityRequestBody body) {
         return restAPI.getEntity(serverName, userId, body);
+
+    }
+
+    /**
+     *  This method gets a relationship.
+     *  <p>
+     *  When retrieving a single relationship we return the whole Relationship object. This is
+     *  because the relationship is being used as the user focus object and will be displayed in
+     *  the details pane.
+     *  <p>
+     *  The method used is POST because the parameters supplied by the UI to the VS are conveyed in
+     *  the request body.
+     *
+     *
+     * @param serverName   name of the server running the view-service.
+     * @param userId       user account under which to conduct operation.
+     * @param body         request body containing parameters to formulate repository request
+     * @return response object containing the repository's type information or exception information
+     */
+    @PostMapping("/instances/relationship")
+    public RexRelationshipResponse getRelationship(@PathVariable String                     serverName,
+                                                   @PathVariable String                     userId,
+                                                   @RequestBody  RexRelationshipRequestBody body) {
+        return restAPI.getRelationship(serverName, userId, body);
 
     }
 

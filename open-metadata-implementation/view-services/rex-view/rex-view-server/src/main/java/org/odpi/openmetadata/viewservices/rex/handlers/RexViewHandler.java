@@ -4,7 +4,9 @@ package org.odpi.openmetadata.viewservices.rex.handlers;
 
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
@@ -12,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.clients.EnterpriseRepositoryServicesClient;
@@ -32,6 +35,7 @@ import org.odpi.openmetadata.viewservices.rex.api.properties.EntityExplorer;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RelationshipExplorer;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexEntityDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedEntityDetail;
+import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedRelationship;
 import org.odpi.openmetadata.viewservices.rex.api.properties.TypeExplorer;
 
 import org.slf4j.Logger;
@@ -226,12 +230,94 @@ public class RexViewHandler
                 RepositoryErrorException   |
                 InvalidParameterException  |
                 EntityNotKnownException    |
-                EntityProxyOnlyException  e) {
+                EntityProxyOnlyException   e) {
             throw e;
         }
 
     }
 
+
+    /**
+     * Retrieve relationship (by GUID) from the repository server
+     * @param userId  userId under which the request is performed
+     * @param repositoryServerName The name of the repository server to interrogate
+     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param enterpriseOption Whether the query is at cohort level or server specific
+     * @param relationshipGUID the GUID of the relationship to retrieve
+     * @param methodName The name of the method being invoked
+     * @return response containing the RexExpandedEntityDetail object.
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException     the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException      one of the parameters is null or invalid.
+     * @throws RelationshipNotKnownException  no relationship was found using the supplied GUID.
+     *
+     *
+     * Client library Exceptions
+     * @throws RepositoryErrorException Repository could not satisfy the request
+     */
+    public RexExpandedRelationship getRelationship(String    userId,
+                                                   String    repositoryServerName,
+                                                   String    repositoryServerURLRoot,
+                                                   boolean   enterpriseOption,
+                                                   String    relationshipGUID,
+                                                   String    methodName)
+    throws
+    RepositoryErrorException,
+    InvalidParameterException,
+    UserNotAuthorizedException,
+    RelationshipNotKnownException
+
+    {
+
+        try {
+
+            /*
+             *  Switch between local and enterprise services clients depending
+             *  on enterprise option...
+             */
+            MetadataCollectionServicesClient repositoryServicesClient;
+
+            if (!enterpriseOption) {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            } else {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            }
+
+
+            Relationship relationship = repositoryServicesClient.getRelationship(userId, relationshipGUID);
+
+            // Create digests for both ends
+
+            TypeExplorer typeExplorer = getTypeExplorer(userId,
+                                                        repositoryServerName,
+                                                        repositoryServerURLRoot,
+                                                        enterpriseOption,
+                                                        methodName);
+
+            EntityProxy entity1 = relationship.getEntityOneProxy();
+            EntityProxy entity2 = relationship.getEntityTwoProxy();
+            String label1 = this.chooseLabelForEntityProxy(entity1, typeExplorer);
+            String label2 = this.chooseLabelForEntityProxy(entity2, typeExplorer);
+
+            RexEntityDigest digest1 = new RexEntityDigest(entity1.getGUID(),label1,0, entity1.getMetadataCollectionName());
+            RexEntityDigest digest2 = new RexEntityDigest(entity2.getGUID(),label2,0, entity2.getMetadataCollectionName());
+
+            String label = this.chooseLabelForRelationship(relationship);
+
+            RexExpandedRelationship rexExpRelationship = new RexExpandedRelationship(relationship, label, digest1, digest2, repositoryServerName);
+
+            return rexExpRelationship;
+
+        }
+        catch (UserNotAuthorizedException     |
+                RepositoryErrorException      |
+                InvalidParameterException     |
+                RelationshipNotKnownException e) {
+            throw e;
+        }
+
+    }
 
     /**
      * Retrieve entity (by GUID) from the repository server
@@ -537,5 +623,162 @@ public class RexViewHandler
         return label;
 
     }
+
+
+
+    private String chooseLabelForEntityProxy(EntityProxy entityProxy, TypeExplorer typeExplorer)
+    {
+
+        // Refer to the comment in chooseLabelForEntity for labelling strategy - similar applies
+        // here but implementation caters for the entity only being a proxy.
+        // By default, use the GUID of the instance. This is not a desirable
+        // label but if there is really nothing else to use, then the GUID is
+        // better than nothing at all. Maybe.
+        String label = entityProxy.getGUID();
+
+
+        // Find the effective typeName - this is the highest supertype of the instance type
+        String instanceTypeName = null;
+
+        InstanceType instanceType = entityProxy.getType();
+        if (instanceType != null) {
+            instanceTypeName = instanceType.getTypeDefName();
+        }
+        if (instanceTypeName == null || instanceTypeName.equals("")) {
+            // Drop out - there is no proper type information for the instance - just adopt the default set above.
+            return label;
+        }
+
+        // We know that instanceTypeName is set to something we can use...
+
+        // Traverse the TypeExplorer looking for the highest supertype..
+        Map<String, EntityExplorer> entityTypes = typeExplorer.getEntities();
+
+        // Get the immediate entity instance type...
+        EntityExplorer eex = entityTypes.get(instanceTypeName);
+        TypeDefLink superType = eex.getEntityDef().getSuperType();
+        while (superType != null) {
+            String superTypeName = superType.getName();
+            eex = entityTypes.get(superTypeName);
+            superType = eex.getEntityDef().getSuperType();
+        }
+        // eex is now the effective type entry
+        TypeDef effectiveTypeDef = eex.getEntityDef();
+
+        String effTypeName = effectiveTypeDef.getName();
+
+        switch (effTypeName) {
+
+            case "InformalTag":
+                if (entityProxy.getUniqueProperties() != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties() != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties().get("tagName") != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties().get("tagName").valueAsString() != null) {
+
+                    label = entityProxy.getUniqueProperties().getInstanceProperties().get("tagName").valueAsString();
+
+                }
+                break;
+
+            case "Like":
+            case "Rating":
+                if (entityProxy.getCreatedBy() != null) {
+                    label = entityProxy.getCreatedBy();
+
+                }
+                break;
+
+            case "DataField":
+                if (entityProxy.getUniqueProperties() != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties() != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties().get("dataFieldName") != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties().get("dataFieldName").valueAsString() != null) {
+
+                    label = entityProxy.getUniqueProperties().getInstanceProperties().get("dataFieldName").valueAsString();
+
+                }
+                break;
+
+            case "Annotation":
+            case "AnnotationReview":
+                if (instanceTypeName != null) {
+                    label = instanceTypeName;  // use the local type name for anything under these types
+
+                }
+                break;
+
+            default:
+                // Anything that is left should be a Referenceable.
+                // If it has a displayName use that.
+                // Otherwise if it has a qualifiedName use up to the last TRUNCATED_STRING_LENGTH chars of that.
+                // If there is not qualifiedName drop through and use GUID (default)
+                if (entityProxy.getUniqueProperties() != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties() != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties().get("displayName") != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties().get("displayName").valueAsString() != null) {
+
+                    label = entityProxy.getUniqueProperties().getInstanceProperties().get("displayName").valueAsString();
+
+                }
+                else if (entityProxy.getUniqueProperties() != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties() != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties().get("name") != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties().get("name").valueAsString() != null) {
+
+                    label = entityProxy.getUniqueProperties().getInstanceProperties().get("name").valueAsString();
+
+                }
+                else if (entityProxy.getUniqueProperties() != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties() != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties().get("qualifiedName") != null) {
+
+                    String fullQN = entityProxy.getUniqueProperties().getInstanceProperties().get("qualifiedName").valueAsString();
+
+                    int lengthQN = fullQN.length();
+                    if (lengthQN > TRUNCATED_STRING_LENGTH) {
+                        String tailQN = "..." + fullQN.substring(lengthQN-TRUNCATED_STRING_LENGTH, lengthQN);
+                        label = tailQN;
+                    } else {
+                        label = fullQN;
+                    }
+                }
+
+        }
+
+        return label;
+
+    }
+
+
+
+    private String chooseLabelForRelationship(Relationship relationship)
+    {
+
+        // By default, use the GUID of the instance. This is not a desirable
+        // label but if there is really nothing else to use, then the GUID is
+        // better than nothing at all. Maybe.
+        String label = relationship.getGUID();
+
+        String instanceTypeName = null;
+
+        InstanceType instanceType = relationship.getType();
+        if (instanceType != null) {
+            instanceTypeName = instanceType.getTypeDefName();
+        }
+        if (instanceTypeName == null || instanceTypeName.equals("")) {
+            // Drop out - there is no proper type information for the instance - just adopt the default set above.
+            return label;
+        }
+
+        // We know that instanceTypeName is set to something we can use...
+
+        // For now simply label relationships by type name.
+        label = instanceTypeName;
+
+        return label;
+
+    }
+
+
 
 }
