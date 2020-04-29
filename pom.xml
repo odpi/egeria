@@ -146,6 +146,7 @@
         <tomcat.version>9.0.33</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
+        <jena.version>3.14.0</jena.version>
         <commons-lang.version>3.10</commons-lang.version>
         <h2-database.version>1.4.200</h2-database.version>
         <jwt.version>0.9.1</jwt.version>
@@ -288,6 +289,20 @@
                 <artifactId>commons-collections4</artifactId>
                 <scope>compile</scope>
                 <version>${commons-collections4.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-arq</artifactId>
+                <scope>runtime</scope>
+                <version>${jena.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-core</artifactId>
+                <scope>compile</scope>
+                <version>${jena.version}</version>
             </dependency>
 
             <dependency>
