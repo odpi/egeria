@@ -26,9 +26,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProjectScopeRelationship extends Line {
-    private static final Logger log = LoggerFactory.getLogger(ProjectScopeRelationship.class);
-    private static final String className = ProjectScopeRelationship.class.getName();
+public class ProjectScope extends Line {
+    private static final Logger log = LoggerFactory.getLogger(ProjectScope.class);
+    private static final String className = ProjectScope.class.getName();
 
       private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
           "scopeDescription",
@@ -58,7 +58,7 @@ public class ProjectScopeRelationship extends Line {
       private String nodeGuid;
 
 
-    public ProjectScopeRelationship() {
+    public ProjectScope() {
         initialise();
     }
 
@@ -80,12 +80,12 @@ public class ProjectScopeRelationship extends Line {
         typeDefGuid = "bc63ac45-b4d0-4fba-b583-92859de77dd8";
     }
 
-    public ProjectScopeRelationship(Line template) {
+    public ProjectScope(Line template) {
         super(template);
         initialise();
     }
 
-    public ProjectScopeRelationship(Relationship omrsRelationship) {
+    public ProjectScope(Relationship omrsRelationship) {
         super(omrsRelationship);
         name = "ProjectScope";
        // set the LineType if this is a LineType enum value.

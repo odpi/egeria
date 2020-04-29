@@ -134,7 +134,7 @@ public class AntonymMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(),ANTONYM).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return ANTONYM;
     }
     @Override

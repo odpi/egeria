@@ -21,18 +21,17 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
- * Link between a more general glossary term and a more specific definition.
+ * Defines an inheritance relationship between two spine objects.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ISARelationship extends Line {
-    private static final Logger log = LoggerFactory.getLogger(ISARelationship.class);
-    private static final String className = ISARelationship.class.getName();
+public class IsaTypeOf extends Line {
+    private static final Logger log = LoggerFactory.getLogger(IsaTypeOf.class);
+    private static final String className = IsaTypeOf.class.getName();
 
       private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
           "description",
-          "expression",
           "status",
           "steward",
           "source",
@@ -42,7 +41,6 @@ public class ISARelationship extends Line {
       };
       private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
           "description",
-          "expression",
           "steward",
           "source",
 
@@ -64,17 +62,17 @@ public class ISARelationship extends Line {
       private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
       private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
       private static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
-      private String specialisedTermGuid;
-      private String termGuid;
+      private String superTypeGuid;
+      private String subTypeGuid;
 
 
-    public ISARelationship() {
+    public IsaTypeOf() {
         initialise();
     }
 
     private void initialise()
     {
-       name = "ISARelationship";
+       name = "IsaTypeOf";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -82,21 +80,21 @@ public class ISARelationship extends Line {
         catch (IllegalArgumentException e) {
            lineType = LineType.Unknown;
         }
-        entity1Name = "classifies";
+        entity1Name = "supertypes";
         entity1Type = "GlossaryTerm";
-        entity2Name = "isA";
+        entity2Name = "subtypes";
         entity2Type = "GlossaryTerm";
-        typeDefGuid = "50fab7c7-68bc-452f-b8eb-ec76829cac85";
+        typeDefGuid = "d5d588c3-46c9-420c-adff-6031802a7e51";
     }
 
-    public ISARelationship(Line template) {
+    public IsaTypeOf(Line template) {
         super(template);
         initialise();
     }
 
-    public ISARelationship(Relationship omrsRelationship) {
+    public IsaTypeOf(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "ISARelationship";
+        name = "IsaTypeOf";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -106,30 +104,30 @@ public class ISARelationship extends Line {
         }
     }
     /**
-     * {@literal Get the guid of the more specialised Term. }
+     * {@literal Get the guid of type associated with the super type spine object - this is the spine object that is inherited from. }
      * @return {@code String }
      */
-    public String getSpecialisedTermGuid()
+    public String getSuperTypeGuid()
     {
-        return specialisedTermGuid;
+        return superTypeGuid;
     }
 
-    public void setSpecialisedTermGuid(String specialisedTermGuid)
+    public void setSuperTypeGuid(String superTypeGuid)
     {
-        this.specialisedTermGuid = specialisedTermGuid;
+        this.superTypeGuid = superTypeGuid;
     }
     /**
-     * {@literal Get the guid of the more general Term. }
+     * {@literal Get the guid of type associated with the sub type spine object - this is the spine object that inherits (specialises). }
      * @return {@code String }
      */
-    public String getTermGuid()
+    public String getSubTypeGuid()
     {
-        return termGuid;
+        return subTypeGuid;
     }
 
-    public void setTermGuid(String termGuid)
+    public void setSubTypeGuid(String subTypeGuid)
     {
-        this.termGuid = termGuid;
+        this.subTypeGuid = subTypeGuid;
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -150,10 +148,6 @@ public class ISARelationship extends Line {
           
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("description",primitivePropertyValue);
-          primitivePropertyValue = new PrimitivePropertyValue();
-          
-          primitivePropertyValue.setPrimitiveValue(null);
-          instanceProperties.setProperty("expression",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
           
           primitivePropertyValue.setPrimitiveValue(null);
@@ -182,17 +176,6 @@ public class ISARelationship extends Line {
          }
          public void setDescription(String description)  {
             this.description = description;
-        }
-         private String expression;
-        /**
-            * {@literal An expression that explains the relationship. }
-            * @return {@code String }
-            */
-         public String getExpression() {
-             return this.expression;
-         }
-         public void setExpression(String expression)  {
-            this.expression = expression;
         }
          private TermRelationshipStatus status;
         /**
@@ -235,11 +218,10 @@ public class ISARelationship extends Line {
              {
                  sb = new StringBuilder();
              }
-             sb.append(" ISARelationship=");
+             sb.append(" IsaTypeOf=");
              sb.append(super.toString(sb));
-             sb.append(" ISARelationship Attributes{");
+             sb.append(" IsaTypeOf Attributes{");
              sb.append("description=" + this.description +",");
-             sb.append("expression=" + this.expression +",");
              sb.append("steward=" + this.steward +",");
              sb.append("source=" + this.source +",");
              if ( status!=null) {
