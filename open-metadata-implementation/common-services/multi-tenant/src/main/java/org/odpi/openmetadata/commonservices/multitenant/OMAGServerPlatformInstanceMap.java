@@ -977,7 +977,7 @@ public class OMAGServerPlatformInstanceMap
      * @return OMAGServerServiceInstance object
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws PropertyServerException the service name is not know - indicating a logic error
+     * @throws PropertyServerException the service name is not known - indicating a logic error
      */
     OMAGServerServiceInstance getServiceInstance(String    userId,
                                                  String    serverName,

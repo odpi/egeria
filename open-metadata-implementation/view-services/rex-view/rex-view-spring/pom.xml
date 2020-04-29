@@ -7,11 +7,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>open-metadata-implementation</artifactId>
+        <artifactId>rex-view</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.7-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
     <scm>
@@ -20,15 +19,31 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Open Metadata View Services (OMVS)</name>
-    <description>
-        Persona specific view interfaces for use in the user interface to work with open meta-data.
-    </description>
+    <artifactId>rex-view-spring</artifactId>
 
-    <artifactId>view-services</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>glossary-author-view</module>
-        <module>rex-view</module>
-    </modules>
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>rex-view-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>rex-view-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+        </dependency>
+
+    </dependencies>
+
+
 </project>
