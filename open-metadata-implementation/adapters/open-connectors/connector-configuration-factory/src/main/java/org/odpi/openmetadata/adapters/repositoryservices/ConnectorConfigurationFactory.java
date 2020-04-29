@@ -87,6 +87,12 @@ public class ConnectorConfigurationFactory
      */
     public Connection getDefaultAuditLogConnection()
     {
+        List<String> supportedSeverities = getDefaultSupportedSeverities();
+
+        return getConsoleAuditLogConnection(supportedSeverities);
+    }
+
+    private List<String> getDefaultSupportedSeverities() {
         List<OMRSAuditLogRecordSeverity> supportedSeverityDefinitions = Arrays.asList(OMRSAuditLogRecordSeverity.values());
         List<String>                     supportedSeverities = new ArrayList<>();
 
@@ -98,8 +104,7 @@ public class ConnectorConfigurationFactory
                 supportedSeverities.add(severityDefinition.getName());
             }
         }
-
-        return getConsoleAuditLogConnection(supportedSeverities);
+        return supportedSeverities;
     }
 
 
@@ -112,13 +117,15 @@ public class ConnectorConfigurationFactory
     private void setSupportedAuditLogSeverities(List<String> supportedSeverities,
                                                 Connection   auditLogDestination)
     {
-        if (supportedSeverities != null)
+        if(supportedSeverities == null || supportedSeverities.isEmpty())
         {
-            Map<String, Object> configurationProperties = new HashMap<>();
-
-            configurationProperties.put(OMRSAuditLogStoreProviderBase.supportedSeveritiesProperty, supportedSeverities);
-            auditLogDestination.setConfigurationProperties(configurationProperties);
+            supportedSeverities = getDefaultSupportedSeverities();
         }
+
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(OMRSAuditLogStoreProviderBase.supportedSeveritiesProperty, supportedSeverities);
+        auditLogDestination.setConfigurationProperties(configurationProperties);
     }
 
 
