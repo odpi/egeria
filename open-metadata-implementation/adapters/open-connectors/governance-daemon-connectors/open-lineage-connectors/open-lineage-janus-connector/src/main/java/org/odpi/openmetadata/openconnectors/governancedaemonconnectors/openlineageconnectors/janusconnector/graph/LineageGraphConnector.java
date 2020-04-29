@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
@@ -73,12 +73,12 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_VERSION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PORT_TYPE;
 
-public class BufferGraphConnector extends BufferGraphConnectorBase {
+public class LineageGraphConnector extends LineageGraphConnectorBase {
 
-    private static final Logger log = LoggerFactory.getLogger(BufferGraphConnector.class);
-    private JanusGraph bufferGraph;
+    private static final Logger log = LoggerFactory.getLogger(LineageGraphConnector.class);
+    private JanusGraph lineageGraph;
     private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
-    private BufferGraphConnectorHelper helper;
+    private LineageGraphConnectorHelper helper;
 
     /**
      * Instantiates the graph based on the configuration passed.
@@ -86,12 +86,11 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      */
     public void initializeGraphDB() throws OpenLineageException {
         GraphFactory graphFactory = new GraphFactory();
-//        mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
 
         try {
-            this.bufferGraph = graphFactory.openGraph(connectionProperties);
+            this.lineageGraph = graphFactory.openGraph(connectionProperties);
         } catch (JanusConnectorException error) {
-            log.error("The Buffer graph could not be initialized due to an error", error);
+            log.error("The Lineage graph could not be initialized due to an error", error);
             throw new OpenLineageException(500,
                     error.getReportingClassName(),
                     error.getReportingActionDescription(),
@@ -100,12 +99,12 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                     error.getReportedUserAction()
             );
         }
-        this.helper = new BufferGraphConnectorHelper(bufferGraph);
+        this.helper = new LineageGraphConnectorHelper(lineageGraph);
     }
 
     @Override
     public void schedulerTask(){
-        GraphTraversalSource g = bufferGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
         try {
             List<Vertex> vertices = g.V().has(PROPERTY_KEY_LABEL, "Process").toList();
             List<String> guidList = vertices.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
@@ -194,18 +193,14 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             String columnOutGuid = columnOut.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
             String columnInGuid = columnIn.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
             if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
-
                 test(columnIn,columnOut,process);
-
-//                MainGraphMapper mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
-//                mainGraphMapper.checkBufferGraph(columnInGuid,columnOutGuid,process);
             }
         }
     }
 
     private void test(Vertex columnIn,Vertex columnOut,Vertex process){
 
-        GraphTraversalSource g = bufferGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         final String processGuid = process.value(PROPERTY_KEY_ENTITY_GUID);
         final String processName = process.value(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME);
@@ -229,7 +224,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     }
 
     private void addTableNode(Vertex columnInVertex, Vertex columnOutVertex, Vertex process){
-        GraphTraversalSource bufferG = bufferGraph.traversal();
+        GraphTraversalSource bufferG = lineageGraph.traversal();
 
 
         Vertex tableIn = getTable(bufferG,columnInVertex);
@@ -275,12 +270,12 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     @Override
     public void addEntity(Set<GraphContext> graphContext){
 
-        GraphTraversalSource g =  bufferGraph.traversal();
+        GraphTraversalSource g =  lineageGraph.traversal();
         graphContext.forEach(entry -> {
             try {
                 addVerticesAndRelationship(g, entry);
             } catch (JanusConnectorException e) {
-                log.error("An exception happened when trying to create vertices and relationships in BufferGraph. The error is", e);
+                log.error("An exception happened when trying to create vertices and relationships in LineageGraph. The error is", e);
             }
         });
 
@@ -328,7 +323,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         else {
             vertex = vertexIt.next();
             if (log.isDebugEnabled()) {
-                log.debug("found existing vertex {} when trying to add it in bufferGraph", vertex);
+                log.debug("found existing vertex {} when trying to add it in LineageGraph", vertex);
             }
             g.tx().rollback();
             return vertex;
@@ -336,12 +331,12 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     }
 
     /**
-     * Creates new Relationships and it's properties in bufferGraph and mainGraph related to Lineage.
+     * Creates new Relationships and it's properties in lineage graph
      *
      */
     private void addRelationship(String relationshipGuid,String relationshipType,Vertex fromVertex,Vertex toVertex) throws JanusConnectorException{
         String methodName = "addRelationship";
-        GraphTraversalSource g = bufferGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         if (relationshipType == null) {
             log.debug("Relationship type name is missing, relationship cannot be created");
@@ -390,7 +385,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      */
     @Override
     public void updateEntity(LineageEntity lineageEntity){
-        GraphTraversalSource g = bufferGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID,lineageEntity.getGuid());
         if(!vertex.hasNext()){
@@ -407,7 +402,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      */
     @Override
     public void updateRelationship(LineageRelationship lineageRelationship){
-        GraphTraversalSource g = bufferGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID,lineageRelationship.getGuid());
         if(!edge.hasNext()){
@@ -420,7 +415,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
     @Override
     public void deleteEntity(String guid,String version){
-        GraphTraversalSource g = bufferGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         Iterator<Vertex> vertex = checkIfVertexExist(g,guid,version);
         //TODO add check when we will have classifications to delete classifications first
@@ -579,7 +574,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
     @Override
     public void disconnect() throws ConnectorCheckedException {
-        this.bufferGraph.close();
+        this.lineageGraph.close();
         super.disconnect();
     }
 
@@ -589,7 +584,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
         String methodName = "lineage";
 
-        GraphTraversalSource g = bufferGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
         try {
             g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         } catch (NoSuchElementException e) {
