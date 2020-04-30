@@ -25,15 +25,14 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
     static get template() {
         return html`
       <style include="shared-styles">
+        #search { 
+             --iron-icon-fill-color: white;
+        }
+        
         vaadin-grid {
           height: calc(100vh - 160px);
         }
-        a {
-            color : var(--egeria-primary-color);
-            text-decoration: none;
-            cursor: hand;
-        }
-        
+            
         .level0{ color: inherit;}
         .level1{ color: inherit;}
         .level2{ color: orange;}
@@ -57,7 +56,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 </div>
          
                 <vaadin-button id="searchSubmit" theme="primary" on-tap="_search">
-                    <iron-icon icon="search"></iron-icon>
+                    <iron-icon id="search" icon="search"></iron-icon>
                 </vaadin-button>
              
                 <multiselect-combo-box id="combo" items="[[items]]" item-label-path="name" ordered="false">
