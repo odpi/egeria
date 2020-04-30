@@ -16,7 +16,7 @@ public abstract class LineageGraphConnectorBase extends ConnectorBase implements
     public abstract void initializeGraphDB() throws OpenLineageException;
 
     @Override
-    public abstract void addEntity(Set<GraphContext> graphContext);
+    public abstract void storeToGraph(Set<GraphContext> graphContext);
 
     @Override
     public abstract void updateEntity(LineageEntity lineageEntity);
