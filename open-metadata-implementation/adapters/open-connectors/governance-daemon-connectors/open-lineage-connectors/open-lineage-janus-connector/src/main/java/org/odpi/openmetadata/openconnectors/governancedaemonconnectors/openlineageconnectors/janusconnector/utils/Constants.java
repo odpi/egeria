@@ -30,6 +30,7 @@ public final class Constants {
     public static final String DATA_FILE = "DataFile";
     public static final String FILE_FOLDER = "FileFolder";
     public static final String CONNECTION = "Connection";
+    public static final String PROCESS = "Process";
 
     //Relationships Type
     public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";

@@ -16,7 +16,7 @@ public interface LineageGraph extends OpenLineageGraphConnector {
      *
      * @param graphContext graph Collection
      */
-    void addEntity(Set<GraphContext> graphContext);
+    void storeToGraph(Set<GraphContext> graphContext);
 
     /**
      * Updates a vertex in the Graph
