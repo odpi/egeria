@@ -11,11 +11,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * DatabaseInterface defines the client side interface for the Data Platform OMAS that is
+ * DatabasePlatformInterface defines the client side interface for the Data Platform OMAS that is
  * relevant for relational database assets.   It provides the ability to
  * define and maintain the metadata about a database and the schemas (tables and columns) it contains.
  */
-public interface DatabaseInterface
+public interface DatabasePlatformInterface
 {
 
     /*
@@ -46,6 +46,30 @@ public interface DatabaseInterface
 
 
     /**
+     * Create a new metadata element to represent a database using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param integratorGUID unique identifier of software server capability representing the caller
+     * @param integratorName unique name of software server capability representing the caller
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param databaseProperties properties to store
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createDatabaseFromTemplate(String             userId,
+                                      String             integratorGUID,
+                                      String             integratorName,
+                                      String             templateGUID,
+                                      DatabaseProperties databaseProperties) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
+
+
+    /**
      * Update the metadata element representing a database.
      *
      * @param userId calling user
@@ -65,6 +89,50 @@ public interface DatabaseInterface
                         DatabaseProperties databaseProperties) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException;
+
+
+    /**
+     * Update the zones for the database asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the Data Platform OMAS).
+     *
+     * @param userId calling user
+     * @param integratorGUID unique identifier of software server capability representing the caller
+     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseGUID unique identifier of the metadata element to publish
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void publishDatabase(String userId,
+                         String integratorGUID,
+                         String integratorName,
+                         String databaseGUID) throws InvalidParameterException,
+                                                     UserNotAuthorizedException,
+                                                     PropertyServerException;
+
+
+    /**
+     * Update the zones for the database asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the Data Platform OMAS.  This is the setting when the database is first created).
+     *
+     * @param userId calling user
+     * @param integratorGUID unique identifier of software server capability representing the caller
+     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseGUID unique identifier of the metadata element to withdraw
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void withdrawDatabase(String userId,
+                          String integratorGUID,
+                          String integratorName,
+                          String databaseGUID) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException;
 
 
     /**
@@ -206,6 +274,32 @@ public interface DatabaseInterface
 
 
     /**
+     * Create a new metadata element to represent a database schema using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param integratorGUID unique identifier of software server capability representing the caller
+     * @param integratorName unique name of software server capability representing the caller
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param databaseGUID unique identifier of the database where the schema is located
+     * @param databaseSchemaProperties properties about the database schema
+     *
+     * @return unique identifier of the new database schema
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createDatabaseSchemaFromTemplate(String                   userId,
+                                            String                   integratorGUID,
+                                            String                   integratorName,
+                                            String                   templateGUID,
+                                            String                   databaseGUID,
+                                            DatabaseSchemaProperties databaseSchemaProperties) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException;
+
+
+    /**
      * Update the metadata element representing a database schema.
      *
      * @param userId calling user
@@ -225,6 +319,50 @@ public interface DatabaseInterface
                               DatabaseSchemaProperties databaseSchemaProperties) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException;
+
+
+    /**
+     * Update the zones for the database asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the Data Platform OMAS).
+     *
+     * @param userId calling user
+     * @param integratorGUID unique identifier of software server capability representing the caller
+     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseSchemaGUID unique identifier of the metadata element to publish
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void publishDatabaseSchema(String userId,
+                               String integratorGUID,
+                               String integratorName,
+                               String databaseSchemaGUID) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
+
+
+    /**
+     * Update the zones for the database asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the Data Platform OMAS.  This is the setting when the database is first created).
+     *
+     * @param userId calling user
+     * @param integratorGUID unique identifier of software server capability representing the caller
+     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseSchemaGUID unique identifier of the metadata element to withdraw
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void withdrawDatabaseSchema(String userId,
+                                String integratorGUID,
+                                String integratorName,
+                                String databaseSchemaGUID) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException;
 
 
     /**
@@ -363,6 +501,32 @@ public interface DatabaseInterface
 
 
     /**
+     * Create a new metadata element to represent a database table using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param integratorGUID unique identifier of software server capability representing the caller
+     * @param integratorName unique name of software server capability representing the caller
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
+     * @param databaseTableProperties properties about the database table
+     *
+     * @return unique identifier of the new metadata element for the database table
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createDatabaseTableFromTemplate(String                  userId,
+                                           String                  integratorGUID,
+                                           String                  integratorName,
+                                           String                  templateGUID,
+                                           String                  databaseSchemaGUID,
+                                           DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException;
+
+
+    /**
      * Update the metadata element representing a database table.
      *
      * @param userId calling user
@@ -486,7 +650,6 @@ public interface DatabaseInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-
     DatabaseTableElement getDatabaseTableByGUID(String userId,
                                                 String guid) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
@@ -502,7 +665,7 @@ public interface DatabaseInterface
      * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
      * @param databaseViewProperties properties for the new view
      *
-     * @return unique identifier if the new metadata element
+     * @return unique identifier of the new metadata element for the database view
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -515,6 +678,33 @@ public interface DatabaseInterface
                               DatabaseViewProperties databaseViewProperties) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException;
+
+
+
+    /**
+     * Create a new metadata element to represent a database view using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param integratorGUID unique identifier of software server capability representing the caller
+     * @param integratorName unique name of software server capability representing the caller
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
+     * @param databaseViewProperties properties for the new view
+     *
+     * @return unique identifier of the new metadata element for the database view
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createDatabaseViewFromTemplate(String                  userId,
+                                          String                  integratorGUID,
+                                          String                  integratorName,
+                                          String                  templateGUID,
+                                          String                  databaseSchemaGUID,
+                                          DatabaseTableProperties databaseViewProperties) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException;
 
 
     /**
@@ -659,9 +849,9 @@ public interface DatabaseInterface
      * @param integratorGUID unique identifier of software server capability representing the caller
      * @param integratorName unique name of software server capability representing the caller
      * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for hte new column
+     * @param databaseColumnProperties properties for the new column
      *
-     * @return unique identifier for the new database column
+     * @return unique identifier of the new metadata element for the new database column
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -676,6 +866,33 @@ public interface DatabaseInterface
                                                                                           PropertyServerException;
 
 
+
+    /**
+     * Create a new metadata element to represent a database column using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param integratorGUID unique identifier of software server capability representing the caller
+     * @param integratorName unique name of software server capability representing the caller
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param databaseTableGUID unique identifier of the database table where this column is located
+     * @param databaseColumnProperties properties for the new column
+     *
+     * @return unique identifier of the new metadata element for the database column
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createDatabaseColumnFromTemplate(String                   userId,
+                                            String                   integratorGUID,
+                                            String                   integratorName,
+                                            String                   templateGUID,
+                                            String                   databaseTableGUID,
+                                            DatabaseColumnProperties databaseColumnProperties) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException;
+
+
     /**
      * Create a new metadata element to represent a database derived column.
      *
@@ -683,9 +900,9 @@ public interface DatabaseInterface
      * @param integratorGUID unique identifier of software server capability representing the caller
      * @param integratorName unique name of software server capability representing the caller
      * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for hte new column
+     * @param databaseColumnProperties properties for the new column
      *
-     * @return unique identifier for the new database column
+     * @return unique identifier of the new metadata element for the database column
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -698,6 +915,31 @@ public interface DatabaseInterface
                                        DatabaseDerivedColumnProperties databaseColumnProperties) throws InvalidParameterException,
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException;
+
+    /**
+     * Create a new metadata element to represent a database derived column using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param integratorGUID unique identifier of software server capability representing the caller
+     * @param integratorName unique name of software server capability representing the caller
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param databaseTableGUID unique identifier of the database table where this column is located
+     * @param databaseColumnProperties properties for the new column
+     *
+     * @return unique identifier of the new metadata element for the database column
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createDatabaseDerivedColumnFromTemplate(String                          userId,
+                                                   String                          integratorGUID,
+                                                   String                          integratorName,
+                                                   String                          templateGUID,
+                                                   String                          databaseTableGUID,
+                                                   DatabaseDerivedColumnProperties databaseColumnProperties) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException;
 
 
     /**
@@ -944,6 +1186,7 @@ public interface DatabaseInterface
                                    DatabaseForeignKeyProperties databaseForeignKeyProperties) throws InvalidParameterException,
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException;
+
 
     /**
      * Remove the foreign key relationship for the requested columns.

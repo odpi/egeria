@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * DataPlatformClient provides the client implementation for the Data Platform OMAS.
  */
 
+@Deprecated
 public class DataPlatformClient extends OCFRESTClient {
 
     private static final String QUALIFIED_NAME_PARAMETER = "qualifiedName";
