@@ -74,7 +74,7 @@ public class FileSystemConverter extends ReferenceableConverter
             if (instanceProperties != null)
             {
                 bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName,
-                                                                            FileSystemMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                            ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                             instanceProperties,
                                                                             methodName));
                 bean.setDisplayName(repositoryHelper.removeStringProperty(serviceName,

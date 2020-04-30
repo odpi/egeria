@@ -2,10 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.builders;
 
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryEnginePropertiesMapper;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.ReferenceableBuilder;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.SoftwareServerCapabilityBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Map;
@@ -14,33 +11,8 @@ import java.util.Map;
  * DiscoveryEngineBuilder creates instance properties based on the bean properties
  * provided in the constructor.
  */
-public class DiscoveryEngineBuilder extends ReferenceableBuilder
+public class DiscoveryEngineBuilder extends SoftwareServerCapabilityBuilder
 {
-    private String displayName     = null;
-    private String description     = null;
-    private String typeDescription = null;
-    private String version         = null;
-    private String patchLevel      = null;
-    private String source          = null;
-
-
-    /**
-     * Constructor when only the qualified name is known.
-     *
-     * @param qualifiedName unique name
-     * @param repositoryHelper helper methods
-     * @param serviceName name of this OMAS
-     * @param serverName name of local server
-     */
-    public DiscoveryEngineBuilder(String               qualifiedName,
-                                  OMRSRepositoryHelper repositoryHelper,
-                                  String               serviceName,
-                                  String               serverName)
-    {
-        super(qualifiedName, repositoryHelper, serviceName, serverName);
-    }
-
-
     /**
      * Constructor when basic properties are known.
      *
@@ -58,10 +30,7 @@ public class DiscoveryEngineBuilder extends ReferenceableBuilder
                                   String               serviceName,
                                   String               serverName)
     {
-        super(qualifiedName, repositoryHelper, serviceName, serverName);
-
-        this.displayName = displayName;
-        this.description = description;
+        super(qualifiedName, displayName, description, repositoryHelper, serviceName, serverName);
     }
 
 
@@ -95,111 +64,16 @@ public class DiscoveryEngineBuilder extends ReferenceableBuilder
                                   String               serverName)
     {
         super(qualifiedName,
+              displayName,
+              description,
+              typeDescription,
+              version,
+              patchLevel,
+              source,
               additionalProperties,
               extendedProperties,
               repositoryHelper,
               serviceName,
               serverName);
-
-        this.displayName = displayName;
-        this.description = description;
-        this.typeDescription = typeDescription;
-        this.version = version;
-        this.patchLevel = patchLevel;
-        this.source = source;
-    }
-
-
-    /**
-     * Return the supplied bean properties in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
-     */
-    public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
-    {
-        InstanceProperties properties = super.getInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      DiscoveryEnginePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      DiscoveryEnginePropertiesMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
-
-        if (typeDescription != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      DiscoveryEnginePropertiesMapper.TYPE_DESCRIPTION_PROPERTY_NAME,
-                                                                      typeDescription,
-                                                                      methodName);
-        }
-
-        if (version != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      DiscoveryEnginePropertiesMapper.VERSION_PROPERTY_NAME,
-                                                                      version,
-                                                                      methodName);
-        }
-
-        if (patchLevel != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      DiscoveryEnginePropertiesMapper.PATCH_LEVEL_PROPERTY_NAME,
-                                                                      patchLevel,
-                                                                      methodName);
-        }
-
-        if (source != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      DiscoveryEnginePropertiesMapper.SOURCE_PROPERTY_NAME,
-                                                                      source,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    public InstanceProperties getNameInstanceProperties(String  methodName)
-    {
-        InstanceProperties properties = super.getNameInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            String literalName = repositoryHelper.getExactMatchRegex(displayName);
-
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      DiscoveryEnginePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      literalName,
-                                                                      methodName);
-        }
-
-        return properties;
     }
 }

@@ -29,6 +29,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
 
     protected List<String>            supportedZones;
     protected List<String>            defaultZones;
+    protected List<String>            publishZones;
 
 
     /**
@@ -48,7 +49,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                                List<String>            defaultZones,
                                AuditLog                auditLog) throws NewInstanceException
     {
-        this(serviceName, repositoryConnector, supportedZones, defaultZones, auditLog, null, 500);
+        this(serviceName, repositoryConnector, supportedZones, defaultZones, null, auditLog, null, 500);
     }
 
 
@@ -65,7 +66,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                                OMRSRepositoryConnector repositoryConnector,
                                AuditLog                auditLog) throws NewInstanceException
     {
-        this( serviceName, repositoryConnector, null, null, auditLog, null, 500);
+        this(serviceName, repositoryConnector, null, null, null, auditLog, null, 500);
     }
 
 
@@ -85,7 +86,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                                String                  localServerUserId,
                                int                     maxPageSize) throws NewInstanceException
     {
-        this(serviceName, repositoryConnector, null, null, auditLog, localServerUserId, maxPageSize);
+        this(serviceName, repositoryConnector, null, null, null, auditLog, localServerUserId, maxPageSize);
     }
 
 
@@ -96,6 +97,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
      * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
+     * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize maximum page size
@@ -105,6 +107,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                         OMRSRepositoryConnector repositoryConnector,
                         List<String>            supportedZones,
                         List<String>            defaultZones,
+                        List<String>            publishZones,
                         AuditLog                auditLog,
                         String                  localServerUserId,
                         int                     maxPageSize) throws NewInstanceException
@@ -126,6 +129,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                 this.repositoryHandler = new RepositoryHandler(auditLog, errorHandler, metadataCollection, maxPageSize);
                 this.supportedZones = supportedZones;
                 this.defaultZones = defaultZones;
+                this.publishZones = publishZones;
             }
             catch (Throwable error)
             {
@@ -297,5 +301,21 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
         validateActiveRepository(methodName);
 
         return defaultZones;
+    }
+
+
+    /**
+     * Return the list of zones that this instance of the OMAS should set in any published Asset.
+     *
+     * @return list of zone names.
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    List<String> getPublishZones() throws PropertyServerException
+    {
+        final String methodName = "getPublishZones";
+
+        validateActiveRepository(methodName);
+
+        return publishZones;
     }
 }

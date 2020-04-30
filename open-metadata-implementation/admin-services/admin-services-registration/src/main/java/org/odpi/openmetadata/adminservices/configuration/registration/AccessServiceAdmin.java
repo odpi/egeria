@@ -42,6 +42,7 @@ public abstract class AccessServiceAdmin
      */
     protected String   supportedZonesPropertyName      = "SupportedZones";      /* Common */
     protected String   defaultZonesPropertyName        = "DefaultZones";        /* Common */
+    protected String   publishZonesPropertyName        = "PublishZones";        /* Common */
     protected String   karmaPointPlateauPropertyName   = "KarmaPointPlateau";   /* Community Profile OMAS */
     protected String   karmaPointIncrementPropertyName = "KarmaPointIncrement"; /* Community Profile OMAS */
 
@@ -138,6 +139,61 @@ public abstract class AccessServiceAdmin
                 {
                     logBadConfigProperties(accessServiceFullName,
                                            supportedZonesPropertyName,
+                                           zoneListObject.toString(),
+                                           auditLog,
+                                           methodName,
+                                           error);
+
+                    /* unreachable */
+                    return null;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Extract the publish zones property from the access services option.
+     *
+     * @param accessServiceOptions options passed to the access service.
+     * @param accessServiceFullName name of calling service
+     * @param auditLog audit log for error messages
+     * @return null or list of zone names
+     * @throws OMAGConfigurationErrorException the supported zones property is not a list of zone names.
+     */
+    protected List<String> extractPublishZones(Map<String, Object> accessServiceOptions,
+                                               String              accessServiceFullName,
+                                               AuditLog            auditLog) throws OMAGConfigurationErrorException
+    {
+        final String  methodName = "extractPublishZones";
+
+        if (accessServiceOptions == null)
+        {
+            return null;
+        }
+        else
+        {
+            Object   zoneListObject = accessServiceOptions.get(publishZonesPropertyName);
+
+            if (zoneListObject == null)
+            {
+                auditLog.logMessage(methodName, OMAGAdminAuditCode.PUBLISH_ZONES.getMessageDefinition(accessServiceFullName, "<null>"));
+                return null;
+            }
+            else
+            {
+                try
+                {
+                    @SuppressWarnings("unchecked")
+                    List<String>  zoneList =  (List<String>)zoneListObject;
+
+                    auditLog.logMessage(methodName, OMAGAdminAuditCode.PUBLISH_ZONES.getMessageDefinition(accessServiceFullName, zoneList.toString()));
+                    return zoneList;
+                }
+                catch (Throwable error)
+                {
+                    logBadConfigProperties(accessServiceFullName,
+                                           publishZonesPropertyName,
                                            zoneListObject.toString(),
                                            auditLog,
                                            methodName,
