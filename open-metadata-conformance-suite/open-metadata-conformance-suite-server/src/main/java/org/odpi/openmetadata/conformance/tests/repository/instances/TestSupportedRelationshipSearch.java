@@ -25,12 +25,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
 
@@ -46,64 +41,66 @@ import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadat
  */
 public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCase
 {
-    private static final String testCaseId     = "repository-relationship-property-search";
-    private static final String testCaseName   = "Repository relationship property search test case";
+    private static final String TEST_CASE_ID      = "repository-relationship-property-search";
+    private static final String TEST_CASE_NAME    = "Repository relationship property search test case";
 
-    private static final String assertion1     = testCaseId + "-01";
-    private static final String assertionMsg1  = " relationship type matches the known type from the repository helper.";
+    private static final String ASSERTION_1       = TEST_CASE_ID + "-01";
+    private static final String ASSERTION_MSG_1   = " relationship type matches the known type from the repository helper.";
 
-    private static final String assertion2     = testCaseId + "-02";
-    private static final String assertionMsg2  = " repository does not support an entity type that can be used to test relationship type ";
+    private static final String ASSERTION_2       = TEST_CASE_ID + "-02";
+    private static final String ASSERTION_MSG_2   = " repository does not support an entity type that can be used to test relationship type ";
 
-    private static final String assertion2a     = testCaseId + "-2a";
-    private static final String assertionMsg2a  = "repository supports searching for relationships of type ";
+    private static final String ASSERTION_2_A     = TEST_CASE_ID + "-2a";
+    private static final String ASSERTION_MSG_2_A = "repository supports searching for relationships of type ";
 
-    private static final String assertion3     = testCaseId + "-03";
-    private static final String assertionMsg3  = "repository supports creation of instances of type ";
+    private static final String ASSERTION_3       = TEST_CASE_ID + "-03";
+    private static final String ASSERTION_MSG_3   = "repository supports creation of instances of type ";
 
-    private static final String assertion4     = testCaseId + "-04";
-    private static final String assertionMsg4  = "findRelationshipsByProperty found {0}/{1} expected results using parameters: {2}";
+    private static final String ASSERTION_4       = TEST_CASE_ID + "-04";
+    private static final String ASSERTION_MSG_4   = "findRelationshipsByProperty found {0}/{1} expected results using parameters: {2}";
 
-    private static final String assertion5     = testCaseId + "-05";
-    private static final String assertionMsg5  = "findRelationshipsByProperty returned {0} unexpected results using parameters: {1}";
+    private static final String ASSERTION_5       = TEST_CASE_ID + "-05";
+    private static final String ASSERTION_MSG_5   = "findRelationshipsByProperty returned {0} unexpected results using parameters: {1}";
 
-    private static final String assertion6     = testCaseId + "-06";
-    private static final String assertionMsg6  = assertionMsg4;
+    private static final String ASSERTION_6       = TEST_CASE_ID + "-06";
+    private static final String ASSERTION_MSG_6   = ASSERTION_MSG_4;
 
-    private static final String assertion7     = testCaseId + "-07";
-    private static final String assertionMsg7  = assertionMsg5;
+    private static final String ASSERTION_7       = TEST_CASE_ID + "-07";
+    private static final String ASSERTION_MSG_7   = ASSERTION_MSG_5;
 
-    private static final String assertion8     = testCaseId + "-08";
-    private static final String assertionMsg8  = "findRelationshipsByPropertyValue found {0}/{1} expected results using parameters: {2}";
+    private static final String ASSERTION_8       = TEST_CASE_ID + "-08";
+    private static final String ASSERTION_MSG_8   = "findRelationshipsByPropertyValue found {0}/{1} expected results using parameters: {2}";
 
-    private static final String assertion9     = testCaseId + "-09";
-    private static final String assertionMsg9  = "findRelationshipsByPropertyValue found {0} unexpected results using parameters: {1}";
+    private static final String ASSERTION_9       = TEST_CASE_ID + "-09";
+    private static final String ASSERTION_MSG_9   = "findRelationshipsByPropertyValue found {0} unexpected results using parameters: {1}";
 
-    private static final String assertion10     = testCaseId + "-10";
-    private static final String assertionMsg10  = assertionMsg4;
+    private static final String ASSERTION_10      = TEST_CASE_ID + "-10";
+    private static final String ASSERTION_MSG_10  = ASSERTION_MSG_4;
 
-    private static final String assertion11     = testCaseId + "-11";
-    private static final String assertionMsg11  = assertionMsg5;
+    private static final String ASSERTION_11      = TEST_CASE_ID + "-11";
+    private static final String ASSERTION_MSG_11  = ASSERTION_MSG_5;
 
-    private static final String assertion12     = testCaseId + "-12";
-    private static final String assertionMsg12  = "findRelationshipsByPropertyValue with general regex found {0}/{1} expected results using parameters: {2}";
+    private static final String ASSERTION_12      = TEST_CASE_ID + "-12";
+    private static final String ASSERTION_MSG_12  = "findRelationshipsByPropertyValue with general regex found {0}/{1} expected results using parameters: {2}";
 
-    private static final String assertion13     = testCaseId + "-13";
-    private static final String assertionMsg13  = "findRelationshipsByPropertyValue with general regex found {0} unexpected results using parameters: {1}";
+    private static final String ASSERTION_13      = TEST_CASE_ID + "-13";
+    private static final String ASSERTION_MSG_13  = "findRelationshipsByPropertyValue with general regex found {0} unexpected results using parameters: {1}";
 
-    private static final String assertion14     = testCaseId + "-14";
-    private static final String assertionMsg14  = "findRelationshipsByProperty with general regex found {0}/{1} expected results using parameters: {2}";
+    private static final String ASSERTION_14      = TEST_CASE_ID + "-14";
+    private static final String ASSERTION_MSG_14  = "findRelationshipsByProperty with general regex found {0}/{1} expected results using parameters: {2}";
 
-    private static final String assertion15     = testCaseId + "-15";
-    private static final String assertionMsg15  = "findRelationshipsByProperty with general regex found {0} unexpected results using parameters: {1}";
+    private static final String ASSERTION_15      = TEST_CASE_ID + "-15";
+    private static final String ASSERTION_MSG_15  = "findRelationshipsByProperty with general regex found {0} unexpected results using parameters: {1}";
 
-    private static final String assertion101    = testCaseId + "-101";
-    private static final String assertionMsg101 = "findRelationshipsByPropertyValue supports general regular expressions: ";
+    private static final String ASSERTION_101     = TEST_CASE_ID + "-101";
+    private static final String ASSERTION_MSG_101 = "findRelationshipsByPropertyValue supports general regular expressions: ";
 
-    private static final String assertion102    = testCaseId + "-102";
-    private static final String assertionMsg102 = "findRelationshipsByProperty supports general regular expressions: ";
+    private static final String ASSERTION_102     = TEST_CASE_ID + "-102";
+    private static final String ASSERTION_MSG_102 = "findRelationshipsByProperty supports general regular expressions: ";
 
-    private static final String missingExpectedGuids = "(results missing expected GUIDs)";
+    private static final String MISSING_EXPECTED_GUIDS = "(results missing expected GUIDs)";
+
+    private static final String V_NULL = "null";
 
 
     private RepositoryConformanceWorkPad              workPad;
@@ -153,7 +150,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
         this.relationshipDef       = relationshipDef;
         this.entityDefs            = entityDefs;
 
-        this.testTypeName          = this.updateTestIdByType(relationshipDef.getName(), testCaseId, testCaseName);
+        this.testTypeName          = this.updateTestIdByType(relationshipDef.getName(), TEST_CASE_ID, TEST_CASE_NAME);
 
         this.knownInstances        = null;
         this.knownInstancesGUIDs   = null;
@@ -184,8 +181,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
         RelationshipDef knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipDef.getName());
         verifyCondition((relationshipDef.equals(knownRelationshipDef)),
-                        assertion1,
-                        testTypeName + assertionMsg1,
+                        ASSERTION_1,
+                        testTypeName + ASSERTION_MSG_1,
                         RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
                         RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
@@ -327,8 +324,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              * Report it as unsupported and back off.
              */
 
-            super.addNotSupportedAssertion(assertion2a,
-                                           assertionMsg2a + relationshipDef.getName(),
+            super.addNotSupportedAssertion(ASSERTION_2_A,
+                                           ASSERTION_MSG_2_A + relationshipDef.getName(),
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
@@ -343,17 +340,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             String methodName = "findRelationshipsByProperty";
             String operationDescription = "find relationships of type " + relationshipDef.getName();
-            Map<String,String> parameters = new HashMap<>();
-            parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
-            parameters.put("matchProperties"               , emptyMatchProperties.toString());
-            parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
-            parameters.put("fromRelationshipElement"       , Integer.toString(0));
-            parameters.put("limitResultsByStatus"          , "null");
-            parameters.put("asOfTime"                      , "null");
-            parameters.put("sequencingProperty"            , "null");
-            parameters.put("sequencingOrder"               , "null");
-            parameters.put("pageSize"                      , Integer.toString(pageSize));
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            Map<String,String> parameters = getParameters(relationshipDef.getGUID(), emptyMatchProperties, MatchCriteria.ALL);
+            String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception( msg , exc );
 
@@ -420,8 +408,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                      * We succeeded in creating instances - record the fact
                      */
                     assertCondition((true),
-                                    assertion3,
-                                    testTypeName + assertionMsg3,
+                                    ASSERTION_3,
+                                    testTypeName + ASSERTION_MSG_3,
                                     RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                                     RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
@@ -566,8 +554,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              * There are no supported types for at least one of the ends - the repository cannot test this relationship type.
              */
             assertCondition((false),
-                            assertion2,
-                             assertionMsg2 + testTypeName,
+                            ASSERTION_2,
+                             ASSERTION_MSG_2 + testTypeName,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
         }
@@ -620,8 +608,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              *
              */
 
-            super.addNotSupportedAssertion(assertion2,
-                                           assertionMsg2,
+            super.addNotSupportedAssertion(ASSERTION_2,
+                                           ASSERTION_MSG_2,
                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
@@ -637,9 +625,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             Map<String,String> parameters = new HashMap<>();
             parameters.put("typeGUID"                , entityType!=null?entityType.getGUID():"null");
             parameters.put("initialProperties"       , properties!=null?properties.toString():"null");
-            parameters.put("initialClasiifications"  , "null");
+            parameters.put("initialClassifications"  , "null");
             parameters.put("initialStatus"           , "null");
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception( msg , exc );
 
@@ -664,8 +652,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              *
              */
 
-            super.addNotSupportedAssertion(assertion2,
-                                           assertionMsg2,
+            super.addNotSupportedAssertion(ASSERTION_2,
+                                           ASSERTION_MSG_2,
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
@@ -684,7 +672,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             parameters.put("end2 entityGUID"         , end2.getGUID());
             parameters.put("initialProperties"       , instanceProps!=null?instanceProps.toString():"null");
             parameters.put("initialStatus"           , "null");
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception( msg , exc );
 
@@ -995,16 +983,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              */
             List<Relationship> result = null;
 
-            Map<String,String> parameters = new HashMap<>();
-            parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
-            parameters.put("matchProperties"               , matchProperties.toString());
-            parameters.put("matchCriteria"                 , matchCriteria.getName());
-            parameters.put("fromRelationshipElement"       , Integer.toString(0));
-            parameters.put("limitResultsByStatus"          , "null");
-            parameters.put("asOfTime"                      , "null");
-            parameters.put("sequencingProperty"            , "null");
-            parameters.put("sequencingOrder"               , "null");
-            parameters.put("pageSize"                      , Integer.toString(pageSize));
+            Map<String,String> parameters = getParameters(relationshipDef.getGUID(), matchProperties, matchCriteria);
 
             try {
 
@@ -1026,8 +1005,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                  *
                  */
 
-                super.addNotSupportedAssertion(assertion101,
-                                               assertionMsg101,
+                super.addNotSupportedAssertion(ASSERTION_101,
+                                               ASSERTION_MSG_101,
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
@@ -1040,7 +1019,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 String methodName = "findRelationshipsByProperty";
                 String operationDescription = "find relationships of type " + relationshipDef.getName();
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -1121,9 +1100,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             boolean limited_small_case = pageLimited && expectedRelationshipCount <  pageSize && resultCount >= expectedRelationshipCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-            String assertionMessage = MessageFormat.format(assertionMsg4, resultCount, expectedRelationshipCount, parameters);
+            String assertionMessage = MessageFormat.format(ASSERTION_MSG_4, resultCount, expectedRelationshipCount, parameters);
             assertCondition((acceptable_result_size),
-                            assertion4,
+                            ASSERTION_4,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
@@ -1152,7 +1131,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                 if (!pageLimited) {
 
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        unexpectedResult = missingExpectedGuids;
+                        unexpectedResult = MISSING_EXPECTED_GUIDS;
 
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
@@ -1199,9 +1178,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                     }
                 }
 
-                assertionMessage = MessageFormat.format(assertionMsg5, unexpectedResult, parameters);
+                assertionMessage = MessageFormat.format(ASSERTION_MSG_5, unexpectedResult, parameters);
                 assertCondition(unexpectedResult.equals("0"),
-                                assertion5,
+                                ASSERTION_5,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
@@ -1304,16 +1283,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             List<Relationship> result = null;
 
-            Map<String,String> parameters = new HashMap<>();
-            parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
-            parameters.put("matchProperties"               , matchProperties.toString());
-            parameters.put("matchCriteria"                 , matchCriteria.getName());
-            parameters.put("fromRelationshipElement"       , Integer.toString(0));
-            parameters.put("limitResultsByStatus"          , "null");
-            parameters.put("asOfTime"                      , "null");
-            parameters.put("sequencingProperty"            , "null");
-            parameters.put("sequencingOrder"               , "null");
-            parameters.put("pageSize"                      , Integer.toString(pageSize));
+            Map<String,String> parameters = getParameters(relationshipDef.getGUID(), matchProperties, matchCriteria);
 
             try {
                 result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
@@ -1335,8 +1305,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                  *
                  */
 
-                super.addNotSupportedAssertion(assertion101,
-                                               assertionMsg101,
+                super.addNotSupportedAssertion(ASSERTION_101,
+                                               ASSERTION_MSG_101,
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
@@ -1349,7 +1319,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 String methodName = "findRelationshipsByProperty";
                 String operationDescription = "find relationships of type " + relationshipDef.getName();
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -1387,9 +1357,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             boolean limited_small_case = pageLimited && expectedRelationshipCount <  pageSize && resultCount >= expectedRelationshipCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-            String assertionMessage = MessageFormat.format(assertionMsg6, resultCount, expectedRelationshipCount, parameters);
+            String assertionMessage = MessageFormat.format(ASSERTION_MSG_6, resultCount, expectedRelationshipCount, parameters);
             assertCondition((acceptable_result_size),
-                            assertion6,
+                            ASSERTION_6,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
@@ -1418,7 +1388,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 if (!pageLimited) {
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        unexpectedResult = missingExpectedGuids;
+                        unexpectedResult = MISSING_EXPECTED_GUIDS;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                     for (Relationship relationship : result) {
@@ -1483,9 +1453,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                     }
                 }
 
-                assertionMessage = MessageFormat.format(assertionMsg7, unexpectedResult, parameters);
+                assertionMessage = MessageFormat.format(ASSERTION_MSG_7, unexpectedResult, parameters);
                 assertCondition(unexpectedResult.equals("0"),
-                                assertion7,
+                                ASSERTION_7,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
@@ -1639,15 +1609,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             List<Relationship> result = null;
 
-            Map<String,String> parameters = new HashMap<>();
-            parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
-            parameters.put("searchCriteria"                , literalisedValue);
-            parameters.put("fromRelationshipElement"       , Integer.toString(0));
-            parameters.put("limitResultsByStatus"          , "null");
-            parameters.put("asOfTime"                      , "null");
-            parameters.put("sequencingProperty"            , "null");
-            parameters.put("sequencingOrder"               , "null");
-            parameters.put("pageSize"                      , Integer.toString(pageSize));
+            Map<String,String> parameters = getParameters(relationshipDef.getGUID(), literalisedValue);
 
             try {
                 result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
@@ -1667,8 +1629,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                  *
                  */
 
-                super.addNotSupportedAssertion(assertion101,
-                                               assertionMsg101,
+                super.addNotSupportedAssertion(ASSERTION_101,
+                                               ASSERTION_MSG_101,
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
@@ -1681,7 +1643,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 String methodName = "findRelationshipsByPropertyValue";
                 String operationDescription = "find relationships of type " + relationshipDef.getName();
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -1707,9 +1669,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             boolean limited_small_case = pageLimited && expectedRelationshipCount <  pageSize && resultCount >= expectedRelationshipCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-            String assertionMessage = MessageFormat.format(assertionMsg8, resultCount, expectedRelationshipCount, parameters);
+            String assertionMessage = MessageFormat.format(ASSERTION_MSG_8, resultCount, expectedRelationshipCount, parameters);
             assertCondition((acceptable_result_size),
-                            assertion8,
+                            ASSERTION_8,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
@@ -1737,7 +1699,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 if (!pageLimited) {
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        unexpectedResult = missingExpectedGuids;
+                        unexpectedResult = MISSING_EXPECTED_GUIDS;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                     for (Relationship relationship : result) {
@@ -1801,9 +1763,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                     }
                 }
 
-                assertionMessage = MessageFormat.format(assertionMsg9, unexpectedResult, parameters);
+                assertionMessage = MessageFormat.format(ASSERTION_MSG_9, unexpectedResult, parameters);
                 assertCondition(unexpectedResult.equals("0"),
-                                assertion9,
+                                ASSERTION_9,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
@@ -2066,8 +2028,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                  *
                  */
 
-                super.addNotSupportedAssertion(assertion101,
-                                               assertionMsg101,
+                super.addNotSupportedAssertion(ASSERTION_101,
+                                               ASSERTION_MSG_101,
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
@@ -2080,17 +2042,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 String methodName = "findRelationshipsByProperty";
                 String operationDescription = "find relationships with no type filter";
-                Map<String,String> parameters = new HashMap<>();
-                parameters.put("relationshipTypeGUID"          , "null");
-                parameters.put("matchProperties"               , matchProperties.toString());
-                parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
-                parameters.put("fromRelationshipElement"       , Integer.toString(0));
-                parameters.put("limitResultsByStatus"          , "null");
-                parameters.put("asOfTime"                      , "null");
-                parameters.put("sequencingProperty"            , "null");
-                parameters.put("sequencingOrder"               , "null");
-                parameters.put("pageSize"                      , Integer.toString(pageSize));
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                Map<String,String> parameters = getParameters(null, matchProperties, MatchCriteria.ALL);
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -2135,16 +2088,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 result = null;
 
-                Map<String,String> parameters = new HashMap<>();
-                parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
-                parameters.put("matchProperties"               , matchProperties.toString());
-                parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
-                parameters.put("fromRelationshipElement"       , Integer.toString(0));
-                parameters.put("limitResultsByStatus"          , "null");
-                parameters.put("asOfTime"                      , "null");
-                parameters.put("sequencingProperty"            , "null");
-                parameters.put("sequencingOrder"               , "null");
-                parameters.put("pageSize"                      , Integer.toString(pageSize));
+                Map<String,String> parameters = getParameters(relationshipDef.getGUID(), matchProperties, MatchCriteria.ALL);
 
                 try {
                     result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
@@ -2165,8 +2109,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                      *
                      */
 
-                    super.addNotSupportedAssertion(assertion101,
-                                                   assertionMsg101,
+                    super.addNotSupportedAssertion(ASSERTION_101,
+                                                   ASSERTION_MSG_101,
                                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
@@ -2179,7 +2123,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                     String methodName = "findRelationshipsByProperty";
                     String operationDescription = "find relationships of type " + relationshipDef.getName();
-                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                    String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                     throw new Exception( msg , exc );
 
@@ -2204,9 +2148,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                 boolean limited_small_case = wildSearchPageLimited && expectedRelationshipCount < pageSize && resultCount >= expectedRelationshipCount;
                 boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-                String assertionMessage = MessageFormat.format(assertionMsg10, resultCount, expectedRelationshipCount, parameters);
+                String assertionMessage = MessageFormat.format(ASSERTION_MSG_10, resultCount, expectedRelationshipCount, parameters);
                 assertCondition((acceptable_result_size),
-                                assertion10,
+                                ASSERTION_10,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
@@ -2235,7 +2179,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                     if (!pageLimited) {
 
                         if (!resultGUIDs.containsAll(expectedGUIDs))
-                            unexpectedResult = missingExpectedGuids;
+                            unexpectedResult = MISSING_EXPECTED_GUIDS;
 
                     } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
@@ -2273,9 +2217,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                         }
                     }
 
-                    assertionMessage = MessageFormat.format(assertionMsg11, unexpectedResult, parameters);
+                    assertionMessage = MessageFormat.format(ASSERTION_MSG_11, unexpectedResult, parameters);
                     assertCondition(unexpectedResult.equals("0"),
-                                    assertion11,
+                                    ASSERTION_11,
                                     assertionMessage,
                                     RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                     RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
@@ -2426,15 +2370,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             List<Relationship> result = null;
 
-            Map<String,String> parameters = new HashMap<>();
-            parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
-            parameters.put("searchCriteria"                , regexValue);
-            parameters.put("fromRelationshipElement"       , Integer.toString(0));
-            parameters.put("limitResultsByStatus"          , "null");
-            parameters.put("asOfTime"                      , "null");
-            parameters.put("sequencingProperty"            , "null");
-            parameters.put("sequencingOrder"               , "null");
-            parameters.put("pageSize"                      , Integer.toString(pageSize));
+            Map<String,String> parameters = getParameters(relationshipDef.getGUID(), regexValue);
 
             try {
                 result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
@@ -2460,8 +2396,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                  * test results. The actual nature of the failure should be clear from the exception message.
                  */
 
-                super.addNotSupportedAssertion(assertion101,
-                                               assertionMsg101 + relationshipDef.getName() + ": " + exc.getMessage(),
+                super.addNotSupportedAssertion(ASSERTION_101,
+                                               ASSERTION_MSG_101 + relationshipDef.getName() + ": " + exc.getMessage(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
 
@@ -2475,7 +2411,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 String methodName = "findRelationshipsByPropertyValue";
                 String operationDescription = "find relationships with general regex for type " + relationshipDef.getName();
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -2500,9 +2436,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             boolean limited_small_case = pageLimited && expectedRelationshipCount < pageSize && resultCount >= expectedRelationshipCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-            String assertionMessage = MessageFormat.format(assertionMsg12, resultCount, expectedRelationshipCount, parameters);
+            String assertionMessage = MessageFormat.format(ASSERTION_MSG_12, resultCount, expectedRelationshipCount, parameters);
             assertCondition((acceptable_result_size),
-                            assertion12,
+                            ASSERTION_12,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
@@ -2530,7 +2466,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 if (!pageLimited) {
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        unexpectedResult = missingExpectedGuids;
+                        unexpectedResult = MISSING_EXPECTED_GUIDS;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                     for (Relationship relationship : result) {
@@ -2594,9 +2530,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                     }
                 }
 
-                assertionMessage = MessageFormat.format(assertionMsg13, unexpectedResult, parameters);
+                assertionMessage = MessageFormat.format(ASSERTION_MSG_13, unexpectedResult, parameters);
                 assertCondition(unexpectedResult.equals("0"),
-                                assertion13,
+                                ASSERTION_13,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
@@ -2620,16 +2556,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             result = null;
 
-            parameters = new HashMap<>();
-            parameters.put("relationshipTypeGUID"          , relationshipDef.getGUID());
-            parameters.put("matchProperties"               , matchProperties.toString());
-            parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
-            parameters.put("fromRelationshipElement"       , Integer.toString(0));
-            parameters.put("limitResultsByStatus"          , "null");
-            parameters.put("asOfTime"                      , "null");
-            parameters.put("sequencingProperty"            , "null");
-            parameters.put("sequencingOrder"               , "null");
-            parameters.put("pageSize"                      , Integer.toString(pageSize));
+            parameters = getParameters(relationshipDef.getGUID(), matchProperties, MatchCriteria.ALL);
 
             try {
 
@@ -2658,8 +2585,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                  * test results. The actual nature of the failure should be clear from the exception message.
                  */
 
-                super.addNotSupportedAssertion(assertion102,
-                                               assertionMsg102 + relationshipDef.getName() + ": " + exc.getMessage(),
+                super.addNotSupportedAssertion(ASSERTION_102,
+                                               ASSERTION_MSG_102 + relationshipDef.getName() + ": " + exc.getMessage(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
@@ -2673,7 +2600,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 String methodName = "findRelationshipsByProperty";
                 String operationDescription = "find relationships of type " + relationshipDef.getName();
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -2697,9 +2624,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             limited_small_case = pageLimited && expectedRelationshipCount < pageSize && resultCount >= expectedRelationshipCount;
             acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-            assertionMessage = MessageFormat.format(assertionMsg14, resultCount, expectedRelationshipCount, parameters);
+            assertionMessage = MessageFormat.format(ASSERTION_MSG_14, resultCount, expectedRelationshipCount, parameters);
             assertCondition((acceptable_result_size),
-                            assertion14,
+                            ASSERTION_14,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
@@ -2727,7 +2654,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 if (!pageLimited) {
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        unexpectedResult = missingExpectedGuids;
+                        unexpectedResult = MISSING_EXPECTED_GUIDS;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                     for (Relationship relationship : result) {
@@ -2791,15 +2718,45 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                     }
                 }
 
-                assertionMessage = MessageFormat.format(assertionMsg15, unexpectedResult, parameters);
+                assertionMessage = MessageFormat.format(ASSERTION_MSG_15, unexpectedResult, parameters);
                 assertCondition(unexpectedResult.equals("0"),
-                                assertion15,
+                                ASSERTION_15,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
             }
         }
 
+    }
+
+    private Map<String,String> getParameters(String relationshipTypeGuid,
+                                             String searchCriteria) {
+        Map<String,String> parameters = new TreeMap<>();
+        parameters.put("relationshipTypeGUID", relationshipTypeGuid == null ? V_NULL : relationshipTypeGuid);
+        parameters.put("searchCriteria", searchCriteria == null ? V_NULL : searchCriteria);
+        parameters.put("fromRelationshipElement", Integer.toString(0));
+        parameters.put("limitResultsByStatus", V_NULL);
+        parameters.put("asOfTime", V_NULL);
+        parameters.put("sequencingProperty", V_NULL);
+        parameters.put("sequencingOrder", V_NULL);
+        parameters.put("pageSize", Integer.toString(pageSize));
+        return parameters;
+    }
+
+    private Map<String,String> getParameters(String relationshipTypeGuid,
+                                             InstanceProperties matchProperties,
+                                             MatchCriteria matchCriteria) {
+        Map<String,String> parameters = new TreeMap<>();
+        parameters.put("relationshipTypeGUID", relationshipTypeGuid == null ? V_NULL : relationshipTypeGuid);
+        parameters.put("matchProperties", matchProperties == null ? V_NULL : matchProperties.toString());
+        parameters.put("matchCriteria", matchCriteria == null ? V_NULL : matchCriteria.getName());
+        parameters.put("fromRelationshipElement", Integer.toString(0));
+        parameters.put("limitResultsByStatus", V_NULL);
+        parameters.put("asOfTime", V_NULL);
+        parameters.put("sequencingProperty", V_NULL);
+        parameters.put("sequencingOrder", V_NULL);
+        parameters.put("pageSize", Integer.toString(pageSize));
+        return parameters;
     }
 
 }

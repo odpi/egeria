@@ -215,7 +215,7 @@ public class PropertyServerException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 
-        log.debug("{}, {}, {}, {}", httpCode, className, actionDescription, caughtError);
+        log.debug("{}, {}, {}", httpCode, className, actionDescription, caughtError);
     }
 
 
@@ -245,7 +245,7 @@ public class PropertyServerException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError, relatedProperties);
 
-        log.debug("{}, {}, {}, {}", httpCode, className, actionDescription, caughtError);
+        log.debug("{}, {}, {}", httpCode, className, actionDescription, caughtError);
     }
 
 
