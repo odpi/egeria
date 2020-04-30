@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.odpi.openmetadata.accessservices.assetowner.mappers.FileSystemMapper;
 import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.ReferenceableConverter;
