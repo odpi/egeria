@@ -27,10 +27,10 @@ its own organizational maturity required to make it successful.
 
 Egeria offers the following types of automation:
 
-* [Manual cataloging](#Manual cataloging)
-* [Templated cataloging](#Templated cataloging)
-* [Integrated cataloging](#Integrated cataloging)
-* [Discovery and stewardship](#Discovery and stewardship)
+* [Manual cataloging](#Manual-cataloging)
+* [Templated cataloging](#Templated-cataloging)
+* [Integrated cataloging](#Integrated-cataloging)
+* [Discovery and stewardship](#Discovery-and-stewardship)
 
 The idea is that these approaches are selected for each type of asset and blended together to balance
 the investment in the automation, against the time commitment of subject matter experts, against
@@ -100,6 +100,7 @@ new database is added, or a schema is changed.
 Integration daemons support different integration patterns to meet the variety of capabilities
 of digital technologies.  For example, it may poll the technology or listen for events from it
 that indicate changes in the assets.
+They are limited to the metadata supported by the technology they are working with
 
 There is more information on the use of integrated cataloging on the
 [integration daemon](../../../open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md)
@@ -108,7 +109,7 @@ page.
 
 ## Discovery and stewardship
 
-Integrated cataloging automates the creation the basic asset entry, its connection and
+Integrated cataloging typically automates the creation the basic asset entry, its connection and
 optionally, its schema.  This is what is called technical metadata.
 
 Metadata discovery uses advanced analysis to inspect the content of specific assets to derive

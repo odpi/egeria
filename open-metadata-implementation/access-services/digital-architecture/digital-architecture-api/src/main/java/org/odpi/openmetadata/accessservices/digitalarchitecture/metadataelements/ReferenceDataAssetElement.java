@@ -3,15 +3,24 @@
 
 package org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ReferenceDataAssetProperties;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ValidValuesImplProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 /**
  * ReferenceDataAssetElement contains the properties and header for a reference data asset retrieved from the metadata repository.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ReferenceDataAssetElement extends ReferenceDataAssetProperties implements MetadataElement,
                                                                                        Serializable
 {

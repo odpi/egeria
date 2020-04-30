@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.handlers;
 
-import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatformProperties;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -54,29 +54,29 @@ public class RegistrationHandler {
     /**
      * Create software server capability entity.
      *
-     * @param softwareServerCapability the software server capability
+     * @param dataPlatformProperties the software server capability
      * @return the string
      * @throws InvalidParameterException  the invalid parameter exception
      * @throws UserNotAuthorizedException the user not authorized exception
      * @throws PropertyServerException    the property server exception
      */
-    public String createSoftwareServerCapability(SoftwareServerCapability softwareServerCapability) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public String createSoftwareServerCapability(DataPlatformProperties dataPlatformProperties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         final String methodName = "createExternalDataPlatform";
 
-        String qualifiedNameForSoftwareServer = softwareServerCapability.getQualifiedName();
+        String qualifiedNameForSoftwareServer = dataPlatformProperties.getQualifiedName();
 
         invalidParameterHandler.validateUserId(DATA_PLATFORM_USER_ID, methodName);
         invalidParameterHandler.validateName(qualifiedNameForSoftwareServer, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
                 .withStringProperty(QUALIFIED_NAME_PROPERTY_NAME, qualifiedNameForSoftwareServer)
-                .withStringProperty(PATCH_LEVEL__PROPERTY_NAME, softwareServerCapability.getPatchLevel())
-                .withStringProperty(TYPE_PROPERTY_NAME, softwareServerCapability.getDataPlatformType())
-                .withStringProperty(VERSION__PROPERTY_NAME, softwareServerCapability.getDataPlatformVersion())
-                .withStringProperty(SOURCE_PROPERTY_NAME, softwareServerCapability.getSource())
-                .withStringProperty(NAME_PROPERTY_NAME, softwareServerCapability.getDisplayName())
-                .withStringProperty(Constants.DESCRIPTION, softwareServerCapability.getDescription())
+                .withStringProperty(PATCH_LEVEL__PROPERTY_NAME, dataPlatformProperties.getPatchLevel())
+                .withStringProperty(TYPE_PROPERTY_NAME, dataPlatformProperties.getTypeDescription())
+                .withStringProperty(VERSION__PROPERTY_NAME, dataPlatformProperties.getVersion())
+                .withStringProperty(SOURCE_PROPERTY_NAME, dataPlatformProperties.getSource())
+                .withStringProperty(NAME_PROPERTY_NAME, dataPlatformProperties.getDisplayName())
+                .withStringProperty(Constants.DESCRIPTION, dataPlatformProperties.getDescription())
                 .build();
 
         return repositoryHandler.createEntity(
@@ -98,7 +98,7 @@ public class RegistrationHandler {
      * @throws UserNotAuthorizedException the user not authorized exception
      * @throws PropertyServerException    the property server exception
      */
-    public SoftwareServerCapability getSoftwareServerCapabilityByQualifiedName(String userId, String qualifiedName) throws InvalidParameterException,UserNotAuthorizedException, PropertyServerException {
+    public DataPlatformProperties getSoftwareServerCapabilityByQualifiedName(String userId, String qualifiedName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         final String methodName = "getExternalDataPlatformByQualifiedName";
 
@@ -123,15 +123,18 @@ public class RegistrationHandler {
         return buildSoftwareServerCapabilitySource(entity);
     }
 
-    private SoftwareServerCapability buildSoftwareServerCapabilitySource(EntityDetail entity) {
-        String methodName= "buildSoftwareServerCapabilitySource";
-        SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
-        softwareServerCapability.setDisplayName(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, NAME_PROPERTY_NAME, entity.getProperties(),  methodName));
-        softwareServerCapability.setQualifiedName(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, QUALIFIED_NAME_PROPERTY_NAME, entity.getProperties(),  methodName));
-        softwareServerCapability.setDataPlatformVersion(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, VERSION__PROPERTY_NAME, entity.getProperties(),  methodName));
-        softwareServerCapability.setPatchLevel(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME,PATCH_LEVEL__PROPERTY_NAME, entity.getProperties(),  methodName));
-        softwareServerCapability.setDataPlatformType(repositoryHelper.getStringProperty(Constants.DATA_PLATFORM_OMAS_NAME, TYPE_PROPERTY_NAME, entity.getProperties(),  methodName));
-        softwareServerCapability.setDescription(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, Constants.DESCRIPTION, entity.getProperties(),  methodName));
-        return softwareServerCapability;
+    private DataPlatformProperties buildSoftwareServerCapabilitySource(EntityDetail entity) {
+        String                 methodName             = "buildSoftwareServerCapabilitySource";
+        DataPlatformProperties dataPlatformProperties = new DataPlatformProperties();
+        dataPlatformProperties.setDisplayName(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, NAME_PROPERTY_NAME, entity.getProperties(), methodName));
+        dataPlatformProperties.setQualifiedName(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, QUALIFIED_NAME_PROPERTY_NAME, entity.getProperties(), methodName));
+        dataPlatformProperties.setVersion(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, VERSION__PROPERTY_NAME,
+                                                                                   entity.getProperties(),
+                                                                    methodName));
+        dataPlatformProperties.setPatchLevel(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, PATCH_LEVEL__PROPERTY_NAME, entity.getProperties(), methodName));
+        dataPlatformProperties.setTypeDescription(repositoryHelper.getStringProperty(Constants.DATA_PLATFORM_OMAS_NAME, TYPE_PROPERTY_NAME, entity.getProperties(),
+                                                                    methodName));
+        dataPlatformProperties.setDescription(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, Constants.DESCRIPTION, entity.getProperties(), methodName));
+        return dataPlatformProperties;
     }
 }

@@ -110,7 +110,7 @@ public class PropertyCondition implements Serializable
     }
 
     /**
-     * Set the value of hte property against which to compare.
+     * Set the value of the property against which to compare.
      *
      * @param value against which to compare
      */

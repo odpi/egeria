@@ -11,8 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SimpleSchemaType describes a schema element that has a primitive type.  This class stores which
- * type of primitive type it is an a default value if supplied.
+ * SimpleSchemaType describes a schema element that has a primitive or enum type.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,7 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = PrimitiveSchemaType.class, name = "PrimitiveSchemaType"),
                 @JsonSubTypes.Type(value = EnumSchemaType.class, name = "EnumSchemaType"),
         })
-
 public class SimpleSchemaType extends SchemaType
 {
     private static final long     serialVersionUID = 1L;

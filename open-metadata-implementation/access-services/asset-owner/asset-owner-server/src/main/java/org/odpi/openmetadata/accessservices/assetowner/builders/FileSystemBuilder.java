@@ -3,8 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.builders;
 
 import org.odpi.openmetadata.accessservices.assetowner.mappers.FileSystemMapper;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.ReferenceableBuilder;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.SoftwareServerCapabilityBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -13,14 +12,8 @@ import java.util.Map;
 /**
  * FileSystemBuilder creates the parts for an entity that represents a file system definition.
  */
-public class FileSystemBuilder extends ReferenceableBuilder
+public class FileSystemBuilder extends SoftwareServerCapabilityBuilder
 {
-    private String displayName;
-    private String description;
-    private String type;
-    private String version;
-    private String patchLevel;
-    private String source;
     private String format;
     private String encryption;
 
@@ -40,12 +33,6 @@ public class FileSystemBuilder extends ReferenceableBuilder
     {
         super(qualifiedName, repositoryHelper, serviceName, serverName);
 
-        this.displayName = null;
-        this.description = null;
-        this.type = null;
-        this.version = null;
-        this.patchLevel = null;
-        this.source = null;
         this.format = null;
         this.encryption = null;
     }
@@ -84,14 +71,19 @@ public class FileSystemBuilder extends ReferenceableBuilder
                              String               serviceName,
                              String               serverName)
     {
-        super(uniqueName, additionalProperties, extendedProperties, repositoryHelper, serviceName, serverName);
+        super(uniqueName,
+              displayName,
+              description,
+              type,
+              version,
+              patchLevel,
+              source,
+              additionalProperties,
+              extendedProperties,
+              repositoryHelper,
+              serviceName,
+              serverName);
 
-        this.displayName = displayName;
-        this.description = description;
-        this.type = type;
-        this.version = version;
-        this.patchLevel = patchLevel;
-        this.source = source;
         this.format = format;
         this.encryption = encryption;
     }
@@ -102,78 +94,8 @@ public class FileSystemBuilder extends ReferenceableBuilder
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
      */
-    public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
-    {
-        InstanceProperties properties = super.getInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      FileSystemMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      FileSystemMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
-
-        if (type != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      FileSystemMapper.TYPE_PROPERTY_NAME,
-                                                                      type,
-                                                                      methodName);
-        }
-
-        if (version != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      FileSystemMapper.VERSION_PROPERTY_NAME,
-                                                                      version,
-                                                                      methodName);
-        }
-
-        if (patchLevel != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      FileSystemMapper.PATCH_LEVEL_PROPERTY_NAME,
-                                                                      patchLevel,
-                                                                      methodName);
-        }
-
-        if (source != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      FileSystemMapper.SOURCE_PROPERTY_NAME,
-                                                                      source,
-                                                                      methodName);
-        }
-        return properties;
-    }
-
-
-
-    /**
-     * Return the supplied bean properties in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
-     */
-    public InstanceProperties getClassificationInstanceProperties(String  methodName) throws InvalidParameterException
+    public InstanceProperties getClassificationInstanceProperties(String  methodName)
     {
         InstanceProperties properties = null;
 

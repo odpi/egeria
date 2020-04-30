@@ -35,6 +35,7 @@ capability around the data assets.
 * **[0581 Solution Ports and Wires](0581-Solution-Ports-and-Wires.md)**
 * **[0595 Design Patterns](0595-Design-Patterns.md)**
 
+![UML Packages](area-5-models-and-schema-overview.png)
 
 Return to [Overview](README.md).
 
