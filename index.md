@@ -60,38 +60,49 @@ Alternatively read on for more information.
 
 The guides provide step-by-step guidance on a specific aspect of working with Egeria.
 
+* [Building an Asset Catalog](open-metadata-publication/website/cataloging-assets) - provides
+  guidance on the different approaches offered by Egeria to maintain a catalog service.
+  A catalog service enables
+  individuals and automated processes to to search for, select and retrieve information
+  about relevant data, systems, applications, software components, processes, ... to help them
+  achieve their specific task.
+ 
+  This guide covers what can be cataloged, the incremental value of each
+  type of information that can be added to the catalog along with the different options
+  to automate the maintenance of the catalog entries.
+
 * [Egeria Planning Guide](open-metadata-publication/website/planning-guide) - provides
-guidance on how to deploy Egeria in your organization.  It will help you decide on which components of Egeria
-to use, where they should be located and how they need to be configured.
+  guidance on how to deploy Egeria in your organization.  It will help you decide on which components of Egeria
+  to use, where they should be located and how they need to be configured.
 
 * [Egeria Administration Guide](open-metadata-implementation/admin-services/docs/user) - describes how to
-configure and operate Egeria
-to support the integration of different types of technologies. 
+  configure and operate Egeria
+  to support the integration of different types of technologies. 
 
 * [Egeria Developer Guide](open-metadata-publication/website/developer-guide) -
-describes how to use Java classes called connectors to extend Egeria to exchange metadata with
-new types of technology and add new capabilities.  It also covers the APIs and Event Topics
-used by applications to save and retrieve metadata from Egeria.
+  describes how to use Java classes called connectors to extend Egeria to exchange metadata with
+  new types of technology and add new capabilities.  It also covers the APIs and Event Topics
+  used by applications to save and retrieve metadata from Egeria.
 
 * [Egeria Diagnostic Guide](open-metadata-publication/website/diagnostic-guide) -
-describes the different types of diagnostics produced by Egeria and how to use them.
+  describes the different types of diagnostics produced by Egeria and how to use them.
 
 * [Open Metadata Conformance Test Suite Guide](open-metadata-conformance-suite) - describes
-how to run the Open Metadata Conformance Test Suite to validate that a technology is
-compliant with the open metadata specifications.
+  how to run the Open Metadata Conformance Test Suite to validate that a technology is
+  compliant with the open metadata specifications.
 
 ## The Lists
 
 If you would like to browse to see what is available then these pages may be of interest.
 
 * [Egeria Open Metadata Types](open-metadata-publication/website/open-metadata-types) - describes
-the scope and usage of metadata supported by Egeria "out of the box".
-* [Egeria Glossary](open-metadata-publication/website/open-metadata-glossary.md) - provides definitions to terms
-used in the Egeria project.
+  the scope and usage of metadata supported by Egeria "out of the box".
+* [Egeria Glossary](open-metadata-publication/website/open-metadata-glossary.md) - provides definitions to terms 
+  used in the Egeria project.
 * [Egeria Status and Road Map](open-metadata-publication/website/roadmap) - describes the various
-components of Egeria, how they fit together and their current status.
+  components of Egeria, how they fit together and their current status.
 * [Egeria Module Organization](Content-Organization.md) - defines the hierarchical structure of the modules in the
-Egeria project.
+  Egeria project.
 
 ## Your Questions
 

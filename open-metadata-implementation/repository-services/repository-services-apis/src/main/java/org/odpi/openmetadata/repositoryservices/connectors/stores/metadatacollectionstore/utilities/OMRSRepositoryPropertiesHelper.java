@@ -2,10 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities;
 
-
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.Date;
@@ -501,4 +500,18 @@ public interface OMRSRepositoryPropertiesHelper
                                                       String              propertyName,
                                                       Map<String, String> mapValues,
                                                       String              methodName) throws InvalidParameterException;
+
+
+    /**
+     * Convert the provided instance properties and match criteria into an equivalent SearchProperties object.
+     *
+     * @param sourceName name of the caller
+     * @param properties properties object to convert
+     * @param matchCriteria match criteria to apply
+     * @return SearchProperties object.
+     */
+    SearchProperties getSearchPropertiesFromInstanceProperties(String             sourceName,
+                                                               InstanceProperties properties,
+                                                               MatchCriteria      matchCriteria);
+
 }

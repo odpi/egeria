@@ -10,7 +10,7 @@
     <parent>
         <artifactId>asset-catalog</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.7-SNAPSHOT</version>
+        <version>1.8-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -51,7 +51,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-connector-framework</artifactId>
+            <artifactId>audit-log-framework</artifactId>
         </dependency>
 
     </dependencies>

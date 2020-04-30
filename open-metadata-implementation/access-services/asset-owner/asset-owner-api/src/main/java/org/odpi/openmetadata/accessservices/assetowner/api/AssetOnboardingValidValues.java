@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.ValidValueConsumer;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ValidValue;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -99,6 +97,7 @@ public interface AssetOnboardingValidValues
      * @param usage how/when should this value be used.
      * @param scope what is the scope of the values.
      * @param preferredValue the value that should be used in an implementation if possible.
+     * @param isDeprecated is this value deprecated?
      * @param additionalProperties additional properties for this valid value.
      * @param extendedProperties properties that need to be populated into a subtype.
      *
@@ -114,6 +113,7 @@ public interface AssetOnboardingValidValues
                              String              usage,
                              String              scope,
                              String              preferredValue,
+                             boolean             isDeprecated,
                              Map<String, String> additionalProperties,
                              Map<String, Object> extendedProperties) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
@@ -174,116 +174,6 @@ public interface AssetOnboardingValidValues
                                     String   validValueGUID) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException;
-
-
-    /**
-     * Link a valid value to an asset that provides the implementation.  Typically this method is
-     * used to link a valid value set to a code table.
-     *
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param assetGUID unique identifier of the asset that implements the valid value.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    void  linkValidValueToImplementation(String   userId,
-                                         String   validValueGUID,
-                                         String   assetGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
-
-
-    /**
-     * Add the ReferenceData classification to an asset.  IF the asset is already classified
-     * in this way, the method is a no-op.
-     *
-     * @param userId calling user.
-     * @param assetGUID unique identifier of the asset that contains reference data.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    void  classifyAssetAsReferenceData(String  userId,
-                                       String  assetGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException;
-
-
-    /**
-     * Remove the link between a valid value and an implementing asset.
-     *
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param assetGUID unique identifier of the asset that used to implement the valid value.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    void  unlinkValidValueFromImplementation(String   userId,
-                                             String   validValueGUID,
-                                             String   assetGUID) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
-
-
-    /**
-     * Remove the ReferenceData classification form an Asset.  If the asset was not classified in this way,
-     * this call is a no-op.
-     *
-     * @param userId calling user.
-     * @param assetGUID unique identifier of asset.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    void  declassifyAssetAsReferenceData(String  userId,
-                                         String  assetGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException;
-
-
-    /**
-     * Link a valid value typically to a schema element or glossary term to show that it uses
-     * the valid values.
-     *
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param consumerGUID unique identifier of the element to link to.
-     * @param strictRequirement the valid values defines the only values that are permitted.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    void    assignValidValueToConsumer(String   userId,
-                                       String   validValueGUID,
-                                       String   consumerGUID,
-                                       boolean  strictRequirement) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException;
-
-
-    /**
-     * Remove the link between a valid value and a consumer.
-     *
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param consumerGUID unique identifier of the element to remove the link from.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    void    unassignValidValueFromConsumer(String   userId,
-                                           String   validValueGUID,
-                                           String   consumerGUID) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException;
 
 
     /**
@@ -387,48 +277,4 @@ public interface AssetOnboardingValidValues
                                           int      pageSize) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException;
-
-
-    /**
-     * Page through the list of consumers for a valid value.
-     *
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of valid value to query
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     *
-     * @return list of referenceable beans
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    List<ValidValueConsumer> getValidValuesConsumers(String   userId,
-                                                     String   validValueGUID,
-                                                     int      startFrom,
-                                                     int      pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException;
-
-
-    /**
-     * Pag through the list of implementations for a valid value.
-     *
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of valid value to query
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     *
-     * @return list of asset beans
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    List<Asset> getValidValuesImplementations(String   userId,
-                                              String   validValueGUID,
-                                              int      startFrom,
-                                              int      pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
 }

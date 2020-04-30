@@ -182,7 +182,7 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
             inlinedClassifications.add(new SpineAttribute());
         }
         if (term.isObjectIdentifier()) {
-            inlinedClassifications.add(new SpineObject());
+            inlinedClassifications.add(new ObjectIdentifier());
         }
         return inlinedClassifications;
     }

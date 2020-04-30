@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}")
 
-@Tag(name="Community Profile OMAS", description="The Community Profile OMAS provides APIs and events for tools and applications that are managing information about people and the way they work together.", externalDocs=@ExternalDocumentation(description="Community Profile Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/community-profile/"))
+@Tag(name="Community Profile OMAS", description="The Community Profile OMAS provides APIs and events for tools and applications that are managing information about people and the way they work together.",
+        externalDocs=@ExternalDocumentation(description="Community Profile Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/community-profile/"))
 
 public class MyProfileResource
 {
@@ -115,14 +116,13 @@ public class MyProfileResource
      */
     @PostMapping(path = "/my-assets/{assetGUID}")
 
-    public VoidResponse  addToMyAssets(@PathVariable String           serverName,
-                                       @PathVariable String           userId,
-                                       @PathVariable String           assetGUID,
-                                       @RequestBody  NullRequestBody  nullRequestBody)
+    public VoidResponse  addToMyAssets(@PathVariable                  String           serverName,
+                                       @PathVariable                  String           userId,
+                                       @PathVariable                  String           assetGUID,
+                                       @RequestBody(required = false) NullRequestBody  nullRequestBody)
     {
         return restAPI.addToMyAssets(serverName, userId, assetGUID, nullRequestBody);
     }
-
 
 
     /**
@@ -140,12 +140,11 @@ public class MyProfileResource
      */
     @PostMapping(path = "/my-assets/{assetGUID}/delete")
 
-    public VoidResponse  removeFromMyAssets(@PathVariable String           serverName,
-                                            @PathVariable String           userId,
-                                            @PathVariable String           assetGUID,
-                                            @RequestBody  NullRequestBody  nullRequestBody)
+    public VoidResponse  removeFromMyAssets(@PathVariable                  String           serverName,
+                                            @PathVariable                  String           userId,
+                                            @PathVariable                  String           assetGUID,
+                                            @RequestBody(required = false) NullRequestBody  nullRequestBody)
     {
         return restAPI.removeFromMyAssets(serverName, userId, assetGUID, nullRequestBody);
     }
-
 }

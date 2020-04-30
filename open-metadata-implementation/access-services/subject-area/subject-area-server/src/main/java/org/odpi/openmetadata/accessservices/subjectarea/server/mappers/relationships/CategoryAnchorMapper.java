@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchorRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.Logger;
@@ -32,7 +32,7 @@ public class CategoryAnchorMapper extends LineMapper
     @Override
     protected String getProxy1Guid(Line line)
     {
-        CategoryAnchorRelationship categoryAnchor = (CategoryAnchorRelationship) line;
+        CategoryAnchor categoryAnchor = (CategoryAnchor) line;
         return categoryAnchor.getGlossaryGuid();
     }
 
@@ -45,7 +45,7 @@ public class CategoryAnchorMapper extends LineMapper
     @Override
     protected String getProxy2Guid(Line line)
     {
-        CategoryAnchorRelationship categoryAnchor = (CategoryAnchorRelationship) line;
+        CategoryAnchor categoryAnchor = (CategoryAnchor) line;
         return categoryAnchor.getCategoryGuid();
     }
 
@@ -60,21 +60,21 @@ public class CategoryAnchorMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), CATEGORY_ANCHOR).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return CATEGORY_ANCHOR;
     }
     @Override
     protected Line getLineInstance() {
-        return new CategoryAnchorRelationship();
+        return new CategoryAnchor();
     }
     @Override
     protected void setEnd1GuidInLine(Line line, String guid){
-        CategoryAnchorRelationship categoryAnchorRelationship = (CategoryAnchorRelationship)line;
+        CategoryAnchor categoryAnchorRelationship = (CategoryAnchor)line;
         categoryAnchorRelationship.setGlossaryGuid(guid);
     }
     @Override
     protected void setEnd2GuidInLine(Line line, String guid) {
-        CategoryAnchorRelationship categoryAnchorRelationship = (CategoryAnchorRelationship)line;
+        CategoryAnchor categoryAnchorRelationship = (CategoryAnchor)line;
         categoryAnchorRelationship.setCategoryGuid(guid);
     }
 }
