@@ -44,6 +44,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_CONDENSED;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_CONNECTION_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DATABASE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
@@ -304,7 +305,7 @@ public class LineageGraphConnectorHelper {
      */
     private LineageEdge abstractEdge(Edge originalEdge) {
         String sourceNodeID = getNodeID(originalEdge.outVertex());
-        String destinationNodeId =  getNodeID(originalEdge.outVertex());
+        String destinationNodeId =  getNodeID(originalEdge.inVertex());
 
         return new LineageEdge(originalEdge.label(), sourceNodeID, destinationNodeId);
     }
@@ -468,7 +469,7 @@ public class LineageGraphConnectorHelper {
 
     private void addColumnProperties(Set<LineageVertex> lineageVertices) {
         //TODO  WIP - test and update queries
-        GraphTraversalSource g = mainGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
         lineageVertices.stream().filter(this::isColumnVertex).forEach(lineageVertex -> {
             Vertex graphVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageVertex.getGuid()).next();
 
@@ -508,6 +509,10 @@ public class LineageGraphConnectorHelper {
                         database.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
             }
 
+            if(connection.hasNext()) {
+                properties.put(PROPERTY_KEY_CONNECTION_NAME,
+                        connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            }
             lineageVertex.setProperties(properties);
         });
     }
