@@ -142,6 +142,7 @@ public class OpenMetadataTypesArchive
         update0010BaseModel();
         add0057IntegrationCapabilities();
         update0224Databases();
+        update0130Projects();
     }
 
 
@@ -269,6 +270,48 @@ public class OpenMetadataTypesArchive
                                                   false);
     }
 
+    /**
+     * 0130 - update ProjectScope attribute type.
+     */
+    private void update0130Projects()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateProjectScopeRelationship());
+    }
+
+    /**
+     * Update the ProjectScope relationship to correct the scopeDescription type to be a String
+     *
+     * @return the type def patch
+     */
+    private TypeDefPatch updateProjectScopeRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ProjectScope";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "scopeDescription";
+        final String attribute1Description     = "Description of how each item is being changed by the project.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
 
     private ClassificationDef addDataEngineIntegrationClassification()
     {
