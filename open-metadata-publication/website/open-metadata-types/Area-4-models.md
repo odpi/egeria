@@ -36,6 +36,7 @@ that the governance program has a positive effect.
 * **[0482 Certifications](0482-Certifications.md)**
 * **[0485 Data Processing Purposes](0485-Data-Processing-Purposes.md)**
 
+![UML Packages](area-4-governance-overview.png)
 
 Return to [Overview](README.md).
 

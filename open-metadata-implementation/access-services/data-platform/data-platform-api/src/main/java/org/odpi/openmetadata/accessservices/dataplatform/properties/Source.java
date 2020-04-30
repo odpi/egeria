@@ -24,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "guid")
 
 @JsonIdentityReference
+@Deprecated
 public abstract class Source {
 
     protected Map<String, String> additionalProperties;

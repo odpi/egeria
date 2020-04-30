@@ -29,6 +29,7 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that AssetOwner is allowed to serve Assets from.
      * @param defaultZones list of zones that AssetOwner sets up in new Asset instances.
+     * @param publishZones list of zones that AssetOwner sets up in published Asset instances.
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize max number of results to return on single request.
@@ -37,6 +38,7 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
     public AssetOwnerServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                       List<String>            supportedZones,
                                       List<String>            defaultZones,
+                                      List<String>            publishZones,
                                       AuditLog                auditLog,
                                       String                  localServerUserId,
                                       int                     maxPageSize) throws NewInstanceException

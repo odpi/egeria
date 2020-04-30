@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * DataPlatform defines an endpoint and connectors for the runtime environment for a collection of data assets.
  */
+@Deprecated
 public class DataPlatform extends Source
 {
     /*
