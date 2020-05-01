@@ -271,7 +271,7 @@ public class OpenMetadataTypesArchive
     }
 
     /**
-     * 0130 - update ProjectScope attribute type.
+     * 0130 - update ProjectScope description
      */
     private void update0130Projects()
     {
@@ -279,7 +279,9 @@ public class OpenMetadataTypesArchive
     }
 
     /**
-     * Update the ProjectScope relationship to correct the scopeDescription type to be a String
+     * The ProjectScope has an attribute with the incorrect type of Date. It is not possible to patch an attribute to change its type for
+     * compatibility reasons. This patch deprecates the old scopeDescription (with Date type) and introduces a new description (with
+     * String type).
      *
      * @return the type def patch
      */
@@ -302,13 +304,27 @@ public class OpenMetadataTypesArchive
         TypeDefAttribute       property;
 
         final String attribute1Name            = "scopeDescription";
-        final String attribute1Description     = "Description of how each item is being changed by the project.";
+        final String attribute1Description     = "Deprecated attribute. Use the description attribute to describe the scope.";
         final String attribute1DescriptionGUID = null;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
         properties.add(property);
+
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description of how each item is being changed by the project.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }

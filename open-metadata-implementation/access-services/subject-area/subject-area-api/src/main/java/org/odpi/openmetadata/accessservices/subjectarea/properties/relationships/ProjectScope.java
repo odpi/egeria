@@ -31,12 +31,12 @@ public class ProjectScope extends Line {
     private static final String className = ProjectScope.class.getName();
 
       private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
-          "scopeDescription",
+          "description",
       // Terminate the list
           null
       };
       private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
-          "scopeDescription",
+          "description",
        // Terminate the list
           null
       };
@@ -130,16 +130,16 @@ public class ProjectScope extends Line {
          public String toString() {
              return toString(new StringBuilder()).toString();
          }
-    private String scopeDescription;
+    private String description;
     /**
      * {@literal Description of the scope of the project. }
      * @return {@code String }
      */
-    public String getScopeDescription() {
-        return this.scopeDescription;
+    public String getDescription() {
+        return this.description;
     }
-    public void  setScopeDescription(String description)  {
-        this.scopeDescription = description;
+    public void setDescription(String description)  {
+        this.description = description;
     }
 
 }
