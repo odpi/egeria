@@ -21,9 +21,11 @@ Infrastructure, Process, Referenceable, Server and Host.
 * **[0045 Servers and Assets](0045-Servers-and-Assets.md)**
 * **[0050 Applications and Processes](0050-Applications-and-Processes.md)**
 * **[0055 Data Processing Engines](0055-Data-Processing-Engines.md)**
+* **[0057 Integration Capabilities](0057-Integration-Capabilities.md)**
 * **[0070 Networks and Gateways](0070-Networks-and-Gateways.md)**
 * **[0090 Cloud Platforms and Services](0090-Cloud-Platforms-and-Services.md)**
 
+![UML Packages](area-0-basic-types-and-infrastructure-overview.png)
 
 Return to [Overview](README.md).
 

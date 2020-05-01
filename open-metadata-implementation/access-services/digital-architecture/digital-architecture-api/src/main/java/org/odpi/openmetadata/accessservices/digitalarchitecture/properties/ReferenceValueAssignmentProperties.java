@@ -4,13 +4,23 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.properties;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.util.Objects;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * ReferenceValueAssignmentProperties is a java bean used to create a link between a valid value and a referenceable item
  * to enable the valid value to be used as a semi-formal tag/classifier.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ReferenceValueAssignmentProperties implements Serializable
 {
     private static final long     serialVersionUID = 1L;

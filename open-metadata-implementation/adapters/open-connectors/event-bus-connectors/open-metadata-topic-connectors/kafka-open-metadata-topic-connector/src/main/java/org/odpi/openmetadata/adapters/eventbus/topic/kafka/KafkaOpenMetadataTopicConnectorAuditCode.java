@@ -106,10 +106,11 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
               OMRSAuditLogRecordSeverity.ERROR,
              "Connecting to bootstrap Apache Kafka Broker {0}}",
              "The local server has failed to started up the Apache Kafka connector, Kafka Broker is unavailable",
-             "Ensure Kafka is running and restart Egeria"),
-    KAFKA_CONNECTION_RETRY( "OCF-KAFKA-TOPIC_CONNECTOR-0015",
+             "Ensure Kafka is running and restart the local Egeria Server"),
+
+    KAFKA_CONNECTION_RETRY( "OCF-KAFKA-TOPIC_CONNECTOR-00015",
               OMRSAuditLogRecordSeverity.STARTUP,
-             "The local server is attempting to connect to Kafka, attemp {0}",
+             "The local server is attempting to connect to Kafka, attempt {0}",
              "Ensure Kafka is available",
              "Ensure the Kafka Cluster has started")
             ;

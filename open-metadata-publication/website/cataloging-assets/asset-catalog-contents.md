@@ -8,20 +8,20 @@ for your organization.  This page describes the different types of information
 that can be stored about an asset and the capabilities that each new piece of information
 enables.
 
-* [Basic Asset Properties](#Basic Asset Properties)
-* [Asset Connections](#Asset Connections)
-* [Asset Schemas](#Asset Schemas)
-* [Asset Ownership](#Asset Ownership)
-* [Asset Zone Membership](#Asset Zone Membership)
-* [Asset Location](#Asset Location)
-* [Asset External Identifiers](#Asset External Identifiers)
-* [Asset Licenses and Certifications](#Asset Licenses and Certifications)
-* [Asset Classifiers](#Asset Classifiers)
-* [Asset Feedback](#Asset Feedback)
-* [Asset Note Logs](#Asset Note Logs)
-* [Asset External Descriptions](#Asset External Descriptions)
-* [Asset Lineage](#Asset Lineage)
-* [Related Assets](#Related Assets)
+* [Basic Asset Properties](#Basic-Asset-Properties)
+* [Asset Connections](#Asset-Connections)
+* [Asset Schemas](#Asset-Schemas)
+* [Asset Ownership](#Asset-Ownership)
+* [Asset Zone Membership](#Asset-Zone-Membership)
+* [Asset Location](#Asset-Location)
+* [Asset External Identifiers](#Asset-External-Identifiers)
+* [Asset Licenses and Certifications](#Asset-Licenses-and-Certifications)
+* [Asset Classifiers](#Asset-Classifiers)
+* [Asset Feedback](#Asset-Feedback)
+* [Asset Note Logs](#Asset-Note-Logs)
+* [Asset External Descriptions](#Asset-External-Descriptions)
+* [Asset Lineage](#Asset-Lineage)
+* [Related Assets](#Related-Assets)
 
 In general, additional information in the catalog aims to provide at least one of the
 following benefits:
@@ -71,10 +71,10 @@ and additional properties will determine how easy it is to retrieve specific ass
 
 ![Asset Connections](asset-connections.png)
 
-A connection can be attached to the asset.  This provides all of the information
+A connection can be attached to the asset.  This provides the information
 necessary to create a connector to the asset.
 
-The connector is a client to both the data and all of the information
+The connector is a client to both the data and the information
 about the asset stored in open metadata.  Some connectors use the metadata
 about the asset to control what data can be retrieved from the asset depending on the caller.
 
@@ -161,7 +161,7 @@ Attaching assets to location definitions means it is possible to use details of 
 as part of the search for assets.
  
 Knowing the asset location, whether it is a physical or digital location can also help with demonstrating that
-data sovereignty is being respected and the level of risk that is allocated in a particular location.
+data sovereignty is being respected and the level of risk that is allocated in a location.
 
 ----
 ## Asset External Identifiers
@@ -169,14 +169,14 @@ data sovereignty is being respected and the level of risk that is allocated in a
 ![Asset External Identifiers](asset-external-identifiers.png)
  
 A specific asset may be represented in different tools using different names.  It is possible to add details of
-all of these external identifiers to the Asset.
+these external identifiers to the Asset.
 
 #### Usage
 
-Knowing all the names of an asset means that the asset catalog can support searches for assets using the
+Knowinthe names of an asset means that the asset catalog can support searches for assets using the
 name that specific communities of people know.
 
-It also helps automated process that are operating on the physical asset through a particular tool or API can
+It also helps automated process that are operating on the physical asset through a tool or API can
 look up the appropriate identifier for the asset for that tool/API.
 
 ----
@@ -205,9 +205,9 @@ processes can used them to control the way that they manage the assets.
 ![Asset Classifiers](asset-classifiers.png)
 
 Classifiers add labels and properties to the asset that identifies them as part of
-a specific group, or having particular characteristics.
+a specific group, or having specific characteristics.
 
-The classifiers can be added to the whole asset or a particular field or operation in the
+The classifiers can be added to the whole asset or a field or operation in the
 schema.
 
 The types of classifiers are:
@@ -216,7 +216,7 @@ The types of classifiers are:
   term is attached to a data field in the assets schema, it signifies that 
   the data stored in that field has the meaning described in the glossary term.
   
-* Reference values identify sets of valid values of particular characteristics
+* Reference values identify sets of valid values of specific characteristics
   of the assets.  For example,
   attaching a reference code for "personal data" to an asset indicates that
   it contains personal data.
@@ -307,7 +307,6 @@ on what is meant by 'origin'.
 
 In general an asset is being accessed by processes.  They are either adding/updating/deleting data or 
 reading it. So one perspective of lineage is to see the processes that are providing and using the asset.
-The linkage between 
 
 Data often flows from asset to asset via the processes, as they read data from one asset, do some
 processing and store the results in a different asset.  The end-to-end flow of data is called
@@ -383,8 +382,8 @@ when these assets were created.
 #### Usage
 
 The related assets enables individuals or automated services to locate assets that are related.
-For example, a process may use the related assets to step through and process all of the
-cataloged files in a folder, or all of the assets in a particular collection.
+For example, a process may use the related assets to step through and process the
+cataloged files in a folder, or the assets in a specific collection.
 
 
 ----

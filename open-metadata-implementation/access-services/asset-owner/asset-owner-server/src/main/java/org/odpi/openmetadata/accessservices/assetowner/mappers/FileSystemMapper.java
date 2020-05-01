@@ -11,8 +11,6 @@ public class FileSystemMapper
     public static final String FILE_SYSTEM_ENTITY_TYPE_NAME             = "SoftwareServerCapability";
     /* Referenceable */
 
-    public static final String QUALIFIED_NAME_PROPERTY_NAME              = "qualifiedName";                        /* from Referenceable entity */
-    public static final String ADDITIONAL_PROPERTIES_PROPERTY_NAME       = "additionalProperties";                 /* from Referenceable entity */
     public static final String DISPLAY_NAME_PROPERTY_NAME                = "name";                                 /* from SoftwareServerCapability entity */
     public static final String DESCRIPTION_PROPERTY_NAME                 = "description";                          /* from SoftwareServerCapability entity */
     public static final String TYPE_PROPERTY_NAME                        = "type";                                 /* from SoftwareServerCapability entity */

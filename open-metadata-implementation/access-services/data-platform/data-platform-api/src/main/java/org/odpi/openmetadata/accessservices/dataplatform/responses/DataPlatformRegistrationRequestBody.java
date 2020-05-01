@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatformProperties;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataPlatformRegistrationRequestBody extends DataPlatformOMASAPIRequestBody {
 
     @JsonProperty("dataPlatform")
-    private SoftwareServerCapability softwareServerCapability;
+    private DataPlatformProperties dataPlatformProperties;
 
     /**
      * Instantiates a new Registration request body.
@@ -36,17 +36,17 @@ public class DataPlatformRegistrationRequestBody extends DataPlatformOMASAPIRequ
      *
      * @return the software server capability
      */
-    public SoftwareServerCapability getSoftwareServerCapability() {
-        return softwareServerCapability;
+    public DataPlatformProperties getDataPlatformProperties() {
+        return dataPlatformProperties;
     }
 
     /**
      * Sets software server capability.
      *
-     * @param softwareServerCapability the software server capability
+     * @param dataPlatformProperties the software server capability
      */
-    public void setSoftwareServerCapability(SoftwareServerCapability softwareServerCapability) {
-        this.softwareServerCapability = softwareServerCapability;
+    public void setDataPlatformProperties(DataPlatformProperties dataPlatformProperties) {
+        this.dataPlatformProperties = dataPlatformProperties;
     }
 
     @Override
@@ -54,18 +54,18 @@ public class DataPlatformRegistrationRequestBody extends DataPlatformOMASAPIRequ
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DataPlatformRegistrationRequestBody that = (DataPlatformRegistrationRequestBody) o;
-        return Objects.equals(softwareServerCapability, that.softwareServerCapability);
+        return Objects.equals(dataPlatformProperties, that.dataPlatformProperties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(softwareServerCapability);
+        return Objects.hash(dataPlatformProperties);
     }
 
     @Override
     public String toString() {
         return "DataPlatformRegistrationRequestBody{" +
-                "softwareServerCapability=" + softwareServerCapability +
+                "dataPlatformProperties=" + dataPlatformProperties +
                 "} " + super.toString();
     }
 }

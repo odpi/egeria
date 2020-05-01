@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.utils;
 
 public class SoftwareServerCapabilityMapper {
 
-    public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_NAME = "SoftwareServerCapability";
+    public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_NAME = "DataPlatformProperties";
     public static final String QUALIFIED_NAME_PROPERTY_NAME = "qualifiedName";
     public static final String NAME_PROPERTY_NAME = "name";
     public static final String PATCH_LEVEL__PROPERTY_NAME = "patchLevel";

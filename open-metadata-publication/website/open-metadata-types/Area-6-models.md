@@ -45,6 +45,8 @@ The steward's actions will impact how the new annotations are processed.
 * **[0660 Measurements](0660-Data-Source-Measurements.md)**
 * **[0690 Request for Action](0690-Request-for-Action.md)**
 
+![UML Packages](area-6-discovery-overview.png)
+
 Egeria's [Open Discovery Framework (ODF)](../../../open-metadata-implementation/frameworks/open-discovery-framework/README.md)
 that supports the development and execution of discovery services.
 The ODF runs in an open metadata discovery server.
