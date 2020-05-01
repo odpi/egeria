@@ -141,12 +141,12 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
 
 
     /**
-     * Retrieve the handler for managing errors from the repository services.
+     * Retrieve the supported zones set up for this service instance.
      *
      * @param userId calling userId
      * @param serverName name of the server tied to the request
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return repository error handler
+     * @return list of governance zones
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      * @throws PropertyServerException the service name is not known or the metadata collection is
@@ -167,12 +167,12 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
 
 
     /**
-     * Retrieve the handler for managing errors from the repository services.
+     * Retrieve the default zones set up for this service instance.
      *
      * @param userId calling userId
      * @param serverName name of the server tied to the request
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return repository error handler
+     * @return list of governance zones
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      * @throws PropertyServerException the service name is not known or the metadata collection is
@@ -189,6 +189,32 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
                                                                                             serviceOperationName);
 
         return instance.getDefaultZones();
+    }
+
+
+    /**
+     * Retrieve the publish zones set up for this service instance.
+     *
+     * @param userId calling userId
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return list of governance zones
+     * @throws InvalidParameterException the server name is not known
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws PropertyServerException the service name is not known or the metadata collection is
+     *                                 not available - indicating a logic error
+     */
+    public List<String> getPublishZones(String userId,
+                                        String serverName,
+                                        String serviceOperationName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId,
+                                                                                            serverName,
+                                                                                            serviceOperationName);
+
+        return instance.getPublishZones();
     }
 
 

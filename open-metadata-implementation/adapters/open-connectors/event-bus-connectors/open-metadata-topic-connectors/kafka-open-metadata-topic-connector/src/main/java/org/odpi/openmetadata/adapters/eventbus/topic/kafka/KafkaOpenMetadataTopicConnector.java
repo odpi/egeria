@@ -80,7 +80,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     {
         super();
 
-        producerProperties.put("bootstrap.servers", "localhost:9092");
+          producerProperties.put("bootstrap.servers", "localhost:9092");
         producerProperties.put("acks", "all");
         producerProperties.put("retries", 1);
         producerProperties.put("batch.size", 16384);
@@ -88,8 +88,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         producerProperties.put("buffer.memory", 33554432);
         producerProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         producerProperties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        producerProperties.put("bring.up.retries", 10);
-        producerProperties.put("bring.up.minSleepTime", 5000);
+        producerProperties.put("bring.up.retries", "10");
+        producerProperties.put("bring.up.minSleepTime", "5000");
 
 
         consumerProperties.put("bootstrap.servers", "localhost:9092");
@@ -99,8 +99,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         consumerProperties.put("max.partition.fetch.bytes",	10485760);
         consumerProperties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         consumerProperties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        consumerProperties.put("bring.up.retries", 10);
-        consumerProperties.put("bring.up.minSleepTime", 5000);
+        consumerProperties.put("bring.up.retries", "10");
+        consumerProperties.put("bring.up.minSleepTime", "5000");
     }
 
 
@@ -389,8 +389,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             int count = 0;
             boolean found = false;
             try {
-                long napCount = Long.parseLong(connectionProperties.getProperty("bring.up.retries"));
-                long minSleepTime = Long.parseLong(connectionProperties.getProperty("bring.up.minSleepTime"));
+                int napCount = Integer.parseInt( connectionProperties.getProperty("bring.up.retries") );
+                int minSleepTime = Integer.parseInt( connectionProperties.getProperty("bring.up.minSleepTime")) ;
 
                 while (count < napCount) {
 
