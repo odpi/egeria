@@ -2,20 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
-import java.util.*;
-import java.util.concurrent.*;
-
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.DescribeClusterResult;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
 import org.apache.kafka.common.Node;
-
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.IncomingEvent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * KafkaOMRSTopicConnector provides a concrete implementation of the OMRSTopicConnector that
@@ -85,8 +88,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         producerProperties.put("buffer.memory", 33554432);
         producerProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         producerProperties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        producerProperties.put("bring.up.retries", "2");
-        producerProperties.put("bring.up.sleepTime", "10");
+        producerProperties.put("bring.up.retries", 10);
+        producerProperties.put("bring.up.minSleepTime", 5000);
 
 
         consumerProperties.put("bootstrap.servers", "localhost:9092");
@@ -96,8 +99,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         consumerProperties.put("max.partition.fetch.bytes",	10485760);
         consumerProperties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         consumerProperties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        consumerProperties.put("bring.up.retries", "2");
-        consumerProperties.put("bring.up.sleepTime", "10");
+        consumerProperties.put("bring.up.retries", 10);
+        consumerProperties.put("bring.up.minSleepTime", 5000);
     }
 
 
@@ -230,7 +233,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
          * This will need changing for single direction connector
          */
         boolean up = false;
-        if( consumerProperties.getProperty("bootstrap.servers").equals(producerProperties.getProperty("bootstrap.servers")) ) {
+        if ( consumerProperties.getProperty("bootstrap.servers").equals(producerProperties.getProperty("bootstrap.servers")) ) {
             up = kafkaStatus.waitForBrokers( producerProperties);
         }
         else {
@@ -238,7 +241,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                     kafkaStatus.waitForBrokers(consumerProperties);
         }
 
-        if ( !up ) {
+        if (!up) {
             final String actionDescription = "waitForThisBroker";
             auditLog.logMessage(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_FAILED_INITIALIZING.getMessageDefinition(topicName));
             throw new ConnectorCheckedException(KafkaOpenMetadataTopicConnectorErrorCode.ERROR_ATTEMPTING_KAFKA_INITIALIZATION.getMessageDefinition(kafkaStatus.getLastException().getClass().getName(),
@@ -376,21 +379,23 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             return found;
         }
 
+
         /*
          * waits for a list of running kafaka brokers
          * @param connectionProperties The kafka connection properties
+         * Performs a sanity check that the services Egeria requires are available
          *         */
         public boolean waitForBrokers(Properties connectionProperties ) {
             int count = 0;
             boolean found = false;
             try {
-                int napCount = Integer.parseInt(connectionProperties.getProperty("bring.up.retries"));
-                int sleepTime = Integer.parseInt(connectionProperties.getProperty("bring.up.sleepTime"));
+                long napCount = Long.parseLong(connectionProperties.getProperty("bring.up.retries"));
+                long minSleepTime = Long.parseLong(connectionProperties.getProperty("bring.up.minSleepTime"));
 
                 while (count < napCount) {
 
                     auditLog.logMessage("waitForBrokers", KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_CONNECTION_RETRY.getMessageDefinition(String.valueOf(count+1)));
-
+                    Instant start = Instant.now();
                     if (getRunningBrokers(connectionProperties)) {
                         //we were returned a list of running brokers
                         //so end retry loop
@@ -398,7 +403,17 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                         break;
                     } else {
                         count++;
-                        Thread.sleep(sleepTime );
+                        /* This provides a minimum sleeptime functionality
+                        *  to allow the ride through of short term availablity issues
+                         */
+                        Instant end = Instant.now();
+                        Duration timeTaken = Duration.between(start, end);
+                        long millis = timeTaken.toMillis();
+
+                        if (millis < minSleepTime)
+                        {
+                            Thread.sleep(minSleepTime - millis);
+                        }
                     }
                 }
             } catch (Exception e) {
