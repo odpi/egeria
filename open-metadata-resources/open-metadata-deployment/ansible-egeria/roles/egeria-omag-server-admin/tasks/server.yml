@@ -108,3 +108,14 @@
         configurationProperties: "{{ config.value.configuration_properties }}"
       pollIntervalInSeconds: "{{ config.value.pool_interval_seconds }}"
   when: config.value.mode == 'data-engine-proxy-service'
+
+- name: "{{ config.key }} set auditlog"
+  uri:
+    url: "{{ server_base_url }}/audit-log-destinations/{{ config.value.auditlog_destination }}"
+    method: POST
+    body_format: json
+    body: "{{ config.value.auditlog_severity }}"
+    headers:
+      Content-Type: application/json
+    validate_certs: no
+  when: "config.value.auditlog_destination is defined"
