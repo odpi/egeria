@@ -8,6 +8,7 @@ import java.util.Objects;
  * The lineage relationship represents the a lineage relationship in the lineage graph with self contained properties.
  */
 public class LineageRelationship extends LineageEntity {
+
     private String firstEndGUID;
     private String secondEndGUID;
 

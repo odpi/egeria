@@ -3,6 +3,9 @@
 package org.odpi.openmetadata.accessservices.assetlineage.event;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
+
+import javax.sound.sampled.Line;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -18,8 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = LineageEvent.class, name = "LineageEvent")
+        @JsonSubTypes.Type(value = LineageEvent.class, name = "LineageEvent"),
+        @JsonSubTypes.Type(value = LineageRelationshipEvent.class, name = "LineageRelationshipEvent")
 })
+
 public abstract class AssetLineageEventHeader{
 
     private long eventVersionId = 1L;
