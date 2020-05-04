@@ -5,6 +5,8 @@ package org.odpi.openmetadata.viewservices.rex.handlers;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
@@ -37,11 +39,14 @@ import org.odpi.openmetadata.viewservices.rex.api.properties.RexEntityDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedEntityDetail;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedRelationship;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexRelationshipDigest;
+import org.odpi.openmetadata.viewservices.rex.api.properties.RexTraversal;
 import org.odpi.openmetadata.viewservices.rex.api.properties.TypeExplorer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -550,6 +555,239 @@ public class RexViewHandler
 
     }
 
+
+
+
+    /**
+     * Retrieve the neighborhood surrounding an entity.
+     * @param userId  userId under which the request is performed
+     * @param repositoryServerName The name of the repository server to interrogate
+     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param enterpriseOption Whether the query is at cohort level or server specific
+     * @param entityGUID the identity of the entity from which to traverse
+     * @param depth the depth to which the method should traverse
+     * @param entityTypeGUIDs the GUIDs of entity types to filter the neighborhood
+     * @param relationshipTypeGUIDs the GUIDs of relationship types to filter the neighborhood
+     * @param classificationNames the names of classification types to filter the neighborhood
+     * @param methodName The name of the method being invoked
+     * @return a RexTraversal object containing the neighborhood information
+     *
+     * Exceptions returned by the server
+     *
+     * @throws InvalidParameterException     a parameter is invalid or null.
+     * @throws TypeErrorException            the type guid passed on the request is not known by the metadata collection.
+     * @throws EntityNotKnownException       the specified start entity could not be found
+     * @throws EntityProxyOnlyException      the specified start entity could not be found
+     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     *                                       the metadata collection is stored.
+     * @throws PropertyErrorException        the sequencing property specified is not valid for any of the requested types of
+     *                                       entity.
+     * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
+     * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
+     */
+    public RexTraversal rexTraversal(String          userId,
+                                     String          repositoryServerName,
+                                     String          repositoryServerURLRoot,
+                                     boolean         enterpriseOption,
+                                     String          entityGUID,
+                                     int             depth,
+                                     List<String>    entityTypeGUIDs,
+                                     List<String>    relationshipTypeGUIDs,
+                                     List<String>    classificationNames,
+                                     String          methodName)
+    throws
+    RepositoryErrorException,
+    InvalidParameterException,
+    EntityNotKnownException,
+    EntityProxyOnlyException,
+    UserNotAuthorizedException,
+    TypeErrorException,
+    PropertyErrorException,
+    FunctionNotSupportedException
+
+    {
+
+        try {
+
+            /*
+             *  Switch between local and enterprise services clients depending
+             *  on enterprise option...
+             */
+            MetadataCollectionServicesClient repositoryServicesClient;
+
+            if (!enterpriseOption) {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            } else {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            }
+
+            /*
+             * Because we will want to extract labels based on type we'll need to know the types supported by the repository...
+             */
+
+            TypeExplorer typeExplorer = getTypeExplorer(userId,
+                                                        repositoryServerName,
+                                                        repositoryServerURLRoot,
+                                                        enterpriseOption,
+                                                        methodName);
+
+            InstanceGraph instGraph = null;
+
+            if (depth >0) {
+
+                instGraph = repositoryServicesClient.getEntityNeighborhood(userId,
+                                                                                         entityGUID,
+                                                                                         entityTypeGUIDs,
+                                                                                         relationshipTypeGUIDs,
+                                                                                         null,
+                                                                                         classificationNames,
+                                                                                         null,
+                                                                                         depth);
+            }
+
+
+            else {
+
+                /*
+                 * Since depth is 0 - use getEntityDetail instead of neighborhood
+                 */
+
+                EntityDetail entityDetail = repositoryServicesClient.getEntityDetail(
+                        userId,
+                        entityGUID);
+
+                // Construct an InstanceGraph containing just the entityDetail
+                instGraph = new InstanceGraph();
+
+                List<EntityDetail> entityDetailList = new ArrayList<>();
+                entityDetailList.add(entityDetail);
+                instGraph.setEntities(entityDetailList);
+
+            }
+
+
+            // Should have an InstanceGraph with one or more entities and maybe relationships
+
+            if (instGraph != null) {
+
+                RexTraversal rt = new RexTraversal();
+
+                /* Format the results
+                 *
+                 * The format of the digests in the RexTraversal is as follows:
+                 *   a map of entityGUID       --> { entityGUID, label, gen }
+                 *   a map of relationshipGUID --> { relationshipGUID, end1GUID, end2GUID, idx, label, gen }
+                 */
+
+                /*
+                 * An InstanceGraph contains relationships and entities that are homed by the repository that
+                 * created the InstanceGraph. The relationships may refer to entities that are not homed by that
+                 * repository, so those entities will not be included in the 'entities' portion of the InstanceGraph.
+                 * Since our RexTraversal needs to be 'complete' - i.e. we have an EntityDigest for each end of
+                 * every relationship, we must generate digests not just from the entities lit, but also spot any
+                 * relationship ends that are NOT in the list and generate a digest for each of them as well.
+                 * Start by processing the homed entities.
+                 * Then process the relationships and check fr each end of each relationship whether we need to
+                 * augment the RexTraversal entityDigestMap.
+                 */
+                List<EntityDetail> entities = instGraph.getEntities();
+                Map<String, RexEntityDigest> entityDigestMap = null;
+                if (entities != null && !entities.isEmpty()) {
+                    entityDigestMap = new HashMap<>();
+                    for (EntityDetail entityDetail : entities) {
+                        /*
+                         * We need entityGUID, label (computed) and if !preTraversal also include gen
+                         */
+                        String entGUID = entityDetail.getGUID();
+
+                        // Pass the typeExplorer to the labeller so that it can traverse...
+                        String entLabel = this.chooseLabelForEntity(entityDetail, typeExplorer);
+
+                        RexEntityDigest red = new RexEntityDigest(entGUID, entLabel, 0, entityDetail.getMetadataCollectionName());
+                        entityDigestMap.put(entGUID, red);
+                    }
+
+                }
+
+                List<Relationship> relationships = instGraph.getRelationships();
+                Map<String, RexRelationshipDigest> relationshipDigestMap = null;
+                if (relationships != null && !relationships.isEmpty()) {
+                    relationshipDigestMap = new HashMap<>();
+                    for (Relationship relationship : relationships) {
+                        /*
+                         * We need: entityGUID, label (computed) and if !preTraversal also include gen
+                         *   relationshipGUID, label (computed), end1GUID, end2GUID, idx (computed), gen
+                         */
+                        String relGUID = relationship.getGUID();
+                        String relLabel = this.chooseLabelForRelationship(relationship);
+                        String end1GUID = relationship.getEntityOneProxy().getGUID();
+                        String end2GUID = relationship.getEntityTwoProxy().getGUID();
+
+                        /* check for proxies... */
+                        if (entityDigestMap.get(end1GUID) == null) {
+                            /* add a digest for this proxy... */
+                            EntityProxy end1Proxy = relationship.getEntityOneProxy();
+                            String end1Label = this.chooseLabelForEntityProxy(end1Proxy, typeExplorer);
+                            RexEntityDigest red = new RexEntityDigest(end1GUID, end1Label, 0, end1Proxy.getMetadataCollectionName());
+                            entityDigestMap.put(end1GUID, red);
+                        }
+                        if (entityDigestMap.get(end2GUID) == null) {
+                            /* add a digest for this proxy... */
+                            EntityProxy end2Proxy = relationship.getEntityTwoProxy();
+                            String end2Label = this.chooseLabelForEntityProxy(end2Proxy, typeExplorer);
+                            RexEntityDigest red = new RexEntityDigest(end2GUID, end2Label, 0, end2Proxy.getMetadataCollectionName());
+                            entityDigestMap.put(end2GUID, red);
+                        }
+
+
+                        int idx = 0;
+
+                        RexRelationshipDigest rrd = new RexRelationshipDigest(relGUID, relLabel, end1GUID, end2GUID, idx,
+                                                                              0, relationship.getMetadataCollectionName());
+                        relationshipDigestMap.put(relGUID, rrd);
+                    }
+                }
+
+                rt.setEntityGUID(entityGUID);
+                rt.setDepth(depth);
+                rt.setGen(0);
+                // Instead of using type guids in the traversal (which is to be sent to the browser) use type names instead.
+                List<String> entityTypeNames = new ArrayList<>();
+                if (entityTypeGUIDs != null && !entityTypeGUIDs.isEmpty())
+                    for (String entityTypeGUID : entityTypeGUIDs) {
+                        // Convert from typeGIUD to typeName
+                        String entityTypeName = typeExplorer.getEntityTypeName(entityTypeGUID);
+                        entityTypeNames.add(entityTypeName);
+                    }
+                rt.setEntityTypeNames(entityTypeNames);
+                rt.setRelationshipTypeGUIDs(relationshipTypeGUIDs);
+                rt.setClassificationNames(classificationNames);
+                rt.setEntities(entityDigestMap);
+                rt.setRelationships(relationshipDigestMap);
+                rt.setServerName(repositoryServerName);
+
+                return rt;
+            }
+
+            else {
+
+                String excMsg = "Could not retrieve subgraph for entity with guid" + entityGUID;
+                return null;
+            }
+        }
+        catch (UserNotAuthorizedException  |
+                EntityNotKnownException    |
+                EntityProxyOnlyException   |
+                RepositoryErrorException   |
+                InvalidParameterException  |
+                TypeErrorException         |
+                PropertyErrorException     |
+                FunctionNotSupportedException   e) {
+            throw e;
+        }
+
+
+    }
 
 
     /**

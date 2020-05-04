@@ -9,6 +9,8 @@ import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipRequestBod
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexSearchBody;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexSearchResponse;
+import org.odpi.openmetadata.viewservices.rex.api.rest.RexTraversalRequestBody;
+import org.odpi.openmetadata.viewservices.rex.api.rest.RexTraversalResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexTypesRequestBody;
 import org.odpi.openmetadata.viewservices.rex.api.rest.TypeExplorerResponse;
 import org.springframework.web.bind.annotation.*;
@@ -153,6 +155,32 @@ public class RexViewRESTResource {
                                                @PathVariable String         userId,
                                                @RequestBody  RexSearchBody   body) {
         return restAPI.findRelationships(serverName, userId, body);
+
+    }
+
+
+    /**
+     *  This method retrieves the neighborhood around a starting entity.
+     *  <p>
+     *  When exploring an entity neighborhood we return an InstanceGraph which contains
+     *  te entities and relationships that were traversed.
+     *  <p>
+     *  The method used is POST because the parameters supplied by the UI to the VS are conveyed in
+     *  the request body.
+     *
+     *
+     * @param serverName   name of the server running the view-service.
+     * @param userId       user account under which to conduct operation.
+     * @param body         request body containing parameters to formulate repository request
+     * @return response object containing the InstanceGraph for the traersal or exception information
+     */
+    @PostMapping("/instances/rex-traversal")
+    public RexTraversalResponse rexTraversal(@PathVariable String                 serverName,
+                                             @PathVariable String                 userId,
+                                             @RequestBody RexTraversalRequestBody body) {
+        return restAPI.rexTraversal(serverName, userId, body);
+
+
 
     }
 }
