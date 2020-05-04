@@ -59,6 +59,7 @@
     "@vaadin/vaadin-list-box": "^1.2.0",
     "@vaadin/vaadin-radio-button": "^1.2.3",
     "@vaadin/vaadin-select": "^2.1.6",
+    "@vaadin/vaadin-split-layout": "^4.1.1",
     "@vaadin/vaadin-tabs": "^3.0.5",
     "@vaadin/vaadin-time-picker": "^2.0.1",
     "@webcomponents/webcomponentsjs": "^2.1.3",

@@ -8,7 +8,7 @@ organization that owns it.  Examples of an asset include:
 
 * Data sources such as databases, files and data feeds.
 * IT infrastructure and applications that automate many aspects of an organization's operation.
-* Digital services and APIs that provide access to the services offered by the organization.
+* APIs that provide access to the services offered by the organization.
 * Analytical models and processes that differentiate an organization from its competitors or ensure it is operating legally and ethically.
 * Buildings and other locations.
 * Physical objects that have a unique identity (eg a serial number).
@@ -88,14 +88,14 @@ for different types of Assets.  Each definition adds more properties
 about the Asset.  Figure 1 shows some of the key assets.
 
 ![Figure 1](asset-hierarchy.png)
-**Figure 1:** Asset hierarchy
+> **Figure 1:** Asset hierarchy
 
 * **Infrastructure** covers physical assets from machinery, sensors and networks.
 There is a subclass called **ITInfrastructure** that is where IT hosts and
 services ar located.
 
 * **Process** describes processing from simple software components to
-multi-task workflows.
+complex workflows.
 
 * **DataStore** a physical store of data such as a file.
 
@@ -112,7 +112,7 @@ processes, data stores and data sets.
 In addition, model [0205](../../../../../open-metadata-publication/website/open-metadata-types/0205-Connection-Linkage.md) shows how
 an Asset is associated with a [Connection](../../../../frameworks/open-connector-framework/docs/concepts/connection.md) object.
 The connection object provides the properties necessary to create a connectors to access the asset's contents as described in section
-[Accessing Assets](#accessing-assets) above.
+[Accessing Assets](#accessing-asset-content) above.
 
 
 ----

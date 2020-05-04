@@ -83,15 +83,15 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         assertTrue("columns for section 1.1 were not created", !relationships.isEmpty() && relationships.size() == 2);
 
 
-        EntityDetail fullNameColumnEntity = omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttribute)=Full Name", false);
+        EntityDetail fullNameColumnEntity = omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttributeProperties)=Full Name", false);
         assertNotNull("Report column was not created", fullNameColumnEntity);
-        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttribute)=Full Name", ((PrimitivePropertyValue) fullNameColumnEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttributeProperties)=Full Name", ((PrimitivePropertyValue) fullNameColumnEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
         assertEquals("Full Name", ((PrimitivePropertyValue) fullNameColumnEntity.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
         assertEquals("concat", ((PrimitivePropertyValue) fullNameColumnEntity.getProperties().getPropertyValue(Constants.FORMULA)).getPrimitiveValue());
 
-        EntityDetail roleOfTheEmployee = omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttribute)=Role of the employee", false);
+        EntityDetail roleOfTheEmployee = omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttributeProperties)=Role of the employee", false);
         assertNotNull("Report column was not created", roleOfTheEmployee);
-        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttribute)=Role of the employee", ((PrimitivePropertyValue) roleOfTheEmployee.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttributeProperties)=Role of the employee", ((PrimitivePropertyValue) roleOfTheEmployee.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
         assertEquals("Role of the employee", ((PrimitivePropertyValue) roleOfTheEmployee.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
         assertEquals("upper", ((PrimitivePropertyValue) roleOfTheEmployee.getProperties().getPropertyValue(Constants.FORMULA)).getPrimitiveValue());
 
@@ -150,9 +150,9 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         assertNotNull(relationships);
         assertTrue("Relationship between reports and reports type was not created", !relationships.isEmpty() && relationships.size() == 1);
 
-        EntityDetail reportColumnEntity = omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DerivedSchemaAttribute)=test_column", false);//registration-qualified-name::report_number_35::section1::test_column
+        EntityDetail reportColumnEntity = omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DerivedSchemaAttributeProperties)=test_column", false);//registration-qualified-name::report_number_35::section1::test_column
         assertNotNull("Report column was not created", reportColumnEntity);
-        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DerivedSchemaAttribute)=test_column", ((PrimitivePropertyValue) reportColumnEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DerivedSchemaAttributeProperties)=test_column", ((PrimitivePropertyValue) reportColumnEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
         assertEquals("test_column", ((PrimitivePropertyValue) reportColumnEntity.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
     }
 

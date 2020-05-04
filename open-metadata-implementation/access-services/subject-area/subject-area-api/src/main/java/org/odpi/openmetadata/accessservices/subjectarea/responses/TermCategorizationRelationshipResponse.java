@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermCategorizationRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Categorization;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TermCategorizationRelationshipResponse extends SubjectAreaOMASAPIResponse
 {
-    private TermCategorizationRelationship termCategorization = null;
+    private Categorization termCategorization = null;
 
     /**
      * Default constructor
@@ -29,7 +29,7 @@ public class TermCategorizationRelationshipResponse extends SubjectAreaOMASAPIRe
     {
         this.setResponseCategory(ResponseCategory.TermCategorizationRelationship);
     }
-    public TermCategorizationRelationshipResponse(TermCategorizationRelationship termCategorization)
+    public TermCategorizationRelationshipResponse(Categorization termCategorization)
     {
         this();
         this.termCategorization =termCategorization;
@@ -40,12 +40,12 @@ public class TermCategorizationRelationshipResponse extends SubjectAreaOMASAPIRe
      *
      * @return TermCategorizationRelationshipResponse
      */
-    public TermCategorizationRelationship getTermCategorization()
+    public Categorization getTermCategorization()
     {
         return termCategorization;
     }
 
-    public void setTermCategorization(TermCategorizationRelationship termCategorization)
+    public void setTermCategorization(Categorization termCategorization)
     {
         this.termCategorization = termCategorization;
     }

@@ -22,7 +22,8 @@ There are three parts to this:
   A description of how to use automation to expand the contents of your asset catalog
   without creating a huge workload for your people.
   
-* [Providing access to the catalog service]()
+* [Providing access to the catalog service](accessing-asset-catalog.md) -
+  A description of the APIs available to access your asset catalog.
 
 ## Related information
 
