@@ -131,4 +131,28 @@ public class RexViewRESTResource {
         return restAPI.findEntities(serverName, userId, body);
 
     }
+
+    /**
+     *  This method searches for relationships based on property value.
+     *  <p>
+     *  When searching for relationships, we return a list of RelationshipDigest objects. This is
+     *  because the digests are used to display a list of search hits to the user
+     *  from which they can select which relationships they would like to add to the graph.
+     *  <p>
+     *  The method used is POST because the parameters supplied by the UI to the VS are conveyed in
+     *  the request body.
+     *
+     *
+     * @param serverName   name of the server running the view-service.
+     * @param userId       user account under which to conduct operation.
+     * @param body         request body containing parameters to formulate repository request
+     * @return response object containing the repository's type information or exception information
+     */
+    @PostMapping("/instances/relationships/by-property-value")
+    public RexSearchResponse findRelationships(@PathVariable String         serverName,
+                                               @PathVariable String         userId,
+                                               @RequestBody  RexSearchBody   body) {
+        return restAPI.findRelationships(serverName, userId, body);
+
+    }
 }

@@ -278,5 +278,68 @@ public class RexViewRESTServices {
     }
 
 
+    /**
+     * Find relationships using searchText
+     *
+     * @param serverName    name of the local view server.
+     * @param userId        userId under which the request is performed
+     * @param requestBody   request body
+     * @return a RexSearchResponse containing a map of relationship digests that match the search parameters.
+     *         The map has type Map of String to RexRelationshipDigest, where the key is the relationship's GUID
+     *
+     * <ul>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.
+     * </ul>
+     */
+
+    public RexSearchResponse findRelationships(String         serverName,
+                                               String         userId,
+                                               RexSearchBody  requestBody) {
+
+        final String methodName = "findRelationships";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RexSearchResponse response = new RexSearchResponse();
+
+        AuditLog auditLog = null;
+
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null) {
+                RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+
+                response.setRelationships(handler.findRelationships(userId,
+                                                                    requestBody.getServerName(),
+                                                                    requestBody.getServerURLRoot(),
+                                                                    requestBody.getEnterpriseOption(),
+                                                                    requestBody.getSearchText(),
+                                                                    requestBody.getTypeName(),
+                                                                    methodName));
+
+                response.setSearchCategory("Relationship");
+                response.setSearchText(requestBody.getSearchText());
+                response.setServerName(requestBody.getServerName());
+                // TODO - do you want to add the typeName to the response object??  - useful for history??
+
+
+            }
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        } catch (Throwable error) {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 
 }

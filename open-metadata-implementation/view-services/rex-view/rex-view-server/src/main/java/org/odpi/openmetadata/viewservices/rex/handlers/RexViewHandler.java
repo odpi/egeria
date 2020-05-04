@@ -36,6 +36,7 @@ import org.odpi.openmetadata.viewservices.rex.api.properties.RelationshipExplore
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexEntityDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedEntityDetail;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedRelationship;
+import org.odpi.openmetadata.viewservices.rex.api.properties.RexRelationshipDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.TypeExplorer;
 
 import org.slf4j.Logger;
@@ -320,7 +321,7 @@ public class RexViewHandler
     }
 
     /**
-     * Retrieve entity (by GUID) from the repository server
+     * Retrieve entities (by text search) from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
      * @param repositoryServerURLRoot The URL root of the repository server to interrogate
@@ -409,6 +410,124 @@ public class RexViewHandler
                     RexEntityDigest entityDigest = new RexEntityDigest(entityDetail.getGUID(), label, 0, entityDetail.getMetadataCollectionName());
 
                     digestMap.put(entityDetail.getGUID(), entityDigest);
+
+                }
+
+                return digestMap;
+            }
+            else {
+                return null;
+            }
+
+        }
+        catch (UserNotAuthorizedException  |
+                RepositoryErrorException   |
+                InvalidParameterException  |
+                TypeErrorException         |
+                PropertyErrorException     |
+                PagingErrorException       |
+                FunctionNotSupportedException   e) {
+            throw e;
+        }
+
+    }
+
+
+    /**
+     * Retrieve relationships (by text search) from the repository server
+     * @param userId  userId under which the request is performed
+     * @param repositoryServerName The name of the repository server to interrogate
+     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param enterpriseOption Whether the query is at cohort level or server specific
+     * @param searchText the search expression that relationships must match
+     * @param relationshipTypeName the name of a type used to filter the relationship search
+     * @param methodName The name of the method being invoked
+     * @return a map of relationship digests for the relationships that matched the search
+     *
+     * Exceptions returned by the server
+     *
+     * @throws InvalidParameterException     a parameter is invalid or null.
+     * @throws TypeErrorException            the type guid passed on the request is not known by the metadata collection.
+     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     *                                       the metadata collection is stored.
+     * @throws PropertyErrorException        the sequencing property specified is not valid for any of the requested types of
+     *                                       entity.
+     * @throws PagingErrorException          the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
+     * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
+     */
+    public Map<String, RexRelationshipDigest> findRelationships(String    userId,
+                                                                String    repositoryServerName,
+                                                                String    repositoryServerURLRoot,
+                                                                boolean   enterpriseOption,
+                                                                String    searchText,
+                                                                String    relationshipTypeName,
+                                                                String    methodName)
+    throws
+    RepositoryErrorException,
+    InvalidParameterException,
+    UserNotAuthorizedException,
+    TypeErrorException,
+    PropertyErrorException,
+    PagingErrorException,
+    FunctionNotSupportedException
+
+    {
+
+        try {
+
+            /*
+             *  Switch between local and enterprise services clients depending
+             *  on enterprise option...
+             */
+            MetadataCollectionServicesClient repositoryServicesClient;
+
+            if (!enterpriseOption) {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            } else {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            }
+
+            TypeExplorer typeExplorer = getTypeExplorer(userId,
+                                                        repositoryServerName,
+                                                        repositoryServerURLRoot,
+                                                        enterpriseOption,
+                                                        methodName);
+
+
+            String relationshipTypeGUID = typeExplorer.getEntityTypeGUID(relationshipTypeName);
+
+            List<Relationship> relationships = repositoryServicesClient.findRelationshipsByPropertyValue(
+                    userId,
+                    relationshipTypeGUID,
+                    searchText,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    0);
+
+
+            if (relationships != null) {
+
+                // Process the list of EntityDetail objects and produce a map of EntityDigest objects
+
+                Map<String, RexRelationshipDigest> digestMap = new HashMap<>();
+
+                for (int r = 0; r < relationships.size(); r++) {
+                    Relationship relationship = relationships.get(r);
+                    String label = this.chooseLabelForRelationship(relationship);
+
+                    RexRelationshipDigest relationshipDigest = new RexRelationshipDigest(relationship.getGUID(),
+                                                                                         label,
+                                                                                         relationship.getEntityOneProxy().getGUID(),
+                                                                                         relationship.getEntityTwoProxy().getGUID(),
+                                                                                         0,
+                                                                                         0,
+                                                                                         relationship.getMetadataCollectionName());
+
+                    digestMap.put(relationship.getGUID(), relationshipDigest);
 
                 }
 
