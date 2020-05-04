@@ -23,12 +23,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
 
@@ -44,59 +39,60 @@ import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadat
  */
 public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 {
-    private static final String testCaseId     = "repository-entity-property-search";
-    private static final String testCaseName   = "Repository entity property search test case";
+    private static final String TEST_CASE_ID      = "repository-entity-property-search";
+    private static final String TEST_CASE_NAME    = "Repository entity property search test case";
 
-    private static final String assertion1     = testCaseId + "-01";
-    private static final String assertionMsg1  = " entity type matches the known type from the repository helper.";
+    private static final String ASSERTION_1       = TEST_CASE_ID + "-01";
+    private static final String ASSERTION_MSG_1   = " entity type matches the known type from the repository helper.";
 
-    private static final String assertion2     = testCaseId + "-2";
-    private static final String assertionMsg2  = "repository supports creation of instances of type ";
+    private static final String ASSERTION_2       = TEST_CASE_ID + "-2";
+    private static final String ASSERTION_MSG_2   = "repository supports creation of instances of type ";
 
-    private static final String assertion3     = testCaseId + "-03";
-    private static final String assertionMsg3  = "findEntitiesByProperty found {0}/{1} expected results using parameters: {2}";
+    private static final String ASSERTION_3       = TEST_CASE_ID + "-03";
+    private static final String ASSERTION_MSG_3   = "findEntitiesByProperty found {0}/{1} expected results using parameters: {2}";
 
-    private static final String assertion4     = testCaseId + "-04";
-    private static final String assertionMsg4  = "findEntitiesByProperty returned {0} unexpected results using parameters: {1}";
+    private static final String ASSERTION_4       = TEST_CASE_ID + "-04";
+    private static final String ASSERTION_MSG_4   = "findEntitiesByProperty returned {0} unexpected results using parameters: {1}";
 
-    private static final String assertion5     = testCaseId + "-05";
-    private static final String assertionMsg5  = assertionMsg3;
+    private static final String ASSERTION_5       = TEST_CASE_ID + "-05";
+    private static final String ASSERTION_MSG_5   = ASSERTION_MSG_3;
 
-    private static final String assertion6     = testCaseId + "-06";
-    private static final String assertionMsg6  = assertionMsg4;
+    private static final String ASSERTION_6       = TEST_CASE_ID + "-06";
+    private static final String ASSERTION_MSG_6   = ASSERTION_MSG_4;
 
-    private static final String assertion7     = testCaseId + "-07";
-    private static final String assertionMsg7  = "findEntitiesByPropertyValue found {0}/{1} expected results using parameters: {2}";
+    private static final String ASSERTION_7       = TEST_CASE_ID + "-07";
+    private static final String ASSERTION_MSG_7   = "findEntitiesByPropertyValue found {0}/{1} expected results using parameters: {2}";
 
-    private static final String assertion8     = testCaseId + "-08";
-    private static final String assertionMsg8  = "findEntitiesByPropertyValue returned {0} unexpected results using parameters: {1}";
+    private static final String ASSERTION_8       = TEST_CASE_ID + "-08";
+    private static final String ASSERTION_MSG_8   = "findEntitiesByPropertyValue returned {0} unexpected results using parameters: {1}";
 
-    private static final String assertion9     = testCaseId + "-09";
-    private static final String assertionMsg9  = assertionMsg7;
+    private static final String ASSERTION_9       = TEST_CASE_ID + "-09";
+    private static final String ASSERTION_MSG_9   = ASSERTION_MSG_7;
 
-    private static final String assertion10     = testCaseId + "-10";
-    private static final String assertionMsg10 = assertionMsg4;
+    private static final String ASSERTION_10      = TEST_CASE_ID + "-10";
+    private static final String ASSERTION_MSG_10  = ASSERTION_MSG_4;
 
-    private static final String assertion11     = testCaseId + "-11";
-    private static final String assertionMsg11  = "findEntitiesByPropertyValue with general regex found {0}/{1} expected results using parameters: {2}";
+    private static final String ASSERTION_11      = TEST_CASE_ID + "-11";
+    private static final String ASSERTION_MSG_11  = "findEntitiesByPropertyValue with general regex found {0}/{1} expected results using parameters: {2}";
 
-    private static final String assertion12     = testCaseId + "-12";
-    private static final String assertionMsg12  = "findEntitiesByPropertyValue with general regex returned {0} unexpected results using parameters: {1}";
+    private static final String ASSERTION_12      = TEST_CASE_ID + "-12";
+    private static final String ASSERTION_MSG_12  = "findEntitiesByPropertyValue with general regex returned {0} unexpected results using parameters: {1}";
 
-    private static final String assertion13     = testCaseId + "-13";
-    private static final String assertionMsg13  = "findEntitiesByProperty with general regex found {0}/{1} expected results using parameters: {2}";
+    private static final String ASSERTION_13      = TEST_CASE_ID + "-13";
+    private static final String ASSERTION_MSG_13  = "findEntitiesByProperty with general regex found {0}/{1} expected results using parameters: {2}";
 
-    private static final String assertion14     = testCaseId + "-14";
-    private static final String assertionMsg14  = "findEntitiesByProperty with general regex returned {0} unexpected results using parameters: {1}";
+    private static final String ASSERTION_14      = TEST_CASE_ID + "-14";
+    private static final String ASSERTION_MSG_14  = "findEntitiesByProperty with general regex returned {0} unexpected results using parameters: {1}";
 
-    private static final String assertion101    = testCaseId + "-101";
-    private static final String assertionMsg101 = "findEntitiesByPropertyValue supports general regular expressions: ";
+    private static final String ASSERTION_101     = TEST_CASE_ID + "-101";
+    private static final String ASSERTION_MSG_101 = "findEntitiesByPropertyValue supports general regular expressions: ";
 
-    private static final String assertion102    = testCaseId + "-102";
-    private static final String assertionMsg102 = "findEntitiesByProperty supports general regular expressions: ";
+    private static final String ASSERTION_102     = TEST_CASE_ID + "-102";
+    private static final String ASSERTION_MSG_102 = "findEntitiesByProperty supports general regular expressions: ";
 
-    private static final String missingExpectedGuids = "(results missing expected GUIDs)";
+    private static final String RESULTS_MISSING_EXPECTED_GUIDS = "(results missing expected GUIDs)";
 
+    private static final String V_NULL = "null";
 
     private RepositoryConformanceWorkPad              workPad;
     private String                                    metadataCollectionId;
@@ -136,7 +132,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
         this.entityDef = entityDef;
 
-        this.testTypeName = this.updateTestIdByType(entityDef.getName(), testCaseId, testCaseName);
+        this.testTypeName = this.updateTestIdByType(entityDef.getName(), TEST_CASE_ID, TEST_CASE_NAME);
 
         this.knownInstances = null;
         this.knownInstancesGUIDs = null;
@@ -168,8 +164,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
         EntityDef knownEntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), entityDef.getName());
         verifyCondition((entityDef.equals(knownEntityDef)),
-                        assertion1,
-                        testTypeName + assertionMsg1,
+                        ASSERTION_1,
+                        testTypeName + ASSERTION_MSG_1,
                         RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
                         RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
@@ -311,21 +307,11 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             String methodName = "findEntitiesByProperty";
             String operationDescription = "find entities of type " + entityDef.getName();
-            Map<String,String> parameters = new HashMap<>();
-            parameters.put("entityTypeGUID"                , entityDef.getGUID());
-            parameters.put("matchProperties"               , emptyMatchProperties.toString());
-            parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
-            parameters.put("fromEntityElement"             , Integer.toString(0));
-            parameters.put("limitResultsByStatus"          , "null");
-            parameters.put("limitResultsByClassification"  , "null");
-            parameters.put("asOfTime"                      , "null");
-            parameters.put("sequencingProperty"            , "null");
-            parameters.put("sequencingOrder"               , "null");
-            parameters.put("pageSize"                      , Integer.toString(pageSize));
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            Map<String,String> parameters = getParameters(entityDef.getGUID(), emptyMatchProperties, MatchCriteria.ALL);
+            String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception( msg , exc );
-            
+
         }
 
 
@@ -390,8 +376,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  * We succeeded in creating instances - record the fact
                  */
                 assertCondition((true),
-                                assertion2,
-                                 assertionMsg2 + testTypeName,
+                                ASSERTION_2,
+                                 ASSERTION_MSG_2 + testTypeName,
                                 RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
@@ -413,8 +399,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  * Report the inability to create instances and give up on the testcase....
                  */
 
-                super.addNotSupportedAssertion(assertion2,
-                                               assertionMsg2 + testTypeName,
+                super.addNotSupportedAssertion(ASSERTION_2,
+                                               ASSERTION_MSG_2 + testTypeName,
                                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
@@ -433,7 +419,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 parameters.put("initialProperties"       , instProps!=null?instProps.toString():"null");
                 parameters.put("initialClasiifications"  , "null");
                 parameters.put("initialStatus"           , "null");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -816,17 +802,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             List<EntityDetail> result;
 
-            Map<String,String> parameters = new HashMap<>();
-            parameters.put("entityTypeGUID"                , entityDef.getGUID());
-            parameters.put("matchProperties"               , matchProperties.toString());
-            parameters.put("matchCriteria"                 , matchCriteria.getName());
-            parameters.put("fromEntityElement"             , Integer.toString(0));
-            parameters.put("limitResultsByStatus"          , "null");
-            parameters.put("limitResultsByClassification"  , "null");
-            parameters.put("asOfTime"                      , "null");
-            parameters.put("sequencingProperty"            , "null");
-            parameters.put("sequencingOrder"               , "null");
-            parameters.put("pageSize"                      , Integer.toString(pageSize));
+            Map<String,String> parameters = getParameters(entityDef.getGUID(), matchProperties, matchCriteria);
 
             try {
 
@@ -849,7 +825,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 String methodName = "findEntitiesByProperty";
                 String operationDescription = "find entities of type " + entityDef.getName();
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -930,9 +906,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             boolean limited_small_case = pageLimited && expectedEntityCount <  pageSize && resultCount >= expectedEntityCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-            String assertionMessage = MessageFormat.format(assertionMsg3, resultCount, expectedEntityCount, parameters);
+            String assertionMessage = MessageFormat.format(ASSERTION_MSG_3, resultCount, expectedEntityCount, parameters);
             assertCondition((acceptable_result_size),
-                            assertion3,
+                            ASSERTION_3,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
@@ -961,7 +937,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 if (!pageLimited) {
 
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        unexpectedResult = missingExpectedGuids;
+                        unexpectedResult = RESULTS_MISSING_EXPECTED_GUIDS;
 
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
@@ -1010,9 +986,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                 }
 
-                assertionMessage = MessageFormat.format(assertionMsg4, unexpectedResult, parameters.toString());
+                assertionMessage = MessageFormat.format(ASSERTION_MSG_4, unexpectedResult, parameters.toString());
                 assertCondition(unexpectedResult.equals("0"),
-                                assertion4,
+                                ASSERTION_4,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
@@ -1115,17 +1091,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             List<EntityDetail> result;
 
-            Map<String,String> parameters = new HashMap<>();
-            parameters.put("entityTypeGUID"                , entityDef.getGUID());
-            parameters.put("matchProperties"               , matchProperties.toString());
-            parameters.put("matchCriteria"                 , matchCriteria.getName());
-            parameters.put("fromEntityElement"             , Integer.toString(0));
-            parameters.put("limitResultsByStatus"          , "null");
-            parameters.put("limitResultsByClassification"  , "null");
-            parameters.put("asOfTime"                      , "null");
-            parameters.put("sequencingProperty"            , "null");
-            parameters.put("sequencingOrder"               , "null");
-            parameters.put("pageSize"                      , Integer.toString(pageSize));
+            Map<String,String> parameters = getParameters(entityDef.getGUID(), matchProperties, matchCriteria);
 
             try {
 
@@ -1148,7 +1114,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 String methodName = "findEntitiesByProperty";
                 String operationDescription = "find entities of type " + entityDef.getName();
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -1187,9 +1153,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             boolean limited_small_case = pageLimited && expectedEntityCount <  pageSize && resultCount >= expectedEntityCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-            String assertionMessage = MessageFormat.format(assertionMsg5, resultCount, expectedEntityCount, parameters);
+            String assertionMessage = MessageFormat.format(ASSERTION_MSG_5, resultCount, expectedEntityCount, parameters);
             assertCondition((acceptable_result_size),
-                            assertion5,
+                            ASSERTION_5,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
@@ -1218,7 +1184,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 if (!pageLimited) {
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        unexpectedResult = missingExpectedGuids;
+                        unexpectedResult = RESULTS_MISSING_EXPECTED_GUIDS;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                     for (EntityDetail entity : result) {
@@ -1283,9 +1249,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                 }
 
-                assertionMessage = MessageFormat.format(assertionMsg6, unexpectedResult, parameters.toString());
+                assertionMessage = MessageFormat.format(ASSERTION_MSG_6, unexpectedResult, parameters.toString());
                 assertCondition(unexpectedResult.equals("0"),
-                                assertion6,
+                                ASSERTION_6,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
@@ -1439,16 +1405,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             List<EntityDetail> result;
 
-            Map<String,String> parameters = new HashMap<>();
-            parameters.put("entityTypeGUID"                , entityDef.getGUID());
-            parameters.put("searchCriteria"                , literalisedValue);
-            parameters.put("fromEntityElement"             , Integer.toString(0));
-            parameters.put("limitResultsByStatus"          , "null");
-            parameters.put("limitResultsByClassification"  , "null");
-            parameters.put("asOfTime"                      , "null");
-            parameters.put("sequencingProperty"            , "null");
-            parameters.put("sequencingOrder"               , "null");
-            parameters.put("pageSize"                      , Integer.toString(pageSize));
+            Map<String,String> parameters = getParameters(entityDef.getGUID(), literalisedValue);
 
             try {
 
@@ -1470,7 +1427,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 String methodName = "findEntitiesByPropertyValue";
                 String operationDescription = "find entities using repository helper regex for type " + entityDef.getName();
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -1494,9 +1451,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             boolean limited_small_case = pageLimited && expectedEntityCount <  pageSize && resultCount >= expectedEntityCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-            String assertionMessage = MessageFormat.format(assertionMsg7, resultCount, expectedEntityCount, parameters);
+            String assertionMessage = MessageFormat.format(ASSERTION_MSG_7, resultCount, expectedEntityCount, parameters);
             assertCondition((acceptable_result_size),
-                            assertion7,
+                            ASSERTION_7,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
@@ -1524,7 +1481,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 if (!pageLimited) {
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        unexpectedResult = missingExpectedGuids;
+                        unexpectedResult = RESULTS_MISSING_EXPECTED_GUIDS;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                     for (EntityDetail entity : result) {
@@ -1588,9 +1545,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                 }
 
-                assertionMessage = MessageFormat.format(assertionMsg8, unexpectedResult, parameters.toString());
+                assertionMessage = MessageFormat.format(ASSERTION_MSG_8, unexpectedResult, parameters.toString());
                 assertCondition(unexpectedResult.equals("0"),
-                                assertion8,
+                                ASSERTION_8,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
@@ -1853,18 +1810,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 String methodName = "findEntitiesByProperty";
                 String operationDescription = "find entities with no type filter ";
-                Map<String,String> parameters = new HashMap<>();
-                parameters.put("entityTypeGUID"                , "null");
-                parameters.put("matchProperties"               , matchProperties.toString());
-                parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
-                parameters.put("fromEntityElement"             , Integer.toString(0));
-                parameters.put("limitResultsByStatus"          , "null");
-                parameters.put("limitResultsByClassification"  , "null");
-                parameters.put("asOfTime"                      , "null");
-                parameters.put("sequencingProperty"            , "null");
-                parameters.put("sequencingOrder"               , "null");
-                parameters.put("pageSize"                      , Integer.toString(pageSize));
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                Map<String,String> parameters = getParameters(null, matchProperties, MatchCriteria.ALL);
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -1911,17 +1858,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  * Repeat the search being specific about type
                  */
 
-                Map<String,String> parameters = new HashMap<>();
-                parameters.put("entityTypeGUID"                , entityDef.getGUID());
-                parameters.put("matchProperties"               , matchProperties.toString());
-                parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
-                parameters.put("fromEntityElement"             , Integer.toString(0));
-                parameters.put("limitResultsByStatus"          , "null");
-                parameters.put("limitResultsByClassification"  , "null");
-                parameters.put("asOfTime"                      , "null");
-                parameters.put("sequencingProperty"            , "null");
-                parameters.put("sequencingOrder"               , "null");
-                parameters.put("pageSize"                      , Integer.toString(pageSize));
+                Map<String,String> parameters = getParameters(entityDef.getGUID(), matchProperties, MatchCriteria.ALL);
 
                 try {
 
@@ -1945,7 +1882,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                     String methodName = "findEntitiesByProperty";
                     String operationDescription = "find entities of type " + entityDef.getName();
-                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                    String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                     throw new Exception( msg , exc );
 
@@ -1970,9 +1907,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 boolean limited_small_case = wildSearchPageLimited && expectedEntityCount < pageSize && resultCount >= expectedEntityCount;
                 boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-                String assertionMessage = MessageFormat.format(assertionMsg9, resultCount, expectedEntityCount, parameters);
+                String assertionMessage = MessageFormat.format(ASSERTION_MSG_9, resultCount, expectedEntityCount, parameters);
                 assertCondition((acceptable_result_size),
-                                assertion9,
+                                ASSERTION_9,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
@@ -2001,7 +1938,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     if (!pageLimited) {
 
                         if (!resultGUIDs.containsAll(expectedGUIDs))
-                            unexpectedResult = missingExpectedGuids;
+                            unexpectedResult = RESULTS_MISSING_EXPECTED_GUIDS;
 
                     } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
@@ -2038,9 +1975,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                         }
                     }
 
-                    assertionMessage = MessageFormat.format(assertionMsg10, unexpectedResult, parameters.toString());
+                    assertionMessage = MessageFormat.format(ASSERTION_MSG_10, unexpectedResult, parameters.toString());
                     assertCondition(unexpectedResult.equals("0"),
-                                    assertion10,
+                                    ASSERTION_10,
                                     assertionMessage,
                                     RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
                                     RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
@@ -2191,16 +2128,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             List<EntityDetail> result;
 
-            Map<String,String> parameters = new HashMap<>();
-            parameters.put("entityTypeGUID"                , entityDef.getGUID());
-            parameters.put("searchCriteria"                , regexValue);
-            parameters.put("fromEntityElement"             , Integer.toString(0));
-            parameters.put("limitResultsByStatus"          , "null");
-            parameters.put("limitResultsByClassification"  , "null");
-            parameters.put("asOfTime"                      , "null");
-            parameters.put("sequencingProperty"            , "null");
-            parameters.put("sequencingOrder"               , "null");
-            parameters.put("pageSize"                      , Integer.toString(pageSize));
+            Map<String,String> parameters = getParameters(entityDef.getGUID(), regexValue);
 
             try {
 
@@ -2223,8 +2151,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  * we can assert that it is that function that is not supported.
                  */
 
-                super.addNotSupportedAssertion(assertion101,
-                                               assertionMsg101 + exc.getMessage(),
+                super.addNotSupportedAssertion(ASSERTION_101,
+                                               ASSERTION_MSG_101 + exc.getMessage(),
                                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
 
@@ -2238,7 +2166,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 String methodName = "findEntitiesByPropertyValue";
                 String operationDescription = "find entities using general regex for type " + entityDef.getName();
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -2263,9 +2191,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             boolean limited_small_case = pageLimited && expectedEntityCount < pageSize && resultCount >= expectedEntityCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-            String assertionMessage = MessageFormat.format(assertionMsg11, resultCount, expectedEntityCount, parameters);
+            String assertionMessage = MessageFormat.format(ASSERTION_MSG_11, resultCount, expectedEntityCount, parameters);
             assertCondition((acceptable_result_size),
-                            assertion11,
+                            ASSERTION_11,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
@@ -2293,7 +2221,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 if (!pageLimited) {
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        unexpectedResult = missingExpectedGuids;
+                        unexpectedResult = RESULTS_MISSING_EXPECTED_GUIDS;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                     for (EntityDetail entity : result) {
@@ -2357,9 +2285,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                 }
 
-                assertionMessage = MessageFormat.format(assertionMsg12, unexpectedResult, parameters);
+                assertionMessage = MessageFormat.format(ASSERTION_MSG_12, unexpectedResult, parameters);
                 assertCondition(unexpectedResult.equals("0"),
-                                assertion12,
+                                ASSERTION_12,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
@@ -2380,17 +2308,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             mppv.setPrimitiveValue(regexValue);
             matchProperties.setProperty(attributeName, mppv);
 
-            parameters = new HashMap<>();
-            parameters.put("entityTypeGUID"                , entityDef.getGUID());
-            parameters.put("matchProperties"               , matchProperties.toString());
-            parameters.put("matchCriteria"                 , MatchCriteria.ALL.getName());
-            parameters.put("fromEntityElement"             , Integer.toString(0));
-            parameters.put("limitResultsByStatus"          , "null");
-            parameters.put("limitResultsByClassification"  , "null");
-            parameters.put("asOfTime"                      , "null");
-            parameters.put("sequencingProperty"            , "null");
-            parameters.put("sequencingOrder"               , "null");
-            parameters.put("pageSize"                      , Integer.toString(pageSize));
+            parameters = getParameters(entityDef.getGUID(), matchProperties, MatchCriteria.ALL);
 
             try {
 
@@ -2413,8 +2331,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  * we can assert that it is that function that is not supported.
                  */
 
-                super.addNotSupportedAssertion(assertion102,
-                                               assertionMsg102 + exc.getMessage(),
+                super.addNotSupportedAssertion(ASSERTION_102,
+                                               ASSERTION_MSG_102 + exc.getMessage(),
                                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
@@ -2428,7 +2346,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 String methodName = "findEntitiesByProperty";
                 String operationDescription = "find entities using general regex for type " + entityDef.getName();
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception( msg , exc );
 
@@ -2453,9 +2371,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             limited_small_case = pageLimited && expectedEntityCount < pageSize && resultCount >= expectedEntityCount;
             acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-            assertionMessage = MessageFormat.format(assertionMsg13, resultCount, expectedEntityCount, parameters);
+            assertionMessage = MessageFormat.format(ASSERTION_MSG_13, resultCount, expectedEntityCount, parameters);
             assertCondition((acceptable_result_size),
-                            assertion13,
+                            ASSERTION_13,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
@@ -2483,7 +2401,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 if (!pageLimited) {
                     if (!resultGUIDs.containsAll(expectedGUIDs))
-                        unexpectedResult = missingExpectedGuids;
+                        unexpectedResult = RESULTS_MISSING_EXPECTED_GUIDS;
                 } else { // pageLimited, so need to allow for and verify hitherto unseen instances
 
                     for (EntityDetail entity : result) {
@@ -2547,15 +2465,47 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                 }
 
-                assertionMessage = MessageFormat.format(assertionMsg14, unexpectedResult, parameters);
+                assertionMessage = MessageFormat.format(ASSERTION_MSG_14, unexpectedResult, parameters);
                 assertCondition(unexpectedResult.equals("0"),
-                                assertion14,
+                                ASSERTION_14,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
             }
         }
 
+    }
+
+    private Map<String,String> getParameters(String entityTypeGuid,
+                                             String searchCriteria) {
+        Map<String,String> parameters = new TreeMap<>();
+        parameters.put("entityTypeGUID", entityTypeGuid == null ? V_NULL : entityTypeGuid);
+        parameters.put("searchCriteria", searchCriteria == null ? V_NULL : searchCriteria);
+        parameters.put("fromEntityElement", Integer.toString(0));
+        parameters.put("limitResultsByStatus", V_NULL);
+        parameters.put("limitResultsByClassification", V_NULL);
+        parameters.put("asOfTime", V_NULL);
+        parameters.put("sequencingProperty", V_NULL);
+        parameters.put("sequencingOrder", V_NULL);
+        parameters.put("pageSize", Integer.toString(pageSize));
+        return parameters;
+    }
+
+    private Map<String,String> getParameters(String entityTypeGuid,
+                                             InstanceProperties matchProperties,
+                                             MatchCriteria matchCriteria) {
+        Map<String,String> parameters = new TreeMap<>();
+        parameters.put("entityTypeGUID", entityTypeGuid == null ? V_NULL : entityTypeGuid);
+        parameters.put("matchProperties", matchProperties == null ? V_NULL : matchProperties.toString());
+        parameters.put("matchCriteria", matchCriteria == null ? V_NULL : matchCriteria.getName());
+        parameters.put("fromEntityElement", Integer.toString(0));
+        parameters.put("limitResultsByStatus", V_NULL);
+        parameters.put("limitResultsByClassification", V_NULL);
+        parameters.put("asOfTime", V_NULL);
+        parameters.put("sequencingProperty", V_NULL);
+        parameters.put("sequencingOrder", V_NULL);
+        parameters.put("pageSize", Integer.toString(pageSize));
+        return parameters;
     }
 
 }

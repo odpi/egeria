@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ISARelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Isa;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -13,14 +13,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * ISARelationshipResponse is the response structure used on the Subject Area OMAS REST API calls that returns a
- * ISARelationship object as a response.
+ * Isa object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TermISARelationshipResponse extends SubjectAreaOMASAPIResponse
 {
-    private ISARelationship termISARelationship = null;
+    private Isa termISARelationship = null;
 
     /**
      * Default constructor
@@ -29,7 +29,7 @@ public class TermISARelationshipResponse extends SubjectAreaOMASAPIResponse
     {
         this.setResponseCategory(ResponseCategory.TermISARelationship);
     }
-    public TermISARelationshipResponse(ISARelationship termISARelationship)
+    public TermISARelationshipResponse(Isa termISARelationship)
     {
         this();
         this.termISARelationship =termISARelationship;
@@ -37,16 +37,16 @@ public class TermISARelationshipResponse extends SubjectAreaOMASAPIResponse
 
 
     /**
-     * Return the ISARelationship object.
+     * Return the Isa object.
      *
      * @return iSARelationshipResponse
      */
-    public ISARelationship getTermISARelationship()
+    public Isa getTermISARelationship()
     {
         return termISARelationship;
     }
 
-    public void setTermISARelationship(ISARelationship termISARelationship)
+    public void setTermISARelationship(Isa termISARelationship)
     {
         this.termISARelationship = termISARelationship;
     }

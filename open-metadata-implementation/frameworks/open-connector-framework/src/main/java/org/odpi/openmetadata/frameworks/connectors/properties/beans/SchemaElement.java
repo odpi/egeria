@@ -50,15 +50,20 @@ public abstract class SchemaElement extends Referenceable
 
 
     /**
-     * Copy/clone Constructor - the parentAsset is passed separately to the template because it is also
-     * likely to be being cloned in the same operation and we want the definitions clone to point to the
-     * asset clone and not the original asset.
+     * Copy/clone Constructor.
      *
      * @param template template object to copy.
      */
     public SchemaElement(SchemaElement template)
     {
         super(template);
+
+        if (template != null)
+        {
+            isDeprecated = template.isDeprecated();
+            displayName = template.getDisplayName();
+            description = template.getDescription();
+        }
     }
 
 

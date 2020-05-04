@@ -27,6 +27,16 @@ public class LineTypeMapper {
      */
     static public String  mapLineTypeToRelationshipTypeGuid(LineType lineType) throws InvalidParameterException {
         String relationshipTypeName = lineType.name();
+        if (lineType.equals(LineType.Hasa)) {
+            relationshipTypeName ="TermHASARelationship";
+        } else if (lineType.equals(LineType.Isa)) {
+            relationshipTypeName ="ISARelationship";
+        } else if (lineType.equals(LineType.IsaTypeOf)) {
+            relationshipTypeName ="TermISATypeOFRelationship";
+        } else if (lineType.equals(LineType.TypedBy)) {
+            relationshipTypeName ="TermTYPEDBYRelationship";
+        }
+
         return OpenMetadataTypesArchiveAccessor.getInstance().getRelationshipDefByName(relationshipTypeName).getGUID();
     }
 
