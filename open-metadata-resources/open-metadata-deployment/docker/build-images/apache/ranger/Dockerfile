@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project
 
-FROM maven:3.6.3-openjdk-8
+FROM maven:3.6.3-openjdk-15
 ARG DOWNLOAD_SERVER="https://archive.apache.org/dist"
 ARG RANGER_VERSION=1.2.0
 ARG SOLR_VERSION=7.7.3
