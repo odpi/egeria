@@ -143,11 +143,13 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
     {
         final String methodName                  = "createDatabase";
         final String propertiesParameterName     = "databaseProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(databaseProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix;
 
@@ -189,12 +191,14 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
         final String methodName                  = "createDatabaseFromTemplate";
         final String templateGUIDParameterName   = "templateGUID";
         final String propertiesParameterName     = "databaseProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(databaseProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/from-template/{4}";
 
@@ -235,12 +239,14 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
         final String methodName                  = "updateDatabase";
         final String elementGUIDParameterName    = "databaseGUID";
         final String propertiesParameterName     = "databaseProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(databaseProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}";
 
@@ -1055,7 +1061,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
      * @param databaseTableProperties properties about the database table
      *
-     * @return unique identifier of the new database schema
+     * @return unique identifier of the new database table
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1976,8 +1982,26 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        final String methodName = "updateDatabaseColumn";
+        final String methodName               = "updateDatabaseColumn";
+        final String elementGUIDParameterName = "databaseColumnGUID";
+        final String propertiesParameterName  = "databaseColumnProperties";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        databaseColumnProperties,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseColumnGUID);
     }
 
 
@@ -2012,7 +2036,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
         invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}";
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/derived/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -2141,7 +2165,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/{2}/tables/columns?startFrom={3}&pageSize={4}";
+        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/tables/{2}/columns?startFrom={3}&pageSize={4}";
 
         DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsGetRESTCall(methodName,
                                                                                        urlTemplate,
