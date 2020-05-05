@@ -92,6 +92,8 @@ Swagger API documentation is generated with the chassis and is documented in [Sw
 
 Spring Boot Actuator is used to expose operational information about the running application such as health, metrics, info, dump. 
 It uses HTTP endpoints or JMX beans to enable us to interact with it. 
+
+A “discovery page” is added with links to all the endpoints. The “discovery page” is available on /actuator by default.
 Once this dependency is on the class-path /info and /health endpoints are available out of the box. 
 
 In order to expose all endpoints over HTTP, use the following property:
