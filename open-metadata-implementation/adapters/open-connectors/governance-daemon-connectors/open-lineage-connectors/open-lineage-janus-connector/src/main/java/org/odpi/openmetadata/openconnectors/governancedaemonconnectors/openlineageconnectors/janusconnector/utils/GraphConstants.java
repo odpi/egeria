@@ -43,13 +43,14 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_SCHEMA_DISPLAY_NAME = "databaseSchemaDisplayName";
     public static final String PROPERTY_NAME_TABLE_DISPLAY_NAME = "tableDisplayName";
     public static final String PROPERTY_NAME_SCHEMA_TYPE_DISPLAY_NAME = "schemaTypeDisplayName";
-    public static final String PROPERTY_NAME_CONNECTION = "schemaTypeDisplayName";
+    public static final String PROPERTY_NAME_CONNECTION = "connectionDisplayName";
     public static final String PROPERTY_NAME_FORMULA = "formula";
     public static final String PROPERTY_NAMEPROCESS_DESCRIPTION_URI = "descriptionURI";
     public static final String PROPERTY_NAME_PROCESS_TYPE = "processType";
     public static final String PROPERTY_NAME_PARENT_PROCESS_GUID = "parent.process.guid";
     public static final String PROPERTY_NAME_GLOSSARY = "glossary";
     public static final String PROPERTY_NAME_METADATA_ID = "metadataCollectionId";
+    private static final String PROPERTY_NAME_PATH = "path";
 
     public static final String CONDENSED_NODE_DISPLAY_NAME = "...";
 
@@ -88,6 +89,7 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_SCHEMA_TYPE_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_SCHEMA_TYPE_DISPLAY_NAME;
     public static final String PROPERTY_KEY_DATABASE_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_DATABASE_DISPLAY_NAME;
     public static final String PROPERTY_KEY_CONNECTION_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_CONNECTION;
+    public static final String PROPERTY_KEY_PATH = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_PATH;
 
     public static final String PROPERTY_KEY_RELATIONSHIP_GUID = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_RELATIONSHIP_VERSION = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_VERSION;
