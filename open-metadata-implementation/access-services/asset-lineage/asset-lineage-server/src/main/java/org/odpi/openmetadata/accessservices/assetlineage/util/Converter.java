@@ -70,7 +70,7 @@ public class Converter {
         Map<String, Object> instancePropertiesAsMap = repositoryHelper.getInstancePropertiesAsMap(properties);
         Map<String, String> attributes = new HashMap<>();
 
-        String methodName = "extractProperties";
+        String methodName = "instancePropertiesToMap";
 
         if (MapUtils.isNotEmpty(instancePropertiesAsMap)) {
             instancePropertiesAsMap.forEach((key, value) -> {
@@ -106,7 +106,7 @@ public class Converter {
     }
 
     private String mapToString(Map<String, Object> map) {
-        return map.keySet().stream().map(key -> key + "=" + map.get(key))
+        return map.keySet().stream().map(key -> key + ": " + map.get(key))
                 .collect(Collectors.joining(", "));
     }
 }
