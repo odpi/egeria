@@ -12,9 +12,9 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
+import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -24,7 +24,7 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +36,17 @@ import java.util.stream.Collectors;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.bothE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLabel;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_DELEGATION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_IMPLEMENTATION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_SCHEMA;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS_PORT;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_DATAFLOW_WITH_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_INCLUDED_IN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC;
@@ -103,7 +112,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             guidList.forEach(process -> findInputColumns(g,process));
             g.tx().commit();
         }catch (Exception e){
-            log.error("Something went wrong when trying to map a process. The error is {}",e);
+            log.error("Something went wrong when trying to map a process. The error is: ",e);
             g.tx().rollback();
         }
     }
@@ -484,7 +493,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             g.tx().commit();
         }
         catch (Exception e){
-            log.debug("An exception happened during update of the properties with error: {}",e);
+            log.debug("An exception happened during update of the properties with error:",e);
             g.tx().rollback();
         }
 
@@ -573,11 +582,13 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                     errorCode.getUserAction());
         }
 
+        List<String> edgeLabels = Arrays.asList(EDGE_LABEL_SEMANTIC, EDGE_LABEL_DATAFLOW_WITH_PROCESS);
 
-        List<String> edgeLabels = new ArrayList<>();
-        edgeLabels.add(EDGE_LABEL_SEMANTIC);
-        edgeLabels.add(includeProcesses ? EDGE_LABEL_DATAFLOW_WITH_PROCESS : EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS);
-
+        //TODO modify query for end to end not to include processes -  check if it's possible to do this without the need of
+        // DataFlowWithoutProcess edges - which are not created anymore
+//        List<String> edgeLabels = new ArrayList<>();
+//        edgeLabels.add(EDGE_LABEL_SEMANTIC);
+//        edgeLabels.add(includeProcesses ? EDGE_LABEL_DATAFLOW_WITH_PROCESS : EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS);
         LineageVerticesAndEdges lineageVerticesAndEdges = null;
 
         String[] edgeLabelsArray = edgeLabels.toArray(new String[0]);
@@ -602,7 +613,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             helper.filterDisplayName(lineageVerticesAndEdges, displayNameMustContain);
         return new LineageResponse(lineageVerticesAndEdges);
     }
-
 
 }
 
