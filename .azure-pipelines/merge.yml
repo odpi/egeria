@@ -29,6 +29,7 @@ stages:
             # TODO: Not sure if this is really needed...
           - script: mkdir -p ${HOME}/.docker
           - task: DownloadSecureFile@1
+            displayName: 'Download docker config'
             name: dockerConfig
             inputs:
               secureFile: odpi-docker.json
@@ -38,9 +39,10 @@ stages:
             inputs:
               command: login
               containerRegistry: odpi-dockerhub
-            # Normal build for master - note we have the '-Ddocker.taglatest' set
-            # This can likely be refactored using variables. 
+              # Normal build for master - note we have the '-Ddocker.taglatest' set
+              # and we use ArtifactoryMaven - so that the artifacts are published
           - task: ArtifactoryMaven@1
+            displayName: 'Build to artifactory (for master)'
             condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
               mavenPomFile: 'pom.xml'
@@ -72,31 +74,23 @@ stages:
                   -Ddocker.images=core
                   -Ddockerfile.googleContainerRegistryEnabled=false
             # build for other releases - note we DO NOT have the '-Ddocker.taglatest' set
-          - task: ArtifactoryMaven@1
+            # and we just do a simple maven build as we don't want the artifacts published
+            # Just docker images & to act as build verification
+          - task: Maven@3
+            displayName: 'Build locally with docker (non-master)'
             condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
               mavenPomFile: 'pom.xml'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '1.8'
               jdkArchitectureOption: 'x64'
-              artifactoryResolverService: 'ODPiArtifactory'
-              targetResolveReleaseRepo: 'egeria-staging'
-              targetResolveSnapshotRepo: 'egeria-snapshot'
-              artifactoryDeployService: 'ODPiArtifactory'
-              targetDeployReleaseRepo: 'egeria-staging'
-              targetDeploySnapshotRepo: 'egeria-snapshot'
-              collectBuildInfo: true
-              buildName: 'Egeria'
-              buildNumber: '$(Build.BuildNumber)'
-              includeEnvVars: true
-              goals: 'clean install'
+              goals: 'clean deploy'
               options: >-
                   --batch-mode
                   -e
                   -s .m2/settings.xml
-                  -Dmerge
+                  -DaltDeploymentRepository=staging::default::file:$(Agent.BuildDirectory)/local-repo
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-                  -P artifactory
                   -Ddocker
                   -Ddocker.repo=odpi
                   -Ddocker.registry=docker.io
@@ -104,6 +98,7 @@ stages:
                   -Ddockerfile.googleContainerRegistryEnabled=false
             # Only publish to artifactory if we are running a master build
           - task: ArtifactoryPublishBuildInfo@1
+            displayName: 'Publish artifactory build (master)'
             condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
               artifactoryService: ODPiArtifactory
@@ -111,3 +106,7 @@ stages:
           - publish: target
             artifact: target-$(Build.BuildNumber)
             condition: always()
+            # Take this extra step for non-master builds and publish artifact to pipelines
+          - publish: $(Agent.BuildDirectory)/local-repo
+            condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+            artifact: org.odpi.egeira-$(Build.BuildNumber)_Java-$(JAVA_VERSION)

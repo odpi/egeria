@@ -29,16 +29,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ADDITIONAL_PROPERTIES_PROPERTY_NAME;
-import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_CATALOG_OMAS;
 
 /**
  * AssetConverter is a helper class that maps the OMRS objects to Asset Catalog model.
  */
 public class AssetConverter {
 
+    private String sourceName;
     private OMRSRepositoryHelper repositoryHelper;
 
-    public AssetConverter(OMRSRepositoryHelper repositoryHelper) {
+    public AssetConverter(String sourceName, OMRSRepositoryHelper repositoryHelper) {
+        this.sourceName = sourceName;
         this.repositoryHelper = repositoryHelper;
     }
 
@@ -281,7 +282,7 @@ public class AssetConverter {
 
         asset.setGuid(entityProxy.getGUID());
         if (entityProxy.getUniqueProperties() != null) {
-            asset.setName(repositoryHelper.getStringProperty("userID", Constants.NAME, entityProxy.getUniqueProperties(), method));
+            asset.setName(repositoryHelper.getStringProperty(sourceName, Constants.NAME, entityProxy.getUniqueProperties(), method));
         }
         asset.setCreatedBy(entityProxy.getCreatedBy());
         asset.setCreateTime(entityProxy.getCreateTime());
@@ -314,13 +315,14 @@ public class AssetConverter {
             instancePropertiesAsMap.forEach((key, value) -> {
                 if (!key.equals(ADDITIONAL_PROPERTIES_PROPERTY_NAME)) {
                     if (value instanceof ArrayPropertyValue) {
-                        List<String> stringArrayProperty = repositoryHelper.getStringArrayProperty(ASSET_CATALOG_OMAS, key, instanceProperties, methodName);
-                        value = listToString(stringArrayProperty);
+                        List<String> stringArrayProperty = repositoryHelper.getStringArrayProperty(sourceName, key, instanceProperties, methodName);
+                        properties.put(key, listToString(stringArrayProperty));
                     } else if (value instanceof MapPropertyValue) {
-                        Map<String, Object> mapProperty = repositoryHelper.getMapFromProperty(ASSET_CATALOG_OMAS, key, instanceProperties, methodName);
-                        value = mapToString(mapProperty);
+                        Map<String, Object> mapProperty = repositoryHelper.getMapFromProperty(sourceName, key, instanceProperties, methodName);
+                        properties.put(key, mapToString(mapProperty));
+                    } else {
+                        properties.put(key, String.valueOf(value));
                     }
-                    properties.put(key, String.valueOf(value));
                 }
             });
         }
@@ -331,7 +333,7 @@ public class AssetConverter {
     private Map<String, String> extractAdditionalProperties(InstanceProperties instanceProperties) {
         String methodName = "extractAdditionalProperties";
 
-        return MapUtils.emptyIfNull(repositoryHelper.removeStringMapFromProperty(ASSET_CATALOG_OMAS,
+        return MapUtils.emptyIfNull(repositoryHelper.removeStringMapFromProperty(sourceName,
                 ADDITIONAL_PROPERTIES_PROPERTY_NAME,
                 instanceProperties, methodName));
     }
@@ -341,7 +343,7 @@ public class AssetConverter {
     }
 
     private String mapToString(Map<String, Object> map) {
-        return map.keySet().stream().map(key -> key + "=" + map.get(key))
+        return map.keySet().stream().map(key -> key + ": " + map.get(key))
                 .collect(Collectors.joining(", "));
     }
 }

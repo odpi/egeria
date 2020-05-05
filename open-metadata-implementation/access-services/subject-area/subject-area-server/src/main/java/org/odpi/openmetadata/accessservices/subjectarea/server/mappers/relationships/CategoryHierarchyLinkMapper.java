@@ -65,7 +65,7 @@ public class CategoryHierarchyLinkMapper extends LineMapper
      * @return name of the type def
      */
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return CATEGORY_HIERARCHY_LINK;
     }
     @Override

@@ -23,7 +23,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     <style include="shared-styles">
         :host {
           display: block;
-          padding: 2px 20px;
+          margin: 0 24px;
         }
         
         .container {

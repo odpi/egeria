@@ -22,7 +22,7 @@
 
     <name>Repository Handler Services</name>
     <description>
-        Common services for managing OMAG Service instances running in hte OMAG Server Platform.
+        Common services for managing OMAG Service instances running in the OMAG Server Platform.
     </description>
 
     <artifactId>repository-handler</artifactId>

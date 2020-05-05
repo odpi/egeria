@@ -182,7 +182,7 @@ public abstract class LineMapper implements ILineMapper
      * get type name
      * @return the omrs type name.
      */
-    abstract  String getTypeName() ;
+    public abstract  String getTypeName() ;
     abstract Line getLineInstance();
     /**
      * get the relationshipTypeDef Guid
