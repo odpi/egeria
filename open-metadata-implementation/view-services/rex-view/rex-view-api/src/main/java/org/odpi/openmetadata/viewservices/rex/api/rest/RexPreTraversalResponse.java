@@ -7,43 +7,83 @@ package org.odpi.openmetadata.viewservices.rex.api.rest;
 
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexPreTraversal;
 
-public class RexPreTraversalResponse {
+import java.util.Arrays;
 
-    private Integer          httpStatusCode;
-    private String           exceptionText;
+public class RexPreTraversalResponse extends RexViewOMVSAPIResponse {
+
+
     private RexPreTraversal rexPreTraversal;
 
-    public RexPreTraversalResponse(Integer statusCode, String exceptionText, RexPreTraversal rexPreTraversal) {
-
-        this.httpStatusCode = statusCode;
-        this.exceptionText = exceptionText;
-        this.rexPreTraversal = rexPreTraversal;
-    }
-
-    public Integer getHttpStatusCode() {
-        return this.httpStatusCode;
-    }
-
-    public String getExceptionText() {
-        return this.exceptionText;
-    }
-
-    public RexPreTraversal getRexPreTraversal() {
-        return this.rexPreTraversal;
-    }
-
-    public void setHttpStatusCode(Integer httpStatusCode)
+    /**
+     * Default constructor
+     */
+    public RexPreTraversalResponse()
     {
-        this.httpStatusCode = httpStatusCode;
+        super();
     }
 
-    public void setExceptionText(String exceptionText)
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public RexPreTraversalResponse(RexPreTraversalResponse template)
     {
-        this.exceptionText = exceptionText;
+        super(template);
+
+        if (template != null) {
+            this.rexPreTraversal = template.getRexPreTraversal();
+        }
     }
 
+
+    /**
+     * Return the rexTraversal result.
+     *
+     * @return bean
+     */
+    public RexPreTraversal getRexPreTraversal()
+    {
+        return rexPreTraversal;
+    }
+
+
+    /**
+     * Set the rexTraversal result.
+     *
+     * @param rexPreTraversal - bean
+     */
     public void setRexPreTraversal(RexPreTraversal rexPreTraversal)
     {
         this.rexPreTraversal = rexPreTraversal;
     }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return return string containing the property names and values
+     */
+    @Override
+    public String toString()
+    {
+        return "RexPreTraversalResponse{" +
+                "rexPreTraversal=" + rexPreTraversal +
+                ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                ", actionDescription='" + getActionDescription() + '\'' +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
+                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
+                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
+                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
+                ", exceptionProperties=" + getExceptionProperties() +
+                '}';
+    }
+
+
+
+
+
 }

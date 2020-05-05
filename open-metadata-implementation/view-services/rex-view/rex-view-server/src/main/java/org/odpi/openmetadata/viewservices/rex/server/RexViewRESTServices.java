@@ -10,9 +10,11 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.viewservices.rex.api.properties.RexPreTraversal;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexTraversal;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityDetailResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityRequestBody;
+import org.odpi.openmetadata.viewservices.rex.api.rest.RexPreTraversalResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipRequestBody;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexSearchBody;
@@ -345,6 +347,78 @@ public class RexViewRESTServices {
         return response;
     }
 
+
+    /**
+     *  This method retrieves the neighborhood around a starting entity for pre=traversal
+     *  <p>
+     *  When exploring an entity neighborhood we return an InstanceGraph which contains
+     *  te entities and relationships that were traversed.
+     *  <p>
+     *  The method used is POST because the parameters supplied by the UI to the VS are conveyed in
+     *  the request body.
+     *
+     *
+     * @param serverName   name of the server running the view-service.
+     * @param userId       user account under which to conduct operation.
+     * @param requestBody  request body containing parameters to formulate repository request
+     * @return response object containing the InstanceGraph for the traersal or exception information
+     *
+     * <ul>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.
+     * </ul>
+     */
+
+    public RexPreTraversalResponse rexPreTraversal(String                  serverName,
+                                                   String                  userId,
+                                                   RexTraversalRequestBody requestBody) {
+
+        final String methodName = "rexPreTraversal";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RexPreTraversalResponse response = new RexPreTraversalResponse();
+
+        AuditLog auditLog = null;
+
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null) {
+                RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+
+                RexPreTraversal preTraversal = handler.rexPreTraversal(userId,
+                                                                       requestBody.getServerName(),
+                                                                       requestBody.getServerURLRoot(),
+                                                                       requestBody.getEnterpriseOption(),
+                                                                       requestBody.getEntityGUID(),
+                                                                       requestBody.getDepth(),
+                                                                       methodName);
+
+                if (preTraversal != null) {
+                    response.setRexPreTraversal(preTraversal);
+                }
+
+                // TODO -- need to test/decide what should happen when there is no neighborhood......
+
+            }
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        } catch (Throwable error) {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
     /**
      *  This method retrieves the neighborhood around a starting entity.
      *  <p>
@@ -417,5 +491,7 @@ public class RexViewRESTServices {
 
         return response;
     }
+
+
 
 }

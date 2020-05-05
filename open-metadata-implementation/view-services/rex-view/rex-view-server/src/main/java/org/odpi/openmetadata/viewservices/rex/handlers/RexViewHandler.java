@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.viewservices.rex.handlers;
 
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
@@ -38,8 +39,10 @@ import org.odpi.openmetadata.viewservices.rex.api.properties.RelationshipExplore
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexEntityDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedEntityDetail;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedRelationship;
+import org.odpi.openmetadata.viewservices.rex.api.properties.RexPreTraversal;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexRelationshipDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexTraversal;
+import org.odpi.openmetadata.viewservices.rex.api.properties.RexTypeStats;
 import org.odpi.openmetadata.viewservices.rex.api.properties.TypeExplorer;
 
 import org.slf4j.Logger;
@@ -559,6 +562,202 @@ public class RexViewHandler
 
 
     /**
+     * Retrieve the neighborhood surrounding an entity for pre-traversal.
+     * @param userId  userId under which the request is performed
+     * @param repositoryServerName The name of the repository server to interrogate
+     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param enterpriseOption Whether the query is at cohort level or server specific
+     * @param entityGUID the identity of the entity from which to traverse
+     * @param depth the depth to which the method should traverse
+     * @param methodName The name of the method being invoked
+     * @return a RexTraversal object containing the neighborhood information
+     *
+     * Exceptions returned by the server
+     *
+     * @throws InvalidParameterException     a parameter is invalid or null.
+     * @throws TypeErrorException            the type guid passed on the request is not known by the metadata collection.
+     * @throws EntityNotKnownException       the specified start entity could not be found
+     * @throws EntityProxyOnlyException      the specified start entity could not be found
+     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     *                                       the metadata collection is stored.
+     * @throws PropertyErrorException        the sequencing property specified is not valid for any of the requested types of
+     *                                       entity.
+     * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
+     * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
+     */
+    public RexPreTraversal rexPreTraversal(String          userId,
+                                           String          repositoryServerName,
+                                           String          repositoryServerURLRoot,
+                                           boolean         enterpriseOption,
+                                           String          entityGUID,
+                                           int             depth,
+                                           String          methodName)
+    throws
+    RepositoryErrorException,
+    InvalidParameterException,
+    EntityNotKnownException,
+    EntityProxyOnlyException,
+    UserNotAuthorizedException,
+    TypeErrorException,
+    PropertyErrorException,
+    FunctionNotSupportedException
+
+    {
+
+        try {
+
+            /*
+             *  Switch between local and enterprise services clients depending
+             *  on enterprise option...
+             */
+            MetadataCollectionServicesClient repositoryServicesClient;
+
+            if (!enterpriseOption) {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            } else {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            }
+
+            /*
+             * Because we will want to extract labels based on type we'll need to know the types supported by the repository...
+             */
+
+            TypeExplorer typeExplorer = getTypeExplorer(userId,
+                                                        repositoryServerName,
+                                                        repositoryServerURLRoot,
+                                                        enterpriseOption,
+                                                        methodName);
+
+            InstanceGraph instGraph = null;
+
+            if (depth >0) {
+
+                instGraph = repositoryServicesClient.getEntityNeighborhood(userId,
+                                                                           entityGUID,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           depth);
+            }
+
+
+            else {
+
+                /*
+                 * Since depth is 0 - use getEntityDetail instead of neighborhood
+                 */
+
+                EntityDetail entityDetail = repositoryServicesClient.getEntityDetail(
+                        userId,
+                        entityGUID);
+
+                // Construct an InstanceGraph containing just the entityDetail
+                instGraph = new InstanceGraph();
+
+                List<EntityDetail> entityDetailList = new ArrayList<>();
+                entityDetailList.add(entityDetail);
+                instGraph.setEntities(entityDetailList);
+
+            }
+
+
+            // Should have an InstanceGraph with one or more entities and maybe relationships
+            // Parse the RexTraversal into a RexPreTraversal for the PreTraversalResponse
+
+            RexPreTraversal rexPreTraversal = new RexPreTraversal();
+
+
+            rexPreTraversal.setEntityGUID(entityGUID);
+            rexPreTraversal.setDepth(depth);
+
+            // Process entities
+            List<EntityDetail> entities = instGraph.getEntities();
+            Map<String, RexTypeStats> entityCountsByType = new HashMap<>();
+            Map<String,RexTypeStats> classificationCountsByType = new HashMap<>();
+            if (entities != null) {
+                for (EntityDetail ent : entities) {
+                    // Process entity type information
+                    /* Skip the entity that the traversal started from.
+                     * Counting the starting entity will distort the counts
+                     */
+                    if (! ent.getGUID().equals(entityGUID)) {
+
+                        InstanceType instanceType = ent.getType();
+                        String typeGUID = instanceType.getTypeDefGUID();
+                        String typeName = instanceType.getTypeDefName();
+                        if (entityCountsByType.get(typeName) == null) {
+                            // First sight of an instance of this type
+                            RexTypeStats stats = new RexTypeStats(typeGUID, 1);
+                            entityCountsByType.put(typeName, stats);
+                        } else {
+                            // Add to the count of instances of this type
+                            Integer existingCount = entityCountsByType.get(typeName).getCount();
+                            entityCountsByType.get(typeName).setCount(existingCount + 1);
+                        }
+                        // Process entity classification information
+                        List<Classification> classifications = ent.getClassifications();
+                        if (classifications != null) {
+                            for (Classification classification : classifications) {
+                                String classificationName = classification.getName();
+                                if (classificationCountsByType.get(classificationName) == null) {
+                                    // First sight of an instance of this type
+                                    RexTypeStats stats = new RexTypeStats(null, 1);
+                                    classificationCountsByType.put(classificationName, stats);
+                                } else {
+                                    // Add to the count of instances of this type
+                                    Integer existingCount = classificationCountsByType.get(classificationName).getCount();
+                                    classificationCountsByType.get(classificationName).setCount(existingCount + 1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // Process relationships
+            List<Relationship> relationships = instGraph.getRelationships();
+            Map<String,RexTypeStats> relationshipCountsByType = new HashMap<>();
+            if (relationships != null) {
+                for (Relationship rel : relationships) {
+                    InstanceType instanceType = rel.getType();
+                    String typeGUID = instanceType.getTypeDefGUID();
+                    String typeName = instanceType.getTypeDefName();
+                    if (relationshipCountsByType.get(typeName) == null) {
+                        // First sight of an instance of this type
+                        RexTypeStats stats = new RexTypeStats(typeGUID, 1);
+                        relationshipCountsByType.put(typeName, stats);
+                    } else {
+                        // Add to the count of instances of this type
+                        Integer existingCount = relationshipCountsByType.get(typeName).getCount();
+                        relationshipCountsByType.get(typeName).setCount(existingCount + 1);
+                    }
+                }
+            }
+            // Update the rexPreTraversal
+            rexPreTraversal.setEntityInstanceCounts(entityCountsByType);
+            rexPreTraversal.setRelationshipInstanceCounts(relationshipCountsByType);
+            rexPreTraversal.setClassificationInstanceCounts(classificationCountsByType);
+
+            return rexPreTraversal;
+
+        }
+        catch (UserNotAuthorizedException  |
+                EntityNotKnownException    |
+                EntityProxyOnlyException   |
+                RepositoryErrorException   |
+                InvalidParameterException  |
+                TypeErrorException         |
+                FunctionNotSupportedException   e) {
+            throw e;
+        }
+
+
+    }
+
+
+
+    /**
      * Retrieve the neighborhood surrounding an entity.
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
@@ -781,7 +980,6 @@ public class RexViewHandler
                 RepositoryErrorException   |
                 InvalidParameterException  |
                 TypeErrorException         |
-                PropertyErrorException     |
                 FunctionNotSupportedException   e) {
             throw e;
         }

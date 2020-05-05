@@ -158,12 +158,11 @@ public class RexViewRESTResource {
 
     }
 
-
     /**
-     *  This method retrieves the neighborhood around a starting entity.
+     *  This method retrieves the neighborhood around a starting entity for pre-traversal
      *  <p>
      *  When exploring an entity neighborhood we return an InstanceGraph which contains
-     *  te entities and relationships that were traversed.
+     *  the entities and relationships that were traversed.
      *  <p>
      *  The method used is POST because the parameters supplied by the UI to the VS are conveyed in
      *  the request body.
@@ -172,7 +171,32 @@ public class RexViewRESTResource {
      * @param serverName   name of the server running the view-service.
      * @param userId       user account under which to conduct operation.
      * @param body         request body containing parameters to formulate repository request
-     * @return response object containing the InstanceGraph for the traersal or exception information
+     * @return response object containing the InstanceGraph for the traversal or exception information
+     */
+    @PostMapping("/instances/rex-pre-traversal")
+    public RexTraversalResponse rexPreTraversal(@PathVariable String                 serverName,
+                                                @PathVariable String                 userId,
+                                                @RequestBody RexTraversalRequestBody body) {
+        return restAPI.rexPreTraversal(serverName, userId, body);
+
+
+
+    }
+
+    /**
+     *  This method retrieves the neighborhood around a starting entity.
+     *  <p>
+     *  When exploring an entity neighborhood we return an InstanceGraph which contains
+     *  the entities and relationships that were traversed.
+     *  <p>
+     *  The method used is POST because the parameters supplied by the UI to the VS are conveyed in
+     *  the request body.
+     *
+     *
+     * @param serverName   name of the server running the view-service.
+     * @param userId       user account under which to conduct operation.
+     * @param body         request body containing parameters to formulate repository request
+     * @return response object containing the InstanceGraph for the traversal or exception information
      */
     @PostMapping("/instances/rex-traversal")
     public RexTraversalResponse rexTraversal(@PathVariable String                 serverName,
