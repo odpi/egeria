@@ -5,6 +5,7 @@ package org.odpi.openmetadata.viewservices.rex.server;
 
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityDetailResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityRequestBody;
+import org.odpi.openmetadata.viewservices.rex.api.rest.RexPreTraversalResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipRequestBody;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexSearchBody;
@@ -153,7 +154,7 @@ public class RexViewRESTResource {
     @PostMapping("/instances/relationships/by-property-value")
     public RexSearchResponse findRelationships(@PathVariable String         serverName,
                                                @PathVariable String         userId,
-                                               @RequestBody  RexSearchBody   body) {
+                                               @RequestBody  RexSearchBody  body) {
         return restAPI.findRelationships(serverName, userId, body);
 
     }
@@ -174,9 +175,9 @@ public class RexViewRESTResource {
      * @return response object containing the InstanceGraph for the traversal or exception information
      */
     @PostMapping("/instances/rex-pre-traversal")
-    public RexTraversalResponse rexPreTraversal(@PathVariable String                 serverName,
-                                                @PathVariable String                 userId,
-                                                @RequestBody RexTraversalRequestBody body) {
+    public RexPreTraversalResponse rexPreTraversal(@PathVariable String                 serverName,
+                                                   @PathVariable String                 userId,
+                                                   @RequestBody RexTraversalRequestBody body) {
         return restAPI.rexPreTraversal(serverName, userId, body);
 
 
