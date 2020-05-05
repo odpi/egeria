@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataPlatformRegistrationRequestBody.class, name = "dataPlatform"),
                 @JsonSubTypes.Type(value = DeployedDatabaseSchemaRequestBody.class, name = "deployedDatabaseSchema")
         })
-
+@Deprecated
 public abstract class DataPlatformOMASAPIRequestBody implements java.io.Serializable {
 
     private static final long serialVersionUID = 1L;

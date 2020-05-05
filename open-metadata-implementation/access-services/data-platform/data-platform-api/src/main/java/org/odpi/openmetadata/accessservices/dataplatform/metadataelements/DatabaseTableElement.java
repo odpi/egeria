@@ -86,7 +86,6 @@ public class DatabaseTableElement extends DatabaseTableProperties implements Met
     {
         return "DatabaseTableElement{" +
                 "elementHeader=" + elementHeader +
-                ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +

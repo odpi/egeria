@@ -88,7 +88,6 @@ public class DatabaseColumnElement extends DatabaseColumnProperties implements M
                 "elementHeader=" + elementHeader +
                 ", dataType='" + getDataType() + '\'' +
                 ", defaultValue='" + getDefaultValue() + '\'' +
-                ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +
