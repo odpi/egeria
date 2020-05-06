@@ -80,7 +80,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     {
         super();
 
-        producerProperties.put("bootstrap.servers", "localhost:9092");
+          producerProperties.put("bootstrap.servers", "localhost:9092");
         producerProperties.put("acks", "all");
         producerProperties.put("retries", 1);
         producerProperties.put("batch.size", 16384);
