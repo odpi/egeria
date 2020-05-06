@@ -81,7 +81,7 @@ This mechanism is controlled by two properties.
 bring.up.retries 
 defaults to 10 and specifies the number of times the Egeria KafkaTopicConnector will retry verification before reporting a failure.
  
-bring.up.minSleepTime is the minimum amount of time to wait before attempting a verification retry. 
+bring.up.minSleepTime is set to 5000ms by default and is the minimum amount of time to wait before attempting a verification retry. 
 If a Kafka verification attempt takes longer than this value the KafkaTopicConnector does not pause before retring the verification.
 
 ## Topic Creation
