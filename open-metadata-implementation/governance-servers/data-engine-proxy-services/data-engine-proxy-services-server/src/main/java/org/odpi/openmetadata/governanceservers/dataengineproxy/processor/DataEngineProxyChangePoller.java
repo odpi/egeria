@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyErrorCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
@@ -65,6 +66,8 @@ public class DataEngineProxyChangePoller implements Runnable {
         this.dataEngineOMASClient = dataEngineOMASClient;
         this.auditLog = auditLog;
 
+        this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.INIT_POLLING.getMessageDefinition());
+
         // Retrieve the base information from the connector
         if (connector != null) {
             try {
@@ -92,19 +95,38 @@ public class DataEngineProxyChangePoller implements Runnable {
         while (running.get()) {
             try {
 
+                // Start with the last change synchronization date and time
                 Date changesLastSynced = connector.getChangesLastSynced();
+
+                // Then look for the oldest change available in the Data Engine since that time
+                Date oldestSinceSync = connector.getOldestChangeSince(changesLastSynced);
                 Date changesCutoff = new Date();
+                if (oldestSinceSync == null) {
+                    // If there were no changes since the last sync time, default to the last sync time
+                    oldestSinceSync = changesLastSynced;
+                } else {
+                    // If there are any changes since that last sync time, calculate a batch window from that oldest
+                    // change to the maximum amount of time to include in a batch
+                    long window = oldestSinceSync.getTime() + (dataEngineProxyConfig.getBatchWindowInSeconds() * 1000L);
+                    long now = changesCutoff.getTime();
+                    // We will look for changes up to that batch window size or the current moment, whichever is sooner
+                    changesCutoff = new Date(Math.min(window, now));
+                }
 
                 ensureSourceNameIsSet();
 
-                this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING.getMessageDefinition(changesLastSynced == null ? "(all changes)" : changesLastSynced.toString()));
+                this.auditLog.logMessage(methodName,
+                        DataEngineProxyAuditCode.POLLING.getMessageDefinition(
+                                oldestSinceSync == null ? "0" : oldestSinceSync.toString(),
+                                changesCutoff.toString()
+                        ));
 
                 // Send the changes, and ordering here is important
-                upsertSchemaTypes(changesLastSynced, changesCutoff);
-                upsertPortImplementations(changesLastSynced, changesCutoff);
-                upsertPortAliases(changesLastSynced, changesCutoff);
-                upsertProcesses(changesLastSynced, changesCutoff);
-                upsertLineageMappings(changesLastSynced, changesCutoff);
+                upsertSchemaTypes(oldestSinceSync, changesCutoff);
+                upsertPortImplementations(oldestSinceSync, changesCutoff);
+                upsertPortAliases(oldestSinceSync, changesCutoff);
+                upsertProcesses(oldestSinceSync, changesCutoff);
+                upsertLineageMappings(oldestSinceSync, changesCutoff);
 
                 // Update the timestamp at which changes were last synced
                 connector.setChangesLastSynced(changesCutoff);
@@ -117,7 +139,7 @@ public class DataEngineProxyChangePoller implements Runnable {
             } catch (UserNotAuthorizedException e) {
                 this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.USER_NOT_AUTHORIZED.getMessageDefinition("send changes"));
             } catch (Exception e) {
-                this.auditLog.logException(methodName, DataEngineProxyAuditCode.UNKNOWN_ERROR.getMessageDefinition(), e);
+                throw new OCFRuntimeException(DataEngineProxyErrorCode.UNKNOWN_ERROR.getMessageDefinition(), this.getClass().getName(), methodName, e);
             }
         }
 
@@ -134,15 +156,16 @@ public class DataEngineProxyChangePoller implements Runnable {
             InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
-        log.info(" ... getting changed schema types.");
+        final String methodName = "upsertSchemaTypes";
+        final String type = "SchemaTypes";
+        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<SchemaType> changedSchemaTypes = connector.getChangedSchemaTypes(changesLastSynced, changesCutoff);
-
         if (changedSchemaTypes != null) {
             for (SchemaType changedSchemaType : changedSchemaTypes) {
                 dataEngineOMASClient.createOrUpdateSchemaType(userId, changedSchemaType);
             }
-            log.info(" ... completing schema type changes.");
         }
+        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));
     }
 
     private void upsertPortImplementations(Date changesLastSynced,
@@ -150,14 +173,17 @@ public class DataEngineProxyChangePoller implements Runnable {
             InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
+        final String methodName = "upsertPortImplementations";
+        final String type = "PortImplementations";
+        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         log.info(" ... getting changed port implementations.");
         List<PortImplementation> changedPortImplementations = connector.getChangedPortImplementations(changesLastSynced, changesCutoff);
         if (changedPortImplementations != null) {
             for (PortImplementation changedPortImplementation : changedPortImplementations) {
                 dataEngineOMASClient.createOrUpdatePortImplementation(userId, changedPortImplementation);
             }
-            log.info(" ... completing port implementation changes.");
         }
+        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));
     }
 
     private void upsertPortAliases(Date changesLastSynced,
@@ -165,14 +191,16 @@ public class DataEngineProxyChangePoller implements Runnable {
             InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
-        log.info(" ... getting changed port aliases.");
+        final String methodName = "upsertPortAliases";
+        final String type = "PortAliases";
+        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<PortAlias> changedPortAliases = connector.getChangedPortAliases(changesLastSynced, changesCutoff);
         if (changedPortAliases != null) {
             for (PortAlias changedPortAlias : changedPortAliases) {
                 dataEngineOMASClient.createOrUpdatePortAlias(userId, changedPortAlias);
             }
-            log.info(" ... completing port alias changes.");
         }
+        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));
     }
 
     private void upsertProcesses(Date changesLastSynced,
@@ -180,14 +208,14 @@ public class DataEngineProxyChangePoller implements Runnable {
             InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
-        log.info(" ... getting changed processes.");
+        final String methodName = "upsertProcesses";
+        final String type = "Processes";
+        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<Process> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
-        if (changedProcesses != null) {
-            for (Process changedProcess : changedProcesses) {
-                dataEngineOMASClient.createOrUpdateProcess(userId, changedProcess);
-            }
-            log.info(" ... completing process changes.");
+        if (changedProcesses != null && !changedProcesses.isEmpty()) {
+            dataEngineOMASClient.createOrUpdateProcesses(userId, changedProcesses);
         }
+        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));
     }
 
     private void upsertLineageMappings(Date changesLastSynced,
@@ -195,12 +223,14 @@ public class DataEngineProxyChangePoller implements Runnable {
             InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
-        log.info(" ... getting changed lineage mappings.");
+        final String methodName = "upsertLineageMappings";
+        final String type = "LineageMappings";
+        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<LineageMapping> changedLineageMappings = connector.getChangedLineageMappings(changesLastSynced, changesCutoff);
         if (changedLineageMappings != null) {
             dataEngineOMASClient.addLineageMappings(userId, changedLineageMappings);
-            log.info(" ... completing lineage mapping changes.");
         }
+        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));
     }
 
 }

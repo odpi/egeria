@@ -56,7 +56,10 @@ public class JobConfiguration {
 
     private static Trigger buildSimpleSchedulerTrigger() {
 
-        int INTERVAL_SECONDS = 600;
+
+//        int INTERVAL_SECONDS = 600;
+        //TODO Remove after development
+        int INTERVAL_SECONDS = 10;
 
         return TriggerBuilder.newTrigger().withIdentity("BufferGraphJob", GROUP)
                 .withSchedule(
