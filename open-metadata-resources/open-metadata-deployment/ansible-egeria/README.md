@@ -135,6 +135,8 @@ admin_omag_server_config:
     cohort_topic: mytopic
     consumer: kafkaserver:9092
     producer: kafkaserver:9092
+    auditlog_destination: slf4j
+    auditlog_severity: []    
 admin_omag_repo_config:
   omas-server:
     mode: local-graph-repository
