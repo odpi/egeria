@@ -49,7 +49,6 @@ public class DatabaseDerivedColumnProperties extends DerivedSchemaAttributePrope
     {
         return "DatabaseDerivedColumnProperties{" +
                 "formula='" + getFormula() + '\'' +
-                ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +

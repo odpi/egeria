@@ -86,7 +86,6 @@ public class DerivedSchemaAttributeProperties extends SchemaAttributeProperties
     {
         return "DerivedSchemaAttributeProperties{" +
                 "formula='" + formula + '\'' +
-                ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +
