@@ -23,6 +23,7 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
 
     public static final String SUPPORTED_TYPES_FOR_SEARCH = "SupportedTypesForSearch";
     private AuditLog auditLog;
+    private String serverName;
     private AssetCatalogServicesInstance instance;
 
 
@@ -56,9 +57,11 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
             instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog, serverUserName,
                     accessServiceConfigurationProperties.getAccessServiceName(), supportedTypesForSearch);
 
-            auditLog.logMessage(actionDescription, AssetCatalogAuditCode.SERVICE_INITIALIZED.getMessageDefinition());
+            this.serverName = instance.getServerName();
+
+            auditLog.logMessage(actionDescription, AssetCatalogAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
         } catch (Exception error) {
-            auditLog.logException(actionDescription, AssetCatalogAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(), error);
+            auditLog.logException(actionDescription, AssetCatalogAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(), serverName), error);
 
             super.throwUnexpectedInitializationException(actionDescription, AccessServiceDescription.ASSET_CATALOG_OMAS.getAccessServiceFullName(), error);
         }
@@ -75,7 +78,7 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
         if (auditLog != null) {
             final String actionDescription = "shutdown";
 
-            auditLog.logMessage(actionDescription, AssetCatalogAuditCode.SERVICE_SHUTDOWN.getMessageDefinition());
+            auditLog.logMessage(actionDescription, AssetCatalogAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
         }
     }
 

@@ -73,6 +73,7 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin {
                                 enterpriseOMRSRepositoryConnector.getRepositoryValidator(),
                                 accessServiceConfigurationProperties.getAccessServiceName(),
                                 serverName,
+                                serverUserName,
                                 supportedZones,
                                 auditLog);
                 super.registerWithEnterpriseTopic(accessServiceConfigurationProperties.getAccessServiceName(),

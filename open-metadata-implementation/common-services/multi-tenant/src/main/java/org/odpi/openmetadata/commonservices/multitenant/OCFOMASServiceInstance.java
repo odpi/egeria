@@ -37,6 +37,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
     protected RelatedMediaHandler       relatedMediaHandler;
     protected SchemaTypeHandler         schemaTypeHandler;
     protected ValidValuesHandler        validValuesHandler;
+    protected RelationalDataHandler     relationalDataHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -164,7 +165,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
         this.endpointHandler           = new EndpointHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.externalIdentifierHandler = new ExternalIdentifierHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.externalReferenceHandler  = new ExternalReferenceHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
-        this.glossaryTermHandler       = new GlossaryTermHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, lastAttachmentHandler);
+        this.glossaryTermHandler       = new GlossaryTermHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.informalTagHandler        = new InformalTagHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.licenseHandler            = new LicenseHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.likeHandler               = new LikeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
@@ -203,6 +204,15 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                                           defaultZones);
 
         validValuesHandler.setAssetHandler(assetHandler);
+
+        relationalDataHandler = new RelationalDataHandler(serviceName,
+                                                          serverName,
+                                                          invalidParameterHandler,
+                                                          repositoryHandler,
+                                                          repositoryHelper,
+                                                          assetHandler,
+                                                          connectionHandler,
+                                                          lastAttachmentHandler);
 
         if (securityVerifier != null)
         {
@@ -513,6 +523,22 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return relatedMediaHandler;
+    }
+
+
+    /**
+     * Return the handler for managing relational data assets, connections and schema.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    RelationalDataHandler getRelationalDataHandler() throws PropertyServerException
+    {
+        final String methodName = "getRelationalDataHandler";
+
+        validateActiveRepository(methodName);
+
+        return relationalDataHandler;
     }
 
 

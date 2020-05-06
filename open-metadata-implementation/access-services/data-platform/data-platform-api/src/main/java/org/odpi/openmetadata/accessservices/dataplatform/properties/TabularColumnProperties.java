@@ -106,7 +106,6 @@ public class TabularColumnProperties extends SchemaAttributeProperties
         return "TabularColumnProperties{" +
                 "dataType='" + dataType + '\'' +
                 ", defaultValue='" + defaultValue + '\'' +
-                ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +

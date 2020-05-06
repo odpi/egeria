@@ -88,7 +88,6 @@ public class DatabaseDerivedColumnElement extends DatabaseDerivedColumnPropertie
         return "DatabaseDerivedColumnElement{" +
                 "elementHeader=" + elementHeader +
                 ", formula='" + getFormula() + '\'' +
-                ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +

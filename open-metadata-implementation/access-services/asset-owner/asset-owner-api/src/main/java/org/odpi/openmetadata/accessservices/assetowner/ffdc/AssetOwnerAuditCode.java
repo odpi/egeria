@@ -4,12 +4,9 @@ package org.odpi.openmetadata.accessservices.assetowner.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The AssetOwnerAuditCode is used to define the message content for the OMRS Audit Log.
@@ -27,7 +24,7 @@ import java.util.Arrays;
 public enum AssetOwnerAuditCode implements AuditLogMessageSet
 {
     SERVICE_INITIALIZING("OMAS-ASSET-OWNER-0001",
-             OMRSAuditLogRecordSeverity.STARTUP,
+            OMRSAuditLogRecordSeverity.STARTUP,
              "The Asset Owner Open Metadata Access Service (OMAS) is initializing a new server instance",
              "The local server has started up a new instance of the Asset Owner OMAS.  This service " +
                                  "enables tools to capture information about assets, build a catalog and set up " +
@@ -49,7 +46,7 @@ public enum AssetOwnerAuditCode implements AuditLogMessageSet
              OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Asset Owner Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local administrator has requested shut down of an Asset Owner OMAS instance.",
-             "No action is required is this shutdown was intended."),
+             "No action is required if this shutdown was intended."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-OWNER-0005",
              OMRSAuditLogRecordSeverity.EXCEPTION,

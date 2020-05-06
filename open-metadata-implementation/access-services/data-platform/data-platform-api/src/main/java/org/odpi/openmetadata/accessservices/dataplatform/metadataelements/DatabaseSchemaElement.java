@@ -92,10 +92,9 @@ public class DatabaseSchemaElement extends DatabaseProperties implements Metadat
                 ", databaseImportedFrom='" + getDatabaseImportedFrom() + '\'' +
                 ", createTime=" + getCreateTime() +
                 ", modifiedTime=" + getModifiedTime() +
-                ", encoding='" + getEncoding() + '\'' +
-                ", language='" + getLanguage() + '\'' +
+                ", encodingType='" + getEncodingType() + '\'' +
+                ", encodingLanguage='" + getEncodingLanguage() + '\'' +
                 ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", dataStoreProperties=" + getDataStoreProperties() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", owner='" + getOwner() + '\'' +
