@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
@@ -103,10 +104,16 @@ public class Converter {
     }
 
     private String listToString(List<String> list) {
+        if(CollectionUtils.isEmpty(list)) {
+            return null;
+        }
         return String.join(",", list);
     }
 
     private String mapToString(Map<String, Object> map) {
+        if(MapUtils.isEmpty(map)) {
+            return null;
+        }
         return map.keySet().stream().map(key -> key + ": " + map.get(key))
                 .collect(Collectors.joining(", "));
     }
