@@ -82,6 +82,10 @@ that support the business.
 models for an organization.  It is designed for architecture tools.  It is able to support the
 definition and management of a digital service through concept to deployment.
 
+* **[digital-service](dev-ops)** - manage metadata for a the Egeria Digital Services lifecycle.
+  
+  The Digital Service OMAS provides services for a managing the lifecycle of an Egeria Digital Service.
+
 * **[discovery-engine](discovery-engine)** - manage metadata for metadata discovery services.
 
   The Discovery Engine OMAS provides an API for a discovery engine to access and store

@@ -39,6 +39,7 @@
         <module>data-science</module>
         <module>dev-ops</module>
         <module>digital-architecture</module>
+        <module>digital-service</module>
         <module>discovery-engine</module>
         <module>governance-engine</module>
         <module>governance-program</module>
