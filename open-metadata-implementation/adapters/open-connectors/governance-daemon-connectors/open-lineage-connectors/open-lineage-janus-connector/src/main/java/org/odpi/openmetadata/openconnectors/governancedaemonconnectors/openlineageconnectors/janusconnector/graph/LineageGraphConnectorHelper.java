@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.bothE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLabel;
@@ -82,33 +83,18 @@ public class LineageGraphConnectorHelper {
      * @param guid       The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @param edgeLabels Traversed edges
      *
-     * @return a subgraph in the GraphSON format.
+     * @return a subgraph in an Open Lineage specific format.
      */
     LineageVerticesAndEdges ultimateSource(String guid, String... edgeLabels) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateSource";
         GraphTraversalSource g = lineageGraph.traversal();
 
-        List<Vertex> sourcesList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                until(inE(edgeLabels).count().is(0)).
-                repeat(inE(edgeLabels).outV().simplePath()).
-                dedup().toList();
+        List<Vertex> vertexList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).until(inE(edgeLabels).count().is(0))
+                .repeat(inE(edgeLabels).outV().simplePath()).dedup().toList();
 
-        detectProblematicCycle(methodName, sourcesList);
+        detectProblematicCycle(methodName, vertexList);
 
-        Vertex originalQueriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
-
-        Set<LineageVertex> lineageVertices = new HashSet<>();
-
-        Set<LineageEdge> lineageEdges = new HashSet<>();
-
-        LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
-        lineageVertices.add(queriedVertex);
-
-        addSourceCondensation(sourcesList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
-
-        addColumnProperties(lineageVertices);
-
-        return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
+        return getCondensedLineage(guid, g, vertexList, PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
     }
 
     /**
@@ -118,32 +104,18 @@ public class LineageGraphConnectorHelper {
      * @param guid       The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @param edgeLabels Traversed edges
      *
-     * @return a subgraph in the GraphSON format.
+     * @return a subgraph in an Open Lineage specific format.
      */
     LineageVerticesAndEdges ultimateDestination(String guid, String... edgeLabels) throws OpenLineageException {
         String methodName = "MainGraphConnector.ultimateDestination";
         GraphTraversalSource g = lineageGraph.traversal();
 
-        List<Vertex> destinationsList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                until(outE(edgeLabels).count().is(0)).
-                repeat(outE(edgeLabels).inV().simplePath()).
-                dedup().toList();
+        List<Vertex> vertexList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).until(outE(edgeLabels).count().is(0))
+                .repeat(outE(edgeLabels).inV().simplePath()).dedup().toList();
 
-        detectProblematicCycle(methodName, destinationsList);
+        detectProblematicCycle(methodName, vertexList);
 
-        Vertex originalQueriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
-        LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
-
-        Set<LineageVertex> lineageVertices = new HashSet<>();
-        Set<LineageEdge> lineageEdges = new HashSet<>();
-
-        lineageVertices.add(queriedVertex);
-
-        addDestinationCondensation(destinationsList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
-
-        addColumnProperties(lineageVertices);
-
-        return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
+        return getCondensedLineage(guid, g, vertexList, PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
     }
 
     /**
@@ -153,7 +125,7 @@ public class LineageGraphConnectorHelper {
      * @param guid       The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @param edgeLabels Traversed edges
      *
-     * @return a subgraph in the GraphSON format.
+     * @return a subgraph in an Open Lineage specific format.
      */
     LineageVerticesAndEdges endToEnd(String guid, String... edgeLabels) {
         GraphTraversalSource g = lineageGraph.traversal();
@@ -177,39 +149,19 @@ public class LineageGraphConnectorHelper {
      * @param guid       The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @param edgeLabels Traversed edges
      *
-     * @return a subgraph in the GraphSON format.
+     * @return a subgraph in an Open Lineage specific format
      */
     LineageVerticesAndEdges sourceAndDestination(String guid, String... edgeLabels) throws OpenLineageException {
-        String methodName = "MainGraphConnector.sourceAndDestination";
-        GraphTraversalSource g = lineageGraph.traversal();
+        LineageVerticesAndEdges ultimateSourceResponse = ultimateSource(guid, edgeLabels);
+        LineageVerticesAndEdges ultimateDestinationResponse = ultimateDestination(guid, edgeLabels);
 
-        List<Vertex> sourcesList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                until(inE(edgeLabels).count().is(0)).
-                repeat(inE(edgeLabels).outV().simplePath()).
-                dedup().toList();
+        Set<LineageVertex> sourceAndDestinationVertices = Stream.concat(ultimateSourceResponse.getLineageVertices().stream(),
+                ultimateDestinationResponse.getLineageVertices().stream()).collect(Collectors.toSet());
 
-        List<Vertex> destinationsList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                until(outE(edgeLabels).count().is(0)).
-                repeat(outE(edgeLabels).inV().simplePath()).
-                dedup().toList();
+        Set<LineageEdge> sourceAndDestinationEdges = Stream.concat(ultimateSourceResponse.getLineageEdges().stream(),
+                ultimateDestinationResponse.getLineageEdges().stream()).collect(Collectors.toSet());
 
-        detectProblematicCycle(methodName, sourcesList);
-        detectProblematicCycle(methodName, destinationsList);
-
-
-        Vertex originalQueriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
-        LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
-
-        Set<LineageVertex> lineageVertices = new HashSet<>();
-        Set<LineageEdge> lineageEdges = new HashSet<>();
-        lineageVertices.add(queriedVertex);
-        addSourceCondensation(sourcesList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
-
-        addDestinationCondensation(destinationsList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex);
-
-        addColumnProperties(lineageVertices);
-
-        return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
+        return new LineageVerticesAndEdges(sourceAndDestinationVertices, sourceAndDestinationEdges);
     }
 
     /**
@@ -218,7 +170,7 @@ public class LineageGraphConnectorHelper {
      *
      * @param guid The guid of the glossary term of which the lineage is queried of.
      *
-     * @return a subgraph in the GraphSON format.
+     * @return a subgraph in an Open Lineage specific format.
      */
     LineageVerticesAndEdges glossary(String guid) {
         GraphTraversalSource g = lineageGraph.traversal();
@@ -237,8 +189,7 @@ public class LineageGraphConnectorHelper {
      * Remove all nodes which displayname does not include the provided String. Any connected edges will also be removed.
      *
      * @param lineageVerticesAndEdges The list of vertices and edges which should be filtered on displayname.
-     * @param displayNameMustContain  The substring that must be part of a node's displayname in order for that node to
-     *                                be returned.
+     * @param displayNameMustContain  The substring that must be part of a node's displayname in order for that node to be returned.
      */
     void filterDisplayName(LineageVerticesAndEdges lineageVerticesAndEdges, String displayNameMustContain) {
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
@@ -260,6 +211,34 @@ public class LineageGraphConnectorHelper {
         lineageEdges.removeAll(edgesToBeRemoved);
         lineageVerticesAndEdges.setLineageVertices(lineageVertices);
         lineageVerticesAndEdges.setLineageEdges(lineageEdges);
+    }
+
+    /**
+     * * Returns a subgraph containing all root and leaf nodes of the full graph that are connected with the queried node.
+     * * The queried node can be a column or table.
+     *
+     * @param guid            the guid of the queried node
+     * @param g               graph traversal object
+     * @param vertexList      list of vertexes to be condensed
+     * @param condensedNodeId the nodeId of the condensed node
+     *
+     * @return the subgraph in an Open Lineage specific format
+     */
+    private LineageVerticesAndEdges getCondensedLineage(String guid, GraphTraversalSource g, List<Vertex> vertexList, String condensedNodeId) {
+        Vertex originalQueriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+
+        Set<LineageVertex> lineageVertices = new HashSet<>();
+
+        Set<LineageEdge> lineageEdges = new HashSet<>();
+
+        LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
+        lineageVertices.add(queriedVertex);
+
+        addColumnProperties(lineageVertices);
+
+        addCondensation(vertexList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex, condensedNodeId);
+
+        return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
     }
 
     /**
@@ -319,16 +298,16 @@ public class LineageGraphConnectorHelper {
     }
 
     /**
-     * Retrieve all properties from the db and return the ones that match the whitelist. This will filter out irrelevant
+     * Retrieve all properties of the vertex from the db and return the ones that match the whitelist. This will filter out irrelevant
      * properties that should not be returned to a UI.
      *
-     * @param originalVertex
+     * @param vertex the vertex to de mapped
      *
-     * @return
+     * @return the filtered properties of the vertex
      */
-    private Map<String, String> retrieveProperties(Vertex originalVertex) {
+    private Map<String, String> retrieveProperties(Vertex vertex) {
         Map<String, String> newNodeProperties = new HashMap<>();
-        Iterator<VertexProperty<Object>> originalProperties = originalVertex.properties();
+        Iterator<VertexProperty<Object>> originalProperties = vertex.properties();
         while (originalProperties.hasNext()) {
             Property<Object> originalProperty = originalProperties.next();
             if (immutableReturnedPropertiesWhiteList.contains(originalProperty.key())) {
@@ -350,7 +329,7 @@ public class LineageGraphConnectorHelper {
      * @param methodName The name of the calling method.
      * @param vertexList The to be validated result of the Gremlin query.
      *
-     * @throws OpenLineageException
+     * @throws OpenLineageException encoded exception from the server
      */
     private void detectProblematicCycle(String methodName, List<Vertex> vertexList) throws OpenLineageException {
         if (!vertexList.isEmpty())
@@ -366,93 +345,46 @@ public class LineageGraphConnectorHelper {
 
 
     /**
-     * Remove all nodes and edges from the response graph that are in between the ultimate sources and the queried node
+     * Remove all nodes and edges from the response graph that are in between the sources and the queried node
      * and replace them by a single "condensed" node.
      *
-     * @param sourcesList           The list of ultimate sources.
+     * @param vertexList            The list of vertexes to be condensed.
      * @param lineageVertices       The list of all vertices returned by the Gremlin query.
      * @param lineageEdges          The list of all edges returned by the Gremlin query.
      * @param originalQueriedVertex The vertex which guid was queried by the user as the original Tinkerpop object.
      * @param queriedVertex         The vertex which guid was queried by the user as an Open Lineage vertex object.
      */
-    private void addSourceCondensation(List<Vertex> sourcesList,
-                                       Set<LineageVertex> lineageVertices,
-                                       Set<LineageEdge> lineageEdges,
-                                       Vertex originalQueriedVertex,
-                                       LineageVertex queriedVertex) {
+    private void addCondensation(List<Vertex> vertexList,
+                                 Set<LineageVertex> lineageVertices,
+                                 Set<LineageEdge> lineageEdges,
+                                 Vertex originalQueriedVertex,
+                                 LineageVertex queriedVertex,
+                                 String condensedNodeId) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
-        if (sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID)))
+        if (vertexList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
             return;
-        LineageVertex condensedVertex = new LineageVertex(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE, NODE_LABEL_CONDENSED);
+        }
+        LineageVertex condensedVertex = new LineageVertex(condensedNodeId, NODE_LABEL_CONDENSED);
         condensedVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
         lineageVertices.add(condensedVertex);
 
-        for (Vertex originalVertex : sourcesList) {
+        for (Vertex originalVertex : vertexList) {
             LineageVertex newVertex = abstractVertex(originalVertex);
-            LineageEdge newEdge = new LineageEdge(
-                    EDGE_LABEL_CONDENSED,
-                    newVertex.getNodeID(),
-                    condensedVertex.getNodeID()
-            );
+            LineageEdge newEdge = new LineageEdge(EDGE_LABEL_CONDENSED, newVertex.getNodeID(), condensedVertex.getNodeID());
             lineageVertices.add(newVertex);
             lineageEdges.add(newEdge);
         }
-        LineageEdge sourceEdge = new LineageEdge(
-                EDGE_LABEL_CONDENSED,
-                condensedVertex.getNodeID(),
-                queriedVertex.getNodeID()
-        );
+        LineageEdge sourceEdge = new LineageEdge(EDGE_LABEL_CONDENSED, condensedVertex.getNodeID(), queriedVertex.getNodeID());
         lineageEdges.add(sourceEdge);
     }
-
-    /**
-     * Remove all nodes and edges from the response graph that are in between the ultimate destinations and the queried node
-     * and replace them by a single "condensed" node.
-     *
-     * @param destinationsList      The list of ultimate destinations.
-     * @param lineageVertices       The list of all vertices returned by the Gremlin query.
-     * @param lineageEdges          The list of all edges returned by the Gremlin query.
-     * @param originalQueriedVertex The vertex which guid was queried by the user as the original Tinkerpop object.
-     * @param queriedVertex         The vertex which guid was queried by the user as an Open Lineage vertex object.
-     */
-    private void addDestinationCondensation(List<Vertex> destinationsList,
-                                            Set<LineageVertex> lineageVertices,
-                                            Set<LineageEdge> lineageEdges,
-                                            Vertex originalQueriedVertex,
-                                            LineageVertex queriedVertex) {
-        //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
-        //when there isn't any.
-        if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
-            LineageVertex condensedDestinationVertex = new LineageVertex(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION, NODE_LABEL_CONDENSED);
-            condensedDestinationVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
-            for (Vertex originalVertex : destinationsList) {
-                LineageVertex newVertex = abstractVertex(originalVertex);
-                LineageEdge newEdge = new LineageEdge(
-                        EDGE_LABEL_CONDENSED,
-                        condensedDestinationVertex.getNodeID(),
-                        newVertex.getNodeID()
-                );
-                lineageVertices.add(newVertex);
-                lineageEdges.add(newEdge);
-            }
-            LineageEdge destinationEdge = new LineageEdge(
-                    EDGE_LABEL_CONDENSED,
-                    queriedVertex.getNodeID(),
-                    condensedDestinationVertex.getNodeID()
-            );
-            lineageVertices.add(condensedDestinationVertex);
-            lineageEdges.add(destinationEdge);
-        }
-    }
-
 
     /**
      * Map a tinkerpop Graph object to an Open Lineage specific format.
      *
      * @param subGraph The graph to be mapped.
      *
-     * @return The graph in in an Open Lineage specific format.
+     * @return The graph in an Open Lineage specific format.
      */
     private LineageVerticesAndEdges getLineageVerticesAndEdges(Graph subGraph) {
         Iterator<Vertex> originalVertices = subGraph.vertices();
