@@ -5,11 +5,16 @@ package org.odpi.openmetadata.accessservices.assetlineage.util;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class AssetLineageConstants {
 
-    private AssetLineageConstants() {}
+    private AssetLineageConstants() {
+    }
 
     public static final String LINEAGE_CLASSIFICATION_TYPES_KEY = "LineageClassificationTypes";
     public static final String ASSET_LINEAGE_OMAS = "AssetLineageOmas";
@@ -87,7 +92,7 @@ public final class AssetLineageConstants {
 
     private static final List<String> validLineageEntityEvents = new ArrayList<>();
 
-    static{
+    static {
         validLineageEntityEvents.add(GLOSSARY_TERM);
         validLineageEntityEvents.add(TABULAR_COLUMN);
         validLineageEntityEvents.add(RELATIONAL_COLUMN);

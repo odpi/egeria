@@ -16,13 +16,21 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.events.*;
+import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
+import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_HIERARCHY;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.VALUE_FOR_ACTIVE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableValidLineageEntityEvents;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableValidLineageRelationshipTypes;
 
 /**
  * AssetLineageOMRSTopicListener received details of each OMRS event from the cohorts that the local server
@@ -36,16 +44,17 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     private AssetLineagePublisher publisher;
     private OMRSAuditLog auditLog;
-    private Converter converter = new Converter();
+    private Converter converter;
     private List<String> lineageClassificationTypes;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
-     *  @param repositoryHelper           helper object for building and querying TypeDefs and metadata instances
-     * @param outTopicConnector          The connector used for the Asset Lineage OMAS Out Topic
-     * @param serverName                 name of this server instance
-     * @param serverUserName             name of the user of the server instance
+     *
+     * @param repositoryHelper  helper object for building and querying TypeDefs and metadata instances
+     * @param outTopicConnector The connector used for the Asset Lineage OMAS Out Topic
+     * @param serverName        name of this server instance
+     * @param serverUserName    name of the user of the server instance
      */
     public AssetLineageOMRSTopicListener(OMRSRepositoryHelper repositoryHelper,
                                          OpenMetadataTopicConnector outTopicConnector,
@@ -55,6 +64,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         this.publisher = new AssetLineagePublisher(repositoryHelper, outTopicConnector, serverName, serverUserName);
         this.lineageClassificationTypes = lineageClassificationTypes;
         this.auditLog = auditLog;
+        converter = new Converter(repositoryHelper);
     }
 
     /**

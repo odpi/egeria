@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class ClassificationHandler {
 
     private InvalidParameterHandler invalidParameterHandler;
+    private OMRSRepositoryHelper repositoryHelper;
     private List<String> lineageClassificationTypes;
 
     /**
@@ -30,9 +32,10 @@ public class ClassificationHandler {
      *
      * @param invalidParameterHandler the invalid parameter handler
      */
-    public ClassificationHandler(InvalidParameterHandler invalidParameterHandler, List<String> lineageClassificationTypes) {
+    public ClassificationHandler(InvalidParameterHandler invalidParameterHandler, List<String> lineageClassificationTypes, OMRSRepositoryHelper repositoryHelper) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.lineageClassificationTypes = lineageClassificationTypes;
+        this.repositoryHelper = repositoryHelper;
     }
 
 
@@ -48,7 +51,7 @@ public class ClassificationHandler {
             return null;
 
         invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
-        Converter converter = new Converter();
+        Converter converter = new Converter(repositoryHelper);
         LineageEntity originalEntityVertex = converter.createLineageEntity(entityDetail);
         AssetContext assetContext = new AssetContext();
         assetContext.addVertex(originalEntityVertex);
@@ -75,7 +78,7 @@ public class ClassificationHandler {
         lineageEntity.setCreateTime(classification.getCreateTime());
         lineageEntity.setUpdateTime(classification.getUpdateTime());
 
-        Converter converter = new Converter();
+        Converter converter = new Converter(repositoryHelper);
         lineageEntity.setProperties(converter.instancePropertiesToMap(classification.getProperties()));
     }
 }

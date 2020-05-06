@@ -14,11 +14,24 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_ALIAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_PORT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableProcessRelationshipsTypes;
 
 /**
  * The process context handler provides methods to build lineage context from processes.
@@ -107,8 +120,7 @@ public class ProcessContextHandler {
 
     private boolean hasEntitiesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
 
-        final String typeDefName = entityDetail.getType().getTypeDefName();
-        List<EntityDetail> entityDetails = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(), PROCESS_PORT, typeDefName);
+        List<EntityDetail> entityDetails = getRelationshipsBetweenEntities(userId, entityDetail, PROCESS_PORT);
 
         if (entityDetails.isEmpty()) {
             log.error("No relationships Process Port has been found for the entity with guid {}", entityDetail.getGUID());
@@ -130,18 +142,15 @@ public class ProcessContextHandler {
      * Retrieves the relationships of an Entity
      *
      * @param userId           String - userId of user making request.
-     * @param guid             guid of parent entity
+     * @param startEntity      parent entity
      * @param relationshipType type of the relationship
-     * @param typeDefName      type of the entity that has the Relationship
      * @return List of entities that are on the other end of the relationship, empty list if none
      */
-    private List<EntityDetail> getRelationshipsBetweenEntities(String userId, String guid, String relationshipType, String typeDefName) throws OCFCheckedExceptionBase {
-        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, guid, relationshipType, typeDefName);
-        EntityDetail startEntity = repositoryHandler.getEntityByGUID(userId, guid, "guid", typeDefName, "getRelationships");
-
+    private List<EntityDetail> getRelationshipsBetweenEntities(String userId, EntityDetail startEntity, String relationshipType) throws OCFCheckedExceptionBase {
         if (startEntity == null) return Collections.emptyList();
         String startEntityType = startEntity.getType().getTypeDefName();
 
+        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipType, startEntityType);
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
 
@@ -189,10 +198,8 @@ public class ProcessContextHandler {
     private boolean hasEndRelationship(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
-            result.addAll(getRelationshipsBetweenEntities(userId,
-                    entityDetail.getGUID(),
-                    immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                    entityDetail.getType().getTypeDefName()));
+            result.addAll(getRelationshipsBetweenEntities(userId, entityDetail,
+                    immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName())));
         }
         return !result.isEmpty();
     }
@@ -209,9 +216,8 @@ public class ProcessContextHandler {
         for (EntityDetail entityDetail : entityDetails) {
 
             List<EntityDetail> tabularSchemaType = getRelationshipsBetweenEntities(userId,
-                    entityDetail.getGUID(),
-                    immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                    entityDetail.getType().getTypeDefName());
+                    entityDetail,
+                    immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()));
             Optional<EntityDetail> first = tabularSchemaType.stream().findFirst();
             result.add(first.orElse(null));
         }
@@ -230,9 +236,8 @@ public class ProcessContextHandler {
         for (EntityDetail entityDetail : entityDetails) {
 
             List<EntityDetail> newListOfEntityDetails = getRelationshipsBetweenEntities(userId,
-                    entityDetail.getGUID(),
-                    immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                    entityDetail.getType().getTypeDefName());
+                    entityDetail,
+                    immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()));
             result.addAll(newListOfEntityDetails);
         }
         return hasEndRelationship(result, userId);
