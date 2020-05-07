@@ -91,9 +91,16 @@ class TokenAjax extends PolymerElement {
         if( typeof this.token !== 'undefined'){
             this.$.ajax.headers['content-type'] = 'application/json';
             this.$.ajax.headers['x-auth-token'] = this.token;
+            this._rootPathUrl();
             this.$.ajax.generateRequest();
         }else{
             console.debug('No token set to token-ajax: no _go');
+        }
+    }
+
+    _rootPathUrl(){
+        if(this.$.ajax.url.startsWith('/') && !this.$.ajax.url.startsWith(this.rootPath) ){
+            this.$.ajax.url = this.rootPath +this.$.ajax.url.substring(1);
         }
     }
 
