@@ -127,7 +127,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Return the assigned meanings for this metadata entity.
+     * Return the unique identifiers of the assigned meanings for this metadata element.
      *
      * @return list of meanings
      */
@@ -149,7 +149,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Set up the assigned meanings for this metadata entity.
+     * Set up the unique identifiers of the assigned meanings for this metadata element.
      *
      * @param meanings list of meanings
      */
@@ -160,7 +160,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Return the list of classifications associated with the object.
+     * Return the list of classifications associated with the metadata element.
      *
      * @return Classifications  list of classifications
      */
@@ -182,7 +182,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Set up the classifications associated with this object.
+     * Set up the classifications associated with this metadata element.
      *
      * @param classifications list of classifications
      */
@@ -226,7 +226,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Return the name of the open metadata type for this element.
+     * Return the name of the open metadata type for this metadata element.
      *
      * @return string name
      */

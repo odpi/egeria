@@ -26,6 +26,8 @@ Java Objects as JSON payloads.
 | max.request.size | 10485760 |
 | key.serializer | org.apache.kafka.common.serialization.StringSerializer |
 | value.serializer | org.apache.kafka.common.serialization.StringSerializer |
+| bring.up.retries | 10 |
+| bring.up.minSleepTime | 5000 |
 
 ## Consumer
 
@@ -40,6 +42,8 @@ Java Objects as JSON payloads.
 | max.partition.fetch.bytes | 10485760 |
 | key.deserializer | org.apache.kafka.common.serialization.StringDeserializer |
 | value.deserializer| org.apache.kafka.common.serialization.StringDeserializer |
+| bring.up.retries | 10 |
+| bring.up.minSleepTime | 5000 |
 
 #  Security
 
@@ -64,6 +68,21 @@ There are 2 key pieces of information that are provided in the documentation for
 "sasl.mechanism":"PLAIN"
 ```
 An example of a use of this configuration can be found in the virtual data connector helm charts. See [odpi-egeria-vdc helm chart](../../../../../../open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-vdc/README.md) 
+
+## Handling Kafka Cluster Bring Up Issues
+
+In some environments users have encountered issues when the Kafka Cluster hasn't become fully available, when attempting a connection to the Kafka Cluster.
+The Egeria KafkaTopicConnector provides a mechanism that verifies that the Kafka Cluster is actually running brokers before attempting to connect.
+This mechanism is controlled by two properties.
+
+* bring.up.retries
+* bring.up.minSleepTime
+
+bring.up.retries 
+defaults to 10 and specifies the number of times the Egeria KafkaTopicConnector will retry verification before reporting a failure.
+ 
+bring.up.minSleepTime is set to 5000ms by default and is the minimum amount of time to wait before attempting a verification retry. 
+If a Kafka verification attempt takes longer than this value the KafkaTopicConnector does not pause before retring the verification.
 
 ## Topic Creation
 

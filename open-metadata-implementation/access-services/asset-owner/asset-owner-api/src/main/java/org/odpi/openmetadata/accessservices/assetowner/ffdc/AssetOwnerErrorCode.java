@@ -196,10 +196,10 @@ public enum AssetOwnerErrorCode implements ExceptionMessageSet
 
 
     /**
-     * The constructor for OMRSErrorCode expects to be passed one of the enumeration rows defined in
-     * OMRSErrorCode above.   For example:
+     * The constructor for AssetOwnerErrorCode expects to be passed one of the enumeration rows defined in
+     * AssetOwnerErrorCode above.   For example:
      *
-     *     OMRSErrorCode   errorCode = OMRSErrorCode.UNKNOWN_ENDPOINT;
+     *     AssetOwnerErrorCode   errorCode = AssetOwnerErrorCode.UNKNOWN_ENDPOINT;
      *
      * This will expand out to the 5 parameters shown below.
      *
