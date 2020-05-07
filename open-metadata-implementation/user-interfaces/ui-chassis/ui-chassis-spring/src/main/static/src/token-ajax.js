@@ -100,7 +100,7 @@ class TokenAjax extends PolymerElement {
 
     /**
      *
-     * enforcing url starts with rootPath, except a relative urls
+     * enforcing url starts with rootPath, except a relative url
      */
     _rootPathUrl(){
         if(this.$.ajax.url.startsWith('/') && !this.$.ajax.url.startsWith(this.rootPath) ){
