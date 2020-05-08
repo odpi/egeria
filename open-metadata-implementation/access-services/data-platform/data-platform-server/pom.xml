@@ -37,16 +37,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-api</artifactId>
         </dependency>
@@ -58,14 +48,13 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-connector-framework</artifactId>
+            <artifactId>audit-log-framework</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -83,7 +72,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-implementation</artifactId>
+            <artifactId>data-platform-topic-connectors</artifactId>
         </dependency>
 
         <dependency>
@@ -105,12 +94,17 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-handler</artifactId>
+            <artifactId>ffdc-services</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>ffdc-services</artifactId>
+            <artifactId>ocf-metadata-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ocf-metadata-handlers</artifactId>
         </dependency>
 
     </dependencies>

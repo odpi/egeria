@@ -770,6 +770,36 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
+    public RelationalDataHandler getRelationalDataHandler(String userId,
+                                                          String serverName,
+                                                          String serviceOperationName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getRelationalDataHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
     public SchemaTypeHandler getSchemaTypeHandler(String userId,
                                                   String serverName,
                                                   String serviceOperationName) throws InvalidParameterException,

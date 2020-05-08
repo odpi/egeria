@@ -10,6 +10,7 @@ import java.util.Objects;
 /**
  * The response of the Data platform contains the Software Server Capability created by the external source of metadata.
  */
+@Deprecated
 public class DataPlatformOMASAPIResponse extends FFDCResponseBase {
 
     private static final long serialVersionUID = 1L;

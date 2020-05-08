@@ -37,8 +37,8 @@ public class GlossaryTermHandler extends AttachmentHandlerBase
     public GlossaryTermHandler(String                  serviceName,
                                String                  serverName,
                                InvalidParameterHandler invalidParameterHandler,
-                               OMRSRepositoryHelper    repositoryHelper,
                                RepositoryHandler       repositoryHandler,
+                               OMRSRepositoryHelper    repositoryHelper,
                                LastAttachmentHandler   lastAttachmentHandler)
     {
         super(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);

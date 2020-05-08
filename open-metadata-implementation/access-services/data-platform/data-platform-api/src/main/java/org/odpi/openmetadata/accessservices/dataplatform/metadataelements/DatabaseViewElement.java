@@ -87,7 +87,6 @@ public class DatabaseViewElement extends DatabaseViewProperties implements Metad
         return "DatabaseViewElement{" +
                 "elementHeader=" + elementHeader +
                 ", expression='" + getExpression() + '\'' +
-                ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +

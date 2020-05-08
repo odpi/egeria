@@ -2,19 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.*;
-
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.DescribeClusterResult;
+import org.apache.kafka.clients.admin.KafkaAdminClient;
+import org.apache.kafka.common.Node;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.IncomingEvent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * KafkaOMRSTopicConnector provides a concrete implementation of the OMRSTopicConnector that
@@ -32,11 +36,13 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     private Properties consumerEgeriaProperties = new Properties();
     private Properties consumerProperties = new Properties();
 
+
     private KafkaOpenMetadataEventConsumer consumer = null;
     private KafkaOpenMetadataEventProducer producer = null;
 
     private String       topicName          = null;
     private String       serverId           = null;
+
     /* this buffer is for consumed events */
     private List<IncomingEvent> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
 
@@ -82,6 +88,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         producerProperties.put("buffer.memory", 33554432);
         producerProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         producerProperties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        producerProperties.put("bring.up.retries", "10");
+        producerProperties.put("bring.up.minSleepTime", "5000");
+
 
         consumerProperties.put("bootstrap.servers", "localhost:9092");
         consumerProperties.put(ENABLE_AUTO_COMMIT_PROPERTY, "true");
@@ -90,6 +99,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         consumerProperties.put("max.partition.fetch.bytes",	10485760);
         consumerProperties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         consumerProperties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        consumerProperties.put("bring.up.retries", "10");
+        consumerProperties.put("bring.up.minSleepTime", "5000");
     }
 
 
@@ -213,7 +224,34 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     {
 
         this.initializeTopic();
-        
+
+        KafkaStatusChecker kafkaStatus = new KafkaStatusChecker();
+
+        /*
+        *  compare the two lists of bootstrap server to ceck we only want one cluster's status checked
+        *  reliant on list being specified in the same order
+         * This will need changing for single direction connector
+         */
+        boolean up = false;
+        if ( consumerProperties.getProperty("bootstrap.servers").equals(producerProperties.getProperty("bootstrap.servers")) ) {
+            up = kafkaStatus.waitForBrokers( producerProperties);
+        }
+        else {
+            up = kafkaStatus.waitForBrokers( producerProperties) &&
+                    kafkaStatus.waitForBrokers(consumerProperties);
+        }
+
+        if (!up) {
+            final String actionDescription = "waitForThisBroker";
+            auditLog.logMessage(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_FAILED_INITIALIZING.getMessageDefinition(topicName));
+            throw new ConnectorCheckedException(KafkaOpenMetadataTopicConnectorErrorCode.ERROR_ATTEMPTING_KAFKA_INITIALIZATION.getMessageDefinition(kafkaStatus.getLastException().getClass().getName(),
+                    topicName,
+                    kafkaStatus.getLastException().getMessage()),
+                    this.getClass().getName(),
+                    "KafkaMonitor.waitForThisBroker",
+                    kafkaStatus.getLastException());
+        }
+
         KafkaOpenMetadataEventConsumerConfiguration consumerConfig = new KafkaOpenMetadataEventConsumerConfiguration(consumerEgeriaProperties, auditLog);
         consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerConfig, consumerProperties, this, auditLog);
         consumerThread = new Thread(consumer, threadHeader + "Consumer-" + topicName);
@@ -304,5 +342,91 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      */
     int getNumberOfUnprocessedEvents() {
     	return incomingEventsList.size();
+    }
+
+    private class KafkaStatusChecker {
+
+        //instantiate empty objects to avoid if null checks
+        // the brokers list if for debug/testing purposes only,
+        private Exception lastException = new Exception();
+
+        /*
+         * connects and requests a list of running kafka brokers
+         * swallows all exceptions to allow caller to control error reporting,
+         *
+         * If this function populates brokers then:
+         * Zookeeper is running
+         * Kafka has a least one server which is running at least one broker
+         *
+         * @param connectionProps The properties to enable connection to kafka
+         */
+        boolean getRunningBrokers(Properties connectionProperties ) {
+
+            boolean found = false;
+            try {
+                AdminClient adminClient = KafkaAdminClient.create(connectionProperties);
+                DescribeClusterResult describeClusterResult = adminClient.describeCluster();
+                Collection<Node> brokers = describeClusterResult.nodes().get();
+                if (!brokers.isEmpty()) {
+                    found = true;
+                }
+            } catch (Exception e) {
+                //gulp down any exceptions, the waiting method will control any audit logging
+                //but keep a copy for reference
+                lastException = e;
+            }
+
+            return found;
+        }
+
+
+        /*
+         * waits for a list of running kafaka brokers
+         * @param connectionProperties The kafka connection properties
+         * Performs a sanity check that the services Egeria requires are available
+         *         */
+        public boolean waitForBrokers(Properties connectionProperties ) {
+            int count = 0;
+            boolean found = false;
+            try {
+                int napCount = Integer.parseInt( connectionProperties.getProperty("bring.up.retries") );
+                int minSleepTime = Integer.parseInt( connectionProperties.getProperty("bring.up.minSleepTime")) ;
+
+                while (count < napCount) {
+
+                    auditLog.logMessage("waitForBrokers", KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_CONNECTION_RETRY.getMessageDefinition(String.valueOf(count+1)));
+                    Instant start = Instant.now();
+                    if (getRunningBrokers(connectionProperties)) {
+                        //we were returned a list of running brokers
+                        //so end retry loop
+                        found = true;
+                        break;
+                    } else {
+                        count++;
+                        /* This provides a minimum sleeptime functionality
+                        *  to allow the ride through of short term availablity issues
+                         */
+                        Instant end = Instant.now();
+                        Duration timeTaken = Duration.between(start, end);
+                        long millis = timeTaken.toMillis();
+
+                        if (millis < minSleepTime)
+                        {
+                            Thread.sleep(minSleepTime - millis);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                lastException = e;
+            }
+            return found;
+        }
+
+        public Exception getLastException() {
+
+            return lastException;
+        }
+
+
     }
 }
