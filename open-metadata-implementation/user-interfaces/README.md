@@ -17,7 +17,7 @@ experience of open metadata.
 
 * [ui-chassis](ui-chassis) the user interface platform.
 
-* [repository-explorer](./ui-chassis-spring/docs/RepositoryExplorer) provides a repository explorer interface.
+* [repository-explorer](ui-chassis/ui-chassis-spring/docs/RepositoryExplorer) provides a repository explorer interface.
 
 ----
 Return to [open-metadata-implementation](..).

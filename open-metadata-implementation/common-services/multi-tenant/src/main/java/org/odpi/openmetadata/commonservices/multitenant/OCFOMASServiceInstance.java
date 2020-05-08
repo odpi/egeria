@@ -37,6 +37,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
     protected RelatedMediaHandler       relatedMediaHandler;
     protected SchemaTypeHandler         schemaTypeHandler;
     protected ValidValuesHandler        validValuesHandler;
+    protected RelationalDataHandler     relationalDataHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -51,7 +52,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                   OMRSRepositoryConnector repositoryConnector,
                                   AuditLog                auditLog) throws NewInstanceException
     {
-        this(serviceName, repositoryConnector, null, null, auditLog, null, 500);
+        this(serviceName, repositoryConnector, null, null, null, auditLog, null, 500);
     }
 
 
@@ -72,7 +73,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                   List<String>            defaultZones,
                                   AuditLog                auditLog) throws NewInstanceException
     {
-        this(serviceName, repositoryConnector, supportedZones, defaultZones, auditLog, null, 500);
+        this(serviceName, repositoryConnector, supportedZones, defaultZones, null, auditLog, null, 500);
     }
 
 
@@ -94,6 +95,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
     {
         this(serviceName,
              repositoryConnector,
+             null,
              null,
              null,
              auditLog,
@@ -122,7 +124,33 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                   String                  localServerUserId,
                                   int                     maxPageSize) throws NewInstanceException
     {
-        super(serviceName, repositoryConnector, supportedZones, defaultZones, auditLog, localServerUserId, maxPageSize);
+        this(serviceName, repositoryConnector, supportedZones, defaultZones, null, auditLog, localServerUserId, maxPageSize);
+    }
+
+
+    /**
+     * Set up the local repository connector that will service the REST Calls.
+     *
+     * @param serviceName name of this service
+     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param supportedZones list of zones that the access service is allowed to serve Assets from.
+     * @param defaultZones list of zones that the access service should set in all new Assets.
+     * @param publishZones list of zones that the access service sets up in published Asset instances.
+     * @param auditLog logging destination
+     * @param localServerUserId userId used for server initiated actions
+     * @param maxPageSize max number of results to return on single request.
+     * @throws NewInstanceException a problem occurred during initialization
+     */
+    public OCFOMASServiceInstance(String                  serviceName,
+                                  OMRSRepositoryConnector repositoryConnector,
+                                  List<String>            supportedZones,
+                                  List<String>            defaultZones,
+                                  List<String>            publishZones,
+                                  AuditLog                auditLog,
+                                  String                  localServerUserId,
+                                  int                     maxPageSize) throws NewInstanceException
+    {
+        super(serviceName, repositoryConnector, supportedZones, defaultZones, publishZones, auditLog, localServerUserId, maxPageSize);
 
         LastAttachmentHandler lastAttachmentHandler = new LastAttachmentHandler(serviceName,
                                                                                 serverName,
@@ -137,7 +165,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
         this.endpointHandler           = new EndpointHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.externalIdentifierHandler = new ExternalIdentifierHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.externalReferenceHandler  = new ExternalReferenceHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
-        this.glossaryTermHandler       = new GlossaryTermHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, lastAttachmentHandler);
+        this.glossaryTermHandler       = new GlossaryTermHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.informalTagHandler        = new InformalTagHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.licenseHandler            = new LicenseHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.likeHandler               = new LikeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
@@ -176,6 +204,15 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                                           defaultZones);
 
         validValuesHandler.setAssetHandler(assetHandler);
+
+        relationalDataHandler = new RelationalDataHandler(serviceName,
+                                                          serverName,
+                                                          invalidParameterHandler,
+                                                          repositoryHandler,
+                                                          repositoryHelper,
+                                                          assetHandler,
+                                                          connectionHandler,
+                                                          lastAttachmentHandler);
 
         if (securityVerifier != null)
         {
@@ -486,6 +523,22 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return relatedMediaHandler;
+    }
+
+
+    /**
+     * Return the handler for managing relational data assets, connections and schema.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    RelationalDataHandler getRelationalDataHandler() throws PropertyServerException
+    {
+        final String methodName = "getRelationalDataHandler";
+
+        validateActiveRepository(methodName);
+
+        return relationalDataHandler;
     }
 
 

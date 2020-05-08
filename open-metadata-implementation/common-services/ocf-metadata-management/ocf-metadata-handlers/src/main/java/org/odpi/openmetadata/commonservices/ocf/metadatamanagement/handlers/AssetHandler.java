@@ -1660,6 +1660,30 @@ public class AssetHandler
     }
 
 
+    /**
+     * Add or replace the security tags for an asset or one of its elements.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
+     * @param securityLabels list of security labels defining the security characteristics of the element
+     * @param securityProperties Descriptive labels describing origin of the asset
+     * @param methodName calling method
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addSecurityTags(String                userId,
+                                 String                assetGUID,
+                                 String                assetElementGUID,
+                                 List<String>          securityLabels,
+                                 Map<String, Object>   securityProperties,
+                                 String                methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -1685,32 +1709,6 @@ public class AssetHandler
                                            ReferenceableMapper.SECURITY_TAG_TYPE_GUID,
                                            ReferenceableMapper.SECURITY_TAG_TYPE_NAME,
                                            methodName);
-    }
-
-
-    /**
-     * Add or replace the security tags for an asset or one of its elements.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier of asset
-     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
-     * @param securityLabels list of security labels defining the security characteristics of the element
-     * @param securityProperties Descriptive labels describing origin of the asset
-     * @param methodName calling method
-     * @throws InvalidParameterException entity not known, null userId or guid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public void  addSecurityTags(String                userId,
-                                 String                assetGUID,
-                                 String                assetElementGUID,
-                                 List<String>          securityLabels,
-                                 Map<String, Object>   securityProperties,
-                                 String                methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
-    {
-        // todo
     }
 
 

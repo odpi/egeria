@@ -20,15 +20,15 @@ public class DataPlatformOMASRegistration {
     /**
      * Pass information about this access service to the OMAG Server administration services.
      */
-    public static void registerAccessService() {
+    static void registerAccessService()
+    {
+        AccessServiceDescription myDescription = AccessServiceDescription.DATA_PLATFORM_OMAS;
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
+                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 DataPlatformAdmin.class.getName());
 
-            AccessServiceDescription myDescription = AccessServiceDescription.DATA_PLATFORM_OMAS;
-            AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                     ServiceOperationalStatus.ENABLED,
-                                                                                     DataPlatformAdmin.class.getName()
-            );
-            OMAGAccessServiceRegistration.registerAccessService(myRegistration);
-        }
+        OMAGAccessServiceRegistration.registerAccessService(myRegistration);
+    }
 }
 
 

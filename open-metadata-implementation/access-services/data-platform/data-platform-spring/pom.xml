@@ -32,6 +32,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>ocf-metadata-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>data-platform-server</artifactId>
         </dependency>
 

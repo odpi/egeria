@@ -36,7 +36,7 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet {
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-CATALOG-0003",
             OMRSAuditLogRecordSeverity.ERROR,
             "The Asset Catalog Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
-            "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+            "The access service detected an error during the start up of a specific server instance.  Its services are not available for server {1}.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
     SERVICE_SHUTDOWN("OMAS-ASSET-CATALOG-0004",
