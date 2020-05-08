@@ -234,9 +234,9 @@ public class LineageGraphConnectorHelper {
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
         lineageVertices.add(queriedVertex);
 
-        addColumnProperties(lineageVertices);
-
         addCondensation(vertexList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex, condensedNodeId);
+
+        addColumnProperties(lineageVertices);
 
         return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
     }
@@ -368,6 +368,7 @@ public class LineageGraphConnectorHelper {
         LineageVertex condensedVertex = new LineageVertex(condensedNodeId, NODE_LABEL_CONDENSED);
         condensedVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
         lineageVertices.add(condensedVertex);
+
 
         for (Vertex originalVertex : vertexList) {
             LineageVertex newVertex = abstractVertex(originalVertex);

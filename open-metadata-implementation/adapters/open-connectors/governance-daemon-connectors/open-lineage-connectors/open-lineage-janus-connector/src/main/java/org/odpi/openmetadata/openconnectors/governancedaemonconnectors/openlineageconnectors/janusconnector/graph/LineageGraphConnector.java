@@ -584,11 +584,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
         List<String> edgeLabels = Arrays.asList(EDGE_LABEL_SEMANTIC, EDGE_LABEL_DATAFLOW_WITH_PROCESS);
 
-        //TODO modify query for end to end not to include processes -  check if it's possible to do this without the need of
-        // DataFlowWithoutProcess edges - which are not created anymore
-//        List<String> edgeLabels = new ArrayList<>();
-//        edgeLabels.add(EDGE_LABEL_SEMANTIC);
-//        edgeLabels.add(includeProcesses ? EDGE_LABEL_DATAFLOW_WITH_PROCESS : EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS);
         LineageVerticesAndEdges lineageVerticesAndEdges = null;
 
         String[] edgeLabelsArray = edgeLabels.toArray(new String[0]);
