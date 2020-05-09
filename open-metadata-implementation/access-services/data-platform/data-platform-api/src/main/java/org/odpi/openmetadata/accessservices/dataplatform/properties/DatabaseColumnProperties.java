@@ -50,7 +50,6 @@ public class DatabaseColumnProperties extends TabularColumnProperties
         return "DatabaseColumnProperties{" +
                 "dataType='" + getDataType() + '\'' +
                 ", defaultValue='" + getDefaultValue() + '\'' +
-                ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +

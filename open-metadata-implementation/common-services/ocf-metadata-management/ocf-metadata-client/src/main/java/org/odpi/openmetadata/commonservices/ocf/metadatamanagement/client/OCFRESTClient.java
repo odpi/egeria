@@ -41,8 +41,8 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    protected OCFRESTClient(String serverName,
-                            String serverPlatformURLRoot) throws InvalidParameterException
+    public OCFRESTClient(String serverName,
+                         String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -59,11 +59,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    protected OCFRESTClient(String   serverName,
-                            String   serverPlatformURLRoot,
-                            String   userId,
-                            String   password,
-                            AuditLog auditLog) throws InvalidParameterException
+    public OCFRESTClient(String   serverName,
+                         String   serverPlatformURLRoot,
+                         String   userId,
+                         String   password,
+                         AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -79,10 +79,10 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    protected OCFRESTClient(String serverName,
-                            String serverPlatformURLRoot,
-                            String userId,
-                            String password) throws InvalidParameterException
+    public OCFRESTClient(String serverName,
+                         String serverPlatformURLRoot,
+                         String userId,
+                         String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -141,7 +141,7 @@ public class OCFRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a AssetsResponse object.
+     * Issue a POST REST call that returns a AssetsResponse object.
      *
      * @param methodName  name of the method being called.
      * @param requestBody request body for the REST call - contains most of the parameters
