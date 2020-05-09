@@ -1171,7 +1171,7 @@ public interface DatabasePlatformInterface
      * @param integratorGUID unique identifier of software server capability representing the caller
      * @param integratorName unique name of software server capability representing the caller
      * @param primaryKeyColumnGUID unique identifier of the column containing the primary key
-     * @param foreignKeyColumnGUID unique identifier of the column containing the primary key from theo other table
+     * @param foreignKeyColumnGUID unique identifier of the column containing the primary key from the other table
      * @param databaseForeignKeyProperties properties about the foreign key relationship
      *
      * @throws InvalidParameterException  one of the parameters is invalid

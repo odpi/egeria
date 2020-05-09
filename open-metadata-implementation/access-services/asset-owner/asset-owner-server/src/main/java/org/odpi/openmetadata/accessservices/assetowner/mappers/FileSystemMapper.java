@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.mappers;
 
 /**
- * GovernanceZoneMapper provides property name mapping for governance zones.
+ * FileSystemMapper provides property name mapping for file systems.
  */
 public class FileSystemMapper
 {

@@ -14,13 +14,7 @@ update_configs:
       - "grahamwallis"
       - "mandy-chessell"
   # Explicit references to package.json (see https://github.com/dependabot/feedback/issues/705 )
-  
-  - package_manager: "javascript"
-    directory: "/open-metadata-resources/open-metadata-deployment/docker/omrs-monitor/dist"
-    update_schedule: "daily"
-    default_reviewers:
-      - "grahamwallis"
-      - "davidradl"
+
   - package_manager: "javascript"
     directory: "/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/static"
     update_schedule: "daily"
@@ -29,12 +23,6 @@ update_configs:
       - "davidradl"
 
   # Explicit entries also needed for dockerfile
-  - package_manager: "docker"
-    directory: "/open-metadata-resources/open-metadata-deployment/docker/omrs-monitor"
-    update_schedule: "daily"
-    default_reviewers:
-      - "grahamwallis"
-      - "planetf1"
   - package_manager: "docker"
     directory: "/open-metadata-resources/open-metadata-deployment/docker/build-images/apache/ranger"
     update_schedule: "daily"

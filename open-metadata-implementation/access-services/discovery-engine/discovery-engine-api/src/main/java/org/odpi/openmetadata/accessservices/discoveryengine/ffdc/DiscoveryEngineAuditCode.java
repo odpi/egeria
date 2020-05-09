@@ -5,11 +5,7 @@ package org.odpi.openmetadata.accessservices.discoveryengine.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The DiscoveryEngineAuditCode is used to define the message content for the OMRS Audit Log.
@@ -100,7 +96,7 @@ public enum DiscoveryEngineAuditCode implements AuditLogMessageSet
                                      "configuration about the discovery engine.",
             "This is part of the normal operation of the service.  No action is required if this change is expected beyond verifying that" +
                                      " the affected discovery engines are updated in the discovery servers.  If the change is " +
-                                     "unexpected, use the" +
+                                     "unexpected, use the " +
                                      "Discovery Engine OMAS configuration interface to query the status of the discovery engine properties.  " +
                                      "It should be possible to trace the source of the update to correct it."),
 
@@ -112,7 +108,7 @@ public enum DiscoveryEngineAuditCode implements AuditLogMessageSet
                                       "configuration about the discovery service.",
               "This is part of the normal operation of the service.  No action is required if this change is expected beyond verifying that" +
                                       " the affected discovery engines are updated with the latest discovery services information.  If the change " +
-                                      "is unexpected, use the" +
+                                      "is unexpected, use the " +
                                       "Discovery Engine OMAS configuration interface to query the status of the registered discovery services for " +
                                       "the affected discovery engine.  It should be possible to trace the source of the update to correct it."),
 

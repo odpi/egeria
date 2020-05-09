@@ -47,6 +47,7 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
               repositoryConnector,
               supportedZones,
               defaultZones,
+              publishZones,
               auditLog,
               localServerUserId,
               maxPageSize);
