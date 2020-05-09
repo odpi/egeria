@@ -130,7 +130,6 @@
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
         <mockito.version>3.3.3</mockito.version>
         <testng.version>7.1.0</testng.version>
-        <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.11.0</jackson.version>
@@ -345,13 +344,6 @@
                 <artifactId>junit</artifactId>
                 <scope>test</scope>
                 <version>${junit.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <scope>compile</scope>
-                <version>${log4j.version}</version>
             </dependency>
 
             <dependency>

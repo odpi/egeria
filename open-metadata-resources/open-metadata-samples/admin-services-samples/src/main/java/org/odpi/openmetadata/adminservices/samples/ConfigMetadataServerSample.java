@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.adminservices.samples;
 
-import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -178,8 +177,6 @@ public class ConfigMetadataServerSample
      */
     public static void main(String[] args)
     {
-        org.apache.log4j.BasicConfigurator.configure(new NullAppender());
-
         String  serverURLRoot = defaultAdminPlatformURLRoot;
         String  adminUserId   = defaultAdminUserId;
 
