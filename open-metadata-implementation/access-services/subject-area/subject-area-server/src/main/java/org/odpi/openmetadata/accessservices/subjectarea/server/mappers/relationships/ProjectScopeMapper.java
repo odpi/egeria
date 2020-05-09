@@ -87,8 +87,8 @@ public class ProjectScopeMapper extends LineMapper
     @Override
     protected void mapLineToInstanceProperties(Line line, InstanceProperties instanceProperties) {
         ProjectScope projectScope  = (ProjectScope)line;
-        if (projectScope.getScopeDescription()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, projectScope.getScopeDescription(), "scopeDescription");
+        if (projectScope.getDescription()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, projectScope.getDescription(), "description");
         }
     }
     /**
@@ -103,8 +103,8 @@ public class ProjectScopeMapper extends LineMapper
         String stringValue = (String) value;
         ProjectScope projectScope = (ProjectScope)line;
         boolean foundProperty = false;
-        if (propertyName.equals("scopeDescription")) {
-            projectScope.setScopeDescription(stringValue);
+        if (propertyName.equals("description")) {
+            projectScope.setDescription(stringValue);
             foundProperty = true;
         }
 
