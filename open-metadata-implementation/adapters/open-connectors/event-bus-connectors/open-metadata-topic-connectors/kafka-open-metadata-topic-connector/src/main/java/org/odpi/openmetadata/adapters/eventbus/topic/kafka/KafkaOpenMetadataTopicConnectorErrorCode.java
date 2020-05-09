@@ -30,10 +30,14 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessage
     ERROR_SENDING_EVENT(400, "OCF-KAFKA-TOPIC-CONNECTOR-400-001 ",
             "An unexpected {0} exception was caught while sending an event to topic {1}.  The message in the exception was: {2}",
             "The system is unable to send the event.",
-            "Review the exception that was returned from the send.")
-    ;
+            "Review the exception that was returned from the send."),
 
-    private ExceptionMessageDefinition messageDefinition;
+    ERROR_ATTEMPTING_KAFKA_INITIALIZATION(400, "OCF-KAFKA-TOPIC-CONNECTOR-400-002 ",
+            "Egeria was unable to initialize a connection to a Kafka cluster.  The message in the exception was: {2}",
+            "The system is unable initialize.",
+            "Ensure that Kafka is available")
+        ;
+        private ExceptionMessageDefinition messageDefinition;
 
 
     /**
