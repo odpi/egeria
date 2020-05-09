@@ -88,7 +88,6 @@
                 <module>apache-atlas</module>
                 <module>apache-ranger-admin</module>
                 <module>gaian</module>
-                <module>omrs-monitor</module>
             </modules>
         </profile>
         <profile>

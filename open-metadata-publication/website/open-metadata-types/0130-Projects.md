@@ -21,6 +21,8 @@ Since it is a Referenceable, it can have links to external URLs,
 such as the project home page, project plan or APIs
 as well as images (see [0015 Linked Media Types](0015-Linked-Media-Types.md) in Area 0).
 
+The description attribute should be used instead of the scopeDescription in ProjectScope; the 
+scopeDescription attribute has been deprecated.  
 
 Return to [Area 1](Area-1-models.md).
 

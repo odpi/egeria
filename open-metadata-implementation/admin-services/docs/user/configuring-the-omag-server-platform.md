@@ -3,6 +3,11 @@
 
 # Configuring the OMAG Server Platform
 
+Figure 1 shows the points of configuration for the OMAG Server Platform.
+
+![Figure 1](../concepts/configurability-of-platform.png)
+> **Figure 1:** What needs to be configured in the server platform
+
 The OMAG Server platform is a JVM process that includes a tomcat
 web server and uses [Spring Boot](https://spring.io/) to support REST APIs.
 

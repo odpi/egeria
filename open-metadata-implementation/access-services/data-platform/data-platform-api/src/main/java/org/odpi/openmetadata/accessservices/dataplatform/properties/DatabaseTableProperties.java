@@ -49,8 +49,7 @@ public class DatabaseTableProperties extends SchemaAttributeProperties
     public String toString()
     {
         return "DatabaseTableProperties{" +
-                "attributeName='" + getAttributeName() + '\'' +
-                ", elementPosition=" + getElementPosition() +
+                "elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +
                 ", allowsDuplicateValues=" + isAllowsDuplicateValues() +
