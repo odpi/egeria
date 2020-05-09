@@ -5,9 +5,7 @@
 
 # Digital Service Open Metadata Access Service (OMAS)
 
-The Digital Service OMAS provides APIs and events for tools that play a role in the lifecycle of an egeria Digital Service.  It enables these tools to query information about the assets it
-is deploying, the infrastructure options and any governance actions that need
-to be performed.
+The Digital Service OMAS provides APIs and events for tools that play a role in the lifecycle of an egeria Digital Service. 
 
 The module structure for the Digital Service OMAS is as follows:
 

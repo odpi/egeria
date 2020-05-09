@@ -152,12 +152,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>digital-service-spring</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>software-developer-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -165,6 +159,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>digital-architecture-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>digital-service-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 

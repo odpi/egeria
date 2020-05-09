@@ -98,7 +98,7 @@ public enum AccessServiceDescription implements Serializable
                                       "Digital Service OMAS",
                                       "digital-service",
                                       "Manage a Digital Service Lifecycle",
-            "https://egeria.odpi.org/open-metadata-implementation/access-services/digital-service/"),
+                                        "https://egeria.odpi.org/open-metadata-implementation/access-services/digital-service/"),
     DISCOVERY_ENGINE_OMAS            (1015,
                                       "Discovery Engine",
                                       "Discovery Engine OMAS",

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project.  -->
 
@@ -9,9 +8,8 @@
     <parent>
         <artifactId>access-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.6-SNAPSHOT</version>
+        <version>1.8-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
     <scm>
@@ -22,11 +20,13 @@
 
     <name>Digital Service OMAS</name>
     <description>
-        The Digital Service Open Metadata Access Service (OMAS) provides APIs and events for tools that play a role in a
-        the Egeria Digital Service Lifecycle.
+        The Digital Service Open Metadata Access Service (OMAS)
+        provides APIs and notifications for tools and applications supporting
+        the lifecycle of the Egeria Digital Service.
     </description>
 
     <artifactId>digital-service</artifactId>
+
     <packaging>pom</packaging>
     <modules>
         <module>digital-service-api</module>
@@ -34,17 +34,4 @@
         <module>digital-service-spring</module>
     </modules>
 
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <configuration>
-                        <skip>true</skip>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 </project>

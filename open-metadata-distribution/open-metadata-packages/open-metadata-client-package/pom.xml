@@ -86,10 +86,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>digital-service-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-client</artifactId>
         </dependency>
         <dependency>
