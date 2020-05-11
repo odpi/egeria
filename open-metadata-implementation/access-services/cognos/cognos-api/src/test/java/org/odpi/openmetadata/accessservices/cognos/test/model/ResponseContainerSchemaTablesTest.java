@@ -16,12 +16,12 @@ import org.odpi.openmetadata.accessservices.cognos.test.utils.TestUtilities;
 
 public class ResponseContainerSchemaTablesTest {
 	
-	String master = "{\r\n" + 
-			"  \"attributes\" : {\r\n" + 
-			"    \"tables\" : [ \"A\", \"C\", \"B\" ]\r\n" + 
-			"  },\r\n" + 
-			"  \"type\" : \"tables\"\r\n" + 
-			"}";
+	String master = String.format("{%n" + 
+			"  \"attributes\" : {%n" + 
+			"    \"tables\" : [ \"A\", \"C\", \"B\" ]%n" + 
+			"  },%n" + 
+			"  \"type\" : \"tables\"%n" + 
+			"}");
 
 	List<String> tables = Arrays.asList("A", "C", "B");
 	

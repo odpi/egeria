@@ -18,12 +18,12 @@ public class TableTest {
 
 	private static final String TABLE_NAME = "TABLE_NAME";
 
-	String master = "{\r\n" +
-			"  \"name\" : \"TABLE_NAME\",\r\n" +
-			"  \"tableItem\" : [ { }, { } ],\r\n" +
-			"  \"foreignKey\" : [ { }, { } ],\r\n" +
-			"  \"primaryKey\" : [ { }, { } ]\r\n" +
-			"}";
+	String master = String.format("{%n" +
+			"  \"name\" : \"TABLE_NAME\",%n" +
+			"  \"tableItem\" : [ { }, { } ],%n" +
+			"  \"foreignKey\" : [ { }, { } ],%n" +
+			"  \"primaryKey\" : [ { }, { } ]%n" +
+			"}");
 
 	String master_empty = "{ }";
 

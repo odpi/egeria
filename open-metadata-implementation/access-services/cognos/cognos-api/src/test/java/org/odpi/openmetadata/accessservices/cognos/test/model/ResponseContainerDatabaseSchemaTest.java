@@ -15,15 +15,15 @@ public class ResponseContainerDatabaseSchemaTest {
 	private static final String SCHEMA_NAME = "sys";
 	
 
-	String master = "{\r\n" + 
-			"  \"attributes\" : {\r\n" + 
-			"    \"catalog\" : \"GOSALES\",\r\n" + 
-			"    \"schema\" : \"sys\",\r\n" + 
-			"    \"schemaType\" : \"user\"\r\n" + 
-			"  },\r\n" + 
-			"  \"id\" : \"GOSALES/sys\",\r\n" + 
-			"  \"type\" : \"schema\"\r\n" + 
-			"}";
+	String master = String.format("{%n" + 
+			"  \"attributes\" : {%n" + 
+			"    \"catalog\" : \"GOSALES\",%n" + 
+			"    \"schema\" : \"sys\",%n" + 
+			"    \"schemaType\" : \"user\"%n" + 
+			"  },%n" + 
+			"  \"id\" : \"GOSALES/sys\",%n" + 
+			"  \"type\" : \"schema\"%n" + 
+			"}");
 		
 	@Test
 	public void toJson() {

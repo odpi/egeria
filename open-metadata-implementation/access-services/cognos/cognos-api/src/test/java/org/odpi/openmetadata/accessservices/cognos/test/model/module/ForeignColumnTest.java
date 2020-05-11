@@ -16,13 +16,13 @@ public class ForeignColumnTest {
 	private static final String PK_SCHEMA = "PK_SCHEMA";
 	private static final String PK_TABLE = "PK_TABLE";
 
-	String master = "{\r\n" +
-			"  \"pkColumn\" : \"PK_COLUMN\",\r\n" +
-			"  \"pkCatalog\" : \"PK_CATALOG\",\r\n" +
-			"  \"pkSchema\" : \"PK_SCHEMA\",\r\n" +
-			"  \"pkTable\" : \"PK_TABLE\",\r\n" +
-			"  \"columnName\" : \"COLUMN_NAME\"\r\n" +
-			"}";
+	String master = String.format("{%n" +
+			"  \"pkColumn\" : \"PK_COLUMN\",%n" +
+			"  \"pkCatalog\" : \"PK_CATALOG\",%n" +
+			"  \"pkSchema\" : \"PK_SCHEMA\",%n" +
+			"  \"pkTable\" : \"PK_TABLE\",%n" +
+			"  \"columnName\" : \"COLUMN_NAME\"%n" +
+			"}");
 
 	String master_empty = "{ }";
 

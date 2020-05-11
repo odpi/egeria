@@ -11,9 +11,9 @@ import org.odpi.openmetadata.accessservices.cognos.test.utils.TestUtilities;
 
 public class TableItemTest {
 
-	String master = "{\r\n" +
-			"  \"column\" : { }\r\n" +
-			"}";
+	String master = String.format("{%n" +
+			"  \"column\" : { }%n" +
+			"}");
 
 	String master_empty = "{ }";
 

@@ -17,13 +17,13 @@ public class ErrorResponseTest {
 	private static final String	CODE = "MSR_OMS_001";
 	private static final String	EXCEPTIONCAUSE = "com.ibm.cognos.AppException: Cannot open ...";
 
-	String master = "{\r\n" + 
-			"  \"class\" : \"ErrorResponse\",\r\n" + 
-			"  \"relatedHTTPCode\" : 500,\r\n" + 
-			"  \"msg\" : \"short message\",\r\n" + 
-			"  \"code\" : \"MSR_OMS_001\",\r\n" + 
-			"  \"exceptionCauseMsg\" : \"com.ibm.cognos.AppException: Cannot open ...\"\r\n" + 
-			"}";
+	String master = String.format("{%n" + 
+			"  \"class\" : \"ErrorResponse\",%n" + 
+			"  \"relatedHTTPCode\" : 500,%n" + 
+			"  \"msg\" : \"short message\",%n" + 
+			"  \"code\" : \"MSR_OMS_001\",%n" + 
+			"  \"exceptionCauseMsg\" : \"com.ibm.cognos.AppException: Cannot open ...\"%n" + 
+			"}");
 
 	@Test
 	public void toJson() {

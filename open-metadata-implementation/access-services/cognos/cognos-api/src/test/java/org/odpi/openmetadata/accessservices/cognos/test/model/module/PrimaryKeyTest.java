@@ -15,10 +15,10 @@ public class PrimaryKeyTest {
 
 	private static final String PK_NAME = "PK_NAME";
 
-	String master = "{\r\n" +
-			"  \"name\" : \"PK_NAME\",\r\n" +
-			"  \"keyedColumn\" : [ \"KEY_COLUMN_1\", \"KEY_COLUMN_2\" ]\r\n" +
-			"}";
+	String master = String.format("{%n" +
+			"  \"name\" : \"PK_NAME\",%n" +
+			"  \"keyedColumn\" : [ \"KEY_COLUMN_1\", \"KEY_COLUMN_2\" ]%n" +
+			"}");
 
 	List<String> columns = Arrays.asList("KEY_COLUMN_1", "KEY_COLUMN_2");
 

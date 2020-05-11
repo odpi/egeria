@@ -16,14 +16,14 @@ public class ForeignKeyTest {
 
 	private static final String FK_NAME = "FK_NAME";
 
-	String master = "{\r\n" +
-			"  \"name\" : \"FK_NAME\",\r\n" +
-			"  \"fkColumn\" : [ {\r\n" +
-			"    \"columnName\" : \"A\"\r\n" +
-			"  }, {\r\n" +
-			"    \"columnName\" : \"B\"\r\n" +
-			"  } ]\r\n" +
-			"}";
+	String master = String.format("{%n" +
+			"  \"name\" : \"FK_NAME\",%n" +
+			"  \"fkColumn\" : [ {%n" +
+			"    \"columnName\" : \"A\"%n" +
+			"  }, {%n" +
+			"    \"columnName\" : \"B\"%n" +
+			"  } ]%n" +
+			"}");
 
 	String master_empty = "{ }";
 

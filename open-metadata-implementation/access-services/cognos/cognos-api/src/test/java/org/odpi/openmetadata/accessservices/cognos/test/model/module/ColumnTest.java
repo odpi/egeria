@@ -14,12 +14,12 @@ public class ColumnTest {
 	private static final String VENDOR_TYPE = "VENDOR_TYPE";
 	private static final String COLUMN_NAME = "COLUMN_NAME";
 
-	String master = "{\r\n" +
-			"  \"name\" : \"COLUMN_NAME\",\r\n" +
-			"  \"vendorType\" : \"VENDOR_TYPE\",\r\n" +
-			"  \"nullable\" : true,\r\n" +
-			"  \"datatype\" : \"DATA_TYPE\"\r\n" +
-			"}";
+	String master = String.format("{%n" +
+			"  \"name\" : \"COLUMN_NAME\",%n" +
+			"  \"vendorType\" : \"VENDOR_TYPE\",%n" +
+			"  \"nullable\" : true,%n" +
+			"  \"datatype\" : \"DATA_TYPE\"%n" +
+			"}");
 
 	String master_empty = "{ }";
 

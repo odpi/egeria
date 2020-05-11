@@ -18,15 +18,15 @@ public class ModuleTest {
 	private static final String IDENTIFIER = "IDENTIFIER";
 	private static final String VERSION = "9.0";
 
-	String master = "{\r\n" +
-			"  \"identifier\" : \"IDENTIFIER\",\r\n" +
-			"  \"version\" : \"9.0\",\r\n" +
-			"  \"dataSource\" : [ { }, { } ]\r\n" +
-			"}";
+	String master = String.format("{%n" +
+			"  \"identifier\" : \"IDENTIFIER\",%n" +
+			"  \"version\" : \"9.0\",%n" +
+			"  \"dataSource\" : [ { }, { } ]%n" +
+			"}");
 
-	String master_empty = "{\r\n" +
-			"  \"version\" : \"9.0\"\r\n" +
-			"}";
+	String master_empty = String.format("{%n" +
+			"  \"version\" : \"9.0\"%n" +
+			"}");
 
 	List<DataSource> sources = Arrays.asList(new DataSource(), new DataSource());
 

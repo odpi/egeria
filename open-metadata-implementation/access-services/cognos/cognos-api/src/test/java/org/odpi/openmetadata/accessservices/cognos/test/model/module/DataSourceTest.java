@@ -18,12 +18,12 @@ public class DataSourceTest {
 	private static final String SCHEMA = "SCHEMA";
 	private static final String CATALOG = "CATALOG";
 
-	String master = "{\r\n" +
-			"  \"schema\" : \"SCHEMA\",\r\n" +
-			"  \"catalog\" : \"CATALOG\",\r\n" +
-			"  \"name\" : \"DTASOURCE_NAME\",\r\n" +
-			"  \"table\" : [ { }, { } ]\r\n" +
-			"}";
+	String master = String.format("{%n" +
+			"  \"schema\" : \"SCHEMA\",%n" +
+			"  \"catalog\" : \"CATALOG\",%n" +
+			"  \"name\" : \"DTASOURCE_NAME\",%n" +
+			"  \"table\" : [ { }, { } ]%n" +
+			"}");
 
 	String master_empty = "{ }";
 
