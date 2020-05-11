@@ -33,6 +33,7 @@
         <module>asset-consumer</module>
         <module>asset-lineage</module>
         <module>asset-owner</module>
+        <module>cognos</module>
         <module>community-profile</module>
         <module>data-platform</module>
         <module>design-model</module>

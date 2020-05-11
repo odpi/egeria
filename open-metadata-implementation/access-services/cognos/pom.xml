@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>access-services</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>1.8-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Cognos OMAS</name>
+    <description>
+        The Cognos Open Metadata Access Service (OMAS) configures and manages metadata for Cognos IBM.
+    </description>
+
+    <artifactId>cognos</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>cognos-client</module>
+        <module>cognos-server</module>
+        <module>cognos-spring</module>
+        <module>cognos-api</module>
+    </modules>
+
+
+</project>

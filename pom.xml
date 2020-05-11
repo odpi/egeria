@@ -1224,7 +1224,34 @@
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>cognos-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
 
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>cognos-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>cognos-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            
+             <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>cognos-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>information-view-api</artifactId>

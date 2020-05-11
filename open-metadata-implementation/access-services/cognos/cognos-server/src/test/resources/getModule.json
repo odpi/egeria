@@ -1,0 +1,197 @@
+{
+  "attributes" : {
+    "physicalDefinition" : {
+      "identifier" : "GOSALES.dbo",
+      "version" : "9.0",
+      "dataSource" : [ {
+        "schema" : "dbo",
+        "catalog" : "GOSALES",
+        "name" : "GOSALES.dbo",
+        "table" : [ {
+          "name" : "Date",
+          "tableItem" : [ {
+            "column" : {
+              "name" : "DateKey",
+              "vendorType" : "INT32",
+              "nullable" : false,
+              "datatype" : "INTEGER"
+            }
+          }, {
+            "column" : {
+              "name" : "Date",
+              "vendorType" : "DATETIME",
+              "nullable" : false,
+              "datatype" : "TIMESTAMP"
+            }
+          } ],
+          "primaryKey" : [ {
+            "name" : "PK_Date_DateKey",
+            "keyedColumn" : [ "DateKey" ]
+          } ]
+        }, {
+          "name" : "Location",
+          "tableItem" : [ {
+            "column" : {
+              "name" : "Latitude",
+              "vendorType" : "DECIMAL",
+              "nullable" : false,
+              "datatype" : "DECIMAL"
+            }
+          }, {
+            "column" : {
+              "name" : "Longitude",
+              "vendorType" : "DECIMAL",
+              "nullable" : false,
+              "datatype" : "DECIMAL"
+            }
+          }, {
+            "column" : {
+              "name" : "Destination",
+              "vendorType" : "STRING",
+              "nullable" : false,
+              "datatype" : "VARCHAR"
+            }
+          } ],
+          "primaryKey" : [ {
+            "name" : "PK_Location_Latitude_Longitude",
+            "keyedColumn" : [ "Latitude", "Longitude" ]
+          } ]
+        }, {
+          "name" : "Product",
+          "tableItem" : [ {
+            "column" : {
+              "name" : "ProductId",
+              "vendorType" : "INT32",
+              "nullable" : false,
+              "datatype" : "INTEGER"
+            }
+          }, {
+            "column" : {
+              "name" : "ProductName",
+              "vendorType" : "STRING",
+              "nullable" : false,
+              "datatype" : "VARCHAR"
+            }
+          }, {
+            "column" : {
+              "name" : "ProductDescription",
+              "vendorType" : "STRING",
+              "nullable" : true,
+              "datatype" : "VARCHAR"
+            }
+          }, {
+            "column" : {
+              "name" : "ProductIntroductionDate",
+              "vendorType" : "INT32",
+              "nullable" : false,
+              "datatype" : "INTEGER"
+            }
+          }, {
+            "column" : {
+              "name" : "ProductTerminationDate",
+              "vendorType" : "INT32",
+              "nullable" : false,
+              "datatype" : "INTEGER"
+            }
+          } ],
+          "foreignKey" : [ {
+            "name" : "FK_Product_Date_ProductIntroductionDate_ProductTerminationDate",
+            "fkColumn" : [ {
+              "pkColumn" : "DateKey",
+              "pkTable" : "Date",
+              "columnName" : "ProductIntroductionDate"
+            }, {
+              "pkColumn" : "DateKey",
+              "pkTable" : "Date",
+              "columnName" : "ProductTerminationDate"
+            } ]
+          } ],
+          "primaryKey" : [ {
+            "name" : "PK_Product_ProductId",
+            "keyedColumn" : [ "ProductId" ]
+          } ]
+        }, {
+          "name" : "Sales",
+          "tableItem" : [ {
+            "column" : {
+              "name" : "ProductId",
+              "vendorType" : "INT32",
+              "nullable" : false,
+              "datatype" : "INTEGER"
+            }
+          }, {
+            "column" : {
+              "name" : "DateKey",
+              "vendorType" : "INT32",
+              "nullable" : false,
+              "datatype" : "INTEGER"
+            }
+          }, {
+            "column" : {
+              "name" : "Quantity",
+              "vendorType" : "INT32",
+              "nullable" : false,
+              "datatype" : "INTEGER"
+            }
+          }, {
+            "column" : {
+              "name" : "Price",
+              "vendorType" : "DECIMAL",
+              "nullable" : false,
+              "datatype" : "DECIMAL(19)"
+            }
+          }, {
+            "column" : {
+              "name" : "Discount",
+              "vendorType" : "DECIMAL",
+              "nullable" : false,
+              "datatype" : "DECIMAL(19)"
+            }
+          }, {
+            "column" : {
+              "name" : "ShipmentDestinationLatitude",
+              "vendorType" : "DECIMAL",
+              "nullable" : false,
+              "datatype" : "DECIMAL"
+            }
+          }, {
+            "column" : {
+              "name" : "ShipmentDestinationLongitude",
+              "vendorType" : "DECIMAL",
+              "nullable" : false,
+              "datatype" : "DECIMAL"
+            }
+          } ],
+          "foreignKey" : [ {
+            "name" : "FK_Sales_Date_DateKey",
+            "fkColumn" : [ {
+              "pkColumn" : "DateKey",
+              "pkTable" : "Date",
+              "columnName" : "DateKey"
+            } ]
+          }, {
+            "name" : "FK_Sales_Location_ShipmentDestinationLatitude_ShipmentDestinationLongitude",
+            "fkColumn" : [ {
+              "pkColumn" : "Latitude",
+              "pkTable" : "Location",
+              "columnName" : "ShipmentDestinationLatitude"
+            }, {
+              "pkColumn" : "Longitude",
+              "pkTable" : "Location",
+              "columnName" : "ShipmentDestinationLongitude"
+            } ]
+          }, {
+            "name" : "FK_Sales_Product_ProductId",
+            "fkColumn" : [ {
+              "pkColumn" : "ProductId",
+              "pkTable" : "Product",
+              "columnName" : "ProductId"
+            } ]
+          } ]
+        } ]
+      } ]
+    }
+  },
+  "id" : "GOSALES_dbo",
+  "type" : "module"
+}

@@ -1,0 +1,377 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.accessservices.cognos.utils.contentmanager;
+
+
+import org.odpi.openmetadata.accessservices.cognos.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosRuntimeException;
+import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class OMEntityDaoForTests extends OMEntityDao {
+
+    private static final Logger log = LoggerFactory.getLogger(OMEntityDaoForTests.class);
+
+    public OMEntityDaoForTests(OMRSRepositoryConnector enterpriseConnector, List<String> supportedZones, OMRSAuditLog auditLog) {
+    	super (enterpriseConnector, supportedZones, auditLog);
+    }
+
+    /**
+     * Returns the newly created entity with the specified properties
+     *
+     * @param metadataCollectionId unique identifier for the metadata collection used for adding entities
+     * @param userName             name of the user performing the add operation
+     * @param typeName             of the entity type def
+     * @param instanceProperties   specific to the entity
+     * @param zoneRestricted
+     * @return the new entity added to the metadata collection
+     * @throws ClassificationErrorException
+     * @throws StatusNotSupportedException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
+     */
+    private EntityDetail addEntity(String metadataCollectionId,
+                                   String userName,
+                                   String typeName,
+                                   InstanceProperties instanceProperties,
+                                   List<Classification> classifications,
+                                   boolean zoneRestricted) throws ClassificationErrorException, StatusNotSupportedException,
+                                                                  UserNotAuthorizedException, InvalidParameterException,
+                                                                  RepositoryErrorException, PropertyErrorException,
+                                                                  TypeErrorException, FunctionNotSupportedException {
+        EntityDetail entity;
+            entity = enterpriseConnector.getRepositoryHelper().getSkeletonEntity(Constants.COGNOS_OMAS_NAME,
+                                                                                metadataCollectionId,
+                                                                                InstanceProvenanceType.LOCAL_COHORT,
+                                                                                userName,
+                                                                                typeName);
+            entity.setClassifications(classifications);
+            if(zoneRestricted && supportedZones != null && !supportedZones.isEmpty()){
+                instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.COGNOS_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "addEntity");
+            }
+            
+            return enterpriseConnector.getMetadataCollection().addEntity(userName,
+                                                                        entity.getType().getTypeDefGUID(),
+                                                                        instanceProperties,
+                                                                        entity.getClassifications(),
+                                                                        entity.getStatus());
+    }
+    
+    public void deleteEntity(EntityDetail entity ) {
+    	InstanceType instanceType = entity.getType();
+    	try {
+			enterpriseConnector.getMetadataCollection().deleteEntity(Constants.COGNOS_USER_ID,
+					instanceType.getTypeDefGUID(), instanceType.getTypeDefName(), entity.getGUID());
+		} catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException
+				| FunctionNotSupportedException | UserNotAuthorizedException e) {
+			throw new CognosRuntimeException(CognosErrorCode.DELETE_ENTITY_EXCEPTION, e, "QName", getEntityQName(entity));
+		}
+    }
+
+    /**
+     * Returns the newly created relationship between 2 entities with the specified properties
+     *
+     * @param metadataCollectionId unique identifier for the metadata collection used for adding relationships
+     * @param typeName             name of the relationship type def
+     * @param instanceProperties    properties for the relationship
+     * @param entityOneGUID        giud of the first end of the relationship
+     * @param entityTwoGUID        giud of the second end of the relationship
+     * @return the created relationship
+     */
+    private Relationship addRelationship(String metadataCollectionId,
+                                         String typeName,
+                                         InstanceProperties instanceProperties,
+                                         String entityOneGUID,
+                                         String entityTwoGUID) {
+
+        Relationship relationship = null;
+        try {
+            relationship = enterpriseConnector.getRepositoryHelper()
+                    .getSkeletonRelationship(Constants.COGNOS_OMAS_NAME,
+                            metadataCollectionId,
+                            InstanceProvenanceType.LOCAL_COHORT,
+                            Constants.COGNOS_USER_ID,
+                            typeName);
+            return enterpriseConnector.getMetadataCollection()
+                    .addRelationship(Constants.COGNOS_USER_ID,
+                            relationship.getType().getTypeDefGUID(),
+                            instanceProperties,
+                            entityOneGUID,
+                            entityTwoGUID,
+                            InstanceStatus.ACTIVE);
+        } catch (StatusNotSupportedException | UserNotAuthorizedException | EntityNotKnownException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException e) {
+            throw new CognosRuntimeException(CognosErrorCode.ADD_RELATIONSHIP_EXCEPTION, e, typeName);
+        }
+    }
+    
+    public void updateEntityProperty(EntityDetail entity, InstanceProperties newProperties) {
+    	try {
+			enterpriseConnector.getMetadataCollection().updateEntityProperties(Constants.COGNOS_USER_ID,
+					entity.getGUID(),
+					newProperties);
+		} catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException
+				| PropertyErrorException | UserNotAuthorizedException | FunctionNotSupportedException e) {
+			throw new CognosRuntimeException(CognosErrorCode.UPDATE_PROPERTY_EXCEPTION, e, "QN", e.getMessage());
+		}
+    }
+
+    public void classifyEntity(EntityDetail entity, String classificationName, InstanceProperties classificationProperties) {
+    	try {
+			enterpriseConnector.getMetadataCollection().classifyEntity(Constants.COGNOS_USER_ID,
+					entity.getGUID(),
+					classificationName,
+					classificationProperties);
+		} catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException
+				| PropertyErrorException | UserNotAuthorizedException | FunctionNotSupportedException | ClassificationErrorException e) {
+			throw new CognosRuntimeException(CognosErrorCode.CLASSIFICATION_EXCEPTION, e, "QN", e.getMessage());
+		}
+    }
+
+
+	/**
+     * Returns the entity of the specified type retrieved based on qualified name
+     *
+     * @param typeName      name of the type def for the entity to be retrieved
+     * @param qualifiedName qualified name property of the entity to be retrieved
+     * @param zoneRestricted
+     * @return the existing entity with the given qualified name or null if it doesn't exist
+     */
+    public EntityDetail getEntity(String typeName, String qualifiedName, boolean zoneRestricted) {
+        Map<String, String>  properties = new HashMap<>();
+        // GDW - need to convert qualifiedName to exactMatchRegex
+        String qualifiedNameRegex = enterpriseConnector.getRepositoryHelper().getExactMatchRegex(qualifiedName);
+        properties.put(Constants.QUALIFIED_NAME, qualifiedNameRegex);
+        InstanceProperties matchProperties = buildMatchingInstanceProperties(properties, zoneRestricted);
+        List<EntityDetail> existingEntities;
+        existingEntities = findEntities(matchProperties, typeName, Constants.START_FROM, Constants.PAGE_SIZE);
+        return checkEntities(existingEntities, qualifiedName);
+    }
+
+	/**
+     * Returns the entity filtered out from entities list based on qualified name
+     *
+     * @param existingEntities the list of entities to search in
+     * @param qualifiedName    qualified name based on which the entity is retrieved
+     * @return the entity that has the specified qualified name
+     */
+    private EntityDetail checkEntities(List<EntityDetail> existingEntities, String qualifiedName) {
+        if (!CollectionUtils.isEmpty(existingEntities))
+            return existingEntities.stream().filter(e -> qualifiedName.equals(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.COGNOS_OMAS_NAME, Constants.QUALIFIED_NAME, e.getProperties(), "checkEntities"))).findFirst().orElse(null);
+        return null;
+    }
+
+    /**
+     * Returns the relationship of the given type between the 2 entities
+     *
+     * @param relationshipType is the name of the relationship type
+     * @param guid1            is guid of first end of relationship
+     * @param guid2            is guid of the second end f relationship
+     * @return the relationship of the given type between the two entities; null if it doesn't exist
+     */
+    private Relationship checkRelationshipExists(String relationshipType,
+                                         String guid1,
+                                         String guid2) {
+        List<Relationship> relationships = getRelationships(relationshipType, guid2);
+        if (!CollectionUtils.isEmpty(relationships)){
+            return relationships.stream().filter(relationship -> relationship.getType().getTypeDefName().equals(relationshipType)
+                    && checkRelationshipEnds(relationship, guid1, guid2)).findFirst().orElse(null);
+        }
+        return null;
+    }
+
+    public List<Relationship> getRelationships(String relationshipType, String guid) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("Retrieving relationships of type {} for entity {}", relationshipType, guid);
+        }
+        try {
+            String relationshipTypeGuid = enterpriseConnector.getRepositoryHelper()
+                                                            .getTypeDefByName(Constants.COGNOS_USER_ID, relationshipType)
+                                                            .getGUID();
+
+            return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.COGNOS_USER_ID,
+                                                                                        guid,
+                                                                                        relationshipTypeGuid,
+                                                                                        Constants.START_FROM,
+                                                                                        Collections.singletonList(InstanceStatus.ACTIVE),
+                                                                                        null,
+                                                                                        null,
+                                                                                        null,
+                                                                                        Constants.PAGE_SIZE);
+        } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
+            throw buildRetrieveRelationshipException(guid, relationshipType, e, this.getClass().getName());
+        }
+    }
+
+    private CognosRuntimeException buildRetrieveRelationshipException(String guid, String relationshipType,
+			OMRSCheckedExceptionBase e, String name) {
+    	
+		return new CognosRuntimeException(CognosErrorCode.GET_RELATIONSHIP_EXCEPTION, e, relationshipType, guid, name);
+	}
+
+	/**
+     * Returns true if the provided relationship is between the 2 specified entities
+     *
+     * @param relationship - the relationship instance to be checked
+     * @param guid1        is the guid of one end
+     * @param guid2        is the guid of the second end
+     * @return boolean
+     */
+    private boolean checkRelationshipEnds(Relationship relationship, String guid1, String guid2) {
+        String end1Guid = relationship.getEntityOneProxy().getGUID();
+        String end2Guid = relationship.getEntityTwoProxy().getGUID();
+        return (end1Guid.equals(guid1) && end2Guid.equals(guid2)) || (end1Guid.equals(guid2) && end2Guid.equals(guid1));
+    }
+
+    /**
+     * Returns the entity of the given type with the specified qualified name; if it doesn't already exists, it is created with the provided instance properties
+     *
+     * @param typeName      is the entity type
+     * @param qualifiedName - qualified name property of the entity, unique for the same entity type
+     * @param properties    specific to the entity type
+     * @return the existing entity with the given qualified name or the newly created entity with the given qualified name
+     * @throws InvalidParameterException
+     * @throws PropertyErrorException
+     * @throws RepositoryErrorException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws PagingErrorException
+     * @throws ClassificationErrorException
+     * @throws UserNotAuthorizedException
+     * @throws TypeErrorException
+     * @throws StatusNotSupportedException
+     */
+    public EntityDetail addEntity(String typeName,
+                                  String qualifiedName,
+                                  InstanceProperties properties,
+                                  boolean zoneRestricted) throws InvalidParameterException, PropertyErrorException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
+        return addEntity(typeName, qualifiedName, properties, null, zoneRestricted);
+    }
+
+
+    /**
+     * Returns the entity of the given type with the specified qualified name; if it doesn't already exists, it is created with the provided instance properties
+     *
+     * @param typeName        is the entity type
+     * @param qualifiedName   - qualified name property of the entity, unique for the same entity type
+     * @param properties      specific to the entity type
+     * @param classifications classifications to be added to entity
+     * @param zoneRestricted
+     * @return the existing entity with the given qualified name or the newly created entity with the given qualified name
+     * @throws InvalidParameterException
+     * @throws StatusNotSupportedException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws TypeErrorException
+     * @throws FunctionNotSupportedException
+     * @throws PagingErrorException
+     * @throws ClassificationErrorException
+     * @throws UserNotAuthorizedException
+     * @throws RepositoryErrorException
+     */
+    public EntityDetail addEntity(String typeName,
+                                  String qualifiedName,
+                                  InstanceProperties properties,
+                                  List<Classification> classifications,
+                                  boolean zoneRestricted) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeErrorException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException {
+
+        OMEntityWrapper wrapper = createOrUpdateEntity(typeName,
+                                                        qualifiedName,
+                                                        properties,
+                                                        classifications,
+                                                        false,
+                                                        zoneRestricted);
+        return wrapper != null ? wrapper.getEntityDetail() : null;
+    }
+
+    public OMEntityWrapper createOrUpdateEntity(String typeName,
+                                                String qualifiedName,
+                                                InstanceProperties properties,
+                                                List<Classification> classifications,
+                                                boolean update,
+                                                boolean zoneRestricted) throws UserNotAuthorizedException, FunctionNotSupportedException,
+                                                                               InvalidParameterException, RepositoryErrorException,
+                                                                               PropertyErrorException, TypeErrorException,
+                                                                               PagingErrorException, ClassificationErrorException,
+                                                                               StatusNotSupportedException, EntityNotKnownException {
+        EntityDetail entityDetail;
+        OMEntityWrapper wrapper;
+        entityDetail = getEntity(typeName, qualifiedName, zoneRestricted);
+        if (entityDetail == null) {
+            entityDetail = addEntity("", Constants.COGNOS_USER_ID, typeName, properties, classifications, zoneRestricted);
+            log.debug("Entity with qualified name {} added", qualifiedName);
+            if(log.isDebugEnabled()) {
+                log.debug("Entity: {}", entityDetail);
+            }
+            wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.NEW);
+        } else {
+            log.debug("Entity with qualified name {} already exists", qualifiedName);
+            if(log.isDebugEnabled()) {
+                log.debug("Entity: {}", entityDetail);
+            }
+            wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.EXISTING);
+
+        }
+
+        return wrapper;
+    }
+
+    /**
+     * Returns the relationship of the given type with the specified qualified name; 
+     * if it doesn't already exists, it is created with the provided instance properties
+     *
+     * @param relationshipType is the relationship type name
+     * @param guid1            first end of the relationship
+     * @param guid2            second end of the relationship
+     * @param instanceProperties       specific to the relationship type
+     * @return the existing relationship with the given qualified name or the newly created relationship with the given qualified name
+     */
+    public Relationship addRelationship(String relationshipType,
+                                        String guid1,
+                                        String guid2,
+                                        InstanceProperties instanceProperties) {
+        Relationship relationship = checkRelationshipExists(relationshipType, guid1, guid2);
+        if (relationship == null) {
+            relationship = addRelationship("", relationshipType, instanceProperties, guid1, guid2);
+            log.debug("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
+            if(log.isDebugEnabled()) {
+                log.debug("Relationship: {}", relationship);
+            }
+        } else {
+            log.debug("Relationship {} already exists between: {} and {}", relationshipType, guid1, guid2);
+        }
+
+        return relationship;
+    }
+
+    public List<EntityDetail> getEntityDetails(List<Relationship> relationships, Function<Relationship, String> relationshipEndFunction ) {
+        Set<String> allLinkedEntitiesGuids = Optional.ofNullable(relationships)
+                                                    .map(Collection::stream)
+                                                    .orElseGet(Stream::empty)
+                                                    .map(relationshipEndFunction)
+                                                    .collect(Collectors.toSet());
+        return allLinkedEntitiesGuids.stream().map(this::getEntityByGuid).collect(Collectors.toList());
+    }
+}
