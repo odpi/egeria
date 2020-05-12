@@ -50,7 +50,7 @@ public class Graph implements Serializable {
         this.lines = lines;
     }
 
-    public String toString(StringBuilder sb) {
+    public StringBuilder toString(StringBuilder sb) {
         if (sb == null) {
             sb = new StringBuilder();
         }
@@ -72,13 +72,13 @@ public class Graph implements Serializable {
 
         sb.append('}');
 
-        return sb.toString();
+        return sb;
     }
 
 
     @Override
     public String toString() {
-        return toString(new StringBuilder());
+        return toString(new StringBuilder()).toString();
     }
 
     @Override
