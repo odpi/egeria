@@ -33,12 +33,20 @@ public interface LineageGraph extends OpenLineageGraphConnector {
     void updateRelationship(LineageRelationship lineageRelationship);
 
     /**
+     * Deletes a relationship in the graph
+     *
+     * @param guid unique identifier of the entity to be deleted
+     */
+    void deleteRelationship(String guid);
+
+    /**
+    /**
      * Deletes a vertex in the graph
      *
      * @param guid unique identifier of the entity to be deleted
      * @param version version of the entity to be deleted
      */
-    void deleteEntity(String guid,String version);
+    void deleteEntity(String guid,Object version);
 
     /**
      * Task that the scheduler performs based on the interval

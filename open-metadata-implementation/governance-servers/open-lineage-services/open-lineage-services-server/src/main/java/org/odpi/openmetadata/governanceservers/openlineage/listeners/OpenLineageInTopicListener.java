@@ -72,23 +72,26 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                     lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
                     storingServices.addEntity(lineageEvent);
                     break;
-//                case UPDATE_ENTITY_EVENT:
-//                    lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
-//                    storingServices.updateEntity(lineageEvent);
-//                    break;
-//                case UPDATE_RELATIONSHIP_EVENT:
-//                    lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent,LineageRelationshipEvent.class);
-//                    storingServices.updateRelationship(lineageRelationshipEvent);
-//                    break;
-////                case DELETE_ENTITY_EVENT:
+                case UPDATE_ENTITY_EVENT:
+                    lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
+                    storingServices.updateEntity(lineageEvent);
+                    break;
+                case UPDATE_RELATIONSHIP_EVENT:
+                    lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent,LineageRelationshipEvent.class);
+                    storingServices.updateRelationship(lineageRelationshipEvent);
+                    break;
+                case DELETE_ENTITY_EVENT:
 //                case DECLASSIFIED_ENTITY_EVENT:
-//                    storingServices.deleteEntity(event);
-//                    break;
+                    lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
+                    storingServices.deleteEntity(lineageEvent);
+                    break;
+                case DELETE_RELATIONSHIP_EVENT:
+                    lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
+                    storingServices.deleteRelationship(lineageRelationshipEvent);
+                    break;
                 default:
                     break;
             }
-
-//            log.debug("AssetLineageEventHeader is null since json cannot be de-serialized, parsing of the event cannot be done");
         }
     }
 
