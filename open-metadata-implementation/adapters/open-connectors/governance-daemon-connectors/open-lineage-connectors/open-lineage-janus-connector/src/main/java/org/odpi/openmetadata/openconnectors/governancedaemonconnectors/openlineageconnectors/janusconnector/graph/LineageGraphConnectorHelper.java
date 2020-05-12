@@ -72,10 +72,10 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.immutableReturnedPropertiesWhiteList;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 
 public class LineageGraphConnectorHelper {
 
-    private static final String SUB_PROCESS = "subProcess";
     private JanusGraph lineageGraph;
 
     public LineageGraphConnectorHelper(JanusGraph lineageGraph) {
@@ -278,7 +278,7 @@ public class LineageGraphConnectorHelper {
 
     private String getNodeID(Vertex vertex) {
         String nodeID;
-        if (vertex.label().equalsIgnoreCase(SUB_PROCESS)) {
+        if (vertex.label().equalsIgnoreCase(NODE_LABEL_SUB_PROCESS)) {
             nodeID = vertex.property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
         } else {
             nodeID = vertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
@@ -440,7 +440,7 @@ public class LineageGraphConnectorHelper {
     }
 
     private boolean isSubProcess(LineageVertex vertex) {
-        return vertex.getNodeType().equalsIgnoreCase(SUB_PROCESS);
+        return vertex.getNodeType().equalsIgnoreCase(NODE_LABEL_SUB_PROCESS);
     }
 
     private boolean isInVertexesToRemove(Set<String> verticesToRemoveNames, LineageEdge edge) {
