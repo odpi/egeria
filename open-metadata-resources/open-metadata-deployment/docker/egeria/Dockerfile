@@ -43,7 +43,9 @@ COPY --chown=egeria:egeria target/assembly /opt/egeria
 EXPOSE 8080 5005
 
 WORKDIR /opt/egeria
-USER egeria:egeria
+
+# Require use of numeric userids to meet some container security checks
+USER 8080:8080
 
 # Spring loader path for connectors etc
 ENV LOADER_PATH=/opt/egeria/server/lib

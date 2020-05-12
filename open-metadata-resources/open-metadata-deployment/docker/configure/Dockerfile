@@ -33,6 +33,7 @@ RUN groupadd -r config -g 1000 && useradd --no-log-init -r -g config -u 1000 -d 
 COPY --chown=config:config dist/check-availability.sh /check-availability.sh
 
 WORKDIR /opt/config
-USER config:config
+# Must use numeric userid here to meet k8s security checks
+USER 1000:1000
 
 ENTRYPOINT ["/check-availability.sh"]

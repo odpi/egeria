@@ -2,12 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.samples;
 
-import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
@@ -213,7 +212,6 @@ public class SubjectAreaDefinitionSample
         String  serverName = SubjectAreaDefinitionSample.getServerName(args);
         String  clientUserId = SubjectAreaDefinitionSample.getUserId(args);
 
-        org.apache.log4j.BasicConfigurator.configure(new NullAppender());
         System.out.println("===============================");
         System.out.println("Subject Area Definition Sample ");
         System.out.println("===============================");
