@@ -180,9 +180,9 @@ public class LineageGraphConnectorHelper {
     LineageVerticesAndEdges glossary(String guid) {
         GraphTraversalSource g = lineageGraph.traversal();
 
-        Graph subGraph = (Graph) g.E().hasLabel(EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM,
-                EDGE_LABEL_ANTONYM, EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP).
-                subgraph("s").cap("s").next();
+        Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(EDGE_LABEL_SEMANTIC_ASSIGNMENT,
+                EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM, EDGE_LABEL_REPLACEMENT_TERM,
+                EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP).subgraph("s").cap("s").next();
 
         return getLineageVerticesAndEdges(subGraph);
     }
