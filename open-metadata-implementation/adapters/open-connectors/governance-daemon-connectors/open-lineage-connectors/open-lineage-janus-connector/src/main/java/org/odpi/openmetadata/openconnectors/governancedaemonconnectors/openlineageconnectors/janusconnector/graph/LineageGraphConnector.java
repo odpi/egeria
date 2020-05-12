@@ -400,7 +400,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     @Override
-    public void deleteEntity(String guid,String version){
+    public void deleteEntity(String guid,Object version){
         GraphTraversalSource g = lineageGraph.traversal();
 
         Iterator<Vertex> vertex = checkIfVertexExist(g,guid,version);
@@ -415,6 +415,23 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         g.tx().commit();
         log.debug("Vertex with guid {} deleted",guid);
     }
+
+    @Override
+    public void deleteRelationship(String guid){
+        GraphTraversalSource g = lineageGraph.traversal();
+
+        Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID,guid);
+        if(!edge.hasNext()){
+            g.tx().rollback();
+            log.debug("Edge with guid did not delete {}",guid);
+            return;
+        }
+
+        g.E(edge.next().id()).drop();
+        g.tx().commit();
+        log.debug("Edge with guid {} deleted",guid);
+    }
+
 
     /**
      * Adds or updates properties of a vertex.
@@ -539,7 +556,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         }
     }
 
-    private Iterator<Vertex> checkIfVertexExist(GraphTraversalSource g, String guid, String version){
+    private Iterator<Vertex> checkIfVertexExist(GraphTraversalSource g, String guid, Object version){
 
         return g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).has(PROPERTY_KEY_ENTITY_VERSION,version);
     }
