@@ -65,5 +65,12 @@ public class StoringServices {
      * Delegates the call for the deletion of an entity to the connector
      *
      */
-    public void deleteEntity(LineageEvent lineageEvent){}
+    public void deleteEntity(LineageEvent lineageEvent){
+
+        lineageGraph.deleteEntity(lineageEvent.getLineageEntity().getGuid(),lineageEvent.getLineageEntity().getVersion());
+    }
+
+    public void deleteRelationship(LineageRelationshipEvent lineageRelationshipEvent) {
+        lineageGraph.deleteRelationship(lineageRelationshipEvent.getLineageRelationship().getGuid());
+    }
 }
