@@ -75,6 +75,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 
 public class LineageGraphConnectorHelper {
 
+    private static final String SUB_PROCESS = "subProcess";
     private JanusGraph lineageGraph;
 
     public LineageGraphConnectorHelper(JanusGraph lineageGraph) {
@@ -132,7 +133,7 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    LineageVerticesAndEdges endToEnd(String guid, String... edgeLabels) {
+    LineageVerticesAndEdges endToEnd(String guid, boolean includeProcesses,  String... edgeLabels) {
         GraphTraversalSource g = lineageGraph.traversal();
 
         Graph endToEndGraph = (Graph)
@@ -144,7 +145,7 @@ public class LineageGraphConnectorHelper {
                                         repeat((Traversal) outE(edgeLabels).subgraph("subGraph").inV().simplePath())
                         ).cap("subGraph").next();
 
-        return getLineageVerticesAndEdges(endToEndGraph);
+        return getLineageVerticesAndEdges(endToEndGraph, includeProcesses);
     }
 
     /**
@@ -177,14 +178,14 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    LineageVerticesAndEdges glossary(String guid) {
+    LineageVerticesAndEdges glossary(String guid, boolean includeProcesses) {
         GraphTraversalSource g = lineageGraph.traversal();
 
         Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(EDGE_LABEL_SEMANTIC_ASSIGNMENT,
                 EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM, EDGE_LABEL_REPLACEMENT_TERM,
                 EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP).subgraph("s").cap("s").next();
 
-        return getLineageVerticesAndEdges(subGraph);
+        return getLineageVerticesAndEdges(subGraph, includeProcesses);
     }
 
     /**
@@ -277,7 +278,7 @@ public class LineageGraphConnectorHelper {
 
     private String getNodeID(Vertex vertex) {
         String nodeID;
-        if (vertex.label().equalsIgnoreCase("subProcess")) {
+        if (vertex.label().equalsIgnoreCase(SUB_PROCESS)) {
             nodeID = vertex.property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
         } else {
             nodeID = vertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
@@ -371,7 +372,6 @@ public class LineageGraphConnectorHelper {
         condensedVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
         lineageVertices.add(condensedVertex);
 
-
         for (Vertex originalVertex : vertexList) {
             LineageVertex newVertex = abstractVertex(originalVertex);
             LineageEdge newEdge = new LineageEdge(EDGE_LABEL_CONDENSED, newVertex.getNodeID(), condensedVertex.getNodeID());
@@ -389,7 +389,7 @@ public class LineageGraphConnectorHelper {
      *
      * @return The graph in an Open Lineage specific format.
      */
-    private LineageVerticesAndEdges getLineageVerticesAndEdges(Graph subGraph) {
+    private LineageVerticesAndEdges getLineageVerticesAndEdges(Graph subGraph, boolean includeProcesses) {
         Iterator<Vertex> originalVertices = subGraph.vertices();
         Iterator<Edge> originalEdges = subGraph.edges();
 
@@ -405,9 +405,46 @@ public class LineageGraphConnectorHelper {
             lineageEdges.add(newLineageEdge);
         }
 
+        if (!includeProcesses) {
+            Set <LineageVertex> verticesToRemove = lineageVertices.stream()
+                    .filter(this::isSubProcess)
+                    .collect(Collectors.toSet());
+            Set<String> verticesToRemoveIDs = verticesToRemove.stream().map(LineageVertex::getNodeID).collect(Collectors.toSet());
+            Set<LineageEdge> edgesToRemove = lineageEdges.stream().filter(edge ->
+                    isInVertexesToRemove(verticesToRemoveIDs, edge)).collect(Collectors.toSet());
+            List<LineageEdge> edgesToReplaceProcesses = createEdgesThatReplaceProcesses(lineageEdges, verticesToRemoveIDs);
+            lineageEdges.addAll(edgesToReplaceProcesses);
+            lineageEdges.removeAll(edgesToRemove);
+            lineageVertices.removeAll(verticesToRemove);
+        }
         addColumnProperties(lineageVertices);
 
         return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
+    }
+
+    private List<LineageEdge> createEdgesThatReplaceProcesses(Set<LineageEdge> lineageEdges, Set<String> verticesToRemoveNames) {
+        List<LineageEdge> edgesToReplaceProcesses = new ArrayList<>();
+        for (String vertexName : verticesToRemoveNames) {
+            for (LineageEdge edge : lineageEdges) {
+                if (edge.getDestinationNodeID().equalsIgnoreCase(vertexName)) {
+                    for (LineageEdge destinationEdge : lineageEdges) {
+                        if (destinationEdge.getSourceNodeID().equalsIgnoreCase(vertexName)) {
+                            edgesToReplaceProcesses.add(new LineageEdge(EDGE_LABEL_CONDENSED,
+                                    edge.getSourceNodeID(), destinationEdge.getDestinationNodeID()));
+                        }
+                    }
+                }
+            }
+        }
+        return edgesToReplaceProcesses;
+    }
+
+    private boolean isSubProcess(LineageVertex vertex) {
+        return vertex.getNodeType().equalsIgnoreCase(SUB_PROCESS);
+    }
+
+    private boolean isInVertexesToRemove(Set<String> verticesToRemoveNames, LineageEdge edge) {
+        return verticesToRemoveNames.contains(edge.getSourceNodeID()) || verticesToRemoveNames.contains(edge.getDestinationNodeID());
     }
 
     private void addColumnProperties(Set<LineageVertex> lineageVertices) {
