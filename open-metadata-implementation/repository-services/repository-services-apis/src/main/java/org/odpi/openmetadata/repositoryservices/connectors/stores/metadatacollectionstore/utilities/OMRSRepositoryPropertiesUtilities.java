@@ -3,7 +3,11 @@
 
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyCondition;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -1680,6 +1684,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             updatedTypeDef.setUpdatedBy(typeDefPatch.getUpdatedBy());
             updatedTypeDef.setUpdateTime(typeDefPatch.getUpdateTime());
 
+            if (typeDefPatch.getTypeDefStatus() != null)
+            {
+                updatedTypeDef.setStatus(typeDefPatch.getTypeDefStatus());
+            }
+
             if (typeDefPatch.getDescription() != null)
             {
                 updatedTypeDef.setDescription(typeDefPatch.getDescription());
@@ -1843,6 +1852,48 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                           this.getClass().getName(),
                                           methodName);
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SearchProperties getSearchPropertiesFromInstanceProperties(String             sourceName,
+                                                                      InstanceProperties properties,
+                                                                      MatchCriteria      matchCriteria)
+    {
+        SearchProperties matchProperties = null;
+        if (properties != null)
+        {
+            matchProperties = new SearchProperties();
+            List<PropertyCondition> conditions = new ArrayList<>();
+            Iterator<String> propertyNames = properties.getPropertyNames();
+            while (propertyNames.hasNext())
+            {
+                String propertyName = propertyNames.next();
+                PropertyCondition pc = new PropertyCondition();
+                pc.setProperty(propertyName);
+                InstancePropertyValue ipv = properties.getPropertyValue(propertyName);
+                if (ipv.getInstancePropertyCategory().equals(InstancePropertyCategory.PRIMITIVE)
+                        && ((PrimitivePropertyValue)ipv).getPrimitiveDefCategory().equals(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING) )
+                {
+                    // Use the LIKE operator for any strings
+                    pc.setOperator(PropertyComparisonOperator.LIKE);
+                }
+                else
+                {
+                    // And the EQ(uals) operator for any other type
+                    pc.setOperator(PropertyComparisonOperator.EQ);
+                }
+                // TODO: we may want to default complex types (lists, etc) to other operators than EQ?
+                pc.setValue(ipv);
+                conditions.add(pc);
+            }
+            matchProperties.setConditions(conditions);
+            matchProperties.setMatchCriteria(matchCriteria);
+        }
+        return matchProperties;
     }
 
 

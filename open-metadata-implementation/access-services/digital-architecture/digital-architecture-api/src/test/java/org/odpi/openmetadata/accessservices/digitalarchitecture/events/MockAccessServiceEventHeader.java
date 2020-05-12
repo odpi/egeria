@@ -6,12 +6,14 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.events;
 /**
  * MockAccessServiceEventHeader provides a concrete class to test the access service's event header
  */
-public class MockAccessServiceEventHeader extends DigitalArchitectureEventHeader
+class MockAccessServiceEventHeader extends DigitalArchitectureEventHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */
-    public MockAccessServiceEventHeader()
+    MockAccessServiceEventHeader()
     {
         super();
     }
@@ -22,7 +24,7 @@ public class MockAccessServiceEventHeader extends DigitalArchitectureEventHeader
      *
      * @param template object to clone
      */
-    public MockAccessServiceEventHeader(MockAccessServiceEventHeader template)
+    MockAccessServiceEventHeader(MockAccessServiceEventHeader template)
     {
         super(template);
     }

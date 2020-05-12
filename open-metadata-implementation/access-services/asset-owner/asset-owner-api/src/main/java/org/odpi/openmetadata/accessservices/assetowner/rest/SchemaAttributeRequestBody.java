@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -107,5 +105,17 @@ public class SchemaAttributeRequestBody extends AssetOwnerOMASAPIRequestBody
         }
         SchemaAttributeRequestBody that = (SchemaAttributeRequestBody) objectToCompare;
         return Objects.equals(schemaAttributeProperties, that.schemaAttributeProperties);
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(schemaAttributeProperties);
     }
 }

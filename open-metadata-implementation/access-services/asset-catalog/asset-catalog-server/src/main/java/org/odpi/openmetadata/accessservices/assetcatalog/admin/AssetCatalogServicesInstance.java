@@ -28,30 +28,27 @@ class AssetCatalogServicesInstance extends OCFOMASServiceInstance {
      * @param repositoryConnector     link to the repository responsible for servicing the REST calls.
      * @param supportedZones          configurable list of zones that Asset Catalog is allowed to serve Assets from
      * @param auditLog                logging destination
-     * @param localServerUserId       userId used for server initiated actions
-     * @param supportedTypesForSearch
+     * @param serverUserName          userId used for server initiated actions
+     * @param supportedTypesForSearch default list of supported types for search method
      * @throws NewInstanceException a problem occurred during initialization
      */
-    AssetCatalogServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                 List<String> supportedZones, AuditLog auditLog,
-                                 String localServerUserId, List<String> supportedTypesForSearch) throws NewInstanceException {
+    AssetCatalogServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones,
+                                 AuditLog auditLog, String serverUserName, String sourceName,
+                                 List<String> supportedTypesForSearch) throws NewInstanceException {
 
-        super(description.getAccessServiceName() + " OMAS", repositoryConnector, auditLog, localServerUserId, repositoryConnector.getMaxPageSize());
+        super(description.getAccessServiceName() + " OMAS", repositoryConnector, auditLog, serverUserName, repositoryConnector.getMaxPageSize());
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null) {
 
-            assetCatalogHandler = new AssetCatalogHandler(serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+            assetCatalogHandler = new AssetCatalogHandler(serverName, sourceName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     errorHandler, supportedZones, supportedTypesForSearch);
-            relationshipHandler = new RelationshipHandler(invalidParameterHandler, repositoryHandler, repositoryHelper, errorHandler);
+            relationshipHandler = new RelationshipHandler(sourceName, invalidParameterHandler, repositoryHandler, repositoryHelper, errorHandler);
         } else {
             final String methodName = "new ServiceInstance";
-
-            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.OMRS_NOT_INITIALIZED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName,
-                    errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
+            throw new NewInstanceException(AssetCatalogErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
+                    this.getClass().getName(),
+                    methodName);
         }
     }
 
