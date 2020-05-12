@@ -592,7 +592,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 lineageVerticesAndEdges = helper.sourceAndDestination(guid, edgeLabelsArray);
                 break;
             case END_TO_END:
-                lineageVerticesAndEdges = helper.endToEnd(guid, edgeLabelsArray);
+                lineageVerticesAndEdges = helper.endToEnd(guid, includeProcesses, edgeLabelsArray);
                 break;
             case ULTIMATE_SOURCE:
                 lineageVerticesAndEdges = helper.ultimateSource(guid, edgeLabelsArray);
@@ -601,7 +601,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 lineageVerticesAndEdges = helper.ultimateDestination(guid, edgeLabelsArray);
                 break;
             case GLOSSARY:
-                lineageVerticesAndEdges = helper.glossary(guid);
+                lineageVerticesAndEdges = helper.glossary(guid, includeProcesses);
                 break;
         }
         if (!displayNameMustContain.isEmpty())
