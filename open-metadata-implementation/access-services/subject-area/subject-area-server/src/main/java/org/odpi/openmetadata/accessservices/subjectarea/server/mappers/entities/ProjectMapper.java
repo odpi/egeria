@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.proje
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
@@ -71,7 +72,7 @@ public class ProjectMapper extends EntityDetailMapper implements INodeMapper {
     }
     @Override
     protected List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> getInlinedClassifications(Node node) {
-        List inlinedClassifications = new ArrayList<>();
+        List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> inlinedClassifications = new ArrayList<>();
         if (node.getNodeType() == NodeType.GlossaryProject) {
             org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.GlossaryProject glossaryProjectClassification =new org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.GlossaryProject();
             // add to inlined classifications

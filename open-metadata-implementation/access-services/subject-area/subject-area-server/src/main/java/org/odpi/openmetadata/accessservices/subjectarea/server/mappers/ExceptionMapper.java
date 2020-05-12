@@ -23,7 +23,7 @@ public class ExceptionMapper {
                     ocfCheckedExceptionBase.getReportedHTTPCode(),
                     ocfCheckedExceptionBase.getReportingClassName(),
                     ocfCheckedExceptionBase.getReportingActionDescription(),
-                    ocfCheckedExceptionBase.getErrorMessage(),
+                    ocfCheckedExceptionBase.getReportedErrorMessage(),
                     ocfCheckedExceptionBase.getReportedSystemAction(),
                     ocfCheckedExceptionBase.getReportedUserAction());
             response = new InvalidParameterExceptionResponse(e);
@@ -32,7 +32,7 @@ public class ExceptionMapper {
                     ocfCheckedExceptionBase.getReportedHTTPCode(),
                     ocfCheckedExceptionBase.getReportingClassName(),
                     ocfCheckedExceptionBase.getReportingActionDescription(),
-                    ocfCheckedExceptionBase.getErrorMessage(),
+                    ocfCheckedExceptionBase.getReportedErrorMessage(),
                     ocfCheckedExceptionBase.getReportedSystemAction(),
                     ocfCheckedExceptionBase.getReportedUserAction(),
                     ((org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException) ocfCheckedExceptionBase).getUserId());
@@ -42,7 +42,7 @@ public class ExceptionMapper {
                     ocfCheckedExceptionBase.getReportedHTTPCode(),
                     ocfCheckedExceptionBase.getReportingClassName(),
                     ocfCheckedExceptionBase.getReportingActionDescription(),
-                    ocfCheckedExceptionBase.getErrorMessage(),
+                    ocfCheckedExceptionBase.getReportedErrorMessage(),
                     ocfCheckedExceptionBase.getReportedSystemAction(),
                     ocfCheckedExceptionBase.getReportedUserAction());
             response = new InvalidParameterExceptionResponse(e);

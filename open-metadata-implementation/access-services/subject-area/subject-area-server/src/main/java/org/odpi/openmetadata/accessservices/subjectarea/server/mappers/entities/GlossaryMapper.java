@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.CanonicalVocabulary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Taxonomy;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.CanonicalGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.CanonicalTaxonomy;
@@ -81,8 +82,8 @@ public class GlossaryMapper extends EntityDetailMapper implements INodeMapper {
         }
     }
     @Override
-    protected List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> getInlinedClassifications(Node node) {
-        List inlinedClassifications = new ArrayList<>();
+    protected List<Classification> getInlinedClassifications(Node node) {
+        List<Classification> inlinedClassifications = new ArrayList<>();
         if (node.getNodeType() == NodeType.TaxonomyAndCanonicalGlossary) {
             CanonicalTaxonomy canonicalTaxonomy = (CanonicalTaxonomy)node;
 
@@ -94,7 +95,7 @@ public class GlossaryMapper extends EntityDetailMapper implements INodeMapper {
             inlinedClassifications.add(canonicalVocabulary);
             // add to inlined classifications
         } else if (node.getNodeType() == NodeType.Taxonomy) {
-            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy taxonomy = ( org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy)node;
+            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy taxonomy = (org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy)node;
 
             Taxonomy taxonomyClassification = new Taxonomy();
             taxonomyClassification.setOrganizingPrinciple(taxonomy.getOrganizingPrinciple());

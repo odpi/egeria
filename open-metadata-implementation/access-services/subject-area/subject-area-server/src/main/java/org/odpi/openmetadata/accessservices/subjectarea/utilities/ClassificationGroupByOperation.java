@@ -32,26 +32,26 @@ public class ClassificationGroupByOperation
     public ClassificationGroupByOperation(Set<String>relevantClassificationNames, Set<Classification> existing, Set<Classification> requested) {
         Set<String> existingNames =null;
         if (!existing.isEmpty()) {
-           existingNames = existing.stream().map(x -> x.getClassificationName()).collect(Collectors.toSet());
+           existingNames = existing.stream().map(Classification::getClassificationName).collect(Collectors.toSet());
            existingMap = existing.stream().collect(Collectors.toMap(Classification::getClassificationName,
                            Function.identity()));
        }
        Set<String> requestedNames =null;
        if (!requested.isEmpty()) {
-          requestedNames =requested.stream().map(x -> x.getClassificationName()).collect(Collectors.toSet());
+          requestedNames =requested.stream().map(Classification::getClassificationName).collect(Collectors.toSet());
           requestedMap = requested.stream().collect(Collectors.toMap(Classification::getClassificationName,
                            Function.identity()));
        }
        if (existingNames== null && requestedNames != null) {
            // add all the requested names
-           add = new ArrayList(requested);
+           add = new ArrayList<>(requested);
        }
        if (requestedNames== null && existingNames != null) {
            // remove the classifications we care about.
 
            Set<String> intersection = new HashSet<String>(relevantClassificationNames); // use the copy constructor
            intersection.retainAll(existingNames);
-           remove = new ArrayList(intersection);
+           remove = new ArrayList<>(intersection);
        }
        if (existingNames!= null && requestedNames!= null) {
            for (String existingName : existingNames) {

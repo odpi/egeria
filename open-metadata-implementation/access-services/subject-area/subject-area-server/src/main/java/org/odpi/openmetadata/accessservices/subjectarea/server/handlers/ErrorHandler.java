@@ -6,8 +6,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 
 /**
@@ -91,7 +89,7 @@ public class ErrorHandler
      * @param serviceName name of this access service
      * @return UnrecognizedGUIDException response unexpected exception from property server
      */
-    public static  SubjectAreaOMASAPIResponse handleUnknownAsset(Throwable  error,
+    public static SubjectAreaOMASAPIResponse handleUnknownAsset(Throwable  error,
                                     String     assetGUID,
                                     String     methodName,
                                     String     serverName,
@@ -264,7 +262,7 @@ public class ErrorHandler
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.METADATA_SERVER_UNCONTACTABLE_ERROR;
         String errorMessage = errorCode.getErrorMessageId()
                 + errorCode.getFormattedErrorMessage(e.getMessage(),
-                e.getErrorMessage(),
+                e.getReportedErrorMessage(),
                 methodName,
                 serviceName,
                 serverName);
@@ -475,7 +473,7 @@ public class ErrorHandler
      * @param serviceName name of this access service
      * @return MetadataServerUncontactableException response -the metadata server cannot be reached
      */
-    public SubjectAreaOMASAPIResponse handleMetadataServerUnContactable(MetadataServerUncontactableException e, String methodName, String serverName, String serviceName) 
+    public static SubjectAreaOMASAPIResponse handleMetadataServerUnContactable(MetadataServerUncontactableException e, String methodName, String serverName, String serviceName)
     {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.METADATA_SERVER_UNCONTACTABLE_ERROR;
         String                 errorMessage = errorCode.getErrorMessageId()
@@ -490,7 +488,7 @@ public class ErrorHandler
         return OMASExceptionToResponse.convertMetadataServerUncontactableException(oe);
     }
 
-    public SubjectAreaOMASAPIResponse handleEntityNotPurgedException(String obsoleteGuid, String restAPIName, String serverName, String serviceName) 
+    public static SubjectAreaOMASAPIResponse handleEntityNotPurgedException(String obsoleteGuid, String restAPIName, String serverName, String serviceName)
     {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR;
         String                 errorMessage = errorCode.getErrorMessageId()
@@ -506,7 +504,7 @@ public class ErrorHandler
         return OMASExceptionToResponse.convertGUIDNotPurgedException(oe);
     }
 
-    public SubjectAreaOMASAPIResponse handleRelationshipNotPurgedException(String  obsoleteGuid, String restAPIName, String serverName, String serviceName) 
+    public static SubjectAreaOMASAPIResponse handleRelationshipNotPurgedException(String  obsoleteGuid, String restAPIName, String serverName, String serviceName)
     {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR;
         String                 errorMessage = errorCode.getErrorMessageId()

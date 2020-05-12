@@ -14,9 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Static mapping methods to map between an OMAS Classification and the OMRS Classification.
@@ -49,9 +47,9 @@ abstract public class ClassificationMapper {
 
                 Set<String> attributeNameSet = mapKnownAttributesToOmrs(omasClassification, omrsClassificationProperties);
 
-                Iterator omrsPropertyIterator = omrsClassificationProperties.getPropertyNames();
+                Iterator<String> omrsPropertyIterator = omrsClassificationProperties.getPropertyNames();
                 while (omrsPropertyIterator.hasNext()) {
-                    String name = (String) omrsPropertyIterator.next();
+                    String name = omrsPropertyIterator.next();
                     //TODO check if this is a property we expect or whether the type has been added to.
                     // this is a property we expect
                     InstancePropertyValue value = omrsClassificationProperties.getPropertyValue(name);
@@ -64,7 +62,7 @@ abstract public class ClassificationMapper {
                                 PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
                                 // put out the omrs value object
                                 if (null == omasClassification.getAdditionalProperties()) {
-                                    omasClassification.setAdditionalProperties(new HashMap<String, String>());
+                                    omasClassification.setAdditionalProperties(Collections.emptyMap());
                                 }
                                 attributeValue = primitivePropertyValue.valueAsString();
                                 break;
@@ -72,7 +70,7 @@ abstract public class ClassificationMapper {
                                 EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
                                 // put out the omrs value object
                                 if (null == omasClassification.getAdditionalProperties()) {
-                                    omasClassification.setAdditionalProperties(new HashMap<String, String>());
+                                    omasClassification.setAdditionalProperties(Collections.emptyMap());
                                 }
                                 attributeValue = enumPropertyValue.valueAsString();
 
@@ -81,7 +79,7 @@ abstract public class ClassificationMapper {
                                 MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
                                 // put out the omrs value object
                                 if (null == omasClassification.getAdditionalProperties()) {
-                                    omasClassification.setAdditionalProperties(new HashMap<String, String>());
+                                    omasClassification.setAdditionalProperties(Collections.emptyMap());
                                 }
                                 attributeValue = mapPropertyValue.getMapValues().toString();
                                 break;

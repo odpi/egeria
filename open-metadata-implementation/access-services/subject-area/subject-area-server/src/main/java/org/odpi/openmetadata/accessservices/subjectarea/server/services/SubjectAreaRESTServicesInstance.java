@@ -128,10 +128,10 @@ public class SubjectAreaRESTServicesInstance
                 InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
                 // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
                 if (offset == null) {
-                    offset = new Integer(0);
+                    offset = 0;
                 }
                 if (pageSize == null) {
-                    pageSize = new Integer(0);
+                    pageSize = 0;
                 }
                 if (sequencingProperty != null) {
                     sequencingProperty = URLDecoder.decode(sequencingProperty, "UTF-8");
