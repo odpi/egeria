@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
@@ -8,45 +8,89 @@ import org.apache.tinkerpop.gremlin.structure.Column;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
+import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraphConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.bothE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLabel;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_DELEGATION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_IMPLEMENTATION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_SCHEMA;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS_PORT;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_DATAFLOW_WITH_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_INCLUDED_IN;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_CREATED_BY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_CREATE_TIME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_UPDATED_BY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_UPDATE_TIME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_VERSION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_METADATA_ID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_CREATED_BY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_CREATE_TIME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_UPDATED_BY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_VERSION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PORT_TYPE;
 
-public class BufferGraphConnector extends BufferGraphConnectorBase {
+public class LineageGraphConnector extends LineageGraphConnectorBase {
 
-    private static final Logger log = LoggerFactory.getLogger(BufferGraphConnector.class);
-    private JanusGraph bufferGraph;
+    private static final Logger log = LoggerFactory.getLogger(LineageGraphConnector.class);
+    private JanusGraph lineageGraph;
     private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
-    private JanusGraph mainGraph;
-//    private MainGraphMapper mainGraphMapper;
+    private LineageGraphConnectorHelper helper;
+
     /**
      * Instantiates the graph based on the configuration passed.
      *
      */
     public void initializeGraphDB() throws OpenLineageException {
         GraphFactory graphFactory = new GraphFactory();
-//        mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
 
         try {
-            this.bufferGraph = graphFactory.openGraph(connectionProperties);
+            this.lineageGraph = graphFactory.openGraph(connectionProperties);
         } catch (JanusConnectorException error) {
-            log.error("The Buffer graph could not be initialized due to an error", error);
+            log.error("The Lineage graph could not be initialized due to an error", error);
             throw new OpenLineageException(500,
                     error.getReportingClassName(),
                     error.getReportingActionDescription(),
@@ -55,29 +99,20 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                     error.getReportedUserAction()
             );
         }
+        this.helper = new LineageGraphConnectorHelper(lineageGraph);
     }
-
-    /**
-     * Retrieves the mainGraph instance.
-     *
-     */
-    @Override
-    public void setMainGraph(Object mainGraph) {
-        this.mainGraph = (JanusGraph) mainGraph;
-    }
-
 
     @Override
     public void schedulerTask(){
-        GraphTraversalSource g = bufferGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
         try {
-            List<Vertex> vertices = g.V().has(PROPERTY_KEY_LABEL, "Process").toList();
+            List<Vertex> vertices = g.V().has(PROPERTY_KEY_LABEL, PROCESS).toList();
             List<String> guidList = vertices.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
 
             guidList.forEach(process -> findInputColumns(g,process));
             g.tx().commit();
         }catch (Exception e){
-            log.error("Something went wrong when trying to map a process from bufferGraph to the mainGraph. The error is {}",e.getMessage());
+            log.error("Something went wrong when trying to map a process. The error is: ",e);
             g.tx().rollback();
         }
     }
@@ -111,7 +146,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                 .in(LINEAGE_MAPPING)
                 .toList();
 
-        Vertex vertexToStart = null;
+        Vertex vertexToStart;
         if (schemaElementVertex != null) {
             Vertex columnOut = null;
             vertexToStart = getProcessForTheSchemaElement(g,schemaElementVertex,process);
@@ -158,35 +193,78 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             String columnOutGuid = columnOut.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
             String columnInGuid = columnIn.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
             if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
-                MainGraphMapper mainGraphMapper = new MainGraphMapper(bufferGraph,mainGraph);
-                mainGraphMapper.checkBufferGraph(columnInGuid,columnOutGuid,process);
+                addNodesAndEdgesForQuerying(columnIn,columnOut,process);
             }
         }
     }
 
     /**
-     * Creates a new vertex if it does not exist
-     * @param lineageEvent - LineageEntity object to be created
+     * Add nodes and edges that are going to be used for lineage UI
+     * @param columnIn - The vertex of the input schema element
+     * @param columnOut - THe vertex of the output schema element
+     * @param process - The vertex of the process.
+     */
+    private void addNodesAndEdgesForQuerying(Vertex columnIn,Vertex columnOut,Vertex process){
+
+        GraphTraversalSource g = lineageGraph.traversal();
+
+        final String processGuid = process.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
+        final String processName = process.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString();
+
+        Iterator<Vertex> t = g.V(columnIn.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).inV().has("processGuid",processGuid);
+
+        if(!t.hasNext()) {
+            Vertex subProcess = g.addV(NODE_LABEL_SUB_PROCESS)
+                    .property(PROPERTY_KEY_ENTITY_NODE_ID, UUID.randomUUID().toString())
+                    .property("processGuid", processGuid)
+                    .property(PROPERTY_KEY_DISPLAY_NAME, processName)
+                    .next();
+
+            columnIn.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, subProcess);
+            subProcess.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, columnOut);
+            subProcess.addEdge(EDGE_LABEL_INCLUDED_IN, process);
+
+            addTableToProcessEdge(g,columnIn, process);
+            addTableToProcessEdge(g,columnOut, process);
+
+            g.tx().commit();
+        }
+    }
+
+        private void addTableToProcessEdge(GraphTraversalSource g,Vertex column, Vertex process){
+
+        Vertex table = getTable(g,column);
+
+        Iterator<Vertex> tableVertex = g.V(table.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).otherV();
+        if(!tableVertex.hasNext()){
+            table.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS,process);
+        }
+    }
+
+    private Vertex getTable(GraphTraversalSource bufferG,Vertex asset){
+        Iterator<Vertex> table = bufferG.V().has(PROPERTY_KEY_ENTITY_GUID,asset.property(PROPERTY_KEY_ENTITY_GUID).value())
+                .emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(RELATIONAL_TABLE),hasLabel(DATA_FILE));
+
+        if (!table.hasNext()){
+            return null;
+        }
+
+        return table.next();
+    }
+
+    /**
+     * Creates vertices and the relationships between them
+     * @param graphContext - graph Collection that contains vertices and edges to be stored
      */
     @Override
-    public void addEntity(LineageEvent lineageEvent){
+    public void storeToGraph(Set<GraphContext> graphContext){
 
-        GraphTraversalSource g =  bufferGraph.traversal();
-
-        Set<GraphContext> verticesToBeAdded = new HashSet<>();
-        lineageEvent.getAssetContext().forEach((key, value) -> {
-            if (value.size() > 1) {
-                verticesToBeAdded.addAll(value);
-            } else {
-                verticesToBeAdded.add(value.stream().findFirst().get());
-            }
-        });
-
-        verticesToBeAdded.forEach(entry -> {
+        GraphTraversalSource g =  lineageGraph.traversal();
+        graphContext.forEach(entry -> {
             try {
                 addVerticesAndRelationship(g, entry);
             } catch (JanusConnectorException e) {
-                log.error("An exception happened when trying to create vertices and relationships in BufferGraph. The error is", e);
+                log.error("An exception happened when trying to create vertices and relationships in LineageGraph. The error is", e);
             }
         });
 
@@ -210,13 +288,13 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      * @param g - Graph traversal object
      * @param lineageEntity - Entity to be created
      */
-    private  Vertex addVertex(GraphTraversalSource g,LineageEntity lineageEntity) throws JanusConnectorException{
+    private  Vertex addVertex(GraphTraversalSource g,LineageEntity lineageEntity) throws JanusConnectorException {
+
+
         //TODO test the updated queries
 //        Iterator<Vertex> vertexIt = g.V()
 //                                     .has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid())
 //                                     .has(PROPERTY_KEY_ENTITY_VERSION,lineageEntity.getVersion());
-//        Vertex vertex;
-
         Iterator<Vertex> vertexIt = g.V()
                 .has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
         Vertex vertex;
@@ -231,7 +309,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         else {
             vertex = vertexIt.next();
             if (log.isDebugEnabled()) {
-                log.debug("found existing vertex {} when trying to add it in bufferGraph", vertex);
+                log.debug("found existing vertex {} when trying to add it in LineageGraph", vertex);
             }
             g.tx().rollback();
             return vertex;
@@ -239,12 +317,12 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     }
 
     /**
-     * Creates new Relationships and it's properties in bufferGraph and mainGraph related to Lineage.
+     * Creates new Relationships and it's properties in lineage graph
      *
      */
     private void addRelationship(String relationshipGuid,String relationshipType,Vertex fromVertex,Vertex toVertex) throws JanusConnectorException{
         String methodName = "addRelationship";
-        GraphTraversalSource g = bufferGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         if (relationshipType == null) {
             log.debug("Relationship type name is missing, relationship cannot be created");
@@ -264,7 +342,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         }
         catch (Exception e){
             g.tx().rollback();
-            log.debug("Something went wrong when trying to create a relationship on the graph check the exception: {}",e);
+            log.debug("Something went wrong when trying to create a relationship on the graph check the exception: ",e);
 
         }
 
@@ -293,7 +371,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      */
     @Override
     public void updateEntity(LineageEntity lineageEntity){
-        GraphTraversalSource g = bufferGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID,lineageEntity.getGuid());
         if(!vertex.hasNext()){
@@ -310,7 +388,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      */
     @Override
     public void updateRelationship(LineageRelationship lineageRelationship){
-        GraphTraversalSource g = bufferGraph.traversal();
+        GraphTraversalSource g = lineageGraph.traversal();
 
         Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID,lineageRelationship.getGuid());
         if(!edge.hasNext()){
@@ -322,8 +400,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
     }
 
     @Override
-    public void deleteEntity(String guid,String version){
-        GraphTraversalSource g = bufferGraph.traversal();
+    public void deleteEntity(String guid,Object version){
+        GraphTraversalSource g = lineageGraph.traversal();
 
         Iterator<Vertex> vertex = checkIfVertexExist(g,guid,version);
         //TODO add check when we will have classifications to delete classifications first
@@ -337,6 +415,23 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         g.tx().commit();
         log.debug("Vertex with guid {} deleted",guid);
     }
+
+    @Override
+    public void deleteRelationship(String guid){
+        GraphTraversalSource g = lineageGraph.traversal();
+
+        Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID,guid);
+        if(!edge.hasNext()){
+            g.tx().rollback();
+            log.debug("Edge with guid did not delete {}",guid);
+            return;
+        }
+
+        g.E(edge.next().id()).drop();
+        g.tx().commit();
+        log.debug("Edge with guid {} deleted",guid);
+    }
+
 
     /**
      * Adds or updates properties of a vertex.
@@ -371,13 +466,9 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
                             .select("v")
                             .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))) ;
             g.tx().commit();
-
-            //TODO addcheck for type check in order to update(if it database or schema it needs extra checks)
-            MainGraphMapper mainGraphMapper  = new MainGraphMapper(bufferGraph,mainGraph);
-            mainGraphMapper.updateVertex(vertex,properties);
         }
         catch (Exception e){
-            log.error("An exception happened during update of the properties with exception: {}",e);
+            log.error("An exception happened during update of the properties with exception: ",e);
             g.tx().rollback();
         }
     }
@@ -419,7 +510,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
             g.tx().commit();
         }
         catch (Exception e){
-            log.debug("An exception happened during update of the properties with error: {}",e);
+            log.debug("An exception happened during update of the properties with error:",e);
             g.tx().rollback();
         }
 
@@ -434,6 +525,8 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
      */
     private Vertex findPathForOutputAsset(Vertex endingVertex, GraphTraversalSource g,Vertex startingVertex)  {
         final String VERTEX = "vertex";
+        //add null check for endingVertex
+        if(endingVertex == null) {return null;}
 
         try{
             Iterator<Vertex> end =  g.V(endingVertex.id())
@@ -463,7 +556,7 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
         }
     }
 
-    private Iterator<Vertex> checkIfVertexExist(GraphTraversalSource g, String guid, String version){
+    private Iterator<Vertex> checkIfVertexExist(GraphTraversalSource g, String guid, Object version){
 
         return g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).has(PROPERTY_KEY_ENTITY_VERSION,version);
     }
@@ -482,8 +575,56 @@ public class BufferGraphConnector extends BufferGraphConnectorBase {
 
     @Override
     public void disconnect() throws ConnectorCheckedException {
-        this.bufferGraph.close();
+        this.lineageGraph.close();
         super.disconnect();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
+        String methodName = "lineage";
+
+        GraphTraversalSource g = lineageGraph.traversal();
+        try {
+            g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+        } catch (NoSuchElementException e) {
+            log.debug("Requested element was not found", e);
+            OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.NODE_NOT_FOUND;
+            throw new OpenLineageException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorCode.getFormattedErrorMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        List<String> edgeLabels = Arrays.asList(EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_DATAFLOW_WITH_PROCESS);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = null;
+
+        String[] edgeLabelsArray = edgeLabels.toArray(new String[0]);
+        switch (scope) {
+            case SOURCE_AND_DESTINATION:
+                lineageVerticesAndEdges = helper.sourceAndDestination(guid, edgeLabelsArray);
+                break;
+            case END_TO_END:
+                lineageVerticesAndEdges = helper.endToEnd(guid, includeProcesses, edgeLabelsArray);
+                break;
+            case ULTIMATE_SOURCE:
+                lineageVerticesAndEdges = helper.ultimateSource(guid, edgeLabelsArray);
+                break;
+            case ULTIMATE_DESTINATION:
+                lineageVerticesAndEdges = helper.ultimateDestination(guid, edgeLabelsArray);
+                break;
+            case GLOSSARY:
+                lineageVerticesAndEdges = helper.glossary(guid, includeProcesses);
+                break;
+        }
+        if (!displayNameMustContain.isEmpty())
+            helper.filterDisplayName(lineageVerticesAndEdges, displayNameMustContain);
+        return new LineageResponse(lineageVerticesAndEdges);
+    }
+
 }
 

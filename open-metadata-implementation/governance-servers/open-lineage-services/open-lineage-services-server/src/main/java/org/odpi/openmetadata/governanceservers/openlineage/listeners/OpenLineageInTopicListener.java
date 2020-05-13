@@ -68,6 +68,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
             switch (assetLineageEventHeader.getAssetLineageEventType()) {
                 case PROCESS_CONTEXT_EVENT:
                 case TECHNICAL_ELEMENT_CONTEXT_EVENT:
+//                case CLASSIFICATION_CONTEXT_EVENT:
                     lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
                     storingServices.addEntity(lineageEvent);
                     break;
@@ -79,14 +80,18 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                     lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent,LineageRelationshipEvent.class);
                     storingServices.updateRelationship(lineageRelationshipEvent);
                     break;
-//                case DELETE_ENTITY_EVENT:
-//                    storingServices.deleteEntity(event);
-//                    break;
+                case DELETE_ENTITY_EVENT:
+//                case DECLASSIFIED_ENTITY_EVENT:
+                    lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
+                    storingServices.deleteEntity(lineageEvent);
+                    break;
+                case DELETE_RELATIONSHIP_EVENT:
+                    lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
+                    storingServices.deleteRelationship(lineageRelationshipEvent);
+                    break;
                 default:
                     break;
             }
-
-//            log.debug("AssetLineageEventHeader is null since json cannot be de-serialized, parsing of the event cannot be done");
         }
     }
 

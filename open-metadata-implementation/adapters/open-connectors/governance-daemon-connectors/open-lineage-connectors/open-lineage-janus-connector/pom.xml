@@ -36,11 +36,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.janusgraph</groupId>
-            <artifactId>janusgraph-driver</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.tinkerpop</groupId>
             <artifactId>gremlin-core</artifactId>
         </dependency>
@@ -98,6 +93,11 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
         </dependency>
 
     </dependencies>
