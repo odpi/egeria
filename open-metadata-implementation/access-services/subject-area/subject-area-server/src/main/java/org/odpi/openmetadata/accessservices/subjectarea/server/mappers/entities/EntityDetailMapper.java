@@ -190,9 +190,8 @@ abstract public class EntityDetailMapper {
         List<Classification> omrsclassifications = omrsEntityDetail.getClassifications() ;
         if (omrsclassifications != null && !omrsclassifications.isEmpty()){
             for (Classification omrsClassification:omrsclassifications) {
-                String omrsClassificationName = omrsClassification.getName();
                 ClassificationFactory classficationFactory = new ClassificationFactory(omrsapiHelper);
-                org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification = classficationFactory.getOMASClassification(omrsClassificationName,omrsClassification);
+                org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification = classficationFactory.getOMASClassification(omrsClassification);
                 if (omasClassification !=null) {
                     // this is a classification we know about.
                     if (!updateNodeWithClassification(node,omasClassification)) {
