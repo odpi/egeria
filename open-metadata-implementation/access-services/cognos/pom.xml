@@ -15,6 +15,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+	<scm>
+		<connection>scm:git:git://github.com/odpi/egeria.git</connection>
+		<developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+		<url>http://github.com/odpi/egeria/tree/master</url>
+	</scm>
+
     <name>Cognos OMAS</name>
     <description>
         The Cognos Open Metadata Access Service (OMAS) configures and manages metadata for Cognos IBM.

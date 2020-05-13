@@ -1230,6 +1230,13 @@
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>cognos-api</artifactId>
+				<type>test-jar</type>
+				<scope>test</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>

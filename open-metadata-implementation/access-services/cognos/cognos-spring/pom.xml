@@ -1,60 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project.  -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <artifactId>cognos</artifactId>
-        <groupId>org.odpi.egeria</groupId>
-        <version>1.8-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<artifactId>cognos</artifactId>
+		<groupId>org.odpi.egeria</groupId>
+		<version>1.8-SNAPSHOT</version>
+	</parent>
 
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-    <name>Cognos OMAS Spring</name>
-    <description>
+	<scm>
+		<connection>scm:git:git://github.com/odpi/egeria.git</connection>
+		<developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+		<url>http://github.com/odpi/egeria/tree/master</url>
+	</scm>
+
+	<name>Cognos OMAS Spring</name>
+	<description>
 
     </description>
 
-    <artifactId>cognos-spring</artifactId>
+	<artifactId>cognos-spring</artifactId>
 
-    <dependencies>
+	<dependencies>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>cognos-server</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.odpi.egeria</groupId>
+			<artifactId>cognos-server</artifactId>
+		</dependency>
 
 
 		<dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>cognos-api</artifactId>
-        </dependency>
-<!-- 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency>
- -->
-     
-        <dependency>
-            <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-annotations</artifactId>
-        </dependency>
+			<groupId>org.odpi.egeria</groupId>
+			<artifactId>cognos-api</artifactId>
+		</dependency>
+		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-context</artifactId> 
+			</dependency> <dependency> <groupId>javax.validation</groupId> <artifactId>validation-api</artifactId> 
+			</dependency> -->
 
-    </dependencies>
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+		</dependency>
+
+	</dependencies>
 
 </project>
