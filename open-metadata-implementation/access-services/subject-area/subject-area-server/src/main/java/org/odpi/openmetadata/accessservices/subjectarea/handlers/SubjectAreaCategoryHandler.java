@@ -316,7 +316,12 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaCategoryRESTServices categoryRESTServices = new SubjectAreaCategoryRESTServices();
         categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
 
-        response = this.oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "GlossaryCategory", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+        if (searchCriteria == null) {
+            response = oMRSAPIHelper.getEntitiesByType(oMRSAPIHelper, methodName, userId, "GlossaryCategory", asOfTime, offset, pageSize);
+        } else {
+            response = this.oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "GlossaryCategory", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+        }
+
         if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetails) {
             EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
             List<EntityDetail> entitydetails = entityDetailsResponse.getEntityDetails();
