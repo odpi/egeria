@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel;
 
-import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
 
 
@@ -58,8 +57,6 @@ public class CanonicalGlossaryOwlArchiveWriter extends OMRSArchiveWriter
      */
     public static void main(String[] args)
     {
-        org.apache.log4j.BasicConfigurator.configure(new NullAppender());
-
         if (args.length == 0)
         {
             System.err.println("USAGE: filename");

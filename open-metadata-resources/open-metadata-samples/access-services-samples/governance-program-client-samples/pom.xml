@@ -54,11 +54,6 @@
             <artifactId>open-connector-framework</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-        </dependency>
-
         <!-- Logback used as provider for slf4j logging -->
         <dependency>
             <groupId>ch.qos.logback</groupId>

@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.samples;
 
-import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
@@ -332,7 +331,6 @@ public class CSVFileReaderSample
      */
     public static void main(String[] args)
     {
-        org.apache.log4j.BasicConfigurator.configure(new NullAppender());
 
         String  fileName = "open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/ContactList.csv";
         String  serverName = "cocoMDS1";
