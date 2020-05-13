@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.cognos;
 import org.odpi.openmetadata.accessservices.cognos.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.cognos.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosRuntimeException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDatabaseSchema;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerModule;
@@ -16,6 +16,7 @@ import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
 import org.odpi.openmetadata.accessservices.cognos.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getDatabases() {
+	public void getDatabases() throws CognosCheckedException {
 		// setup repository
 		createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseEntity(DATABASE_ADWENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
@@ -70,13 +71,13 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 	
 	@Test
-	public void getDatabasesEmptyRepository() {
+	public void getDatabasesEmptyRepository() throws CognosCheckedException {
 		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases();
 		assertTrue( databases.size() == 0, "Database list expected to be empty.");
 	}
 
 	@Test
-	public void getDatabaseSchemasWithEmptyCatalog() {
+	public void getDatabaseSchemasWithEmptyCatalog() throws CognosCheckedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String guidDataSource = entityDB.getGUID();
@@ -87,7 +88,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 	
 	@Test
-	public void getDatabaseSchemas() {
+	public void getDatabaseSchemas() throws CognosCheckedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String guidDataSource = entityDB.getGUID();
@@ -107,7 +108,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 	
 	@Test
-	public void getDatabaseSchemasSameNameForTwoCatalogs() {
+	public void getDatabaseSchemasSameNameForTwoCatalogs() throws CognosCheckedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
@@ -122,7 +123,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	
 	
 	@Test
-	public void getSchemaTablesForEmptySchema() {
+	public void getSchemaTablesForEmptySchema() throws CognosCheckedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
@@ -137,18 +138,21 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String schemaName = "NonExistingSchemaName";
 
-		CognosRuntimeException thrown = assertThrows(
-				CognosRuntimeException.class,
+		CognosCheckedException thrown = assertThrows(
+				CognosCheckedException.class,
 		        () -> databaseContextHandler.getSchemaTables(entityDB.getGUID(), schemaName),
 		        "Request for tables of unknown schema fails with exception."
 		    );
 
-		    assertEquals(CognosErrorCode.SCHEMA_UNKNOWN, thrown.getErrorCode(), "Error data is correct");
-		    assertTrue(thrown.getMessage().contains(schemaName), "Schema name should be in the message.");
+		    assertEquals(CognosErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
+		    		thrown.getReportedErrorMessageId(),
+		    		"Message Id is not correct");
+		    
+			assertTrue(thrown.getMessage().contains(schemaName), "Failed schema name should be in the message.");
 	}
 	
 	@Test
-	public void getSchemaTables() {
+	public void getSchemaTables() throws CognosCheckedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		EntityDetail entitySchema = createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
@@ -231,31 +235,44 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
     }
 
 	@Test
-	public void getModuleFailure_BadDataSourceGuid() throws Exception {
+	public void getModuleFailure_BadDataSourceGuid() {
 
-		CognosRuntimeException thrown = assertThrows(
-				CognosRuntimeException.class,
-		        () -> databaseContextHandler.getModule("BadGuid", DATABASE_GOSALES, SCHEMA_DBO),
+		String badGuid = "BadGuid";
+		CognosCheckedException thrown = assertThrows(
+				CognosCheckedException.class,
+		        () -> databaseContextHandler.getModule(badGuid, DATABASE_GOSALES, SCHEMA_DBO),
 		        "Illegal parameter GUID fails with exception."
 		    );
-		    assertEquals(CognosErrorCode.GET_ENTITY_EXCEPTION, thrown.getErrorCode(), "Error data is correct");
-		    assertTrue(thrown.getMessage().contains("BadGuid"), "GUID should be in the message.");
+		    assertEquals(CognosErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition().getMessageId(),
+		    		thrown.getReportedErrorMessageId(),
+		    		"Message Id is not correct");
+		    
+			assertTrue(thrown.getMessage().contains(badGuid), "GUID should be in the message.");
 	}
 	
 	@Test
-	public void getModuleFailure_UnknownSchemaName() throws Exception {
+	public void getModuleFailure_UnknownSchemaName() {
 
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 
-		CognosRuntimeException thrown = assertThrows(
-				CognosRuntimeException.class,
-		        () -> databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES, "schemaUnknown"),
+		String badSchema = "schemaUnknown";
+		CognosCheckedException thrown = assertThrows(
+				CognosCheckedException.class,
+		        () -> databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES, badSchema),
 		        "Request for missing schema name fails with exception."
 		    );
-		    assertEquals(CognosErrorCode.SCHEMA_UNKNOWN, thrown.getErrorCode(), "Error data is correct");
-		    assertTrue(thrown.getMessage().contains("schemaUnknown"), "Failed schema name should be in the message.");
+		
+	    assertEquals(CognosErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
+	    		thrown.getReportedErrorMessageId(),
+	    		"Message Id is not correct");
+	    
+		assertTrue(thrown.getMessage().contains(badSchema), "Failed schema name should be in the message.");
 	}
 	
+//	private String buildMessage(CognosErrorCode source, String ... params) {
+//		return new MessageFormat(source.getMessageDefinition().getMessageTemplate()).format(params);
+//	}
+//	
 	private String buildKey(String ... param ) {
 		return String.join("_", param);
 	}

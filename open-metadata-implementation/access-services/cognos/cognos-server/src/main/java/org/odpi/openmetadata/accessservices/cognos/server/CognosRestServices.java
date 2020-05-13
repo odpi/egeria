@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.cognos.server;
 
 import java.util.List;
 
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosRuntimeException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDatabaseSchema;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerModule;
@@ -35,7 +35,7 @@ public class CognosRestServices {
         	response.setDatabasesList(databases);
         	return response;
         }
-        catch (CognosRuntimeException e) {
+        catch (CognosCheckedException e) {
             log.error(e.getMessage(), e);
             return handleErrorResponse(e);
         }
@@ -48,7 +48,7 @@ public class CognosRestServices {
 						.getDatabaseSchemas(dataSource);
         	response.setSchemaList(databasesSchemas);
         	return response;
-        } catch (CognosRuntimeException e) {
+        } catch (CognosCheckedException e) {
             log.error(e.getMessage(), e);
             return handleErrorResponse(e);
         }
@@ -61,7 +61,7 @@ public class CognosRestServices {
         			.getSchemaTables(databaseGuid, schema);
         	response.setTableList(tables);
         	return response;
-       } catch (CognosRuntimeException e) {
+       } catch (CognosCheckedException e) {
             log.error(e.getMessage(), e);
             return handleErrorResponse(e);
         }
@@ -76,13 +76,13 @@ public class CognosRestServices {
         	response.setModule(module);
         	return response;
         }
-        catch (CognosRuntimeException e) {
+        catch (CognosCheckedException e) {
             log.error(e.getMessage(), e);
             return handleErrorResponse(e);
         }
 	}
 
-    private CognosOMASAPIResponse handleErrorResponse(CognosRuntimeException e) {
+    private CognosOMASAPIResponse handleErrorResponse(CognosCheckedException e) {
     	return new ErrorResponse(e);
     }
 

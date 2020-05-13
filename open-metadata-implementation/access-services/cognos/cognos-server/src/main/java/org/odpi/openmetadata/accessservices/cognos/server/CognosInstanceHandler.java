@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.cognos.server;
 
 import org.odpi.openmetadata.accessservices.cognos.assets.DatabaseContextHandler;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosRuntimeException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
 
 /**
@@ -26,14 +26,18 @@ class CognosInstanceHandler {
 	 *
 	 * @param serverName name of the server tied to the request
 	 * @return assetsHandler for exclusive use by the requested instance
+	 * @throws CognosCheckedException if server is not initialized.
 	 */
-	DatabaseContextHandler getAssetContextHandler(String serverName) {
+	DatabaseContextHandler getAssetContextHandler(String serverName) throws CognosCheckedException {
 		CognosServicesInstance instance = instanceMap.getInstance(serverName);
 
 		if (instance != null) {
 			return instance.getContextBuilder();
 		}
-		throw new CognosRuntimeException(CognosErrorCode.SERVICE_NOT_INITIALIZED, serverName);
+		throw new CognosCheckedException(
+				CognosErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(serverName),
+				this.getClass().getSimpleName(),
+				"getAssetContextHandler");
 	}
 
 }

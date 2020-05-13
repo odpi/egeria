@@ -3,20 +3,22 @@
 
 package org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions;
 
-import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.OMAGCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
-public class CognosCheckedException extends Exception {
+public class CognosCheckedException extends OMAGCheckedExceptionBase {
 	
-	private CognosErrorCode errorCode;
-	
-	
-    public CognosCheckedException(CognosErrorCode code, Throwable caughtError) {
-        super(code.getErrorMessage(), caughtError);
-        this.errorCode = code;
-    }
+	private static final long serialVersionUID = 1L;
+
+    public CognosCheckedException(ExceptionMessageDefinition msg, String className, String actionDescription, Throwable caughtError) {
+        super(msg, className, actionDescription, caughtError);
+     }
     
-    public CognosCheckedException(CognosErrorCode code) {
-        this.errorCode = code;
+    public CognosCheckedException(ExceptionMessageDefinition msg, String className, String actionDescription) {
+        super(msg, className, actionDescription);
     }
+	public String getErrorCause() {
+		return this.getCause() != null ? this.getCause().getMessage() : null;
+	}
 
 }

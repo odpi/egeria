@@ -11,7 +11,6 @@ import org.odpi.openmetadata.accessservices.cognos.assets.DatabaseContextHandler
 import org.odpi.openmetadata.accessservices.cognos.auditlog.CognosAuditCode;
 import org.odpi.openmetadata.accessservices.cognos.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
-import org.odpi.openmetadata.accessservices.cognos.listeners.CognosEnterpriseOmrsEventListener;
 import org.odpi.openmetadata.accessservices.cognos.server.CognosServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
@@ -72,7 +71,13 @@ public class CognosAdmin extends AccessServiceAdmin
 
         String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
         cognosOutTopicConnector = initializeCognosTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-        List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions());
+        
+        
+        List<String> supportedZones = extractSupportedZones(
+        				accessServiceConfigurationProperties.getAccessServiceOptions(),
+                        accessServiceConfigurationProperties.getAccessServiceName(),
+                        auditLog);
+
         OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
 
         if (cognosOutTopicConnector != null) {
@@ -115,13 +120,19 @@ public class CognosAdmin extends AccessServiceAdmin
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     e);
+            
             throw new OMAGConfigurationErrorException(400,
-                    CognosAdmin.class.getSimpleName(),
+                    this.getClass().getSimpleName(),
                     actionDescription,
-                    auditCode.getFormattedLogMessage(),
+                    auditCode.getLogMessage(),
+                    auditCode.getLogMessageId(),
+                    new String[] {serverName},
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
-                    e);
+                    e.getClass().getSimpleName(),
+                    (Map<String, Object>) null);
+           
+            
         }
     }
 
@@ -176,98 +187,13 @@ public class CognosAdmin extends AccessServiceAdmin
         } catch (Throwable error) {
             String methodName = "getTopicConnector";
 
-            if (log.isDebugEnabled()) {
-                log.debug("Unable to create topic connector: " + error.toString());
-            }
-
-            CognosErrorCode errorCode = CognosErrorCode.NULL_TOPIC_CONNECTOR;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage("getTopicConnector");
-
-            throw new OMRSConfigErrorException(errorCode.getHttpErrorCode(),
+            throw new OMRSConfigErrorException(
+            		CognosErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(methodName),
                     this.getClass().getName(),
                     methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
                     error);
-
         }
     }
-
-
-    private List<String> extractSupportedZones(Map<String, Object> accessServiceOptions) throws OMAGConfigurationErrorException
-    {
-        final String methodName = "extractSupportedZones";
-        CognosAuditCode auditCode;
-
-        if (accessServiceOptions == null)
-        {
-            return null;
-        }
-        else
-        {
-            Object   zoneListObject = accessServiceOptions.get(supportedZonesPropertyName);
-
-            if (zoneListObject == null)
-            {
-                auditCode = CognosAuditCode.ALL_ZONES;
-                auditLog.logRecord(methodName,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
-                return null;
-            }
-            else
-            {
-                try
-                {
-                    List<String>  zoneList =  (List<String>)zoneListObject;
-
-                    auditCode = CognosAuditCode.SUPPORTED_ZONES;
-                    auditLog.logRecord(methodName,
-                            auditCode.getLogMessageId(),
-                            auditCode.getSeverity(),
-                            auditCode.getFormattedLogMessage(zoneList.toString()),
-                            null,
-                            auditCode.getSystemAction(),
-                            auditCode.getUserAction());
-
-                    return zoneList;
-                }
-                catch (Throwable error)
-                {
-                    auditCode = CognosAuditCode.BAD_CONFIG;
-                    auditLog.logRecord(methodName,
-                            auditCode.getLogMessageId(),
-                            auditCode.getSeverity(),
-                            auditCode.getFormattedLogMessage(zoneListObject.toString(), supportedZonesPropertyName),
-                            null,
-                            auditCode.getSystemAction(),
-                            auditCode.getUserAction());
-
-                    CognosErrorCode errorCode    = CognosErrorCode.BAD_CONFIG;
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(zoneListObject.toString(),
-                            supportedZonesPropertyName,
-                            error.getClass().getName(),
-                            error.getMessage());
-
-                    throw new OMAGConfigurationErrorException(errorCode.getHttpErrorCode(),
-                            this.getClass().getName(),
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction(),
-                            error);
-                }
-            }
-        }
-    }
-
-
 
     /**
      * Shutdown the access service.

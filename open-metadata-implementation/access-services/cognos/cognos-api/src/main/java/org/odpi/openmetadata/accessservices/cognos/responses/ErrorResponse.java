@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.cognos.responses;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosRuntimeException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -43,10 +43,10 @@ public class ErrorResponse extends CognosOMASAPIResponse {
 		// required to deserialize
 	}
 	
-	public ErrorResponse(CognosRuntimeException source) {
-		setRelatedHTTPCode(source.getErrorCode().getHttpErrorCode());
+	public ErrorResponse(CognosCheckedException source) {
+		setRelatedHTTPCode(source.getReportedHTTPCode());
 		message = source.getMessage();
-		errorCode = source.getErrorCode().getErrorMessageId();
+		errorCode = source.getReportedErrorMessageId();
 		exceptionCause = source.getErrorCause();
 	}
 	

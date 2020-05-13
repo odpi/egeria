@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosRuntimeException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -57,7 +57,7 @@ public class OMEntityDao {
     	context = value;
     }
     
-    public List<EntityDetail> findEntities(InstanceProperties matchProperties, String typeName, int fromElement, int pageSize) {
+    public List<EntityDetail> findEntities(InstanceProperties matchProperties, String typeName, int fromElement, int pageSize) throws CognosCheckedException {
         // GDW the matchProperties passed to this method should have already converted any exact match string
         // using the getExactMatchRegex repository helper method
         OMRSRepositoryHelper repositoryHelper = enterpriseConnector.getRepositoryHelper();
@@ -77,11 +77,16 @@ public class OMEntityDao {
                                             null,
                                             SequencingOrder.ANY,
                                             pageSize);
-        } catch (InvalidParameterException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | UserNotAuthorizedException | RepositoryErrorException | PagingErrorException e) {
+        } catch (InvalidParameterException | PropertyErrorException | TypeErrorException 
+        		| FunctionNotSupportedException | UserNotAuthorizedException | RepositoryErrorException 
+        		| PagingErrorException ex) {
             String keys = String.join(",", matchProperties.getInstanceProperties().keySet());
             String values = matchProperties.getInstanceProperties().values().stream().map(InstancePropertyValue::valueAsString).collect(Collectors.joining(","));
-            throw new CognosRuntimeException(CognosErrorCode.GET_ENTITY_EXCEPTION, e, 
-            		keys, values, this.getClass().getName());
+			throw new CognosCheckedException(
+					CognosErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition(keys, values),
+					this.getClass().getSimpleName(),
+					"findEntities",
+					ex);
 
        }
         return existingEntities;
@@ -113,18 +118,25 @@ public class OMEntityDao {
 	 * 
 	 * @param guid of the entity to fetch.
 	 * @return entity with required GUID.
-	 * 
-	 * @throws CognosRuntimeException if entity cannot be fetched.
+	 * @throws CognosCheckedException if entity cannot be fetched: failed request to repository or entity not found.
 	 */
-    public EntityDetail getEntityByGuid(String guid)  {
+    public EntityDetail getEntityByGuid(String guid) throws CognosCheckedException  {
         EntityDetail entity = null;
         try {
             entity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.COGNOS_USER_ID, guid);
-        } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException e) {
-            throw new CognosRuntimeException(CognosErrorCode.GET_ENTITY_EXCEPTION, e, Constants.GUID, guid, context);
+        } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException 
+        		| EntityProxyOnlyException | UserNotAuthorizedException ex) {
+			throw new CognosCheckedException(
+					CognosErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition(Constants.GUID, guid),
+					this.getClass().getSimpleName(),
+					"getEntityByGuid",
+					ex);
         }
-        if(entity == null ) {
-            throw new CognosRuntimeException(CognosErrorCode.ENTITY_NOT_FOUND_EXCEPTION, Constants.GUID, guid);
+        if (entity == null) {
+			throw new CognosCheckedException(
+					CognosErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getMessageDefinition(Constants.GUID, guid),
+					this.getClass().getSimpleName(),
+					"getEntityByGuid");
         }
 
         return entity;
@@ -134,16 +146,21 @@ public class OMEntityDao {
 		return enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.COGNOS_USER_ID, name).getGUID();
 	}
 	
-	public List<Relationship> getRelationshipsForEntity(EntityDetail entity, String relationshipType) {
+	public List<Relationship> getRelationshipsForEntity(EntityDetail entity, String relationshipType) throws CognosCheckedException {
 		String relationshipTypeGuid = relationshipType == null ? null : getTypeDefGuidByName(relationshipType);
 		try {
 			return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.COGNOS_USER_ID,
 					entity.getGUID(), relationshipTypeGuid, 0, FILTER_ACTIVE, null, null, null, 0);
 		} catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException
 				| PropertyErrorException | PagingErrorException | FunctionNotSupportedException
-				| UserNotAuthorizedException e) {
-			log.error(e.getMessage(), e);
-			throw new CognosRuntimeException(CognosErrorCode.UNKNOWN_ERROR, e);
+				| UserNotAuthorizedException ex) {
+			throw new CognosCheckedException(
+					CognosErrorCode.GET_RELATIONSHIP_EXCEPTION.getMessageDefinition(relationshipType, getEntityQName(entity)),
+					this.getClass().getSimpleName(),
+					"getRelationshipsForEntity",
+					ex);
+
+
 		}
 	}
 
@@ -175,6 +192,4 @@ public class OMEntityDao {
 		return enterpriseConnector.getRepositoryHelper()
 				.getMapProperty(Constants.COGNOS_OMAS_NAME, name, properties, context);
 	}
-
-
 }

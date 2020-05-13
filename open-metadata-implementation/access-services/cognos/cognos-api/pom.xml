@@ -24,6 +24,14 @@
 	<artifactId>cognos-api</artifactId>
 
 	<dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>org.odpi.egeria</groupId>
+			<artifactId>audit-log-framework</artifactId>
+		</dependency>		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>

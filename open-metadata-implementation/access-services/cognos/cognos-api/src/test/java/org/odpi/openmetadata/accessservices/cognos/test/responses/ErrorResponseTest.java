@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosRuntimeException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.responses.ErrorResponse;
 import org.odpi.openmetadata.accessservices.cognos.test.utils.TestUtilities;
 
@@ -28,7 +28,11 @@ public class ErrorResponseTest {
 	@Test
 	public void toJson() {
 		
-		CognosRuntimeException ex = new CognosRuntimeException(CognosErrorCode.INCORRECT_MODEL_EXCEPTION, (Throwable)null);
+		CognosCheckedException ex = new CognosCheckedException(
+				CognosErrorCode.INCORRECT_MODEL_EXCEPTION.getMessageDefinition(),
+				"ErrorResponse",
+				"");
+		
 		ErrorResponse er = new ErrorResponse(ex);
 		
 		er.setMessage(MESSAGE);
