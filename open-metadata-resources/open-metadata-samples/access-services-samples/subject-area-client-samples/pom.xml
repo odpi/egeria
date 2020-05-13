@@ -62,7 +62,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        org.odpi.openmetadata.accessservices.subjectarea.samples.SubjectAreaDefinitionSample
+                                        org.odpi.openmetadata.accessservices.subjectarea.samples.SubjectAreaCatalogSample
                                     </mainClass>
                                 </manifest>
                             </archive>

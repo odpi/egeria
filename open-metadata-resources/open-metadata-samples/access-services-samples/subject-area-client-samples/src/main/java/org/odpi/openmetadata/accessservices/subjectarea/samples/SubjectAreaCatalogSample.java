@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
@@ -17,9 +17,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- *  SubjectAreaDefinition Sample provides a client program that calls the Subject Area OMAS to create sample Subject Area Definitions.
+ *  Category Sample provides a client program that calls the Subject Area OMAS to create sample Subject Area Catalog.
  */
-public class SubjectAreaDefinitionSample
+public class SubjectAreaCatalogSample
 {
     /*
      * Subject areas for Coco Pharmaceuticals sample.
@@ -47,7 +47,7 @@ public class SubjectAreaDefinitionSample
     private static final String   DISTRIBUTION = "Distribution";
     private static final String   INVOICE = "Invoice";
 
-    private static final String GLOSSARY_NAME        = "Coco Pharmaceuticals Subject Area Definitions";
+    private static final String GLOSSARY_NAME        = "Coco Pharmaceuticals Subject Area Glossary";
     private static final String GLOSSARY_DESCRIPTION = "Coco Pharmaceuticals Core Subject Areas for Personalized Medicine.";
     private static final String DEFAULT_SERVER_NAME  = "cocoMDS1";
     private static final String DEFAULT_USERID       = "erinoverview";
@@ -67,7 +67,7 @@ public class SubjectAreaDefinitionSample
      * @param serverName server to connect to.
      * @param clientUserId user id to use to access metadata.
      */
-    private SubjectAreaDefinitionSample(String serverURLRoot, String serverName, String clientUserId)
+    private SubjectAreaCatalogSample(String serverURLRoot, String serverName, String clientUserId)
     {
         this.serverURLRoot = serverURLRoot;
         this.serverName = serverName;
@@ -93,78 +93,78 @@ public class SubjectAreaDefinitionSample
          * create Organisation subject areas
          */
         String glossaryGuid =  glossary.getSystemAttributes().getGUID();
-        SubjectAreaDefinition organisation = createTopSubjectAreaDefinition(ORGANIZATION,glossaryGuid);
-        SubjectAreaDefinition hospital= createChildSubjectAreaDefinition(HOSPITAL,organisation,glossaryGuid);
-        SubjectAreaDefinition supplier= createChildSubjectAreaDefinition(SUPPLIER,organisation,glossaryGuid);
+        Category organisation = createTopCategory(ORGANIZATION,glossaryGuid);
+        Category hospital= createChildCategory(HOSPITAL,organisation,glossaryGuid);
+        Category supplier= createChildCategory(SUPPLIER,organisation,glossaryGuid);
 
         /*
          * create Person subject areas
          */
-        SubjectAreaDefinition person = createTopSubjectAreaDefinition(PERSON,glossaryGuid);
-        SubjectAreaDefinition patient= createChildSubjectAreaDefinition(PATIENT,person,glossaryGuid);
-        SubjectAreaDefinition clinician= createChildSubjectAreaDefinition(CLINICIAN,person,glossaryGuid);
-        SubjectAreaDefinition employee= createChildSubjectAreaDefinition(EMPLOYEE,person,glossaryGuid);
-        SubjectAreaDefinition collaborator= createChildSubjectAreaDefinition(COLLABORATOR,person,glossaryGuid);
+        Category person = createTopCategory(PERSON,glossaryGuid);
+        Category patient= createChildCategory(PATIENT,person,glossaryGuid);
+        Category clinician= createChildCategory(CLINICIAN,person,glossaryGuid);
+        Category employee= createChildCategory(EMPLOYEE,person,glossaryGuid);
+        Category collaborator= createChildCategory(COLLABORATOR,person,glossaryGuid);
 
         /*
          * create Clinical subject areas
          */
-        SubjectAreaDefinition clinical = createTopSubjectAreaDefinition(CLINICAL,glossaryGuid);
-        SubjectAreaDefinition symptom= createChildSubjectAreaDefinition(SYMPTOM,clinical,glossaryGuid);
-        SubjectAreaDefinition measurement= createChildSubjectAreaDefinition(MEASUREMENT,clinical,glossaryGuid);
-        SubjectAreaDefinition prescription= createChildSubjectAreaDefinition(PRESCRIPTION,clinical,glossaryGuid);
-        SubjectAreaDefinition outcome= createChildSubjectAreaDefinition(OUTCOME,clinical,glossaryGuid);
+        Category clinical = createTopCategory(CLINICAL,glossaryGuid);
+        Category symptom= createChildCategory(SYMPTOM,clinical,glossaryGuid);
+        Category measurement= createChildCategory(MEASUREMENT,clinical,glossaryGuid);
+        Category prescription= createChildCategory(PRESCRIPTION,clinical,glossaryGuid);
+        Category outcome= createChildCategory(OUTCOME,clinical,glossaryGuid);
 
         /*
          * create Treatment subject areas
          */
-        SubjectAreaDefinition treatment = createTopSubjectAreaDefinition(TREATMENT,glossaryGuid);
-        SubjectAreaDefinition product= createChildSubjectAreaDefinition(PRODUCT,treatment,glossaryGuid);
-        SubjectAreaDefinition order= createChildSubjectAreaDefinition(ORDER,treatment,glossaryGuid);
-        SubjectAreaDefinition recipe= createChildSubjectAreaDefinition(RECIPE,treatment,glossaryGuid);
+        Category treatment = createTopCategory(TREATMENT,glossaryGuid);
+        Category product= createChildCategory(PRODUCT,treatment,glossaryGuid);
+        Category order= createChildCategory(ORDER,treatment,glossaryGuid);
+        Category recipe= createChildCategory(RECIPE,treatment,glossaryGuid);
 
         /*
          * create Service Quality subject areas
          */
-        SubjectAreaDefinition serviceQuality = createTopSubjectAreaDefinition(SERVICE_QUALITY,glossaryGuid);
-        SubjectAreaDefinition contract= createChildSubjectAreaDefinition(CONTRACT,serviceQuality,glossaryGuid);
-        SubjectAreaDefinition stock= createChildSubjectAreaDefinition(STOCK,serviceQuality,glossaryGuid);
-        SubjectAreaDefinition distribution= createChildSubjectAreaDefinition(DISTRIBUTION,serviceQuality,glossaryGuid);
-        SubjectAreaDefinition invoice= createChildSubjectAreaDefinition(INVOICE,serviceQuality,glossaryGuid);
+        Category serviceQuality = createTopCategory(SERVICE_QUALITY,glossaryGuid);
+        Category contract= createChildCategory(CONTRACT,serviceQuality,glossaryGuid);
+        Category stock= createChildCategory(STOCK,serviceQuality,glossaryGuid);
+        Category distribution= createChildCategory(DISTRIBUTION,serviceQuality,glossaryGuid);
+        Category invoice= createChildCategory(INVOICE,serviceQuality,glossaryGuid);
     }
 
 
     /**
-     * Create a top level subject area definition - this means a Subject Area Definition that does not have a superCategory.
-     * @param name name of the Subject Area Definition to create
+     * Create a top level subject area definition - this means a Subject Area Category that does not have a superCategory.
+     * @param name name of the Subject Area Category to create
      * @param glossaryGuid guid of the glossary to associate the Subject Area with.
-     * @return SubjectAreaDefinition the created Subject Area Definition
+     * @return Category the created Subject Area
      * @throws  SubjectAreaCheckedExceptionBase error
      */
-    private SubjectAreaDefinition createTopSubjectAreaDefinition( String name, String glossaryGuid)  throws SubjectAreaCheckedExceptionBase
+    private Category createTopCategory( String name, String glossaryGuid)  throws SubjectAreaCheckedExceptionBase
     {
         System.out.println("----------------------------");
-        System.out.println("Creating a top level Subject Area Definition called " + name);
-        SubjectAreaDefinition subjectAreaDefinition = new SubjectAreaDefinition();
+        System.out.println("Creating a top level Subject Area Category called " + name);
+        Category subjectAreaDefinition = new Category();
         subjectAreaDefinition.setName(name);
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         subjectAreaDefinition.setGlossary(glossarySummary);
-        return subjectAreaCategory.createSubjectAreaDefinition(clientUserId, subjectAreaDefinition);
+        return subjectAreaCategory.createCategory(clientUserId, subjectAreaDefinition);
     }
 
 
     /**
      * Create a child Subject Area Definition - this means a Subject Area Definition that has a superCategory.
-     * @param name name of the Subject Area Definition to create
+     * @param name name of the Subject Area Category to create
      * @param parent parent Category
      * @param glossaryGuid guid of the glossary to associate the Subject Area with.
-     * @return SubjectAreaDefinition the created Subject Area Definition
+     * @return Category the created Subject Area
      * @throws SubjectAreaCheckedExceptionBase error
      */
-    private SubjectAreaDefinition createChildSubjectAreaDefinition(String name, SubjectAreaDefinition parent, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
+    private Category createChildCategory(String name, Category parent, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
     {
-        SubjectAreaDefinition subjectAreaDefinition = new SubjectAreaDefinition();
+        Category subjectAreaDefinition = new Category();
         subjectAreaDefinition.setName(name);
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
@@ -172,13 +172,13 @@ public class SubjectAreaDefinitionSample
         CategorySummary parentCategorysummary = new CategorySummary();
         parentCategorysummary.setGuid(parent.getSystemAttributes().getGUID());
         subjectAreaDefinition.setParentCategory(parentCategorysummary);
-        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(clientUserId,
+        Category newCategory = subjectAreaCategory.createCategory(clientUserId,
                 subjectAreaDefinition);
-        if (newSubjectAreaDefinition != null)
+        if (newCategory != null)
         {
-            System.out.println("Created Subject Area Definition " + newSubjectAreaDefinition.getName() + " with guid " + newSubjectAreaDefinition.getSystemAttributes().getGUID() + ", parent SubjectArea Definition is " + parent.getName());
+            System.out.println("Created Subject Area Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID() + ", parent SubjectArea Category is " + parent.getName());
         }
-        return newSubjectAreaDefinition;
+        return newCategory;
     }
 
 
@@ -208,19 +208,19 @@ public class SubjectAreaDefinitionSample
      */
     public static void main(String[] args) throws IOException
     {
-        String  serverURLRoot = SubjectAreaDefinitionSample.getUrl(args);
-        String  serverName = SubjectAreaDefinitionSample.getServerName(args);
-        String  clientUserId = SubjectAreaDefinitionSample.getUserId(args);
+        String  serverURLRoot = SubjectAreaCatalogSample.getUrl(args);
+        String  serverName = SubjectAreaCatalogSample.getServerName(args);
+        String  clientUserId = SubjectAreaCatalogSample.getUserId(args);
 
         System.out.println("===============================");
-        System.out.println("Subject Area Definition Sample ");
+        System.out.println("Subject Area Catalog Sample ");
         System.out.println("===============================");
         System.out.println("Running against OMAG server platform: " + serverURLRoot);
         System.out.println("OMAG server platform: " + serverName);
         System.out.println("Using userId: " + clientUserId);
         try
         {
-            SubjectAreaDefinitionSample  sample = new SubjectAreaDefinitionSample(serverURLRoot,
+            SubjectAreaCatalogSample sample = new SubjectAreaCatalogSample(serverURLRoot,
                                                                                   serverName,
                                                                                   clientUserId);
 
