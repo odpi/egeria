@@ -2,12 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.cognos.test.model.module;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.odpi.openmetadata.accessservices.cognos.model.module.PrimaryKey;
 import org.odpi.openmetadata.accessservices.cognos.test.utils.TestUtilities;
 

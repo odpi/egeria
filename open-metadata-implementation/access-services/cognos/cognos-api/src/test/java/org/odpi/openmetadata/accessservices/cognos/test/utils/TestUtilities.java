@@ -3,9 +3,8 @@
 
 package org.odpi.openmetadata.accessservices.cognos.test.utils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -30,7 +29,7 @@ public class TestUtilities {
 			fail("Can't write JSON for object " + ds.getClass().getName());
 		}
 		String output = new String(baos.toByteArray(), StandardCharsets.UTF_8);
-		assertEquals(master, output, ds.getClass().getName() + " json failed.");
+		assertEquals(ds.getClass().getName() + " json failed.", master, output);
 	}
 	
 	static public <T extends Object> T readObjectJson(String json, Class<T> cls) {

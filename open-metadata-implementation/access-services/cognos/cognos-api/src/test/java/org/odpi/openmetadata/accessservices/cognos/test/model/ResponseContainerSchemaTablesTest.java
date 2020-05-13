@@ -4,13 +4,14 @@
 
 package org.odpi.openmetadata.accessservices.cognos.test.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerSchemaTables;
 import org.odpi.openmetadata.accessservices.cognos.test.utils.TestUtilities;
 

@@ -3,9 +3,9 @@
 
 package org.odpi.openmetadata.accessservices.cognos.test.responses;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.responses.ErrorResponse;

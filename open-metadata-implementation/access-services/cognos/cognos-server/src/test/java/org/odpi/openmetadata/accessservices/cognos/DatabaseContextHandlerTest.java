@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.cognos;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.odpi.openmetadata.accessservices.cognos.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.cognos.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
@@ -16,17 +18,11 @@ import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
 import org.odpi.openmetadata.accessservices.cognos.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
-import java.text.MessageFormat;
+import static org.junit.Assert.*;
+
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
@@ -44,7 +40,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	
 	private DatabaseContextHandler databaseContextHandler;
 
-	@BeforeEach
+	@Before
 	public void setup() throws Exception {
 		super.setup();
 		OMEntityDao omEntityDaoReal = new OMEntityDao(enterpriseConnector, Collections.emptyList(), auditLog);
@@ -60,7 +56,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		// test
 		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases();
 		assertNotNull(databases);
-		assertTrue( databases.size() == 2, "Failed retrieve databases.");
+		assertTrue("Failed retrieve databases.", databases.size() == 2);
 
 		ResponseContainerDatabase gs = databases.stream()
 				.filter(ds->DATABASE_GOSALES.equals(ds.getDbName()))
@@ -73,7 +69,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	@Test
 	public void getDatabasesEmptyRepository() throws CognosCheckedException {
 		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases();
-		assertTrue( databases.size() == 0, "Database list expected to be empty.");
+		assertTrue( "Database list expected to be empty.", databases.size() == 0 );
 	}
 
 	@Test
@@ -83,7 +79,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		String guidDataSource = entityDB.getGUID();
 		// test
 		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler.getDatabaseSchemas(guidDataSource);
-		assertTrue(schemas.isEmpty(), "Schemas list expected to be empty.");
+		assertTrue("Schemas list expected to be empty.", schemas.isEmpty() );
 
 	}
 	
@@ -97,7 +93,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler.getDatabaseSchemas(guidDataSource);
 		assertNotNull(schemas);
-		assertTrue( schemas.size() == 2, "Failed to retrieve database schemas.");
+		assertTrue( "Failed to retrieve database schemas.", schemas.size() == 2 );
 		
 		ResponseContainerDatabaseSchema schema = schemas.stream()
 				.filter(s->SCHEMA_DBO.equals(s.getSchema()))
@@ -117,7 +113,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler.getDatabaseSchemas(entityDB.getGUID());
 		assertNotNull(schemas);
-		assertTrue( schemas.size() == 1, "Failed to retrieve database schema.");
+		assertTrue( "Failed to retrieve database schema.", schemas.size() == 1 );
 		assertEquals("AdventureWorks", schemas.get(0).getCatalog());
 	}
 	
@@ -129,7 +125,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
 
 		ResponseContainerSchemaTables tables = databaseContextHandler.getSchemaTables(entityDB.getGUID(), SCHEMA_DBO);
-		assertTrue(tables.getTablesList().isEmpty(), "Table list expected to be empty.");
+		assertTrue("Table list expected to be empty.", tables.getTablesList().isEmpty() );
 	}
 	
 	@Test
@@ -139,16 +135,16 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		String schemaName = "NonExistingSchemaName";
 
 		CognosCheckedException thrown = assertThrows(
+		        "Request for tables of unknown schema fails with exception.",
 				CognosCheckedException.class,
-		        () -> databaseContextHandler.getSchemaTables(entityDB.getGUID(), schemaName),
-		        "Request for tables of unknown schema fails with exception."
+		        () -> databaseContextHandler.getSchemaTables(entityDB.getGUID(), schemaName)
 		    );
 
 		    assertEquals(CognosErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
 		    		thrown.getReportedErrorMessageId(),
 		    		"Message Id is not correct");
 		    
-			assertTrue(thrown.getMessage().contains(schemaName), "Failed schema name should be in the message.");
+			assertTrue("Failed schema name should be in the message.", thrown.getMessage().contains(schemaName));
 	}
 	
 	@Test
@@ -163,7 +159,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		assertNotNull(tableResponse);
 		List<String> tables = tableResponse.getTablesList();
 		
-		assertTrue( tables.size() == 2, "Failed to retrieve tables.");
+		assertTrue( "Failed to retrieve tables.", tables.size() == 2 );
 		Collections.sort(tables);
 		assertEquals("A,B", String.join(",", tables), "All table names are correct.");
 	}
@@ -228,7 +224,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		assertNotNull(moduleResponse);
 		List<Table> tables = moduleResponse.getPhysicalModule().getDataSource().get(0).getTable();
 		
-		assertEquals( 4, tables.size(), "Failed to retrieve tables.");
+		assertEquals( "Failed to retrieve tables.", 4, tables.size() );
 		
 		String module = TestUtilities.readJsonFile("/src/test/resources/", "getModule");
 		TestUtilities.assertObjectJson(moduleResponse, module);
@@ -239,15 +235,15 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 		String badGuid = "BadGuid";
 		CognosCheckedException thrown = assertThrows(
+		        "Illegal parameter GUID fails with exception.",
 				CognosCheckedException.class,
-		        () -> databaseContextHandler.getModule(badGuid, DATABASE_GOSALES, SCHEMA_DBO),
-		        "Illegal parameter GUID fails with exception."
+		        () -> databaseContextHandler.getModule(badGuid, DATABASE_GOSALES, SCHEMA_DBO)
 		    );
-		    assertEquals(CognosErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition().getMessageId(),
-		    		thrown.getReportedErrorMessageId(),
-		    		"Message Id is not correct");
+		    assertEquals("Message Id is not correct",
+		    		CognosErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition().getMessageId(),
+		    		thrown.getReportedErrorMessageId() );
 		    
-			assertTrue(thrown.getMessage().contains(badGuid), "GUID should be in the message.");
+			assertTrue("GUID should be in the message.", thrown.getMessage().contains(badGuid));
 	}
 	
 	@Test
@@ -257,22 +253,19 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 		String badSchema = "schemaUnknown";
 		CognosCheckedException thrown = assertThrows(
+		        "Request for missing schema name fails with exception.",
 				CognosCheckedException.class,
-		        () -> databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES, badSchema),
-		        "Request for missing schema name fails with exception."
+		        () -> databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES, badSchema)
 		    );
 		
-	    assertEquals(CognosErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
-	    		thrown.getReportedErrorMessageId(),
-	    		"Message Id is not correct");
+	    assertEquals("Message Id is not correct",
+	    		CognosErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
+	    		thrown.getReportedErrorMessageId()
+	    		);
 	    
-		assertTrue(thrown.getMessage().contains(badSchema), "Failed schema name should be in the message.");
+		assertTrue("Failed schema name should be in the message.", thrown.getMessage().contains(badSchema) );
 	}
 	
-//	private String buildMessage(CognosErrorCode source, String ... params) {
-//		return new MessageFormat(source.getMessageDefinition().getMessageTemplate()).format(params);
-//	}
-//	
 	private String buildKey(String ... param ) {
 		return String.join("_", param);
 	}

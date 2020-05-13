@@ -2,16 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.cognos;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+
+import java.util.Collections;
+import java.util.List;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.cognos.utils.contentmanager.OMEntityDaoForTests;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
 import org.odpi.openmetadata.accessservices.cognos.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.cognos.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.accessservices.cognos.utils.QualifiedNameUtils;
+import org.odpi.openmetadata.accessservices.cognos.utils.contentmanager.OMEntityDaoForTests;
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -46,13 +53,6 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnec
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator;
-
-import java.util.Collections;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 public class InMemoryRepositoryTest {
 
