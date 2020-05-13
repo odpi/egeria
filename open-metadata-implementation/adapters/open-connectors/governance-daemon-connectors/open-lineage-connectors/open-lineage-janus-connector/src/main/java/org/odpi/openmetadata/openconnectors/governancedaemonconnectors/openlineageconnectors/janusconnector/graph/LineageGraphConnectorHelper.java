@@ -48,6 +48,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.CONDENSED_NODE_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.DESTINATION_CONDENSATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_ANTONYM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CONDENSED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_IS_A_RELATIONSHIP;
@@ -71,6 +72,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_TABLE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.SOURCE_CONDENSATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.immutableReturnedPropertiesWhiteList;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 
@@ -100,7 +102,7 @@ public class LineageGraphConnectorHelper {
 
         detectProblematicCycle(methodName, vertexList);
 
-        return getCondensedLineage(guid, g, vertexList, PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
+        return getCondensedLineage(guid, g, vertexList, SOURCE_CONDENSATION);
     }
 
     /**
@@ -121,7 +123,7 @@ public class LineageGraphConnectorHelper {
 
         detectProblematicCycle(methodName, vertexList);
 
-        return getCondensedLineage(guid, g, vertexList, PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
+        return getCondensedLineage(guid, g, vertexList, DESTINATION_CONDENSATION);
     }
 
     /**
@@ -133,7 +135,7 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    LineageVerticesAndEdges endToEnd(String guid, boolean includeProcesses,  String... edgeLabels) {
+    LineageVerticesAndEdges endToEnd(String guid, boolean includeProcesses, String... edgeLabels) {
         GraphTraversalSource g = lineageGraph.traversal();
 
         Graph endToEndGraph = (Graph)
@@ -220,14 +222,14 @@ public class LineageGraphConnectorHelper {
      * * Returns a subgraph containing all root and leaf nodes of the full graph that are connected with the queried node.
      * * The queried node can be a column or table.
      *
-     * @param guid            the guid of the queried node
-     * @param g               graph traversal object
-     * @param vertexList      list of vertexes to be condensed
-     * @param condensedNodeId the nodeId of the condensed node
+     * @param guid             the guid of the queried node
+     * @param g                graph traversal object
+     * @param vertexList       list of vertexes to be condensed
+     * @param condensationType the type of the condensation
      *
      * @return the subgraph in an Open Lineage specific format
      */
-    private LineageVerticesAndEdges getCondensedLineage(String guid, GraphTraversalSource g, List<Vertex> vertexList, String condensedNodeId) {
+    private LineageVerticesAndEdges getCondensedLineage(String guid, GraphTraversalSource g, List<Vertex> vertexList, String condensationType) {
         Vertex originalQueriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
 
         Set<LineageVertex> lineageVertices = new HashSet<>();
@@ -237,7 +239,7 @@ public class LineageGraphConnectorHelper {
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
         lineageVertices.add(queriedVertex);
 
-        addCondensation(vertexList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex, condensedNodeId);
+        addCondensation(vertexList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex, condensationType);
 
         addColumnProperties(lineageVertices);
 
@@ -356,29 +358,32 @@ public class LineageGraphConnectorHelper {
      * @param lineageEdges          The list of all edges returned by the Gremlin query.
      * @param originalQueriedVertex The vertex which guid was queried by the user as the original Tinkerpop object.
      * @param queriedVertex         The vertex which guid was queried by the user as an Open Lineage vertex object.
+     * @param condensationType      the type of the condensed node
      */
     private void addCondensation(List<Vertex> vertexList,
                                  Set<LineageVertex> lineageVertices,
                                  Set<LineageEdge> lineageEdges,
                                  Vertex originalQueriedVertex,
                                  LineageVertex queriedVertex,
-                                 String condensedNodeId) {
+                                 String condensationType) {
         //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
         //when there isn't any.
         if (vertexList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
             return;
         }
-        LineageVertex condensedVertex = new LineageVertex(condensedNodeId, NODE_LABEL_CONDENSED);
+
+        LineageVertex condensedVertex = new LineageVertex(getCondensedNodeId(condensationType), NODE_LABEL_CONDENSED);
         condensedVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
         lineageVertices.add(condensedVertex);
 
         for (Vertex originalVertex : vertexList) {
             LineageVertex newVertex = abstractVertex(originalVertex);
-            LineageEdge newEdge = new LineageEdge(EDGE_LABEL_CONDENSED, newVertex.getNodeID(), condensedVertex.getNodeID());
+
+            LineageEdge newEdge = getEdge(condensedVertex, newVertex, condensationType);
             lineageVertices.add(newVertex);
             lineageEdges.add(newEdge);
         }
-        LineageEdge sourceEdge = new LineageEdge(EDGE_LABEL_CONDENSED, condensedVertex.getNodeID(), queriedVertex.getNodeID());
+        LineageEdge sourceEdge = getEdge(queriedVertex, condensedVertex, condensationType);
         lineageEdges.add(sourceEdge);
     }
 
@@ -406,7 +411,7 @@ public class LineageGraphConnectorHelper {
         }
 
         if (!includeProcesses) {
-            Set <LineageVertex> verticesToRemove = lineageVertices.stream()
+            Set<LineageVertex> verticesToRemove = lineageVertices.stream()
                     .filter(this::isSubProcess)
                     .collect(Collectors.toSet());
             Set<String> verticesToRemoveIDs = verticesToRemove.stream().map(LineageVertex::getNodeID).collect(Collectors.toSet());
@@ -555,5 +560,22 @@ public class LineageGraphConnectorHelper {
 
     private boolean isColumnVertex(LineageVertex lineageVertex) {
         return Arrays.asList(Constants.TABULAR_COLUMN, Constants.RELATIONAL_COLUMN).contains(lineageVertex.getNodeType());
+    }
+
+    private String getCondensedNodeId(String condensationType) {
+        if (SOURCE_CONDENSATION.equalsIgnoreCase(condensationType)) {
+            return PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
+        } else {
+            return PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION;
+        }
+    }
+
+    private LineageEdge getEdge(LineageVertex firstVertex, LineageVertex secondVertex, String condensationType) {
+        if (SOURCE_CONDENSATION.equalsIgnoreCase(condensationType)) {
+            return new LineageEdge(EDGE_LABEL_CONDENSED, firstVertex.getNodeID(), secondVertex.getNodeID());
+        } else {
+            return new LineageEdge(EDGE_LABEL_CONDENSED, secondVertex.getNodeID(), firstVertex.getNodeID());
+        }
+
     }
 }

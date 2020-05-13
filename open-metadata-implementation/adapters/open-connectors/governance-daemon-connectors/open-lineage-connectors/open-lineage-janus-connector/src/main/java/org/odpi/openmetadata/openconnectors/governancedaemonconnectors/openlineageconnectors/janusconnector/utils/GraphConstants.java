@@ -53,6 +53,8 @@ public class GraphConstants {
     private static final String PROPERTY_NAME_PATH = "path";
 
     public static final String CONDENSED_NODE_DISPLAY_NAME = "...";
+    public static final String SOURCE_CONDENSATION = "source";
+    public static final String DESTINATION_CONDENSATION = "destination";
 
     public static final String NODE_LABEL_TABLE = "table";
     public static final String NODE_LABEL_COLUMN = "column";
