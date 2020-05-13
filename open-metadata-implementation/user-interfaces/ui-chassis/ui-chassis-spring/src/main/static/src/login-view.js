@@ -22,7 +22,7 @@ class LoginView extends PolymerElement {
               padding: 16px;
               margin: 0 16px;
               display: inline-block;
-            }
+            }   
           </style>
         </custom-style>
       <style include="shared-styles">
@@ -46,50 +46,45 @@ class LoginView extends PolymerElement {
             width: 100%;
         }
         
-        img.logo {
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-          margin-top: 1em;
-          width: 600px;
+        #logo{
+            margin: auto;
+            width: 600px;
+            height: 250px;
+            background-size: contain;
         }
-        
+      
         @media (max-width: 640px){
           :host {
             justify-content: flex-end;
           }
           
-          img.logo {
-              width: 70vw;
+          #logo {
+           width: 70vw;
           }
-    
         }
       </style>
       <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
-
-      <p>
-          <img class="logo" src="images/Logo_transparent.png"/>
-      </p>
        
+       <h2><div id="logo"></div></h2>
        <div class="container6">
-              <div   class="login">
-                 <iron-form id="form">
-                    <form method="post" action="/auth/login">
-                        <paper-input value={{username}} label="Username" name="username" required
-                                     error-message="Username is required"                                
-                                     autofocus></paper-input>
-                        <paper-input value="{{password}}" label="Password" name="password" required
-                                     error-message="Password is required"
-                                     type="password" ></paper-input>
-                                     
-                        <form-feedback message="{{feedback}}" level="{{feedbackLevel}}"></form-feedback>
-                        <div style="float: right">
-                            <paper-button id="login-button" on-tap="_logIn" raised>Login</paper-button>
-                        </div>
-                        <iron-a11y-keys keys="enter" on-keys-pressed="_logIn"></iron-a11y-keys>
-                    </form>
-                </iron-form>   
-               </div>
+          <div   class="login">
+             <iron-form id="form">
+                <form method="post" action="/auth/login">
+                    <paper-input value={{username}} label="Username" name="username" required
+                                 error-message="Username is required"                                
+                                 autofocus></paper-input>
+                    <paper-input value="{{password}}" label="Password" name="password" required
+                                 error-message="Password is required"
+                                 type="password" ></paper-input>
+                                 
+                    <form-feedback message="{{feedback}}" level="{{feedbackLevel}}"></form-feedback>
+                    <div style="float: right">
+                        <paper-button id="login-button" on-tap="_logIn" raised>Login</paper-button>
+                    </div>
+                    <iron-a11y-keys keys="enter" on-keys-pressed="_logIn"></iron-a11y-keys>
+                </form>
+            </iron-form>   
+           </div>
        </div>
 
     `;

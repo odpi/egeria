@@ -6,6 +6,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
@@ -438,6 +440,73 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<EntityDetail> findEntities(String                    userId,
+                                           String                    entityTypeGUID,
+                                           List<String>              entitySubtypeGUIDs,
+                                           SearchProperties          matchProperties,
+                                           int                       fromEntityElement,
+                                           List<InstanceStatus>      limitResultsByStatus,
+                                           SearchClassifications     matchClassifications,
+                                           Date                      asOfTime,
+                                           String                    sequencingProperty,
+                                           SequencingOrder           sequencingOrder,
+                                           int                       pageSize) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException,
+                                                                                      PagingErrorException,
+                                                                                      UserNotAuthorizedException
+    {
+        /*
+         * Validate parameters
+         */
+        super.findEntitiesParameterValidation(userId,
+                                              entityTypeGUID,
+                                              entitySubtypeGUIDs,
+                                              matchProperties,
+                                              fromEntityElement,
+                                              limitResultsByStatus,
+                                              matchClassifications,
+                                              asOfTime,
+                                              sequencingProperty,
+                                              sequencingOrder,
+                                              pageSize);
+
+        /*
+         * Perform operation
+         *
+         * This is a brute force implementation of locating in entity since it iterates through all of
+         * the stored entities.
+         */
+        List<EntityDetail>         foundEntities = new ArrayList<>();
+        Map<String, EntityDetail>  entityStore = repositoryStore.timeWarpEntityStore(asOfTime);
+
+        for (EntityDetail  entity : entityStore.values())
+        {
+            if (entity != null)
+            {
+                if ((entity.getStatus() != InstanceStatus.DELETED) &&
+                        (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entitySubtypeGUIDs, entity)) &&
+                        (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
+                        (repositoryValidator.verifyMatchingClassifications(matchClassifications, entity)) &&
+                        (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
+                                entity,
+                                entity.getProperties()
+                        )))
+                {
+                    foundEntities.add(entity);
+                }
+            }
+        }
+
+        return repositoryHelper.formatEntityResults(foundEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+    }
+
+
+    /**
      * Return a list of entities that have the requested type of classifications attached.
      *
      * @param userId unique identifier for requesting user.
@@ -769,6 +838,79 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, relationship, methodName);
 
         return relationship;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 List<String>              relationshipSubtypeGUIDs,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize) throws InvalidParameterException,
+                                                                                            TypeErrorException,
+                                                                                            RepositoryErrorException,
+                                                                                            PropertyErrorException,
+                                                                                            PagingErrorException,
+                                                                                            FunctionNotSupportedException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String  methodName = "findRelationships";
+        final String  guidParameterName = "relationshipTypeGUID";
+
+        /*
+         * Validate parameters
+         */
+        super.findRelationshipsParameterValidation(userId,
+                                                   relationshipTypeGUID,
+                                                   relationshipSubtypeGUIDs,
+                                                   matchProperties,
+                                                   fromRelationshipElement,
+                                                   limitResultsByStatus,
+                                                   asOfTime,
+                                                   sequencingProperty,
+                                                   sequencingOrder,
+                                                   pageSize);
+
+
+        /*
+         * Perform operation
+         *
+         * This is a brute force implementation of locating a relationship since it iterates through all of
+         * the stored entities.
+         */
+        List<Relationship>         foundRelationships = new ArrayList<>();
+        Map<String, Relationship>  relationshipStore = repositoryStore.timeWarpRelationshipStore(asOfTime);
+
+        for (Relationship  relationship : relationshipStore.values())
+        {
+            if (relationship != null)
+            {
+                if ((relationship.getStatus() != InstanceStatus.DELETED) &&
+                        (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationshipSubtypeGUIDs, relationship)) &&
+                        (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
+                        (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
+                                relationship,
+                                relationship.getProperties()
+                        )))
+                {
+                    foundRelationships.add(relationship);
+                }
+            }
+        }
+
+        return repositoryHelper.formatRelationshipResults(foundRelationships,
+                fromRelationshipElement,
+                sequencingProperty,
+                sequencingOrder,
+                pageSize);
     }
 
 

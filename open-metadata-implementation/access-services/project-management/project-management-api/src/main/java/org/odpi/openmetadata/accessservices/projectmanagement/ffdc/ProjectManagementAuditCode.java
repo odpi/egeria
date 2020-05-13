@@ -49,6 +49,8 @@ public enum ProjectManagementAuditCode implements AuditLogMessageSet
 
     ;
 
+    private static final long    serialVersionUID = 1L;
+
 
     AuditLogMessageDefinition messageDefinition;
 

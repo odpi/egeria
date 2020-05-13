@@ -11,6 +11,8 @@ import java.util.Objects;
  */
 public class UserNotAuthorizedException extends ConformanceSuiteCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     private String  userId;
 
     /**

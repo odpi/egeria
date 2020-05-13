@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.CommentMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.LikeMapper;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -13,8 +14,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.Map;
 
 /**
- * LikeConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a Like bean.
+ * CommentConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a Comment bean.
  */
 public class CommentConverter extends ElementHeaderConverter
 {
@@ -76,8 +77,16 @@ public class CommentConverter extends ElementHeaderConverter
 
             if (instanceProperties != null)
             {
+                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName,
+                                                                            ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                            instanceProperties,
+                                                                            methodName));
                 bean.setCommentText(repositoryHelper.removeStringProperty(serviceName, CommentMapper.TEXT_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setCommentType(this.removeCommentTypeFromProperties(instanceProperties));
+                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName,
+                                                                                          ReferenceableMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                                          instanceProperties,
+                                                                                          methodName));
                 bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
             }
         }
@@ -88,7 +97,7 @@ public class CommentConverter extends ElementHeaderConverter
 
 
     /**
-     * Retrieve the StarRating enum property from the instance properties of an entity
+     * Retrieve the CommentType enum property from the instance properties of an entity
      *
      * @param properties  entity properties
      * @return   enum value

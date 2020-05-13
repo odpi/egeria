@@ -53,9 +53,11 @@ public class Term extends GovernedNode implements Serializable {
     private String usage =null;
 
     private GlossarySummary glossary =null;
-
+    @JsonProperty(value="isSpineObject")
     private boolean isSpineObject =false;
+    @JsonProperty(value="isSpineAttribute")
     private boolean isSpineAttribute =false;
+    @JsonProperty(value="isObjectIdentifier")
     private boolean isObjectIdentifier =false;
 
     public Term() {
