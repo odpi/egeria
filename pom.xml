@@ -180,6 +180,7 @@
         <swagger.version>2.1.2</swagger.version>
         <groovy.version>3.0.3</groovy.version>
         <micrometer-registry-prometheus.version>1.5.1</micrometer-registry-prometheus.version>
+        <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -927,6 +928,27 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>data-science-spring</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>cloud-information-model</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>glossary-canonical-model</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>design-model-archive-base</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2214,6 +2236,12 @@
                 <artifactId>groovy-templates</artifactId>
                 <version>${groovy.version}</version>
                 <classifier>indy</classifier>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${jcl-over-slf4j.version}</version>
             </dependency>
 
         </dependencies>

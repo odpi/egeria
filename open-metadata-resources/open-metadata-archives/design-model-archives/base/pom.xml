@@ -8,14 +8,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-metadata-archives</artifactId>
+        <artifactId>design-model-archives</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.8-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-
-    <packaging>pom</packaging>
 
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
@@ -23,16 +21,30 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Design Model Archives</name>
+    <name>Design Model Archive Base</name>
     <description>
-        The Design Model Archives provide utilities for loading common/standard design models from third parties.
+        The Design Model Archive Base provides common classes to support utilities to import standard design models.
     </description>
 
-    <artifactId>design-model-archives</artifactId>
+    <artifactId>design-model-archive-base</artifactId>
 
-    <modules>
-        <module>base</module>
-        <module>cloud-information-model</module>
-        <module>glossary-canonical-model</module>
-    </modules>
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-archive-utilities</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-types</artifactId>
+        </dependency>
+
+    </dependencies>
+
 </project>
