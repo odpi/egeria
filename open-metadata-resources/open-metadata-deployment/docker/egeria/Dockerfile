@@ -23,16 +23,16 @@ LABEL org.opencontainers.image.vendor = "ODPi" \
       org.opencontainers.image.version = "$version" \
       org.opencontainers.image.documentation = "https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/docker/egeria/" \
       org.opencontainers.image.ext.vcs-date = "$VCS_DATE" \
-      org.opencontainers.image.ext.docker.cmd = "docker run -d -p 8080:8080 odpi/egeria" \
-      org.opencontainers.image.ext.docker.cmd.devel = "docker run -d -p 8080:8080 -p 5005:5005 -e JAVA_DEBUG=true odpi/egeria" \
+      org.opencontainers.image.ext.docker.cmd = "docker run -d -p 9443:9443 odpi/egeria" \
+      org.opencontainers.image.ext.docker.cmd.devel = "docker run -d -p 9443:9443 -p 5005:5005 -e JAVA_DEBUG=true odpi/egeria" \
       org.opencontainers.image.ext.docker.debug = "docker exec -it $CONTAINER /bin/sh" \
       org.opencontainers.image.ext.docker.params = "JAVA_DEBUG=set to true to enable JVM debugging"
 
 RUN apk --no-cache add bash shadow && \
     apk --no-cache update && \
     apk --no-cache upgrade && \
-    groupadd -r egeria -g 8080 && \
-    useradd --no-log-init -r -g egeria -u 8080 -m -d /opt/egeria egeria
+    groupadd -r egeria -g 9443 && \
+    useradd --no-log-init -r -g egeria -u 9443 -m -d /opt/egeria egeria
 
 COPY --chown=egeria:egeria dist/entrypoint.sh /entrypoint.sh
 
@@ -40,12 +40,12 @@ COPY --chown=egeria:egeria dist/entrypoint.sh /entrypoint.sh
 COPY --chown=egeria:egeria target/assembly /opt/egeria
 
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
-EXPOSE 8080 5005
+EXPOSE 9443 5005
 
 WORKDIR /opt/egeria
 
 # Require use of numeric userids to meet some container security checks
-USER 8080:8080
+USER 9443:9443
 
 # Spring loader path for connectors etc
 ENV LOADER_PATH=/opt/egeria/server/lib

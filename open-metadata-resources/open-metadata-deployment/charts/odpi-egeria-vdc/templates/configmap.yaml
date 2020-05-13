@@ -18,7 +18,7 @@ data:
   # Used by IGC/Postgres & initialization
   STRICT_SSL: "false"
   LOGGING_LEVEL_ROOT: "{{ .Values.logging.level }}"
-  EGERIA_ENDPOINT: http://{{ include "myapp.fullname" . }}-egeria-service:8080
+  EGERIA_ENDPOINT: https://{{ include "myapp.fullname" . }}-egeria-service:9443
   EGERIA_ARTIFACTORY_RELEASE: https://odpi.jfrog.io/odpi/egeria-release-local
   EGERIA_ARTIFACTORY_STAGING: https://odpi.jfrog.io/odpi/egeria-staging-local
   EGERIA_ARTIFACTORY_SNAPSHOT: https://odpi.jfrog.io/odpi/egeria-snapshot-local
@@ -74,7 +74,7 @@ data:
 
   # Used by User Interface
   {{ if .Values.ui.enabled }}
-  OMAS_SERVER_URL: http://{{ include "myapp.fullname" . }}-egeria-service:8080
+  OMAS_SERVER_URL: https://{{ include "myapp.fullname" . }}-egeria-service:9443
   OMAS_SERVER_NAME: myserver
   {{ end }}
 

@@ -38,7 +38,7 @@ etc](../../open-metadata-implementation/admin-services/docs/user/README.md).  Be
 configure the repository workbench within it by POSTing to:
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cts/conformance-suite-workbenches/repository-workbench/repositories
+POST https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cts/conformance-suite-workbenches/repository-workbench/repositories
 ```
 
 with a repository workbench configuration like the following:

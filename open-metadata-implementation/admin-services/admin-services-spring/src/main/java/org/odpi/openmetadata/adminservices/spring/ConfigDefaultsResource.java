@@ -31,7 +31,7 @@ public class ConfigDefaultsResource
      * this server's REST interfaces.  It is a value that is sent to other servers to allow
      * them to call this server.
      *
-     * The default value is "localhost:8080".
+     * The default value is "localhost:9443".
      *
      * ServerURLRoot is used as a default value during the configuration of the server's subsystems.
      * If it is updated after a subsystem is configured then the new value is ignored.
@@ -58,7 +58,7 @@ public class ConfigDefaultsResource
      * this server's REST interfaces.  It is a value that is sent to other servers to allow
      * them to call this server.
      *
-     * The default value is "http://localhost:8080".
+     * The default value is "https://localhost:9443".
      *
      * ServerRootURL is used as a default value during the configuration of the server's subsystems.
      * If it is updated after a subsystem is configured then the new value is ignored.
