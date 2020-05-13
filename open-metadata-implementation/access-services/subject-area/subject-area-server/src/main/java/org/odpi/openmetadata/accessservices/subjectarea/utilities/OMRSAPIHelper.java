@@ -1348,14 +1348,7 @@ public class OMRSAPIHelper {
     }
 
 
-    public SubjectAreaOMASAPIResponse findEntitiesByPropertyValue(String restAPIName, String userId, String typeName, String searchCriteria, Date asOfTime, Integer offset, Integer pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) {
-                  // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
-        if (offset == null) {
-            offset = 0;
-        }
-        if (pageSize == null) {
-            pageSize = 0;
-        }
+    public SubjectAreaOMASAPIResponse findEntitiesByPropertyValue(String restAPIName, String userId, String typeName, String searchCriteria, Date asOfTime, int offset, int pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) {
         if (sequencingProperty !=null) {
             try {
                 sequencingProperty = URLDecoder.decode(sequencingProperty,"UTF-8");
@@ -1392,16 +1385,9 @@ public class OMRSAPIHelper {
                                                                String userId,
                                                                String typeName,
                                                                Date asOfTime,
-                                                               Integer offset,
-                                                               Integer pageSize
-                                                               ) {
-        if (offset == null) {
-            offset = 0;
-        }
-        if (pageSize == null) {
-            pageSize = 0;
-        }
-      
+                                                               int offset,
+                                                               int pageSize
+    ) {
         TypeDef typeDef = this.omrsRepositoryHelper.getTypeDefByName("getEntitiesByType",typeName);
         String entityTypeGUID = typeDef.getGUID();
         return oMRSAPIHelper.callGetEntitiesByType(

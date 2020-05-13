@@ -22,10 +22,9 @@ import java.util.Date;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
 
-@Tag(name="Subject Area OMAS", description="The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs=@ExternalDocumentation(description="Subject Area Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
+@Tag(name = "Subject Area OMAS", description = "The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs = @ExternalDocumentation(description = "Subject Area Open Metadata Access Service (OMAS)", url = "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
 
-public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInstance
-{
+public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInstance {
     private SubjectAreaProjectRESTServices restAPI = new SubjectAreaProjectRESTServices();
 
     /**
@@ -37,37 +36,40 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
 
     /**
      * Create a Project.
-     *
+     * <p>
      * Projects with the same name can be confusing. Best practise is to create projects that have unique names.
      * This Create call does not police that Project names are unique. So it is possible to create projects with the same name as each other.
-     *
+     * <p>
      * Projects that are created using this call will be GlossaryProjects.
      * <p>
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param serverName      serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId          unique identifier for requesting user, under which the request is performed
      * @param suppliedProject Project to create
      * @return response, when successful contains the created Project.
      * when not successful the following Exception responses can occur
-     *  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     *  MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     *  InvalidParameterException            one of the parameters is null or invalid.
-     *  UnrecognizedGUIDException            the supplied guid was not recognised
-     *  ClassificationException              Error processing a classification
-     *  StatusNotSupportedException          A status value is not supported
+     * UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * InvalidParameterException            one of the parameters is null or invalid.
+     * UnrecognizedGUIDException            the supplied guid was not recognised
+     * ClassificationException              Error processing a classification
+     * StatusNotSupportedException          A status value is not supported
      */
-    @PostMapping( path = "/users/{userId}/projects")
-    public SubjectAreaOMASAPIResponse createProject(@PathVariable String serverName,@PathVariable String userId, @RequestBody Project suppliedProject) {
-        return restAPI.createProject(serverName, userId,suppliedProject);
+    @PostMapping(path = "/users/{userId}/projects")
+    public SubjectAreaOMASAPIResponse createProject(@PathVariable String serverName,
+                                                    @PathVariable String userId,
+                                                    @RequestBody Project suppliedProject) {
+        return restAPI.createProject(serverName, userId, suppliedProject);
     }
 
     /**
      * Get a Project.
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId userId under which the request is performed
-     * @param guid guid of the Project to get
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     userId under which the request is performed
+     * @param guid       guid of the Project to get
      * @return response which when successful contains the Project with the requested guid
-     *  when not successful the following Exception responses can occur
+     * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
@@ -77,22 +79,25 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @GetMapping( path = "/users/{userId}/projects/{guid}")
-    public  SubjectAreaOMASAPIResponse getProject(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid) {
-            return restAPI.getProjectByGuid(serverName, userId,guid);
+    @GetMapping(path = "/users/{userId}/projects/{guid}")
+    public SubjectAreaOMASAPIResponse getProject(@PathVariable String serverName,
+                                                 @PathVariable String userId,
+                                                 @PathVariable String guid) {
+        return restAPI.getProjectByGuid(serverName, userId, guid);
     }
+
     /**
      * Find Project
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria String expression matching Project property values. If not specified then all glossaries are returned.
-     * @param asOfTime the glossaries returned as they were at this time. null indicates at the current time.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is no limit to the page size
-     * @param sequencingOrder the sequencing order for the results.
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId             unique identifier for requesting user, under which the request is performed
+     * @param searchCriteria     String expression matching Project property values. If not specified then all glossaries are returned.
+     * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
+     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     *                           beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize           the maximum number of elements that can be returned on this request.
+     *                           0 means there is no limit to the page size
+     * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of glossaries meeting the search Criteria
      *
@@ -103,16 +108,16 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @GetMapping( path = "/users/{userId}/projects")
-    public  SubjectAreaOMASAPIResponse findProject(@PathVariable String serverName, @PathVariable String userId,
-                                                @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
-                                                @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                @RequestParam(value = "offset", required=false) Integer offset,
-                                                @RequestParam(value = "pageSize", required=false) Integer pageSize,
-                                                @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
-                                                @RequestParam(value = "sequencingProperty", required=false) String sequencingProperty
-    )  {
-        return restAPI.findProject(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+    @GetMapping(path = "/users/{userId}/projects")
+    public SubjectAreaOMASAPIResponse findProject(@PathVariable String serverName, @PathVariable String userId,
+                                                  @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                  @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                  @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                  @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                  @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                  @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
+    ) {
+        return restAPI.findProject(serverName, userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
     /*
      * Get Project relationships
@@ -138,16 +143,16 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      */
 
 
-    @GetMapping( path = "/users/{userId}/projects/{guid}/relationships")
-    public  SubjectAreaOMASAPIResponse getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                            @PathVariable String guid,
-                                                            @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                            @RequestParam(value = "offset", required=false) Integer offset,
-                                                            @RequestParam(value = "pageSize", required=false) Integer pageSize,
-                                                            @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
-                                                            @RequestParam(value = "sequencingProperty", required=false) String sequencingProperty
+    @GetMapping(path = "/users/{userId}/projects/{guid}/relationships")
+    public SubjectAreaOMASAPIResponse getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                              @PathVariable String guid,
+                                                              @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                              @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                              @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                              @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                              @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
     ) {
-        return restAPI.getProjectRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+        return restAPI.getProjectRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /*
@@ -173,15 +178,13 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * </ul>
      */
 
-
-    @GetMapping( path = "/users/{userId}/projects/{guid}/terms")
-    public  SubjectAreaOMASAPIResponse getProjectTerms(@PathVariable String serverName,
-                                                       @PathVariable String userId,
-                                                       @PathVariable String guid,
-                                                       @RequestParam(value = "asOfTime", required=false) Date asOfTime
-
+    @GetMapping(path = "/users/{userId}/projects/{guid}/terms")
+    public SubjectAreaOMASAPIResponse getProjectTerms(@PathVariable String serverName,
+                                                      @PathVariable String userId,
+                                                      @PathVariable String guid,
+                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime
     ) {
-        return restAPI.getProjectTerms(serverName, userId,guid,asOfTime);
+        return restAPI.getProjectTerms(serverName, userId, guid, asOfTime);
     }
 
     /**
@@ -193,11 +196,11 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId           unique identifier for requesting user, under which the request is performed
-     * @param guid             guid of the Project to update
-     * @param Project         Project to update
-     * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Project to update
+     * @param Project    Project to update
+     * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated Project
      * when not successful the following Exception responses can occur
      * <ul>
@@ -208,9 +211,14 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @PutMapping( path = "/users/{userId}/projects/{guid}")
-    public  SubjectAreaOMASAPIResponse updateProject(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid,@RequestBody Project Project,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
-        return restAPI.updateProject(serverName, userId,guid,Project,isReplace);
+    @PutMapping(path = "/users/{userId}/projects/{guid}")
+    public SubjectAreaOMASAPIResponse updateProject(@PathVariable String serverName,
+                                                    @PathVariable String userId,
+                                                    @PathVariable String guid,
+                                                    @RequestBody Project Project,
+                                                    @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+    ) {
+        return restAPI.updateProject(serverName, userId, guid, Project, isReplace);
     }
 
     /**
@@ -224,10 +232,10 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * A hard delete means that the Project will not exist after the operation.
      * when not successful the following Exceptions can occur
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId  unique identifier for requesting user, under which the request is performed
-     * @param guid    guid of the Project to be deleted.
-     * @param isPurge true indicates a hard delete, false is a soft delete.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Project to be deleted.
+     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -240,18 +248,20 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * <li> GUIDNotPurgedException               a hard delete was issued but the Project was not purged</li>
      * </ul>
      */
-    @DeleteMapping( path = "/users/{userId}/projects/{guid}")
-    public  SubjectAreaOMASAPIResponse deleteProject(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
-        if (isPurge == null) {
-            // default to soft delete if isPurge is not specified.
-            isPurge = false;
-        }
-        return restAPI.deleteProject(serverName, userId,guid,isPurge);
+    @DeleteMapping(path = "/users/{userId}/projects/{guid}")
+    public SubjectAreaOMASAPIResponse deleteProject(@PathVariable String serverName,
+                                                    @PathVariable String userId,
+                                                    @PathVariable String guid,
+                                                    @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+    ) {
+        return restAPI.deleteProject(serverName, userId, guid, isPurge);
     }
+
     /**
      * Restore a Project
-     *
+     * <p>
      * Restore allows the deleted Project to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Project to restore
@@ -265,9 +275,11 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @PostMapping( path = "/users/{userId}/projects/{guid}")
-    public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)
-    {
-        return restAPI.restoreProject(serverName, userId,guid);
+    @PostMapping(path = "/users/{userId}/projects/{guid}")
+    public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String serverName,
+                                                     @PathVariable String userId,
+                                                     @PathVariable String guid
+    ) {
+        return restAPI.restoreProject(serverName, userId, guid);
     }
 }

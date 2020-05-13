@@ -124,24 +124,17 @@ public abstract class SubjectAreaHandler {
                                                                 String userId,
                                                                 String guid,
                                                                 Date asOfTime,
-                                                                Integer offset,
-                                                                Integer pageSize,
+                                                                int offset,
+                                                                int pageSize,
                                                                 org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
                                                                 String sequencingProperty
-                                                               ) {
-
+    ) {
         SubjectAreaOMASAPIResponse response = null;
         SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
         glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
             try {
                 InputValidator.validateGUIDNotNull(className, restAPIName, guid, "guid");
                 // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
-                if (offset == null) {
-                    offset = 0;
-                }
-                if (pageSize == null) {
-                    pageSize = 0;
-                }
                 if (sequencingProperty != null) {
                     sequencingProperty = URLDecoder.decode(sequencingProperty, "UTF-8");
                 }

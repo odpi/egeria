@@ -22,10 +22,9 @@ import java.util.Date;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
 
-@Tag(name="Subject Area OMAS", description="The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs=@ExternalDocumentation(description="Subject Area Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
+@Tag(name = "Subject Area OMAS", description = "The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs = @ExternalDocumentation(description = "Subject Area Open Metadata Access Service (OMAS)", url = "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
 
-public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInstance
-{
+public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInstance {
     private SubjectAreaGlossaryRESTServices restAPI = new SubjectAreaGlossaryRESTServices();
 
     /**
@@ -46,30 +45,34 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      *     <li>TaxonomyAndCanonicalGlossary to create a glossary that is both a taxonomy and a canonical glosary </li>
      *     <li>Glossary to create a glossary that is not a taxonomy or a canonical glossary</li>
      * </ul>
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
+     *
+     * @param serverName       serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId           unique identifier for requesting user, under which the request is performed
      * @param suppliedGlossary Glossary to create
      * @return response, when successful contains the created glossary.
      * when not successful the following Exception responses can occur
-     *  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     *  MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     *  InvalidParameterException            one of the parameters is null or invalid.
-     *  UnrecognizedGUIDException            the supplied guid was not recognised
-     *  ClassificationException              Error processing a classification
-     *  StatusNotSupportedException          A status value is not supported
+     * UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * InvalidParameterException            one of the parameters is null or invalid.
+     * UnrecognizedGUIDException            the supplied guid was not recognised
+     * ClassificationException              Error processing a classification
+     * StatusNotSupportedException          A status value is not supported
      */
-    @PostMapping( path = "/users/{userId}/glossaries")
-    public SubjectAreaOMASAPIResponse createGlossary(@PathVariable String serverName,@PathVariable String userId, @RequestBody Glossary suppliedGlossary) {
-        return restAPI.createGlossary(serverName, userId,suppliedGlossary);
+    @PostMapping(path = "/users/{userId}/glossaries")
+    public SubjectAreaOMASAPIResponse createGlossary(@PathVariable String serverName,
+                                                     @PathVariable String userId,
+                                                     @RequestBody Glossary suppliedGlossary) {
+        return restAPI.createGlossary(serverName, userId, suppliedGlossary);
     }
 
     /**
      * Get a glossary.
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId userId under which the request is performed
-     * @param guid guid of the glossary to get
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     userId under which the request is performed
+     * @param guid       guid of the glossary to get
      * @return response which when successful contains the glossary with the requested guid
-     *  when not successful the following Exception responses can occur
+     * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
@@ -79,22 +82,25 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @GetMapping( path = "/users/{userId}/glossaries/{guid}")
-    public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid) {
-            return restAPI.getGlossaryByGuid(serverName, userId,guid);
+    @GetMapping(path = "/users/{userId}/glossaries/{guid}")
+    public SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName,
+                                                  @PathVariable String userId,
+                                                  @PathVariable String guid) {
+        return restAPI.getGlossaryByGuid(serverName, userId, guid);
     }
+
     /**
      * Find Glossary
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria String expression matching Glossary property values. If not specified then all glossaries are returned.
-     * @param asOfTime the glossaries returned as they were at this time. null indicates at the current time.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is no limit to the page size
-     * @param sequencingOrder the sequencing order for the results.
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId             unique identifier for requesting user, under which the request is performed
+     * @param searchCriteria     String expression matching Glossary property values. If not specified then all glossaries are returned.
+     * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
+     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     *                           beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize           the maximum number of elements that can be returned on this request.
+     *                           0 means there is no limit to the page size
+     * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of glossaries meeting the search Criteria
      *
@@ -105,29 +111,30 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @GetMapping( path = "/users/{userId}/glossaries")
-    public  SubjectAreaOMASAPIResponse findGlossary(@PathVariable String serverName, @PathVariable String userId,
-                                                @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
-                                                @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                @RequestParam(value = "offset", required=false) Integer offset,
-                                                @RequestParam(value = "pageSize", required=false) Integer pageSize,
-                                                @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
-                                                @RequestParam(value = "sequencingProperty", required=false) String sequencingProperty
-    )  {
-        return restAPI.findGlossary(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+    @GetMapping(path = "/users/{userId}/glossaries")
+    public SubjectAreaOMASAPIResponse findGlossary(@PathVariable String serverName, @PathVariable String userId,
+                                                   @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                   @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                   @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                   @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                   @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                   @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
+    ) {
+        return restAPI.findGlossary(serverName, userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
+
     /**
      * Get Glossary relationships
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the glossary to get
-     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
-     * @param sequencingOrder the sequencing order for the results.
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId             unique identifier for requesting user, under which the request is performed
+     * @param guid               guid of the glossary to get
+     * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
+     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     *                           beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize           the maximum number of elements that can be returned on this request.
+     *                           0 means there is not limit to the page size
+     * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the glossary relationships
      * when not successful the following Exception responses can occur
@@ -140,14 +147,14 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      */
 
 
-    @GetMapping( path = "/users/{userId}/glossaries/{guid}/relationships")
-    public  SubjectAreaOMASAPIResponse getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                            @PathVariable String guid,
-                                                            @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                            @RequestParam(value = "offset", required=false) Integer offset,
-                                                            @RequestParam(value = "pageSize", required=false) Integer pageSize,
-                                                            @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
-                                                            @RequestParam(value = "sequencingProperty", required=false) String sequencingProperty
+    @GetMapping(path = "/users/{userId}/glossaries/{guid}/relationships")
+    public SubjectAreaOMASAPIResponse getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                               @PathVariable String guid,
+                                                               @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                               @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                               @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                               @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                               @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
     ) {
         return restAPI.getGlossaryRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
@@ -161,11 +168,11 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * qualified names to mismatch the Glossary name.
      * Status is not updated using this call.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId           unique identifier for requesting user, under which the request is performed
-     * @param guid             guid of the glossary to update
-     * @param glossary         glossary to update
-     * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the glossary to update
+     * @param glossary   glossary to update
+     * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated glossary
      * when not successful the following Exception responses can occur
      * <ul>
@@ -176,9 +183,13 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @PutMapping( path = "/users/{userId}/glossaries/{guid}")
-    public  SubjectAreaOMASAPIResponse updateGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid,@RequestBody Glossary glossary,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
-        return restAPI.updateGlossary(serverName, userId,guid,glossary,isReplace);
+    @PutMapping(path = "/users/{userId}/glossaries/{guid}")
+    public SubjectAreaOMASAPIResponse updateGlossary(@PathVariable String serverName,
+                                                     @PathVariable String userId,
+                                                     @PathVariable String guid,
+                                                     @RequestBody Glossary glossary,
+                                                     @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace) {
+        return restAPI.updateGlossary(serverName, userId, guid, glossary, isReplace);
     }
 
     /**
@@ -194,10 +205,10 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * A hard delete means that the glossary will not exist after the operation.
      * when not successful the following Exceptions can occur
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId  unique identifier for requesting user, under which the request is performed
-     * @param guid    guid of the glossary to be deleted.
-     * @param isPurge true indicates a hard delete, false is a soft delete.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the glossary to be deleted.
+     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -210,18 +221,19 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
-    @DeleteMapping( path = "/users/{userId}/glossaries/{guid}")
-    public  SubjectAreaOMASAPIResponse deleteGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
-        if (isPurge == null) {
-            // default to soft delete if isPurge is not specified.
-            isPurge = false;
-        }
-        return restAPI.deleteGlossary(serverName, userId,guid,isPurge);
+    @DeleteMapping(path = "/users/{userId}/glossaries/{guid}")
+    public SubjectAreaOMASAPIResponse deleteGlossary(@PathVariable String serverName,
+                                                     @PathVariable String userId,
+                                                     @PathVariable String guid,
+                                                     @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge) {
+        return restAPI.deleteGlossary(serverName, userId, guid, isPurge);
     }
+
     /**
      * Restore a Glossary
-     *
+     * <p>
      * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the glossary to restore
@@ -235,9 +247,10 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @PostMapping( path = "/users/{userId}/glossaries/{guid}")
-    public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)
-    {
-        return restAPI.restoreGlossary(serverName, userId,guid);
+    @PostMapping(path = "/users/{userId}/glossaries/{guid}")
+    public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String serverName,
+                                                      @PathVariable String userId,
+                                                      @PathVariable String guid) {
+        return restAPI.restoreGlossary(serverName, userId, guid);
     }
 }
