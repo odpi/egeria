@@ -27,12 +27,13 @@ public class ClassificationFactory {
 
     /**
      * Get an OMAS Classification based on the name and then map the supplied omrs classificaiton to the omas one.
-     * @param name name of the classification. Note this may not match the classification name if the classification is a sub type of the supplied name.
      * @param omrsClassification the supplied omrs classification to map
      * @return the omas classification, null if not known.
      */
-    public org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification getOMASClassification(String name, Classification omrsClassification)  {
+    public org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification getOMASClassification(Classification omrsClassification)  {
+        final String name = omrsClassification.getName();
         final String serviceName = omrsapiHelper.getServiceName();
+
         if (this.repositoryHelper.isTypeOf(serviceName,name,"SpineAttribute")) {
             return new SpineAttributeMapper(this.omrsapiHelper).mapOmrsToBean(omrsClassification);
         }
