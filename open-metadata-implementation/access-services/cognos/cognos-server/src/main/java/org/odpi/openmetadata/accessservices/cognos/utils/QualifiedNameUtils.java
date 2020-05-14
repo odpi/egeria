@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.cognos.utils;
 
-import org.springframework.util.StringUtils;
 
 public class QualifiedNameUtils {
 
@@ -13,7 +12,7 @@ public class QualifiedNameUtils {
 
 	public static String buildQualifiedName(String parentQualifiedName, String typeName, String value) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(StringUtils.isEmpty(parentQualifiedName) ? "" : (parentQualifiedName + SEPARATOR))
+		sb.append((parentQualifiedName == null || parentQualifiedName.isEmpty()) ? "" : (parentQualifiedName + SEPARATOR))
 		.append(OPEN_BRACKET)
 		.append(typeName)
 		.append(CLOSE_BRACKET)

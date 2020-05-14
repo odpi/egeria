@@ -14,7 +14,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -195,9 +194,10 @@ public class OMEntityDaoForTests extends OMEntityDao {
      * @return the entity that has the specified qualified name
      */
     private EntityDetail checkEntities(List<EntityDetail> existingEntities, String qualifiedName) {
-        if (!CollectionUtils.isEmpty(existingEntities))
-            return existingEntities.stream().filter(e -> qualifiedName.equals(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.COGNOS_OMAS_NAME, Constants.QUALIFIED_NAME, e.getProperties(), "checkEntities"))).findFirst().orElse(null);
-        return null;
+        if (existingEntities == null || existingEntities.isEmpty()) {
+        	return null;
+        }
+        return existingEntities.stream().filter(e -> qualifiedName.equals(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.COGNOS_OMAS_NAME, Constants.QUALIFIED_NAME, e.getProperties(), "checkEntities"))).findFirst().orElse(null);
     }
 
     /**
@@ -213,11 +213,12 @@ public class OMEntityDaoForTests extends OMEntityDao {
                                          String guid1,
                                          String guid2) throws CognosCheckedException {
         List<Relationship> relationships = getRelationships(relationshipType, guid2);
-        if (!CollectionUtils.isEmpty(relationships)){
-            return relationships.stream().filter(relationship -> relationship.getType().getTypeDefName().equals(relationshipType)
-                    && checkRelationshipEnds(relationship, guid1, guid2)).findFirst().orElse(null);
+        if (relationships == null || relationships.isEmpty()) {
+        	return null;
         }
-        return null;
+        
+        return relationships.stream().filter(relationship -> relationship.getType().getTypeDefName().equals(relationshipType)
+                && checkRelationshipEnds(relationship, guid1, guid2)).findFirst().orElse(null);
     }
 
     public List<Relationship> getRelationships(String relationshipType, String guid) throws CognosCheckedException {
