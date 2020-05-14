@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -25,6 +27,7 @@ public class RexSearchBody {
     private String                    searchText;                    // must be non-null
     private Boolean                   enterpriseOption;
     private String                    typeName;                      // filter by type, or null
+    private List<String>              classificationNames;           // Limit results of entity searches to instances with at least one of these classifications
     private Integer                   gen;                           // indicator of the current gen of the traversal
 
 
@@ -44,6 +47,8 @@ public class RexSearchBody {
 
     public String getTypeName() { return typeName; }
 
+    public List<String> getClassificationNames() { return classificationNames; }
+
     public Boolean getEnterpriseOption() { return enterpriseOption; }
 
     public Integer getGen() { return gen; }
@@ -56,6 +61,8 @@ public class RexSearchBody {
     public void setSearchText(String searchText) { this.searchText = searchText; }
 
     public void setTypeName(String typeName) { this.typeName = typeName; }
+
+    public void setClassificationNames(List<String> classificationNames ) { this.classificationNames = classificationNames; }
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
 

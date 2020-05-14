@@ -256,6 +256,7 @@ public class RexViewRESTServices {
                                                           requestBody.getEnterpriseOption(),
                                                           requestBody.getSearchText(),
                                                           requestBody.getTypeName(),
+                                                          requestBody.getClassificationNames(),
                                                           methodName));
 
                 response.setSearchCategory("Entity");

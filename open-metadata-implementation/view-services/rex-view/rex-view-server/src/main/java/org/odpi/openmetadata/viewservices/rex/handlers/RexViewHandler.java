@@ -351,13 +351,14 @@ public class RexViewHandler
      * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
      * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
      */
-    public Map<String, RexEntityDigest> findEntities(String    userId,
-                                                     String    repositoryServerName,
-                                                     String    repositoryServerURLRoot,
-                                                     boolean   enterpriseOption,
-                                                     String    searchText,
-                                                     String    entityTypeName,
-                                                     String    methodName)
+    public Map<String, RexEntityDigest> findEntities(String       userId,
+                                                     String       repositoryServerName,
+                                                     String       repositoryServerURLRoot,
+                                                     boolean      enterpriseOption,
+                                                     String       searchText,
+                                                     String       entityTypeName,
+                                                     List<String> classificationNames,
+                                                     String       methodName)
     throws
     RepositoryErrorException,
     InvalidParameterException,
@@ -398,7 +399,7 @@ public class RexViewHandler
                     searchText,
                     0,
                     null,
-                    null,
+                    classificationNames,
                     null,
                     null,
                     null,
