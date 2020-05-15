@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.cognos.test.model.module;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.testng.Assert.*;
+import org.testng.annotations.Test;
 
 import org.odpi.openmetadata.accessservices.cognos.model.module.Column;
 import org.odpi.openmetadata.accessservices.cognos.test.utils.TestUtilities;
@@ -48,7 +48,7 @@ public class ColumnTest {
 		Column obj = TestUtilities.readObjectJson(master, Column.class);
 
 		assertEquals(COLUMN_NAME, obj.getName());
-		assertEquals(true, obj.isNullable());
+		assertEquals(Boolean.TRUE, obj.isNullable());
 		assertEquals(VENDOR_TYPE, obj.getVendorType());
 		assertEquals(DATA_TYPE, obj.getDatatype());
 	}

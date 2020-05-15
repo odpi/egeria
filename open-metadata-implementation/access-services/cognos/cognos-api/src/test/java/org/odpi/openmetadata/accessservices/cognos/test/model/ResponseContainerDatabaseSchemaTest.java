@@ -3,9 +3,10 @@
 
 package org.odpi.openmetadata.accessservices.cognos.test.model;
 
-import static org.junit.Assert.assertEquals;
+import static org.testng.Assert.assertEquals;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
+
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDatabaseSchema;
 import org.odpi.openmetadata.accessservices.cognos.test.utils.TestUtilities;
 

@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.accessservices.cognos.test.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,6 +15,11 @@ import java.nio.file.Paths;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Class for static function helpers to setup, run, assert junit tests.
+ * 
+ *
+ */
 public class TestUtilities {
 	
 
@@ -29,7 +34,7 @@ public class TestUtilities {
 			fail("Can't write JSON for object " + ds.getClass().getName());
 		}
 		String output = new String(baos.toByteArray(), StandardCharsets.UTF_8);
-		assertEquals(ds.getClass().getName() + " json failed.", master, output);
+		assertEquals(master, output, ds.getClass().getName() + " json failed.");
 	}
 	
 	static public <T extends Object> T readObjectJson(String json, Class<T> cls) {

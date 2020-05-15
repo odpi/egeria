@@ -5,13 +5,13 @@
 package org.odpi.openmetadata.accessservices.cognos.test.model;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerSchemaTables;
 import org.odpi.openmetadata.accessservices.cognos.test.utils.TestUtilities;
 

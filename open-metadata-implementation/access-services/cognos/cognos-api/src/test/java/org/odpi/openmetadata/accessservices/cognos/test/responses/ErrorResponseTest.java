@@ -3,9 +3,9 @@
 
 package org.odpi.openmetadata.accessservices.cognos.test.responses;
 
-import static org.junit.Assert.assertEquals;
+import static org.testng.Assert.assertEquals;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.responses.ErrorResponse;
@@ -29,7 +29,7 @@ public class ErrorResponseTest {
 	public void toJson() {
 		
 		CognosCheckedException ex = new CognosCheckedException(
-				CognosErrorCode.INCORRECT_MODEL_EXCEPTION.getMessageDefinition(),
+				CognosErrorCode.INCORRECT_MODEL_EXCEPTION.getMessageDefinition("guidEntity", "error description"),
 				"ErrorResponse",
 				"");
 		

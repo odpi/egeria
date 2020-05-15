@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.cognos.test.model.module;
 
-import static org.junit.Assert.assertNotNull;
+import static org.testng.Assert.assertNotNull;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.odpi.openmetadata.accessservices.cognos.model.module.Column;
 import org.odpi.openmetadata.accessservices.cognos.model.module.TableItem;
 import org.odpi.openmetadata.accessservices.cognos.test.utils.TestUtilities;
