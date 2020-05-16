@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.cognos.admin;
 
 
 import java.util.List;
-import java.util.Map;
 
 import org.odpi.openmetadata.accessservices.cognos.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.cognos.auditlog.CognosAuditCode;
@@ -27,7 +26,13 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * CognosAdmin is the class that is called by the OMAG Server to initialize and terminate
+ * the Cognos OMAS.  The initialization call provides this OMAS with resources from the
+ * Open Metadata Repository Services.
+ * 
+ *
+ */
 public class CognosAdmin extends AccessServiceAdmin
 {
 
@@ -50,24 +55,14 @@ public class CognosAdmin extends AccessServiceAdmin
      */
     @Override
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties, OMRSTopicConnector enterpriseOMRSTopicConnector, OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
-        final String actionDescription = "initialize";
-        CognosAuditCode auditCode;
-
-        auditCode = CognosAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
-
+        
+    	final String actionDescription = "initialize";
+        auditLog.logMessage(actionDescription, CognosAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
         this.auditLog = auditLog;
 
-        if (enterpriseConnector != null)
-        {
-            serverName = enterpriseConnector.getServerName();
-        }
+		if (enterpriseConnector != null) {
+			serverName = enterpriseConnector.getServerName();
+		}
 
         String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
         cognosOutTopicConnector = initializeCognosTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
@@ -81,58 +76,34 @@ public class CognosAdmin extends AccessServiceAdmin
         OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
 
         if (cognosOutTopicConnector != null) {
-            startConnector(CognosAuditCode.SERVICE_REGISTERED_WITH_IV_OUT_TOPIC, actionDescription, outTopicName, cognosOutTopicConnector);
+            startConnector(CognosAuditCode.SERVICE_REGISTERED_WITH_COGNOS_OUT_TOPIC, actionDescription, outTopicName, cognosOutTopicConnector);
         }
 
         DatabaseContextHandler contextBuilders = new DatabaseContextHandler(omEntityDao);
         instance = new CognosServicesInstance(contextBuilders, serverName);
-
-        auditCode = CognosAuditCode.SERVICE_INITIALIZED;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(serverName),
-                accessServiceConfigurationProperties.toString(),
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        
+        auditLog.logMessage(actionDescription, CognosAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
     }
 
     private void startConnector(CognosAuditCode auditCode, String actionDescription, String topicName, OpenMetadataTopicConnector topicConnector) throws OMAGConfigurationErrorException {
 
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(topicName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
-
+        auditLog.logMessage(actionDescription, auditCode.getMessageDefinition(topicName));
 
         try {
             topicConnector.start();
         } catch (ConnectorCheckedException e) {
-            auditCode = CognosAuditCode.ERROR_INITIALIZING_COGNOS_TOPIC_CONNECTION;
-            auditLog.logException(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(topicName, serverName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-            
-            throw new OMAGConfigurationErrorException(400,
-                    this.getClass().getSimpleName(),
-                    actionDescription,
-                    auditCode.getLogMessage(),
-                    auditCode.getLogMessageId(),
-                    new String[] {serverName},
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e.getClass().getSimpleName(),
-                    (Map<String, Object>) null);
-           
-            
+        	
+            auditLog.logException(actionDescription, 
+            		CognosAuditCode.getAuditLogMessageDefinition(
+            			CognosErrorCode.ERROR_INITIALIZING_COGNOS_TOPIC_CONNECTION.getMessageDefinition(), topicName, serverName),
+            		e);
+
+            throw new OMAGConfigurationErrorException(
+            		CognosErrorCode.ERROR_INITIALIZING_COGNOS_TOPIC_CONNECTION
+            		.getMessageDefinition(topicName, serverName),
+            		getClass().getSimpleName(),
+            		actionDescription,
+            		e);
         }
     }
 
@@ -146,26 +117,20 @@ public class CognosAdmin extends AccessServiceAdmin
      * @return the topic created based on the connection properties
      */
     private OpenMetadataTopicConnector initializeCognosTopicConnector(Connection topicConnection) {
-        final String actionDescription = "initialize";
         if (topicConnection != null) {
             try {
                 return getTopicConnector(topicConnection);
             } catch (Exception e) {
-                CognosAuditCode auditCode = CognosAuditCode.ERROR_INITIALIZING_CONNECTION;
-                auditLog.logException(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(topicConnection.toString(), serverName, e.getMessage()),
-                        topicConnection.toString(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction(),
-                        e);
+		        final String actionDescription = "initialize";
+                auditLog.logException(actionDescription, 
+                		CognosAuditCode.ERROR_INITIALIZING_CONNECTION
+                		.getMessageDefinition(topicConnection.toString(), serverName, e.getMessage()), e);
+
                 throw e;
             }
 
         }
         return null;
-
     }
 
 
@@ -199,7 +164,10 @@ public class CognosAdmin extends AccessServiceAdmin
      * Shutdown the access service.
      */
     public void shutdown() {
-        try {
+
+    	final String actionDescription = "shutdown";
+        
+    	try {
         	cognosOutTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
             log.error("Error disconnecting cognos topic connector");
@@ -209,17 +177,7 @@ public class CognosAdmin extends AccessServiceAdmin
         {
             instance.shutdown();
         }
-
-        final String actionDescription = "shutdown";
-        CognosAuditCode auditCode;
-
-        auditCode = CognosAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(serverName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        
+        auditLog.logMessage(actionDescription, CognosAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
     }
 }

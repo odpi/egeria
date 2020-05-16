@@ -6,6 +6,27 @@ package org.odpi.openmetadata.accessservices.cognos.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
+/**
+ * The CognosErrorCode is definition of the first failure data capture (FFDC) for errors that occur when working with
+ * the Cognos OMAS Services. It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
+ * <p>
+ * The fields in the enum are defined in {@link org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition}.
+ * The object is used to build exception augmented with parameters to identify related context:
+ * <ul>
+ * <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
+ * <li><ul>
+ * <li>500 - internal error</li>
+ * <li>400 - invalid parameters</li>
+ * <li>404 - not found</li>
+ * <li>409 - data conflict errors - eg item already defined</li>
+ * </ul></li>
+ * <li>Error Message Id - to uniquely identify the message</li>
+ * <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
+ * <li>SystemAction - describes the result of the error</li>
+ * <li>UserAction - describes how a AssetConsumerInterface should correct the error</li>
+ * </ul>
+ */
+
 public enum CognosErrorCode implements ExceptionMessageSet {
 
 	ADD_RELATIONSHIP_EXCEPTION(
@@ -73,6 +94,11 @@ public enum CognosErrorCode implements ExceptionMessageSet {
 			"Classification for entity {0} failed set classification {1}.",
 			"The system is unable to process the request.",
 			"Refresh data."),
+    ERROR_INITIALIZING_COGNOS_TOPIC_CONNECTION(400,
+    		"OMAS-COGNOS-0013",
+            "Unable to initialize the connection to topic {0} in the Cognos Open Metadata Access Service (OMAS) instance for server {1} ",
+            "The connection to Cognos topic could not be initialized.",
+            "Review the exception and resolve the configuration. "),
 
 	UNKNOWN_ERROR(
 			"OMAS-COGNOS-500", 
@@ -85,6 +111,14 @@ public enum CognosErrorCode implements ExceptionMessageSet {
 	private ExceptionMessageDefinition messageDefinition;
 
 
+	/**
+	 * Constructor with all fields initialized from passed parameters. 
+	 * @param httpErrorCode suggested for response.
+	 * @param errorMessageId to uniquely identify the message. 
+	 * @param errorMessage placeholder to allow additional values to be captured from context.
+	 * @param systemAction describes the result of the error
+	 * @param userAction describes how a consumer should correct the error.
+	 */
 	CognosErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction,
 			String userAction) {
 		this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
@@ -94,6 +128,13 @@ public enum CognosErrorCode implements ExceptionMessageSet {
 				userAction);
 	}
 
+	/**
+	 * Constructor for HTTP response status 500.
+	 * @param errorMessageId to uniquely identify the message. 
+	 * @param errorMessage placeholder to allow additional values to be captured from context.
+	 * @param systemAction describes the result of the error
+	 * @param userAction describes how a consumer should correct the error.
+	 */
 	CognosErrorCode(String errorMessageId, String errorMessage, String systemAction, String userAction) {
 		this(500, errorMessageId, errorMessage, systemAction, userAction);
 	}
