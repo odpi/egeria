@@ -29,10 +29,6 @@
 
     <packaging>pom</packaging>
 
-    <properties>
-        <apache.solr.version>7.7.2</apache.solr.version>
-    </properties>
-
     <modules>
         <module>atlas</module>
         <module>ranger</module>
