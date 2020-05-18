@@ -18,7 +18,11 @@ Below are the highlights:
   [hands-on labs](../open-metadata-resources/open-metadata-labs) and
   [samples](../open-metadata-resources/open-metadata-samples) demonstrating
   the new IT Infrastructure and API support for Egeria. 
-  
+
+* A new dependencies has been included:
+    * Spring Boot Actuator - Provides features to help you monitor and manage your application when you push it to production
+    * micrometer-registry-prometheus - Exposes metrics in a format that can be scraped by a Prometheus server
+ 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

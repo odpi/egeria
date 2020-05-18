@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.samples;
 
-
-import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.accessservices.assetowner.client.AvroFileAssetOwner;
 
 /**
@@ -69,8 +67,6 @@ public class CreateAvroFileAssetSample
      */
     public static void main(String[] args)
     {
-        org.apache.log4j.BasicConfigurator.configure(new NullAppender());
-
         if ((args == null) || (args.length < 1))
         {
             System.out.println("Please specify the file name in the first parameter");

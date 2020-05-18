@@ -1520,11 +1520,11 @@ public class RelationshipsFVT
         System.out.println("Got ProjectScopeRelationship " +gotProjectScopeRelationship);
 
         ProjectScope updateProjectScope = new ProjectScope();
-        updateProjectScope.setScopeDescription("ddd2");
+        updateProjectScope.setDescription("ddd2");
         updateProjectScope.setGuid(createdProjectScope.getGuid());
         ProjectScope updatedProjectScope = subjectAreaRelationship.updateProjectScopeRelationship(this.userId, updateProjectScope);
         FVTUtils.validateLine(updatedProjectScope);
-        if (!updatedProjectScope.getScopeDescription().equals(updateProjectScope.getScopeDescription()))
+        if (!updatedProjectScope.getDescription().equals(updateProjectScope.getDescription()))
         {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Project scope  update scopeDescription not as expected", "", "");
         }
@@ -1539,11 +1539,11 @@ public class RelationshipsFVT
         }
         System.out.println("Updated ProjectScopeRelationship " + createdProjectScope);
         ProjectScope replaceProjectScope = new ProjectScope();
-        replaceProjectScope.setScopeDescription("ddd3");
+        replaceProjectScope.setDescription("ddd3");
         replaceProjectScope.setGuid(createdProjectScope.getGuid());
         ProjectScope replacedProjectScope = subjectAreaRelationship.replaceProjectScopeRelationship(this.userId, replaceProjectScope);
         FVTUtils.validateLine(replacedProjectScope);
-        if (!replacedProjectScope.getScopeDescription().equals(replaceProjectScope.getScopeDescription()))
+        if (!replacedProjectScope.getDescription().equals(replaceProjectScope.getDescription()))
         {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: project scope replace scope description not as expected", "", "");
         }
