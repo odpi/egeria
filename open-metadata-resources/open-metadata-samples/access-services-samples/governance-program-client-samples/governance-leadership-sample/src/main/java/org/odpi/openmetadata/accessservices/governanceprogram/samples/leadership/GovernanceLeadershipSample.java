@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceprogram.samples;
+package org.odpi.openmetadata.accessservices.governanceprogram.samples.leadership;
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.PersonalProfileManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.NoProfileForUserException;

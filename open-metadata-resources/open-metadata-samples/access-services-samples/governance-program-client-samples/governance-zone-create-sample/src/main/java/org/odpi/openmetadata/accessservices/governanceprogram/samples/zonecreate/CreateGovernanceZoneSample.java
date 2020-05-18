@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 
 /**
- * CreateGovernanceZoneSample illustrates the use of the Asset Owner OMAS API to create governance zones
+ * CreateGovernanceZoneSample illustrates the use of the Governance Program OMAS API to create governance zones
  * for Coco Pharmaceuticals.
  */
 public class CreateGovernanceZoneSample

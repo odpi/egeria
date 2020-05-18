@@ -7,7 +7,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>asset-management-samples</artifactId>
+        <artifactId>governance-program-client-samples</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.8-SNAPSHOT</version>
     </parent>
@@ -19,17 +19,17 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <artifactId>governance-zone-create-sample</artifactId>
-    <name>Governance zone create sample</name>
+    <artifactId>governance-leadership-sample</artifactId>
+    <name>Governance leadership sample</name>
     <description>
-        Samples that shows how to create a Governance Zone using the Governance Program OMAS
+        Samples that shows how to extract information on Governance leadership via the Governance Program OMAS
     </description>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-connector-framework</artifactId>
+            <artifactId>governance-program-api</artifactId>
         </dependency>
 
         <dependency>
@@ -38,8 +38,18 @@
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>community-profile-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>community-profile-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
         </dependency>
 
         <!-- Logback used as provider for slf4j logging -->
@@ -69,7 +79,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>org.odpi.openmetadata.accessservices.governanceprogram.samples.zonecreate.CreateGovernanceZoneSample</mainClass>
+                                    <mainClass>org.odpi.openmetadata.accessservices.governanceprogram.samples.leadership.GovernanceLeadershipSample</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>
