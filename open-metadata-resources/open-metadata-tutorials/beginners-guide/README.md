@@ -14,9 +14,9 @@ The technologies involved fit into these categories:
 1. [Components for building and developing the Egeria software](building.md).
 
 If you only want to get up and running with Egeria to follow along our tutorials as quickly as possible, you can simply
-run through (1) or (2) which avoids the need to configure egeria and associated components locally..
+run through (1) or (2) which avoids the need to configure egeria and associated components locally.
 
-If you are interested in understanding more about the underlying technologies, the remaining links provide progressively
+If you are interested in understanding more about the underlying technologies, links (3) and (4) provide progressively
 more detail about each of the underlying technologies used by both the tutorials and by Egeria itself.
 
 
