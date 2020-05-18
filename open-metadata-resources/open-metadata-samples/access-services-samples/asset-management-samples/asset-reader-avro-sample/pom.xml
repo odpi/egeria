@@ -19,7 +19,7 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <artifactId>assset-reader-sample</artifactId>
+    <artifactId>asset-reader-avro-sample</artifactId>
 
     <name>Asset reader avro sample</name>
     <description>
@@ -76,7 +76,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>org.odpi.openmetadata.accessservices.assetowner.samples.readavrofile.AvroFileReaderSample</mainClass>
+                                    <mainClass>org.odpi.openmetadata.accessservices.assetconsumer.samples.readavrofile.AvroFileReaderSample</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>

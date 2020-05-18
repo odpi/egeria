@@ -61,7 +61,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>org.odpi.openmetadata.accessservices.assetowner.samples.createavrofile.CreateCsvAssetFileSample</mainClass>
+                                    <mainClass>org.odpi.openmetadata.accessservices.assetowner.samples.createcsvfile.CreateCSVFileAssetSample</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>

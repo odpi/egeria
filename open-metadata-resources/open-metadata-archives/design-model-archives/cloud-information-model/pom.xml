@@ -56,6 +56,13 @@
             <artifactId>jsonld-java</artifactId>
         </dependency>
 
+        <!-- Logback used as provider for slf4j logging -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

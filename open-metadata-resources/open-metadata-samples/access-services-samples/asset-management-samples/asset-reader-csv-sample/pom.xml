@@ -71,7 +71,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>org.odpi.openmetadata.accessservices.assetowner.samples.readavrofile.AvroFileReaderSample</mainClass>
+                                    <mainClass>org.odpi.openmetadata.accessservices.assetconsumer.samples.readcsvfile.CSVFileReaderSample</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>
