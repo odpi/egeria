@@ -79,7 +79,7 @@ public class DatabasePlatformResource
      * @param integratorGUID unique identifier of software server capability representing the caller
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseProperties properties to store
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element or
      * InvalidParameterException  one of the parameters is invalid or
@@ -93,9 +93,9 @@ public class DatabasePlatformResource
                                                    @PathVariable String             integratorGUID,
                                                    @PathVariable String             integratorName,
                                                    @PathVariable String             templateGUID,
-                                                   @RequestBody  DatabaseProperties databaseProperties)
+                                                   @RequestBody  TemplateProperties templateProperties)
     {
-        return restAPI.createDatabaseFromTemplate(serverName, userId, integratorGUID, integratorName, templateGUID, databaseProperties);
+        return restAPI.createDatabaseFromTemplate(serverName, userId, integratorGUID, integratorName, templateGUID, templateProperties);
     }
 
 
@@ -362,7 +362,7 @@ public class DatabasePlatformResource
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseGUID unique identifier of the database where the schema is located
-     * @param databaseSchemaProperties properties about the database schema
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new database schema or
      * InvalidParameterException  one of the parameters is invalid or
@@ -371,15 +371,15 @@ public class DatabasePlatformResource
      */
     @PostMapping(path = "/integrators/{integratorGUID}/{integratorName}/databases/{databaseGUID}/schemas/from-template/{templateGUID}")
 
-    public GUIDResponse createDatabaseSchemaFromTemplate(@PathVariable String                   serverName,
-                                                         @PathVariable String                   userId,
-                                                         @PathVariable String                   integratorGUID,
-                                                         @PathVariable String                   integratorName,
-                                                         @PathVariable String                   templateGUID,
-                                                         @PathVariable String                   databaseGUID,
-                                                         @RequestBody  DatabaseSchemaProperties databaseSchemaProperties)
+    public GUIDResponse createDatabaseSchemaFromTemplate(@PathVariable String             serverName,
+                                                         @PathVariable String             userId,
+                                                         @PathVariable String             integratorGUID,
+                                                         @PathVariable String             integratorName,
+                                                         @PathVariable String             templateGUID,
+                                                         @PathVariable String             databaseGUID,
+                                                         @RequestBody  TemplateProperties templateProperties)
     {
-        return restAPI.createDatabaseSchemaFromTemplate(serverName, userId, integratorGUID, integratorName, templateGUID, databaseGUID, databaseSchemaProperties);
+        return restAPI.createDatabaseSchemaFromTemplate(serverName, userId, integratorGUID, integratorName, templateGUID, databaseGUID, templateProperties);
     }
 
 
@@ -644,7 +644,7 @@ public class DatabasePlatformResource
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
-     * @param databaseTableProperties properties about the database table
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new database table or
      * InvalidParameterException  one of the parameters is invalid or
@@ -653,15 +653,15 @@ public class DatabasePlatformResource
      */
     @PostMapping(path = "/integrators/{integratorGUID}/{integratorName}/databases/schemas/{databaseSchemaGUID}/tables/from-template/{templateGUID}")
 
-    public GUIDResponse createDatabaseTableFromTemplate(@PathVariable String                  serverName,
-                                                        @PathVariable String                  userId,
-                                                        @PathVariable String                  integratorGUID,
-                                                        @PathVariable String                  integratorName,
-                                                        @PathVariable String                  templateGUID,
-                                                        @PathVariable String                  databaseSchemaGUID,
-                                                        @RequestBody  DatabaseTableProperties databaseTableProperties)
+    public GUIDResponse createDatabaseTableFromTemplate(@PathVariable String             serverName,
+                                                        @PathVariable String             userId,
+                                                        @PathVariable String             integratorGUID,
+                                                        @PathVariable String             integratorName,
+                                                        @PathVariable String             templateGUID,
+                                                        @PathVariable String             databaseSchemaGUID,
+                                                        @RequestBody  TemplateProperties templateProperties)
     {
-        return restAPI.createDatabaseTableFromTemplate(serverName, userId, integratorGUID, integratorName, templateGUID, databaseSchemaGUID, databaseTableProperties);
+        return restAPI.createDatabaseTableFromTemplate(serverName, userId, integratorGUID, integratorName, templateGUID, databaseSchemaGUID, templateProperties);
     }
 
 
@@ -862,7 +862,7 @@ public class DatabasePlatformResource
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
-     * @param databaseViewProperties properties for the new view
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the database view or
      * InvalidParameterException  one of the parameters is invalid or
@@ -871,15 +871,15 @@ public class DatabasePlatformResource
      */
     @PostMapping(path = "/integrators/{integratorGUID}/{integratorName}/databases/schemas/{databaseSchemaGUID}/tables/views/from-template/{templateGUID}")
 
-    public GUIDResponse createDatabaseViewFromTemplate(@PathVariable String                  serverName,
-                                                       @PathVariable String                  userId,
-                                                       @PathVariable String                  integratorGUID,
-                                                       @PathVariable String                  integratorName,
-                                                       @PathVariable String                  templateGUID,
-                                                       @PathVariable String                  databaseSchemaGUID,
-                                                       @RequestBody  DatabaseTableProperties databaseViewProperties)
+    public GUIDResponse createDatabaseViewFromTemplate(@PathVariable String             serverName,
+                                                       @PathVariable String             userId,
+                                                       @PathVariable String             integratorGUID,
+                                                       @PathVariable String             integratorName,
+                                                       @PathVariable String             templateGUID,
+                                                       @PathVariable String             databaseSchemaGUID,
+                                                       @RequestBody  TemplateProperties templateProperties)
     {
-        return restAPI.createDatabaseViewFromTemplate(serverName, userId, integratorGUID, integratorName, templateGUID, databaseSchemaGUID, databaseViewProperties);
+        return restAPI.createDatabaseViewFromTemplate(serverName, userId, integratorGUID, integratorName, templateGUID, databaseSchemaGUID, templateProperties);
     }
 
 
@@ -1086,7 +1086,7 @@ public class DatabasePlatformResource
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for the new column
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the database column
      * InvalidParameterException  one of the parameters is invalid or
@@ -1095,101 +1095,15 @@ public class DatabasePlatformResource
      */
     @PostMapping(path = "/integrators/{integratorGUID}/{integratorName}/databases/schemas/tables/{databaseTableGUID}/columns/from-template/{templateGUID}")
 
-    public GUIDResponse createDatabaseColumnFromTemplate(@PathVariable String                   serverName,
-                                                         @PathVariable String                   userId,
-                                                         @PathVariable String                   integratorGUID,
-                                                         @PathVariable String                   integratorName,
-                                                         @PathVariable String                   templateGUID,
-                                                         @PathVariable String                   databaseTableGUID,
-                                                         @RequestBody  DatabaseColumnProperties databaseColumnProperties)
+    public GUIDResponse createDatabaseColumnFromTemplate(@PathVariable String             serverName,
+                                                         @PathVariable String             userId,
+                                                         @PathVariable String             integratorGUID,
+                                                         @PathVariable String             integratorName,
+                                                         @PathVariable String             templateGUID,
+                                                         @PathVariable String             databaseTableGUID,
+                                                         @RequestBody  TemplateProperties templateProperties)
     {
-        return restAPI.createDatabaseColumnFromTemplate(serverName, userId, integratorGUID, integratorName, templateGUID, databaseTableGUID, databaseColumnProperties);
-    }
-
-
-    /**
-     * Create a new metadata element to represent a database derived column.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
-     * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for the new column
-     *
-     * @return unique identifier of the new metadata element for the database column or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/integrators/{integratorGUID}/{integratorName}/databases/schemas/tables/{databaseTableGUID}/columns/derived")
-
-    public GUIDResponse createDatabaseDerivedColumn(@PathVariable String                          serverName,
-                                                    @PathVariable String                          userId,
-                                                    @PathVariable String                          integratorGUID,
-                                                    @PathVariable String                          integratorName,
-                                                    @PathVariable String                          databaseTableGUID,
-                                                    @RequestBody  DatabaseDerivedColumnProperties databaseColumnProperties)
-    {
-        return restAPI.createDatabaseDerivedColumn(serverName, userId, integratorGUID, integratorName, databaseTableGUID, databaseColumnProperties);
-    }
-
-
-    /**
-     * Create a new metadata element to represent a database derived column using an existing metadata element as a template.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for the new column
-     *
-     * @return unique identifier of the new metadata element for the database column or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/integrators/{integratorGUID}/{integratorName}/databases/schemas/tables/{databaseTableGUID}/columns/derived/from-template/{templateGUID}")
-
-    public GUIDResponse createDatabaseDerivedColumnFromTemplate(@PathVariable String                          serverName,
-                                                                @PathVariable String                          userId,
-                                                                @PathVariable String                          integratorGUID,
-                                                                @PathVariable String                          integratorName,
-                                                                @PathVariable String                          templateGUID,
-                                                                @PathVariable String                          databaseTableGUID,
-                                                                @RequestBody  DatabaseDerivedColumnProperties databaseColumnProperties)
-    {
-        return restAPI.createDatabaseDerivedColumnFromTemplate(serverName, userId, integratorGUID, integratorName, templateGUID, databaseTableGUID, databaseColumnProperties);
-    }
-
-
-    /**
-     * Create a link to the data value that is used to derive a database column.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
-     * @param databaseColumnGUID unique identifier of the derived column
-     * @param databaseQueryProperties properties for the query
-     *
-     * @return void or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/integrators/{integratorGUID}/{integratorName}/databases/schemas/tables/columns/{databaseColumnGUID}/query-target")
-
-    public VoidResponse addQueryTargetToDerivedColumn(@PathVariable String                  serverName,
-                                                      @PathVariable String                  userId,
-                                                      @PathVariable String                  integratorGUID,
-                                                      @PathVariable String                  integratorName,
-                                                      @PathVariable String                  databaseColumnGUID,
-                                                      @RequestBody  DatabaseQueryProperties databaseQueryProperties)
-    {
-        return restAPI.addQueryTargetToDerivedColumn(serverName, userId, integratorGUID, integratorName, databaseColumnGUID, databaseQueryProperties);
+        return restAPI.createDatabaseColumnFromTemplate(serverName, userId, integratorGUID, integratorName, templateGUID, databaseTableGUID, templateProperties);
     }
 
 
@@ -1218,34 +1132,6 @@ public class DatabasePlatformResource
                                              @RequestBody  DatabaseColumnProperties databaseColumnProperties)
     {
         return restAPI.updateDatabaseColumn(serverName, userId, integratorGUID, integratorName, databaseColumnGUID, databaseColumnProperties);
-    }
-
-
-    /**
-     * Update the metadata element representing a database derived column.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
-     * @param databaseColumnGUID unique identifier of the metadata element to update
-     * @param databaseColumnProperties new properties for the metadata element
-     *
-     * @return void or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/integrators/{integratorGUID}/{integratorName}/databases/schemas/tables/columns/derived/{databaseColumnGUID}")
-
-    public VoidResponse updateDatabaseDerivedColumn(@PathVariable String                          serverName,
-                                                    @PathVariable String                          userId,
-                                                    @PathVariable String                          integratorGUID,
-                                                    @PathVariable String                          integratorName,
-                                                    @PathVariable String                          databaseColumnGUID,
-                                                    @RequestBody  DatabaseDerivedColumnProperties databaseColumnProperties)
-    {
-        return restAPI.updateDatabaseDerivedColumn(serverName, userId, integratorGUID, integratorName, databaseColumnGUID, databaseColumnProperties);
     }
 
 
