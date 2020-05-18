@@ -24,14 +24,11 @@ public final class AssetLineageConstants {
 
     public static final String SCHEMA_ELEMENT = "SchemaElement";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
-    public static final String SCHEMA_TYPE = "SchemaType";
     public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
 
     //Area 5 Types
     public static final String RELATIONAL_COLUMN = "RelationalColumn";
     public static final String RELATIONAL_TABLE = "RelationalTable";
-    public static final String DEPLOYED_DB_SCHEMA_TYPE = "DeployedDatabaseSchema";
-    public static final String DATA_STORE = "DataStore";
     public static final String DATABASE = "Database";
     public static final String FILE_FOLDER = "FileFolder";
 
@@ -39,13 +36,12 @@ public final class AssetLineageConstants {
     public static final String PORT_ALIAS = "PortAlias";
     public static final String PORT_IMPLEMENTATION = "PortImplementation";
     public static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
-    public static final String TABULAR_COLUMN_TYPE = "TabularColumnType";
     public static final String TABULAR_COLUMN = "TabularColumn";
     public static final String DATA_FILE = "DataFile";
     public static final String CONNECTION = "Connection";
+    public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
 
     //Relationships Type
-    public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
     public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
     public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
     public static final String ASSET_SCHEMA_TYPE = "AssetSchemaType";
@@ -102,7 +98,7 @@ public final class AssetLineageConstants {
 
     public static final ImmutableList<String> immutableValidLineageEntityEvents = ImmutableList.copyOf(validLineageEntityEvents);
 
-    public static final ImmutableList<String> immutableValidLineageRelationshipTypes = ImmutableList.copyOf(Arrays.asList(SCHEMA_ATTRIBUTE,
+    public static final ImmutableList<String> immutableValidLineageRelationshipTypes = ImmutableList.copyOf(Arrays.asList(
             ATTRIBUTE_FOR_SCHEMA, COMPLEX_SCHEMA_TYPE, ASSET_SCHEMA_TYPE, CONNECTION_TO_ASSET, CONNECTION_ENDPOINT, DATA_CONTENT_FOR_DATA_SET,
             SEMANTIC_ASSIGNMENT, PORT_DELEGATION, PROCESS_PORT, LINEAGE_MAPPING, PORT_SCHEMA, NESTED_FILE, FOLDER_HIERARCHY, PROCESS_HIERARCHY));
 }
