@@ -5,11 +5,15 @@ package org.odpi.openmetadata.accessservices.dataplatform.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.List;
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * DatabaseColumnProperties describes the properties of a database column.
+ * The database column may have a fixed value (inherited from tabular column or be derived by a formula.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -18,6 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DatabaseColumnProperties extends TabularColumnProperties
 {
     private static final long    serialVersionUID = 1L;
+
+    private String                        formula = null;
+    private List<DatabaseQueryProperties> queries = null;
+
 
     /**
      * Default constructor
@@ -36,6 +44,55 @@ public class DatabaseColumnProperties extends TabularColumnProperties
     public DatabaseColumnProperties(DatabaseColumnProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            formula = template.getFormula();
+            queries = template.getQueries();
+        }
+    }
+
+
+    /**
+     * Return the formula used to combine the values of the queries.  Each query is has a identifier and the
+     * formula has placeholders for these identifiers in it to show how the query results are combined.
+     *
+     * @return String formula
+     */
+    public String getFormula() { return formula; }
+
+
+    /**
+     * Set up the formula used to combine the values of the queries.  Each query is has a identifier and the
+     * formula has placeholders for these identifiers in it to show how the query results are combined.
+     *
+     * @param formula String formula
+     */
+    public void setFormula(String formula)
+    {
+        this.formula = formula;
+    }
+
+
+    /**
+     * Return the list of individual query targets for a derived column.
+     *
+     * @return list of queries and their target element
+     */
+    public List<DatabaseQueryProperties> getQueries()
+    {
+        return queries;
+    }
+
+
+    /**
+     * Set up the list of individual query targets for a derived column.
+     *
+     * @param queries list of queries and their target element
+     */
+    public void setQueries(List<DatabaseQueryProperties> queries)
+    {
+        this.queries = queries;
     }
 
 
@@ -48,7 +105,9 @@ public class DatabaseColumnProperties extends TabularColumnProperties
     public String toString()
     {
         return "DatabaseColumnProperties{" +
-                "dataType='" + getDataType() + '\'' +
+                "formula='" + formula + '\'' +
+                ", queries=" + queries +
+                ", dataType='" + getDataType() + '\'' +
                 ", defaultValue='" + getDefaultValue() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
@@ -69,11 +128,48 @@ public class DatabaseColumnProperties extends TabularColumnProperties
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", vendorProperties=" + getVendorProperties() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        DatabaseColumnProperties that = (DatabaseColumnProperties) objectToCompare;
+        return Objects.equals(formula, that.formula) &&
+                Objects.equals(queries, that.queries);
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), formula, queries);
     }
 }

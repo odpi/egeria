@@ -15,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -111,6 +112,55 @@ public class ReferenceableHandler
             }
         }
 
+        return null;
+    }
+
+
+    /**
+     * Create the property facet for the vendor properties.
+     *
+     * @param userId calling user
+     * @param referenceableGUID unique identifier of the metadata element
+     * @param qualifiedName qualified name of the metadata element
+     * @param vendorProperties properties for the vendor
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void setVendorProperties(String              userId,
+                                    String              referenceableGUID,
+                                    String              qualifiedName,
+                                    Map<String, String> vendorProperties,
+                                    String              methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        // todo
+    }
+
+
+    /**
+     * Retrieve the property facet for the vendor properties.
+     *
+     * @param userId calling user
+     * @param referenceableGUID unique identifier of the metadata element
+     * @param qualifiedName qualified name of the metadata element
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public Map<String, String> getVendorProperties(String userId,
+                                                   String referenceableGUID,
+                                                   String qualifiedName,
+                                                   String methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        // todo
         return null;
     }
 }

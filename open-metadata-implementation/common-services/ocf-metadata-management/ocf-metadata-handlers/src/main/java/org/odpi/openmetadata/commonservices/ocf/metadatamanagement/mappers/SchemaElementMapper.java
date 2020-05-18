@@ -164,7 +164,8 @@ public class SchemaElementMapper
     public static final String SCHEMA_QUERY_IMPL_RELATIONSHIP_TYPE_NAME = "SchemaQueryImplementation";
     /* End1 = DerivedSchemaAttribute; End 2 = SchemaAttribute */
 
-    public static final String QUERY_PROPERTY_NAME                      = "query";                /* from SchemaQueryImplementation relationship */
+    public static final String QUERY_ID_PROPERTY_NAME                   = "queryId"; /* from SchemaQueryImplementation relationship */
+    public static final String QUERY_PROPERTY_NAME                      = "query";   /* from SchemaQueryImplementation relationship */
 
     /* - Known Subtypes ------------------------------------------------------- */
 
@@ -245,7 +246,29 @@ public class SchemaElementMapper
     public static final String RELATIONAL_TABLE_TYPE_NAME               = "RelationalTable";
     /* SchemaAttribute */
 
+    public static final String RELATIONAL_VIEW_CLASSIFICATION_TYPE_GUID = "4814bec8-482d-463d-8376-160b0358e129";
+    public static final String RELATIONAL_VIEW_CLASSIFICATION_TYPE_NAME = "RelationalView";
+    /* Linked to RelationalTable */
+    public static final String EXPRESSION_PROPERTY_NAME                 = "expression";          /* from RelationalView classification */
+
     public static final String RELATIONAL_COLUMN_TYPE_GUID              = "aa8d5470-6dbc-4648-9e2f-045e5df9d2f9";   /* from Area 5 */
     public static final String RELATIONAL_COLUMN_TYPE_NAME              = "RelationalColumn";
     /* TabularColumn */
+
+    public static final String PRIMARY_KEY_CLASSIFICATION_TYPE_GUID     = "b239d832-50bd-471b-b17a-15a335fc7f40";
+    public static final String PRIMARY_KEY_CLASSIFICATION_TYPE_NAME     = "PrimaryKey";
+    /* Linked to RelationalColumn */
+    public static final String PRIMARY_KEY_PATTERN_PROPERTY_NAME        = "keyPattern";    /* from PrimaryKey classification */
+    public static final String PRIMARY_KEY_NAME_PROPERTY_NAME           = "name";          /* from PrimaryKey classification */
+
+    public static final String FOREIGN_KEY_RELATIONSHIP_TYPE_GUID       = "3cd4e0e7-fdbf-47a6-ae88-d4b3205e0c07"; /* from Area 5 */
+    public static final String FOREIGN_KEY_RELATIONSHIP_TYPE_NAME       = "ForeignKey";
+    /* End1 = RelationalColumn; End 2 = RelationalColumn */
+    public static final String FOREIGN_KEY_NAME_PROPERTY_NAME           = "name";          /* from ForeignKey relationship */
+    public static final String FOREIGN_KEY_DESCRIPTION_PROPERTY_NAME    = "description";   /* from ForeignKey relationship */
+    public static final String FOREIGN_KEY_CONFIDENCE_PROPERTY_NAME     = "confidence";    /* from ForeignKey relationship */
+    public static final String FOREIGN_KEY_STEWARD_PROPERTY_NAME        = "steward";       /* from ForeignKey relationship */
+    public static final String FOREIGN_KEY_SOURCE_PROPERTY_NAME         = "source";        /* from ForeignKey relationship */
+
+
 }

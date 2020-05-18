@@ -1,12 +1,8 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetowner.handlers;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers;
 
-import org.odpi.openmetadata.accessservices.assetowner.builders.FileSystemBuilder;
-import org.odpi.openmetadata.accessservices.assetowner.converters.FileSystemConverter;
-import org.odpi.openmetadata.accessservices.assetowner.mappers.FileSystemMapper;
-import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
-import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
+
 import org.odpi.openmetadata.adapters.connectors.datastore.avrofile.AvroFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
@@ -14,10 +10,9 @@ import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolder
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.AssetBuilder;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SoftwareServerCapabilityMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -33,14 +28,15 @@ import java.util.*;
  */
 public class FileSystemHandler
 {
-    private String                  serviceName;
-    private String                  serverName;
-    private List<String>            supportedZones;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private RepositoryHandler       repositoryHandler;
-    private InvalidParameterHandler invalidParameterHandler;
-    private AssetHandler            assetHandler;
-    private SchemaTypeHandler       schemaTypeHandler;
+    private String                          serviceName;
+    private String                          serverName;
+    private List<String>                    supportedZones;
+    private OMRSRepositoryHelper            repositoryHelper;
+    private RepositoryHandler               repositoryHandler;
+    private InvalidParameterHandler         invalidParameterHandler;
+    private AssetHandler                    assetHandler;
+    private SchemaTypeHandler               schemaTypeHandler;
+    private SoftwareServerCapabilityHandler softwareServerCapabilityHandler;
 
     private final static String folderDivider = "/";
     private final static String fileSystemDivider = "://";
@@ -58,27 +54,30 @@ public class FileSystemHandler
      * @param supportedZones list of supported zones
      * @param assetHandler handler for assets
      * @param schemaTypeHandler handler for schema elements
+     * @param softwareServerCapabilityHandler handler for file systems
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      */
-    public FileSystemHandler(String                  serviceName,
-                             String                  serverName,
-                             List<String>            supportedZones,
-                             AssetHandler            assetHandler,
-                             SchemaTypeHandler       schemaTypeHandler,
-                             InvalidParameterHandler invalidParameterHandler,
-                             RepositoryHandler       repositoryHandler,
-                             OMRSRepositoryHelper    repositoryHelper)
+    public FileSystemHandler(String                          serviceName,
+                             String                          serverName,
+                             InvalidParameterHandler         invalidParameterHandler,
+                             RepositoryHandler               repositoryHandler,
+                             OMRSRepositoryHelper            repositoryHelper,
+                             List<String>                    supportedZones,
+                             AssetHandler                    assetHandler,
+                             SchemaTypeHandler               schemaTypeHandler,
+                             SoftwareServerCapabilityHandler softwareServerCapabilityHandler)
     {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.supportedZones = supportedZones;
-        this.assetHandler = assetHandler;
-        this.schemaTypeHandler = schemaTypeHandler;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
+        this.serviceName                     = serviceName;
+        this.serverName                      = serverName;
+        this.supportedZones                  = supportedZones;
+        this.assetHandler                    = assetHandler;
+        this.schemaTypeHandler               = schemaTypeHandler;
+        this.softwareServerCapabilityHandler = softwareServerCapabilityHandler;
+        this.invalidParameterHandler         = invalidParameterHandler;
+        this.repositoryHandler               = repositoryHandler;
+        this.repositoryHelper                = repositoryHelper;
     }
 
 
@@ -188,78 +187,6 @@ public class FileSystemHandler
         }
 
         return result;
-    }
-
-
-    /**
-     * Files live on a file system.  This method creates a top level anchor for a file system.
-     *
-     * @param userId calling user
-     * @param uniqueName qualified name for the file system
-     * @param displayName short display name
-     * @param description description of the file system
-     * @param type type of file system
-     * @param version version of file system
-     * @param patchLevel patchLevel of software supporting the file system
-     * @param source supplier of the software for this file system
-     * @param format format of files on this file system
-     * @param encryption encryption type - null for unencrypted
-     * @param additionalProperties additional properties
-     * @param methodName calling method
-     *
-     * @return unique identifier for the file system
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public String   createFileSystemInCatalog(String               userId,
-                                              String               uniqueName,
-                                              String               displayName,
-                                              String               description,
-                                              String               type,
-                                              String               version,
-                                              String               patchLevel,
-                                              String               source,
-                                              String               format,
-                                              String               encryption,
-                                              Map<String, String>  additionalProperties,
-                                              String               methodName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
-    {
-        FileSystemBuilder builder = new FileSystemBuilder(uniqueName,
-                                                          displayName,
-                                                          description,
-                                                          type,
-                                                          version,
-                                                          patchLevel,
-                                                          source,
-                                                          format,
-                                                          encryption,
-                                                          additionalProperties,
-                                                          null,
-                                                          repositoryHelper,
-                                                          serviceName,
-                                                          serverName);
-
-        String fileSystemGUID = repositoryHandler.createEntity(userId,
-                                                               FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_GUID,
-                                                               FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_NAME,
-                                                               builder.getInstanceProperties(methodName),
-                                                               methodName);
-
-        if (fileSystemGUID != null)
-        {
-            repositoryHandler.classifyEntity(userId,
-                                             fileSystemGUID,
-                                             FileSystemMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_GUID,
-                                             FileSystemMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
-                                             builder.getClassificationInstanceProperties(methodName),
-                                             methodName);
-        }
-
-        return fileSystemGUID;
     }
 
 
@@ -389,7 +316,7 @@ public class FileSystemHandler
             if (repositoryHandler.isEntityATypeOf(userId,
                                                   anchorGUID,
                                                   guidParameterName,
-                                                  FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_NAME,
+                                                  SoftwareServerCapabilityMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                   methodName))
             {
                 repositoryHandler.createRelationship(userId,
@@ -474,7 +401,7 @@ public class FileSystemHandler
                     folderName = folderFragment;
                 }
 
-                Folder currentFolder = this.getFolderByPathName(userId, pathName, methodName);
+                Asset currentFolder = this.getFolderByPathName(userId, pathName, methodName);
 
                 if (currentFolder == null)
                 {
@@ -587,12 +514,12 @@ public class FileSystemHandler
          * Check that the file system is known and that the folder is both known and visible through the
          * supported zones.
          */
-        FileSystem fileSystem = getFileSystemByGUID(userId, fileSystemGUID, methodName);
-        Asset      folder = assetHandler.getValidatedVisibleAsset(userId,
-                                                                  supportedZones,
-                                                                  folderGUID,
-                                                                  serviceName,
-                                                                  methodName);
+        SoftwareServerCapability fileSystem = softwareServerCapabilityHandler.getSoftwareServerCapabilityByGUID(userId, fileSystemGUID, methodName);
+        Asset                    folder     = assetHandler.getValidatedVisibleAsset(userId,
+                                                                                    supportedZones,
+                                                                                    folderGUID,
+                                                                                    serviceName,
+                                                                                    methodName);
 
         /*
          * Continue with operation if all is ok.
@@ -610,7 +537,7 @@ public class FileSystemHandler
         {
             invalidParameterHandler.throwUnknownElement(userId,
                                                         fileSystemGUID,
-                                                        FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_NAME,
+                                                        SoftwareServerCapabilityMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                         serviceName,
                                                         serverName,
                                                         methodName);
@@ -650,12 +577,12 @@ public class FileSystemHandler
          * Check that the file system is known and that the folder is both known and visible through the
          * supported zones.
          */
-        FileSystem fileSystem = getFileSystemByGUID(userId, fileSystemGUID, methodName);
-        Asset      folder = assetHandler.getValidatedVisibleAsset(userId,
-                                                                  supportedZones,
-                                                                  folderGUID,
-                                                                  serviceName,
-                                                                  methodName);
+        SoftwareServerCapability fileSystem = softwareServerCapabilityHandler.getSoftwareServerCapabilityByGUID(userId, fileSystemGUID, methodName);
+        Asset                    folder = assetHandler.getValidatedVisibleAsset(userId,
+                                                                                supportedZones,
+                                                                                folderGUID,
+                                                                                serviceName,
+                                                                                methodName);
 
         /*
          * Continue with operation if all is ok.
@@ -666,7 +593,7 @@ public class FileSystemHandler
                                                                 AssetMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                 AssetMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                 fileSystemGUID,
-                                                                FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_NAME,
+                                                                SoftwareServerCapabilityMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                 folderGUID,
                                                                 methodName);
         }
@@ -674,7 +601,7 @@ public class FileSystemHandler
         {
             invalidParameterHandler.throwUnknownElement(userId,
                                                         fileSystemGUID,
-                                                        FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_NAME,
+                                                        SoftwareServerCapabilityMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                         serviceName,
                                                         serverName,
                                                         methodName);
@@ -809,7 +736,7 @@ public class FileSystemHandler
         {
             invalidParameterHandler.throwUnknownElement(userId,
                                                         fileGUID,
-                                                        FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_NAME,
+                                                        AssetMapper.DATA_FILE_TYPE_NAME,
                                                         serviceName,
                                                         serverName,
                                                         methodName);
@@ -931,22 +858,23 @@ public class FileSystemHandler
              * The file's pathname includes the root file system name.  A SoftWareServerCapability entity
              * is created for the file system if it does not exist already.
              */
-            FileSystem  fileSystem = this.getFileSystemByUniqueName(userId, fileSystemName, methodName);
+            SoftwareServerCapability  fileSystem = softwareServerCapabilityHandler.getSoftwareServerCapabilityByUniqueName(userId, fileSystemName, methodName);
 
             if (fileSystem == null)
             {
-                fileSystemGUID = this.createFileSystemInCatalog(userId,
-                                                                fileSystemName,
-                                                                fileSystemName,
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                null);
+                fileSystemGUID = softwareServerCapabilityHandler.createFileSystem(userId,
+                                                                                  fileSystemName,
+                                                                                  fileSystemName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  methodName);
             }
             else
             {
@@ -1381,7 +1309,7 @@ public class FileSystemHandler
      * @param fileName name of the file to connect to
      * @return connection object
      */
-    private Connection getDataFileConnection(String            fileName)
+    public Connection getDataFileConnection(String            fileName)
     {
         final BasicFileStoreProvider provider = new BasicFileStoreProvider();
 
@@ -1419,7 +1347,7 @@ public class FileSystemHandler
      * @param quoteCharacter character used to group text that includes the delimiter character
      * @return connection object
      */
-    private Connection getCSVFileConnection(String            fileName,
+    public Connection getCSVFileConnection(String            fileName,
                                             List<String>      columnHeaders,
                                             Character         delimiterCharacter,
                                             Character         quoteCharacter)
@@ -1478,7 +1406,7 @@ public class FileSystemHandler
      * @param fileName name of the file to connect to
      * @return connection object
      */
-    private Connection getAvroFileConnection(String            fileName)
+    public Connection getAvroFileConnection(String            fileName)
     {
         final AvroFileStoreProvider provider = new AvroFileStoreProvider();
 
@@ -1512,7 +1440,7 @@ public class FileSystemHandler
      * @param folderName name of the file to connect to
      * @return connection object
      */
-    private Connection getDataFolderConnection(String folderName)
+    public Connection getDataFolderConnection(String folderName)
     {
         final DataFolderProvider provider = new DataFolderProvider();
 
@@ -1559,152 +1487,6 @@ public class FileSystemHandler
 
 
     /**
-     * Retrieve a FileSystem asset by its unique identifier (GUID).
-     *
-     * @param userId calling user
-     * @param fileSystemGUID unique identifier used to locate the file system
-     * @param methodName calling method
-     *
-     * @return FileSystem properties
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public FileSystem getFileSystemByGUID(String   userId,
-                                          String   fileSystemGUID,
-                                          String   methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
-    {
-        final String  guidName = "fileSystemGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(fileSystemGUID, guidName, methodName);
-
-        EntityDetail  entity = repositoryHandler.getEntityByGUID(userId,
-                                                                 fileSystemGUID,
-                                                                 guidName,
-                                                                 FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_NAME,
-                                                                 methodName);
-
-        if (entity != null)
-        {
-            FileSystemConverter converter = new FileSystemConverter(entity,
-                                                                    repositoryHelper,
-                                                                    serviceName);
-
-            return converter.getFileSystemBean();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve a FileSystem asset by its unique name.
-     *
-     * @param userId calling user
-     * @param uniqueName unique name for the file system
-     * @param methodName calling method
-     *
-     * @return Filesystem properties
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public FileSystem getFileSystemByUniqueName(String   userId,
-                                                String   uniqueName,
-                                                String   methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
-    {
-        final String  nameName = "uniqueName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(uniqueName, nameName, methodName);
-
-        FileSystemBuilder builder = new FileSystemBuilder(uniqueName,
-                                                          repositoryHelper,
-                                                          serviceName,
-                                                          serverName);
-
-        EntityDetail  entity = repositoryHandler.getUniqueEntityByName(userId,
-                                                                       uniqueName,
-                                                                       nameName,
-                                                                       builder.getQualifiedNameInstanceProperties(methodName),
-                                                                       FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_GUID,
-                                                                       FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_NAME,
-                                                                       methodName);
-
-        if (entity != null)
-        {
-            FileSystemConverter converter = new FileSystemConverter(entity,
-                                                                    repositoryHelper,
-                                                                    serviceName);
-
-            return converter.getFileSystemBean();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve a list of defined FileSystems assets.
-     *
-     * @param userId calling user
-     * @param startingFrom starting point in the list
-     * @param maxPageSize maximum number of results
-     * @param methodName calling method
-     *
-     * @return List of Filesystem unique identifiers
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<String> getFileSystems(String  userId,
-                                       int     startingFrom,
-                                       int     maxPageSize,
-                                       String  methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maxPageSize, methodName);
-
-        List<EntityDetail> entities = repositoryHandler.getEntitiesForType(userId,
-                                                                           FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_GUID,
-                                                                           FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_NAME,
-                                                                           startingFrom,
-                                                                           queryPageSize,
-                                                                           methodName);
-
-        if (entities != null)
-        {
-            List<String>  guids = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    guids.add(entity.getGUID());
-                }
-            }
-
-            if (! guids.isEmpty())
-            {
-                return guids;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
      * Retrieve a Folder asset by its unique identifier (GUID).
      *
      * @param userId calling user
@@ -1717,11 +1499,11 @@ public class FileSystemHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public Folder getFolderByGUID(String   userId,
-                                  String   folderGUID,
-                                  String   methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public Asset getFolderByGUID(String   userId,
+                                 String   folderGUID,
+                                 String   methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         final String  guidName = "folderGUID";
 
@@ -1741,7 +1523,7 @@ public class FileSystemHandler
                                                           repositoryHelper,
                                                           serviceName);
 
-            return new Folder(converter.getAssetBean());
+            return converter.getAssetBean();
         }
 
         return null;
@@ -1761,7 +1543,7 @@ public class FileSystemHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public Folder getFolderByPathName(String  userId,
+    public Asset getFolderByPathName(String  userId,
                                       String  pathName,
                                       String  methodName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
@@ -1793,7 +1575,7 @@ public class FileSystemHandler
                                                           repositoryHelper,
                                                           serviceName);
 
-            return new Folder(converter.getAssetBean());
+            return converter.getAssetBean();
         }
 
         return null;
@@ -1834,7 +1616,7 @@ public class FileSystemHandler
         if (repositoryHandler.isEntityATypeOf(userId,
                                               anchorGUID,
                                               guidParameterName,
-                                              FileSystemMapper.FILE_SYSTEM_ENTITY_TYPE_NAME,
+                                              AssetMapper.FILE_FOLDER_TYPE_NAME,
                                               methodName))
         {
             relatedAssets = assetHandler.getRelatedAssets(userId,
