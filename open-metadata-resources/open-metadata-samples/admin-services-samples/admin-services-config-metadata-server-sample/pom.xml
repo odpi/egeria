@@ -7,7 +7,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>subject-area-client-samples</artifactId>
+        <artifactId>admin-services-samples</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.8-SNAPSHOT</version>
     </parent>
@@ -20,23 +20,28 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <artifactId>subject-area-definition-sample</artifactId>
+    <artifactId>admin-services-config-metadata-server-sample</artifactId>
 
-    <name>Subject Area OMAS Samples</name>
+    <name>Admin Services Config Metadata Server Sample</name>
     <description>
-        Subject Area Open Metadata Access Service (OMAS) client sample for managing Definitions.
+        Samples that shows how to configure a metadata server using the admin client
     </description>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>subject-area-api</artifactId>
+            <artifactId>admin-services-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>subject-area-client</artifactId>
+            <artifactId>admin-services-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
         </dependency>
 
         <!-- Logback used as provider for slf4j logging -->
@@ -47,7 +52,6 @@
         </dependency>
 
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -62,7 +66,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        org.odpi.openmetadata.accessservices.subjectarea.samples.definition.SubjectAreaDefinitionSample
+                                        org.odpi.openmetadata.adminservices.samples.configure.ConfigureMetadataServerSample
                                     </mainClass>
                                 </manifest>
                             </archive>

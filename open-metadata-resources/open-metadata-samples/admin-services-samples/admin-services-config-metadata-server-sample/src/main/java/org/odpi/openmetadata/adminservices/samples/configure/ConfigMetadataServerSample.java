@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.adminservices.samples;
+package org.odpi.openmetadata.adminservices.samples.configure;
 
 import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
