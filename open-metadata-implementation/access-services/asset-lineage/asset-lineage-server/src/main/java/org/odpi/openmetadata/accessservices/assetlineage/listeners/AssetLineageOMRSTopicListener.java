@@ -177,7 +177,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
 
-        if(!anyLineageClassificationsLeft(entityDetail))
+        if (!anyLineageClassificationsLeft(entityDetail))
             return;
 
         log.debug(PROCESSING_ENTITYDETAIL_DEBUG_MESSAGE, "classifiedEntity", entityDetail.getGUID());
@@ -188,7 +188,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
 
-        if(!anyLineageClassificationsLeft(entityDetail))
+        if (!anyLineageClassificationsLeft(entityDetail))
             return;
 
         log.debug(PROCESSING_ENTITYDETAIL_DEBUG_MESSAGE, "reclassifiedEntity", entityDetail.getGUID());
@@ -216,6 +216,10 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         if (!(PROCESS_HIERARCHY.equals(relationshipType) || SEMANTIC_ASSIGNMENT.equals(relationshipType))) {
             return;
         }
+        if (!(immutableValidLineageEntityEvents.contains(relationship.getEntityOneProxy().getType().getTypeDefName())
+                || immutableValidLineageEntityEvents.contains(relationship.getEntityTwoProxy().getType().getTypeDefName()))) {
+            return;
+        }
 
         publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
     }
@@ -225,13 +229,22 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         if (!immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName())) {
             return;
         }
+        if (!(immutableValidLineageEntityEvents.contains(relationship.getEntityOneProxy().getType().getTypeDefName())
+                || immutableValidLineageEntityEvents.contains(relationship.getEntityTwoProxy().getType().getTypeDefName()))) {
+            return;
+        }
 
         publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.UPDATE_RELATIONSHIP_EVENT);
     }
 
     private void processDeletedRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
         log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.DELETE_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
+
         if (!immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName())) {
+            return;
+        }
+        if (!(immutableValidLineageEntityEvents.contains(relationship.getEntityOneProxy().getType().getTypeDefName())
+                || immutableValidLineageEntityEvents.contains(relationship.getEntityTwoProxy().getType().getTypeDefName()))) {
             return;
         }
 
@@ -240,7 +253,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private boolean anyLineageClassificationsLeft(EntityDetail entityDetail) {
-        if(CollectionUtils.isEmpty(entityDetail.getClassifications())){
+        if (CollectionUtils.isEmpty(entityDetail.getClassifications())) {
             return false;
         }
 
