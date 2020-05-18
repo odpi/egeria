@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
@@ -24,13 +25,11 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_HIERARCHY;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.VALUE_FOR_ACTIVE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableValidLineageEntityEvents;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableValidLineageRelationshipTypes;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
 
 /**
  * AssetLineageOMRSTopicListener received details of each OMRS event from the cohorts that the local server
@@ -177,6 +176,10 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private void processClassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
+
+        if(!anyLineageClassificationsLeft(entityDetail))
+            return;
+
         log.debug(PROCESSING_ENTITYDETAIL_DEBUG_MESSAGE, "classifiedEntity", entityDetail.getGUID());
         publisher.publishClassificationContext(entityDetail);
     }
@@ -184,6 +187,10 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private void processReclassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
+
+        if(!anyLineageClassificationsLeft(entityDetail))
+            return;
+
         log.debug(PROCESSING_ENTITYDETAIL_DEBUG_MESSAGE, "reclassifiedEntity", entityDetail.getGUID());
         publisher.publishClassificationContext(entityDetail);
     }
@@ -205,7 +212,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     private void processNewRelationshipEvent(Relationship relationship) throws ConnectorCheckedException, JsonProcessingException {
         log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
-        if (!PROCESS_HIERARCHY.equals(relationship.getType().getTypeDefName())) {
+        String relationshipType = relationship.getType().getTypeDefName();
+        if (!(PROCESS_HIERARCHY.equals(relationshipType) || SEMANTIC_ASSIGNMENT.equals(relationshipType))) {
             return;
         }
 
@@ -232,8 +240,14 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private boolean anyLineageClassificationsLeft(EntityDetail entityDetail) {
-        return lineageClassificationTypes.stream().anyMatch(classificationType -> entityDetail.getClassifications().stream().anyMatch(
-                classification -> classification.getName().equals(classificationType)));
+        if(CollectionUtils.isEmpty(entityDetail.getClassifications())){
+            return false;
+        }
+
+        List<String> classificationNames = entityDetail.getClassifications().stream()
+                .map(classification -> classification.getType().getTypeDefName())
+                .collect(Collectors.toList());
+        return !Collections.disjoint(lineageClassificationTypes, classificationNames);
     }
 
     private void logExceptionToAudit(OMRSInstanceEvent instanceEvent, Exception e) {
