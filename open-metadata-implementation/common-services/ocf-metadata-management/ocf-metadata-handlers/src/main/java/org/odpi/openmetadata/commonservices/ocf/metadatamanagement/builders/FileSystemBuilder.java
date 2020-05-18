@@ -1,9 +1,8 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetowner.builders;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
-import org.odpi.openmetadata.accessservices.assetowner.mappers.FileSystemMapper;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.SoftwareServerCapabilityBuilder;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SoftwareServerCapabilityMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -103,7 +102,7 @@ public class FileSystemBuilder extends SoftwareServerCapabilityBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      FileSystemMapper.FORMAT_PROPERTY_NAME,
+                                                                      SoftwareServerCapabilityMapper.FORMAT_PROPERTY_NAME,
                                                                       format,
                                                                       methodName);
         }
@@ -112,7 +111,7 @@ public class FileSystemBuilder extends SoftwareServerCapabilityBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      FileSystemMapper.ENCRYPTION_PROPERTY_NAME,
+                                                                      SoftwareServerCapabilityMapper.ENCRYPTION_PROPERTY_NAME,
                                                                       encryption,
                                                                       methodName);
         }

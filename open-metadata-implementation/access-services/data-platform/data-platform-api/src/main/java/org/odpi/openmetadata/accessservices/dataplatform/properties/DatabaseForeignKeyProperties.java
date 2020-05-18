@@ -43,7 +43,7 @@ public class DatabaseForeignKeyProperties implements Serializable
 
 
     /**
-     * Copy/clone constructor for an Endpoint.
+     * Copy/clone constructor for an foreign key.
      *
      * @param template template object to copy.
      */
