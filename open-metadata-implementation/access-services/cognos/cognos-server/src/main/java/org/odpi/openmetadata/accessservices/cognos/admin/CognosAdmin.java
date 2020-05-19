@@ -16,8 +16,8 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -33,7 +33,7 @@ public class CognosAdmin extends AccessServiceAdmin
 {
 
     private OpenMetadataTopicConnector cognosOutTopicConnector;
-    private OMRSAuditLog auditLog;
+    private AuditLog auditLog;
     private String serverName = null;
     private CognosServicesInstance instance = null;
 
@@ -49,7 +49,10 @@ public class CognosAdmin extends AccessServiceAdmin
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
     @Override
-    public void initialize(AccessServiceConfig accessServiceConfigurationProperties, OMRSTopicConnector enterpriseOMRSTopicConnector, OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
+    public void initialize(	AccessServiceConfig accessServiceConfigurationProperties, 
+    						OMRSTopicConnector enterpriseOMRSTopicConnector, 
+    						OMRSRepositoryConnector enterpriseConnector, 
+    						AuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
         
         final String actionDescription = "Initialize Cognos OMAS service.";
 

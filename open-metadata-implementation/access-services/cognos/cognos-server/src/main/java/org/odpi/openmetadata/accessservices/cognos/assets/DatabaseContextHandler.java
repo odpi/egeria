@@ -228,7 +228,7 @@ public class DatabaseContextHandler {
 	}
 
 	private Module buildModule(String databaseGuid, String catalog, String schema) throws CognosCheckedException {
-		Module module = new Module();
+		Module module = new org.odpi.openmetadata.accessservices.cognos.model.module.Module();
 
 		module.setIdentifier(catalog + "." + schema);
 		module.setDataSource(Arrays.asList(buildDataSource(databaseGuid, catalog, schema)));

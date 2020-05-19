@@ -69,7 +69,12 @@ public enum CognosAuditCode implements AuditLogMessageSet {
             "The Cognos Open Metadata Access Service (OMAS) is unable to terminate an instance {0}",
             "The access service detected an error during the shut down of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, try to shut " +
-                                                 "down the server."),
+                                                 "down the server."), 
+    FIND_ENTITIES("OMAS-COGNOS-0009",
+    		OMRSAuditLogRecordSeverity.INFO,
+    		"Retrieving entities of type {0} with properties {1}.",
+            "The local server has requested find entities operation.",
+            "No action is required.  This is part of the normal operation of the server."),
 
 //    SUPPORTED_ZONES("OMAS-COGNOS-0009",
 //            OMRSAuditLogRecordSeverity.INFO,

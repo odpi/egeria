@@ -10,10 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.odpi.openmetadata.accessservices.cognos.auditlog.CognosAuditCode;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -33,30 +34,44 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorExce
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+/**
+ * The class implements access wrapper to retrieve data OMRS.
+ * 
+ */
 public class OMEntityDao {
 
-    private static final Logger log = LoggerFactory.getLogger(OMEntityDao.class);
     protected final OMRSRepositoryConnector enterpriseConnector;
     protected List<String> supportedZones;
-    private final OMRSAuditLog auditLog;
+    private final AuditLog auditLog;
     
     private String context;
     
 	private static final List<InstanceStatus> FILTER_ACTIVE = Arrays.asList(InstanceStatus.ACTIVE);
 
-    public OMEntityDao(OMRSRepositoryConnector enterpriseConnector, List<String> supportedZones, OMRSAuditLog auditLog) {
+    public OMEntityDao(OMRSRepositoryConnector enterpriseConnector, List<String> supportedZones, AuditLog auditLog) {
         this.enterpriseConnector = enterpriseConnector;
         this.auditLog = auditLog;
         this.supportedZones = supportedZones;
     }
 
+    /**
+     * Set context of the execution for logging.
+     * @param value high level method/operation requested by user.
+     */
     public void setContext(String value) {
     	context = value;
     }
     
+    /**
+     * Find entities matching criteria.
+     * @param matchProperties filter.
+     * @param typeName of the requested entity.
+     * @param fromElement index of the first entity.
+     * @param pageSize number of entities to return.
+     * @return list of matching entities
+     * @throws CognosCheckedException in case repository fails.
+     */
     public List<EntityDetail> findEntities(InstanceProperties matchProperties, String typeName, int fromElement, int pageSize) throws CognosCheckedException {
         // GDW the matchProperties passed to this method should have already converted any exact match string
         // using the getExactMatchRegex repository helper method
@@ -64,7 +79,7 @@ public class OMEntityDao {
         TypeDef typeDef = repositoryHelper.getTypeDefByName(Constants.COGNOS_USER_ID, typeName);
         List<EntityDetail> existingEntities;
         try {
-            log.debug("Retrieving entities of type {} with properties {}", typeDef.getName(),  matchProperties);
+            auditLog.logMessage(context, CognosAuditCode.FIND_ENTITIES.getMessageDefinition(typeDef.getName(),  matchProperties.toString()));
             existingEntities = enterpriseConnector.getMetadataCollection()
             		.findEntitiesByProperty(Constants.COGNOS_USER_ID,
                                             typeDef.getGUID(),
@@ -145,7 +160,14 @@ public class OMEntityDao {
 	private String getTypeDefGuidByName(String name) {
 		return enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.COGNOS_USER_ID, name).getGUID();
 	}
-	
+
+	/**
+	 * Get relationships of certain type for the entity.
+	 * @param entity whose relationships are requested.
+	 * @param relationshipType only relationship of the type are requested. All relationships are returned if null.
+	 * @return requested relationships.
+	 * @throws CognosCheckedException in case of repository fails.
+	 */
 	public List<Relationship> getRelationshipsForEntity(EntityDetail entity, String relationshipType) throws CognosCheckedException {
 		String relationshipTypeGuid = relationshipType == null ? null : getTypeDefGuidByName(relationshipType);
 		try {
@@ -164,30 +186,64 @@ public class OMEntityDao {
 		}
 	}
 
+	/**
+	 * Get qualified name property for the entity.
+	 * @param entity whose qualified name is requested.
+	 * @return qualified name.
+	 */
 	public String getEntityQName(EntityDetail entity) {
 		return enterpriseConnector.getRepositoryHelper()
 				.getStringProperty(Constants.COGNOS_OMAS_NAME, Constants.QUALIFIED_NAME, entity.getProperties(), context);
 	}
+	/**
+	 * Get entity property of type string.
+	 * @param entity whose property is requested.
+	 * @param name if the requested property.
+	 * @return property value.
+	 */
 	public String getEntityStringProperty(EntityDetail entity, String name) {
 		return enterpriseConnector.getRepositoryHelper()
 				.getStringProperty(Constants.COGNOS_OMAS_NAME, name, entity.getProperties(), context);
 	}
-
+	/**
+	 * Get entity property of type boolean.
+	 * @param entity whose property is requested.
+	 * @param name if the requested property.
+	 * @return property value.
+	 */
 	public Boolean getEntityBooleanProperty(EntityDetail entity, String name) {
 		return enterpriseConnector.getRepositoryHelper()
 				.getBooleanProperty(Constants.COGNOS_OMAS_NAME, name, entity.getProperties(), context);
 	}
 
+	/**
+	 * Get entity property of type integer.
+	 * @param entity whose property is requested.
+	 * @param name if the requested property.
+	 * @return property value.
+	 */
 	public int getEntityIntProperty(EntityDetail entity, String name) {
 		return enterpriseConnector.getRepositoryHelper()
 				.getIntProperty(Constants.COGNOS_OMAS_NAME, name, entity.getProperties(), context);
 	}
 
+	/**
+	 * Get property of type string from collection of instance properties.
+	 * @param name if the requested property.
+	 * @param properties collection of instance properties
+	 * @return property value.
+	 */
 	public String getStringProperty(String name, InstanceProperties properties) {
 		return enterpriseConnector.getRepositoryHelper()
 				.getStringProperty(Constants.COGNOS_OMAS_NAME, name, properties, context);
 	}
 
+	/**
+	 * Get map of property from collection of instance properties.
+	 * @param name if the requested property.
+	 * @param properties collection of instance properties
+	 * @return property value.
+	 */
 	public InstanceProperties getMapProperty(InstanceProperties properties, String name) {
 		return enterpriseConnector.getRepositoryHelper()
 				.getMapProperty(Constants.COGNOS_OMAS_NAME, name, properties, context);
