@@ -5,16 +5,15 @@ package org.odpi.openmetadata.accessservices.cognos.model.module;
 import java.util.List;
 
 /**
- * COGNOS MOSER physical module.
- * Sample:
- * {
- *		"identifier": "AdventureWorks2014.Person",
- *		"version": "9.0",
- *		"dataSource": [
- *			{ @see org.odpi.openmetadata.accessservices.cognos.model.module.DataSource }
- *		]
+ * Cognos modeling service (MOSER) physical module.
+ * <br>Sample:<br>
+ * {<br>
+ *	&emsp;	"identifier": "AdventureWorks2014.Person",<br>
+ *	&emsp;	"version": "9.0",<br>
+ *	&emsp;	"dataSource": [&nbsp;
+ *			{@link org.odpi.openmetadata.accessservices.cognos.model.module.DataSource}
+ *	&emsp;	]<br>
  *	}
- * @author YEVGENIYMarchenko
  *
  */
 public class Module implements IModuleObject {
@@ -23,21 +22,48 @@ public class Module implements IModuleObject {
 	private String version = "9.0";	// fixed version matching MOSER XSD on the moment of development.
 	private List <DataSource> dataSource;
 
+	/**
+	 * Get module identifier.
+	 * @return module identifier.
+	 */
 	public String getIdentifier() {
 		return identifier;
 	}
+	/**
+	 * Set module identifier.
+	 * @param identifier of the module.
+	 */
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
+	
+	/**
+	 * Get version of the module.
+	 * @return version of the module.
+	 */
 	public String getVersion() {
 		return version;
 	}
+	
+	/**
+	 * Set version of the module.
+	 * @param version of the module.
+	 */
 	public void setVersion(String version) {
 		this.version = version;
 	}
+	
+	/**
+	 * Get data source element of the module.
+	 * @return data source element of the module.
+	 */
 	public List <DataSource> getDataSource() {
 		return dataSource;
 	}
+	/**
+	 * Set data source element of the module.
+	 * @param dataSource element
+	 */
 	public void setDataSource(List <DataSource> dataSource) {
 		this.dataSource = dataSource;
 	}

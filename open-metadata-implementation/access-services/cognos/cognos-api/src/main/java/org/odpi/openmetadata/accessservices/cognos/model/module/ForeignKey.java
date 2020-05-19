@@ -6,17 +6,14 @@ import java.util.List;
 
 /**
  * Database table foreign key abstraction.
- *	Sample:
- *	{
- *		"name": "FK_Address_StateProvince_StateProvinceID",
- *		"fkColumn": [
- *			{
- *				@see org.odpi.openmetadata.accessservices.cognos.model.module.ForeignColumn
- *			}
- *		]
- *	}
+ *	<br>Sample:<br>
+ *	{<br>
+ *	&emsp;	"name": "FK_Address_StateProvince_StateProvinceID",<br>
+ *	&emsp;	"fkColumn": [&nbsp;
+ *	&emsp;		{@link org.odpi.openmetadata.accessservices.cognos.model.module.ForeignColumn}
+ *	&emsp;	]<br>
+ *	}<br>
  *
- * @author YEVGENIYMarchenko
  *
  */
 public class ForeignKey implements IModuleObject {

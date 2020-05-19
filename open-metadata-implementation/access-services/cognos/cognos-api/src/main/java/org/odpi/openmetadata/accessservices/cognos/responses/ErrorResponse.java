@@ -17,12 +17,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Response to return error.
  * 
  * Sample of an error:
-{
-	"msg": "MSR_GEN_0097 Error while getting catalogs and schemas...",
-	"code": "MSR_GEN_0097",
-	"exceptionCauseMsg": "com.ibm.cognos.AppException: Cannot open ..."
-}
- * @author YEVGENIYMarchenko
+ *{
+ *	"msg": "MSR_GEN_0097 Error while getting catalogs and schemas...",
+ *	"code": "MSR_GEN_0097",
+ *	"exceptionCauseMsg": "com.ibm.cognos.AppException: Cannot open ..."
+ *}
  *
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
@@ -42,34 +41,60 @@ public class ErrorResponse extends CognosOMASAPIResponse {
 	public ErrorResponse() {
 		// required to deserialize
 	}
-	
+	/**
+	 * Constructor initialized from exception thrown.
+	 * @param source of the error.
+	 */
 	public ErrorResponse(CognosCheckedException source) {
 		setRelatedHTTPCode(source.getReportedHTTPCode());
 		message = source.getMessage();
 		errorCode = source.getReportedErrorMessageId();
 		exceptionCause = source.getErrorCause();
 	}
-	
+	/**
+	 * Get error message 
+	 * @return error message.
+	 */
 	public String getMessage() {
 		return message;
 	}
 
+	/**
+	 * Set error message.
+	 * @param message to set.
+	 */
 	public void setMessage(String message) {
 		this.message = message;
 	}
 
+	/**
+	 * Get error code.
+	 * @return error code.
+	 */
 	public String getErrorCode() {
 		return errorCode;
 	}
 
+	/**
+	 * Set error code.
+	 * @param errorCode to set.
+	 */
 	public void setErrorCode(String errorCode) {
 		this.errorCode = errorCode;
 	}
 
+	/**
+	 * Get message of original cause - details.
+	 * @return message of original cause.
+	 */
 	public String getExceptionCause() {
 		return exceptionCause;
 	}
 
+	/**
+	 * Set details of the error.
+	 * @param exceptionCause description of details.
+	 */
 	public void setExceptionCause(String exceptionCause) {
 		this.exceptionCause = exceptionCause;
 	}

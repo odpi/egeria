@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Type - set by subclass to identify content of the response.<br>
  * 
  * 
- * @author YEVGENIYMarchenko
  *
  */
 @JsonAutoDetect(getterVisibility = NONE, setterVisibility = NONE, fieldVisibility = NONE)

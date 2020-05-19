@@ -30,7 +30,7 @@ public class CognosRestServices {
 
 		try {
 			DatabasesResponse response = new DatabasesResponse();
-			List<ResponseContainerDatabase> databases = instanceHandler.getAssetContextHandler(serverName)
+			List<ResponseContainerDatabase> databases = instanceHandler.getDatabaseContextHandler(serverName)
 					.getDatabases();
         	response.setDatabasesList(databases);
         	return response;
@@ -44,7 +44,7 @@ public class CognosRestServices {
 	public CognosOMASAPIResponse getSchemas(String serverName, String dataSource) {
         try {
         	SchemasResponse response = new SchemasResponse();
-        	List<ResponseContainerDatabaseSchema> databasesSchemas = instanceHandler.getAssetContextHandler(serverName)
+        	List<ResponseContainerDatabaseSchema> databasesSchemas = instanceHandler.getDatabaseContextHandler(serverName)
 						.getDatabaseSchemas(dataSource);
         	response.setSchemaList(databasesSchemas);
         	return response;
@@ -57,7 +57,7 @@ public class CognosRestServices {
 	public CognosOMASAPIResponse getTables(String serverName, String databaseGuid, String schema) {
         try {
         	SchemaTablesResponse response = new SchemaTablesResponse();
-        	ResponseContainerSchemaTables tables = instanceHandler.getAssetContextHandler(serverName)
+        	ResponseContainerSchemaTables tables = instanceHandler.getDatabaseContextHandler(serverName)
         			.getSchemaTables(databaseGuid, schema);
         	response.setTableList(tables);
         	return response;
@@ -71,7 +71,7 @@ public class CognosRestServices {
         try {
 
         	ModuleResponse response = new ModuleResponse();
-        	ResponseContainerModule module = instanceHandler.getAssetContextHandler(serverName)
+        	ResponseContainerModule module = instanceHandler.getDatabaseContextHandler(serverName)
         			.getModule(databaseGuid, catalog, schema);
         	response.setModule(module);
         	return response;

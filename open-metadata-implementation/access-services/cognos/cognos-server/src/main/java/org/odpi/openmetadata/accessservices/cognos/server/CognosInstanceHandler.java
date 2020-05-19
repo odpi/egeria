@@ -25,10 +25,10 @@ class CognosInstanceHandler {
 	 * Retrieve the handler for retrieving assets details for the access service.
 	 *
 	 * @param serverName name of the server tied to the request
-	 * @return assetsHandler for exclusive use by the requested instance
+	 * @return database handler for exclusive use by the requested instance
 	 * @throws CognosCheckedException if server is not initialized.
 	 */
-	DatabaseContextHandler getAssetContextHandler(String serverName) throws CognosCheckedException {
+	DatabaseContextHandler getDatabaseContextHandler(String serverName) throws CognosCheckedException {
 		CognosServicesInstance instance = instanceMap.getInstance(serverName);
 
 		if (instance != null) {
@@ -37,7 +37,7 @@ class CognosInstanceHandler {
 		throw new CognosCheckedException(
 				CognosErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(serverName),
 				this.getClass().getSimpleName(),
-				"getAssetContextHandler");
+				"getDatabaseContextHandler");
 	}
 
 }

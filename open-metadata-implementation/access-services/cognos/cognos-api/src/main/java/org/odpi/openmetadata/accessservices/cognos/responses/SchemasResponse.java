@@ -6,10 +6,19 @@ import java.util.List;
 
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDatabaseSchema;
 
+
+/**
+ * Response for request of the available database schemas. 
+ *
+ */
 public class SchemasResponse extends CognosOMASAPIResponse{
 
-    public void setSchemaList(List<ResponseContainerDatabaseSchema> databasesSchemas) {
-        this.setData(databasesSchemas);
+	/**
+	 * Set list of schemas available for database.
+	 * @param databaseSchemas set as response.
+	 */
+    public void setSchemaList(List<ResponseContainerDatabaseSchema> databaseSchemas) {
+        this.setData(databaseSchemas);
     }
 
 }

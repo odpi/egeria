@@ -18,11 +18,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * The class is base for all responses of Cognos OMAS
+ * The class is base for all responses of Cognos OMAS.<br>
+ * 
+ * Response data is stored in data field as list of a response containers.
+ * 
  */
-
-
-
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -46,10 +46,18 @@ public class CognosOMASAPIResponse {
     
     private List<? extends ResponseContainer> data;
 
+    /**
+     * Get data of the response.
+     * @return data of the response.
+     */
     public List<? extends ResponseContainer> getData() {
         return data;
     }
 
+    /**
+     * Set response data.
+     * @param data response data.
+     */
     protected void setData(List<? extends ResponseContainer> data) {
         this.data = data;
     }

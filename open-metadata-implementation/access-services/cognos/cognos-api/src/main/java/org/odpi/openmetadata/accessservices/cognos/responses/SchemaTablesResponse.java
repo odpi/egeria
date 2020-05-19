@@ -2,6 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 
+/**
+ * Response for request of the tables of the schema. 
+ * 
+ *
+ */
+
 package org.odpi.openmetadata.accessservices.cognos.responses;
 
 import java.util.Arrays;
@@ -11,6 +17,10 @@ import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerSchema
 
 public class SchemaTablesResponse extends CognosOMASAPIResponse {
 	
+	/**
+	 * Set list of tables of the schema.
+	 * @param tables to set.
+	 */
     public void setTableList(ResponseContainerSchemaTables tables) {
         this.setData(Arrays.asList(tables));
     }

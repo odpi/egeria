@@ -4,6 +4,16 @@ package org.odpi.openmetadata.accessservices.cognos.model;
 
 import java.util.List;
 
+/**
+ * Response container for list of table names available in the schema.<br>
+ * The container has following attributes:<br>
+ * &emsp;tables - list of table names available in the schema.<br>
+ * 
+ * The type of the container is 'tables'.
+ * 
+ * 
+ */
+
 public class ResponseContainerSchemaTables extends ResponseContainer {
 	
 	private static final String TABLES = "tables";
