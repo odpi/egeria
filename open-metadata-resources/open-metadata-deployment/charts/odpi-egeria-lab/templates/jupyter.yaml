@@ -61,6 +61,9 @@ spec:
                   {{ .Values.image.jupyter.name }}\
                   :{{ .Values.image.jupyter.tag | default .Values.egeria.version }}"
           imagePullPolicy: {{ .Values.image.jupyter.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "myapp.fullname" . }}-configmap
           args:
             - jupyter
             - lab
