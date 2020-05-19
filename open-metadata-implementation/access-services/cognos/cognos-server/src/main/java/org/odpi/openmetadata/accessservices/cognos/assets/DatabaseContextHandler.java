@@ -22,6 +22,7 @@ import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.model.*;
 import org.odpi.openmetadata.accessservices.cognos.model.module.*;
+import org.odpi.openmetadata.accessservices.cognos.model.module.Module;
 import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -228,7 +229,7 @@ public class DatabaseContextHandler {
 	}
 
 	private Module buildModule(String databaseGuid, String catalog, String schema) throws CognosCheckedException {
-		Module module = new org.odpi.openmetadata.accessservices.cognos.model.module.Module();
+		Module module = new Module();
 
 		module.setIdentifier(catalog + "." + schema);
 		module.setDataSource(Arrays.asList(buildDataSource(databaseGuid, catalog, schema)));
