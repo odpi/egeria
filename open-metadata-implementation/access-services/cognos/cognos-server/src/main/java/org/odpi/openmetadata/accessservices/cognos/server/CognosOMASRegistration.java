@@ -16,14 +16,17 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOpe
  */
 class CognosOMASRegistration {
 
-    CognosOMASRegistration() {
-
+    /**
+     * Pass information about this access service to the OMAG Server administration services.
+     */
+    static void registerAccessService()
+    {
         AccessServiceDescription myDescription = AccessServiceDescription.COGNOS_OMAS;
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-        		ServiceOperationalStatus.ENABLED,
-                CognosAdmin.class.getName()
+                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 CognosAdmin.class.getName());
 
-        );
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
+
 }

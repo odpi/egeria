@@ -6,9 +6,7 @@ package org.odpi.openmetadata.accessservices.cognos.admin;
 
 import java.util.List;
 
-import org.odpi.openmetadata.accessservices.cognos.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.cognos.auditlog.CognosAuditCode;
-import org.odpi.openmetadata.accessservices.cognos.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
 import org.odpi.openmetadata.accessservices.cognos.server.CognosServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
@@ -41,15 +39,15 @@ public class CognosAdmin extends AccessServiceAdmin
     /**
      * Initialize the access service.
      *
-     * @param accessServiceConfigurationProperties  specific configuration properties for this access service.
-     * @param enterpriseOMRSTopicConnector          connector for receiving OMRS Events from the cohorts
-     * @param enterpriseConnector     connector for querying the cohort repositories
-     * @param auditLog                              audit log component for logging messages.
-     * @param serverUserName                        user id to use on OMRS calls where there is no end user.
-     * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
+     * @param accessServiceConfig				specific configuration properties for this access service.
+     * @param enterpriseOMRSTopicConnector		connector for receiving OMRS Events from the cohorts
+     * @param enterpriseConnector     			connector for querying the cohort repositories
+     * @param auditLog                      	audit log component for logging messages.
+     * @param serverUserName                    user id to use on OMRS calls where there is no end user.
+     * @throws OMAGConfigurationErrorException	invalid parameters in the configuration properties.
      */
     @Override
-    public void initialize(	AccessServiceConfig accessServiceConfigurationProperties, 
+    public void initialize(	AccessServiceConfig accessServiceConfig, 
     						OMRSTopicConnector enterpriseOMRSTopicConnector, 
     						OMRSRepositoryConnector enterpriseConnector, 
     						AuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
@@ -66,8 +64,8 @@ public class CognosAdmin extends AccessServiceAdmin
         
         try {
             // initialize Topic Connector
-        	String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-            cognosOutTopicConnector =  super.getTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic(),
+        	String outTopicName = getTopicName(accessServiceConfig.getAccessServiceOutTopic());
+            cognosOutTopicConnector =  super.getTopicConnector(accessServiceConfig.getAccessServiceOutTopic(),
             		OpenMetadataTopicConnector.class,
             		auditLog,
                     AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName(),
@@ -76,6 +74,12 @@ public class CognosAdmin extends AccessServiceAdmin
             if (cognosOutTopicConnector != null) {
                 startConnector(actionDescription, outTopicName, cognosOutTopicConnector);
             }
+
+            List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                    accessServiceConfig.getAccessServiceName(), auditLog);
+
+            instance = new CognosServicesInstance(enterpriseConnector, supportedZones,
+                    auditLog, serverUserName,  enterpriseConnector.getMaxPageSize());
 
        	
         } catch (OMAGConfigurationErrorException error) {
@@ -95,15 +99,6 @@ public class CognosAdmin extends AccessServiceAdmin
                                                          error);
         }
         
-        List<String> supportedZones = extractSupportedZones(
-        				accessServiceConfigurationProperties.getAccessServiceOptions(),
-                        accessServiceConfigurationProperties.getAccessServiceName(),
-                        auditLog);
-
-        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
-
-        DatabaseContextHandler contextBuilders = new DatabaseContextHandler(omEntityDao);
-        instance = new CognosServicesInstance(contextBuilders, serverName);
         
         auditLog.logMessage(actionDescription, CognosAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
     }

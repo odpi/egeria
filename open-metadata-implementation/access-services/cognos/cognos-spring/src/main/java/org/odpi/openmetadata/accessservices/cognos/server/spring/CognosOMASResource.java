@@ -41,7 +41,7 @@ public class CognosOMASResource {
             @PathVariable("userId") String userId
 			)
 	{
-		return restAPI.getDatabases(serverName);
+		return restAPI.getDatabases(serverName, userId);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class CognosOMASResource {
             @PathVariable("dataSourceGUID") String dataSource
 			)
 	{
-		return restAPI.getSchemas(serverName, dataSource);
+		return restAPI.getSchemas(serverName, userId, dataSource);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class CognosOMASResource {
 			@RequestBody(required=false) Object request
 			) 
 	{
-		return restAPI.getTables(serverName, dataSource, schema);
+		return restAPI.getTables(serverName, userId, dataSource, schema);
 	}
 	
 	/**
@@ -104,7 +104,7 @@ public class CognosOMASResource {
 			@RequestBody(required=false) Object request
 			) {
 
-		return restAPI.getModule(serverName, dataSource, catalog, schema);
+		return restAPI.getModule(serverName, userId, dataSource, catalog, schema);
 	}
 	
 }

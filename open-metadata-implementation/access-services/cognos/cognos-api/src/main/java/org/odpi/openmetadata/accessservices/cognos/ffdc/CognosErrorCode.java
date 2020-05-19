@@ -99,13 +99,19 @@ public enum CognosErrorCode implements ExceptionMessageSet {
             "Unable to initialize the connection to topic {0} in the Cognos Open Metadata Access Service (OMAS) instance for server {1} ",
             "The connection to Cognos topic could not be initialized.",
             "Review the exception and resolve the configuration. "),
+    SERVICE_INSTANCE_FAILURE(
+			"OMAS-COGNOS-014",
+			"The access service can't find instance for server {0}, user {1}, operation {2}.",
+			"The system is unable to process the request.",
+            "Review the exception and resolve the configuration. "),
 
 	UNKNOWN_ERROR(
 			"OMAS-COGNOS-500", 
 			"Server failed to execute request with unknown reason.",
 			"The system is unable to process the request.", 
-			"Report the error to administrator.");
-
+			"Report the error to administrator."), 
+	;
+	
 	private static final long    serialVersionUID = 1L;
 
 	private ExceptionMessageDefinition messageDefinition;
