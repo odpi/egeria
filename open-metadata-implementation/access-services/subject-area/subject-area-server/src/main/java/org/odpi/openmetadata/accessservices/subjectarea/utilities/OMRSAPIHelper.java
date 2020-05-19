@@ -40,10 +40,21 @@ public class OMRSAPIHelper {
     private static final String className = OMRSAPIHelper.class.getName();
 
     private OMRSMetadataCollection oMRSMetadataCollection=null;
-    private ErrorHandler errorHandler=null;
     final private String serviceName;
     private String serverName = null;
     private OMRSRepositoryHelper omrsRepositoryHelper  = null;
+
+    public OMRSAPIHelper(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    /**
+     * Get the service name - ths is used for logging
+     * @return service name
+     */
+    public String getServiceName() {
+        return this.serviceName;
+    }
 
     public OMRSMetadataCollection getOMRSMetadataCollection(String restAPIName) throws MetadataServerUncontactableException {
         validateInitialization(restAPIName);
@@ -120,18 +131,6 @@ public class OMRSAPIHelper {
         }
     }
 
-    public OMRSAPIHelper(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    /**
-     * Get the service name - ths is used for logging
-     * @return service name
-     */
-    public String getServiceName() {
-        return this.serviceName;
-    }
-
     // entity CRUD
     public  SubjectAreaOMASAPIResponse callOMRSAddEntity(String restAPIName, String userId , EntityDetail entityDetail) {
         String methodName = "callOMRSAddEntity";
@@ -145,48 +144,48 @@ public class OMRSAPIHelper {
             EntityDetail addedEntityDetail=getOMRSMetadataCollection(restAPIName).addEntity(userId, entityDetail.getType().getTypeDefGUID(), instanceProperties, entityDetail.getClassifications(), InstanceStatus.ACTIVE);
             response = new EntityDetailResponse(addedEntityDetail);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException e) {
-           response =  this.errorHandler.handleTypeErrorException(e,
+           response = ErrorHandler.handleTypeErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e) {
-           response =  this.errorHandler.handlePropertyErrorException(e,
+           response = ErrorHandler.handlePropertyErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException e) {
-           response =  this.errorHandler.handleClassificationErrorException(e,
+           response = ErrorHandler.handleClassificationErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException e) {
-           response =  this.errorHandler.handleStatusNotSupportedException(e,
+           response = ErrorHandler.handleStatusNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -210,33 +209,33 @@ public class OMRSAPIHelper {
             EntityDetail gotEntityDetail=  getOMRSMetadataCollection(restAPIName).getEntityDetail(userId, entityGUID);
             response = new EntityDetailResponse(gotEntityDetail);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException e) {
-           response =  this.errorHandler.handleEntityNotKnownError(entityGUID,
+           response = ErrorHandler.handleEntityNotKnownError(entityGUID,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException e) {
-           response =  this.errorHandler.handleEntityProxyOnlyException(e,
+           response = ErrorHandler.handleEntityProxyOnlyException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -280,44 +279,44 @@ public class OMRSAPIHelper {
             response = new EntityDetailsResponse(foundEntities);
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e) {
-           response =  this.errorHandler.handlePropertyErrorException(e,
+           response = ErrorHandler.handlePropertyErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException e) {
-           response =  this.errorHandler.handleTypeErrorException(e,
+           response = ErrorHandler.handleTypeErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException e) {
-           response =  this.errorHandler.handlePagingErrorException(e,
+           response = ErrorHandler.handlePagingErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -356,44 +355,44 @@ public class OMRSAPIHelper {
             response = new EntityDetailsResponse(foundEntities);
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-            response =  this.errorHandler.handleInvalidParameterException(e,
+            response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (RepositoryErrorException e) {
-            response =  this.errorHandler.handleRepositoryError(e,
+            response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-            response =  this.errorHandler.handleUnauthorizedUser(userId,
+            response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e) {
-            response =  this.errorHandler.handlePropertyErrorException(e,
+            response = ErrorHandler.handlePropertyErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-            response =  this.errorHandler.handleFunctionNotSupportedException(e,
+            response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException e) {
-            response =  this.errorHandler.handleTypeErrorException(e,
+            response = ErrorHandler.handleTypeErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException e) {
-            response =  this.errorHandler.handlePagingErrorException(e,
+            response = ErrorHandler.handlePagingErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -421,40 +420,40 @@ public class OMRSAPIHelper {
             updatedEntity = getOMRSMetadataCollection(restAPIName).updateEntityProperties(userId, entityDetail.getGUID(), instanceProperties);
             response = new EntityDetailResponse(updatedEntity);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e) {
-           response =  this.errorHandler.handlePropertyErrorException(e,
+           response = ErrorHandler.handlePropertyErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException e) {
-           response =  this.errorHandler.handleEntityNotKnownError(entityDetail.getGUID(),
+           response = ErrorHandler.handleEntityNotKnownError(entityDetail.getGUID(),
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -476,34 +475,34 @@ public class OMRSAPIHelper {
             EntityDetail deletedEntity   = getOMRSMetadataCollection(restAPIName).deleteEntity(userId,typeDefGuid, typeDefName, obsoleteGuid);
             response = new EntityDetailResponse(deletedEntity);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException e) {
-           response =  this.errorHandler.handleEntityNotKnownError(obsoleteGuid,
+           response = ErrorHandler.handleEntityNotKnownError(obsoleteGuid,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -526,39 +525,39 @@ public class OMRSAPIHelper {
             getOMRSMetadataCollection(restAPIName).purgeEntity(userId, typeDefGuid, typeDefName,  obsoleteGuid);
             response = new VoidResponse();
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException e) {
-           response =  this.errorHandler.handleEntityNotKnownError(obsoleteGuid,
+           response = ErrorHandler.handleEntityNotKnownError(obsoleteGuid,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException e) {
-           response =  this.errorHandler.handleEntityNotPurgedException(obsoleteGuid,
+           response = ErrorHandler.handleEntityNotPurgedException(obsoleteGuid,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -581,41 +580,41 @@ public class OMRSAPIHelper {
             response = new EntityDetailResponse(restoredEntity);
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException e) {
-           response =  this.errorHandler.handleEntityNotKnownException(guid,
+           response = ErrorHandler.handleEntityNotKnownException(guid,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (EntityNotDeletedException e)
         {
-           response =  this.errorHandler.handleEntityNotDeletedException(guid,
+           response = ErrorHandler.handleEntityNotDeletedException(guid,
                     restAPIName,
                     serverName,
                     serviceName
             );
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -644,45 +643,45 @@ public class OMRSAPIHelper {
             EntityDetail entity = getOMRSMetadataCollection(restAPIName).classifyEntity(userId, entityGUID, classificationName, instanceProperties);
             response = new EntityDetailResponse(entity);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException e) {
-           response =  this.errorHandler.handleEntityNotKnownError(entityGUID,
+           response = ErrorHandler.handleEntityNotKnownError(entityGUID,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e) {
-           response =  this.errorHandler.handlePropertyErrorException(e,
+           response = ErrorHandler.handlePropertyErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException e) {
-           response =  this.errorHandler.handleClassificationErrorException(e,
+           response = ErrorHandler.handleClassificationErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
 
           } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -710,41 +709,41 @@ public class OMRSAPIHelper {
             EntityDetail entity = getOMRSMetadataCollection(restAPIName).declassifyEntity(userId, entityGUID, classificationName);
             response = new EntityDetailResponse(entity);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException e) {
-           response =  this.errorHandler.handleEntityNotKnownError(entityGUID,
+           response = ErrorHandler.handleEntityNotKnownError(entityGUID,
                     restAPIName,
                     serverName,
                     serviceName);
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException e) {
-           response =  this.errorHandler.handleClassificationErrorException(e,
+           response = ErrorHandler.handleClassificationErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -776,53 +775,53 @@ public class OMRSAPIHelper {
             response = new RelationshipResponse(addedRelationship);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
 
-           response = response =  this.errorHandler.handleInvalidParameterException(e,
+           response = response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException e) {
-           response =  this.errorHandler.handleStatusNotSupportedException(e,
+           response = ErrorHandler.handleStatusNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException e) {
             //TODO this is the wrong guid. We should pass the entity guid that is not found. But that is not yet in the the Excpetion we get
 
-           response =  this.errorHandler.handleEntityNotKnownError(relationship.getGUID(),
+           response = ErrorHandler.handleEntityNotKnownError(relationship.getGUID(),
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e) {
-           response =  this.errorHandler.handlePropertyErrorException(e,
+           response = ErrorHandler.handlePropertyErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException e) {
-           response =  this.errorHandler.handleTypeErrorException(e,
+           response = ErrorHandler.handleTypeErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -844,29 +843,29 @@ public class OMRSAPIHelper {
             Relationship relationship = getOMRSMetadataCollection(restAPIName).getRelationship(userId,relationshipGUID);
             response = new RelationshipResponse(relationship);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException e) {
-           response =  this.errorHandler.handleRelationshipNotKnownException(relationshipGUID,
+           response = ErrorHandler.handleRelationshipNotKnownException(relationshipGUID,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -897,44 +896,44 @@ public class OMRSAPIHelper {
             }
             response = new RelationshipResponse(updatedRelationship);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException e) {
-           response =  this.errorHandler.handleRelationshipNotKnownException(relationship.getGUID(),
+           response = ErrorHandler.handleRelationshipNotKnownException(relationship.getGUID(),
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e) {
-           response =  this.errorHandler.handlePropertyErrorException(e,
+           response = ErrorHandler.handlePropertyErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException e) {
-           response =  this.errorHandler.handleStatusNotSupportedException(e,
+           response = ErrorHandler.handleStatusNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -956,34 +955,34 @@ public class OMRSAPIHelper {
             Relationship deletedRelationship =getOMRSMetadataCollection(restAPIName).deleteRelationship(userId, typeGuid, typeName, guid);
             response = new RelationshipResponse(deletedRelationship);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException e) {
-           response =  this.errorHandler.handleRelationshipNotKnownException(guid,
+           response = ErrorHandler.handleRelationshipNotKnownException(guid,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -1005,41 +1004,41 @@ public class OMRSAPIHelper {
             restoredRelationship =getOMRSMetadataCollection(restAPIName).restoreRelationship(userId, guid);
             response = new RelationshipResponse(restoredRelationship);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException e) {
-           response =  this.errorHandler.handleRelationshipNotKnownException(guid,
+           response = ErrorHandler.handleRelationshipNotKnownException(guid,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (RelationshipNotDeletedException e)
         {
-           response =  this.errorHandler.handleRelationshipNotDeletedException(guid,
+           response = ErrorHandler.handleRelationshipNotDeletedException(guid,
                     restAPIName,
                     serverName,
                     serviceName
                     );
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -1062,39 +1061,39 @@ public class OMRSAPIHelper {
             getOMRSMetadataCollection(restAPIName).purgeRelationship(userId, typeGuid, typeName, guid);
             response = new VoidResponse();
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException e) {
-           response =  this.errorHandler.handleRelationshipNotKnownException(guid,
+           response = ErrorHandler.handleRelationshipNotKnownException(guid,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException e) {
-           response =  this.errorHandler.handleRelationshipNotPurgedException(guid,
+           response = ErrorHandler.handleRelationshipNotPurgedException(guid,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -1138,49 +1137,49 @@ public class OMRSAPIHelper {
             );
             response = new RelationshipsResponse(relationships);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException e) {
-           response =  this.errorHandler.handleTypeErrorException(e,
+           response = ErrorHandler.handleTypeErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e) {
-           response =  this.errorHandler.handlePropertyErrorException(e,
+           response = ErrorHandler.handlePropertyErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException e) {
-           response =  this.errorHandler.handleEntityNotKnownError(entityGUID,
+           response = ErrorHandler.handleEntityNotKnownError(entityGUID,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException e) {
-           response =  this.errorHandler.handlePagingErrorException(e,
+           response = ErrorHandler.handlePagingErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -1214,49 +1213,49 @@ public class OMRSAPIHelper {
                     sequencingProperty,sequencingOrder,pageSize);
             response = new RelationshipsResponse(relationships);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-           response =  this.errorHandler.handleRepositoryError(e,
+           response = ErrorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException e) {
-           response =  this.errorHandler.handleTypeErrorException(e,
+           response = ErrorHandler.handleTypeErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e) {
-           response =  this.errorHandler.handlePropertyErrorException(e,
+           response = ErrorHandler.handlePropertyErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException e) {
-           response =  this.errorHandler.handleEntityNotKnownError(entityGUID,
+           response = ErrorHandler.handleEntityNotKnownError(entityGUID,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException e) {
-           response =  this.errorHandler.handlePagingErrorException(e,
+           response = ErrorHandler.handlePagingErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+            response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -1297,13 +1296,13 @@ public class OMRSAPIHelper {
             return new InstanceGraphResponse(instanceGraph);
         } catch (UserNotAuthorizedException e)
         {
-           response =  this.errorHandler.handleUnauthorizedUser(userId,
+           response = ErrorHandler.handleUnauthorizedUser(userId,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (MetadataServerUncontactableException e)
         {
-           response =  this.errorHandler.handleMetadataServerUnContactable(e,
+           response = ErrorHandler.handleMetadataServerUnContactable(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -1312,35 +1311,35 @@ public class OMRSAPIHelper {
             // check to see if the method is not implemented. in this case do not error.
             String method_not_implemented_msg_id = OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition().getMessageId();
             if (!e.getReportedErrorMessage().startsWith(method_not_implemented_msg_id)) {
-               response =  this.errorHandler.handleRepositoryError(e, restAPIName, serverName, serviceName);
+               response = ErrorHandler.handleRepositoryError(e, restAPIName, serverName, serviceName);
             }
         } catch (TypeErrorException e)
         {
-           response =  this.errorHandler.handleTypeErrorException(e,
+           response = ErrorHandler.handleTypeErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (EntityNotKnownException e)
         {
-           response =  this.errorHandler.handleEntityNotKnownError(entityGUID,
+           response = ErrorHandler.handleEntityNotKnownError(entityGUID,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (InvalidParameterException e)
         {
-           response =  this.errorHandler.handleInvalidParameterException(e,
+           response = ErrorHandler.handleInvalidParameterException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (PropertyErrorException e)
         {
-           response =  this.errorHandler.handlePropertyErrorException(e,
+           response = ErrorHandler.handlePropertyErrorException(e,
                     restAPIName,
                     serverName,
                     serviceName);
         } catch (FunctionNotSupportedException e)
         {
-           response =  this.errorHandler.handleFunctionNotSupportedException(e,
+           response = ErrorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -1349,14 +1348,7 @@ public class OMRSAPIHelper {
     }
 
 
-    public SubjectAreaOMASAPIResponse findEntitiesByPropertyValue(String restAPIName, String userId, String typeName, String searchCriteria, Date asOfTime, Integer offset, Integer pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) {
-                  // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
-        if (offset == null) {
-            offset = new Integer(0);
-        }
-        if (pageSize == null) {
-            pageSize = new Integer(0);
-        }
+    public SubjectAreaOMASAPIResponse findEntitiesByPropertyValue(String restAPIName, String userId, String typeName, String searchCriteria, Date asOfTime, int offset, int pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) {
         if (sequencingProperty !=null) {
             try {
                 sequencingProperty = URLDecoder.decode(sequencingProperty,"UTF-8");
@@ -1380,7 +1372,7 @@ public class OMRSAPIHelper {
                 userId,
                 entityTypeGUID,
                 searchCriteria,
-                offset.intValue(),
+                offset,
                 null,       // TODO limit by status ?
                 null,  // TODO limit by classification ?
                 asOfTime,
@@ -1393,16 +1385,9 @@ public class OMRSAPIHelper {
                                                                String userId,
                                                                String typeName,
                                                                Date asOfTime,
-                                                               Integer offset,
-                                                               Integer pageSize
-                                                               ) {
-        if (offset == null) {
-            offset = new Integer(0);
-        }
-        if (pageSize == null) {
-            pageSize = new Integer(0);
-        }
-      
+                                                               int offset,
+                                                               int pageSize
+    ) {
         TypeDef typeDef = this.omrsRepositoryHelper.getTypeDefByName("getEntitiesByType",typeName);
         String entityTypeGUID = typeDef.getGUID();
         return oMRSAPIHelper.callGetEntitiesByType(

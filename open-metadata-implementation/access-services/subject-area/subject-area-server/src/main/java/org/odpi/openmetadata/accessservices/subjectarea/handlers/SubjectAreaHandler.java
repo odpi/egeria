@@ -124,12 +124,11 @@ public abstract class SubjectAreaHandler {
                                                                 String userId,
                                                                 String guid,
                                                                 Date asOfTime,
-                                                                Integer offset,
-                                                                Integer pageSize,
+                                                                int offset,
+                                                                int pageSize,
                                                                 org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
                                                                 String sequencingProperty
-                                                               ) {
-
+    ) {
         SubjectAreaOMASAPIResponse response = null;
         SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
         glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
