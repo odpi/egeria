@@ -111,7 +111,7 @@ public class CreateGovernanceZoneSample
     public static void main(String[] args)
     {
         String  serverName = "cocoMDS1";
-        String  serverURLRoot = "http://localhost:8080";
+        String  serverURLRoot = "https://localhost:9443";
         String  clientUserId = "garygeeke";
 
 

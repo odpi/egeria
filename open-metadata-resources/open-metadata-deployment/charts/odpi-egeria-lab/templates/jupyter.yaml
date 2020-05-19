@@ -68,15 +68,15 @@ spec:
             - "--NotebookApp.iopub_data_rate_limit=1.0e10"
           env:
             - name: corePlatformURL
-              value: "http://{{ .Release.Name }}-core:8080"
+              value: "https://{{ .Release.Name }}-core:9443"
             - name: dataLakePlatformURL
-              value: "http://{{ .Release.Name }}-datalake:8080"
+              value: "https://{{ .Release.Name }}-datalake:9443"
             - name: devPlatformURL
-              value: "http://{{ .Release.Name }}-dev:8080"
+              value: "https://{{ .Release.Name }}-dev:9443"
             - name: ctsPlatformURL
-              value: "http://{{ .Release.Name }}-dev:8080"
+              value: "https://{{ .Release.Name }}-dev:9443"
             - name: factoryPlatformURL
-              value: "http://{{ .Release.Name }}-factory:8080"
+              value: "https://{{ .Release.Name }}-factory:9443"
             - name: eventBusURLroot
               value: "{{ .Release.Name }}-kafka:9092"
             - name: uiExternalURL

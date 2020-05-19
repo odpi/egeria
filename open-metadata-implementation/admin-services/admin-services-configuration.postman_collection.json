@@ -16,12 +16,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -46,12 +46,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/stores/connection",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/stores/connection",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -75,12 +75,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/platform-services/users/garygeeke/server-platform-origin",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/platform-services/users/garygeeke/server-platform-origin",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"platform-services",
@@ -108,12 +108,12 @@
 					"raw": "{\n                    \"class\": \"Connection\",\n                    \"type\": {\n                        \"class\": \"ElementType\",\n                        \"elementTypeId\": \"114e9f8f-5ff3-4c32-bd37-a7eb42712253\",\n                        \"elementTypeName\": \"Connection\",\n                        \"elementTypeVersion\": 1,\n                        \"elementTypeDescription\": \"A set of properties to identify and configure a connector instance.\",\n                        \"elementOrigin\": \"CONFIGURATION\"\n                    },\n                    \"guid\": \"12137087-2b13-4c4e-b840-97c4282f7416\",\n                    \"qualifiedName\": \"InTopic\",\n                    \"displayName\": \"InTopic\",\n                    \"description\": \"InTopic\",\n                    \"connectorType\": {\n                        \"class\": \"ConnectorType\",\n                        \"type\": {\n                            \"class\": \"ElementType\",\n                            \"elementTypeId\": \"954421eb-33a6-462d-a8ca-b5709a1bd0d4\",\n                            \"elementTypeName\": \"ConnectorType\",\n                            \"elementTypeVersion\": 1,\n                            \"elementTypeDescription\": \"A set of properties describing a type of connector.\",\n                            \"elementOrigin\": \"LOCAL_COHORT\"\n                        },\n                        \"guid\": \"3851e8d0-e343-400c-82cb-3918fed81da6\",\n                        \"qualifiedName\": \"Kafka Open Metadata Topic Connector\",\n                        \"displayName\": \"Kafka Open Metadata Topic Connector\",\n                        \"description\": \"Kafka Open Metadata Topic Connector supports string based events over an Apache Kafka event bus.\",\n                        \"connectorProviderClassName\": \"org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider\"\n                    },\n                    \"endpoint\": {\n                        \"class\": \"Endpoint\",\n                        \"type\": {\n                            \"class\": \"ElementType\",\n                            \"elementTypeId\": \"dbc20663-d705-4ff0-8424-80c262c6b8e7\",\n                            \"elementTypeName\": \"Endpoint\",\n                            \"elementTypeVersion\": 1,\n                            \"elementTypeDescription\": \"Description of the network address and related information needed to call a software service.\",\n                            \"elementOrigin\": \"CONFIGURATION\"\n                        },\n                        \"guid\": \"b4ae2f8c-5f65-4ed7-8762-1ef2aa958db5\",\n                        \"qualifiedName\": \"open-metadata/ConfigTopic\",\n                        \"displayName\": \"open-metadata/ConfigTopic\",\n                        \"description\": \"ConfigTopic\",\n                        \"address\": \"open-metadata/admin-services/ConfigTopic\"\n                    }\n                }"
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/stores/connection",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/stores/connection",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -137,12 +137,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/stores/connection",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/stores/connection",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -166,12 +166,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-url-root?url=https://cocoMDS1:8080",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-url-root?url=https://cocoMDS1:9443",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -184,7 +184,7 @@
 					"query": [
 						{
 							"key": "url",
-							"value": "https://cocoMDS1:8080"
+							"value": "https://cocoMDS1:9443"
 						}
 					]
 				},
@@ -202,12 +202,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-user-id?id=cocoMDS",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-user-id?id=cocoMDS",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -238,12 +238,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/max-page-size?limit=500",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/max-page-size?limit=500",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -274,12 +274,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName=OMAG Test Server",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName=OMAG Test Server",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -310,12 +310,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/organization-name?name=Coco Pharmaceuticals",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/organization-name?name=Coco Pharmaceuticals",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -346,12 +346,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/event-bus",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/event-bus",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -376,12 +376,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -406,12 +406,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -436,12 +436,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/in-memory-repository",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/in-memory-repository",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -468,12 +468,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/local-graph-repository",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/local-graph-repository",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -500,12 +500,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.openmetadata.adapters.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.openmetadata.adapters.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -539,12 +539,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.igc.eventmapper.IGCEventMapperProvider&eventSource=infosphereEvent",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.igc.eventmapper.IGCEventMapperProvider&eventSource=infosphereEvent",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -580,12 +580,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -610,12 +610,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cohort1",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cohort1",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -641,12 +641,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cohort1",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cohort1",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -672,12 +672,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -702,12 +702,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
@@ -732,12 +732,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1",
-					"protocol": "http",
+					"raw": "https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9443",
 					"path": [
 						"open-metadata",
 						"admin-services",
