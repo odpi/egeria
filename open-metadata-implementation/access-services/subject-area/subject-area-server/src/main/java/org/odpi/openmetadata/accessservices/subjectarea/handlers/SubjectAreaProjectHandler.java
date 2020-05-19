@@ -39,7 +39,7 @@ import java.util.*;
  * OMAS and retrieves entities and relationships through the OMRSRepositoryConnector.
  */
 public class SubjectAreaProjectHandler extends SubjectAreaHandler{
-    private static final Class clazz = SubjectAreaProjectHandler.class;
+    private static final Class<?> clazz = SubjectAreaProjectHandler.class;
     private static final String className = clazz.getName();
     private static final Logger log = LoggerFactory.getLogger(clazz);
 
@@ -323,8 +323,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
 
             response = getProjectByGuid(userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.Project)) {
-                Project originalProject = ((ProjectResponse) response).getProject();
-                Project updateProject = originalProject;
+                Project updateProject = ((ProjectResponse) response).getProject();
                 if (isReplace) {
                     // copy over attributes
                     updateProject.setName(suppliedProject.getName());
@@ -547,7 +546,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
                     for (Node node : nodes) {
                         if (node.getNodeType() == NodeType.Term) {
                             if (terms == null) {
-                                terms = new ArrayList();
+                                terms = new ArrayList<>();
                             }
                             terms.add((Term) node);
                         }
