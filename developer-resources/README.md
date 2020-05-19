@@ -19,6 +19,7 @@ It supplements the general [Community Guide](../Community-Guide.md).
 
 * Technology Summaries
    * [Spring and Spring Boot](Spring.md) - for building REST APIs
+   * [Swagger](tools/Swagger.md) - REST API documentation
    * [Developer import of Egeria content using Gradle](Consuming-Egeria-Using_Gradle.md)
   
 
