@@ -61,6 +61,8 @@ services:
         networks:
             - cocopharma
         user: root
+        env_file:
+            - '.env'
 
     core:
         depends_on:
@@ -70,6 +72,8 @@ services:
             - '19443:9443'
         networks:
             - cocopharma
+        env_file:
+            - '.env'
 
     datalake:
         depends_on:
@@ -79,6 +83,8 @@ services:
             - '19444:9443'
         networks:
             - cocopharma
+        env_file:
+            - '.env'
 
     dev:
         depends_on:
@@ -88,6 +94,8 @@ services:
             - '19445:9443'
         networks:
             - cocopharma
+        env_file:
+            - '.env'
 
     factory:
         depends_on:
@@ -97,6 +105,8 @@ services:
             - '19446:9443'
         networks:
             - cocopharma
+        env_file:
+            - '.env'
 
     ui:
         depends_on:
@@ -113,5 +123,7 @@ services:
             - '18443:8443'
         networks:
             cocopharma:
+        env_file:
+            - '.env'
 networks:
     cocopharma:
