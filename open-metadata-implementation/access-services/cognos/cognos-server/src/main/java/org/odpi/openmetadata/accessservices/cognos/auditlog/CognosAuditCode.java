@@ -24,7 +24,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 public enum CognosAuditCode implements AuditLogMessageSet {
 
     SERVICE_INITIALIZING("OMAS-COGNOS-0001",
-            OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.STARTUP,
             "The Cognos Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Cognos OMAS.",
             "No action is required.  This is part of the normal operation of the server."),
@@ -64,6 +64,12 @@ public enum CognosAuditCode implements AuditLogMessageSet {
             "Unable to initialize the Cognos Open Metadata Access Service (OMAS) topic connection {0} for server instance {1}; error message was: {2}",
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
+    SERVICE_INSTANCE_TERMINATION_FAILURE("OMAS-COGNOS-0008",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "The Cognos Open Metadata Access Service (OMAS) is unable to terminate an instance {0}",
+            "The access service detected an error during the shut down of a specific server instance.  Its services are not available for the server.",
+            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, try to shut " +
+                                                 "down the server."),
 
 //    SUPPORTED_ZONES("OMAS-COGNOS-0009",
 //            OMRSAuditLogRecordSeverity.INFO,

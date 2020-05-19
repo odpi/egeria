@@ -13,18 +13,14 @@ import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
 import org.odpi.openmetadata.accessservices.cognos.server.CognosServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * CognosAdmin is the class that is called by the OMAG Server to initialize and terminate
@@ -36,7 +32,6 @@ import org.slf4j.LoggerFactory;
 public class CognosAdmin extends AccessServiceAdmin
 {
 
-    private static final Logger log = LoggerFactory.getLogger(CognosAdmin.class);
     private OpenMetadataTopicConnector cognosOutTopicConnector;
     private OMRSAuditLog auditLog;
     private String serverName = null;
@@ -56,7 +51,8 @@ public class CognosAdmin extends AccessServiceAdmin
     @Override
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties, OMRSTopicConnector enterpriseOMRSTopicConnector, OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
         
-    	final String actionDescription = "initialize";
+        final String actionDescription = "Initialize Cognos OMAS service.";
+
         auditLog.logMessage(actionDescription, CognosAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
         this.auditLog = auditLog;
 
@@ -64,9 +60,37 @@ public class CognosAdmin extends AccessServiceAdmin
 			serverName = enterpriseConnector.getServerName();
 		}
 
-        String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-        cognosOutTopicConnector = initializeCognosTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
         
+        try {
+            // initialize Topic Connector
+        	String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
+            cognosOutTopicConnector =  super.getTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic(),
+            		OpenMetadataTopicConnector.class,
+            		auditLog,
+                    AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName(),
+                    actionDescription);
+
+            if (cognosOutTopicConnector != null) {
+                startConnector(actionDescription, outTopicName, cognosOutTopicConnector);
+            }
+
+       	
+        } catch (OMAGConfigurationErrorException error) {
+            throw error;
+        } catch (Exception error) {
+            auditLog.logException(
+            		actionDescription,
+            		CognosAuditCode.getAuditLogMessageDefinition(
+            				OMAGAdminErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(),
+            				AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName(),
+            				error.getClass().getName(),
+            				error.getMessage()),
+            		error);
+            
+            super.throwUnexpectedInitializationException(actionDescription,
+                                                         AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName(),
+                                                         error);
+        }
         
         List<String> supportedZones = extractSupportedZones(
         				accessServiceConfigurationProperties.getAccessServiceOptions(),
@@ -75,19 +99,23 @@ public class CognosAdmin extends AccessServiceAdmin
 
         OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
 
-        if (cognosOutTopicConnector != null) {
-            startConnector(CognosAuditCode.SERVICE_REGISTERED_WITH_COGNOS_OUT_TOPIC, actionDescription, outTopicName, cognosOutTopicConnector);
-        }
-
         DatabaseContextHandler contextBuilders = new DatabaseContextHandler(omEntityDao);
         instance = new CognosServicesInstance(contextBuilders, serverName);
         
         auditLog.logMessage(actionDescription, CognosAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
     }
 
-    private void startConnector(CognosAuditCode auditCode, String actionDescription, String topicName, OpenMetadataTopicConnector topicConnector) throws OMAGConfigurationErrorException {
+    /** 
+     * Helper method to wrap start connector logic and error processing.
+     * 
+     * @param actionDescription parent method name providing context for error handling.
+     * @param topicName to start
+     * @param topicConnector to start
+     * @throws OMAGConfigurationErrorException
+     */
+    private void startConnector(String actionDescription, String topicName, OpenMetadataTopicConnector topicConnector) throws OMAGConfigurationErrorException {
 
-        auditLog.logMessage(actionDescription, auditCode.getMessageDefinition(topicName));
+        auditLog.logMessage(actionDescription, CognosAuditCode.SERVICE_REGISTERED_WITH_COGNOS_OUT_TOPIC.getMessageDefinition(topicName));
 
         try {
             topicConnector.start();
@@ -107,70 +135,20 @@ public class CognosAdmin extends AccessServiceAdmin
         }
     }
 
-
-
-
-    /**
-     * Returns the topic created based on connection properties
-     *
-     * @param topicConnection  properties of the topic
-     * @return the topic created based on the connection properties
-     */
-    private OpenMetadataTopicConnector initializeCognosTopicConnector(Connection topicConnection) {
-        if (topicConnection != null) {
-            try {
-                return getTopicConnector(topicConnection);
-            } catch (Exception e) {
-		        final String actionDescription = "initialize";
-                auditLog.logException(actionDescription, 
-                		CognosAuditCode.ERROR_INITIALIZING_CONNECTION
-                		.getMessageDefinition(topicConnection.toString(), serverName, e.getMessage()), e);
-
-                throw e;
-            }
-
-        }
-        return null;
-    }
-
-
-    /**
-     * Returns the connector created from topic connection properties
-     *
-     * @param topicConnection  properties of the topic connection
-     * @return the connector created based on the topic connection properties
-     */
-    private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection) {
-        try {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
-
-            OpenMetadataTopicConnector topicConnector = (OpenMetadataTopicConnector) connectorBroker.getConnector(topicConnection);
-
-            topicConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR));
-
-            return topicConnector;
-        } catch (Throwable error) {
-            String methodName = "getTopicConnector";
-
-            throw new OMRSConfigErrorException(
-            		CognosErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(methodName),
-                    this.getClass().getName(),
-                    methodName,
-                    error);
-        }
-    }
-
     /**
      * Shutdown the access service.
      */
+    @Override
     public void shutdown() {
 
     	final String actionDescription = "shutdown";
         
     	try {
         	cognosOutTopicConnector.disconnect();
-        } catch (ConnectorCheckedException e) {
-            log.error("Error disconnecting cognos topic connector");
+        } catch (ConnectorCheckedException error) {
+            auditLog.logException(actionDescription,
+                    CognosAuditCode.SERVICE_INSTANCE_TERMINATION_FAILURE.getMessageDefinition(serverName),
+                    error);
         }
 
         if (instance != null)
