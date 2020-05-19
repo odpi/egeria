@@ -20,31 +20,37 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.cognos.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
-import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDatabase;
-import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDatabaseSchema;
-import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerModule;
-import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerSchemaTables;
-import org.odpi.openmetadata.accessservices.cognos.model.module.Column;
-import org.odpi.openmetadata.accessservices.cognos.model.module.DataSource;
-import org.odpi.openmetadata.accessservices.cognos.model.module.ForeignColumn;
-import org.odpi.openmetadata.accessservices.cognos.model.module.ForeignKey;
-import org.odpi.openmetadata.accessservices.cognos.model.module.Module;
-import org.odpi.openmetadata.accessservices.cognos.model.module.PrimaryKey;
-import org.odpi.openmetadata.accessservices.cognos.model.module.Table;
-import org.odpi.openmetadata.accessservices.cognos.model.module.TableItem;
+import org.odpi.openmetadata.accessservices.cognos.model.*;
+import org.odpi.openmetadata.accessservices.cognos.model.module.*;
 import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+/**
+ * The class builds data content of the Cognos OMAS responses.<br>
+ * 
+ * This class contains logic about elements required to build responses and their relationships.
+ * Only methods used to build responses should be public.<br>
+ * 
+ * <br>Here is the exposed functionality:
+ * <ul>
+ * <li>Get databases {@link org.odpi.openmetadata.accessservices.cognos.assets.DatabaseContextHandler#getDatabases}</li>
+ * <li>Get database schemas {@link org.odpi.openmetadata.accessservices.cognos.assets.DatabaseContextHandler#getSchemaTables}</li>
+ * <li>Get schema tables {@link org.odpi.openmetadata.accessservices.cognos.assets.DatabaseContextHandler#getSchemaTables}</li>
+ * <li>Get physical module {@link org.odpi.openmetadata.accessservices.cognos.assets.DatabaseContextHandler#getModule}</li>
+ * </ul>
+ * Database metadata is retrieved from OMRS using object of type
+ * {@link org.odpi.openmetadata.accessservices.cognos.contentmanager.OMEntityDao}<br>
+ * All repository logic should be handled there.<br>
+ * 
+ * 
+ */
 public class DatabaseContextHandler {
 
 
-	private static final Logger log = LoggerFactory.getLogger(DatabaseContextHandler.class);
 	private OMEntityDao omEntityDao;
 
 	public DatabaseContextHandler(OMEntityDao omEntityDao) {
@@ -54,9 +60,10 @@ public class DatabaseContextHandler {
 	/**
 	 * Set context of the execution.
 	 * Every public method should call the method setContext() first to set the context.
+	 * @param context of the execution - top level method.
 	 */
-	void setContext() {
-		omEntityDao.setContext(new Throwable().getStackTrace()[1].getMethodName());
+	void setContext(String context) {
+		omEntityDao.setContext(context);
 	}
 
 
@@ -67,14 +74,17 @@ public class DatabaseContextHandler {
 	 */
 	public List<ResponseContainerDatabase> getDatabases() throws CognosCheckedException {
 		
-		setContext();
+		setContext("getDatabases");
 
 		InstanceProperties instanceProperties = omEntityDao.buildMatchingInstanceProperties(Collections.emptyMap(), true);
 		List<EntityDetail> entities = omEntityDao.findEntities(instanceProperties, Constants.DATABASE, 0, 0);
-		return Optional.ofNullable(entities).map(Collection::stream).orElseGet(Stream::empty)
+		List<ResponseContainerDatabase> ret = Optional.ofNullable(entities).map(Collection::stream).orElseGet(Stream::empty)
 				.parallel()
 				.map(this::buildDatabase)
 				.filter(Objects::nonNull).collect(Collectors.toList());
+		
+		ret.sort(Comparator.comparing(rdb->rdb.getDbName().toUpperCase()));
+		return ret;
 	}
 	
 	private ResponseContainerDatabase buildDatabase(EntityDetail e) {
@@ -97,7 +107,7 @@ public class DatabaseContextHandler {
 	 */
 	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String guidDataSource) throws CognosCheckedException {
 
-		setContext();
+		setContext("getDatabaseSchemas");
 
 		EntityDetail db = omEntityDao.getEntityByGuid(guidDataSource);
 		String catalogName = getEntityStringProperty(db, Constants.ATTRIBUTE_NAME);
@@ -119,6 +129,12 @@ public class DatabaseContextHandler {
 		return ret;
 	}
 
+	/**
+	 * Helper function to build database response object from entity of the schema.
+	 * @param catalogName the schema belongs to.
+	 * @param dbSchemaEntity source of the schema data.
+	 * @return response element.
+	 */
 	private ResponseContainerDatabaseSchema buildSchemaForRelationship(String catalogName, EntityDetail dbSchemaEntity) {
 			String schemaName = getEntityStringProperty(dbSchemaEntity, Constants.ATTRIBUTE_NAME);
 			ResponseContainerDatabaseSchema schema = new ResponseContainerDatabaseSchema();
@@ -147,7 +163,7 @@ public class DatabaseContextHandler {
 	 */
 	public ResponseContainerSchemaTables getSchemaTables(String guidDataSource, String schema) throws CognosCheckedException {
 
-		setContext();
+		setContext("getSchemaTables");
 
 		ResponseContainerSchemaTables ret = new ResponseContainerSchemaTables();
 
@@ -203,7 +219,7 @@ public class DatabaseContextHandler {
 	 */
 	public ResponseContainerModule getModule(String databaseGuid, String catalog, String schema) throws CognosCheckedException {
 
-		setContext();
+		setContext("getModule");
 
 		ResponseContainerModule ret = new ResponseContainerModule();
 		ret.setId(catalog + "_" + schema);
