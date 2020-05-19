@@ -305,6 +305,7 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse removeRatingFromAsset(String          serverName,
                                               String          userId,
                                               String          guid,
@@ -398,6 +399,7 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse removeLikeFromAsset(String          serverName,
                                             String          userId,
                                             String          guid,
@@ -612,6 +614,7 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse removeCommentFromAsset(String          serverName,
                                                String          userId,
                                                String          assetGUID,
@@ -1012,6 +1015,7 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse   deleteTag(String          serverName,
                                     String          userId,
                                     String          tagGUID,
@@ -1326,6 +1330,7 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse   removeTagFromAsset(String          serverName,
                                              String          userId,
                                              String          assetGUID,

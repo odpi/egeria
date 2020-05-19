@@ -15,7 +15,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Activity;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchorRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermAnchorMapper;
@@ -166,7 +166,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
                         String termGuid = createdTermEntityDetail.getGUID();
                         // Knit the Term to the supplied glossary
                         String glossaryGuid = associatedGlossary.getSystemAttributes().getGUID();
-                        TermAnchorRelationship termAnchor = new TermAnchorRelationship();
+                        TermAnchor termAnchor = new TermAnchor();
                         termAnchor.setGlossaryGuid(glossaryGuid);
                         termAnchor.setTermGuid(termGuid);
                         TermAnchorMapper termAnchorMapper = new TermAnchorMapper(oMRSAPIHelper);
@@ -229,7 +229,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
                         List<Relationship> glossaryRelationships = relationshipsResponse.getRelationships();
                         if (glossaryRelationships.iterator().hasNext()) {
                             Relationship glossaryRelationship = glossaryRelationships.iterator().next();
-                            TermAnchorRelationship termAnchor = (TermAnchorRelationship) new TermAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
+                            TermAnchor termAnchor = (TermAnchor) new TermAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
                             response = SubjectAreaUtils.getGlossarySummaryForTerm(methodName, userId, oMRSAPIHelper, termAnchor, gotTerm);
                             if (response.getResponseCategory().equals(ResponseCategory.GlossarySummary)) {
                                 GlossarySummaryResponse glossarySummaryResponse = (GlossarySummaryResponse) response;

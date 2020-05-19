@@ -448,7 +448,7 @@ public class GlossaryViewController extends SecureController {
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
     @GetMapping("/categories/{categoryGUID}/terms")
-    public List<GlossaryTerm> getTermsOfCategory(@PathVariable("termGUID") String categoryGUID,
+    public List<GlossaryTerm> getTermsOfCategory(@PathVariable("categoryGUID") String categoryGUID,
                                                  @RequestParam(defaultValue = "0") Integer from,
                                                  @RequestParam(defaultValue = "100") Integer size, HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {

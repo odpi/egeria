@@ -28,14 +28,6 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
     public DataEngineConnectorBase() { super(); }
 
     /**
-     * Retrieve the details about the data engine to which we are connected.
-     *
-     * @return SoftwareServerCapability
-     */
-    @Override
-    public abstract SoftwareServerCapability getDataEngineDetails();
-
-    /**
      * Indicates whether the data engine requires polling (true) or is capable of notifying of changes on its own
      * (false).
      *

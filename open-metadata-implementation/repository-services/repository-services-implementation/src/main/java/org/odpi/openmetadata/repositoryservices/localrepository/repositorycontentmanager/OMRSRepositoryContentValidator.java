@@ -2062,7 +2062,8 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             }
 
             boolean  validPropertyType = false;
-            String   validPropertyTypeName = propertyType.getName();
+            String   actualPropertyTypeName = propertyType.getName();
+            String   validPropertyTypeName  = propertyDefinitionType.getName();
 
             switch (propertyType)
             {
@@ -2072,18 +2073,22 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         /*
                          * Ensure that primitive definition category is a perfect match...
                          */
-                        PrimitivePropertyValue primPropertyValue = (PrimitivePropertyValue)propertyValue;
-                        PrimitiveDefCategory propertyDefCat = primPropertyValue.getPrimitiveDefCategory();
-                        PrimitiveDef primAttributeDef = (PrimitiveDef) attributeTypeDef;
-                        PrimitiveDefCategory attributeDefCat = primAttributeDef.getPrimitiveDefCategory();
-                        if (propertyDefCat == attributeDefCat) {
+                        PrimitivePropertyValue primPropertyValue    = (PrimitivePropertyValue)propertyValue;
+                        PrimitiveDefCategory   primPropertyCategory = primPropertyValue.getPrimitiveDefCategory();
+                        PrimitiveDef           expectedAttributeDef = (PrimitiveDef) attributeTypeDef;
+                        PrimitiveDefCategory   expectedAttributeDefCategory = expectedAttributeDef.getPrimitiveDefCategory();
+                        if (primPropertyCategory == expectedAttributeDefCategory)
+                        {
                             validPropertyType = true;
                         }
-                        else {
-                            validPropertyTypeName = attributeDefCat.getName();
+                        else
+                        {
+                            actualPropertyTypeName = primPropertyCategory.getName();
+                            validPropertyTypeName  = expectedAttributeDefCategory.getName();
                         }
                     }
-                    else if (propertyDefinitionType == AttributeTypeDefCategory.UNKNOWN_DEF) {
+                    else if (propertyDefinitionType == AttributeTypeDefCategory.UNKNOWN_DEF)
+                    {
                         /*
                          * This property definition type may have been adopted above due to the
                          * attributeTypeDef being null. Permit primitive definition category to
@@ -2115,7 +2120,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             if (! validPropertyType)
             {
                 throw new PropertyErrorException(OMRSErrorCode.BAD_PROPERTY_TYPE.getMessageDefinition(propertyName,
-                                                                                                      propertyType.getName(),
+                                                                                                      actualPropertyTypeName,
                                                                                                       typeDefCategoryName,
                                                                                                       typeDefName,
                                                                                                       validPropertyTypeName,
@@ -4069,17 +4074,23 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         for (ClassificationCondition condition : conditions)
         {
             String classificationName = condition.getName();
-            boolean isClassified = verifyEntityIsClassified(classificationName, entity);
-            SearchProperties properties = condition.getMatchProperties();
-            boolean classificationMatches = false;
-            for (Classification classification : classifications)
+            if (classificationName != null)
             {
-                if (classificationName.equals(classification.getName()))
+                // Only attempt to match if a classification name has been provided: if not, we cannot match against
+                // the requested classification (as no definition of a classification has been provided that we should
+                // attempt to match against)
+                boolean isClassified = verifyEntityIsClassified(classificationName, entity);
+                SearchProperties properties = condition.getMatchProperties();
+                boolean classificationMatches = false;
+                for (Classification classification : classifications)
                 {
-                    classificationMatches = verifyMatchingInstancePropertyValues(properties, entity, classification.getProperties());
+                    if (classificationName.equals(classification.getName()))
+                    {
+                        classificationMatches = verifyMatchingInstancePropertyValues(properties, entity, classification.getProperties());
+                    }
                 }
+                matchingClassificationCount += (isClassified && classificationMatches) ? 1 : 0;
             }
-            matchingClassificationCount += (isClassified && classificationMatches) ? 1 : 0;
         }
         // TODO: we may want to move this into the loop above to short-circuit (for performance)
         switch (matchClassifications.getMatchCriteria())

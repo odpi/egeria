@@ -36,7 +36,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     }
 
     /**
-     * Create a TermHASARelationship is the relationship between a spine object and a spine attribute.
+     * Create a Hasa is the relationship between a spine object and a spine attribute.
      * Note that this method does not error if the relationship ends are not spine objects or spine attributes.
      * This allows the user to create terms then make them spine objects and spine attributes at a later stage.
      * <p>
@@ -44,7 +44,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
-     * @return response, when successful contains the created TermHASARelationship
+     * @return response, when successful contains the created Hasa
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -56,10 +56,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTermHASARelationship(String serverName, String userId, TermHASARelationship termHASARelationship)
+    public SubjectAreaOMASAPIResponse createTermHASARelationship(String serverName, String userId, Hasa termHASARelationship)
     {
         String restAPIName = "createTermHASARelationship";
-        return createLine(serverName,restAPIName, userId,TermHASARelationship.class.getName(),termHASARelationship);
+        return createLine(serverName, restAPIName, userId, Hasa.class.getName(), termHASARelationship);
     }
 
 
@@ -84,18 +84,18 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      {
 
         String restAPIName = "getTermHASARelationship";
-        return getLine(serverName,restAPIName, userId,TermHASARelationship.class.getName(),guid);
+        return getLine(serverName, restAPIName, userId, Hasa.class.getName(), guid);
     }
 
     /**
-     * Update a TermHASARelationship is the relationship between a spine object and a spine attribute.
+     * Update a Hasa is the relationship between a spine object and a spine attribute.
      * <p>
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated TermHASARelationship
+     * @return response, when successful contains the updated Hasa
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -107,10 +107,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermHASARelationship(String serverName, String userId, TermHASARelationship termHASARelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse updateTermHASARelationship(String serverName, String userId, Hasa termHASARelationship, boolean isReplace)
      {
         String restAPIName = "updateTermHASARelationship";
-        return updateLine(serverName,restAPIName, userId,TermHASARelationship.class.getName(),termHASARelationship,isReplace);
+        return updateLine(serverName, restAPIName, userId, Hasa.class.getName(), termHASARelationship, isReplace);
     }
 
     /**
@@ -135,7 +135,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteTermHASARelationship(String serverName, String userId, String guid, Boolean isPurge)
      {
         String restAPIName = "deleteTermHASARelationship";
-        return deleteLine(serverName,restAPIName, userId,TermHASARelationship.class.getName(),guid,isPurge);
+        return deleteLine(serverName, restAPIName, userId, Hasa.class.getName(), guid, isPurge);
     }
 
     /**
@@ -160,7 +160,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse restoreTermHASARelationship(String serverName, String userId, String guid)
      {
         String restAPIName = "restoreTermHASARelationship";
-        return restoreLine(serverName, restAPIName, userId, TermHASARelationship.class.getName(), guid);
+        return restoreLine(serverName, restAPIName, userId, Hasa.class.getName(), guid);
     }
 
     /**
@@ -1146,7 +1146,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
-     * @param termTYPEDBYRelationship the TermTYPEDBYRelationship relationship
+     * @param termTYPEDBYRelationship the TypedBy relationship
      * @return response, when successful contains the created termTYPEDBYRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1158,10 +1158,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTermTYPEDBYRelationship(String serverName, String userId, TermTYPEDBYRelationship termTYPEDBYRelationship)
+    public SubjectAreaOMASAPIResponse createTermTYPEDBYRelationship(String serverName, String userId, TypedBy termTYPEDBYRelationship)
      {
         String restAPIName = "createTermTYPEDBYRelationship";
-        return createLine(serverName, restAPIName, userId,TermTYPEDBYRelationship.class.getName(), termTYPEDBYRelationship);
+        return createLine(serverName, restAPIName, userId, TypedBy.class.getName(), termTYPEDBYRelationship);
     }
 
     /**
@@ -1183,18 +1183,18 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse getTermTYPEDBYRelationship(String serverName, String userId, String guid)
      {
         String restAPIName = "getTermTYPEDBYRelationship";
-        return getLine(serverName, restAPIName, userId,TermTYPEDBYRelationship.class.getName(), guid);
+        return getLine(serverName, restAPIName, userId, TypedBy.class.getName(), guid);
     }
 
     /**
-     * Update a TermTYPEDBYRelationship relationship, which is a link between a spine attribute and its type.
+     * Update a TypedBy relationship, which is a link between a spine attribute and its type.
      * <p>
      *
      * @param serverName                          serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                              userId under which the request is performed
-     * @param termTYPEDBYRelationship the TermTYPEDBYRelationship relationship
+     * @param termTYPEDBYRelationship the TypedBy relationship
      * @param isReplace                           flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated TermTYPEDBYRelationship
+     * @return response, when successful contains the updated TypedBy
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1206,18 +1206,18 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(String serverName, String userId, TermTYPEDBYRelationship termTYPEDBYRelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(String serverName, String userId, TypedBy termTYPEDBYRelationship, boolean isReplace)
      {
         String restAPIName = "updateTermTYPEDBYRelationship";
-        return updateLine(serverName, restAPIName, userId,TermTYPEDBYRelationship.class.getName(), termTYPEDBYRelationship,isReplace);
+        return updateLine(serverName, restAPIName, userId, TypedBy.class.getName(), termTYPEDBYRelationship, isReplace);
     }
 
     /**
-     * Delete a TermTYPEDBYRelationship relationship, which is a link between a spine attribute and its type.
+     * Delete a TypedBy relationship, which is a link between a spine attribute and its type.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the TermTYPEDBYRelationship relationship to delete
+     * @param guid       guid of the TypedBy relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -1235,7 +1235,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteTermTYPEDBYRelationship(String serverName, String userId, String guid, Boolean isPurge)
      {
         String restAPIName = "deleteTermTYPEDBYRelationship";
-        return deleteLine(serverName, restAPIName, userId,TermTYPEDBYRelationship.class.getName(), guid, isPurge);
+        return deleteLine(serverName, restAPIName, userId, TypedBy.class.getName(), guid, isPurge);
     }
     /**
      * Restore a replacement term relationship.
@@ -1259,7 +1259,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse restoreTermTYPEDBYRelationship(String serverName, String userId, String guid)
      {
         String restAPIName = "restoreTermTYPEDBYRelationship";
-        return restoreLine(serverName, restAPIName, userId, TermTYPEDBYRelationship.class.getName(), guid);
+        return restoreLine(serverName, restAPIName, userId, TypedBy.class.getName(), guid);
     }
     /**
      * Create a iSARelationship relationship, which is a link between a more general glossary term and a more specific definition.
@@ -1267,7 +1267,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName      serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId          userId under which the request is performed
-     * @param iSARelationship the ISARelationship relationship
+     * @param iSARelationship the Isa relationship
      * @return response, when successful contains the created iSARelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1280,10 +1280,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createISARelationship(String serverName, String userId, ISARelationship iSARelationship)
+    public SubjectAreaOMASAPIResponse createISARelationship(String serverName, String userId, Isa iSARelationship)
      {
         String restAPIName = "createISARelationship";
-        return createLine(serverName, restAPIName, userId,ISARelationship.class.getName(), iSARelationship);
+        return createLine(serverName, restAPIName, userId, Isa.class.getName(), iSARelationship);
     }
 
     /**
@@ -1305,18 +1305,18 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse getISARelationship(String serverName, String userId, String guid)
      {
         String restAPIName = "getISARelationship";
-        return getLine(serverName, restAPIName, userId,ISARelationship.class.getName(), guid);
+        return getLine(serverName, restAPIName, userId, Isa.class.getName(), guid);
     }
 
     /**
-     * Update a ISARelationship relationship, which is a link between a more general glossary term and a more specific definition.
+     * Update a Isa relationship, which is a link between a more general glossary term and a more specific definition.
      * <p>
      *
      * @param serverName                  serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                      userId under which the request is performed
-     * @param iSARelationship the ISARelationship relationship
+     * @param iSARelationship the Isa relationship
      * @param isReplace                   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated ISARelationship
+     * @return response, when successful contains the updated Isa
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1328,18 +1328,18 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateISARelationship(String serverName, String userId, ISARelationship iSARelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse updateISARelationship(String serverName, String userId, Isa iSARelationship, boolean isReplace)
      {
         String restAPIName = "updateISARelationship";
-        return updateLine(serverName, restAPIName, userId,ISARelationship.class.getName(), iSARelationship,isReplace);
+        return updateLine(serverName, restAPIName, userId, Isa.class.getName(), iSARelationship, isReplace);
     }
 
     /**
-     * Delete a ISARelationship relationship, which is a link between a more general glossary term and a more specific definition.
+     * Delete a Isa relationship, which is a link between a more general glossary term and a more specific definition.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the ISARelationship relationship to delete
+     * @param guid       guid of the Isa relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -1357,7 +1357,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteISARelationship(String serverName, String userId, String guid, Boolean isPurge)
      {
         String restAPIName = "deleteISARelationship";
-        return deleteLine(serverName, restAPIName, userId,ISARelationship.class.getName(), guid, isPurge);
+        return deleteLine(serverName, restAPIName, userId, Isa.class.getName(), guid, isPurge);
     }
     /**
      * Restore a is a relationship.
@@ -1381,7 +1381,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse restoreISARelationship(String serverName, String userId, String guid)
      {
         String restAPIName = "restoreISARelationship";
-        return restoreLine(serverName, restAPIName, userId, ISARelationship.class.getName(), guid);
+        return restoreLine(serverName, restAPIName, userId, Isa.class.getName(), guid);
     }
     /**
      * Create a termISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
@@ -1389,7 +1389,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
-     * @param termISATypeOFRelationship the TermISATypeOFRelationship relationship
+     * @param termISATypeOFRelationship the IsaTypeOf relationship
      * @return response, when successful contains the created termISATypeOFRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1402,10 +1402,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTermISATypeOFRelationship(String serverName, String userId, TermISATypeOFRelationship termISATypeOFRelationship)
+    public SubjectAreaOMASAPIResponse createTermISATypeOFRelationship(String serverName, String userId, IsaTypeOf termISATypeOFRelationship)
      {
         String restAPIName = "createTermISATypeOFRelationship";
-        return createLine(serverName, restAPIName, userId,TermISATypeOFRelationship.class.getName(),termISATypeOFRelationship);
+        return createLine(serverName, restAPIName, userId, IsaTypeOf.class.getName(), termISATypeOFRelationship);
     }
 
     /**
@@ -1427,18 +1427,18 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse getTermISATypeOFRelationship(String serverName, String userId, String guid)
      {
         String restAPIName = "getTermISATypeOFRelationship";
-        return getLine(serverName, restAPIName, userId,TermISATypeOFRelationship.class.getName(),guid);
+        return getLine(serverName, restAPIName, userId, IsaTypeOf.class.getName(), guid);
     }
 
     /**
-     * Update a TermISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Update a IsaTypeOf relationship, which is an inheritance relationship between two spine objects.
      * <p>
      *
      * @param serverName                            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                                userId under which the request is performed
-     * @param termISATypeOFRelationship the TermISATypeOFRelationship relationship
+     * @param termISATypeOFRelationship the IsaTypeOf relationship
      * @param isReplace                             flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated TermISATypeOFRelationship
+     * @return response, when successful contains the updated IsaTypeOf
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1450,18 +1450,18 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermISATypeOFRelationship(String serverName, String userId, TermISATypeOFRelationship termISATypeOFRelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse updateTermISATypeOFRelationship(String serverName, String userId, IsaTypeOf termISATypeOFRelationship, boolean isReplace)
      {
         String restAPIName = "updateTermISATypeOFRelationship";
-        return updateLine(serverName, restAPIName, userId,TermISATypeOFRelationship.class.getName(),termISATypeOFRelationship,isReplace);
+        return updateLine(serverName, restAPIName, userId, IsaTypeOf.class.getName(), termISATypeOFRelationship, isReplace);
     }
 
     /**
-     * Delete a TermISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Delete a IsaTypeOf relationship, which is an inheritance relationship between two spine objects.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the TermISATypeOFRelationship relationship to delete
+     * @param guid       guid of the IsaTypeOf relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -1479,10 +1479,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteIsATypeOfRelationship(String serverName, String userId, String guid, Boolean isPurge)
      {
         String restAPIName = "deleteIsATypeOfRelationship";
-        return deleteLine(serverName, restAPIName, userId,TermISATypeOFRelationship.class.getName(),guid,isPurge);
+        return deleteLine(serverName, restAPIName, userId, IsaTypeOf.class.getName(), guid, isPurge);
     }
     /**
-     * Restore a is TermISATypeOFRelationship relationship.
+     * Restore a is IsaTypeOf relationship.
      *
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -1503,7 +1503,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse restoreTermISATypeOFRelationship(String serverName, String userId, String guid)
      {
         String restAPIName = "restoreTermISATypeOFRelationship";
-        return restoreLine(serverName, restAPIName, userId, TermISATypeOFRelationship.class.getName(), guid);
+        return restoreLine(serverName, restAPIName, userId, IsaTypeOf.class.getName(), guid);
     }
     /**
      *  Create a termCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
@@ -1525,10 +1525,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTermCategorizationRelationship(String serverName, String userId, TermCategorizationRelationship  termCategorizationRelationship)
+    public SubjectAreaOMASAPIResponse createTermCategorizationRelationship(String serverName, String userId, Categorization termCategorizationRelationship)
      {
         String restAPIName = "createTermCategorizationRelationship";
-        return createLine(serverName, restAPIName, userId,TermCategorizationRelationship.class.getName(), termCategorizationRelationship);
+        return createLine(serverName, restAPIName, userId, Categorization.class.getName(), termCategorizationRelationship);
     }
 
     /**
@@ -1548,7 +1548,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
      public SubjectAreaOMASAPIResponse getTermCategorizationRelationship(String serverName,String userId,String guid)   {
         String restAPIName = "getTermCategorizationRelationship";
-         return getLine(serverName, restAPIName, userId,TermCategorizationRelationship.class.getName(), guid);
+         return getLine(serverName, restAPIName, userId, Categorization.class.getName(), guid);
      }
 
     /**
@@ -1559,7 +1559,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId               userId under which the request is performed
      * @param termCategorizationRelationship   the termCategorization relationship
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated ISARelationship
+     * @return response, when successful contains the updated Isa
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1571,9 +1571,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(String serverName,String userId,TermCategorizationRelationship termCategorizationRelationship, Boolean isReplace)  {
+    public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(String serverName, String userId, Categorization termCategorizationRelationship, Boolean isReplace)  {
         String restAPIName = "updateTermCategorizationRelationship";
-        return updateLine(serverName, restAPIName, userId,TermCategorizationRelationship.class.getName(),termCategorizationRelationship,isReplace);
+        return updateLine(serverName, restAPIName, userId, Categorization.class.getName(), termCategorizationRelationship, isReplace);
     }
 
 
@@ -1598,7 +1598,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
      public SubjectAreaOMASAPIResponse deleteTermCategorizationRelationship(String serverName,String userId, String guid, Boolean isPurge)  {
         String restAPIName = "deleteTermCategorizationRelationship";
-         return deleteLine(serverName, restAPIName, userId,TermCategorizationRelationship.class.getName(), guid,isPurge);
+         return deleteLine(serverName, restAPIName, userId, Categorization.class.getName(), guid, isPurge);
      }
     /**
      * Restore a TermCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
@@ -1620,7 +1620,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse restoreTermCategorizationRelationship( String serverName,  String userId, String guid)
      {
         String restAPIName = "restoreTermCategorizationRelationship";
-        return restoreLine(serverName, restAPIName, userId, TermCategorizationRelationship.class.getName(), guid);
+        return restoreLine(serverName, restAPIName, userId, Categorization.class.getName(), guid);
     }
 
     /**
@@ -1645,10 +1645,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTermAnchorRelationship(String serverName, String userId, TermAnchorRelationship  termAnchorRelationship)
+    public SubjectAreaOMASAPIResponse createTermAnchorRelationship(String serverName, String userId, TermAnchor termAnchorRelationship)
      {
         String restAPIName = "createTermAnchorRelationship";
-        return createLine(serverName, restAPIName, userId,TermAnchorRelationship.class.getName(), termAnchorRelationship);
+        return createLine(serverName, restAPIName, userId, TermAnchor.class.getName(), termAnchorRelationship);
     }
 
     /**
@@ -1668,7 +1668,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse getTermAnchorRelationship(String serverName,String userId,String guid)   {
         String restAPIName = "getTermAnchorRelationship";
-        return getLine(serverName, restAPIName, userId,TermAnchorRelationship.class.getName(), guid);
+        return getLine(serverName, restAPIName, userId, TermAnchor.class.getName(), guid);
     }
 
     /**
@@ -1692,7 +1692,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse deleteTermAnchorRelationship(String serverName,String userId, String guid, Boolean isPurge)  {
         String restAPIName = "deleteTermAnchorRelationship";
-        return deleteLine(serverName, restAPIName, userId,TermAnchorRelationship.class.getName(), guid,isPurge);
+        return deleteLine(serverName, restAPIName, userId, TermAnchor.class.getName(), guid, isPurge);
     }
     /**
      * Restore a TermAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
@@ -1714,7 +1714,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse restoreTermAnchorRelationship( String serverName,  String userId, String guid)
      {
         String restAPIName = "restoreTermAnchorRelationship";
-        return restoreLine(serverName, restAPIName, userId, TermAnchorRelationship.class.getName(), guid);
+        return restoreLine(serverName, restAPIName, userId, TermAnchor.class.getName(), guid);
     }
     /**
      *  Create a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
@@ -1737,10 +1737,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createCategoryAnchorRelationship(String serverName, String userId, CategoryAnchorRelationship  categoryAnchorRelationship)
+    public SubjectAreaOMASAPIResponse createCategoryAnchorRelationship(String serverName, String userId, CategoryAnchor categoryAnchorRelationship)
      {
         String restAPIName = "createCategoryAnchorRelationship";
-        return createLine(serverName, restAPIName, userId,CategoryAnchorRelationship.class.getName(), categoryAnchorRelationship);
+        return createLine(serverName, restAPIName, userId, CategoryAnchor.class.getName(), categoryAnchorRelationship);
     }
 
     /**
@@ -1760,7 +1760,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse getCategoryAnchorRelationship(String serverName,String userId,String guid)   {
         String restAPIName = "getCategoryAnchorRelationship";
-        return getLine(serverName, restAPIName, userId,CategoryAnchorRelationship.class.getName(), guid);
+        return getLine(serverName, restAPIName, userId, CategoryAnchor.class.getName(), guid);
     }
 
     /**
@@ -1784,7 +1784,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse deleteCategoryAnchorRelationship(String serverName,String userId, String guid, Boolean isPurge)  {
         String restAPIName = "deleteCategoryAnchorRelationship";
-        return deleteLine(serverName, restAPIName, userId,CategoryAnchorRelationship.class.getName(), guid,isPurge);
+        return deleteLine(serverName, restAPIName, userId, CategoryAnchor.class.getName(), guid, isPurge);
     }
     /**
      * Restore a CategoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
@@ -1806,7 +1806,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse restoreCategoryAnchorRelationship( String serverName,  String userId, String guid)
      {
         String restAPIName = "restoreCategoryAnchorRelationship";
-        return restoreLine(serverName, restAPIName, userId, CategoryAnchorRelationship.class.getName(), guid);
+        return restoreLine(serverName, restAPIName, userId, CategoryAnchor.class.getName(), guid);
     }
     /**
      * Create a projectScope relationship, which is a link between the project content and the project.
@@ -1827,10 +1827,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function is not supported.
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createProjectScopeRelationship(String serverName, String userId, ProjectScopeRelationship projectScope)
+    public SubjectAreaOMASAPIResponse createProjectScopeRelationship(String serverName, String userId, ProjectScope projectScope)
     {
         String restAPIName = "createProjectScope";
-        return createLine(serverName,restAPIName, userId,ProjectScopeRelationship.class.getName(),projectScope);
+        return createLine(serverName, restAPIName, userId, ProjectScope.class.getName(), projectScope);
     }
 
     /**
@@ -1852,7 +1852,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse getProjectScopeRelationship(String serverName, String userId, String guid)
     {
         String restAPIName = "getProjectScopeRelationship";
-        return getLine(serverName, restAPIName, userId, ProjectScopeRelationship.class.getName(), guid);
+        return getLine(serverName, restAPIName, userId, ProjectScope.class.getName(), guid);
     }
 
     /**
@@ -1875,10 +1875,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateProjectScopeRelationship(String serverName, String userId, ProjectScopeRelationship projectScope, boolean isReplace)
+    public SubjectAreaOMASAPIResponse updateProjectScopeRelationship(String serverName, String userId, ProjectScope projectScope, boolean isReplace)
     {
         String restAPIName = "updateProjectScopeRelationship";
-        return updateLine(serverName,restAPIName, userId,ProjectScopeRelationship.class.getName(),projectScope,isReplace);
+        return updateLine(serverName, restAPIName, userId, ProjectScope.class.getName(), projectScope, isReplace);
     }
 
     /**
@@ -1904,7 +1904,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteProjectScopeRelationship(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteProjectScopeRelationship";
-        return deleteLine(serverName, restAPIName, userId, ProjectScopeRelationship.class.getName(), guid,isPurge);
+        return deleteLine(serverName, restAPIName, userId, ProjectScope.class.getName(), guid, isPurge);
     }
     /**
      * Restore a projectScope relationship, which is a link between the project content and the project.
@@ -1928,7 +1928,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse restoreProjectScopeRelationship(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreProjectScopeRelationship";
-        return restoreLine(serverName, restAPIName, userId, ProjectScopeRelationship.class.getName(), guid);
+        return restoreLine(serverName, restAPIName, userId, ProjectScope.class.getName(), guid);
     }
 
     /**

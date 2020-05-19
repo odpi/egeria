@@ -28,19 +28,19 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermHASARelationship createTermHASARelationship(String userId, TermHASARelationship termHASARelationship) throws InvalidParameterException,
-                                                                                                                                               UserNotAuthorizedException,
-                                                                                                                                               MetadataServerUncontactableException,
-                                                                                                                                               UnexpectedResponseException,
-                                                                                                                                               UnrecognizedGUIDException
+    Hasa createTermHASARelationship(String userId, Hasa termHASARelationship) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     MetadataServerUncontactableException,
+                                                                                     UnexpectedResponseException,
+                                                                                     UnrecognizedGUIDException
     ;
     /**
      * Get a Term HASA Relationship. A relationship between a spine object and a spine attribute.
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermHASARelationship relationship to get
-     * @return TermHASARelationship
+     * @param guid   guid of the Hasa relationship to get
+     * @return Hasa
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
@@ -51,11 +51,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    TermHASARelationship getTermHASARelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                             MetadataServerUncontactableException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             UnexpectedResponseException,
-                                                                                                             UnrecognizedGUIDException
+    Hasa getTermHASARelationship(String userId, String guid) throws InvalidParameterException,
+                                                                    MetadataServerUncontactableException,
+                                                                    UserNotAuthorizedException,
+                                                                    UnexpectedResponseException,
+                                                                    UnrecognizedGUIDException
     ;
     /**
      * Update a Term HASA Relationship.
@@ -74,7 +74,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermHASARelationship updateTermHASARelationship(String userId, TermHASARelationship termHASARelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    Hasa updateTermHASARelationship(String userId, Hasa termHASARelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     ;
     /**
      * Replace a Term HASA Relationship.
@@ -93,11 +93,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermHASARelationship replaceTermHASARelationship(String userId, TermHASARelationship termHASARelationship) throws InvalidParameterException,
-                                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                                MetadataServerUncontactableException,
-                                                                                                                                                UnexpectedResponseException,
-                                                                                                                                                UnrecognizedGUIDException
+    Hasa replaceTermHASARelationship(String userId, Hasa termHASARelationship) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      MetadataServerUncontactableException,
+                                                                                      UnexpectedResponseException,
+                                                                                      UnrecognizedGUIDException
     ;
     /**
      * Delete a Term HASA Relationship. A relationship between a spine object and a spine attribute.     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -105,8 +105,8 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermHASARelationship relationship to delete
-     * @return Deleted TermHASARelationship
+     * @param guid   guid of the Hasa relationship to delete
+     * @return Deleted Hasa
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -119,7 +119,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermHASARelationship deleteTermHASARelationship(String userId, String guid) throws
+    Hasa deleteTermHASARelationship(String userId, String guid) throws
                                                                                                          InvalidParameterException,
                                                                                                          MetadataServerUncontactableException,
                                                                                                          UserNotAuthorizedException,
@@ -134,7 +134,7 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermHASARelationship relationship to delete
+     * @param guid   guid of the Hasa relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -171,11 +171,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    TermHASARelationship restoreTermHASARelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    Hasa restoreTermHASARelationship(String userId, String guid) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        MetadataServerUncontactableException,
+                                                                        UnexpectedResponseException,
+                                                                        UnrecognizedGUIDException
     ;
     /**
      * Create a RelatedTerm. A Related Term is a link between two similar Terms.
@@ -1555,13 +1555,13 @@ public interface SubjectAreaRelationship
             UnrecognizedGUIDException
     ;
     /**
-     *  Create a TermTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
+     *  Create a TypedBy relationship, which is defines the relationship between a spine attribute and its type.
      *
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
-     * @param termTYPEDBYRelationship the TermTYPEDBYRelationship relationship
+     * @param termTYPEDBYRelationship the TypedBy relationship
      * @return the created termTYPEDBYRelationship relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -1572,7 +1572,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermTYPEDBYRelationship createTermTYPEDBYRelationship(String userId, TermTYPEDBYRelationship termTYPEDBYRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    TypedBy createTermTYPEDBYRelationship(String userId, TypedBy termTYPEDBYRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     ;
     /**
      *  Get a termTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
@@ -1580,7 +1580,7 @@ public interface SubjectAreaRelationship
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the RelatedTerm relationship to get
-     * @return TermTYPEDBYRelationship
+     * @return TypedBy
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
@@ -1591,20 +1591,20 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    TermTYPEDBYRelationship getTermTYPEDBYRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                                               MetadataServerUncontactableException,
-                                                                                                                               UserNotAuthorizedException,
-                                                                                                                               UnexpectedResponseException,
-                                                                                                                               UnrecognizedGUIDException
+    TypedBy getTermTYPEDBYRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                          MetadataServerUncontactableException,
+                                                                          UserNotAuthorizedException,
+                                                                          UnexpectedResponseException,
+                                                                          UnrecognizedGUIDException
     ;
     /**
-     * Update a TermTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
+     * Update a TypedBy relationship, which is defines the relationship between a spine attribute and its type.
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
-     * @param termTYPEDBYRelationship the TermTYPEDBYRelationship relationship
-     * @return  TermTYPEDBYRelationship updated termTYPEDBYRelationship
+     * @param termTYPEDBYRelationship the TypedBy relationship
+     * @return  TypedBy updated termTYPEDBYRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -1615,19 +1615,19 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    TermTYPEDBYRelationship updateTermTYPEDBYRelationship(String userId, TermTYPEDBYRelationship termTYPEDBYRelationship)  throws InvalidParameterException,
-                                                                                                                                                                                    MetadataServerUncontactableException,
-                                                                                                                                                                                    UserNotAuthorizedException,
-                                                                                                                                                                                    UnexpectedResponseException,
-                                                                                                                                                                                    UnrecognizedGUIDException ;
+    TypedBy updateTermTYPEDBYRelationship(String userId, TypedBy termTYPEDBYRelationship) throws InvalidParameterException,
+                                                                                                 MetadataServerUncontactableException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 UnexpectedResponseException,
+                                                                                                 UnrecognizedGUIDException ;
     /**
-     * Replace an TermTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
+     * Replace an TypedBy relationship, which is defines the relationship between a spine attribute and its type.
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
      * @param termTYPEDBYRelationship the termTYPEDBYRelationship relationship
-     * @return  TermTYPEDBYRelationship replaced termTYPEDBYRelationship
+     * @return  TypedBy replaced termTYPEDBYRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -1637,11 +1637,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermTYPEDBYRelationship replaceTermTYPEDBYRelationship(String userId, TermTYPEDBYRelationship termTYPEDBYRelationship)  throws InvalidParameterException,
-                                                                                                                                                                                     MetadataServerUncontactableException,
-                                                                                                                                                                                     UserNotAuthorizedException,
-                                                                                                                                                                                     UnexpectedResponseException,
-                                                                                                                                                                                     UnrecognizedGUIDException;
+    TypedBy replaceTermTYPEDBYRelationship(String userId, TypedBy termTYPEDBYRelationship) throws InvalidParameterException,
+                                                                                                  MetadataServerUncontactableException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  UnexpectedResponseException,
+                                                                                                  UnrecognizedGUIDException;
     /**
      *  Delete a termTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -1650,7 +1650,7 @@ public interface SubjectAreaRelationship
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the RelatedTerm relationship to delete
-     * @return deleted TermTYPEDBYRelationship
+     * @return deleted TypedBy
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -1663,7 +1663,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermTYPEDBYRelationship deleteTermTYPEDBYRelationship(String userId, String guid) throws
+    TypedBy deleteTermTYPEDBYRelationship(String userId, String guid) throws
                                                                                                                            InvalidParameterException,
                                                                                                                            MetadataServerUncontactableException,
                                                                                                                            UserNotAuthorizedException,
@@ -1678,7 +1678,7 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermTYPEDBYRelationship relationship to delete
+     * @param guid   guid of the TypedBy relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -1716,11 +1716,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    TermTYPEDBYRelationship restoreTypedByRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    TypedBy restoreTypedByRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          MetadataServerUncontactableException,
+                                                                          UnexpectedResponseException,
+                                                                          UnrecognizedGUIDException
     ;
     /**
      *  Create a Isa relationship, which is link between a more general glossary term and a more specific definition.
@@ -1740,7 +1740,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    ISARelationship createIsaRelationship(String userId, ISARelationship isa) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    Isa createIsaRelationship(String userId, Isa isa) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     ;
     /**
      *  Get a isa relationship, which is link between a more general glossary term and a more specific definition.
@@ -1759,11 +1759,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    ISARelationship getIsaRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                   MetadataServerUncontactableException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   UnexpectedResponseException,
-                                                                                                   UnrecognizedGUIDException
+    Isa getIsaRelationship(String userId, String guid) throws InvalidParameterException,
+                                                              MetadataServerUncontactableException,
+                                                              UserNotAuthorizedException,
+                                                              UnexpectedResponseException,
+                                                              UnrecognizedGUIDException
     ;
     /**
      * Update a Isa relationship, which is link between a more general glossary term and a more specific definition.
@@ -1783,11 +1783,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    ISARelationship updateIsaRelationship(String userId, ISARelationship isaRelationship)  throws InvalidParameterException,
-                                                                                                                            MetadataServerUncontactableException,
-                                                                                                                            UserNotAuthorizedException,
-                                                                                                                            UnexpectedResponseException,
-                                                                                                                            UnrecognizedGUIDException ;
+    Isa updateIsaRelationship(String userId, Isa isaRelationship) throws InvalidParameterException,
+                                                                         MetadataServerUncontactableException,
+                                                                         UserNotAuthorizedException,
+                                                                         UnexpectedResponseException,
+                                                                         UnrecognizedGUIDException ;
     /**
      * Replace an Isa relationship, which is link between a more general glossary term and a more specific definition.
      * <p>
@@ -1805,11 +1805,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    ISARelationship replaceIsaRelationship(String userId, ISARelationship isaRelationship)  throws InvalidParameterException,
-                                                                                                                             MetadataServerUncontactableException,
-                                                                                                                             UserNotAuthorizedException,
-                                                                                                                             UnexpectedResponseException,
-                                                                                                                             UnrecognizedGUIDException;
+    Isa replaceIsaRelationship(String userId, Isa isaRelationship) throws InvalidParameterException,
+                                                                          MetadataServerUncontactableException,
+                                                                          UserNotAuthorizedException,
+                                                                          UnexpectedResponseException,
+                                                                          UnrecognizedGUIDException;
     /**
      *  Delete a isa relationship, which is link between a more general glossary term and a more specific definition.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -1831,7 +1831,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    ISARelationship deleteIsaRelationship(String userId, String guid) throws
+    Isa deleteIsaRelationship(String userId, String guid) throws
                                                                                                InvalidParameterException,
                                                                                                MetadataServerUncontactableException,
                                                                                                UserNotAuthorizedException,
@@ -1884,21 +1884,21 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    ISARelationship restoreIsaRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    Isa restoreIsaRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  MetadataServerUncontactableException,
+                                                                  UnexpectedResponseException,
+                                                                  UnrecognizedGUIDException
     ;
     /**
-     *  Create a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
+     *  Create a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
      *
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
-     * @param TermISATypeOFRelationship the TermISATypeOFRelationship relationship
-     * @return the created TermISATypeOFRelationship relationship
+     * @param TermISATypeOFRelationship the IsaTypeOf relationship
+     * @return the created IsaTypeOf relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -1908,15 +1908,15 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermISATypeOFRelationship createTermISATypeOFRelationship(String userId, TermISATypeOFRelationship TermISATypeOFRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    IsaTypeOf createTermISATypeOFRelationship(String userId, IsaTypeOf TermISATypeOFRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     ;
     /**
-     *  Get a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
+     *  Get a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the RelatedTerm relationship to get
-     * @return TermISATypeOFRelationship
+     * @return IsaTypeOf
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
@@ -1927,20 +1927,20 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    TermISATypeOFRelationship getTermISATypeOFRelationship(String userId, String guid) throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    IsaTypeOf getTermISATypeOFRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                              MetadataServerUncontactableException,
+                                                                              UserNotAuthorizedException,
+                                                                              UnexpectedResponseException,
+                                                                              UnrecognizedGUIDException
     ;
     /**
-     * Update a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
+     * Update a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
-     * @param isATypeOf            the TermISATypeOFRelationship relationship
-     * @return  TermISATypeOFRelationship updated TermISATypeOFRelationship
+     * @param isATypeOf            the IsaTypeOf relationship
+     * @return  IsaTypeOf updated IsaTypeOf
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -1950,11 +1950,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermISATypeOFRelationship updateTermISATypeOFRelationship(String userId, TermISATypeOFRelationship isATypeOf)  throws InvalidParameterException,
-                                                                                                                                                                                            MetadataServerUncontactableException,
-                                                                                                                                                                                            UserNotAuthorizedException,
-                                                                                                                                                                                            UnexpectedResponseException,
-                                                                                                                                                                                            UnrecognizedGUIDException ;
+    IsaTypeOf updateTermISATypeOFRelationship(String userId, IsaTypeOf isATypeOf) throws InvalidParameterException,
+                                                                                         MetadataServerUncontactableException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         UnexpectedResponseException,
+                                                                                         UnrecognizedGUIDException ;
     /**
      * Replace an isATypeOf relationship, which is defines an inheritance relationship between two spine objects.
      * <p>
@@ -1972,20 +1972,20 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermISATypeOFRelationship replaceTermISATypeOFRelationship(String userId, TermISATypeOFRelationship isATypeOf)  throws InvalidParameterException,
-                                                                                                                                                                                             MetadataServerUncontactableException,
-                                                                                                                                                                                             UserNotAuthorizedException,
-                                                                                                                                                                                             UnexpectedResponseException,
-                                                                                                                                                                                             UnrecognizedGUIDException;
+    IsaTypeOf replaceTermISATypeOFRelationship(String userId, IsaTypeOf isATypeOf) throws InvalidParameterException,
+                                                                                          MetadataServerUncontactableException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          UnexpectedResponseException,
+                                                                                          UnrecognizedGUIDException;
     /**
-     *  Delete a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
+     *  Delete a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the RelatedTerm relationship to delete
-     * @return deleted TermISATypeOFRelationship
+     * @return deleted IsaTypeOf
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -1998,7 +1998,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermISATypeOFRelationship deleteTermISATypeOFRelationship(String userId, String guid) throws
+    IsaTypeOf deleteTermISATypeOFRelationship(String userId, String guid) throws
                                                                                                                                InvalidParameterException,
                                                                                                                                MetadataServerUncontactableException,
                                                                                                                                UserNotAuthorizedException,
@@ -2008,12 +2008,12 @@ public interface SubjectAreaRelationship
                                                                                                                                UnexpectedResponseException
     ;
     /**
-     *  Purge a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
+     *  Purge a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
      * A purge means that the relationship will not exist after the operation.
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermISATypeOFRelationship relationship to delete
+     * @param guid   guid of the IsaTypeOf relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -2051,11 +2051,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    TermISATypeOFRelationship restoreIsaTypeOfRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    IsaTypeOf restoreIsaTypeOfRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              MetadataServerUncontactableException,
+                                                                              UnexpectedResponseException,
+                                                                              UnrecognizedGUIDException
     ;
 
     /**
@@ -2076,11 +2076,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermCategorizationRelationship createTermCategorizationRelationship(String userId, TermCategorizationRelationship termCategorizationRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    Categorization createTermCategorizationRelationship(String userId, Categorization termCategorizationRelationship) throws InvalidParameterException,
+                                                                                                                             UserNotAuthorizedException,
+                                                                                                                             MetadataServerUncontactableException,
+                                                                                                                             UnexpectedResponseException,
+                                                                                                                             UnrecognizedGUIDException
     ;
     /**
      * Get a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
@@ -2099,11 +2099,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    TermCategorizationRelationship getTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    Categorization getTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                        MetadataServerUncontactableException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        UnexpectedResponseException,
+                                                                                        UnrecognizedGUIDException
     ;
     /**
      * Update a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
@@ -2122,7 +2122,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermCategorizationRelationship updateTermCategorizationRelationship(String userId, TermCategorizationRelationship termCategorizationRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    Categorization updateTermCategorizationRelationship(String userId, Categorization termCategorizationRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     ;
     /**
      * Replace a Term HASA Relationship.
@@ -2141,11 +2141,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermCategorizationRelationship replaceTermCategorizationRelationship(String userId, TermCategorizationRelationship termCategorizationRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    Categorization replaceTermCategorizationRelationship(String userId, Categorization termCategorizationRelationship) throws InvalidParameterException,
+                                                                                                                              UserNotAuthorizedException,
+                                                                                                                              MetadataServerUncontactableException,
+                                                                                                                              UnexpectedResponseException,
+                                                                                                                              UnrecognizedGUIDException
     ;
     /**
      * Delete a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -2167,7 +2167,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermCategorizationRelationship deleteTermCategorizationRelationship(String userId, String guid) throws
+    Categorization deleteTermCategorizationRelationship(String userId, String guid) throws
             InvalidParameterException,
             MetadataServerUncontactableException,
             UserNotAuthorizedException,
@@ -2220,11 +2220,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    TermCategorizationRelationship restoreTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    Categorization restoreTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            MetadataServerUncontactableException,
+                                                                                            UnexpectedResponseException,
+                                                                                            UnrecognizedGUIDException
     ;
 
     /**
@@ -2248,11 +2248,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermAnchorRelationship createTermAnchorRelationship(String userId, TermAnchorRelationship termAnchorRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    TermAnchor createTermAnchorRelationship(String userId, TermAnchor termAnchorRelationship) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     MetadataServerUncontactableException,
+                                                                                                     UnexpectedResponseException,
+                                                                                                     UnrecognizedGUIDException
     ;
     /**
      * Get a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.
@@ -2271,11 +2271,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    TermAnchorRelationship getTermAnchorRelationship(String userId, String guid) throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    TermAnchor getTermAnchorRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                            MetadataServerUncontactableException,
+                                                                            UserNotAuthorizedException,
+                                                                            UnexpectedResponseException,
+                                                                            UnrecognizedGUIDException
     ;
 
     /**
@@ -2295,11 +2295,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermAnchorRelationship replaceTermAnchorRelationship(String userId, TermAnchorRelationship termAnchorRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    TermAnchor replaceTermAnchorRelationship(String userId, TermAnchor termAnchorRelationship) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      MetadataServerUncontactableException,
+                                                                                                      UnexpectedResponseException,
+                                                                                                      UnrecognizedGUIDException
     ;
     /**
      * Delete a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -2321,7 +2321,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TermAnchorRelationship deleteTermAnchorRelationship(String userId, String guid) throws
+    TermAnchor deleteTermAnchorRelationship(String userId, String guid) throws
             InvalidParameterException,
             MetadataServerUncontactableException,
             UserNotAuthorizedException,
@@ -2374,11 +2374,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    TermAnchorRelationship restoreTermAnchorRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    TermAnchor restoreTermAnchorRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                MetadataServerUncontactableException,
+                                                                                UnexpectedResponseException,
+                                                                                UnrecognizedGUIDException
     ;
 
     /**
@@ -2399,11 +2399,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    CategoryAnchorRelationship createCategoryAnchorRelationship(String userId, CategoryAnchorRelationship categoryAnchorRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    CategoryAnchor createCategoryAnchorRelationship(String userId, CategoryAnchor categoryAnchorRelationship) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     MetadataServerUncontactableException,
+                                                                                                                     UnexpectedResponseException,
+                                                                                                                     UnrecognizedGUIDException
     ;
     /**
      * Get a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
@@ -2421,11 +2421,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    CategoryAnchorRelationship getCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    CategoryAnchor getCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                    MetadataServerUncontactableException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    UnexpectedResponseException,
+                                                                                    UnrecognizedGUIDException
     ;
     /**
      *Update a Category Anchor Relationship.
@@ -2444,11 +2444,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    CategoryAnchorRelationship updateCategoryAnchorRelationship(String userId, CategoryAnchorRelationship categoryAnchorRelationship) throws InvalidParameterException,
-                                                                                                                                              UserNotAuthorizedException,
-                                                                                                                                              MetadataServerUncontactableException,
-                                                                                                                                              UnexpectedResponseException,
-                                                                                                                                              UnrecognizedGUIDException
+    CategoryAnchor updateCategoryAnchorRelationship(String userId, CategoryAnchor categoryAnchorRelationship) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     MetadataServerUncontactableException,
+                                                                                                                     UnexpectedResponseException,
+                                                                                                                     UnrecognizedGUIDException
     ;
 
     /**
@@ -2468,11 +2468,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    CategoryAnchorRelationship replaceCategoryAnchorRelationship(String userId, CategoryAnchorRelationship categoryAnchorRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    CategoryAnchor replaceCategoryAnchorRelationship(String userId, CategoryAnchor categoryAnchorRelationship) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      MetadataServerUncontactableException,
+                                                                                                                      UnexpectedResponseException,
+                                                                                                                      UnrecognizedGUIDException
     ;
     /**
      * Delete a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -2493,7 +2493,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    CategoryAnchorRelationship deleteCategoryAnchorRelationship(String userId, String guid) throws
+    CategoryAnchor deleteCategoryAnchorRelationship(String userId, String guid) throws
             InvalidParameterException,
             MetadataServerUncontactableException,
             UserNotAuthorizedException,
@@ -2544,11 +2544,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    CategoryAnchorRelationship restoreCategoryAnchorRelationship(String userId,  String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    CategoryAnchor restoreCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        MetadataServerUncontactableException,
+                                                                                        UnexpectedResponseException,
+                                                                                        UnrecognizedGUIDException
     ;
     /**
      *  Create a ProjectScope relationship. A link between the project content and the project.
@@ -2566,7 +2566,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    ProjectScopeRelationship createProjectScopeRelationship(String userId, ProjectScopeRelationship projectScope) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    ProjectScope createProjectScopeRelationship(String userId, ProjectScope projectScope) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
    ;
     /**
      *  Get a ProjectScope relationship. A link between the project content and the project.
@@ -2584,11 +2584,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    ProjectScopeRelationship getProjectScopeRelationship(String userId, String guid) throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    ProjectScope getProjectScopeRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                MetadataServerUncontactableException,
+                                                                                UserNotAuthorizedException,
+                                                                                UnexpectedResponseException,
+                                                                                UnrecognizedGUIDException
   ;
     /**
      * Update a ProjectScope relationship which is a link between the project content and the project.
@@ -2607,11 +2607,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    ProjectScopeRelationship updateProjectScopeRelationship(String userId, ProjectScopeRelationship projectScopeRelationship)  throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    ProjectScope updateProjectScopeRelationship(String userId, ProjectScope projectScopeRelationship) throws InvalidParameterException,
+                                                                                                             MetadataServerUncontactableException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             UnexpectedResponseException,
+                                                                                                             UnrecognizedGUIDException
         ;
     /**
      * Replace a ProjectScope relationship which is a link between the project content and the project.
@@ -2630,11 +2630,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    ProjectScopeRelationship replaceProjectScopeRelationship(String userId, ProjectScopeRelationship projectScopeRelationship)  throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    ProjectScope replaceProjectScopeRelationship(String userId, ProjectScope projectScopeRelationship) throws InvalidParameterException,
+                                                                                                              MetadataServerUncontactableException,
+                                                                                                              UserNotAuthorizedException,
+                                                                                                              UnexpectedResponseException,
+                                                                                                              UnrecognizedGUIDException
 ;
 
     /**
@@ -2657,7 +2657,7 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    ProjectScopeRelationship deleteProjectScopeRelationship(String userId, String guid) throws
+    ProjectScope deleteProjectScopeRelationship(String userId, String guid) throws
             InvalidParameterException,
             MetadataServerUncontactableException,
             UnrecognizedGUIDException,
@@ -2709,11 +2709,11 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     ProjectScopeRelationship restoreProjectScopeRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+     ProjectScope restoreProjectScopeRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     MetadataServerUncontactableException,
+                                                                                     UnexpectedResponseException,
+                                                                                     UnrecognizedGUIDException
    ;
 
 

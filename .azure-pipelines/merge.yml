@@ -29,6 +29,7 @@ stages:
             # TODO: Not sure if this is really needed...
           - script: mkdir -p ${HOME}/.docker
           - task: DownloadSecureFile@1
+            displayName: 'Download docker config'
             name: dockerConfig
             inputs:
               secureFile: odpi-docker.json
@@ -41,6 +42,7 @@ stages:
               # Normal build for master - note we have the '-Ddocker.taglatest' set
               # and we use ArtifactoryMaven - so that the artifacts are published
           - task: ArtifactoryMaven@1
+            displayName: 'Build to artifactory (for master)'
             condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
               mavenPomFile: 'pom.xml'
@@ -75,13 +77,14 @@ stages:
             # and we just do a simple maven build as we don't want the artifacts published
             # Just docker images & to act as build verification
           - task: Maven@3
+            displayName: 'Build locally with docker (non-master)'
             condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
               mavenPomFile: 'pom.xml'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '1.8'
               jdkArchitectureOption: 'x64'
-              goals: 'clean install'
+              goals: 'clean deploy'
               options: >-
                   --batch-mode
                   -e
@@ -95,6 +98,7 @@ stages:
                   -Ddockerfile.googleContainerRegistryEnabled=false
             # Only publish to artifactory if we are running a master build
           - task: ArtifactoryPublishBuildInfo@1
+            displayName: 'Publish artifactory build (master)'
             condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
               artifactoryService: ODPiArtifactory

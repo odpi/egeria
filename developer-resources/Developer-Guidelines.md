@@ -72,7 +72,7 @@ behaviour and philosophy helps people to understand its capability faster.
 
 ### README markdown files
 
-Each directory (particularly code modules) should have a `README.md` file that describes the
+Each directory (apart from Java packages) should have a `README.md` file that describes the
 content of the directory.  These files are displayed automatically by GitHub when the
 directory is accessed and this helps someone navigating through the directory structures.
 
@@ -97,7 +97,8 @@ Java code files may have additional comments, particularly where the processing 
 The most useful comments are those that describe the purpose, or intent of the code,
 rather than a description of what each line of code is doing.
 
-The output from a build should be checked to ensure there are no javadoc warnings - for example about undocumented parameters or exceptions.
+The output from a build should be checked to ensure there are no javadoc warnings - 
+for example about undocumented parameters or exceptions.
 
 ## Dependent libraries
 
@@ -174,6 +175,15 @@ We have also noticed that you need to ensure JAVA_HOME is set (see under 'Java' 
 ## Issue Tracking
 
 See [Issue Tracking](Issue-Tracking.md) for information about how we use issues in Egeria.
+
+## Creating Postman Samples
+
+[Postman](https://www.getpostman.com) is a great tool for experimenting with REST APIs.  It helps during development
+and also while someone is learning how to call Egeria.
+[Creating Postman Samples](Postman-Samples.md) describes how to create a Postman sample for a new API.
+
+----
+* Return to [Developer Resources](.)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

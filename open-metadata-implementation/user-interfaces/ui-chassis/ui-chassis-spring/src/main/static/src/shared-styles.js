@@ -19,6 +19,13 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             --app-secondary-color: var(--egeria-secondary-color);
             
             --paper-toast-background-color: var(--egeria-secondary-color);
+            
+            --iron-icon-fill-color: var(--egeria-primary-color);
+        }
+        a {
+            color : var(--egeria-primary-color);
+            text-decoration: none;
+            cursor: pointer;
         }
         #logo {
             background: var(--app-logo-background);
@@ -27,7 +34,10 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             background-size: var(--app-logo-background-size);
             background-position: center;
             text-indent:-9999px;
-          }
+        }
+        .displayName{
+            color: var(--egeria-primary-color);
+        }
         .feedback {
             min-height: 1em;
             padding: 3px 6px;

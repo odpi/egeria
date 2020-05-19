@@ -133,7 +133,7 @@ public class ValidValueMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), VALID_VALUE).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  VALID_VALUE;
     }
     @Override

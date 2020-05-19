@@ -89,7 +89,7 @@ public class SubjectAreaAdmin extends AccessServiceAdmin {
                                   error);
 
             super.throwUnexpectedInitializationException(actionDescription,
-                                                         AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
+                                                         AccessServiceDescription.SUBJECT_AREA_OMAS.getAccessServiceFullName(),
                                                          error);
         }
     }
