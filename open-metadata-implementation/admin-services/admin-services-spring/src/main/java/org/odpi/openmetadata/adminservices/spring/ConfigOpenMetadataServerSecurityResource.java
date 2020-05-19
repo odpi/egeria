@@ -13,64 +13,21 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * ConfigOpenMetadataSecurityResource provides the API to configure the security connector that validates
- * platform requests that do not reference an OMAG server.  These requests are used by the
- * team that run the platform as a service.
+ * ConfigOpenMetadataServerSecurityResource provides the API to configure the security connector that validates
+ * Open Metadata and Governance requests issued to a specific OMAG server.
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}")
+@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/security")
 
-@Tag(name="Administration Services", description="The administration services support the configuration of the open metadata and governance services within the OMAG Server Platform This configuration determines which of the open metadata and governance services are active.", externalDocs=@ExternalDocumentation(description="Administration Services",url="https://egeria.odpi.org/open-metadata-implementation/admin-services/"))
+@Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
+        " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
+        "Governance (OMAG) services are active.",
+        externalDocs=@ExternalDocumentation(description="Further information",
+                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-an-omag-server.html"))
 
-public class ConfigOpenMetadataSecurityResource
+public class ConfigOpenMetadataServerSecurityResource
 {
     private static OMAGServerAdminSecurityServices adminSecurityAPI = new OMAGServerAdminSecurityServices();
-
-
-    /**
-     * Set up a platform security connector
-     *
-     * @param userId calling user.
-     * @param requestBody requestBody used to create and configure the connector that performs platform security
-     * @return void response
-     */
-    @PostMapping(path = "/platform/security/connection")
-
-    public VoidResponse setPlatformSecurityConnection(@PathVariable String                      userId,
-                                                      @RequestBody  PlatformSecurityRequestBody requestBody)
-    {
-        return adminSecurityAPI.setPlatformSecurityConnection(userId, requestBody);
-    }
-
-
-    /**
-     * Return the connection object for platform security connector.  Null is returned if no platform security
-     * has been set up.
-     *
-     * @param userId calling user
-     * @return connection response
-     */
-    @GetMapping(path = "/platform/security/connection")
-
-    public ConnectionResponse getPlatformSecurityConnection(@PathVariable String       userId)
-    {
-        return adminSecurityAPI.getPlatformSecurityConnection(userId);
-    }
-
-
-    /**
-     * Clear the connection object for platform security.  This means there is no platform security set up.
-     *
-     * @param userId calling user
-     * @return void response
-     */
-    @DeleteMapping(path = "/platform/security/connection")
-
-    public  VoidResponse clearPlatformSecurityConnection(@PathVariable String   userId)
-    {
-        return adminSecurityAPI.clearPlatformSecurityConnection(userId);
-    }
-
 
     /**
      * Override the default server security connector.
@@ -80,7 +37,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param connection connection used to create and configure the connector.
      * @return void response
      */
-    @PostMapping(path = "/servers/{serverName}/security/connection")
+    @PostMapping(path = "/connection")
 
     public synchronized VoidResponse setServerSecurityConnection(@PathVariable String       userId,
                                                                  @PathVariable String       serverName,
@@ -97,7 +54,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param serverName server to retrieve configuration from
      * @return connection response
      */
-    @GetMapping(path = "/servers/{serverName}/security/connection")
+    @GetMapping(path = "/connection")
 
     public synchronized ConnectionResponse getServerSecurityConnection(@PathVariable  String       userId,
                                                                        @PathVariable  String       serverName)
@@ -114,7 +71,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param serverName server to configure
      * @return connection response
      */
-    @DeleteMapping(path = "/servers/{serverName}/security/connection")
+    @DeleteMapping(path = "/connection")
 
     public synchronized VoidResponse clearServerSecurityConnection(@PathVariable  String   userId,
                                                                    @PathVariable  String   serverName)
