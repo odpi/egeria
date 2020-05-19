@@ -40,8 +40,8 @@ public class JanusFactoryBeans {
 
     private JanusGraphFactory.Builder janusFactoryBerkley(ConnectionProperties connectionProperties){
         final String graphType = (String) connectionProperties.getConfigurationProperties().get("graphType");
-        final String storagePath = "./egeria-lineage-repositories/"+graphType+"/berkeley";
-        final String indexPath = "./egeria-lineage-repositories/"+graphType+"/searchindex";
+        final String storagePath = "./egeria-lineage-repositories/lineageGraph/berkeley";
+        final String indexPath = "./egeria-lineage-repositories/lineageGraph/searchindex";
 
         return JanusGraphFactory.build().
                 set("storage.backend", connectionProperties.getConfigurationProperties().get("storageBackend")).

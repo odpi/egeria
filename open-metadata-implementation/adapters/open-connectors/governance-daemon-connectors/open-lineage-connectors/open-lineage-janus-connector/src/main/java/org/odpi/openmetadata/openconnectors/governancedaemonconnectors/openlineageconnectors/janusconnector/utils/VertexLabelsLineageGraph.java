@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils;
 
-public enum VertexLabelsBufferGraph {
+public enum VertexLabelsLineageGraph {
     GLOSSARY_TERM,
     RELATIONAL_COLUMN,
     RELATIONAL_TABLE_TYPE,

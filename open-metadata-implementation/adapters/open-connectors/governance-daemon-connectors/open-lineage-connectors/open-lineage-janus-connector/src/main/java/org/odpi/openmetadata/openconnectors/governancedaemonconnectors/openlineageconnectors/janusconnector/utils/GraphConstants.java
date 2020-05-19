@@ -38,18 +38,23 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_LABEL = "label";
     public static final String PROPERTY_NAME_PROXY = "proxy";
     public static final String PROPERTY_NAME_GLOSSARY_TERM = "glossaryTerm";
-    public static final String PROPERTY_NAME_HOST_DISPLAY_NAME = "displayname";
-    public static final String PROPERTY_NAME_DATABASE_DISPLAY_NAME = "databaseDisplayname";
-    public static final String PROPERTY_NAME_SCHEMA_DISPLAY_NAME = "schemaDisplayNname";
+    public static final String PROPERTY_NAME_HOST_DISPLAY_NAME = "displayName";
+    public static final String PROPERTY_NAME_DATABASE_DISPLAY_NAME = "databaseDisplayName";
+    public static final String PROPERTY_NAME_SCHEMA_DISPLAY_NAME = "databaseSchemaDisplayName";
     public static final String PROPERTY_NAME_TABLE_DISPLAY_NAME = "tableDisplayName";
+    public static final String PROPERTY_NAME_SCHEMA_TYPE_DISPLAY_NAME = "schemaTypeDisplayName";
+    public static final String PROPERTY_NAME_CONNECTION = "connectionDisplayName";
     public static final String PROPERTY_NAME_FORMULA = "formula";
     public static final String PROPERTY_NAMEPROCESS_DESCRIPTION_URI = "descriptionURI";
     public static final String PROPERTY_NAME_PROCESS_TYPE = "processType";
     public static final String PROPERTY_NAME_PARENT_PROCESS_GUID = "parent.process.guid";
     public static final String PROPERTY_NAME_GLOSSARY = "glossary";
     public static final String PROPERTY_NAME_METADATA_ID = "metadataCollectionId";
+    private static final String PROPERTY_NAME_PATH = "path";
 
     public static final String CONDENSED_NODE_DISPLAY_NAME = "...";
+    public static final String SOURCE_CONDENSATION = "source";
+    public static final String DESTINATION_CONDENSATION = "destination";
 
     public static final String NODE_LABEL_TABLE = "table";
     public static final String NODE_LABEL_COLUMN = "column";
@@ -58,8 +63,13 @@ public class GraphConstants {
     public static final String NODE_LABEL_PROCESS = "process";
     public static final String NODE_LABEL_SUB_PROCESS = "subProcess";
 
-    public static final String EDGE_LABEL_SEMANTIC = "semanticAssignment";
-    public static final String EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM = "synonym";
+    public static final String EDGE_LABEL_SEMANTIC_ASSIGNMENT = "SemanticAssignment";
+    public static final String EDGE_LABEL_RELATED_TERM = "RelatedTerm";
+    public static final String EDGE_LABEL_SYNONYM = "Synonym";
+    public static final String EDGE_LABEL_ANTONYM = "Antonym";
+    public static final String EDGE_LABEL_REPLACEMENT_TERM = "ReplacementTerm";
+    public static final String EDGE_LABEL_TRANSLATION = "Translation";
+    public static final String EDGE_LABEL_IS_A_RELATIONSHIP = "ISARelationship";
     public static final String EDGE_LABEL_CONDENSED = "condensed";
     public static final String EDGE_LABEL_INCLUDED_IN = "includedIn";
     public static final String EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS = "DataFlowWithoutProcess";
@@ -83,6 +93,10 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_ENTITY_UPDATE_TIME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_UPDATE_TIME;
     public static final String PROPERTY_KEY_SCHEMA_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_SCHEMA_DISPLAY_NAME;
     public static final String PROPERTY_KEY_TABLE_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_TABLE_DISPLAY_NAME;
+    public static final String PROPERTY_KEY_SCHEMA_TYPE_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_SCHEMA_TYPE_DISPLAY_NAME;
+    public static final String PROPERTY_KEY_DATABASE_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_DATABASE_DISPLAY_NAME;
+    public static final String PROPERTY_KEY_CONNECTION_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_CONNECTION;
+    public static final String PROPERTY_KEY_PATH = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_PATH;
 
     public static final String PROPERTY_KEY_RELATIONSHIP_GUID = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_RELATIONSHIP_VERSION = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_VERSION;

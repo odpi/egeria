@@ -12,10 +12,6 @@ import java.util.Map;
 
 public class GremlinHelper {
 
-//    private GraphTraversalSource g;
-
-
-
     public void updatePropertiesQuery(GraphTraversalSource g, Vertex vertex, Map<Object,String> properties){
 
         GraphTraversal<Map<Object, String>, Vertex> x = g.inject(properties)

@@ -1,20 +1,22 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.buffergraph;
+package org.odpi.openmetadata.governanceservers.openlineage.graph;
 
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 
-public interface BufferGraph extends OpenLineageGraphConnector {
+import java.util.Set;
+
+public interface LineageGraph extends OpenLineageGraphConnector {
 
     /**
-     * Stores a lineage event into the Buffergraph database
+     * Stores a lineage event into the lineage graph database
      *
-     * @param lineageEvent event
+     * @param graphContext graph Collection
      */
-    void addEntity(LineageEvent lineageEvent);
+    void storeToGraph(Set<GraphContext> graphContext);
 
     /**
      * Updates a vertex in the Graph
@@ -31,18 +33,24 @@ public interface BufferGraph extends OpenLineageGraphConnector {
     void updateRelationship(LineageRelationship lineageRelationship);
 
     /**
+     * Deletes a relationship in the graph
+     *
+     * @param guid unique identifier of the entity to be deleted
+     */
+    void deleteRelationship(String guid);
+
+    /**
+    /**
      * Deletes a vertex in the graph
      *
      * @param guid unique identifier of the entity to be deleted
      * @param version version of the entity to be deleted
      */
-    void deleteEntity(String guid,String version);
+    void deleteEntity(String guid,Object version);
 
     /**
      * Task that the scheduler performs based on the interval
      */
     void schedulerTask();
-
-    void setMainGraph(Object mainGraph);
 
 }
