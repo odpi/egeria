@@ -16,7 +16,6 @@ import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
 import org.odpi.openmetadata.accessservices.cognos.utils.EntityPropertiesBuilder;
-import org.odpi.openmetadata.accessservices.cognos.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.accessservices.cognos.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.accessservices.cognos.utils.contentmanager.OMEntityDaoForTests;
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
@@ -31,7 +30,6 @@ import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveManage
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -64,6 +62,8 @@ public class InMemoryRepositoryTest {
     protected OMRSAuditLog auditLog;
     private OMRSRepositoryContentManager localRepositoryContentManager = null;
     protected OMEntityDaoForTests omEntityDao;
+    
+    final private String context = "Cognos OMAS test";
     
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -158,7 +158,7 @@ public class InMemoryRepositoryTest {
 
 	protected EntityDetail createDatabaseEntity(String dbName, String type, String version ) {
 		String qualifiedName = QualifiedNameUtils.buildQualifiedName("", Constants.DATABASE, dbName);
-        InstanceProperties properties = new EntityPropertiesBuilder()
+        InstanceProperties properties = new EntityPropertiesBuilder(context, "createDatabaseEntity", null)
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedName)
                 .withStringProperty(Constants.NAME, dbName)
                 .withStringProperty(Constants.TYPE, type)
@@ -181,7 +181,7 @@ public class InMemoryRepositoryTest {
 		String qualifiedName =  QualifiedNameUtils.buildQualifiedName(
 				omEntityDao.getEntityStringProperty(db, Constants.QUALIFIED_NAME),
 				Constants.DEPLOYED_DATABASE_SCHEMA, schemaName);
-        InstanceProperties properties = new EntityPropertiesBuilder()
+        InstanceProperties properties = new EntityPropertiesBuilder(context, "createDatabaseSchemaEntity", null)
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedName)
                 .withStringProperty(Constants.NAME, schemaName)
                 .build();
@@ -207,13 +207,14 @@ public class InMemoryRepositoryTest {
 
 	protected EntityDetail createSchemaTable(EntityDetail schema, String tableName) throws CognosCheckedException {
 		
+		String method = "createSchemaTable";
 		List<Relationship> relationshipsRDBSchemaList = omEntityDao.getRelationships(Constants.ASSET_SCHEMA_TYPE, schema.getGUID());
 		
 		if (relationshipsRDBSchemaList == null || relationshipsRDBSchemaList.isEmpty()) {
 			String qualifiedName =  QualifiedNameUtils.buildQualifiedName(
 					getEntityQName(schema), 
 					Constants.RELATIONAL_DB_SCHEMA_TYPE, Constants.SCHEMA_ASSET);
-	        InstanceProperties properties = new EntityPropertiesBuilder()
+	        InstanceProperties properties = new EntityPropertiesBuilder(context, method, null)
 	                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedName)
 	                .build();
 			
@@ -235,7 +236,7 @@ public class InMemoryRepositoryTest {
 			String qualifiedName =  QualifiedNameUtils.buildQualifiedName(
 					omEntityDao.getEntityStringProperty(schema, Constants.QUALIFIED_NAME), 
 					Constants.RELATIONAL_DB_SCHEMA_TYPE, tableName);
-	        InstanceProperties properties = new EntityPropertiesBuilder()
+	        InstanceProperties properties = new EntityPropertiesBuilder(context, method, null)
 	                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedName)
 	                .withStringProperty(Constants.DISPLAY_NAME, tableName)
 	                .build();
@@ -252,9 +253,10 @@ public class InMemoryRepositoryTest {
 
     protected EntityDetail addColumn(EntityDetail tableEntity, String columnName, String dataType, String vendorType) throws Exception {
 
+    	String method = "addColumn";
     	int position = getColumnPosition(tableEntity);
     	String columnQName = QualifiedNameUtils.buildQualifiedName(getEntityQName(tableEntity), Constants.RELATIONAL_COLUMN, columnName);
-        InstanceProperties columnTypeProperties = new EntityPropertiesBuilder()
+        InstanceProperties columnTypeProperties = new EntityPropertiesBuilder(context, method, null)
                 .withStringProperty(Constants.QUALIFIED_NAME, columnQName)
                 .withStringProperty(Constants.DISPLAY_NAME, columnName)
                 .withIntegerProperty(Constants.POSITION, position)
@@ -267,29 +269,28 @@ public class InMemoryRepositoryTest {
     	omEntityDao.addRelationship(Constants.NESTED_SCHEMA_ATTRIBUTE, tableEntity.getGUID(), columnEntity.getGUID(), null);
 
     	if (dataType != null) {
-    		setColumnNoteLogProperty(columnEntity, Constants.ODBC_TYPE,
-    				EntityPropertiesUtils.createPrimitiveStringPropertyValue(dataType));
+    		setColumnNoteLogProperty(columnEntity, Constants.ODBC_TYPE, dataType);
     	}
     	
     	if (vendorType != null) {
-    		setColumnNoteLogProperty(columnEntity, Constants.DATA_UNDERSCORE_TYPE,
-    				EntityPropertiesUtils.createPrimitiveStringPropertyValue(vendorType));
-    	}
+    		setColumnNoteLogProperty(columnEntity, Constants.DATA_UNDERSCORE_TYPE, vendorType);
+     	}
    	
         return columnEntity;
     }
 
-	public void setColumnProperty(EntityDetail columnEntity, String propName, InstancePropertyValue propValue ) throws Exception {
+	public void setColumnProperty(EntityDetail columnEntity, String propName, Boolean propValue ) throws Exception {
 		InstanceProperties properties = columnEntity.getProperties();
-		properties.setProperty(propName, propValue);
+		properties = new EntityPropertiesBuilder(context, "setColumnProperty", properties)
+				.withBooleanProperty(propName, propValue)
+				.build();
 		omEntityDao.updateEntityProperty(columnEntity, properties);
 	}
 
 	public void setColumnPrimaryKey(EntityDetail columnEntity, String primaryKeyName) throws Exception {
 
-		InstanceProperties classificationProperties = new InstanceProperties();
-		classificationProperties.setProperty(Constants.NAME, 
-				EntityPropertiesUtils.createPrimitiveStringPropertyValue(primaryKeyName));
+		InstanceProperties classificationProperties = new EntityPropertiesBuilder(context, "setColumnPrimaryKey", null)
+				.withStringProperty(Constants.NAME, primaryKeyName).build();
 		
 		omEntityDao.classifyEntity(columnEntity, Constants.PRIMARY_KEY, classificationProperties);
 	}
@@ -298,7 +299,7 @@ public class InMemoryRepositoryTest {
     	omEntityDao.addRelationship(Constants.FOREIGN_KEY, referencedColumnEntity.getGUID(), columnEntity.getGUID(), null);
 	}
 
-	public void setColumnNoteLogProperty(EntityDetail columnEntity, String propName, InstancePropertyValue propValue ) throws Exception {
+	public void setColumnNoteLogProperty(EntityDetail columnEntity, String propName, String propValue ) throws Exception {
 		
 		EntityDetail columnTypeEntity = getColumnType(columnEntity);
 		InstanceProperties ap = omEntityDao.getMapProperty(columnTypeEntity.getProperties(), Constants.ADDITIONAL_PROPERTIES);
@@ -307,7 +308,8 @@ public class InMemoryRepositoryTest {
 			ap = new InstanceProperties();
 		}
 		
-		ap.setProperty(propName, propValue);
+		EntityPropertiesBuilder pb = new EntityPropertiesBuilder(context, "setColumnNoteLogProperty", ap);
+		pb.withStringProperty(propName, propValue);
 		MapPropertyValue mpv = new MapPropertyValue();
 		mpv.setMapValues(ap);
 		InstanceProperties properties = columnTypeEntity.getProperties();
@@ -340,7 +342,7 @@ public class InMemoryRepositoryTest {
 		String columnName = omEntityDao.getEntityStringProperty(columnEntity, Constants.DISPLAY_NAME);
         String columnTypeQName = QualifiedNameUtils.buildQualifiedName(getEntityQName(columnEntity),
         		Constants.RELATIONAL_COLUMN_TYPE, columnName + Constants.TYPE_SUFFIX );
-        InstanceProperties columnTypeProperties = new EntityPropertiesBuilder()
+        InstanceProperties columnTypeProperties = new EntityPropertiesBuilder(context, "getColumnType", null)
                 .withStringProperty(Constants.QUALIFIED_NAME, columnTypeQName)
                 .build();
         

@@ -21,7 +21,6 @@ import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerSchema
 import org.odpi.openmetadata.accessservices.cognos.model.module.Table;
 import org.odpi.openmetadata.accessservices.cognos.test.utils.TestUtilities;
 import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
-import org.odpi.openmetadata.accessservices.cognos.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -184,8 +183,9 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		addColumn(entityTableA, "ProductName", DATA_TYPE_VARCHAR, VENDOR_TYPE_STRING);
 		EntityDetail columnEntity = addColumn(entityTableA, "ProductDescription", DATA_TYPE_VARCHAR,
 				VENDOR_TYPE_STRING);
-		setColumnProperty(columnEntity, Constants.IS_NULLABLE,
-				EntityPropertiesUtils.createPrimitiveBooleanPropertyValue(Boolean.TRUE)); // only test of nullable field
+		
+		setColumnProperty(columnEntity, Constants.IS_NULLABLE, Boolean.TRUE);	// only test of nullable field
+
 		columnEntity = addColumn(entityTableA, "ProductIntroductionDate", DATA_TYPE_INTEGER, VENDOR_TYPE_INT32);
 		defineColumnForeignKey(columnEntity, pkDate);
 		columnEntity = addColumn(entityTableA, "ProductTerminationDate", DATA_TYPE_INTEGER, VENDOR_TYPE_INT32);
@@ -200,12 +200,10 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		addColumn(entityTableSales, "Quantity", DATA_TYPE_INTEGER, VENDOR_TYPE_INT32);
 
 		columnEntity = addColumn(entityTableSales, "Price", DATA_TYPE_DECIMAL, DATA_TYPE_DECIMAL);
-		setColumnNoteLogProperty(columnEntity, Constants.LENGTH,
-				EntityPropertiesUtils.createPrimitiveStringPropertyValue("19"));
+		setColumnNoteLogProperty(columnEntity, Constants.LENGTH, "19");
 
 		columnEntity = addColumn(entityTableSales, "Discount", DATA_TYPE_DECIMAL, DATA_TYPE_DECIMAL);
-		setColumnNoteLogProperty(columnEntity, Constants.LENGTH,
-				EntityPropertiesUtils.createPrimitiveStringPropertyValue("19"));
+		setColumnNoteLogProperty(columnEntity, Constants.LENGTH, "19");
 
 		columnEntity = addColumn(entityTableSales, "ShipmentDestinationLatitude", DATA_TYPE_DECIMAL, DATA_TYPE_DECIMAL);
 		defineColumnForeignKey(columnEntity, pkLatitude);
