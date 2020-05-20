@@ -23,6 +23,7 @@ public class DatabaseQueryProperties implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
+    private String queryId         = null;
     private String query           = null;
     private String queryTargetGUID = null;
 
@@ -37,7 +38,7 @@ public class DatabaseQueryProperties implements Serializable
 
 
     /**
-     * Copy/clone constructor for an Endpoint.
+     * Copy/clone constructor for the database query.
      *
      * @param template template object to copy.
      */
@@ -45,6 +46,7 @@ public class DatabaseQueryProperties implements Serializable
     {
         if (template != null)
         {
+            queryId         = template.getQueryId();
             query           = template.getQuery();
             queryTargetGUID = template.getQueryTargetGUID();
         }
@@ -52,9 +54,31 @@ public class DatabaseQueryProperties implements Serializable
 
 
     /**
+     * Return the identifier that is used in the column formula.
+     *
+     * @return string identifier
+     */
+    public String getQueryId()
+    {
+        return queryId;
+    }
+
+
+    /**
+     * Set the identifier that is used in the column formula.
+     *
+     * @param queryId string identifier
+     */
+    public void setQueryId(String queryId)
+    {
+        this.queryId = queryId;
+    }
+
+
+    /**
      * Set up code for query.
      *
-     * @param query String
+     * @param query String logic
      */
     public void setQuery(String query)
     {
@@ -104,11 +128,11 @@ public class DatabaseQueryProperties implements Serializable
     public String toString()
     {
         return "DatabaseQueryProperties{" +
-                "query='" + query + '\'' +
-                ", queryTarget=" + queryTargetGUID +
+                "queryId='" + queryId + '\'' +
+                ", query='" + query + '\'' +
+                ", queryTargetGUID='" + queryTargetGUID + '\'' +
                 '}';
     }
-
 
 
     /**
@@ -129,8 +153,9 @@ public class DatabaseQueryProperties implements Serializable
             return false;
         }
         DatabaseQueryProperties that = (DatabaseQueryProperties) objectToCompare;
-        return Objects.equals(query, that.query) &&
-                queryTargetGUID == that.queryTargetGUID;
+        return Objects.equals(queryId, that.queryId) &&
+                Objects.equals(query, that.query) &&
+                Objects.equals(queryTargetGUID, that.queryTargetGUID);
     }
 
 
@@ -142,6 +167,6 @@ public class DatabaseQueryProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(query, queryTargetGUID);
+        return Objects.hash(queryId, query, queryTargetGUID);
     }
 }

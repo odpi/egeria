@@ -137,12 +137,12 @@
         <kafka.version>2.5.0</kafka.version>
         <janus.version>0.5.2</janus.version>
         <gremlin.version>3.4.6</gremlin.version>
-        <netty.version>4.1.49.Final</netty.version>
-        <spring-boot.version>2.2.7.RELEASE</spring-boot.version>
+        <netty.version>4.1.50.Final</netty.version>
+        <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
         <spring.version>5.2.6.RELEASE</spring.version>
         <spring-security.version>5.3.2.RELEASE</spring-security.version>
         <spring-data.version>2.3.0.RELEASE</spring-data.version>
-        <tomcat.version>9.0.34</tomcat.version>
+        <tomcat.version>9.0.35</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <jena.version>3.14.0</jena.version>

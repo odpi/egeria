@@ -31,9 +31,11 @@ RUN apk --no-cache add bash shadow curl git jq openldap-clients postgresql-clien
 RUN groupadd -r config -g 1000 && useradd --no-log-init -r -g config -u 1000 -d /opt/config config
 
 COPY --chown=config:config dist/check-availability.sh /check-availability.sh
-
+COPY --chown=config:config dist/.curlrc /opt/config/.curlrc
 WORKDIR /opt/config
 # Must use numeric userid here to meet k8s security checks
 USER 1000:1000
+
+
 
 ENTRYPOINT ["/check-availability.sh"]

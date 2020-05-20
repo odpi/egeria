@@ -202,7 +202,7 @@ public class SoftwareServerCapabilitiesProperties extends ReferenceablePropertie
     @Override
     public String toString()
     {
-        return "DataPlatformProperties{" +
+        return "SoftwareServerCapabilitiesProperties{" +
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", typeDescription='" + typeDescription + '\'' +
@@ -211,8 +211,9 @@ public class SoftwareServerCapabilitiesProperties extends ReferenceablePropertie
                 ", source='" + source + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
+                ", vendorProperties=" + getVendorProperties() +
+                ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
-                ", meanings=" + getMeanings() +
                 '}';
     }
 

@@ -17,6 +17,7 @@ data:
   EGERIA_SERVER: {{ .Values.egeria.server }}
   # Used by IGC/Postgres & initialization
   STRICT_SSL: "false"
+  CURL_CA_BUNDLE: ""
   LOGGING_LEVEL_ROOT: "{{ .Values.logging.level }}"
   EGERIA_ENDPOINT: https://{{ include "myapp.fullname" . }}-egeria-service:9443
   EGERIA_ARTIFACTORY_RELEASE: https://odpi.jfrog.io/odpi/egeria-release-local
@@ -33,11 +34,11 @@ data:
   {{ end }}
 
   {{ if .Values.atlas.enabled }}
-  ATLASPROXY_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service:8080
+  ATLASPROXY_ENDPOINT: https://{{ include "myapp.fullname" . }}-atlas-service:9443
   ATLAS_HOST: atlas
   ATLAS_OPTS: "-Dkafka.advertised.hostname=atlas"
   ATLAS_PORT: "21000"
-  ATLAS_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service:21000
+  ATLAS_ENDPOINT: https://{{ include "myapp.fullname" . }}-atlas-service:21000
   ATLAS_SERVER: {{ .Values.atlas.proxyserver }}
   ATLAS_USER: {{ .Values.atlas.user }}
   ATLAS_PASS: {{ .Values.atlas.password }}
@@ -54,7 +55,7 @@ data:
   {{ end }}
 
   {{ if .Values.ibmigc.enabled }}
-  IGCPROXY_ENDPOINT: http://{{ include "myapp.fullname" . }}-ibm-igc-service:8080
+  IGCPROXY_ENDPOINT: https://{{ include "myapp.fullname" . }}-ibm-igc-service:9443
   # Below values for IBMIGC need to reference either your container or external environment
   # See also: ibmigc... in values.yaml
   {{ if .Values.ibmigc.internal.enabled }}

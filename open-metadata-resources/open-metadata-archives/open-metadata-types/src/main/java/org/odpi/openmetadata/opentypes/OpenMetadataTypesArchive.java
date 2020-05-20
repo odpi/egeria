@@ -142,6 +142,7 @@ public class OpenMetadataTypesArchive
         update0010BaseModel();
         add0057IntegrationCapabilities();
         update0224Databases();
+        update0512DerivedSchemaAttributes();
         update0130Projects();
     }
 
@@ -315,7 +316,7 @@ public class OpenMetadataTypesArchive
         properties.add(property);
 
         final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of how each item is being changed by the project.";
+        final String attribute2Description     = "Description of how each item is related to the project.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -377,6 +378,55 @@ public class OpenMetadataTypesArchive
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
                                                  descriptionGUID);
+
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * 0512 - Add the queryId to identify how the query is used in a complex formula.
+     */
+    private void update0512DerivedSchemaAttributes()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSchemaQueryImplementationRelationship());
+    }
+
+
+    private TypeDefPatch updateSchemaQueryImplementationRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SchemaQueryImplementation";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "queryId";
+        final String attribute1Description     = "Identifier for placeholder in derived schema attribute's formula.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
 
     }
 

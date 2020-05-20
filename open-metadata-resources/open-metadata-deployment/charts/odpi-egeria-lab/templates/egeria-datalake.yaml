@@ -59,6 +59,9 @@ spec:
                   {{ .Values.image.egeria.name }}\
                   :{{ .Values.image.egeria.tag | default .Values.egeria.version }}"
           imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "myapp.fullname" . }}-configmap
           ports:
             - containerPort: 9443
           readinessProbe:
