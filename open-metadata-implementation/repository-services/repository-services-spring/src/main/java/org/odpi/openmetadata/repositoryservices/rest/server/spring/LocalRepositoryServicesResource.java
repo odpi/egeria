@@ -21,7 +21,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/repository-services/users/{userId}")
 
-@Tag(name="Open Metadata Repository Services (OMRS)", description="The Open Metadata Repository Services (OMRS) enable metadata repositories to exchange metadata irrespective of the technology, or technology supplier.", externalDocs=@ExternalDocumentation(description="Open Metadata Repository Services (OMRS)",url="https://egeria.odpi.org/open-metadata-implementation/repository-services/"))
+@Tag(name="Repository Services - Local Repository",
+        description="The Local Repository Services are part of the Open Metadata Repository Services (OMRS). They provide the " +
+                "interface to the local repository that is used by remote servers to query locally stored metadata.",
+        externalDocs=@ExternalDocumentation(description="Further information",
+                url="https://egeria.odpi.org/open-metadata-implementation/repository-services/"))
 
 
 public class LocalRepositoryServicesResource
@@ -48,7 +52,7 @@ public class LocalRepositoryServicesResource
      *
      * @param serverName unique identifier for requested server.
      * @param userId calling user
-     * @return String metadata collection id.
+     * @return String metadata collection id
      * or RepositoryErrorException if there is a problem communicating with the metadata repository.
      */
     @GetMapping(path = "/metadata-collection-id")

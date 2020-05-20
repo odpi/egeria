@@ -72,14 +72,19 @@ consisting of Entities, Classifications and Relationships.
 
 ## Understanding more of the design
 
-See the **[documentation](docs/README.md)**.
+See the **[documentation](docs)**.
 
 ## What about the code?
 
 The code for OMRS is organized into three modules:
 
-* **[repository-services-apis](repository-services-apis)** contains the Java interfaces and
+* **[repository-services-apis](repository-services-apis)** contains the Java client interfaces,
+connector interfaces and
 event structures for the repository services.
+
+* **[repository-services-archive-utilities](repository-services-archive-utilities)** contains the 
+common utilities used to build and
+process [Open Metadata Archives](../../open-metadata-resources/open-metadata-archives).
 
 * **[repository-services-client](repository-services-client)** contains the Java interfaces and
 for calling remote repository services.
@@ -89,6 +94,7 @@ support for the peer-to-peer metadata exchange and federation.
 
 * **[repository-services-spring](repository-services-spring)** uses spring to create the OMRS REST services.
 
+----
 
 Return to [open-metadata-implementation](..).
 
