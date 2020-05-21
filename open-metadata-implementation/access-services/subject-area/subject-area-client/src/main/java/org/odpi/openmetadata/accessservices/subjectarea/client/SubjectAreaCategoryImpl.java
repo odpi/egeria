@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
@@ -15,7 +16,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.utils.RestCaller;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 
 import java.util.Date;
 import java.util.List;
@@ -94,7 +94,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Get a category by guid.
      *
      * @param userId userId under which the request is performed
-     * @param guid   userId of the category to get
+     * @param guid   guid of the category to get
      * @return the requested category.
      * <p>
      * Exceptions returned by the server
@@ -133,8 +133,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Get Category relationships
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param guid               userId of the category to get
-     * @param guid               userId of the category to get
+     * @param guid               guid of the category to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time.
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -266,7 +265,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             userId of the category to update
+     * @param guid             guid of the category to update
      * @param suppliedCategory category to be updated
      * @return replaced category
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -305,7 +304,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             userId of the category to update
+     * @param guid             guid of the category to update
      * @param suppliedCategory category to be updated
      * @return a response which when successful contains the updated category
      * when not successful the following Exceptions can occur
@@ -341,7 +340,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * that it is possible to undo the delete.
      *
      * @param userId userId under which the request is performed
-     * @param guid   userId of the category to be deleted.
+     * @param guid   guid of the category to be deleted.
      * @return the deleted category
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -389,7 +388,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * A purge means that the category will not exist after the operation.
      *
      * @param userId userId under which the request is performed
-     * @param guid   userId of the category to be deleted.
+     * @param guid   guid of the category to be deleted.
      *               Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -431,7 +430,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Restore allows the deleted Category to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the category to restore
+     * @param guid   guid of the category to restore
      * @return the restored category
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -522,7 +521,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Get a subjectAreaDefinition by guid.
      *
      * @param userId userId under which the request is performed
-     * @param guid   userId of the subjectAreaDefinition to get
+     * @param guid   guid of the subjectAreaDefinition to get
      * @return the requested subjectAreaDefinition.
      * <p>
      * Exceptions returned by the server
@@ -563,7 +562,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Status is not updated using this call.
      *
      * @param userId                        userId under which the request is performed
-     * @param guid                          userId of the subjectAreaDefinition to update
+     * @param guid                          guid of the subjectAreaDefinition to update
      * @param suppliedSubjectAreaDefinition subjectAreaDefinition to be updated
      * @return replaced subjectAreaDefinition
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -600,7 +599,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Status is not updated using this call.
      *
      * @param userId                        userId under which the request is performed
-     * @param guid                          userId of the subjectAreaDefinition to update
+     * @param guid                          guid of the subjectAreaDefinition to update
      * @param suppliedSubjectAreaDefinition subjectAreaDefinition to be updated
      * @return a response which when successful contains the updated subjectAreaDefinition
      * when not successful the following Exceptions can occur
@@ -635,7 +634,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * that it is possible to undo the delete.
      *
      * @param userId userId under which the request is performed
-     * @param guid   userId of the subjectAreaDefinition to be deleted.
+     * @param guid   guid of the subjectAreaDefinition to be deleted.
      * @return the deleted subjectAreaDefinition
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
@@ -679,7 +678,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * A purge means that the subjectAreaDefinition will not exist after the operation.
      *
      * @param userId userId under which the request is performed
-     * @param guid   userId of the subjectAreaDefinition to be deleted.
+     * @param guid   guid of the subjectAreaDefinition to be deleted.
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws EntityNotPurgedException             a hard delete was issued but the subjectAreaDefinition was not purged
@@ -719,8 +718,8 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Restore allows the deleted SubjectArea to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the subject area definition to restore
-     * @return the restored subvject area definition
+     * @param guid   guid of the subject area definition to restore
+     * @return the restored subject area definition
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -762,7 +761,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      *
      *
      * @param userId userId under which the request is performed
-     * @param userId userId of the category to update
+     * @param userId guid of the category to update
      * @param suppliedCategory Category to be updated
      * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return the updated category.
@@ -810,22 +809,21 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
     }
 
     /**
-     *  Update SubjectAreaDefinition.
+     * Update SubjectAreaDefinition.
      *
-     *
-     * @param userId userId under which the request is performed
-     * @param guid guid of the subjectAreaDefinition to update
+     * @param userId                        userId under which the request is performed
+     * @param guid                          guid of the subjectAreaDefinition to update
      * @param suppliedSubjectAreaDefinition SubjectAreaDefinition to be updated
-     * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param isReplace                     flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return the updated subjectAreaDefinition.
-     *
+     * <p>
      * Exceptions returned by the server
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     *
-     * Client library Exceptions
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid
+     *                                              <p>
+     *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
     private SubjectAreaDefinition updateSubjectAreaDefinition(String userId, String guid, SubjectAreaDefinition suppliedSubjectAreaDefinition, boolean isReplace) throws UserNotAuthorizedException,
                                                                                                                                                                          InvalidParameterException,

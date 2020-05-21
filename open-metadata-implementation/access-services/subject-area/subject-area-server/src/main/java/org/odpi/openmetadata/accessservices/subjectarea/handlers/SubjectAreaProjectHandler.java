@@ -473,7 +473,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * Restore allows the deleted Project to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the project to restore
+     * @param guid   guid of the project to restore
      * @return response which when successful contains the restored project
      * when not successful the following Exception responses can occur
      * <ul>

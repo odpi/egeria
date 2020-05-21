@@ -262,12 +262,11 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         }
         return response;
     }
-    /*
+    /**
      * Get Glossary relationships
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param userId   userId of the term to get
+     * @param guid   guid
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -275,7 +274,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Glossary userId
+     * @return the relationships associated with the requested Glossary guid
      *
      * when not successful the following Exception responses can occur
      * <ul>
@@ -285,7 +284,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getGlossaryRelationships(String userId, String guid,
+    public SubjectAreaOMASAPIResponse getGlossaryRelationships(String userId,
+                                                               String guid,
                                                                Date asOfTime,
                                                                Integer offset,
                                                                Integer pageSize,
