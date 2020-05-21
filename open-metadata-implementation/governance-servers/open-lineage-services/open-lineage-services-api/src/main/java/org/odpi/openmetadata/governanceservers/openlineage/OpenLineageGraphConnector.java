@@ -4,8 +4,6 @@ package org.odpi.openmetadata.governanceservers.openlineage;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
 public interface OpenLineageGraphConnector {
 
@@ -28,7 +26,5 @@ public interface OpenLineageGraphConnector {
      * @throws OpenLineageException
      */
     void initializeGraphDB() throws OpenLineageException;
-
-    LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
 
 }

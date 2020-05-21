@@ -17,24 +17,6 @@ necessarily provide all of these methods, so you only need to override those tha
 is capable of handling. The un-overridden methods will simply do nothing (set) or return null (read)
 by default.
 
-## Polling connector
-
-Currently only polling-based connectors have an interface defined. The key methods used in a connector
-for polling are as follows:
-
-- `getChangesLastSynced` to indicate when the changes were last synced by the connector (or null if
-    this is the very first time sync is occurring).
-- `getOldestChangeSince` to indicate the date and time of the oldest change the connector knows about
-    since the provided date and time. This is used to efficiently skip over any periods where no changes
-    were made. (If there is no change since the specified date and time, it should return null.)
-- `setChangesLastSynced` to persist the date and time when the changes were last synchronized by the
-    connector.
-
-At least one `getChangedXYZ` method should also be implemented to actually retrieve that type of
-data engine information and provide it to the proxy. Not all connectors will necessarily provide all
-of the types, so it may not be necessary to override all of these methods. (Most important from the
-perspective of data processing is probably `getChangedProcesses`.)
-
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

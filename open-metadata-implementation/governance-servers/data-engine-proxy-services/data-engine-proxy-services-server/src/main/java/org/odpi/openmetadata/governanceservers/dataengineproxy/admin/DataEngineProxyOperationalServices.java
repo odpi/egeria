@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
-import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyErrorCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.processor.DataEngineProxyChangePoller;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -64,23 +63,32 @@ public class DataEngineProxyOperationalServices {
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         if (dataEngineProxyConfig == null) {
-            throw new OMAGConfigurationErrorException(
-                    DataEngineProxyErrorCode.NO_CONFIG_DOC.getMessageDefinition(localServerName),
+            AuditLogMessageDefinition error = DataEngineProxyAuditCode.NO_CONFIG_DOC.getMessageDefinition(localServerName);
+            auditLog.logMessage(methodName, error);
+            throw new OMAGConfigurationErrorException(500,
                     this.getClass().getName(),
-                    methodName
-            );
+                    methodName,
+                    MessageFormat.format(error.getMessageTemplate(), error.getMessageParams()),
+                    error.getSystemAction(),
+                    error.getUserAction());
         } else if (dataEngineProxyConfig.getAccessServiceRootURL() == null) {
-            throw new OMAGConfigurationErrorException(
-                    DataEngineProxyErrorCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName),
+            AuditLogMessageDefinition error = DataEngineProxyAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName);
+            auditLog.logMessage(methodName, error);
+            throw new OMAGConfigurationErrorException(500,
                     this.getClass().getName(),
-                    methodName
-            );
+                    methodName,
+                    MessageFormat.format(error.getMessageTemplate(), error.getMessageParams()),
+                    error.getSystemAction(),
+                    error.getUserAction());
         } else if (dataEngineProxyConfig.getAccessServiceServerName() == null) {
-            throw new OMAGConfigurationErrorException(
-                    DataEngineProxyErrorCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName),
+            AuditLogMessageDefinition error = DataEngineProxyAuditCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName);
+            auditLog.logMessage(methodName, error);
+            throw new OMAGConfigurationErrorException(500,
                     this.getClass().getName(),
-                    methodName
-            );
+                    methodName,
+                    MessageFormat.format(error.getMessageTemplate(), error.getMessageParams()),
+                    error.getSystemAction(),
+                    error.getUserAction());
         }
 
         /*
@@ -98,12 +106,13 @@ public class DataEngineProxyOperationalServices {
                         dataEngineProxyConfig.getAccessServiceRootURL());
             }
         } catch (InvalidParameterException error) {
-            throw new OMAGConfigurationErrorException(
-                    DataEngineProxyErrorCode.UNKNOWN_ERROR.getMessageDefinition(),
+            throw new OMAGConfigurationErrorException(error.getReportedHTTPCode(),
                     this.getClass().getName(),
                     methodName,
-                    error
-            );
+                    error.getErrorMessage(),
+                    error.getReportedSystemAction(),
+                    error.getReportedUserAction(),
+                    error);
         }
 
         // Configure the connector
@@ -126,27 +135,16 @@ public class DataEngineProxyOperationalServices {
                 }
                 // TODO: otherwise we likely need to look for and process events
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
-                throw new OMAGConfigurationErrorException(
-                        DataEngineProxyErrorCode.ERROR_INITIALIZING_CONNECTION.getMessageDefinition(),
-                        this.getClass().getName(),
-                        methodName,
-                        e
-                );
+                this.auditLog.logException(methodName, DataEngineProxyAuditCode.ERROR_INITIALIZING_CONNECTION.getMessageDefinition(), e);
             } finally {
-                if (changePoller != null) {
-                    changePoller.stop();
-                }
+                changePoller.stop();
             }
         }
 
         if (dataEngineConnector != null && dataEngineConnector.isActive()) {
             this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.SERVICE_INITIALIZED.getMessageDefinition(dataEngineConnector.getConnection().getConnectorType().getConnectorProviderClassName()));
         } else {
-            throw new OMAGConfigurationErrorException(
-                    DataEngineProxyErrorCode.NO_CONFIG_DOC.getMessageDefinition(localServerName),
-                    this.getClass().getName(),
-                    methodName
-            );
+            this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.NO_CONFIG_DOC.getMessageDefinition());
         }
 
     }
