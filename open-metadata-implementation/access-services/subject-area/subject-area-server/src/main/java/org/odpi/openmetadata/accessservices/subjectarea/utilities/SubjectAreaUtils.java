@@ -115,7 +115,7 @@ public class SubjectAreaUtils {
     }
 
     /**
-     * Set icon summaries from related media relationships by issuing a call to omrs using the related media userId - which is at one end of the relationship.
+     * Set icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
      *
      * Note that we should only return the icons that are effective - by checking the effective From and To dates against the current time
      * @param userId userid under which to issue to the get of the related media
@@ -136,7 +136,7 @@ public class SubjectAreaUtils {
     }
 
     /**
-     * Get a Term's icon summaries from related media relationships by issuing a call to omrs using the related media userId - which is at one end of the relationship.
+     * Get a Term's icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
      * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
      * @param omrsapiHelper helper to access OMRS
@@ -164,7 +164,7 @@ public class SubjectAreaUtils {
         return response;
     }
     /**
-     * Get a Categories icon summaries from related media relationships by issuing a call to omrs using the related media userId - which is at one end of the relationship.
+     * Get a Categories icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
      * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
      * @param omrsapiHelper helper to access OMRS
