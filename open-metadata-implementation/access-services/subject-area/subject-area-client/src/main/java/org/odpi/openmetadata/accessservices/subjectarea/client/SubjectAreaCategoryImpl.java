@@ -111,7 +111,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
     public Category getCategoryByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
         final String methodName = "getCategoryByGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
@@ -166,7 +166,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                           MetadataServerUncontactableException {
         final String methodName = "getCategoryRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         List<Line> relationships = getRelationships(BASE_URL, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         if (log.isDebugEnabled()) {
@@ -285,7 +285,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                            MetadataServerUncontactableException {
         final String methodName = "replaceCategory";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
 
         Category category = updateCategory(userId, guid, suppliedCategory, true);
@@ -324,7 +324,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                  MetadataServerUncontactableException {
         final String methodName = "updateCategory";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         Category category = updateCategory(userId, guid, suppliedCategory, false);
         if (log.isDebugEnabled()) {
@@ -362,7 +362,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                       EntityNotDeletedException {
         final String methodName = "deleteCategory";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
@@ -406,7 +406,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                  FunctionNotSupportedException {
         final String methodName = "purgeCategory";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
@@ -449,7 +449,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                        UnexpectedResponseException {
         final String methodName = "restoreCategory";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
@@ -539,7 +539,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
     public SubjectAreaDefinition getSubjectAreaDefinitionByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
         final String methodName = "getSubjectAreaDefinitionByGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
@@ -580,7 +580,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                                                                MetadataServerUncontactableException {
         final String methodName = "replaceSubjectAreaDefinition";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
 
         SubjectAreaDefinition subjectAreaDefinition = updateSubjectAreaDefinition(userId, guid, suppliedSubjectAreaDefinition, true);
@@ -617,7 +617,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                                                                      MetadataServerUncontactableException {
         final String methodName = "updateSubjectAreaDefinition";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaDefinition subjectAreaDefinition = updateSubjectAreaDefinition(userId, guid, suppliedSubjectAreaDefinition, false);
         if (log.isDebugEnabled()) {
@@ -652,7 +652,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                 EntityNotDeletedException {
         final String methodName = "deleteSubjectAreaDefinition";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
@@ -696,7 +696,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                               UnexpectedResponseException {
         final String methodName = "purgeSubjectAreaDefinition";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
@@ -737,7 +737,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                  UnexpectedResponseException {
         final String methodName = "restoreSubjectArea";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
@@ -783,7 +783,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                                      UnexpectedResponseException {
         final String methodName = "updateCategory";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
@@ -833,7 +833,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                                                                                          UnexpectedResponseException {
         final String methodName = "updateSubjectAreaDefinition";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");

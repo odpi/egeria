@@ -86,7 +86,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
      * @return A graph of nodeTypes.
      *
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -242,7 +242,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
                             while (omrsPropertyIterator.hasNext()) {
                                 String name = (String) omrsPropertyIterator.next();
                                 InstancePropertyValue value = entityProperties.getPropertyValue(name);
-                                // supplied userId matches the expected type
+                                // supplied guid matches the expected type
                                 if (value.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE) {
                                     PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
                                     Object actualValue = primitivePropertyValue.getPrimitiveValue();

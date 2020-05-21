@@ -771,7 +771,7 @@ public class OMRSAPIHelper {
                                                                            serverName,
                                                                            serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException e) {
-            //TODO this is the wrong userId. We should pass the entity userId that is not found. But that is not yet in the the Excpetion we get
+            //TODO this is the wrong guid. We should pass the entity guid that is not found. But that is not yet in the the Exception we get
 
             response = this.errorHandler.handleEntityNotKnownError(relationship.getGUID(),
                                                                    restAPIName,

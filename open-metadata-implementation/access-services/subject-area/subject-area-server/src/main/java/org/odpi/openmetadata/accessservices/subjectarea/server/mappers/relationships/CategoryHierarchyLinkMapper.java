@@ -24,10 +24,10 @@ public class CategoryHierarchyLinkMapper extends LineMapper
     }
 
     /**
-     * Get proxy1 userId.
+     * Get proxy1 guid.
      * The proxy has omrs type GlossaryCategory
      * @param line line
-     * @return userId for entity proxy 1
+     * @return guid for entity proxy 1
      */
     @Override
     protected String getProxy1Guid(Line line)
@@ -37,10 +37,10 @@ public class CategoryHierarchyLinkMapper extends LineMapper
     }
 
     /**
-     * Get proxy2 userId
+     * Get proxy2 guid
      * The proxy has omrs type GlossaryCategory
      * @param line for this Line
-     * @return userId for entity proxy 2
+     * @return guid for entity proxy 2
      */
     @Override
     protected String getProxy2Guid(Line line)
@@ -50,9 +50,9 @@ public class CategoryHierarchyLinkMapper extends LineMapper
     }
 
     /**
-     * Get the relationship type def userId.
-     * @param relationship the relationship associated with the typedef whose userId is returned.
-     * @return userId of the typedef
+     * Get the relationship type def guid.
+     * @param relationship the relationship associated with the typedef whose guid is returned.
+     * @return guid of the typedef
      */
     @Override
     protected String getRelationshipTypeDefGuid(Relationship relationship)

@@ -204,7 +204,7 @@ public class SubjectAreaUtils {
      * @return a parent category as a CategorySummary
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException  the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException  the supplied guid was not recognised
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws FunctionNotSupportedException   Function not supported
      */

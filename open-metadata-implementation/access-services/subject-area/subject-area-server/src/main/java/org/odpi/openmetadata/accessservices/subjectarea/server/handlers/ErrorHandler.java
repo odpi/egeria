@@ -16,7 +16,7 @@ public class ErrorHandler {
     static String className = ErrorHandler.class.getName();
 
     /**
-     * return an exception response if the supplied userId is not authorized to perform a request
+     * return an exception response if the supplied guid is not authorized to perform a request
      *
      * @param userId      user name to validate
      * @param methodName  name of the method making the call.
@@ -199,7 +199,7 @@ public class ErrorHandler {
     /**
      * Convert the supplied OMRS exception to a Subject Area Entity Not known exception and throw it.
      *
-     * @param guid        supplied userId
+     * @param guid        supplied guid
      * @param methodName  name of the method making the call.
      * @param serverName  name of this server
      * @param serviceName name of this access service
@@ -301,7 +301,7 @@ public class ErrorHandler {
     /**
      * Convert the supplied OMRS exception to a Subject Area relationship not known exception and throw it.
      *
-     * @param guid        supplied userId
+     * @param guid        supplied guid
      * @param methodName  name of the method making the call.
      * @param serverName  name of this server
      * @param serviceName name of this access service
@@ -322,7 +322,7 @@ public class ErrorHandler {
     /**
      * Convert the supplied OMRS exception to a Subject Area Entity not known exception and throw it.
      *
-     * @param guid        supplied userId
+     * @param guid        supplied guid
      * @param methodName  name of the method making the call.
      * @param serverName  name of this server
      * @param serviceName name of this access service
@@ -342,7 +342,7 @@ public class ErrorHandler {
     /**
      * Convert the supplied OMRS exception to a Subject Area entity not deleted exception and throw it.
      *
-     * @param guid        supplied userId
+     * @param guid        supplied guid
      * @param methodName  name of the method making the call.
      * @param serverName  name of this server
      * @param serviceName name of this access service
@@ -366,7 +366,7 @@ public class ErrorHandler {
     /**
      * Convert the supplied OMRS exception to a Subject Area relationship not deleted exception and throw it.
      *
-     * @param guid        supplied userId
+     * @param guid        supplied guid
      * @param methodName  name of the method making the call.
      * @param serverName  name of this server
      * @param serviceName name of this access service

@@ -106,7 +106,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
     public SubjectAreaOMASAPIResponse getProjectByGuid(String serverName, String userId, String guid) {
         final String methodName = "getProjectByGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response= null;
         try {
@@ -205,7 +205,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
     ) {
         String methodName = "getProjectRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {
@@ -293,7 +293,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
     public SubjectAreaOMASAPIResponse updateProject(String serverName, String userId, String guid, Project suppliedProject, boolean isReplace) {
         final String methodName = "updateProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response= null;
         try {
@@ -341,7 +341,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
     public SubjectAreaOMASAPIResponse deleteProject(String serverName, String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response= null;
         try {
@@ -379,7 +379,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
     {
         final String methodName = "restoreProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response= null;
         try {

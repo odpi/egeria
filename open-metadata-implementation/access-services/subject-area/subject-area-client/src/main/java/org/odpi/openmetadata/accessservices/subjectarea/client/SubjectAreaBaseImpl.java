@@ -71,7 +71,7 @@ public class SubjectAreaBaseImpl
     protected List<Line> getRelationships(String base_url, String userId, String guid, Date asOfTime, int offset, int pageSize, SequencingOrder sequencingOrder, String sequencingProperty) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, FunctionNotSupportedException, UnexpectedResponseException {
         final String methodName = "getRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");

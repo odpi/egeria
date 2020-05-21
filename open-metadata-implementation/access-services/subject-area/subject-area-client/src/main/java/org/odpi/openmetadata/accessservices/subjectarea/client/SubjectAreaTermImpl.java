@@ -117,7 +117,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                                                               UnexpectedResponseException {
         final String methodName = "getTermByGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
@@ -170,7 +170,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
             MetadataServerUncontactableException {
         final String methodName = "getRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         List<Line> relationships = getRelationships(BASE_URL, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         if (log.isDebugEnabled()) {
@@ -206,7 +206,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                                                                               MetadataServerUncontactableException {
         final String methodName = "replaceTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
 
         Term term = updateTerm(userId,guid,suppliedTerm,true);
@@ -244,7 +244,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                                                                                     MetadataServerUncontactableException {
         final String methodName = "updateTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         Term term = updateTerm(userId, guid, suppliedTerm, false);
         if (log.isDebugEnabled()) {
@@ -286,7 +286,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                                                                 EntityNotDeletedException {
         final String methodName = "deleteTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
@@ -333,7 +333,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                                              EntityNotPurgedException {
         final String methodName = "purgeTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
@@ -382,7 +382,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                                                                                               UnexpectedResponseException {
         final String methodName = "updateTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
@@ -430,7 +430,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
             UnexpectedResponseException {
         final String methodName = "restoreTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");

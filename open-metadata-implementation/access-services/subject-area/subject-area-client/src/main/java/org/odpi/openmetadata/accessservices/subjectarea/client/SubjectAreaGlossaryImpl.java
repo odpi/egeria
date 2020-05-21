@@ -134,7 +134,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
     public  Glossary getGlossaryByGuid(String userId,String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
         final String methodName = "getGlossaryByGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
@@ -188,7 +188,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
             MetadataServerUncontactableException {
         final String methodName = "getGlossaryRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         List<Line> relationships = getRelationships(BASE_URL, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         if (log.isDebugEnabled()) {
@@ -311,7 +311,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                               MetadataServerUncontactableException {
         final String methodName = "replaceGlossary";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         Glossary glossary = updateGlossary( userId, guid,suppliedGlossary,true);
         if (log.isDebugEnabled()) {
@@ -346,7 +346,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                                     MetadataServerUncontactableException {
         final String methodName = "updateGlossary";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         Glossary glossary = updateGlossary(userId, guid,suppliedGlossary,false);
         if (log.isDebugEnabled()) {
@@ -387,7 +387,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                                                                         EntityNotDeletedException {
         final String methodName = "deleteGlossary";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
@@ -438,7 +438,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                                                                     FunctionNotSupportedException {
         final String methodName = "purgeGlossary";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
@@ -485,7 +485,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                                                UnexpectedResponseException {
         final String methodName = "updateGlossary";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
@@ -532,7 +532,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
             UnexpectedResponseException {
         final String methodName = "restoreGlossary";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");

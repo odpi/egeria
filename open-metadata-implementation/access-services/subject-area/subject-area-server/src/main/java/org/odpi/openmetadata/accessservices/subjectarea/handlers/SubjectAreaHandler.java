@@ -237,7 +237,7 @@ public abstract class SubjectAreaHandler {
     }
 
     /**
-     * Get the relationships keyed off an entity userId.
+     * Get the relationships keyed off an entity guid.
      *
      * @param restAPIName             rest API name
      * @param userId                  user identity
@@ -364,7 +364,7 @@ public abstract class SubjectAreaHandler {
                             null);
                     response = OMASExceptionToResponse.convertInvalidParameterException(e);
                 } else {
-                    // find by userId
+                    // find by guid
                     response = glossaryHandler.getGlossaryByGuid(userId, guid);
                     // set error code in case we failed
                     ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITH_NON_EXISTANT_GLOSSARY_GUID.getMessageDefinition();
@@ -375,7 +375,7 @@ public abstract class SubjectAreaHandler {
                                 messageDefinition,
                                 className,
                                 methodName,
-                                "glossary userId",
+                                "glossary guid",
                                 guid);
 
                         response = OMASExceptionToResponse.convertInvalidParameterException(e);

@@ -65,7 +65,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * The name needs to be specified - as this is the main identifier for the term. The name should be unique for canonical glossaries. This API does not police the uniqueness in this case.
      * <p>
      * The qualifiedName can be specified and will be honoured. If it is specified then the caller may wish to ensure that it is
-     * unique. If this qualifiedName is not specified then one will be generated as GlossaryTerm concatinated with the the userId.
+     * unique. If this qualifiedName is not specified then one will be generated as GlossaryTerm concatinated with the the guid.
      * <p>
      * Failure to create the Terms classifications, link to its glossary or its icon, results in the create failing and the term being deleted
      *
@@ -76,9 +76,9 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.
      * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
      * <li> ClassificationException              Error processing a classification
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
@@ -116,7 +116,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
 
@@ -124,7 +124,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     {
         final String methodName = "getTermByGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {
@@ -175,7 +175,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     ) {
         String methodName = "getTermRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {
@@ -260,7 +260,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
@@ -270,7 +270,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     {
         final String methodName = "updateTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {
@@ -303,7 +303,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -316,7 +316,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     {
         final String methodName = "deleteTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {
@@ -340,7 +340,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * @return response which when successful contains the restored term
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -351,7 +351,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     {
         final String methodName = "restoreTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {

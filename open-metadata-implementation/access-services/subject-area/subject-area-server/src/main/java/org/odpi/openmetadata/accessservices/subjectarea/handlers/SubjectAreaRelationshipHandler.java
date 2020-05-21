@@ -84,7 +84,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> ClassificationException              Error processing a classification.</li>
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * <li> FunctionNotSupportedException        Function is not supported.
@@ -133,14 +133,14 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse getLine(String restAPIName, String userId, String className, String guid) {
 
         String methodName = "getLine";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         ILineBundleFactory factory = new ILineBundleFactory(oMRSAPIHelper);
@@ -181,7 +181,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> ClassificationException              Error processing a classification.</li>
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
@@ -267,7 +267,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * @return response for a soft delete, the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -280,7 +280,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
 
         String methodName = "deleteLine";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid + ",isPurge=" + isPurge);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid + ",isPurge=" + isPurge);
         }
         SubjectAreaOMASAPIResponse response = null;
         OMRSRepositoryHelper repositoryHelper = oMRSAPIHelper.getOMRSRepositoryHelper();
@@ -326,7 +326,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -339,7 +339,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
 
         String methodName = "deleteLine";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         ILineBundleFactory factory = new ILineBundleFactory(oMRSAPIHelper);

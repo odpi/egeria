@@ -114,7 +114,7 @@ public class SubjectAreaRESTServicesInstance {
                                                               ) {
         final String methodName = "getRelationshipsFromGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         // initialise omrs API helper with the right instance based on the server name
         SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
@@ -228,7 +228,7 @@ public class SubjectAreaRESTServicesInstance {
     }
 
     /**
-     * Get the relationships keyed off an entity userId.
+     * Get the relationships keyed off an entity guid.
      *
      * @param restAPIName             rest API name
      * @param userId                  user identity
@@ -308,7 +308,7 @@ public class SubjectAreaRESTServicesInstance {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> ClassificationException              Error processing a classification.</li>
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * <li> FunctionNotSupportedException        Function is not supported.
@@ -347,7 +347,7 @@ public class SubjectAreaRESTServicesInstance {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
     protected SubjectAreaOMASAPIResponse getLine(String serverName, String restAPIName, String userId, String className, String guid) {
@@ -385,7 +385,7 @@ public class SubjectAreaRESTServicesInstance {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> ClassificationException              Error processing a classification.</li>
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
@@ -421,7 +421,7 @@ public class SubjectAreaRESTServicesInstance {
      * @return response for a soft delete, the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -462,7 +462,7 @@ public class SubjectAreaRESTServicesInstance {
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>

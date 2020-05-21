@@ -135,7 +135,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
     public  Project getProjectByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
         final String methodName = "getProjectByGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
@@ -189,7 +189,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             MetadataServerUncontactableException {
         final String methodName = "getProjectRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         List<Line> relationships = getRelationships(BASE_URL, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         if (log.isDebugEnabled()) {
@@ -223,7 +223,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
     ) throws InvalidParameterException, UserNotAuthorizedException, FunctionNotSupportedException, UnexpectedResponseException, MetadataServerUncontactableException {
         final String methodName = "getProjectTerms";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
@@ -354,7 +354,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                                                               MetadataServerUncontactableException {
         final String methodName = "replaceProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         Project project = updateProject(userId,guid,suppliedProject,true);
         if (log.isDebugEnabled()) {
@@ -389,7 +389,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                                                                     MetadataServerUncontactableException {
         final String methodName = "updateProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         Project project = updateProject(userId,guid,suppliedProject,false);
         if (log.isDebugEnabled()) {
@@ -429,7 +429,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                                         EntityNotDeletedException {
         final String methodName = "deleteProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
@@ -479,7 +479,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                                     FunctionNotSupportedException {
         final String methodName = "purgeProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
@@ -524,7 +524,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                                                                                UnexpectedResponseException {
         final String methodName = "updateProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
@@ -571,7 +571,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             UnexpectedResponseException {
         final String methodName = "restoreProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");

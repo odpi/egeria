@@ -3129,7 +3129,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
 
     private SubjectAreaOMASAPIResponse getRelationship(String userId, String guid, String methodName, String base_url) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, UnrecognizedGUIDException {
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         final String urlTemplate = base_url + "/%s";
         InputValidator.validateUserIdNotNull(className, methodName, userId);
@@ -3145,7 +3145,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
 
     private SubjectAreaOMASAPIResponse deleteRelationship(String userId, String guid, String methodName, String base_url) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, FunctionNotSupportedException, RelationshipNotDeletedException, UnrecognizedGUIDException {
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
@@ -3165,7 +3165,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
 
     private SubjectAreaOMASAPIResponse restoreRelationship(String userId, String guid, String methodName, String base_url) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, UnrecognizedGUIDException {
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
@@ -3182,7 +3182,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
 
     private void purgeRelationship(String userId, String guid, String methodName, String base_url) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, RelationshipNotPurgedException, UnexpectedResponseException, UnrecognizedGUIDException {
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
 
         InputValidator.validateUserIdNotNull(className, methodName, userId);

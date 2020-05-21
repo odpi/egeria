@@ -227,7 +227,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
 
             String methodName = "getCategoryRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {

@@ -63,7 +63,7 @@ public abstract class LineMapper implements ILineMapper
                 // this is a property we expect
                 InstancePropertyValue value =relationshipProperties.getPropertyValue(propertyName);
 
-                // supplied userId matches the expected type
+                // supplied guid matches the expected type
 
                 Object actualValue;
                 switch (value.getInstancePropertyCategory()) {
