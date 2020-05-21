@@ -4,6 +4,11 @@ package org.odpi.openmetadata.commonservices.ffdc;
 
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -427,12 +432,12 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied guid returned an entity of the wrong type
+     * Throw an exception if the supplied guid returned an instance of the wrong type
      *
-     * @param guid  unique identifier of entity
+     * @param guid  unique identifier of instance
      * @param methodName  name of the method making the call.
-     * @param actualType  type of retrieved entity
-     * @param expectedType  type the entity should be
+     * @param actualType  type of retrieved instance
+     * @param expectedType  type the instance should be
      * @throws InvalidParameterException the guid is for the wrong type of object
      */
     public void handleWrongTypeForGUIDException(String guid,
@@ -448,6 +453,95 @@ public class InvalidParameterHandler
                                             methodName,
                                             expectedType);
 
+    }
+
+
+    /**
+     * Validate that an instance is from the expected metadata collection.
+     *
+     * @param instanceGUID unique identifier of the instance
+     * @param parameterName name of the parameter tha supplied the instance
+     * @param instanceHeader header of the instance
+     * @param expectedOrigin expected origin (defined by the type of API) - null means any
+     * @param expectedMetadataCollectionGUID unique identifier of expected metadata collection id - null means any
+     * @param expectedMetadataCollectionName unique name of expected metadata collection id - used for error logging
+     * @param serviceName name of calling service
+     * @param methodName name of calling method
+     *
+     * @throws InvalidParameterException the metadata collection id or origin is not correct
+     */
+    public void  validateInstanceProvenanceForUpdate(String        instanceGUID,
+                                                     String        parameterName,
+                                                     ElementHeader instanceHeader,
+                                                     ElementOrigin expectedOrigin,
+                                                     String        expectedMetadataCollectionGUID,
+                                                     String        expectedMetadataCollectionName,
+                                                     String        serviceName,
+                                                     String        methodName) throws InvalidParameterException
+    {
+        if (instanceHeader != null)
+        {
+            if (instanceHeader.getType() != null)
+            {
+                ElementType instanceType = instanceHeader.getType();
+
+                if ((expectedOrigin == null) || (instanceType.getElementOrigin() == expectedOrigin))
+                {
+                    if (expectedMetadataCollectionGUID == null)
+                    {
+                        return;
+                    }
+
+                    if (expectedMetadataCollectionGUID.equals(instanceType.getElementHomeMetadataCollectionId()))
+                    {
+                        return;
+                    }
+                }
+
+                String expectedOriginName = "null";
+                String instanceOriginName = "null";
+
+                if (expectedOrigin != null)
+                {
+                    expectedOriginName = expectedOrigin.getName();
+                }
+
+                if (instanceType.getElementOrigin() != null)
+                {
+                    instanceOriginName = instanceType.getElementOrigin().getName();
+                }
+
+                throw new InvalidParameterException(OMAGCommonErrorCode.WRONG_METADATA_COLLECTION_FOR_UPDATE.getMessageDefinition(methodName,
+                                                                                                                                  serviceName,
+                                                                                                                                  instanceGUID,
+                                                                                                                                  instanceType.getElementTypeName(),
+                                                                                                                                  expectedOriginName,
+                                                                                                                                  expectedMetadataCollectionName,
+                                                                                                                                  expectedMetadataCollectionGUID,
+                                                                                                                                  instanceOriginName,
+                                                                                                                                  instanceType.getElementHomeMetadataCollectionName(),
+                                                                                                                                  instanceType.getElementHomeMetadataCollectionId()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
+            }
+            else
+            {
+                throw new InvalidParameterException(OMAGCommonErrorCode.NULL_OBJECT.getMessageDefinition("instanceHeader.getType()",
+                                                                                                         methodName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
+            }
+        }
+        else
+        {
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_OBJECT.getMessageDefinition("instanceHeader",
+                                                                                                     methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
+        }
     }
 
 

@@ -4,67 +4,100 @@ package org.odpi.openmetadata.accessservices.dataplatform.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
-import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
-import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformRestServices;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapabilitiesProperties;
+import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * The type Data platform omas resource.
+ * Server-side REST API support for data platform independent REST endpoints
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-platform/users/{userId}")
 
-@Tag(name="Data Platform OMAS", description="The Data Platform OMAS provides APIs for tools and applications wishing to register new data assets. It provides the ability to register the host, platform and location of the data platform itself along with the data assets it hosts.", externalDocs=@ExternalDocumentation(description="Data Platform Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-platform/"))
+@Tag(name="Data Platform OMAS",
+        description="The Data Platform OMAS provides APIs for tools and applications wishing to manage metadata relating to data platforms.",
+        externalDocs=@ExternalDocumentation(description="Data Platform Open Metadata Access Service (OMAS)",
+                url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-platform/"))
 
-public class DataPlatformOMASResource {
+public class DataPlatformOMASResource
+{
+    private DataPlatformRESTServices restAPI = new DataPlatformRESTServices();
 
-    private DataPlatformRestServices restAPI = new DataPlatformRestServices();
 
     /**
-     * Instantiates a new Data Platform omas resource.
+     * Instantiates a new Data Platform OMAS resource.
      */
-    public DataPlatformOMASResource() {
+    public DataPlatformOMASResource()
+    {
     }
 
+
     /**
-     * Create a software server capability entity
+     * Return the connection object for the Discovery Engine OMAS's out topic.
      *
-     * @param serverName  name of server instance to call
-     * @param userId      the name of the calling user
-     * @param requestBody properties of the entity
-     * @return unique identifier of the created process
+     * @param serverName name of the server to route the request to.
+     * @param userId identifier of calling user.
+     *
+     * @return connection object for the out topic or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition.
      */
-    @PostMapping(path = "/registration")
-    public GUIDResponse createExternalDataPlatform(@PathVariable("serverName") String serverName,
-                                                   @PathVariable("userId") String userId,
-                                                   @RequestBody DataPlatformRegistrationRequestBody requestBody) {
-        return restAPI.createExternalDataPlatform(serverName, userId, requestBody);
+    @GetMapping(path = "/topics/out-topic-connection")
+
+    public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                    @PathVariable String userId)
+    {
+        return restAPI.getOutTopicConnection(serverName, userId);
     }
+
 
     /**
-     * Return the software server capability entity from an external data platform by qualified name.
+     * Create information about the integration daemon that is managing the acquisition of metadata from the
+     * data platform.  Typically this is Egeria's data platform proxy.
      *
-     * @param serverName    the server name
-     * @param userId        the user id
-     * @param qualifiedName the qualified name
-     * @return the software server capability by qualified name
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param integratorCapabilities description of the integration daemon (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the integration daemon's software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
      */
-    @GetMapping(path = "/software-server-capability/{qualifiedName}")
-    public DataPlatformOMASAPIResponse getExternalDataPlatformByQualifiedName(@PathVariable String serverName,
-                                                                              @PathVariable String userId,
-                                                                              @PathVariable String qualifiedName) {
-        return restAPI.getExternalDataPlatformByQualifiedName(serverName, userId, qualifiedName);
-    }
+    @PostMapping(path = "/integrators")
 
-    @PostMapping(path = "/deployed-database-schema")
-    public GUIDResponse createDeployedDatabaseSchema(@PathVariable("serverName") String serverName,
-                                                     @PathVariable("userId") String userId,
-                                                     @RequestBody DeployedDatabaseSchemaRequestBody requestBody) {
-        return restAPI.createDeployedDatabaseSchema(serverName, userId, requestBody);
+    public GUIDResponse createDataPlatformIntegrator(@PathVariable String                               serverName,
+                                                     @PathVariable String                               userId,
+                                                     @RequestBody  SoftwareServerCapabilitiesProperties integratorCapabilities)
+    {
+        return restAPI.createDataPlatformIntegrator(serverName, userId, integratorCapabilities);
     }
 
 
+    /**
+     * Retrieve the unique identifier of the integration daemon.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param qualifiedName unique name of the integration daemon
+     *
+     * @return unique identifier of the integration daemon's software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    @GetMapping(path = "integrators/by-name/{qualifiedName}")
+
+    public GUIDResponse  getDataPlatformIntegratorGUID(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String qualifiedName)
+    {
+        return restAPI.getDataPlatformIntegratorGUID(serverName, userId, qualifiedName);
+    }
 }

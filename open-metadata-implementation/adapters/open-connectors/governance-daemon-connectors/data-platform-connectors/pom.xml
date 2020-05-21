@@ -19,9 +19,10 @@
 
     <artifactId>data-platform-connectors</artifactId>
 
-    <name>Data Platform Connectors</name>
+    <name>Data Platform Integration Connector Implementations</name>
     <description>
-        The data platform connectors provide plugins to different data platforms to be able to synchronize
+        The data platform integration connector implementations provide plugins to
+        different data platforms to be able to synchronize
         data assets on them.
     </description>
 

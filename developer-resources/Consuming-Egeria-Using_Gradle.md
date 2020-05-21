@@ -36,7 +36,7 @@ This allows us to get the latest `repository-services-apis` artifact from the `s
 
 ## Build and check your gradle. 
 
-We rebould our project to see the new dependencies and ensure we are getting the desired artifacts.
+We rebuild our project to see the new dependencies and ensure we are getting the desired artifacts.
 
 ```sh
 gradlew build --refresh-dependencies

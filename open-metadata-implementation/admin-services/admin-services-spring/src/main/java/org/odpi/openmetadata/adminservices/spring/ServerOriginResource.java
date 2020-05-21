@@ -12,13 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 /**
- * ServerPlatformOriginResource provides the Spring wrapper for the origin service that helps the client
+ * ServerOriginResource provides the Spring wrapper for the origin service that helps the client
  * discover the type of the server.
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}")
 
-@Tag(name="Administration Services", description="The administration services support the configuration of the open metadata and governance services within the OMAG Server Platform This configuration determines which of the open metadata and governance services are active.", externalDocs=@ExternalDocumentation(description="Administration Services",url="https://egeria.odpi.org/open-metadata-implementation/admin-services/"))
+@Tag(name="Administration Services - Operational",
+        description="The operational administration services support the management" +
+                "of OMAG Server instances.  This includes starting and stopping the servers as well as querying and changing their operational state.",
+        externalDocs=@ExternalDocumentation(description="Further information",
+                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/operating-omag-server.html"))
 
 public class ServerOriginResource
 {

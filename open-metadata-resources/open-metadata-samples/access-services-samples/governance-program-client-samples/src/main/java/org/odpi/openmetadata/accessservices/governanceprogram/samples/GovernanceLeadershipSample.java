@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.samples;
 
-import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.accessservices.communityprofile.client.PersonalProfileManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.NoProfileForUserException;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
@@ -633,8 +632,6 @@ public class GovernanceLeadershipSample
         String  serverName;
         String  serverURLRoot;
         String  clientUserId;
-
-        org.apache.log4j.BasicConfigurator.configure(new NullAppender());
 
         if ((args == null) || (args.length < 3))
         {

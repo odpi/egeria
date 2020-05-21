@@ -2,14 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchorRelationship;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +32,7 @@ public class TermAnchorMapper extends LineMapper
     @Override
     protected String getProxy1Guid(Line line)
     {
-        TermAnchorRelationship termAnchor = (TermAnchorRelationship) line;
+        TermAnchor termAnchor = (TermAnchor) line;
         return termAnchor.getGlossaryGuid();
     }
 
@@ -49,7 +45,7 @@ public class TermAnchorMapper extends LineMapper
     @Override
     protected String getProxy2Guid(Line line)
     {
-        TermAnchorRelationship termAnchor = (TermAnchorRelationship) line;
+        TermAnchor termAnchor = (TermAnchor) line;
         return termAnchor.getTermGuid();
     }
 
@@ -64,21 +60,21 @@ public class TermAnchorMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), TERM_ANCHOR).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  TERM_ANCHOR;
     }
     @Override
     protected Line getLineInstance() {
-        return new TermAnchorRelationship();
+        return new TermAnchor();
     }
     @Override
     protected void setEnd1GuidInLine(Line line, String guid){
-        TermAnchorRelationship termAnchorRelationship = (TermAnchorRelationship)line;
+        TermAnchor termAnchorRelationship = (TermAnchor)line;
         termAnchorRelationship.setGlossaryGuid(guid);
     }
     @Override
     protected void setEnd2GuidInLine(Line line, String guid) {
-        TermAnchorRelationship termAnchorRelationship = (TermAnchorRelationship)line;
+        TermAnchor termAnchorRelationship = (TermAnchor)line;
         termAnchorRelationship.setTermGuid(guid);
     }
 }
