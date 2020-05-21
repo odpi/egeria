@@ -220,7 +220,6 @@ public interface SubjectAreaCategory
      * Get Category relationships
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the category to get
      * @param guid   guid of the category to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
