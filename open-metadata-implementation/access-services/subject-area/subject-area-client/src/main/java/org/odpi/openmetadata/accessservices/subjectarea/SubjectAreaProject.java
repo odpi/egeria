@@ -42,7 +42,7 @@ public interface SubjectAreaProject
 
      Project createProject(String userId, Project suppliedProject) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException;
     /**
-     * Get a Project by userId.
+     * Get a Project by guid.
      * @param userId userId under which the request is performed
      * @param guid guid of the Project to get
      * @return the requested Project.

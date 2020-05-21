@@ -36,7 +36,7 @@ public interface SubjectAreaCategory
 
      Category createCategory(String userId, Category suppliedCategory) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException ;
     /**
-     * Get a category by userId.
+     * Get a category by guid.
      * @param userId userId under which the request is performed
      * @param guid guid of the category to get
      * @return the requested category.

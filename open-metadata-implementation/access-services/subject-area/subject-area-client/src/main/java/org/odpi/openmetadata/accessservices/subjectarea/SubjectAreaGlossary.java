@@ -39,7 +39,7 @@ public interface SubjectAreaGlossary
 
      Glossary createGlossary(String userId, Glossary suppliedGlossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException ;
     /**
-     * Get a glossary by userId.
+     * Get a glossary by guid.
      * @param userId userId under which the request is performed
      * @param guid guid of the glossary to get
      * @return the requested glossary.

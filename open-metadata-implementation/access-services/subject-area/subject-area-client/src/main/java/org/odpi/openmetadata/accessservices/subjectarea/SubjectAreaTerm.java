@@ -40,7 +40,7 @@ import java.util.List;
                                                                                 FunctionNotSupportedException,
                                                                                 UnexpectedResponseException ;
     /**
-     * Get a term by userId.
+     * Get a term by guid.
      * @param userId userId under which the request is performed
      * @param guid guid of the term to get
      * @return the requested term.
