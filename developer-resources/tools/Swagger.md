@@ -54,6 +54,8 @@ using the `@Operation` annotation.
 
 * Return to [Tools](.)
 * Return to [Developer Resources](..)
+* Return to the [Egeria Dojo](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
