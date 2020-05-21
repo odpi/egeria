@@ -74,7 +74,7 @@ public class SubjectAreaBaseImpl
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
         final String urlTemplate = this.omasServerURL +base_url + "/%s/relationships";
         String url = String.format(urlTemplate, serverName, userId, guid);
         if (sequencingOrder==null) {
