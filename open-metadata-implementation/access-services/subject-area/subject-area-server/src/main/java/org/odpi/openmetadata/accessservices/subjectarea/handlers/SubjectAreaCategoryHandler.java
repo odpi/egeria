@@ -231,7 +231,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaCategoryRESTServices categoryRESTServices = new SubjectAreaCategoryRESTServices();
         categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                 EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
@@ -411,7 +411,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         try {
             InputValidator.validateUserIdNotNull(className, methodName, userId);
             InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = getCategory(userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.Category)) {
                 Category originalCategory = ((CategoryResponse) response).getCategory();
@@ -507,7 +507,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         OMRSRepositoryHelper repositoryHelper = this.oMRSAPIHelper.getOMRSRepositoryHelper();
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             String source = oMRSAPIHelper.getServiceName();
             String typeDefName = "GlossaryCategory";
             String typeDefGuid = repositoryHelper.getTypeDefByName(source, typeDefName).getGUID();
@@ -558,7 +558,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaCategoryRESTServices categoryRESTServices = new SubjectAreaCategoryRESTServices();
         categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
             if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
                 response = getCategory(userId, guid);

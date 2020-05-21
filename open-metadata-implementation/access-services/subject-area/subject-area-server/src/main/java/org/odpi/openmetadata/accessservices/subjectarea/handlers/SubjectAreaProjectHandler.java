@@ -174,7 +174,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         projectRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
 
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                 response = getResponse(response);
@@ -319,7 +319,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         try {
 
             InputValidator.validateNodeType(className, methodName, suppliedProject.getNodeType(), NodeType.Project, NodeType.GlossaryProject);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
             response = getProjectByGuid(userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.Project)) {
@@ -415,7 +415,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         SubjectAreaProjectRESTServices projectRESTServices = new SubjectAreaProjectRESTServices();
         projectRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             // do not delete if there is project content (terms or categories)
             // look for all project content that is not deleted.
             List<InstanceStatus> statusList = new ArrayList<>();
@@ -490,7 +490,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         SubjectAreaProjectRESTServices projectRESTServices = new SubjectAreaProjectRESTServices();
         projectRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                 response = getProjectByGuid(userId, guid);

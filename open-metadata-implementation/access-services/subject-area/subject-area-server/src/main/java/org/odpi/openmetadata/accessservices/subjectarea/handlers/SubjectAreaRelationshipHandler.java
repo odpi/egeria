@@ -148,7 +148,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         ILineMapper mapper = bundle.getMapper();
 
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, guid);
             if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
                 Relationship createdOMRSRelationship = ((RelationshipResponse) response).getRelationship();
@@ -289,7 +289,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         ILineMapper mapper = bundle.getMapper();
 
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             StringTokenizer st = new StringTokenizer(className, ".");
             String typeName = mapper.getTypeName();
             String source = oMRSAPIHelper.getServiceName();
@@ -346,7 +346,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         ILineBundle bundle = factory.getInstance(className);
         ILineMapper mapper = bundle.getMapper();
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = this.oMRSAPIHelper.callOMRSRestoreRelationship(restAPIName, userId, guid);
             if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
                 Relationship omrsRelationship = ((RelationshipResponse) response).getRelationship();

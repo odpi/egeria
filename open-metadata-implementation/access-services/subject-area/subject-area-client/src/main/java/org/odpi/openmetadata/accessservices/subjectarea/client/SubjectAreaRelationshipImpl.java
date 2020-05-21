@@ -3133,7 +3133,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         }
         final String urlTemplate = base_url + "/%s";
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         String url = String.format(urlTemplate, serverName, userId, guid);
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className, methodName, url);
@@ -3148,7 +3148,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = base_url + "/%s?isPurge=false";
         String url = String.format(urlTemplate, serverName, userId, guid);
@@ -3168,7 +3168,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = base_url + "/%s";
         String url = String.format(urlTemplate, serverName, userId, guid);
@@ -3186,7 +3186,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         }
 
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = base_url + "/%s?isPurge=true";
         String url = String.format(urlTemplate, serverName, userId, guid);

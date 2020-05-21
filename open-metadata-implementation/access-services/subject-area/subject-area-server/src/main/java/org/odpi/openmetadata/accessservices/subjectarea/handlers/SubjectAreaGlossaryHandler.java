@@ -183,7 +183,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
 
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                 response = getResponse(response);
@@ -328,7 +328,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         try {
 
             InputValidator.validateNodeType(className, methodName, suppliedGlossary.getNodeType(), NodeType.Glossary, NodeType.Taxonomy, NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
             response = getGlossaryByGuid(userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.Glossary)) {
@@ -416,7 +416,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
         glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             // do not delete if there is glossary content (terms or categories)
             // look for all glossary content that is not deleted.
             List<InstanceStatus> statusList = new ArrayList<>();
@@ -491,7 +491,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
         glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                 response = getGlossaryByGuid(userId, guid);

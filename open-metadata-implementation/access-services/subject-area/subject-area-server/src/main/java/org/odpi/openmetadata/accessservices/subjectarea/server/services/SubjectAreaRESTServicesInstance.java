@@ -112,7 +112,7 @@ public class SubjectAreaRESTServicesInstance {
         SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
         if (response == null) {
             try {
-                InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
                 // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
                 if (offset == null) {
                     offset = new Integer(0);

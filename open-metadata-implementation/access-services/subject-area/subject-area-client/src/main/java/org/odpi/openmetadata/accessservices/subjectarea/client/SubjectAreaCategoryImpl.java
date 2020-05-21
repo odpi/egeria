@@ -114,7 +114,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
         final String urlTemplate = this.omasServerURL + BASE_URL + "/%s";
         String url = String.format(urlTemplate, serverName, userId, guid);
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className, methodName, url);
@@ -364,7 +364,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isPurge=false";
         String url = String.format(urlTemplate, serverName, userId, guid);
@@ -408,7 +408,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isPurge=true";
         String url = String.format(urlTemplate, serverName, userId, guid);
@@ -451,7 +451,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = this.omasServerURL + BASE_URL + "/%s";
         String url = String.format(urlTemplate, serverName, userId, guid);
@@ -541,7 +541,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
         final String urlTemplate = this.omasServerURL + BASE_URL + "/%s";
         String url = String.format(urlTemplate, serverName, userId, guid);
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className, methodName, url);
@@ -654,7 +654,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isPurge=false";
         String url = String.format(urlTemplate, serverName, userId, guid);
@@ -698,7 +698,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isPurge=false";
         String url = String.format(urlTemplate, serverName, userId, guid);
@@ -739,7 +739,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = this.omasServerURL + BASE_URL + "/%s";
         String url = String.format(urlTemplate, serverName, userId, guid);
@@ -785,7 +785,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isReplace=%b";
         String url = String.format(urlTemplate, serverName, userId, guid, isReplace);
@@ -834,7 +834,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isReplace=%b";
         String url = String.format(urlTemplate, serverName, userId, guid, isReplace);

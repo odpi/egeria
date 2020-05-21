@@ -129,7 +129,7 @@ public abstract class SubjectAreaHandler {
         glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         if (response == null) {
             try {
-                InputValidator.validateGUIDNotNull(className, restAPIName, guid, "userId");
+                InputValidator.validateGUIDNotNull(className, restAPIName, guid, "guid");
                 // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
                 if (offset == null) {
                     offset = new Integer(0);

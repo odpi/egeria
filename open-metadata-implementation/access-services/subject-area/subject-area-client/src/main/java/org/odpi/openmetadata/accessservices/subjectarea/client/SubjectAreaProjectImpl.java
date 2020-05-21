@@ -226,7 +226,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
         final String urlTemplate = this.omasServerURL + BASE_URL + "/%s/terms";
         String url = String.format(urlTemplate, serverName, userId, guid);
 
@@ -433,7 +433,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isPurge=false";
         String url = String.format(urlTemplate, serverName, userId, guid);

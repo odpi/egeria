@@ -216,7 +216,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
 
         if (response == null) {
             try {
-                InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
                 response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
                 if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                     EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
@@ -396,7 +396,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
         try {
 
             InputValidator.validateNodeType(className, methodName, suppliedTerm.getNodeType(), NodeType.Term, NodeType.Activity);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
             response = getTermByGuid(userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.Term)) {
@@ -575,7 +575,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
             OMRSRepositoryHelper repositoryHelper = this.oMRSAPIHelper.getOMRSRepositoryHelper();
             try
             {
-                InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
                 //TODO get source properly
                 String source = oMRSAPIHelper.getServiceName();
@@ -634,7 +634,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
         if (response == null) {
             try {
 
-                InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
                 response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
                 if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
                     response = getTermByGuid(userId, guid);
