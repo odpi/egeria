@@ -17,7 +17,7 @@ public class GuidOrientatedException extends SubjectAreaCheckedException {
      * @param messageDefinition content of the message
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param guid              userId associated with this Exception
+     * @param guid              guid associated with this Exception
      */
     public GuidOrientatedException(ExceptionMessageDefinition messageDefinition,
                                    String className,
@@ -36,7 +36,7 @@ public class GuidOrientatedException extends SubjectAreaCheckedException {
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
      * @param caughtError       previous error causing this exception
-     * @param guid              userId associated with this Exception
+     * @param guid              guid associated with this Exception
      */
     public GuidOrientatedException(ExceptionMessageDefinition messageDefinition,
                                    String className,

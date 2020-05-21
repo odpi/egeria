@@ -18,7 +18,7 @@ public class RelationshipNotPurgedException extends GuidOrientatedException {
      * @param messageDefinition content of the message
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param guid              the userId of the entity that was not purged
+     * @param guid              the guid of the relationship that was not purged
      */
     public RelationshipNotPurgedException(ExceptionMessageDefinition messageDefinition,
                                           String className,
@@ -36,7 +36,7 @@ public class RelationshipNotPurgedException extends GuidOrientatedException {
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
      * @param caughtError       previous error causing this exception
-     * @param guid              the userId of the entity that was not purged
+     * @param guid              the guid of the relationship that was not purged
      */
     public RelationshipNotPurgedException(ExceptionMessageDefinition messageDefinition,
                                           String className,
