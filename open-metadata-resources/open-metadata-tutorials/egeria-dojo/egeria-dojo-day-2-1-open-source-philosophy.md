@@ -9,7 +9,7 @@ In this session, you will learn about the way that open source projects and ecos
 and Egeria specifically.
 This will include a check list of items to verify before you start contributing to Egeria.
 
-![Open Source Philosophy](egeria-dojo-day-2-1-open-source-philosphy.png)
+![Open Source Philosophy](egeria-dojo-day-2-1-open-source-philosophy.png)
 
 
 

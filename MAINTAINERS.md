@@ -3,6 +3,12 @@
 
 # Egeria Maintainers
 
+![Egeria Maintainers Badge](developer-resources/badges/ODPi_Egeria_Badges-Maintainer.png)
+
+Egeria maintainers are the group of people that drive the content of Egeria.
+They take responsibility for [specific components](CODEOWNERS) and help to guide
+new pull requests into master.
+
 The current Egeria maintainers are:
 
 
@@ -12,21 +18,33 @@ The current Egeria maintainers are:
 | Nigel Jones    | jonesn@uk.ibm.com         |
 | David Radley   | david_radley@uk.ibm.com   |
 | Graham Wallis | graham_wallis@uk.ibm.com |
-| Kees van de Fliert | keesvandefliert@gmail.com |
 | Guy Ackermans | guy.ackermans92@gmail.com |
 | Maryna Strelchuk | maryna.strelchuk@gmail.com |
 | Bogdan Sava | Bogdan-Mihail.Sava@ing.com |
 | Chris Replogle | chris.replogle@gmail.com | 
-| Ferd Scheepers | ferd.scheepers@mamahuhu.nl |
-| Ruxandra Gabriela Rosu | ruxandra-gabriela.rosu@ing.com |
 | Daniela Valentina Otelea | daniela-valentina.otelea@ing.com |
-| Wu Yue Feng | wyf1116@gmail.com |
 | Chris Grote | chris@thegrotes.net |
 | Raluca Popa | raluca.popa2@ing.com |
-| Cong Chen | cong.chen@ing.com |
-| Ernie Ostic | ernie.ostic@getmanta.com |
 | Chris Replogle | Chris.Replogle@sas.com |
 | Dimitrios Maimaris | dimi.maim@gmail.com |
+
+To understand how to become an Egeria maintainer
+see the [Egeria Operations Guide](Egeria-Operations.md).
+
+
+## Emeritus Maintainers
+
+The following people are no longer working on the Egeria project.
+However they have been a maintainer in the past and through their
+contributions, we have a strong foundation to build on.
+
+
+| Name           | Email |
+| -------------- | -----------------
+| Kees van de Fliert | keesvandefliert@gmail.com |
+| Ruxandra Gabriela Rosu | ruxandra-gabriela.rosu@ing.com |
+| Cong Chen | cong.chen@ing.com |
+| Wu Yue Feng | wyf1116@gmail.com |
 
 
 
