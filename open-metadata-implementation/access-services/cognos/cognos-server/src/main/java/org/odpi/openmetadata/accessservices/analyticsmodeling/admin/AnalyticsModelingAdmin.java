@@ -21,8 +21,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 /**
- * CognosAdmin is the class that is called by the OMAG Server to initialize and terminate
- * the Cognos OMAS.  The initialization call provides this OMAS with resources from the
+ * AnalyticsModelingAdmin is the class that is called by the OMAG Server to initialize and terminate
+ * the Analytics Modeling OMAS.  The initialization call provides this OMAS with resources from the
  * Open Metadata Repository Services.
  * 
  *
@@ -30,7 +30,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class AnalyticsModelingAdmin extends AccessServiceAdmin
 {
 
-    private OpenMetadataTopicConnector cognosOutTopicConnector;
+    private OpenMetadataTopicConnector analyticsModelingOutTopicConnector;
     private AuditLog auditLog;
     private String serverName = null;
     private AnalyticsModelingServicesInstance instance = null;
@@ -53,7 +53,7 @@ public class AnalyticsModelingAdmin extends AccessServiceAdmin
     						AuditLog auditLog,
     						String serverUserName) throws OMAGConfigurationErrorException {
         
-        final String actionDescription = "Initialize Cognos OMAS service.";
+        final String actionDescription = "Initialize Analytics Modeling OMAS service.";
 
         auditLog.logMessage(actionDescription, AnalyticsModelingAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
         this.auditLog = auditLog;
@@ -66,14 +66,14 @@ public class AnalyticsModelingAdmin extends AccessServiceAdmin
         try {
             // initialize Topic Connector
         	String outTopicName = getTopicName(accessServiceConfig.getAccessServiceOutTopic());
-            cognosOutTopicConnector =  super.getTopicConnector(accessServiceConfig.getAccessServiceOutTopic(),
+            analyticsModelingOutTopicConnector =  super.getTopicConnector(accessServiceConfig.getAccessServiceOutTopic(),
             		OpenMetadataTopicConnector.class,
             		auditLog,
                     AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName(),
                     actionDescription);
 
-            if (cognosOutTopicConnector != null) {
-                startConnector(actionDescription, outTopicName, cognosOutTopicConnector);
+            if (analyticsModelingOutTopicConnector != null) {
+                startConnector(actionDescription, outTopicName, analyticsModelingOutTopicConnector);
             }
 
             List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
@@ -114,7 +114,7 @@ public class AnalyticsModelingAdmin extends AccessServiceAdmin
      */
     private void startConnector(String actionDescription, String topicName, OpenMetadataTopicConnector topicConnector) throws OMAGConfigurationErrorException {
 
-        auditLog.logMessage(actionDescription, AnalyticsModelingAuditCode.SERVICE_REGISTERED_WITH_COGNOS_OUT_TOPIC.getMessageDefinition(topicName));
+        auditLog.logMessage(actionDescription, AnalyticsModelingAuditCode.SERVICE_REGISTERED_WITH_OUT_TOPIC.getMessageDefinition(topicName));
 
         try {
             topicConnector.start();
@@ -122,11 +122,11 @@ public class AnalyticsModelingAdmin extends AccessServiceAdmin
         	
             auditLog.logException(actionDescription, 
             		AnalyticsModelingAuditCode.getAuditLogMessageDefinition(
-            			AnalyticsModelingErrorCode.ERROR_INITIALIZING_COGNOS_TOPIC_CONNECTION.getMessageDefinition(), topicName, serverName),
+            			AnalyticsModelingErrorCode.ERROR_INITIALIZING_ANALYTICS_MODELING_TOPIC_CONNECTION.getMessageDefinition(), topicName, serverName),
             		e);
 
             throw new OMAGConfigurationErrorException(
-            		AnalyticsModelingErrorCode.ERROR_INITIALIZING_COGNOS_TOPIC_CONNECTION
+            		AnalyticsModelingErrorCode.ERROR_INITIALIZING_ANALYTICS_MODELING_TOPIC_CONNECTION
             		.getMessageDefinition(topicName, serverName),
             		getClass().getSimpleName(),
             		actionDescription,
@@ -143,7 +143,7 @@ public class AnalyticsModelingAdmin extends AccessServiceAdmin
     	final String actionDescription = "shutdown";
         
     	try {
-        	cognosOutTopicConnector.disconnect();
+        	analyticsModelingOutTopicConnector.disconnect();
         } catch (ConnectorCheckedException error) {
             auditLog.logException(actionDescription,
                     AnalyticsModelingAuditCode.SERVICE_INSTANCE_TERMINATION_FAILURE.getMessageDefinition(serverName),

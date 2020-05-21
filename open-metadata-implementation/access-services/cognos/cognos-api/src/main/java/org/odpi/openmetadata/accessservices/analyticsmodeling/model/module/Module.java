@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.model.module;
 import java.util.List;
 
 /**
- * Cognos modeling service (MOSER) physical module.
+ * Analytics Modeling service module.
  * <br>Sample:<br>
  * {<br>
  *	&emsp;	"identifier": "AdventureWorks2014.Person",<br>

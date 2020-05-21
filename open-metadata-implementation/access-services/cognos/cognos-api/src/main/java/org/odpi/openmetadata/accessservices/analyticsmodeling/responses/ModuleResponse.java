@@ -8,7 +8,7 @@ import java.util.Arrays;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule;
 
 /**
- * Response for request of the Cognos physical module. 
+ * Response for request of the Analytics Modeling module. 
  *
  */
 

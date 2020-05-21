@@ -76,12 +76,12 @@ public class OMEntityDao {
         // GDW the matchProperties passed to this method should have already converted any exact match string
         // using the getExactMatchRegex repository helper method
         OMRSRepositoryHelper repositoryHelper = enterpriseConnector.getRepositoryHelper();
-        TypeDef typeDef = repositoryHelper.getTypeDefByName(Constants.COGNOS_USER_ID, typeName);
+        TypeDef typeDef = repositoryHelper.getTypeDefByName(Constants.ANALYTICS_MODELING_USER_ID, typeName);
         List<EntityDetail> existingEntities;
         try {
             auditLog.logMessage(context, AnalyticsModelingAuditCode.FIND_ENTITIES.getMessageDefinition(typeDef.getName(),  matchProperties.toString()));
             existingEntities = enterpriseConnector.getMetadataCollection()
-            		.findEntitiesByProperty(Constants.COGNOS_USER_ID,
+            		.findEntitiesByProperty(Constants.ANALYTICS_MODELING_USER_ID,
                                             typeDef.getGUID(),
                                             matchProperties,
                                             MatchCriteria.ALL,
@@ -118,11 +118,11 @@ public class OMEntityDao {
         InstanceProperties instanceProperties = new InstanceProperties();
         if(properties != null && properties.size() > 0) {
             for(Map.Entry<String, String> entry :  properties.entrySet()){
-                instanceProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.COGNOS_OMAS_NAME, instanceProperties, entry.getKey(), entry.getValue(), "throw buildMatchingInstanceProperties");
+                instanceProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.ANALYTICS_MODELING_OMAS_NAME, instanceProperties, entry.getKey(), entry.getValue(), "throw buildMatchingInstanceProperties");
             }
         }
         if(zoneRestricted && supportedZones != null && !supportedZones.isEmpty()){
-            instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.COGNOS_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "throw buildMatchingInstanceProperties");
+            instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.ANALYTICS_MODELING_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "throw buildMatchingInstanceProperties");
         }
 
         return instanceProperties;
@@ -138,7 +138,7 @@ public class OMEntityDao {
     public EntityDetail getEntityByGuid(String guid) throws AnalyticsModelingCheckedException  {
         EntityDetail entity = null;
         try {
-            entity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.COGNOS_USER_ID, guid);
+            entity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.ANALYTICS_MODELING_USER_ID, guid);
         } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException 
         		| EntityProxyOnlyException | UserNotAuthorizedException ex) {
 			throw new AnalyticsModelingCheckedException(
@@ -158,7 +158,7 @@ public class OMEntityDao {
     }
     
 	private String getTypeDefGuidByName(String name) {
-		return enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.COGNOS_USER_ID, name).getGUID();
+		return enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.ANALYTICS_MODELING_USER_ID, name).getGUID();
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class OMEntityDao {
 	public List<Relationship> getRelationshipsForEntity(EntityDetail entity, String relationshipType) throws AnalyticsModelingCheckedException {
 		String relationshipTypeGuid = relationshipType == null ? null : getTypeDefGuidByName(relationshipType);
 		try {
-			return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.COGNOS_USER_ID,
+			return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.ANALYTICS_MODELING_USER_ID,
 					entity.getGUID(), relationshipTypeGuid, 0, FILTER_ACTIVE, null, null, null, 0);
 		} catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException
 				| PropertyErrorException | PagingErrorException | FunctionNotSupportedException
@@ -193,7 +193,7 @@ public class OMEntityDao {
 	 */
 	public String getEntityQName(EntityDetail entity) {
 		return enterpriseConnector.getRepositoryHelper()
-				.getStringProperty(Constants.COGNOS_OMAS_NAME, Constants.QUALIFIED_NAME, entity.getProperties(), context);
+				.getStringProperty(Constants.ANALYTICS_MODELING_OMAS_NAME, Constants.QUALIFIED_NAME, entity.getProperties(), context);
 	}
 	/**
 	 * Get entity property of type string.
@@ -203,7 +203,7 @@ public class OMEntityDao {
 	 */
 	public String getEntityStringProperty(EntityDetail entity, String name) {
 		return enterpriseConnector.getRepositoryHelper()
-				.getStringProperty(Constants.COGNOS_OMAS_NAME, name, entity.getProperties(), context);
+				.getStringProperty(Constants.ANALYTICS_MODELING_OMAS_NAME, name, entity.getProperties(), context);
 	}
 	/**
 	 * Get entity property of type boolean.
@@ -213,7 +213,7 @@ public class OMEntityDao {
 	 */
 	public Boolean getEntityBooleanProperty(EntityDetail entity, String name) {
 		return enterpriseConnector.getRepositoryHelper()
-				.getBooleanProperty(Constants.COGNOS_OMAS_NAME, name, entity.getProperties(), context);
+				.getBooleanProperty(Constants.ANALYTICS_MODELING_OMAS_NAME, name, entity.getProperties(), context);
 	}
 
 	/**
@@ -224,7 +224,7 @@ public class OMEntityDao {
 	 */
 	public int getEntityIntProperty(EntityDetail entity, String name) {
 		return enterpriseConnector.getRepositoryHelper()
-				.getIntProperty(Constants.COGNOS_OMAS_NAME, name, entity.getProperties(), context);
+				.getIntProperty(Constants.ANALYTICS_MODELING_OMAS_NAME, name, entity.getProperties(), context);
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class OMEntityDao {
 	 */
 	public String getStringProperty(String name, InstanceProperties properties) {
 		return enterpriseConnector.getRepositoryHelper()
-				.getStringProperty(Constants.COGNOS_OMAS_NAME, name, properties, context);
+				.getStringProperty(Constants.ANALYTICS_MODELING_OMAS_NAME, name, properties, context);
 	}
 
 	/**
@@ -246,6 +246,6 @@ public class OMEntityDao {
 	 */
 	public InstanceProperties getMapProperty(InstanceProperties properties, String name) {
 		return enterpriseConnector.getRepositoryHelper()
-				.getMapProperty(Constants.COGNOS_OMAS_NAME, name, properties, context);
+				.getMapProperty(Constants.ANALYTICS_MODELING_OMAS_NAME, name, properties, context);
 	}
 }

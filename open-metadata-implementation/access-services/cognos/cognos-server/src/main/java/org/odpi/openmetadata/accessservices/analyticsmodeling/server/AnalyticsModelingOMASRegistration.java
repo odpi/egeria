@@ -9,7 +9,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 /**
- * CognosOMASRegistration registers the access service with the OMAG Server
+ * AnalyticsModelingOMASRegistration registers the access service with the OMAG Server
  * administration services. This registration must be driven once at server
  * start up. The OMAG Server administration services then use this registration
  * information as confirmation that there is an implementation of this access

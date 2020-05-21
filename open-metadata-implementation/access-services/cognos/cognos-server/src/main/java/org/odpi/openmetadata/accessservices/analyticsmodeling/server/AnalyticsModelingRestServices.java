@@ -22,7 +22,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.slf4j.LoggerFactory;
 
 /**
- * Server-side implementation of the Cognos OMAS interface for modeling.
+ * Server-side implementation of the Analytics Modeling OMAS interface for modeling.
  */
 public class AnalyticsModelingRestServices {
 

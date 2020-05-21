@@ -28,7 +28,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
 /**
- * The class builds data content of the Cognos OMAS responses.<br>
+ * The class builds data content of the Analytics Modeling OMAS responses.<br>
  * 
  * This class contains logic about elements required to build responses and their relationships.
  * Only methods used to build responses should be public.<br>
@@ -208,7 +208,7 @@ public class DatabaseContextHandler {
 	}
 
 	/**
-	 * Build Cognos physical module for database schema
+	 * Build Analytics Modeling module for database schema
 	 * @param databaseGuid of the module
 	 * @param catalog of the module
 	 * @param schema of the module

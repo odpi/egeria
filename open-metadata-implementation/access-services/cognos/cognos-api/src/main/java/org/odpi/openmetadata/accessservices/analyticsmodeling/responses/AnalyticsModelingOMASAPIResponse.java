@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * The class is base for all responses of Cognos OMAS.<br>
+ * The class is base for all responses of Analytics Modeling OMAS.<br>
  * 
  * Response data is stored in data field as list of a response containers.
  * 
@@ -59,7 +59,7 @@ public class AnalyticsModelingOMASAPIResponse extends FFDCResponseBase {
 
     @Override
     public String toString() {
-        return "CognosOMASAPIResponse{" +
+        return "AnalyticsModelingOMASAPIResponse{" +
                 " data =" + data +
                '}';
     }

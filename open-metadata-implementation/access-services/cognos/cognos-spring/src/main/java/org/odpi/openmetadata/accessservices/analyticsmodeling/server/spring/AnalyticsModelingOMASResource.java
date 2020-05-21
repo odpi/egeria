@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/cognos/users/{userId}/")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/analytics-modeling/users/{userId}/")
 
-@Tag(name="Cognos OMAS",
-	description="The Cognos OMAS queries RDBMS metadata and creates modules for IBM Cognos Analytics.",
-	externalDocs=@ExternalDocumentation(description="Cognos Open Metadata Access Service (OMAS)",
-	url="https://egeria.odpi.org/open-metadata-implementation/access-services/cognos/"))
+@Tag(name="Analytics Modeling OMAS",
+	description="The Analytics Modeling OMAS queries RDBMS metadata from repository and creates module for database schema.",
+	externalDocs=@ExternalDocumentation(description="Analytics Modeling Open Metadata Access Service (OMAS)",
+	url="https://egeria.odpi.org/open-metadata-implementation/access-services/analytics-modeling/"))
 
 
 public class AnalyticsModelingOMASResource {
@@ -34,7 +34,7 @@ public class AnalyticsModelingOMASResource {
 	 * Get list of databases.
      * @param serverName  unique identifier for requested server.
      * @param userId      the unique identifier for the user
-	 * @return Cognos response contains list of databases.
+	 * @return Analytics Modeling response contains list of databases.
 	 */
 	@GetMapping(path = "/databases")
 	public AnalyticsModelingOMASAPIResponse getDatabases(
@@ -50,7 +50,7 @@ public class AnalyticsModelingOMASResource {
      * @param serverName  unique identifier for requested server.
      * @param userId      the unique identifier for the user
 	 * @param dataSource data source GUID.
-	 * @return Cognos response contains list of database schemas.
+	 * @return Analytics Modeling response contains list of database schemas.
 	 */
 	@GetMapping(path = "/{dataSourceGUID}/schemas")
 	public AnalyticsModelingOMASAPIResponse getSchemas(
@@ -70,7 +70,7 @@ public class AnalyticsModelingOMASResource {
 	 * @param catalog of the db.
 	 * @param schema of the db.
 	 * @param request body.
-	 * @return Cognos response contains list of tables in the database schema.
+	 * @return Analytics Modeling response contains list of tables in the database schema.
 	 */
 	@PostMapping(path = "/{dataSourceGUID}/tables")
 	public AnalyticsModelingOMASAPIResponse getTables(
@@ -93,7 +93,7 @@ public class AnalyticsModelingOMASResource {
 	 * @param catalog of the db.
 	 * @param schema of the db.
 	 * @param request body.
-	 * @return physical module for the database schema.
+	 * @return Analytics Modeling module for the database schema.
 	 */
 	@PostMapping(path = "/{dataSourceGUID}/physicalModule")
 	public AnalyticsModelingOMASAPIResponse getPhysicalModule(

@@ -5,9 +5,9 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.model;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Module;
 
 /**
- * Response container for Cognos physical module representation.<br>
+ * Response container for Analytics Modeling module representation.<br>
  * The container has following attributes:<br>
- * &emsp;physicalDefinition - Cognos physical module representation.<br>
+ * &emsp;physicalDefinition - Analytics Modeling module representation.<br>
  * 
  * The type of the container is 'module'.
  * 
@@ -26,7 +26,7 @@ public class ResponseContainerModule extends ResponseContainer {
 	}
 
 	/**
-	 * Set Cognos physical module.
+	 * Set Analytics Modeling module.
 	 * @param value module definition to set.
 	 */
 	public void setPhysicalModule(Module value) {
@@ -34,8 +34,8 @@ public class ResponseContainerModule extends ResponseContainer {
 	}
 
 	/**
-	 * Get Cognos physical module.
-	 * @return Cognos physical module.
+	 * Get Analytics Modeling module.
+	 * @return Analytics Modeling module.
 	 */
 	public Module  getPhysicalModule() {
 		return (Module) getAttribute(PHYSICAL_DEFINITION);

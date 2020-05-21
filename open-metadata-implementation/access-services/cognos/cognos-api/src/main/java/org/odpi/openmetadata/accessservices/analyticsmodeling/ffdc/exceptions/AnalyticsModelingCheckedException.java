@@ -7,7 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.OMAGCheckedException
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 /**
- * Exception based on CognosErrorCode class {@link org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode}
+ * Exception based on AnalyticsModelingErrorCode class {@link org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode}
  * 
  */
 public class AnalyticsModelingCheckedException extends OMAGCheckedExceptionBase {

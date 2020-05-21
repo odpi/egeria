@@ -15,14 +15,14 @@ public class ErrorResponseTest {
 	
 	private static final String	MESSAGE = "short message";
 	private static final String	CODE = "MSR_OMS_001";
-	private static final String	EXCEPTIONCAUSE = "com.ibm.cognos.AppException: Cannot open ...";
+	private static final String	EXCEPTIONCAUSE = "com.ibm.AppException: Cannot open ...";
 
 	String master = String.format("{%n" + 
 			"  \"class\" : \"ErrorResponse\",%n" + 
 			"  \"relatedHTTPCode\" : 500,%n" + 
 			"  \"msg\" : \"short message\",%n" + 
 			"  \"code\" : \"MSR_OMS_001\",%n" + 
-			"  \"exceptionCauseMsg\" : \"com.ibm.cognos.AppException: Cannot open ...\"%n" + 
+			"  \"exceptionCauseMsg\" : \"com.ibm.AppException: Cannot open ...\"%n" + 
 			"}");
 
 	@Test

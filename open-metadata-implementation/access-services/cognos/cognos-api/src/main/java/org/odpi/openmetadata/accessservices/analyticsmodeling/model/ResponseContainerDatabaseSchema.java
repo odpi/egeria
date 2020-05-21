@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.analyticsmodeling.model;
 
 /**
- * Response container for Cognos schema representation.<br>
+ * Response container for Analytics Modeling schema representation.<br>
  * The container has following attributes:<br>
  * &emsp;catalog - name of the schema catalog.<br>
  * &emsp;schema -  name of the schema.<br>

@@ -63,7 +63,7 @@ public class InMemoryRepositoryTest {
     private OMRSRepositoryContentManager localRepositoryContentManager = null;
     protected OMEntityDaoForTests omEntityDao;
     
-    final private String context = "Cognos OMAS test";
+    final private String context = "Analytics Modeling OMAS test";
     
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -74,30 +74,30 @@ public class InMemoryRepositoryTest {
         when(enterpriseConnector.getMetadataCollection()).thenReturn(repositoryConnector.getMetadataCollection());
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(repositoryConnector.getRepositoryHelper());
 
-        when(omrsRepositoryHelper.getStringProperty(eq(Constants.COGNOS_OMAS_NAME),
+        when(omrsRepositoryHelper.getStringProperty(eq(Constants.ANALYTICS_MODELING_OMAS_NAME),
                 any(String.class),
                 any(InstanceProperties.class),
                 any(String.class))).thenCallRealMethod();
-        when(omrsRepositoryHelper.getBooleanProperty(eq(Constants.COGNOS_OMAS_NAME),
+        when(omrsRepositoryHelper.getBooleanProperty(eq(Constants.ANALYTICS_MODELING_OMAS_NAME),
                 any(String.class),
                 any(InstanceProperties.class),
                 any(String.class))).thenCallRealMethod();
-        when(omrsRepositoryHelper.getIntProperty(eq(Constants.COGNOS_OMAS_NAME),
+        when(omrsRepositoryHelper.getIntProperty(eq(Constants.ANALYTICS_MODELING_OMAS_NAME),
                 any(String.class),
                 any(InstanceProperties.class),
                 any(String.class))).thenCallRealMethod();
-        when(omrsRepositoryHelper.getStringArrayProperty(eq(Constants.COGNOS_OMAS_NAME),
+        when(omrsRepositoryHelper.getStringArrayProperty(eq(Constants.ANALYTICS_MODELING_OMAS_NAME),
                 any(String.class),
                 any(InstanceProperties.class),
                 any(String.class))).thenCallRealMethod();
 
 
-        when(omrsRepositoryHelper.addStringArrayPropertyToInstance(eq(Constants.COGNOS_OMAS_NAME),
+        when(omrsRepositoryHelper.addStringArrayPropertyToInstance(eq(Constants.ANALYTICS_MODELING_OMAS_NAME),
                 any(InstanceProperties.class),
                 any(String.class),
                 anyList(),
                 any(String.class))).thenCallRealMethod();
-        when(omrsRepositoryHelper.addStringPropertyToInstance(eq(Constants.COGNOS_OMAS_NAME),
+        when(omrsRepositoryHelper.addStringPropertyToInstance(eq(Constants.ANALYTICS_MODELING_OMAS_NAME),
                 any(InstanceProperties.class),
                 any(String.class),
                 any(String.class),

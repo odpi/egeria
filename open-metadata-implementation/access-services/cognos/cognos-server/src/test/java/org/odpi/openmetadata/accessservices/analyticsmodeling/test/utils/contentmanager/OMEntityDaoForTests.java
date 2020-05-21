@@ -55,14 +55,14 @@ public class OMEntityDaoForTests extends OMEntityDao {
                                                                   RepositoryErrorException, PropertyErrorException,
                                                                   TypeErrorException, FunctionNotSupportedException {
         EntityDetail entity;
-            entity = enterpriseConnector.getRepositoryHelper().getSkeletonEntity(Constants.COGNOS_OMAS_NAME,
+            entity = enterpriseConnector.getRepositoryHelper().getSkeletonEntity(Constants.ANALYTICS_MODELING_OMAS_NAME,
                                                                                 metadataCollectionId,
                                                                                 InstanceProvenanceType.LOCAL_COHORT,
                                                                                 userName,
                                                                                 typeName);
             entity.setClassifications(classifications);
             if(zoneRestricted && supportedZones != null && !supportedZones.isEmpty()){
-                instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.COGNOS_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "addEntity");
+                instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.ANALYTICS_MODELING_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "addEntity");
             }
             
             return enterpriseConnector.getMetadataCollection().addEntity(userName,
@@ -75,7 +75,7 @@ public class OMEntityDaoForTests extends OMEntityDao {
     public void deleteEntity(EntityDetail entity) throws AnalyticsModelingCheckedException {
     	InstanceType instanceType = entity.getType();
     	try {
-			enterpriseConnector.getMetadataCollection().deleteEntity(Constants.COGNOS_USER_ID,
+			enterpriseConnector.getMetadataCollection().deleteEntity(Constants.ANALYTICS_MODELING_USER_ID,
 					instanceType.getTypeDefGUID(), instanceType.getTypeDefName(), entity.getGUID());
 		} catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException
 				| FunctionNotSupportedException | UserNotAuthorizedException ex) {
@@ -107,13 +107,13 @@ public class OMEntityDaoForTests extends OMEntityDao {
         Relationship relationship = null;
         try {
             relationship = enterpriseConnector.getRepositoryHelper()
-                    .getSkeletonRelationship(Constants.COGNOS_OMAS_NAME,
+                    .getSkeletonRelationship(Constants.ANALYTICS_MODELING_OMAS_NAME,
                             metadataCollectionId,
                             InstanceProvenanceType.LOCAL_COHORT,
-                            Constants.COGNOS_USER_ID,
+                            Constants.ANALYTICS_MODELING_USER_ID,
                             typeName);
             return enterpriseConnector.getMetadataCollection()
-                    .addRelationship(Constants.COGNOS_USER_ID,
+                    .addRelationship(Constants.ANALYTICS_MODELING_USER_ID,
                             relationship.getType().getTypeDefGUID(),
                             instanceProperties,
                             entityOneGUID,
@@ -132,7 +132,7 @@ public class OMEntityDaoForTests extends OMEntityDao {
     
     public void updateEntityProperty(EntityDetail entity, InstanceProperties newProperties) throws AnalyticsModelingCheckedException {
     	try {
-			enterpriseConnector.getMetadataCollection().updateEntityProperties(Constants.COGNOS_USER_ID,
+			enterpriseConnector.getMetadataCollection().updateEntityProperties(Constants.ANALYTICS_MODELING_USER_ID,
 					entity.getGUID(),
 					newProperties);
 		} catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException
@@ -149,7 +149,7 @@ public class OMEntityDaoForTests extends OMEntityDao {
 
     public void classifyEntity(EntityDetail entity, String classificationName, InstanceProperties classificationProperties) throws AnalyticsModelingCheckedException {
     	try {
-			enterpriseConnector.getMetadataCollection().classifyEntity(Constants.COGNOS_USER_ID,
+			enterpriseConnector.getMetadataCollection().classifyEntity(Constants.ANALYTICS_MODELING_USER_ID,
 					entity.getGUID(),
 					classificationName,
 					classificationProperties);
@@ -197,7 +197,7 @@ public class OMEntityDaoForTests extends OMEntityDao {
         if (existingEntities == null || existingEntities.isEmpty()) {
         	return null;
         }
-        return existingEntities.stream().filter(e -> qualifiedName.equals(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.COGNOS_OMAS_NAME, Constants.QUALIFIED_NAME, e.getProperties(), "checkEntities"))).findFirst().orElse(null);
+        return existingEntities.stream().filter(e -> qualifiedName.equals(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.ANALYTICS_MODELING_OMAS_NAME, Constants.QUALIFIED_NAME, e.getProperties(), "checkEntities"))).findFirst().orElse(null);
     }
 
     /**
@@ -228,10 +228,10 @@ public class OMEntityDaoForTests extends OMEntityDao {
         }
         try {
             String relationshipTypeGuid = enterpriseConnector.getRepositoryHelper()
-                                                            .getTypeDefByName(Constants.COGNOS_USER_ID, relationshipType)
+                                                            .getTypeDefByName(Constants.ANALYTICS_MODELING_USER_ID, relationshipType)
                                                             .getGUID();
 
-            return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.COGNOS_USER_ID,
+            return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.ANALYTICS_MODELING_USER_ID,
                                                                                         guid,
                                                                                         relationshipTypeGuid,
                                                                                         Constants.START_FROM,
@@ -346,7 +346,7 @@ public class OMEntityDaoForTests extends OMEntityDao {
         OMEntityWrapper wrapper;
         entityDetail = getEntity(typeName, qualifiedName, zoneRestricted);
         if (entityDetail == null) {
-            entityDetail = addEntity("", Constants.COGNOS_USER_ID, typeName, properties, classifications, zoneRestricted);
+            entityDetail = addEntity("", Constants.ANALYTICS_MODELING_USER_ID, typeName, properties, classifications, zoneRestricted);
             log.debug("Entity with qualified name {} added", qualifiedName);
             if(log.isDebugEnabled()) {
                 log.debug("Entity: {}", entityDetail);

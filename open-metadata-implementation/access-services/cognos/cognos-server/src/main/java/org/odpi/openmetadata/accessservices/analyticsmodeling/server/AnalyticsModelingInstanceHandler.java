@@ -12,9 +12,9 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedExc
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
 
 /**
- * CognosInstanceHandler retrieves information from the instance map for the
+ * AnalyticsModelingInstanceHandler retrieves information from the instance map for the
  * access service instances. The instance map is thread-safe. Instances are
- * added and removed by the CognosAdmin class.
+ * added and removed by the AnalyticsModelingAdmin class.
  */
 class AnalyticsModelingInstanceHandler extends OCFOMASServiceInstanceHandler {
 

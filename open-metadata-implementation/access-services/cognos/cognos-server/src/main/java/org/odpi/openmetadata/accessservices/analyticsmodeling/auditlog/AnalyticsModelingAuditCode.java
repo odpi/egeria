@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.MessageDefinition;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 /**
- * The CognosAuditCode is used to define the message content for the OMRS Audit Log.
+ * The AnalyticsModelingAuditCode is used to define the message content for the OMRS Audit Log.
  * <p>
  * The 5 fields in the enum are:
  * <ul>
@@ -23,82 +23,47 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum AnalyticsModelingAuditCode implements AuditLogMessageSet {
 
-    SERVICE_INITIALIZING("OMAS-COGNOS-0001",
+    SERVICE_INITIALIZING("OMAS-ANALYTICS-MODELING-0001",
             OMRSAuditLogRecordSeverity.STARTUP,
-            "The Cognos Open Metadata Access Service (OMAS) is initializing a new server instance",
-            "The local server has started up a new instance of the Cognos OMAS.",
+            "The Analytics Modeling Open Metadata Access Service (OMAS) is initializing a new server instance",
+            "The local server has started up a new instance of the Analytics Modeling OMAS.",
             "No action is required.  This is part of the normal operation of the server."),
 
-//    SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-COGNOS-0002",
-//            OMRSAuditLogRecordSeverity.INFO,
-//            "The Cognos Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
-//            "The Cognos OMAS is registering to receive events from the connected open metadata repositories.",
-//            "No action is required.  This is part of the normal operation of the server."),
-//
-//    SERVICE_REGISTERED_WITH_IV_IN_TOPIC("OMAS-COGNOS-0003",
-//            OMRSAuditLogRecordSeverity.INFO,
-//            "The Cognos Open Metadata Access Service (OMAS) is registering a listener with the Cognos In topic {0}",
-//            "The Cognos OMAS is registering to receive incoming events from external tools and applications.",
-//            "No action is required.  This is part of the normal operation of the server."),
-//
-    SERVICE_REGISTERED_WITH_COGNOS_OUT_TOPIC("OMAS-COGNOS-0004",
+    SERVICE_REGISTERED_WITH_OUT_TOPIC("OMAS-ANALYTICS-MODELING-0004",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Cognos Open Metadata Access Service (OMAS) is registering a publisher with the Cognos Out topic {0}",
-            "The Cognos OMAS is registering to publish events to Cognos Out topic.",
+            "The Analytics Modeling Open Metadata Access Service (OMAS) is registering a publisher with the Analytics Modeling Out topic {0}",
+            "The Analytics Modeling OMAS is registering to publish events to Analytics Modeling Out topic.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_INITIALIZED("OMAS-COGNOS-0005",
+    SERVICE_INITIALIZED("OMAS-ANALYTICS-MODELING-0005",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Cognos Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
-            "The Cognos OMAS has completed initialization.",
+            "The Analytics Modeling Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
+            "The Analytics Modeling OMAS has completed initialization.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_SHUTDOWN("OMAS-COGNOS-0006",
+    SERVICE_SHUTDOWN("OMAS-ANALYTICS-MODELING-0006",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Cognos Open Metadata Access Service (OMAS) is shutting down server instance {0}",
-            "The local server has requested shut down of an Cognos OMAS server instance.",
+            "The Analytics Modeling Open Metadata Access Service (OMAS) is shutting down server instance {0}",
+            "The local server has requested shut down of an Analytics Modeling OMAS server instance.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    ERROR_INITIALIZING_CONNECTION("OMAS-COGNOS-0007",
+    ERROR_INITIALIZING_CONNECTION("OMAS-ANALYTICS-MODELING-0007",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "Unable to initialize the Cognos Open Metadata Access Service (OMAS) topic connection {0} for server instance {1}; error message was: {2}",
+            "Unable to initialize the Analytics Modeling Open Metadata Access Service (OMAS) topic connection {0} for server instance {1}; error message was: {2}",
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
-    SERVICE_INSTANCE_TERMINATION_FAILURE("OMAS-COGNOS-0008",
+    SERVICE_INSTANCE_TERMINATION_FAILURE("OMAS-ANALYTICS-MODELING-0008",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The Cognos Open Metadata Access Service (OMAS) is unable to terminate an instance {0}",
+            "The Analytics Modeling Open Metadata Access Service (OMAS) is unable to terminate an instance {0}",
             "The access service detected an error during the shut down of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, try to shut " +
                                                  "down the server."), 
-    FIND_ENTITIES("OMAS-COGNOS-0009",
+    FIND_ENTITIES("OMAS-ANALYTICS-MODELING-0009",
     		OMRSAuditLogRecordSeverity.INFO,
     		"Retrieving entities of type {0} with properties {1}.",
             "The local server has requested find entities operation.",
             "No action is required.  This is part of the normal operation of the server."),
 
-//    SUPPORTED_ZONES("OMAS-COGNOS-0009",
-//            OMRSAuditLogRecordSeverity.INFO,
-//            "The Cognos Open Metadata Access Service (OMAS) is supporting the following governance zones {0}",
-//            "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
-//                    "This means it is only providing access to the Assets from these zone(s) and the new Assets will be visible only for these zone(s)",
-//            "No action is required.  This is part of the normal operation of the service."),
-//    BAD_CONFIG("OMAS-COGNOS-0010",
-//            OMRSAuditLogRecordSeverity.ERROR,
-//            "The Cognos Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property",
-//            "The access service has not been passed valid configuration.",
-//            "Correct the configuration and restart the service."),
-//    ALL_ZONES("OMAS-COGNOS-0011",
-//            OMRSAuditLogRecordSeverity.INFO,
-//            "The Cognos Open Metadata Access Service (OMAS) is supporting all governance zones",
-//            "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
-//                    "This means it is providing access to all Assets irrespective of the zone(s) they are located in and the created Assets can be accessed from any zone",
-//            "No action is required.  This is part of the normal operation of the service."),
-//    NULL_OMRS_EVENT_RECEIVED("OMAS-COGNOS-0012",
-//            OMRSAuditLogRecordSeverity.EXCEPTION,
-//            "Unable to process a received event from topic {0} because its content is null",
-//            "The system is unable to process an incoming event.",
-//            "This may be caused by an internal logic error or the receipt of an incompatible OMRSEvent, " +
-//                    "possibly from a later version of the OMRS protocol"),
     ;
 
 

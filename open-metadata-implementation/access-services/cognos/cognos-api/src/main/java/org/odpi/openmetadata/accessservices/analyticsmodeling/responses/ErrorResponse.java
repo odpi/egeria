@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *{
  *	"msg": "MSR_GEN_0097 Error while getting catalogs and schemas...",
  *	"code": "MSR_GEN_0097",
- *	"exceptionCauseMsg": "com.ibm.cognos.AppException: Cannot open ..."
+ *	"exceptionCauseMsg": "com.ibm.AppException: Cannot open ..."
  *}
  *
  */

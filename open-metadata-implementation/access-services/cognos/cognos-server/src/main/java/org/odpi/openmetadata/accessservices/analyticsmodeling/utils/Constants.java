@@ -8,12 +8,12 @@ public class Constants {
 	public static final Integer PAGE_SIZE = 100;
 	public static final Integer START_FROM = 0;
 	public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
+	public static final String ANALYTICS_MODELING_OMAS_NAME = "AnalyticsModelingOmas";
+	public static final String ANALYTICS_MODELING_USER_ID = "AnalyticsModelingOmas";
 	public static final String ASSET_SCHEMA_TYPE = "AssetSchemaType";
 	public static final String ATTACHED_NOTE_LOG = "AttachedNoteLog";
 	public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
 	public static final String ATTRIBUTE_NAME = "name";
-	public static final String COGNOS_OMAS_NAME = "CognosOmas";
-	public static final String COGNOS_USER_ID = "CognosOmas";
 	public static final String DATABASE = "Database";
 	public static final String DATA_CONTENT_FOR_DATASET = "DataContentForDataSet";
 	public static final String DATA_UNDERSCORE_TYPE = "data_type";
