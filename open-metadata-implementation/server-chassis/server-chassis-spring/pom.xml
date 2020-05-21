@@ -278,6 +278,22 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+
+            <!--dependency>
+  <groupId>jakarta.annotation</groupId>
+  <artifactId>jakarta.annotation-api</artifactId>
+  <version>1.3.5</version>
+</dependency-->
+
         <!-- Documentation -->
 
         <dependency>
