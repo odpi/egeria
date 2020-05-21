@@ -187,7 +187,7 @@ import java.util.List;
      *
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws GUIDNotPurgedException a hard delete was issued but the term was not purged
+     * @throws EntityNotPurgedException a hard delete was issued but the term was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws FunctionNotSupportedException   Function not supported
      * Client library Exceptions
@@ -197,7 +197,7 @@ import java.util.List;
       void purgeTerm(String userId, String guid) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 MetadataServerUncontactableException,
-                                                                                GUIDNotPurgedException,
+                                                                                EntityNotPurgedException,
                                                                                 FunctionNotSupportedException,
                                                                                 UnrecognizedGUIDException,
                                                                                 UnexpectedResponseException;

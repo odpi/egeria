@@ -12,30 +12,30 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- *EntityNotDeletedExceptionResponse is the response that wraps a EntityNotDeletedException
+ *EntityNotPurgedExceptionResponse is the response that wraps a EntityNotPurgedException
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EntityNotDeletedExceptionResponse extends SubjectAreaOMASAPIResponse
+public class EntityNotPurgedExceptionResponse extends SubjectAreaOMASAPIResponse
 {
 
     protected String    guid = null;
-    public EntityNotDeletedExceptionResponse(SubjectAreaCheckedException e)
+    public EntityNotPurgedExceptionResponse(SubjectAreaCheckedException e)
     {
         super(e);
-        this.setResponseCategory(ResponseCategory.EntityNotDeletedException);
+        this.setResponseCategory(ResponseCategory.EntityNotPurgedException);
         guid = ((GuidOrientatedException)e).getGuid();
     }
 
     @Override
     public String toString()
     {
-        return "EntityNotDeletedExceptionResponse{" +
+        return "EntityNotPurgedExceptionResponse{" +
                 super.toString() + ", guid = " + guid + '}';
     }
     /**
-     * Return the guid - the unique identifier of the entity that was not deleted
+     * Return the guid - the unique identifier of the entity that was not purged
      *
      * @return String message id
      */
@@ -43,7 +43,7 @@ public class EntityNotDeletedExceptionResponse extends SubjectAreaOMASAPIRespons
         return guid;
     }
     /**
-     * Set up the guid - the unique identifier of the entity that was not deleted
+     * Set up the guid - the unique identifier of the entity that was not purged
      *
      * @param guid String guid
      */

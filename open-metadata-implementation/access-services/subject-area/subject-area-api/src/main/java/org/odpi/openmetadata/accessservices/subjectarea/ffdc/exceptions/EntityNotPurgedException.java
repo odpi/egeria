@@ -6,23 +6,24 @@ package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 /**
- * The UnrecognizedGUIDException is thrown by the Subject Area OMAS when the unique identifier (guid)
- * used to request an object is either unrecognized, or is the identifier for a different type of object.
+ * The EntityNotPurgedException is thrown by the Subject Area OMAS when an entity is not purged
+ * value.
  */
-public class UnrecognizedGUIDException extends GuidOrientatedException {
+
+public class EntityNotPurgedException extends GuidOrientatedException {
 
     /**
-     * This is the typical constructor used for creating an UnrecognizedGUIDException
+     * This is the typical constructor used for creating an EntityNotDeletedException
      *
      * @param messageDefinition content of the message
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param guid              unrecognised guid
+     * @param guid              the guid of the entity that was not purged
      */
-    public UnrecognizedGUIDException(ExceptionMessageDefinition messageDefinition,
-                                     String className,
-                                     String actionDescription,
-                                     String guid) {
+    public EntityNotPurgedException(ExceptionMessageDefinition messageDefinition,
+                                    String className,
+                                    String actionDescription,
+                                    String guid) {
         super(messageDefinition, className, actionDescription, guid);
     }
 
@@ -35,15 +36,16 @@ public class UnrecognizedGUIDException extends GuidOrientatedException {
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
      * @param caughtError       previous error causing this exception
-     * @param guid              unrecognised guid
+     * @param guid              the guid of the entity that was not purged
      */
-    public UnrecognizedGUIDException(ExceptionMessageDefinition messageDefinition,
-                                     String className,
-                                     String actionDescription,
-                                     Throwable caughtError,
-                                     String guid) {
+    public EntityNotPurgedException(ExceptionMessageDefinition messageDefinition,
+                                    String className,
+                                    String actionDescription,
+                                    Throwable caughtError,
+                                    String guid) {
         super(messageDefinition, className, actionDescription, caughtError, guid);
     }
 
 }
+
 

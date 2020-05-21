@@ -63,7 +63,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Hasa createdTermHASARelationship = handler.createTermHASARelationship(userId, termHASARelationship);
             response = new TermHASARelationshipResponse(createdTermHASARelationship);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -102,7 +102,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
              Hasa updatedTermHASARelationship = handler.getTermHASARelationship(userId, guid);
              response = new TermHASARelationshipResponse(updatedTermHASARelationship);
          }  catch (Throwable error) {
-             response = getResponseForError(error, auditLog, restAPIName);
+             response = getResponseForError(error, auditLog, className, restAPIName);
          }
          restCallLogger.logRESTCallReturn(token, response.toString());
          return response;
@@ -148,7 +148,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
              }
 
          }  catch (Throwable error) {
-             response = getResponseForError(error, auditLog, restAPIName);
+             response = getResponseForError(error, auditLog, className, restAPIName);
          }
          restCallLogger.logRESTCallReturn(token, response.toString());
          return response;
@@ -193,7 +193,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                  response = new TermHASARelationshipResponse(deletedTermHASARelationship);
              }
          }  catch (Throwable error) {
-             response = getResponseForError(error, auditLog, restAPIName);
+             response = getResponseForError(error, auditLog, className, restAPIName);
          }
          restCallLogger.logRESTCallReturn(token, response.toString());
          return response;
@@ -232,7 +232,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
              Hasa restoredTermHASARelationship = handler.restoreTermHASARelationship(userId, guid);
              response = new TermHASARelationshipResponse(restoredTermHASARelationship);
          }  catch (Throwable error) {
-             response = getResponseForError(error, auditLog, restAPIName);
+             response = getResponseForError(error, auditLog, className, restAPIName);
          }
          restCallLogger.logRESTCallReturn(token, response.toString());
          return response;
@@ -270,7 +270,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelatedTerm createdRelatedTerm = handler.createRelatedTerm(userId, relatedTerm);
             response = new RelatedTermResponse(createdRelatedTerm);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -309,7 +309,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelatedTerm updatedRelatedTerm = handler.getRelatedTerm(userId, guid);
             response = new RelatedTermResponse(updatedRelatedTerm);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -355,7 +355,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -400,7 +400,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new RelatedTermResponse(deletedRelatedTerm);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -439,7 +439,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelatedTerm restoredRelatedTerm = handler.restoreRelatedTerm(userId, guid);
             response = new RelatedTermResponse(restoredRelatedTerm);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -478,7 +478,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Synonym createdSynonym = handler.createSynonymRelationship(userId, synonym);
             response = new SynonymRelationshipResponse(createdSynonym);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -517,7 +517,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Synonym updatedSynonym = handler.getSynonymRelationship(userId, guid);
             response = new SynonymRelationshipResponse(updatedSynonym);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -563,7 +563,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -608,7 +608,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new SynonymRelationshipResponse(deletedSynonym);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -647,7 +647,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Synonym restoredSynonym = handler.restoreSynonymRelationship(userId, guid);
             response = new SynonymRelationshipResponse(restoredSynonym);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -686,7 +686,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Antonym createdAntonym = handler.createAntonymRelationship(userId, antonym);
             response = new AntonymRelationshipResponse(createdAntonym);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -725,7 +725,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Antonym updatedAntonym = handler.getAntonymRelationship(userId, guid);
             response = new AntonymRelationshipResponse(updatedAntonym);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -771,7 +771,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -816,7 +816,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new AntonymRelationshipResponse(deletedAntonym);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -855,7 +855,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Antonym restoredAntonym = handler.restoreAntonymRelationship(userId, guid);
             response = new AntonymRelationshipResponse(restoredAntonym);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -894,7 +894,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Translation createdTranslation = handler.createTranslationRelationship(userId, categoryAnchor);
             response = new TranslationRelationshipResponse(createdTranslation);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -933,7 +933,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Translation updatedTranslation = handler.getTranslationRelationship(userId, guid);
             response = new TranslationRelationshipResponse(updatedTranslation);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -979,7 +979,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1024,7 +1024,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new TranslationRelationshipResponse(deletedTranslation);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1063,7 +1063,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Translation restoredTranslation = handler.restoreTranslationRelationship(userId, guid);
             response = new TranslationRelationshipResponse(restoredTranslation);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1102,7 +1102,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             UsedInContext createdUsedInContext = handler.createUsedInContextRelationship(userId, usedInContext);
             response = new UsedInContextRelationshipResponse(createdUsedInContext);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1141,7 +1141,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             UsedInContext updatedUsedInContext = handler.getUsedInContextRelationship(userId, guid);
             response = new UsedInContextRelationshipResponse(updatedUsedInContext);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1187,7 +1187,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1232,7 +1232,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new UsedInContextRelationshipResponse(deletedUsedInContext);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1271,7 +1271,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             UsedInContext restoredUsedInContext = handler.restoreUsedInContextRelationship(userId, guid);
             response = new UsedInContextRelationshipResponse(restoredUsedInContext);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1310,7 +1310,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             PreferredTerm createdPreferredTerm = handler.createPreferredTermRelationship(userId, preferredTerm);
             response = new PreferredTermRelationshipResponse(createdPreferredTerm);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1349,7 +1349,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             PreferredTerm updatedPreferredTerm = handler.getPreferredTermRelationship(userId, guid);
             response = new PreferredTermRelationshipResponse(updatedPreferredTerm);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1395,7 +1395,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1440,7 +1440,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new PreferredTermRelationshipResponse(deletedPreferredTerm);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1479,7 +1479,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             PreferredTerm restoredPreferredTerm = handler.restorePreferredTermRelationship(userId, guid);
             response = new PreferredTermRelationshipResponse(restoredPreferredTerm);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1518,7 +1518,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             ValidValue createdValidValue = handler.createValidValueRelationship(userId, validValue);
             response = new ValidValueRelationshipResponse(createdValidValue);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1557,7 +1557,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             ValidValue updatedValidValue = handler.getValidValueRelationship(userId, guid);
             response = new ValidValueRelationshipResponse(updatedValidValue);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1603,7 +1603,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1648,7 +1648,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new ValidValueRelationshipResponse(deletedValidValue);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1687,7 +1687,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             ValidValue restoredValidValue = handler.restoreValidValueRelationship(userId, guid);
             response = new ValidValueRelationshipResponse(restoredValidValue);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1726,7 +1726,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             ReplacementTerm createdReplacementTerm = handler.createReplacementTermRelationship(userId, replacementTerm);
             response = new ReplacementRelationshipResponse(createdReplacementTerm);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1765,7 +1765,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             ReplacementTerm updatedReplacementTerm = handler.getReplacementTermRelationship(userId, guid);
             response = new ReplacementRelationshipResponse(updatedReplacementTerm);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1811,7 +1811,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1856,7 +1856,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new ReplacementRelationshipResponse(deletedReplacementTerm);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1895,7 +1895,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             ReplacementTerm restoredReplacementTerm = handler.restoreReplacementTermRelationship(userId, guid);
             response = new ReplacementRelationshipResponse(restoredReplacementTerm);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1934,7 +1934,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             TypedBy createdTermTYPEDBYRelationship = handler.createTermTYPEDBYRelationship(userId, termTYPEDBYRelationship);
             response = new TermTYPEDBYRelationshipResponse(createdTermTYPEDBYRelationship);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1973,7 +1973,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             TypedBy updatedTermTYPEDBYRelationship = handler.getTermTYPEDBYRelationship(userId, guid);
             response = new TermTYPEDBYRelationshipResponse(updatedTermTYPEDBYRelationship);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2019,7 +2019,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2064,7 +2064,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new TermTYPEDBYRelationshipResponse(deletedTermTYPEDBYRelationship);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2103,7 +2103,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             TypedBy restoredTermTYPEDBYRelationship = handler.restoreTypedByRelationship(userId, guid);
             response = new TermTYPEDBYRelationshipResponse(restoredTermTYPEDBYRelationship);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2142,7 +2142,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Isa createdISARelationship = handler.createIsaRelationship(userId, ISARelationship);
             response = new TermISARelationshipResponse(createdISARelationship);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2181,7 +2181,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Isa updatedISARelationship = handler.getIsaRelationship(userId, guid);
             response = new TermISARelationshipResponse(updatedISARelationship);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2227,7 +2227,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2272,7 +2272,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new TermISARelationshipResponse(deletedISARelationship);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2311,7 +2311,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Isa restoredISARelationship = handler.restoreIsaRelationship(userId, guid);
             response = new TermISARelationshipResponse(restoredISARelationship);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2350,7 +2350,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             IsaTypeOf createdTermISATypeOFRelationship = handler.createTermISATypeOFRelationship(userId, termISATypeOFRelationship);
             response = new TermISATYPEOFRelationshipResponse(createdTermISATypeOFRelationship);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2389,7 +2389,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             IsaTypeOf updatedTermISATypeOFRelationship = handler.getTermISATypeOFRelationship(userId, guid);
             response = new TermISATYPEOFRelationshipResponse(updatedTermISATypeOFRelationship);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2435,7 +2435,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2480,7 +2480,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new TermISATYPEOFRelationshipResponse(deletedTermISATypeOFRelationship);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2519,7 +2519,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             IsaTypeOf restoredTermISATypeOFRelationship = handler.restoreIsaTypeOfRelationship(userId, guid);
             response = new TermISATYPEOFRelationshipResponse(restoredTermISATypeOFRelationship);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2558,7 +2558,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Categorization createdTermCategorization = handler.createTermCategorizationRelationship(userId, termCategorization);
             response = new TermCategorizationRelationshipResponse(createdTermCategorization);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2597,7 +2597,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Categorization updatedTermCategorization = handler.getTermCategorizationRelationship(userId, guid);
             response = new TermCategorizationRelationshipResponse(updatedTermCategorization);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2643,7 +2643,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2688,7 +2688,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new TermCategorizationRelationshipResponse(deletedTermCategorization);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2727,7 +2727,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             Categorization restoredTermCategorization = handler.restoreTermCategorizationRelationship(userId, guid);
             response = new TermCategorizationRelationshipResponse(restoredTermCategorization);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2770,7 +2770,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             TermAnchor createdTermAnchor = handler.createTermAnchorRelationship(userId, termAnchor);
             response = new TermAnchorRelationshipResponse(createdTermAnchor);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2809,7 +2809,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             TermAnchor updatedTermAnchor = handler.getTermAnchorRelationship(userId, guid);
             response = new TermAnchorRelationshipResponse(updatedTermAnchor);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2854,7 +2854,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2899,7 +2899,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new TermAnchorRelationshipResponse(deletedTermAnchor);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2938,7 +2938,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             TermAnchor restoredTermAnchor = handler.restoreTermAnchorRelationship(userId, guid);
             response = new TermAnchorRelationshipResponse(restoredTermAnchor);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2981,7 +2981,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             CategoryAnchor createdCategoryAnchor = handler.createCategoryAnchorRelationship(userId, categoryAnchor);
             response = new CategoryAnchorRelationshipResponse(createdCategoryAnchor);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -3020,7 +3020,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             CategoryAnchor updatedCategoryAnchor = handler.getCategoryAnchorRelationship(userId, guid);
             response = new CategoryAnchorRelationshipResponse(updatedCategoryAnchor);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -3066,7 +3066,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -3111,7 +3111,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new CategoryAnchorRelationshipResponse(deletedCategoryAnchor);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -3150,7 +3150,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             CategoryAnchor restoredCategoryAnchor = handler.restoreCategoryAnchorRelationship(userId, guid);
             response = new CategoryAnchorRelationshipResponse(restoredCategoryAnchor);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -3188,7 +3188,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             ProjectScope createdProjectScope = handler.createProjectScopeRelationship(userId, projectScope);
             response = new ProjectScopeRelationshipResponse(createdProjectScope);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -3227,7 +3227,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             ProjectScope updatedProjectScope = handler.getProjectScopeRelationship(userId, guid);
             response = new ProjectScopeRelationshipResponse(updatedProjectScope);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -3273,7 +3273,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             }
 
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -3318,7 +3318,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
                 response = new ProjectScopeRelationshipResponse(deletedProjectScope);
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -3357,7 +3357,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             ProjectScope restoredProjectScope = handler.restoreProjectScopeRelationship(userId, guid);
             response = new ProjectScopeRelationshipResponse(restoredProjectScope);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, restAPIName);
+            response = getResponseForError(error, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -3392,7 +3392,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
              SemanticAssignment updatedSemanticAssignment = handler.getSemanticAssignmentRelationship(userId, guid);
              response = new SemanticAssignementRelationshipResponse(updatedSemanticAssignment);
          }  catch (Throwable error) {
-             response = getResponseForError(error, auditLog, restAPIName);
+             response = getResponseForError(error, auditLog, className, restAPIName);
          }
          restCallLogger.logRESTCallReturn(token, response.toString());
          return response;

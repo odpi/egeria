@@ -154,7 +154,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -162,7 +162,7 @@ public class RelationshipHandler {
      */
     public void purgeTermHASARelationship(String userId, String guid) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
-                                                                             GUIDNotPurgedException,
+                                                                             RelationshipNotPurgedException,
                                                                              UnrecognizedGUIDException,
                                                                              MetadataServerUncontactableException,
                                                                              UnexpectedResponseException {
@@ -344,7 +344,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -352,7 +352,7 @@ public class RelationshipHandler {
      */
     public void purgeRelatedTerm(String userId, String guid) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
-                                                                    GUIDNotPurgedException,
+                                                                    RelationshipNotPurgedException,
                                                                     UnrecognizedGUIDException,
                                                                     MetadataServerUncontactableException,
                                                                     UnexpectedResponseException {
@@ -510,7 +510,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -518,7 +518,7 @@ public class RelationshipHandler {
      */
     public void purgeSynonymRelationship(String userId, String guid) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
-                                                                            GUIDNotPurgedException,
+                                                                            RelationshipNotPurgedException,
                                                                             UnrecognizedGUIDException,
                                                                             MetadataServerUncontactableException,
                                                                             UnexpectedResponseException {
@@ -675,7 +675,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -683,7 +683,7 @@ public class RelationshipHandler {
      */
     public void purgeAntonymRelationship(String userId, String guid) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
-                                                                            GUIDNotPurgedException,
+                                                                            RelationshipNotPurgedException,
                                                                             UnrecognizedGUIDException,
                                                                             MetadataServerUncontactableException,
                                                                             UnexpectedResponseException {
@@ -845,7 +845,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -853,7 +853,7 @@ public class RelationshipHandler {
      */
     public void purgeTranslationRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
-                                                                                GUIDNotPurgedException,
+                                                                                RelationshipNotPurgedException,
                                                                                 UnrecognizedGUIDException,
                                                                                 MetadataServerUncontactableException,
                                                                                 UnexpectedResponseException {
@@ -1015,7 +1015,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1023,7 +1023,7 @@ public class RelationshipHandler {
      */
     public void purgeUsedInContextRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
-                                                                                  GUIDNotPurgedException,
+                                                                                  RelationshipNotPurgedException,
                                                                                   UnrecognizedGUIDException,
                                                                                   MetadataServerUncontactableException,
                                                                                   UnexpectedResponseException {
@@ -1177,7 +1177,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1185,7 +1185,7 @@ public class RelationshipHandler {
      */
     public void purgePreferredTermRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
-                                                                                  GUIDNotPurgedException,
+                                                                                  RelationshipNotPurgedException,
                                                                                   UnrecognizedGUIDException,
                                                                                   MetadataServerUncontactableException,
                                                                                   UnexpectedResponseException {
@@ -1347,7 +1347,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1355,7 +1355,7 @@ public class RelationshipHandler {
      */
     public void purgeValidValueRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
-                                                                               GUIDNotPurgedException,
+                                                                               RelationshipNotPurgedException,
                                                                                UnrecognizedGUIDException,
                                                                                MetadataServerUncontactableException,
                                                                                UnexpectedResponseException {
@@ -1513,7 +1513,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1521,7 +1521,7 @@ public class RelationshipHandler {
      */
     public void purgeReplacementTermRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
-                                                                                    GUIDNotPurgedException,
+                                                                                    RelationshipNotPurgedException,
                                                                                     UnrecognizedGUIDException,
                                                                                     MetadataServerUncontactableException,
                                                                                     UnexpectedResponseException {
@@ -1679,7 +1679,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1687,7 +1687,7 @@ public class RelationshipHandler {
      */
     public void purgeTermTYPEDBYRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
-                                                                                GUIDNotPurgedException,
+                                                                                RelationshipNotPurgedException,
                                                                                 UnrecognizedGUIDException,
                                                                                 MetadataServerUncontactableException,
                                                                                 UnexpectedResponseException {
@@ -1845,7 +1845,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1853,7 +1853,7 @@ public class RelationshipHandler {
      */
     public void purgeIsaRelationship(String userId, String guid) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
-                                                                        GUIDNotPurgedException,
+                                                                        RelationshipNotPurgedException,
                                                                         UnrecognizedGUIDException,
                                                                         MetadataServerUncontactableException,
                                                                         UnexpectedResponseException {
@@ -2011,7 +2011,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2019,7 +2019,7 @@ public class RelationshipHandler {
      */
     public void purgeTermISATypeOFRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
-                                                                                  GUIDNotPurgedException,
+                                                                                  RelationshipNotPurgedException,
                                                                                   UnrecognizedGUIDException,
                                                                                   MetadataServerUncontactableException,
                                                                                   UnexpectedResponseException {
@@ -2176,7 +2176,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2184,7 +2184,7 @@ public class RelationshipHandler {
      */
     public void purgeTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
-                                                                                       GUIDNotPurgedException,
+                                                                                       RelationshipNotPurgedException,
                                                                                        UnrecognizedGUIDException,
                                                                                        MetadataServerUncontactableException,
                                                                                        UnexpectedResponseException {
@@ -2348,7 +2348,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2356,7 +2356,7 @@ public class RelationshipHandler {
      */
     public void purgeTermAnchorRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
-                                                                               GUIDNotPurgedException,
+                                                                               RelationshipNotPurgedException,
                                                                                UnrecognizedGUIDException,
                                                                                MetadataServerUncontactableException,
                                                                                UnexpectedResponseException {
@@ -2518,7 +2518,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2526,7 +2526,7 @@ public class RelationshipHandler {
      */
     public void purgeCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
-                                                                                   GUIDNotPurgedException,
+                                                                                   RelationshipNotPurgedException,
                                                                                    UnrecognizedGUIDException,
                                                                                    MetadataServerUncontactableException,
                                                                                    UnexpectedResponseException {
@@ -2684,7 +2684,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2692,7 +2692,7 @@ public class RelationshipHandler {
      */
     public void purgeProjectScopeRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
-                                                                                 GUIDNotPurgedException,
+                                                                                 RelationshipNotPurgedException,
                                                                                  UnrecognizedGUIDException,
                                                                                  MetadataServerUncontactableException,
                                                                                  UnexpectedResponseException {

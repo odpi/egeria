@@ -12,26 +12,26 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- *EntityNotDeletedExceptionResponse is the response that wraps a EntityNotDeletedException
+ * RelationshipNotPurgedExceptionResponse is the response that wraps a RelationshipNotPurgedException
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EntityNotDeletedExceptionResponse extends SubjectAreaOMASAPIResponse
+public class RelationshipNotPurgedExceptionResponse extends SubjectAreaOMASAPIResponse
 {
 
     protected String    guid = null;
-    public EntityNotDeletedExceptionResponse(SubjectAreaCheckedException e)
+    public RelationshipNotPurgedExceptionResponse(SubjectAreaCheckedException e)
     {
         super(e);
-        this.setResponseCategory(ResponseCategory.EntityNotDeletedException);
+        this.setResponseCategory(ResponseCategory.RelationshipNotPurgedException);
         guid = ((GuidOrientatedException)e).getGuid();
     }
 
     @Override
     public String toString()
     {
-        return "EntityNotDeletedExceptionResponse{" +
+        return "RelationshipNotPurgedExceptionResponse{" +
                 super.toString() + ", guid = " + guid + '}';
     }
     /**

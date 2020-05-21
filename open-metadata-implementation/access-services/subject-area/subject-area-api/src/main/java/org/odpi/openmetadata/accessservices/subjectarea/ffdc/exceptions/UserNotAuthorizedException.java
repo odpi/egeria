@@ -3,47 +3,49 @@
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
 /**
  * The UserNotAuthorizedException is thrown by the Subject Area OMAS when a userId passed on a request is not
  * authorized to perform the requested action.
  */
-public class UserNotAuthorizedException extends SubjectAreaCheckedExceptionBase
-{
-    private String userId=null;
+public class UserNotAuthorizedException extends SubjectAreaCheckedException {
+    private String userId = null;
+
     /**
-     * This is the typical constructor used for creating a UserNotAuthorizedException.
+     * This is the typical constructor used for creating an UserNotAuthorizedException
      *
-     * @param httpCode http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
+     * @param messageDefinition content of the message
+     * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param userId  user identifier
+     * @param userId            userId associated with this Exception
      */
-    public UserNotAuthorizedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction,String userId)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-        this.userId=userId;
+    public UserNotAuthorizedException(ExceptionMessageDefinition messageDefinition,
+                                      String className,
+                                      String actionDescription,
+                                      String userId) {
+        super(messageDefinition, className, actionDescription);
+        this.userId = userId;
     }
 
 
     /**
-     * This is the constructor used for creating a UserNotAuthorizedException that resulted from a previous error.
+     * This is the constructor used for creating an UserNotAuthorizedException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param httpCode http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
+     * @param messageDefinition content of the message
+     * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param caughtError the error that resulted in this exception.
-     * @param userId  user identifier
-     * */
-    public UserNotAuthorizedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, String userId,Throwable caughtError)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
-        this.userId=userId;
+     * @param caughtError       previous error causing this exception
+     * @param userId            userId associated with this Exception
+     */
+    public UserNotAuthorizedException(ExceptionMessageDefinition messageDefinition,
+                                      String className,
+                                      String actionDescription,
+                                      Throwable caughtError,
+                                      String userId) {
+        super(messageDefinition, className, actionDescription, caughtError);
+        this.userId = userId;
     }
 
     public String getUserId() {
