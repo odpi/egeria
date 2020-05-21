@@ -112,14 +112,14 @@ public abstract class LineMapper implements ILineMapper
     }
 
     /**
-     * Pass the userId of the EntityProxy for end 1 to the Line ,so it can store it appropriately
+     * Pass the guid of the EntityProxy for end 1 to the Line ,so it can store it appropriately
      * @param line line to update
      * @param guid userId to add into the Line
      */
     protected abstract void setEnd1GuidInLine(Line line, String guid);
 
     /**
-     * Pass the userId of the EntityProxy for end 2 to the Line ,so it can store it appropriately
+     * Pass the guid of the EntityProxy for end 2 to the Line ,so it can store it appropriately
      * @param line line to update
      * @param guid userId to add into the Line
      */
@@ -188,7 +188,7 @@ public abstract class LineMapper implements ILineMapper
      * get the relationshipTypeDef Guid
      * This method should be overridden to provide the appropriate userId for the type.
      * @param relationship to get the userId from
-     * @return the userId of the relationship typedef
+     * @return the guid of the relationship typedef
      */
     protected String  getRelationshipTypeDefGuid(Relationship relationship)
     {

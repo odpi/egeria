@@ -253,7 +253,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed
-     * @param guid         userId of the term to update
+     * @param guid         guid of the term to update
      * @param suppliedTerm term to be updated
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated. The GovernanceAction content is always replaced.
      * @return a response which when successful contains the updated term
@@ -297,7 +297,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  userId under which the request is performed
-     * @param guid    userId of the term to be deleted.
+     * @param guid    guid of the term to be deleted.
      * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
@@ -335,7 +335,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the term to delete
+     * @param guid       guid of the term to delete
      * @return response which when successful contains the restored term
      * when not successful the following Exception responses can occur
      * <ul>

@@ -233,7 +233,7 @@ public class SubjectAreaRESTServicesInstance {
      * @param restAPIName             rest API name
      * @param userId                  user identity
      * @param entityGuid              globally unique identifier
-     * @param relationshipTypeGuid    the userId of the relationship type to restrict the relationships returned to this type. null means return all relationship types.
+     * @param relationshipTypeGuid    the guid of the relationship type to restrict the relationships returned to this type. null means return all relationship types.
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -340,7 +340,7 @@ public class SubjectAreaRESTServicesInstance {
      * @param restAPIName name of the rest API
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param className  class name
-     * @param guid       userId of the relationship to get
+     * @param guid       guid of the relationship to get
      * @return response which when successful contains the relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
@@ -416,7 +416,7 @@ public class SubjectAreaRESTServicesInstance {
      * @param restAPIName rest API name
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param className  class name
-     * @param guid       userId of the HAS A relationship to delete
+     * @param guid       guid of the HAS A relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete, the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -458,7 +458,7 @@ public class SubjectAreaRESTServicesInstance {
      * @param restAPIName name of the rest API
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param className  class name
-     * @param guid       userId of the relationship to restore
+     * @param guid       guid of the relationship to restore
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>

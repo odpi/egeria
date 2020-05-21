@@ -148,7 +148,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
             String suppliedCategoryParentGuid = null;
             if (suppliedCategory.getParentCategory() != null) {
-                //store the parent category userId
+                //store the parent category guid
                 suppliedCategoryParentGuid = suppliedCategory.getParentCategory().getGuid();
             }
 

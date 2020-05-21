@@ -126,7 +126,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param className   class name
-     * @param guid        userId of the relationship to get
+     * @param guid        guid of the relationship to get
      * @return response which when successful contains the relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
@@ -262,7 +262,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param className   class name
-     * @param guid        userId of the HAS A relationship to delete
+     * @param guid        guid of the HAS A relationship to delete
      * @param isPurge     true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete, the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -322,7 +322,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param className   class name
-     * @param guid        userId of the relationship to restore
+     * @param guid        guid of the relationship to restore
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -332,7 +332,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException             a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreLine(String restAPIName, String userId, String className, String guid) {
