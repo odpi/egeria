@@ -7,9 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
@@ -138,7 +138,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
+        InputValidator.validateGUIDNotNull(className,methodName,guid, "guid");
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s";
         String url = String.format(urlTemplate,serverName,userId,guid);
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
@@ -431,8 +431,8 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
-        InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
+        InputValidator.validateUserIdNotNull(className, methodName,userId);
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isPurge=false";
         String url = String.format(urlTemplate,serverName,userId,guid);
@@ -482,7 +482,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
+        InputValidator.validateGUIDNotNull(className,methodName,guid, "guid");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isPurge=true";
         String url = String.format(urlTemplate,serverName,userId,guid);
@@ -527,7 +527,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
+        InputValidator.validateGUIDNotNull(className,methodName,guid, "guid");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isReplace=%b";
         String url = String.format(urlTemplate,serverName,userId,guid,isReplace);
@@ -574,7 +574,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
+        InputValidator.validateGUIDNotNull(className,methodName,guid, "guid");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s";
         String url = String.format(urlTemplate,serverName,userId,guid);

@@ -99,7 +99,7 @@ public class SubjectAreaGraphImpl extends SubjectAreaBaseImpl implements org.odp
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
         final String urlTemplate = this.omasServerURL +BASE_URL + "/%s";
         String url = String.format(urlTemplate, serverName, userId, guid );
 
