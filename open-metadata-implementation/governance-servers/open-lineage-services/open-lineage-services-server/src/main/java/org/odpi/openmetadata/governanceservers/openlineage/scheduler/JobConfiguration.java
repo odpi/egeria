@@ -2,14 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
-import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
+import org.odpi.openmetadata.governanceservers.openlineage.buffergraph.BufferGraph;
+import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +15,10 @@ public class JobConfiguration {
     private static final Logger log = LoggerFactory.getLogger(JobConfiguration.class);
 
     private static Scheduler scheduler;
-    private static LineageGraph lineageGraph;
+    private static BufferGraph bufferGraph;
 
-    public JobConfiguration(LineageGraph lineageGraph){
-        this.lineageGraph = lineageGraph;
+    public JobConfiguration(BufferGraph bufferGraph){
+        this.bufferGraph = bufferGraph;
         schedule();
     }
 
@@ -35,7 +29,7 @@ public class JobConfiguration {
             scheduler = new StdSchedulerFactory().getScheduler();
             scheduler.start();
         } catch (SchedulerException e) {
-            log.error("{} could not run the job for LineageGraph", methodName);
+            log.error("{} could not run the job for bufferGraph", methodName);
         }
 
         Trigger trigger = buildSimpleSchedulerTrigger();
@@ -49,12 +43,12 @@ public class JobConfiguration {
 
     private static void scheduleJob(Trigger trigger) throws Exception {
 
-        if(lineageGraph != null) {
+        if(bufferGraph != null) {
             JobDetail jobDetail = JobBuilder.
-                    newJob(LineageGraphJob.class).
-                    withIdentity("LineageGraphJob", GROUP).
+                    newJob(BufferGraphJob.class).
+                    withIdentity("BufferGraphJob", GROUP).
                     build();
-            jobDetail.getJobDataMap().put("openLineageGraphStore", lineageGraph);
+            jobDetail.getJobDataMap().put("openLineageGraphStore", bufferGraph);
             scheduler.scheduleJob(jobDetail, trigger);
         }
 
@@ -62,12 +56,9 @@ public class JobConfiguration {
 
     private static Trigger buildSimpleSchedulerTrigger() {
 
+        int INTERVAL_SECONDS = 600;
 
-//        int INTERVAL_SECONDS = 600;
-        //TODO Remove after development
-        int INTERVAL_SECONDS = 10;
-
-        return TriggerBuilder.newTrigger().withIdentity("LineageGraphJob", GROUP)
+        return TriggerBuilder.newTrigger().withIdentity("BufferGraphJob", GROUP)
                 .withSchedule(
                         SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(INTERVAL_SECONDS).repeatForever())
                 .build();

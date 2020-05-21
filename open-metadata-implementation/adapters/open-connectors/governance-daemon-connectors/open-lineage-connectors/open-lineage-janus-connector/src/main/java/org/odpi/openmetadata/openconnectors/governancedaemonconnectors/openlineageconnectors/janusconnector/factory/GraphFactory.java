@@ -10,27 +10,22 @@ import org.janusgraph.core.schema.JanusGraphManagement;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.EdgeLabelsLineageGraph;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.VertexLabelsLineageGraph;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.EdgeLabelsBufferGraph;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.EdgeLabelsMainGraph;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.VertexLabelsBufferGraph;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.VertexLabelsMainGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_VERSION;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_METADATA_ID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_LABEL;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_GUID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_LABEL;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_METADATA_ID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_VERSION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
 public class GraphFactory extends IndexingFactory {
+
 
     private static final Logger log = LoggerFactory.getLogger(GraphFactory.class);
 
@@ -44,13 +39,14 @@ public class GraphFactory extends IndexingFactory {
      */
     public JanusGraph openGraph(ConnectionProperties connectionProperties) throws JanusConnectorException {
         final String methodName = "openGraph";
-
         JanusGraph janusGraph;
+
+        final String graphType = (String) connectionProperties.getConfigurationProperties().get("graphType");
         JanusGraphFactory.Builder config = janusFactoryBeans.getJanusFactory(connectionProperties);
 
         try {
             janusGraph = config.open();
-            return initializeGraph(janusGraph);
+            return initializeGraph(janusGraph, graphType);
         } catch (Exception e) {
             log.error("A connection with the graph database could not be established with the provided configuration", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.CANNOT_OPEN_GRAPH_DB;
@@ -68,16 +64,27 @@ public class GraphFactory extends IndexingFactory {
      * Set up the schema for the Janus Graph instance
      *
      * @param janusGraph - Janus Graph instance
+     * @param graphType  - type of the graph to be initiated
      */
-    private JanusGraph initializeGraph(JanusGraph janusGraph) throws JanusConnectorException {
+    private JanusGraph initializeGraph(JanusGraph janusGraph, String graphType) throws JanusConnectorException {
 
         final String methodName = "initializeGraph";
         log.info("Updating graph schema, if necessary");
         try {
             JanusGraphManagement management = janusGraph.openManagement();
 
-            Set<String> vertexLabels = schemaBasedOnGraphType(VertexLabelsLineageGraph.class);
-            Set<String> relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsLineageGraph.class);
+            Set<String> vertexLabels = new HashSet<>();
+            Set<String> relationshipsLabels = new HashSet<>();
+
+            if ("bufferGraph".equals(graphType)) {
+                vertexLabels = schemaBasedOnGraphType(VertexLabelsBufferGraph.class);
+                relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsBufferGraph.class);
+            }
+
+            if ("mainGraph".equals(graphType)) {
+                vertexLabels = schemaBasedOnGraphType(VertexLabelsMainGraph.class);
+                relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsMainGraph.class);
+            }
 
             checkAndAddLabelVertex(management, vertexLabels);
             checkAndAddLabelEdge(management, relationshipsLabels);
@@ -85,10 +92,10 @@ public class GraphFactory extends IndexingFactory {
             //TODO define properties
             management.commit();
 
-            createIndexes(janusGraph);
+            createIndexes(janusGraph, graphType);
             return janusGraph;
         } catch (Exception e) {
-            log.error("{} failed  during graph initialize operation with error: {}", e);
+            log.error("{} failed  during graph initialize operation with error: {}", graphType, e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
             throw new JanusConnectorException(GraphFactory.class.getName(),
@@ -132,18 +139,40 @@ public class GraphFactory extends IndexingFactory {
         }
     }
 
+    private void createIndexes(JanusGraph janusGraph, String graphType) {
+        if ("bufferGraph".equals(graphType)) {
+            createIndexesBuffer(janusGraph);
+        }
+
+        if ("mainGraph".equals(graphType)) {
+            createIndexesMainGraph(janusGraph);
+        }
+    }
+
     /**
-     * Set up the indexes for the Janus Graph instance
+     * Set up the indexes for the Janus Graph instance when type is bufferGraph
      *
      * @param janusGraph - Janus Graph instance
      */
-    private void createIndexes(JanusGraph janusGraph) {
+    private void createIndexesBuffer(JanusGraph janusGraph) {
+
         createCompositeIndexForProperty(PROPERTY_NAME_GUID, PROPERTY_KEY_ENTITY_GUID, true, janusGraph, Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_LABEL, PROPERTY_KEY_LABEL, false, janusGraph, Vertex.class);
-        createCompositeIndexForProperty(PROPERTY_NAME_VERSION, PROPERTY_KEY_ENTITY_VERSION, false, janusGraph, Vertex.class);
-        createCompositeIndexForProperty(PROPERTY_NAME_METADATA_ID, PROPERTY_KEY_METADATA_ID, false, janusGraph, Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_LABEL, PROPERTY_KEY_RELATIONSHIP_LABEL, false, janusGraph, Edge.class);
         createCompositeIndexForProperty(PROPERTY_NAME_GUID, PROPERTY_KEY_RELATIONSHIP_GUID, false, janusGraph, Edge.class);
+
     }
 
+    /**
+     * Set up the indexes for the Janus Graph instance when type is mainGraph
+     *
+     * @param janusGraph - Janus Graph instance
+     */
+    private void createIndexesMainGraph(JanusGraph janusGraph) {
+        createCompositeIndexForProperty(PROPERTY_NAME_NODE_ID, PROPERTY_KEY_ENTITY_NODE_ID, true, janusGraph, Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_GUID, PROPERTY_KEY_ENTITY_GUID, false, janusGraph, Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_LABEL, PROPERTY_KEY_LABEL, false, janusGraph, Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_LABEL, PROPERTY_KEY_RELATIONSHIP_LABEL, false, janusGraph, Edge.class);
+
+    }
 }

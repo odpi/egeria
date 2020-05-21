@@ -88,7 +88,6 @@ public class Converter {
         lineageEntity.setUpdatedBy(instanceHeader.getUpdatedBy());
         lineageEntity.setUpdateTime(instanceHeader.getUpdateTime());
         lineageEntity.setVersion(instanceHeader.getVersion());
-        lineageEntity.setMetadataCollectionId(instanceHeader.getMetadataCollectionId());
     }
 
     private String propertyValueToString(InstancePropertyValue ipv) {
