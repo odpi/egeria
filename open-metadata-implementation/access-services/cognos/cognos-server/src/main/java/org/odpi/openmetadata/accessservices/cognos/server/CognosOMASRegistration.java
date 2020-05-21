@@ -9,24 +9,24 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 /**
- * CognosOMASRegistration registers the access service with the OMAG Server administration services.
- * This registration must be driven once at server start up.  The OMAG Server administration services
- * then use this registration information as confirmation that there is an implementation of this
- * access service in the server and it can be configured and used.
+ * CognosOMASRegistration registers the access service with the OMAG Server
+ * administration services. This registration must be driven once at server
+ * start up. The OMAG Server administration services then use this registration
+ * information as confirmation that there is an implementation of this access
+ * service in the server and it can be configured and used.
  */
 class CognosOMASRegistration {
 
-    /**
-     * Pass information about this access service to the OMAG Server administration services.
-     */
-    static void registerAccessService()
-    {
-        AccessServiceDescription myDescription = AccessServiceDescription.COGNOS_OMAS;
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 ServiceOperationalStatus.ENABLED,
-                                                                                 CognosAdmin.class.getName());
+	/**
+	 * Pass information about this access service to the OMAG Server administration
+	 * services.
+	 */
+	static void registerAccessService() {
+		AccessServiceDescription myDescription = AccessServiceDescription.COGNOS_OMAS;
+		AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
+				ServiceOperationalStatus.ENABLED, CognosAdmin.class.getName());
 
-        OMAGAccessServiceRegistration.registerAccessService(myRegistration);
-    }
+		OMAGAccessServiceRegistration.registerAccessService(myRegistration);
+	}
 
 }

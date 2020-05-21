@@ -50,7 +50,8 @@ public class CognosAdmin extends AccessServiceAdmin
     public void initialize(	AccessServiceConfig accessServiceConfig, 
     						OMRSTopicConnector enterpriseOMRSTopicConnector, 
     						OMRSRepositoryConnector enterpriseConnector, 
-    						AuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
+    						AuditLog auditLog,
+    						String serverUserName) throws OMAGConfigurationErrorException {
         
         final String actionDescription = "Initialize Cognos OMAS service.";
 
