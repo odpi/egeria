@@ -31,7 +31,7 @@ public interface SubjectAreaProject
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException  the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException  the supplied guid was not recognised
      * @throws ClassificationException Error processing a classification
      * @throws FunctionNotSupportedException   Function not supported
      *
@@ -44,13 +44,13 @@ public interface SubjectAreaProject
     /**
      * Get a Project by userId.
      * @param userId userId under which the request is performed
-     * @param guid userId of the Project to get
+     * @param guid guid of the Project to get
      * @return the requested Project.
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws FunctionNotSupportedException   Function not supported
      *
      * Client library Exceptions
@@ -63,8 +63,7 @@ public interface SubjectAreaProject
      * Get Project relationships
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the Project to get
-     * @param guid   userId of the Project to get
+     * @param guid   guid of the Project to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -72,7 +71,7 @@ public interface SubjectAreaProject
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Project userId
+     * @return the relationships associated with the requested Project guid
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -83,12 +82,13 @@ public interface SubjectAreaProject
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     List<Line> getProjectRelationships(String userId, String guid,
-                                         Date asOfTime,
-                                         int offset,
-                                         int pageSize,
-                                         org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                         String sequencingProperty) throws
+     List<Line> getProjectRelationships(String userId,
+                                        String guid,
+                                        Date asOfTime,
+                                        int offset,
+                                        int pageSize,
+                                        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                        String sequencingProperty) throws
             UserNotAuthorizedException,
             InvalidParameterException,
             FunctionNotSupportedException,
@@ -98,7 +98,7 @@ public interface SubjectAreaProject
      * Get the terms in this project.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the Project to get
+     * @param guid   guid of the Project to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @return the terms that are in the requested Project
      *
@@ -163,7 +163,7 @@ public interface SubjectAreaProject
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             userId of the Project to update
+     * @param guid             guid of the Project to update
      * @param suppliedProject Project to be updated
      * @return replaced Project
      *
@@ -191,7 +191,7 @@ public interface SubjectAreaProject
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             userId of the Project to update
+     * @param guid             guid of the Project to update
      * @param suppliedProject Project to be updated
      * @return a response which when successful contains the updated Project
      * when not successful the following Exceptions can occur
@@ -218,9 +218,9 @@ public interface SubjectAreaProject
      * that it is possible to undo the delete.
      *
      * @param userId userId under which the request is performed
-     * @param guid userId of the Project to be deleted.
+     * @param guid guid of the Project to be deleted.
      * @return the deleted Project
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -246,9 +246,9 @@ public interface SubjectAreaProject
      * A purge means that the Project will not exist after the operation.
      *
      * @param userId userId under which the request is performed
-     * @param guid userId of the Project to be deleted.
+     * @param guid guid of the Project to be deleted.
      *
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws EntityNotPurgedException a hard delete was issued but the Project was not purged
@@ -271,9 +271,9 @@ public interface SubjectAreaProject
      *
      * Restore allows the deleted Project to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the Project to restore
+     * @param guid       guid of the Project to restore
      * @return the restored Project
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.

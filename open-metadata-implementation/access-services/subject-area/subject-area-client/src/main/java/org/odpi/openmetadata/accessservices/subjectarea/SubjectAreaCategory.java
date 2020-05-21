@@ -25,7 +25,7 @@ public interface SubjectAreaCategory
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException  the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException  the supplied guid was not recognised
      * @throws ClassificationException Error processing a classification
      * @throws FunctionNotSupportedException   Function not supported
      *
@@ -38,13 +38,13 @@ public interface SubjectAreaCategory
     /**
      * Get a category by userId.
      * @param userId userId under which the request is performed
-     * @param guid userId of the category to get
+     * @param guid guid of the category to get
      * @return the requested category.
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws FunctionNotSupportedException   Function not supported
      *
      * Client library Exceptions
@@ -61,7 +61,7 @@ public interface SubjectAreaCategory
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             userId of the category to update
+     * @param guid             guid of the category to update
      * @param suppliedCategory category to be updated
      * @return replaced category
      *
@@ -89,7 +89,7 @@ public interface SubjectAreaCategory
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             userId of the category to update
+     * @param guid             guid of the category to update
      * @param suppliedCategory category to be updated
      * @return a response which when successful contains the updated category
      * when not successful the following Exceptions can occur
@@ -112,8 +112,8 @@ public interface SubjectAreaCategory
      * A delete (also known as a soft delete) means that the category instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
-      * @param userId userId under which the request is performed
-     * @param guid userId of the category to be deleted.
+     * @param userId userId under which the request is performed
+     * @param guid guid of the category to be deleted.
      * @return the deleted category
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -138,12 +138,12 @@ public interface SubjectAreaCategory
      * A purge means that the category will not exist after the operation.
      *
      * @param userId userId under which the request is performed
-     * @param guid userId of the category to be deleted.
+     * @param guid guid of the category to be deleted.
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws EntityNotPurgedException a hard delete was issued but the category was not purged
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws FunctionNotSupportedException Function not supported.
      *
      * Client library Exceptions
@@ -163,9 +163,9 @@ public interface SubjectAreaCategory
      *
      * Restore allows the deleted Category to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the category to restore
+     * @param guid       guid of the category to restore
      * @return the restored category
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
@@ -188,7 +188,7 @@ public interface SubjectAreaCategory
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException  the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException  the supplied guid was not recognised
      * @throws ClassificationException Error processing a classification
      * @throws FunctionNotSupportedException   Function not supported
      *
@@ -201,13 +201,13 @@ public interface SubjectAreaCategory
     /**
      * Get a subjectAreaDefinition by userId.
      * @param userId userId under which the request is performed
-     * @param guid userId of the subjectAreaDefinition to get
+     * @param guid guid of the subjectAreaDefinition to get
      * @return the requested subjectAreaDefinition.
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws FunctionNotSupportedException   Function not supported
      *
      * Client library Exceptions
@@ -221,7 +221,7 @@ public interface SubjectAreaCategory
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   userId of the category to get
-     * @param guid   userId of the category to get
+     * @param guid   guid of the category to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -229,7 +229,7 @@ public interface SubjectAreaCategory
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Category userId
+     * @return the relationships associated with the requested Category guid
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -240,12 +240,13 @@ public interface SubjectAreaCategory
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     List<Line> getCategoryRelationships(String userId, String guid,
-                                               Date asOfTime,
-                                               int offset,
-                                               int pageSize,
-                                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                               String sequencingProperty) throws
+     List<Line> getCategoryRelationships(String userId,
+                                         String guid,
+                                         Date asOfTime,
+                                         int offset,
+                                         int pageSize,
+                                         org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                         String sequencingProperty) throws
             UserNotAuthorizedException,
             InvalidParameterException,
             FunctionNotSupportedException,
@@ -293,7 +294,7 @@ public interface SubjectAreaCategory
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             userId of the subjectAreaDefinition to update
+     * @param guid             guid of the subjectAreaDefinition to update
      * @param suppliedSubjectAreaDefinition subjectAreaDefinition to be updated
      * @return replaced subjectAreaDefinition
      *
@@ -321,7 +322,7 @@ public interface SubjectAreaCategory
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             userId of the subjectAreaDefinition to update
+     * @param guid             guid of the subjectAreaDefinition to update
      * @param suppliedSubjectAreaDefinition subjectAreaDefinition to be updated
      * @return a response which when successful contains the updated subjectAreaDefinition
      * when not successful the following Exceptions can occur
@@ -346,7 +347,7 @@ public interface SubjectAreaCategory
      * that it is possible to undo the delete.
      *
      * @param userId userId under which the request is performed
-     * @param guid userId of the subjectAreaDefinition to be deleted.
+     * @param guid guid of the subjectAreaDefinition to be deleted.
      * @return the deleted subjectAreaDefinition
      *
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -371,12 +372,12 @@ public interface SubjectAreaCategory
      * A purge means that the subjectAreaDefinition will not exist after the operation.
      *
      * @param userId userId under which the request is performed
-     * @param guid userId of the subjectAreaDefinition to be deleted.
+     * @param guid guid of the subjectAreaDefinition to be deleted.
      *
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws EntityNotPurgedException a hard delete was issued but the subjectAreaDefinition was not purged
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws FunctionNotSupportedException Function not supported
      *
      * Client library Exceptions
@@ -396,9 +397,9 @@ public interface SubjectAreaCategory
      *
      * Restore allows the deleted Subject Area to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the subject area to restore
+     * @param guid       guid of the subject area to restore
      * @return the restored subject area
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.

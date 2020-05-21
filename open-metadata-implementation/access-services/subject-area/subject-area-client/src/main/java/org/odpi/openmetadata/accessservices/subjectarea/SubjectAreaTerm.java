@@ -42,7 +42,7 @@ import java.util.List;
     /**
      * Get a term by userId.
      * @param userId userId under which the request is performed
-     * @param guid userId of the term to get
+     * @param guid guid of the term to get
      * @return the requested term.
      *
      * Exceptions returned by the server
@@ -65,7 +65,7 @@ import java.util.List;
      * Get Term relationships
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the term to get
+     * @param guid   guid of the term to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -73,7 +73,7 @@ import java.util.List;
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Term userId
+     * @return the relationships associated with the requested Term guid
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -103,7 +103,7 @@ import java.util.List;
      * The GovernanceAction content if specified replaces what is on the server.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             userId of the term to update
+     * @param guid             guid of the term to update
      * @param suppliedTerm term to be updated
      * @return replaced term
      *
@@ -132,7 +132,7 @@ import java.util.List;
      * The GovernanceAction content if specified replaces what is on the server.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             userId of the term to update
+     * @param guid             guid of the term to update
      * @param suppliedTerm term to be updated
      * @return a response which when successful contains the updated term
      * when not successful the following Exceptions can occur
@@ -156,7 +156,7 @@ import java.util.List;
      * that it is possible to undo the delete.
      *
      * @param userId userId under which the request is performed
-     * @param guid userId of the term to be deleted.
+     * @param guid guid of the term to be deleted.
      * @return the deleted term
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -164,7 +164,7 @@ import java.util.List;
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws EntityNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -183,12 +183,12 @@ import java.util.List;
      * A purge means that the term will not exist after the operation.
      *
      * @param userId userId under which the request is performed
-     * @param guid userId of the term to be deleted.
+     * @param guid guid of the term to be deleted.
      *
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws EntityNotPurgedException a hard delete was issued but the term was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws FunctionNotSupportedException   Function not supported
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -206,7 +206,7 @@ import java.util.List;
      *
      * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the term to restore
+     * @param guid       guid of the term to restore
      * @return the restored term
      * @throws UnrecognizedGUIDException the supplied userId was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.

@@ -22,7 +22,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -39,13 +39,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the Hasa relationship to get
+     * @param guid   guid of the Hasa relationship to get
      * @return Hasa
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -68,7 +68,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -87,7 +87,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -105,7 +105,7 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the Hasa relationship to delete
+     * @param guid   guid of the Hasa relationship to delete
      * @return Deleted Hasa
      *
      * Exceptions returned by the server
@@ -114,7 +114,7 @@ public interface SubjectAreaRelationship
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -134,14 +134,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the Hasa relationship to delete
+     * @param guid   guid of the Hasa relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -158,13 +158,13 @@ public interface SubjectAreaRelationship
      *
      * Restore allows the deleted has a relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the has a relationship to delete
+     * @param guid       guid of the has a relationship to delete
      * @return response which when successful contains the restored has a relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -189,7 +189,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -207,13 +207,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to get
+     * @param guid   guid of the RelatedTerm relationship to get
      * @return RelatedTerm
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -236,7 +236,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -255,7 +255,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -272,13 +272,13 @@ public interface SubjectAreaRelationship
      *
      * Restore allows the deleted Synonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the related term relationship to restore
+     * @param guid       guid of the related term relationship to restore
      * @return response which when successful contains the restored related term relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -298,7 +298,7 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * @return deleted RelatedTerm
      *
      * Exceptions returned by the server
@@ -307,7 +307,7 @@ public interface SubjectAreaRelationship
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -327,14 +327,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -352,13 +352,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deleted related term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the related term relationship to delete
+     * @param guid       guid of the related term relationship to delete
      * @return response which when successful contains the restored related term relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -384,7 +384,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -397,13 +397,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to get
+     * @param guid   guid of the RelatedTerm relationship to get
      * @return Synonym
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -426,7 +426,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -448,7 +448,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -466,7 +466,7 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * @return deleted Synonym
      *
      * Exceptions returned by the server
@@ -475,7 +475,7 @@ public interface SubjectAreaRelationship
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -495,14 +495,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the Synonym relationship to delete
+     * @param guid   guid of the Synonym relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -520,13 +520,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deleted Synonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the Synonym relationship to delete
+     * @param guid       guid of the Synonym relationship to delete
      * @return response which when successful contains the restored Synonym relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -551,7 +551,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -564,13 +564,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to get
+     * @param guid   guid of the RelatedTerm relationship to get
      * @return Antonym
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -592,7 +592,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -615,7 +615,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -633,14 +633,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * @return deleted Antonym
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * Client library Exceptions
@@ -662,14 +662,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the Antonym relationship to delete
+     * @param guid   guid of the Antonym relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -687,13 +687,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deleted Antonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the Antonym relationship to delete
+     * @param guid       guid of the Antonym relationship to delete
      * @return response which when successful contains the restored Antonym relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -718,7 +718,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -735,13 +735,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to get
+     * @param guid   guid of the RelatedTerm relationship to get
      * @return Translation
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -764,7 +764,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -787,7 +787,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -805,14 +805,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * @return deleted Translation
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * Client library Exceptions
@@ -834,14 +834,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the Translation relationship to delete
+     * @param guid   guid of the Translation relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -859,13 +859,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deleted Translation relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the Translation relationship to delete
+     * @param guid       guid of the Translation relationship to delete
      * @return response which when successful contains the restored Translation relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -890,7 +890,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -907,13 +907,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to get
+     * @param guid   guid of the RelatedTerm relationship to get
      * @return UsedInContext
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -936,7 +936,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -959,7 +959,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -977,14 +977,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * @return deleted UsedInContext
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * Client library Exceptions
@@ -1006,14 +1006,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the UsedInContext relationship to delete
+     * @param guid   guid of the UsedInContext relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1031,13 +1031,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deletedUsed in context relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the Used in context relationship to delete
+     * @param guid       guid of the Used in context relationship to delete
      * @return response which when successful contains the restored Used in context relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1062,7 +1062,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1075,13 +1075,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to get
+     * @param guid   guid of the RelatedTerm relationship to get
      * @return PreferredTerm
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1100,7 +1100,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1123,7 +1123,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1141,14 +1141,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * @return deleted PreferredTerm
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * Client library Exceptions
@@ -1170,14 +1170,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the PreferredTerm relationship to delete
+     * @param guid   guid of the PreferredTerm relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1195,13 +1195,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deletedpreferred term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the preferred term relationship to delete
+     * @param guid       guid of the preferred term relationship to delete
      * @return response which when successful contains the restored preferred term relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1226,7 +1226,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1243,13 +1243,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to get
+     * @param guid   guid of the RelatedTerm relationship to get
      * @return ValidValue
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1272,7 +1272,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1295,7 +1295,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1313,14 +1313,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * @return deleted ValidValue
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * Client library Exceptions
@@ -1342,14 +1342,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the ValidValue relationship to delete
+     * @param guid   guid of the ValidValue relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1367,13 +1367,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deletedvalid value relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the valid value relationship to delete
+     * @param guid       guid of the valid value relationship to delete
      * @return response which when successful contains the restored valid value relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1398,7 +1398,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1411,13 +1411,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to get
+     * @param guid   guid of the RelatedTerm relationship to get
      * @return ReplacementTerm
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1440,7 +1440,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1463,7 +1463,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1481,14 +1481,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * @return deleted ReplacementTerm
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * Client library Exceptions
@@ -1510,14 +1510,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the ReplacementTerm relationship to delete
+     * @param guid   guid of the ReplacementTerm relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1535,13 +1535,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deleted replacement term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the replacement term relationship to delete
+     * @param guid       guid of the replacement term relationship to delete
      * @return response which when successful contains the restored replacement term relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1566,7 +1566,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1579,13 +1579,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to get
+     * @param guid   guid of the RelatedTerm relationship to get
      * @return TypedBy
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1608,7 +1608,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1631,7 +1631,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1649,14 +1649,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * @return deleted TypedBy
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * Client library Exceptions
@@ -1678,14 +1678,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the TypedBy relationship to delete
+     * @param guid   guid of the TypedBy relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1703,13 +1703,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deleted typed by relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the typed by relationship to delete
+     * @param guid       guid of the typed by relationship to delete
      * @return response which when successful contains the restored typed by relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1734,7 +1734,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1747,13 +1747,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to get
+     * @param guid   guid of the RelatedTerm relationship to get
      * @return Isa
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1776,7 +1776,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1799,7 +1799,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1817,14 +1817,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * @return deleted Isa
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * Client library Exceptions
@@ -1846,14 +1846,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the Isa relationship to delete
+     * @param guid   guid of the Isa relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1871,13 +1871,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deleted is a relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the is a relationship to delete
+     * @param guid       guid of the is a relationship to delete
      * @return response which when successful contains the restored is a relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1902,7 +1902,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1915,13 +1915,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to get
+     * @param guid   guid of the RelatedTerm relationship to get
      * @return IsaTypeOf
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1944,7 +1944,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1966,7 +1966,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1984,14 +1984,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * @return deleted IsaTypeOf
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * Client library Exceptions
@@ -2013,14 +2013,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the IsaTypeOf relationship to delete
+     * @param guid   guid of the IsaTypeOf relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2038,13 +2038,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deleted is a type of relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the is a type of relationship to delete
+     * @param guid       guid of the is a type of relationship to delete
      * @return response which when successful contains the restored is a type of relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2070,7 +2070,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2087,13 +2087,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the TermCategorizationRelationship relationship to get
+     * @param guid   guid of the TermCategorizationRelationship relationship to get
      * @return TermCategorizationRelationship
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2116,7 +2116,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2135,7 +2135,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2153,7 +2153,7 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the TermCategorizationRelationship relationship to delete
+     * @param guid   guid of the TermCategorizationRelationship relationship to delete
      * @return Deleted TermCategorizationRelationship
      *
      * Exceptions returned by the server
@@ -2162,7 +2162,7 @@ public interface SubjectAreaRelationship
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2182,14 +2182,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the TermCategorizationRelationship relationship to delete
+     * @param guid   guid of the TermCategorizationRelationship relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2207,13 +2207,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deleted Term Categorization relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the Term Categorization relationship to delete
+     * @param guid       guid of the Term Categorization relationship to delete
      * @return response which when successful contains the restored has a relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2242,7 +2242,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2259,13 +2259,13 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the TermAnchorRelationship relationship to get
+     * @param guid   guid of the TermAnchorRelationship relationship to get
      * @return TermAnchorRelationship
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException          the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2289,7 +2289,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2307,7 +2307,7 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the TermAnchorRelationship relationship to delete
+     * @param guid   guid of the TermAnchorRelationship relationship to delete
      * @return Deleted TermAnchorRelationship
      *
      * Exceptions returned by the server
@@ -2316,7 +2316,7 @@ public interface SubjectAreaRelationship
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2336,14 +2336,14 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the TermAnchorRelationship relationship to delete
+     * @param guid   guid of the TermAnchorRelationship relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2361,13 +2361,13 @@ public interface SubjectAreaRelationship
      * Restore allows the deleted Term Categorization relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the Term Anchor relationship to delete
+     * @param guid       guid of the Term Anchor relationship to delete
      * @return response which when successful contains the restored Term Anchor relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2393,7 +2393,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2409,13 +2409,13 @@ public interface SubjectAreaRelationship
      * Get a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the CategoryAnchorRelationship relationship to get
+     * @param guid   guid of the CategoryAnchorRelationship relationship to get
      * @return CategoryAnchorRelationship
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2438,7 +2438,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2462,7 +2462,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2479,7 +2479,7 @@ public interface SubjectAreaRelationship
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the CategoryAnchorRelationship relationship to delete
+     * @param guid   guid of the CategoryAnchorRelationship relationship to delete
      * @return Deleted CategoryAnchorRelationship
      *
      * Exceptions returned by the server
@@ -2488,7 +2488,7 @@ public interface SubjectAreaRelationship
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2507,14 +2507,14 @@ public interface SubjectAreaRelationship
      * A purge means that the relationship will not exist after the operation.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the CategoryAnchorRelationship relationship to delete
+     * @param guid   guid of the CategoryAnchorRelationship relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2531,13 +2531,13 @@ public interface SubjectAreaRelationship
      *
      * Restore allows the deleted Category Anchor relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the Category Anchor relationship to delete
+     * @param guid       guid of the Category Anchor relationship to delete
      * @return response which when successful contains the restored category anchor relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2560,7 +2560,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2572,13 +2572,13 @@ public interface SubjectAreaRelationship
      *  Get a ProjectScope relationship. A link between the project content and the project.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to get
+     * @param guid   guid of the RelatedTerm relationship to get
      * @return ProjectScope
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2601,7 +2601,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2624,7 +2624,7 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2643,7 +2643,7 @@ public interface SubjectAreaRelationship
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the RelatedTerm relationship to delete
+     * @param guid   guid of the RelatedTerm relationship to delete
      * @return deleted ProjectScope
      *
      * Exceptions returned by the server
@@ -2652,7 +2652,7 @@ public interface SubjectAreaRelationship
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2673,14 +2673,14 @@ public interface SubjectAreaRelationship
      * A purge means that the relationship will not exist after the operation.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the ProjectScope relationship to delete
+     * @param guid   guid of the ProjectScope relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2697,13 +2697,13 @@ public interface SubjectAreaRelationship
      *
      * Restore allows the deleted ProjectScope relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the ProjectScope relationship to restore
+     * @param guid       guid of the ProjectScope relationship to restore
      * @return response which when successful contains the restored ProjectScope relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2723,12 +2723,12 @@ public interface SubjectAreaRelationship
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the SemanticAssignment relationship to get
-     * @return  the SemanticAssignment relationship with the requested userId
+     * @param guid   guid of the SemanticAssignment relationship to get
+     * @return  the SemanticAssignment relationship with the requested guid
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
