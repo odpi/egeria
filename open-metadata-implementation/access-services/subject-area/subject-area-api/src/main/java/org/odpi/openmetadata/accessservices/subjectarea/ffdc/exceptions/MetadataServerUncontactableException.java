@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 /**
- * The MetadataServerUncontactableException is thrown by the Subject Area OMAS when an error occurs during a classification
+ * The MetadataServerUncontactableException is thrown by the Subject Area OMAS when the OMAG server cannot be contacted
  * value.
  */
 public class MetadataServerUncontactableException extends SubjectAreaCheckedException {

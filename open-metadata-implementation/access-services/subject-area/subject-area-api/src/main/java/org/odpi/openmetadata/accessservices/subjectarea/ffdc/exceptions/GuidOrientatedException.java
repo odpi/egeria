@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 /**
- * The GuidOrientatedException is thrown by the Subject Area OMAS when an error occurs that has an associated userId.
+ * The GuidOrientatedException is thrown by the Subject Area OMAS when an error occurs that has an associated guid.
  */
 public class GuidOrientatedException extends SubjectAreaCheckedException {
     private final String guid;

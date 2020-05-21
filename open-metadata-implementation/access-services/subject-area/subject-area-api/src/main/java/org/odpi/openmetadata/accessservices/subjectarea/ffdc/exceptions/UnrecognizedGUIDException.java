@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 /**
- * The UnrecognizedGUIDException is thrown by the Subject Area OMAS when the unique identifier (userId)
+ * The UnrecognizedGUIDException is thrown by the Subject Area OMAS when the unique identifier (guid)
  * used to request an object is either unrecognized, or is the identifier for a different type of object.
  */
 public class UnrecognizedGUIDException extends GuidOrientatedException {
@@ -17,7 +17,7 @@ public class UnrecognizedGUIDException extends GuidOrientatedException {
      * @param messageDefinition content of the message
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param guid              unrecognised userId
+     * @param guid              unrecognised guid
      */
     public UnrecognizedGUIDException(ExceptionMessageDefinition messageDefinition,
                                      String className,
@@ -35,7 +35,7 @@ public class UnrecognizedGUIDException extends GuidOrientatedException {
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
      * @param caughtError       previous error causing this exception
-     * @param guid              unrecognised userId
+     * @param guid              unrecognised guid
      */
     public UnrecognizedGUIDException(ExceptionMessageDefinition messageDefinition,
                                      String className,

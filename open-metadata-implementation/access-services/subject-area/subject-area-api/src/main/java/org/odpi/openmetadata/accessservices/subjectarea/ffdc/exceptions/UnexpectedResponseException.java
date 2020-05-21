@@ -6,8 +6,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 /**
- * The UnexpectedResponseException is thrown by the Subject Area OMAS when an error occurs during a classification
- * value.
+ * The UnexpectedResponseException is thrown by the Subject Area OMAS when an unexpected error occurs
  */
 public class UnexpectedResponseException extends SubjectAreaCheckedException {
     String unexpectedCategoryName;

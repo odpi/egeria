@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 /**
- * The StatusNotSupportedException is thrown by the Subject Area OMAS when an error occurs during a classification
+ * The StatusNotSupportedException is thrown by the Subject Area OMAS when a status is not supported
  * value.
  */
 public class StatusNotSupportedException extends SubjectAreaCheckedException {
