@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
@@ -76,9 +76,9 @@ public class SubjectAreaDefinitionSample
 
     /**
      * Run the sample
-     * @throws SubjectAreaCheckedExceptionBase error
+     * @throws SubjectAreaCheckedException error
      */
-    private void run() throws SubjectAreaCheckedExceptionBase
+    private void run() throws SubjectAreaCheckedException
     {
         SubjectArea subjectArea = new SubjectAreaImpl(this.serverName, this.serverURLRoot);
         subjectAreaGlossary = subjectArea.getSubjectAreaGlossary();
@@ -139,9 +139,9 @@ public class SubjectAreaDefinitionSample
      * @param name name of the Subject Area Definition to create
      * @param glossaryGuid guid of the glossary to associate the Subject Area with.
      * @return SubjectAreaDefinition the created Subject Area Definition
-     * @throws  SubjectAreaCheckedExceptionBase error
+     * @throws  SubjectAreaCheckedException error
      */
-    private SubjectAreaDefinition createTopSubjectAreaDefinition( String name, String glossaryGuid)  throws SubjectAreaCheckedExceptionBase
+    private SubjectAreaDefinition createTopSubjectAreaDefinition( String name, String glossaryGuid)  throws SubjectAreaCheckedException
     {
         System.out.println("----------------------------");
         System.out.println("Creating a top level Subject Area Definition called " + name);
@@ -160,9 +160,9 @@ public class SubjectAreaDefinitionSample
      * @param parent parent Category
      * @param glossaryGuid guid of the glossary to associate the Subject Area with.
      * @return SubjectAreaDefinition the created Subject Area Definition
-     * @throws SubjectAreaCheckedExceptionBase error
+     * @throws SubjectAreaCheckedException error
      */
-    private SubjectAreaDefinition createChildSubjectAreaDefinition(String name, SubjectAreaDefinition parent, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
+    private SubjectAreaDefinition createChildSubjectAreaDefinition(String name, SubjectAreaDefinition parent, String glossaryGuid) throws SubjectAreaCheckedException
     {
         SubjectAreaDefinition subjectAreaDefinition = new SubjectAreaDefinition();
         subjectAreaDefinition.setName(name);
@@ -189,9 +189,9 @@ public class SubjectAreaDefinitionSample
      * @param glossaryName name of the glossary to create
      * @param glossaryDescription description of the Glossary
      * @return created glossary
-     * @throws SubjectAreaCheckedExceptionBase error
+     * @throws SubjectAreaCheckedException error
      */
-    private Glossary createGlossary(String userId, String glossaryName, String glossaryDescription) throws SubjectAreaCheckedExceptionBase
+    private Glossary createGlossary(String userId, String glossaryName, String glossaryDescription) throws SubjectAreaCheckedException
     {
         Glossary glossary = new Glossary();
         glossary.setName(glossaryName);

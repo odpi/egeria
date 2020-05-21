@@ -29,6 +29,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidato
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -71,7 +72,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                       RepositoryHandler repositoryHandler,
                                       OMRSAPIHelper oMRSAPIHelper,
                                       RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper, errorHandler);
+        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper);
     }
 
     /**
@@ -114,7 +115,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * </ul>
      * <p>
      * The qualifiedName can be specified and will be honoured. If it is specified then the caller may wish to ensure that it is
-     * unique. If this qualifiedName is not specified then one will be generated as GlossaryCategory concatinated with the the guid.
+     * unique. If this qualifiedName is not specified then one will be generated as GlossaryCategory concatinated with the the userId.
      *
      * <p>
      * Failure to create the Categories classifications, link to its glossary or its icon, results in the create failing and the category being deleted
@@ -128,7 +129,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> ClassificationException              Error processing a classification</li>
      * <li> StatusNotSupportedException          A status value is not supported</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
@@ -147,17 +148,19 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
             String suppliedCategoryParentGuid = null;
             if (suppliedCategory.getParentCategory() != null) {
-                //store the parent category guid
+                //store the parent category userId
                 suppliedCategoryParentGuid = suppliedCategory.getParentCategory().getGuid();
             }
 
             // need to check we have a name
             final String suppliedCategoryName = suppliedCategory.getName();
             if (suppliedCategoryName == null || suppliedCategoryName.equals("")) {
-                SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_WITHOUT_NAME;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
-                log.error(errorMessage);
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
+                ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_WITHOUT_NAME.getMessageDefinition();
+                throw new InvalidParameterException(messageDefinition,
+                                                    className,
+                                                    methodName,
+                                                    "Name",
+                                                    null);
             }
             GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
             SubjectAreaOMASAPIResponse glossaryResponse = validateGlossarySummaryDuringCreation(glossaryHandler, userId, methodName, suppliedGlossary);
@@ -210,14 +213,14 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
     
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the category to get. This could be a guid for a SubjectAreaDefintion, which is type of category
-     * @return response which when successful contains the category with the requested guid
+     * @param guid       userId of the category to get. This could be a userId for a SubjectAreaDefintion, which is type of category
+     * @return response which when successful contains the category with the requested userId
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised
      * </ul>
      */
 
@@ -228,7 +231,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaCategoryRESTServices categoryRESTServices = new SubjectAreaCategoryRESTServices();
         categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
             response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                 EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
@@ -352,7 +355,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
     
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
+     * @param guid   userId of the term to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -360,7 +363,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Category guid
+     * @return the relationships associated with the requested Category userId
      *
      * when not successful the following Exception responses can occur
      * <ul>
@@ -387,13 +390,13 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             guid of the category to update
+     * @param guid             userId of the category to update
      * @param suppliedCategory category to be updated
      * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated category
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
@@ -409,7 +412,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         try {
             InputValidator.validateUserIdNotNull(className, methodName, userId);
             InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
             response = getCategory(userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.Category)) {
                 Category originalCategory = ((CategoryResponse) response).getCategory();
@@ -483,18 +486,18 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
     
      * @param userId     userId under which the request is performed
-     * @param guid       guid of the category to be deleted.
+     * @param guid       userId of the category to be deleted.
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the category was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteCategory(String userId, String guid, Boolean isPurge) {
@@ -505,7 +508,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         OMRSRepositoryHelper repositoryHelper = this.oMRSAPIHelper.getOMRSRepositoryHelper();
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
             String source = oMRSAPIHelper.getServiceName();
             String typeDefName = "GlossaryCategory";
             String typeDefGuid = repositoryHelper.getTypeDefByName(source, typeDefName).getGUID();
@@ -538,11 +541,11 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
     
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the category to restore
+     * @param guid       userId of the category to restore
      * @return response which when successful contains the restored category
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -556,7 +559,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaCategoryRESTServices categoryRESTServices = new SubjectAreaCategoryRESTServices();
         categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
             response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
             if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
                 response = getCategory(userId, guid);

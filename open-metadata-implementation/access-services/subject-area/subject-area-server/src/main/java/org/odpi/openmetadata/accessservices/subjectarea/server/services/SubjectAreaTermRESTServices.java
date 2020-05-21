@@ -65,7 +65,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * The name needs to be specified - as this is the main identifier for the term. The name should be unique for canonical glossaries. This API does not police the uniqueness in this case.
      * <p>
      * The qualifiedName can be specified and will be honoured. If it is specified then the caller may wish to ensure that it is
-     * unique. If this qualifiedName is not specified then one will be generated as GlossaryTerm concatinated with the the guid.
+     * unique. If this qualifiedName is not specified then one will be generated as GlossaryTerm concatinated with the the userId.
      * <p>
      * Failure to create the Terms classifications, link to its glossary or its icon, results in the create failing and the term being deleted
      *
@@ -78,7 +78,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised
      * <li> ClassificationException              Error processing a classification
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
@@ -109,14 +109,14 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      *
      * @param serverName  serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
-     * @return response which when successful contains the term with the requested guid
+     * @param guid   userId of the term to get
+     * @return response which when successful contains the term with the requested userId
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * </ul>
      */
 
@@ -124,7 +124,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     {
         final String methodName = "getTermByGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {
@@ -145,7 +145,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName rest API name
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
+     * @param userId   userId of the term to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -153,7 +153,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Term guid
+     * @return the relationships associated with the requested Term userId
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -175,7 +175,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     ) {
         String methodName = "getTermRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {
@@ -254,13 +254,13 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed
-     * @param guid         guid of the term to update
+     * @param guid         userId of the term to update
      * @param suppliedTerm term to be updated
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated. The GovernanceAction content is always replaced.
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
@@ -270,7 +270,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     {
         final String methodName = "updateTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {
@@ -298,25 +298,25 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  userId under which the request is performed
-     * @param guid    guid of the term to be deleted.
+     * @param guid    userId of the term to be deleted.
      * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteTerm(String serverName, String userId, String guid, Boolean isPurge)
     {
         final String methodName = "deleteTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {
@@ -336,11 +336,11 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the term to delete
+     * @param guid       userId of the term to delete
      * @return response which when successful contains the restored term
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -351,7 +351,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     {
         final String methodName = "restoreTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {

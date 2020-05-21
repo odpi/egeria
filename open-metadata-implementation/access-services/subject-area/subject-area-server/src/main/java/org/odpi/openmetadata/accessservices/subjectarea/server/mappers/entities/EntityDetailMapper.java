@@ -64,7 +64,7 @@ abstract public class EntityDetailMapper {
             // this is a property we expect
             InstancePropertyValue value = omrsEntityDetailProperties.getPropertyValue(propertyName);
 
-            // supplied guid matches the expected type
+            // supplied userId matches the expected type
 
             Object actualValue;
             switch (value.getInstancePropertyCategory()) {

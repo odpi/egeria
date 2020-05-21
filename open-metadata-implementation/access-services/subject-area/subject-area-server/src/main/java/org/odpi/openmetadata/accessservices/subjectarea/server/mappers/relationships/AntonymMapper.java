@@ -98,10 +98,10 @@ public class AntonymMapper extends LineMapper
     }
 
     /**
-     * Get proxy1 guid.
+     * Get proxy1 userId.
      * The proxy has omrs type GlossaryTerm
      * @param line line
-     * @return guid for entity proxy 1
+     * @return userId for entity proxy 1
      */
     @Override
     protected String getProxy1Guid(Line line)
@@ -111,10 +111,10 @@ public class AntonymMapper extends LineMapper
     }
 
     /**
-     * Get proxy2 guid
+     * Get proxy2 userId
      * The proxy has omrs type GlossaryTerm
      * @param line for this Line
-     * @return guid for entity proxy 2
+     * @return userId for entity proxy 2
      */
     @Override
     protected String getProxy2Guid(Line line)
@@ -124,9 +124,9 @@ public class AntonymMapper extends LineMapper
     }
 
     /**
-     * Get the relationship type def guid.
-     * @param relationship the relationship associated with the typedef whose guid is returned.
-     * @return guid of the typedef
+     * Get the relationship type def userId.
+     * @param relationship the relationship associated with the typedef whose userId is returned.
+     * @return userId of the typedef
      */
     @Override
     protected String getRelationshipTypeDefGuid(Relationship relationship)

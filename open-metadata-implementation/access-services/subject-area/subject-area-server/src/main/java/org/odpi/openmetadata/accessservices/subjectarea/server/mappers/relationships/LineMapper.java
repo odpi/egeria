@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.MessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -56,14 +57,13 @@ public abstract class LineMapper implements ILineMapper
         InstanceProperties relationshipProperties = relationship.getProperties();
         if (relationshipProperties!=null) {
             mapLineEffectivityToInstanceProperties(line, relationshipProperties);
-            //mapInstancePropertiesToLine(line, relationshipProperties);
             Iterator omrsPropertyIterator =relationshipProperties.getPropertyNames();
             while (omrsPropertyIterator.hasNext()) {
                 String propertyName = (String) omrsPropertyIterator.next();
                 // this is a property we expect
                 InstancePropertyValue value =relationshipProperties.getPropertyValue(propertyName);
 
-                // supplied guid matches the expected type
+                // supplied userId matches the expected type
 
                 Object actualValue;
                 switch (value.getInstancePropertyCategory()) {
@@ -112,16 +112,16 @@ public abstract class LineMapper implements ILineMapper
     }
 
     /**
-     * Pass the guid of the EntityProxy for end 1 to the Line ,so it can store it appropriately
+     * Pass the userId of the EntityProxy for end 1 to the Line ,so it can store it appropriately
      * @param line line to update
-     * @param guid guid to add into the Line
+     * @param guid userId to add into the Line
      */
     protected abstract void setEnd1GuidInLine(Line line, String guid);
 
     /**
-     * Pass the guid of the EntityProxy for end 2 to the Line ,so it can store it appropriately
+     * Pass the userId of the EntityProxy for end 2 to the Line ,so it can store it appropriately
      * @param line line to update
-     * @param guid guid to add into the Line
+     * @param guid userId to add into the Line
      */
     protected abstract void setEnd2GuidInLine(Line line, String guid);
 
@@ -186,9 +186,9 @@ public abstract class LineMapper implements ILineMapper
     abstract Line getLineInstance();
     /**
      * get the relationshipTypeDef Guid
-     * This method should be overridden to provide the appropriate guid for the type.
-     * @param relationship to get the guid from
-     * @return the guid of the relationship typedef
+     * This method should be overridden to provide the appropriate userId for the type.
+     * @param relationship to get the userId from
+     * @return the userId of the relationship typedef
      */
     protected String  getRelationshipTypeDefGuid(Relationship relationship)
     {
@@ -196,18 +196,18 @@ public abstract class LineMapper implements ILineMapper
     }
 
     /**
-     * Get proxy 1 guid
+     * Get proxy 1 userId
      * @param line for this Line
-     * @return proxy 1 guid
+     * @return proxy 1 userId
      */
     protected String getProxy1Guid(Line line)
     {
         return null;
     }
     /**
-     * Get proxy 2 guid
+     * Get proxy 2 userId
      * @param line for this Line
-     * @return proxy 2 guid
+     * @return proxy 2 userId
      */
     protected String getProxy2Guid(Line line)
     {
@@ -262,17 +262,4 @@ public abstract class LineMapper implements ILineMapper
 
     }
 
-    /**
-     * relationship is not of the right type. Throw an Exception
-     * @param relationship relationship of wrong type
-     * @param methodName method name for dignostics
-     * @param type expected type
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     */
-    protected void throwWrongTypeException(Relationship relationship, String methodName,String type) throws InvalidParameterException {
-        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.MAPPER_RELATIONSHIP_GUID_TYPE_ERROR;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName,relationship.getGUID(),type);
-        log.error(errorMessage);
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
-    }
 }

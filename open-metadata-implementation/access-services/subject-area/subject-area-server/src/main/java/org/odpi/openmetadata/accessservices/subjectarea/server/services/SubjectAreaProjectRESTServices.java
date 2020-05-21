@@ -106,7 +106,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
     public SubjectAreaOMASAPIResponse getProjectByGuid(String serverName, String userId, String guid) {
         final String methodName = "getProjectByGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         SubjectAreaOMASAPIResponse response= null;
         try {
@@ -144,7 +144,8 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse findProject(String serverName, String userId,
+    public  SubjectAreaOMASAPIResponse findProject(String serverName,
+                                                   String userId,
                                                    String searchCriteria,
                                                    Date asOfTime,
                                                    Integer offset,
@@ -193,7 +194,9 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * </ul>
      */
 
-    public  SubjectAreaOMASAPIResponse getProjectRelationships(String serverName, String userId,String guid,
+    public  SubjectAreaOMASAPIResponse getProjectRelationships(String serverName,
+                                                               String userId,
+                                                               String guid,
                                                                Date asOfTime,
                                                                Integer offset,
                                                                Integer pageSize,
@@ -202,7 +205,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
     ) {
         String methodName = "getProjectRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {
@@ -290,7 +293,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
     public SubjectAreaOMASAPIResponse updateProject(String serverName, String userId, String guid, Project suppliedProject, boolean isReplace) {
         final String methodName = "updateProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         SubjectAreaOMASAPIResponse response= null;
         try {
@@ -332,13 +335,13 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the Project was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the Project was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the Project was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteProject(String serverName, String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         SubjectAreaOMASAPIResponse response= null;
         try {
@@ -376,7 +379,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
     {
         final String methodName = "restoreProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         SubjectAreaOMASAPIResponse response= null;
         try {

@@ -28,6 +28,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidato
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -70,7 +71,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
                                   RepositoryHandler repositoryHandler,
                                   OMRSAPIHelper oMRSAPIHelper,
                                   RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName,invalidParameterHandler,repositoryHelper,repositoryHandler,oMRSAPIHelper,errorHandler);
+        super(serviceName, serverName,invalidParameterHandler,repositoryHelper,repositoryHandler,oMRSAPIHelper);
     }
 
     /**
@@ -124,7 +125,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised.</li>
      * <li>ClassificationException              Error processing a classification.</li>
      * <li>StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
@@ -146,11 +147,12 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
                 // need to check we have a name
                 final String suppliedTermName = suppliedTerm.getName();
                 if (suppliedTermName == null || suppliedTermName.equals("")) {
-                    SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITHOUT_NAME;
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
-                    log.error(errorMessage);
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
-                }
+                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITHOUT_NAME.getMessageDefinition();
+                    throw new InvalidParameterException(messageDefinition,
+                                                        className,
+                                                        methodName,
+                                                        "Name",
+                                                        null);                }
                 TermMapper termMapper = new TermMapper(oMRSAPIHelper);
                 EntityDetail suppliedTermEntityDetail = termMapper.mapNodeToEntityDetail(suppliedTerm);
                 GlossarySummary suppliedGlossary = suppliedTerm.getGlossary();
@@ -193,17 +195,17 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
     }
 
     /**
-     * Get a term by guid.
+     * Get a term by userId.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the term to get
-     * @return response which when successful contains the term with the requested guid
+     * @param guid       userId of the term to get
+     * @return response which when successful contains the term with the requested userId
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse getTermByGuid(String userId, String guid) {
@@ -214,7 +216,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
 
         if (response == null) {
             try {
-                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
                 response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
                 if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                     EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
@@ -332,7 +334,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
      * Get Term relationships
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
+     * @param guid   userId of the term to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -340,7 +342,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Term guid
+     * @return the relationships associated with the requested Term userId
      *
      * when not successful the following Exception responses can occur
      * <ul>
@@ -372,13 +374,13 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
      *
 
      * @param userId           unique identifier for requesting user, under which the request is performed
-     * @param guid             guid of the term to update
+     * @param guid             userId of the term to update
      * @param suppliedTerm term to be updated
      * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -394,7 +396,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
         try {
 
             InputValidator.validateNodeType(className, methodName, suppliedTerm.getNodeType(), NodeType.Term, NodeType.Activity);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
 
             response = getTermByGuid(userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.Term)) {
@@ -549,18 +551,18 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
      * when not successful the following Exceptions can occur
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the term to be deleted.
+     * @param guid       userId of the term to be deleted.
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteTerm(String userId, String guid, Boolean isPurge) {
@@ -573,7 +575,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
             OMRSRepositoryHelper repositoryHelper = this.oMRSAPIHelper.getOMRSRepositoryHelper();
             try
             {
-                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
 
                 //TODO get source properly
                 String source = oMRSAPIHelper.getServiceName();
@@ -613,11 +615,11 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
      * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the term to restore
+     * @param guid       userId of the term to restore
      * @return response which when successful contains the restored term
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -632,7 +634,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
         if (response == null) {
             try {
 
-                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
                 response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
                 if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
                     response = getTermByGuid(userId, guid);

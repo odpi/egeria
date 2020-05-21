@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.EntityNotDeletedException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailsResponse;
@@ -17,13 +18,12 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.proje
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.ProjectMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGraphRESTServices;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaProjectRESTServices;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -38,7 +38,7 @@ import java.util.*;
  * SubjectAreaProjectHandler manages Project objects from the property server.  It runs server-side in the subject Area
  * OMAS and retrieves entities and relationships through the OMRSRepositoryConnector.
  */
-public class SubjectAreaProjectHandler extends SubjectAreaHandler{
+public class SubjectAreaProjectHandler extends SubjectAreaHandler {
     private static final Class clazz = SubjectAreaProjectHandler.class;
     private static final String className = clazz.getName();
     private static final Logger log = LoggerFactory.getLogger(clazz);
@@ -52,32 +52,33 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
-     * @param errorHandler            handler for repository service errors
+     * @param oMRSAPIHelper           OMRS API helper
      */
     public SubjectAreaProjectHandler(String serviceName,
                                      String serverName,
                                      InvalidParameterHandler invalidParameterHandler,
                                      OMRSRepositoryHelper repositoryHelper,
                                      RepositoryHandler repositoryHandler,
-                                     OMRSAPIHelper oMRSAPIHelper,
-                                     RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName,invalidParameterHandler,repositoryHelper,repositoryHandler,oMRSAPIHelper,errorHandler);
+                                     OMRSAPIHelper oMRSAPIHelper) {
+        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper);
     }
+
     /**
      * Take an entityDetail response and map it to the appropriate Project orientated response
+     *
      * @param response entityDetailResponse
      * @return Project response containing the appropriate Project object.
      */
     @Override
-    protected SubjectAreaOMASAPIResponse getResponse( SubjectAreaOMASAPIResponse response) {
+    protected SubjectAreaOMASAPIResponse getResponse(SubjectAreaOMASAPIResponse response) {
         EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
         EntityDetail entityDetail = entityDetailResponse.getEntityDetail();
         ProjectMapper projectMapper = new ProjectMapper(oMRSAPIHelper);
 
         try {
-            Project project= projectMapper.mapEntityDetailToNode(entityDetail);
-            if (project.getNodeType()==NodeType.GlossaryProject) {
-                GlossaryProject glossaryProject = (GlossaryProject)project;
+            Project project = projectMapper.mapEntityDetailToNode(entityDetail);
+            if (project.getNodeType() == NodeType.GlossaryProject) {
+                GlossaryProject glossaryProject = (GlossaryProject) project;
                 response = new ProjectResponse(glossaryProject);
             } else {
                 response = new ProjectResponse(project);
@@ -105,8 +106,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * <li>Project to create a project that is not a taxonomy or a canonical project</li>
      * </ul>
      *
-    
-     * @param userId           unique identifier for requesting user, under which the request is performed
+     * @param userId          unique identifier for requesting user, under which the request is performed
      * @param suppliedProject Project to create
      * @return response, when successful contains the created project.
      * when not successful the following Exception responses can occur
@@ -114,7 +114,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised.</li>
      * <li>ClassificationException              Error processing a classification.</li>
      * <li>StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
@@ -130,10 +130,13 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
             String suppliedProjectName = suppliedProject.getName();
             // need to check we have a name
             if (suppliedProjectName == null || suppliedProjectName.equals("")) {
-                SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CREATE_WITHOUT_NAME;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
-                log.error(errorMessage);
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
+                ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_PROJECT_CREATE_WITHOUT_NAME.getMessageDefinition();
+                throw new InvalidParameterException(messageDefinition,
+                                                    className,
+                                                    methodName,
+                                                    "Name",
+                                                    null);
+
             } else {
                 ProjectMapper projectMapper = new ProjectMapper(oMRSAPIHelper);
                 EntityDetail projectEntityDetail = projectMapper.mapNodeToEntityDetail(suppliedProject);
@@ -151,18 +154,17 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
     }
 
     /**
-     * Get a project by guid.
+     * Get a project by userId.
      *
-     
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the project to get
-     * @return response which when successful contains the project with the requested guid
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   userId of the project to get
+     * @return response which when successful contains the project with the requested userId
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse getProjectByGuid(String userId, String guid) {
@@ -172,7 +174,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
         projectRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
 
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
             response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                 response = getResponse(response);
@@ -186,7 +188,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
     /**
      * Find Project
      *
-     
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param searchCriteria     String expression matching Project property values. If not specified then all projects are returned.
      * @param asOfTime           the projects returned as they were at this time. null indicates at the current time.
@@ -206,12 +207,12 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * </ul>
      */
     public SubjectAreaOMASAPIResponse findProject(String userId,
-                                                   String searchCriteria,
-                                                   Date asOfTime,
-                                                   Integer offset,
-                                                   Integer pageSize,
-                                                   org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                   String sequencingProperty) {
+                                                  String searchCriteria,
+                                                  Date asOfTime,
+                                                  Integer offset,
+                                                  Integer pageSize,
+                                                  org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                                  String sequencingProperty) {
 
         final String methodName = "findProject";
         SubjectAreaOMASAPIResponse response = null;
@@ -252,21 +253,21 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
         }
         return response;
     }
+
     /**
      * Get Project relationships
      *
-     
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
-     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
-     * @param sequencingOrder the sequencing order for the results.
+     * @param userId             unique identifier for requesting user, under which the request is performed
+     * @param guid               userId of the term to get
+     * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
+     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     *                           beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize           the maximum number of elements that can be returned on this request.
+     *                           0 means there is not limit to the page size
+     * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Project guid
-     *
+     * @return the relationships associated with the requested Project userId
+     * <p>
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
@@ -276,12 +277,12 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      */
 
     public SubjectAreaOMASAPIResponse getProjectRelationships(String userId, String guid,
-                                                               Date asOfTime,
-                                                               Integer offset,
-                                                               Integer pageSize,
-                                                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                               String sequencingProperty
-                                                              ) {
+                                                              Date asOfTime,
+                                                              Integer offset,
+                                                              Integer pageSize,
+                                                              org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                                              String sequencingProperty
+                                                             ) {
         String methodName = "getProjectRelationships";
         return getRelationshipsFromGuid(methodName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
@@ -295,15 +296,14 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * qualified names to mismatch the Project name.
      * Status is not updated using this call.
      *
-    
-     * @param userId           unique identifier for requesting user, under which the request is performed
-     * @param guid             guid of the project to update
+     * @param userId          unique identifier for requesting user, under which the request is performed
+     * @param guid            userId of the project to update
      * @param suppliedProject project to be updated
-     * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param isReplace       flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated project
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -319,7 +319,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
         try {
 
             InputValidator.validateNodeType(className, methodName, suppliedProject.getNodeType(), NodeType.Project, NodeType.GlossaryProject);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
 
             response = getProjectByGuid(userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.Project)) {
@@ -348,7 +348,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
                     if (suppliedProject.getStartDate() != null) {
                         updateProject.setStartDate(suppliedProject.getStartDate());
                     }
-                        if (suppliedProject.getPlannedEndDate() != null) {
+                    if (suppliedProject.getPlannedEndDate() != null) {
                         updateProject.setPlannedEndDate(suppliedProject.getPlannedEndDate());
                     }
                     if (suppliedProject.getStatus() != null) {
@@ -394,20 +394,19 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * A hard delete means that the project will not exist after the operation.
      * when not successful the following Exceptions can occur
      *
-     
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the project to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     * @param userId  unique identifier for requesting user, under which the request is performed
+     * @param guid    userId of the project to be deleted.
+     * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the project was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the project was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the project was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteProject(String userId, String guid, Boolean isPurge) {
@@ -416,7 +415,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
         SubjectAreaProjectRESTServices projectRESTServices = new SubjectAreaProjectRESTServices();
         projectRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
             // do not delete if there is project content (terms or categories)
             // look for all project content that is not deleted.
             List<InstanceStatus> statusList = new ArrayList<>();
@@ -449,11 +448,13 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
                                 response = getResponse(response);
                             }
                         } else {
-                            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE;
-                            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName, guid);
-                            log.error(errorMessage);
-                            InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
-                            response = new InvalidParameterExceptionResponse(e);
+                            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition();
+                            response = new EntityNotDeletedExceptionResponse(
+                                    new EntityNotDeletedException(messageDefinition,
+                                                                  className,
+                                                                  methodName,
+                                                                  guid)
+                            );
                         }
                     }
                 }
@@ -471,13 +472,12 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * <p>
      * Restore allows the deleted Project to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
-     
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the project to restore
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   userId of the project to restore
      * @return response which when successful contains the restored project
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -490,10 +490,10 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
         SubjectAreaProjectRESTServices projectRESTServices = new SubjectAreaProjectRESTServices();
         projectRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
             response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                response = getProjectByGuid( userId, guid);
+                response = getProjectByGuid(userId, guid);
             }
         } catch (InvalidParameterException e) {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
@@ -505,42 +505,41 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * Get the terms in this project.
      *
      * @param subjectAreaGraphHandler graph handler
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Project to get
-     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
+     * @param userId                  unique identifier for requesting user, under which the request is performed
+     * @param guid                    userId of the Project to get
+     * @param asOfTime                the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @return a response which when successful contains the Project terms
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse getProjectTerms(
-                                                       SubjectAreaGraphHandler subjectAreaGraphHandler,
-                                                       String userId,
-                                                       String guid,
-                                                       Date asOfTime
-                                                      ) {
-
+    public SubjectAreaOMASAPIResponse getProjectTerms(
+            SubjectAreaGraphHandler subjectAreaGraphHandler,
+            String userId,
+            String guid,
+            Date asOfTime
+                                                     ) {
 
 
         // find all nodes, project and its subclass GlossaryProject, Term and its subclass Activity
-        String nodeFilter =  (new HashSet<>(Arrays.asList(NodeType.Project, NodeType.Term, NodeType.GlossaryProject, NodeType.Activity))).toString();
+        String nodeFilter = (new HashSet<>(Arrays.asList(NodeType.Project, NodeType.Term, NodeType.GlossaryProject, NodeType.Activity))).toString();
         // filter on the project scope relationship
-        String lineFilter=   (new HashSet<>(Arrays.asList(LineType.ProjectScope))).toString();
+        String lineFilter = (new HashSet<>(Arrays.asList(LineType.ProjectScope))).toString();
         SubjectAreaOMASAPIResponse response = subjectAreaGraphHandler.getGraph(
-                                                                                    userId,
-                                                                                    guid,
-                                                                                    asOfTime,
-                                                                                    nodeFilter,
-                                                                                    lineFilter,
-                                                                                    null,1);
+                userId,
+                guid,
+                asOfTime,
+                nodeFilter,
+                lineFilter,
+                null, 1);
         List<Term> terms = null;
         if (response.getResponseCategory() == ResponseCategory.Graph) {
-            GraphResponse graphResponse = (GraphResponse)response;
-            Graph graph =graphResponse.getGraph();
+            GraphResponse graphResponse = (GraphResponse) response;
+            Graph graph = graphResponse.getGraph();
             if (graph != null) {
                 Set<Node> nodes = graph.getNodes();
                 if (nodes != null) {

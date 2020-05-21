@@ -63,7 +63,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException  the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException  the supplied userId was not recognised
      * @throws ClassificationException Error processing a classification
      * @throws FunctionNotSupportedException   Function not supported
      *
@@ -91,24 +91,21 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePost(className,methodName,requestBody, url);
 
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
-        DetectUtils.detectAndThrowClassificationException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        Project project = DetectUtils.detectAndReturnProject(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
+        DetectUtils.detectAndThrowClassificationException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        Project project = DetectUtils.detectAndReturnProject(className, methodName, restResponse);
         // that the returned nodeType matches the requested one
         if (suppliedProject.getNodeType()!=null && !suppliedProject.getNodeType().equals(project.getNodeType())) {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.UNEXPECTED_NODETYPE;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    suppliedProject.getNodeType().name(),project.getNodeType().name());
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(
+                    errorCode.getMessageDefinition(),
                     className,
                     methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction()
+                   "Node type",
+                    project.getNodeType().name()
             );
         }
 
@@ -119,15 +116,15 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
     }
 
     /**
-     * Get a project by guid.
+     * Get a project by userId.
      * @param userId userId under which the request is performed
-     * @param guid guid of the project to get
+     * @param guid userId of the project to get
      * @return the requested project.
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied userId was not recognised
      * @throws FunctionNotSupportedException   Function not supported
      *
      * Client library Exceptions
@@ -138,18 +135,18 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
     public  Project getProjectByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
         final String methodName = "getProjectByGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s";
         String url = String.format(urlTemplate,serverName,userId,guid);
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        Project project = DetectUtils.detectAndReturnProject(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        Project project = DetectUtils.detectAndReturnProject(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -159,8 +156,8 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * Get Project relationships
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the project to get
-     * @param guid   guid of the project to get
+     * @param guid   userId of the project to get
+     * @param guid   userId of the project to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -168,7 +165,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Project guid
+     * @return the relationships associated with the requested Project userId
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -192,7 +189,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             MetadataServerUncontactableException {
         final String methodName = "getProjectRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         List<Line> relationships = getRelationships(BASE_URL, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         if (log.isDebugEnabled()) {
@@ -205,7 +202,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * Get the terms in this project.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Project to get
+     * @param guid   userId of the Project to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @return the terms that are in the requested Project
      *
@@ -226,18 +223,18 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
     ) throws InvalidParameterException, UserNotAuthorizedException, FunctionNotSupportedException, UnexpectedResponseException, MetadataServerUncontactableException {
         final String methodName = "getProjectTerms";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
         final String urlTemplate = this.omasServerURL +BASE_URL + "/%s/terms";
         String url = String.format(urlTemplate, serverName, userId, guid);
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        List<Term> terms = DetectUtils.detectAndReturnTerms(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        List<Term> terms = DetectUtils.detectAndReturnTerms(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -319,10 +316,10 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             url = url + queryStringSB.toString();
         }
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        List<Project> projects = DetectUtils.detectAndReturnProjects(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        List<Project> projects = DetectUtils.detectAndReturnProjects(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -339,7 +336,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             guid of the project to update
+     * @param guid             userId of the project to update
      * @param suppliedProject project to be updated
      * @return replaced project
      *
@@ -357,7 +354,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                                                               MetadataServerUncontactableException {
         final String methodName = "replaceProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         Project project = updateProject(userId,guid,suppliedProject,true);
         if (log.isDebugEnabled()) {
@@ -375,7 +372,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             guid of the project to update
+     * @param guid             userId of the project to update
      * @param suppliedProject project to be updated
      * @return a response which when successful contains the updated project
      * when not successful the following Exceptions can occur
@@ -392,7 +389,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                                                                     MetadataServerUncontactableException {
         final String methodName = "updateProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         Project project = updateProject(userId,guid,suppliedProject,false);
         if (log.isDebugEnabled()) {
@@ -411,9 +408,9 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * that it is possible to undo the delete.
      *
      * @param userId userId under which the request is performed
-     * @param guid guid of the project to be deleted.
+     * @param guid userId of the project to be deleted.
      * @return the deleted project
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied userId was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -432,22 +429,22 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                                         EntityNotDeletedException {
         final String methodName = "deleteProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isPurge=false";
         String url = String.format(urlTemplate,serverName,userId,guid);
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        DetectUtils.detectAndThrowEntityNotDeletedException(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        DetectUtils.detectAndThrowEntityNotDeletedException(restResponse);
 
-        Project project = DetectUtils.detectAndReturnProject(methodName,restResponse);
+        Project project = DetectUtils.detectAndReturnProject(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -461,12 +458,12 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * A purge means that the project will not exist after the operation.
      *
      * @param userId userId under which the request is performed
-     * @param guid guid of the project to be deleted.
+     * @param guid userId of the project to be deleted.
      *
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied userId was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws GUIDNotPurgedException a hard delete was issued but the project was not purged
+     * @throws EntityNotPurgedException a hard delete was issued but the project was not purged
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -477,25 +474,25 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
                                                                                     UnrecognizedGUIDException,
-                                                                                    GUIDNotPurgedException,
+                                                                                    EntityNotPurgedException,
                                                                                     UnexpectedResponseException,
                                                                                     FunctionNotSupportedException {
         final String methodName = "purgeProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isPurge=true";
         String url = String.format(urlTemplate,serverName,userId,guid);
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
-        DetectUtils.detectAndThrowGUIDNotPurgedException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
+        DetectUtils.detectAndThrowEntityNotPurgedException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -507,7 +504,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * qualified names to mismatch the Project name.
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
-     * @param guid guid of the project to update
+     * @param userId userId of the project to update
      * @param suppliedProject Project to be updated
      * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return the updated project.
@@ -527,10 +524,10 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                                                                                UnexpectedResponseException {
         final String methodName = "updateProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isReplace=%b";
         String url = String.format(urlTemplate,serverName,userId,guid,isReplace);
@@ -542,10 +539,10 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePut(className,methodName,requestBody,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
 
-        Project project = DetectUtils.detectAndReturnProject(methodName,restResponse);
+        Project project = DetectUtils.detectAndReturnProject(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -556,9 +553,9 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      *
      * Restore allows the deleted Project to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the project to restore
+     * @param guid       userId of the project to restore
      * @return the restored project
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied userId was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
@@ -574,21 +571,21 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             UnexpectedResponseException {
         final String methodName = "restoreProject";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s";
         String url = String.format(urlTemplate,serverName,userId,guid);
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePostNoBody(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
 
-        Project project = DetectUtils.detectAndReturnProject(methodName,restResponse);
+        Project project = DetectUtils.detectAndReturnProject(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }

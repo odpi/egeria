@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.EntityNotDeletedException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailsResponse;
@@ -21,6 +22,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidato
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -61,7 +63,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                       RepositoryHandler repositoryHandler,
                                       OMRSAPIHelper oMRSAPIHelper,
                                       RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName,invalidParameterHandler,repositoryHelper,repositoryHandler,oMRSAPIHelper,errorHandler);
+        super(serviceName, serverName,invalidParameterHandler,repositoryHelper,repositoryHandler,oMRSAPIHelper);
     }
 
 
@@ -121,7 +123,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised.</li>
      * <li>ClassificationException              Error processing a classification.</li>
      * <li>StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
@@ -138,10 +140,12 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
 
             // need to check we have a name
             if (suppliedGlossaryName == null || suppliedGlossaryName.equals("")) {
-                SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CREATE_WITHOUT_NAME;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
-                log.error(errorMessage);
-                throw new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
+                ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CREATE_WITHOUT_NAME.getMessageDefinition();
+                throw new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(messageDefinition,
+                                                                                                                     className,
+                                                                                                                     methodName,
+                                                                                                                     "name",
+                                                                                                                     null);
             } else {
                 GlossaryMapper glossaryMapper = new GlossaryMapper(oMRSAPIHelper);
                 EntityDetail glossaryEntityDetail = glossaryMapper.mapNodeToEntityDetail(suppliedGlossary);
@@ -159,17 +163,17 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     }
 
     /**
-     * Get a glossary by guid.
+     * Get a glossary by userId.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the glossary to get
-     * @return response which when successful contains the glossary with the requested guid
+     * @param guid       userId of the glossary to get
+     * @return response which when successful contains the glossary with the requested userId
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse getGlossaryByGuid(String userId, String guid) {
@@ -179,7 +183,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
 
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
             response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                 response = getResponse(response);
@@ -263,7 +267,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
+     * @param userId   userId of the term to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -271,7 +275,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Glossary guid
+     * @return the relationships associated with the requested Glossary userId
      *
      * when not successful the following Exception responses can occur
      * <ul>
@@ -302,13 +306,13 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * Status is not updated using this call.
      *
      * @param userId           unique identifier for requesting user, under which the request is performed
-     * @param guid             guid of the glossary to update
+     * @param guid             userId of the glossary to update
      * @param suppliedGlossary glossary to be updated
      * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated glossary
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -324,7 +328,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         try {
 
             InputValidator.validateNodeType(className, methodName, suppliedGlossary.getNodeType(), NodeType.Glossary, NodeType.Taxonomy, NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
 
             response = getGlossaryByGuid(userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.Glossary)) {
@@ -392,18 +396,18 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * when not successful the following Exceptions can occur
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the glossary to be deleted.
+     * @param guid       userId of the glossary to be deleted.
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteGlossary(String userId, String guid, Boolean isPurge) {
@@ -412,7 +416,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
         glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
             // do not delete if there is glossary content (terms or categories)
             // look for all glossary content that is not deleted.
             List<InstanceStatus> statusList = new ArrayList<>();
@@ -445,11 +449,13 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                 response = getResponse(response);
                             }
                         } else {
-                            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE;
-                            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName, guid);
-                            log.error(errorMessage);
-                            InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
-                            response = new InvalidParameterExceptionResponse(e);
+                            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition();
+                            response = new EntityNotDeletedExceptionResponse(
+                                    new EntityNotDeletedException(messageDefinition,
+                                                                  className,
+                                                                  methodName,
+                                                                  guid)
+                            );
                         }
                     }
                 }
@@ -468,11 +474,11 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the glossary to restore
+     * @param guid       userId of the glossary to restore
      * @return response which when successful contains the restored glossary
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -485,7 +491,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
         glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "userId");
             response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                 response = getGlossaryByGuid(userId, guid);

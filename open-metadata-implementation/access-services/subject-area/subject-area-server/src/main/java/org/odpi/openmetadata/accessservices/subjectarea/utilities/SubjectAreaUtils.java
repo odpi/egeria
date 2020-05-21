@@ -29,6 +29,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMA
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.*;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -114,7 +115,7 @@ public class SubjectAreaUtils {
     }
 
     /**
-     * Set icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
+     * Set icon summaries from related media relationships by issuing a call to omrs using the related media userId - which is at one end of the relationship.
      *
      * Note that we should only return the icons that are effective - by checking the effective From and To dates against the current time
      * @param userId userid under which to issue to the get of the related media
@@ -135,7 +136,7 @@ public class SubjectAreaUtils {
     }
 
     /**
-     * Get a Term's icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
+     * Get a Term's icon summaries from related media relationships by issuing a call to omrs using the related media userId - which is at one end of the relationship.
      * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
      * @param omrsapiHelper helper to access OMRS
@@ -163,7 +164,7 @@ public class SubjectAreaUtils {
         return response;
     }
     /**
-     * Get a Categories icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
+     * Get a Categories icon summaries from related media relationships by issuing a call to omrs using the related media userId - which is at one end of the relationship.
      * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
      * @param omrsapiHelper helper to access OMRS
@@ -203,7 +204,7 @@ public class SubjectAreaUtils {
      * @return a parent category as a CategorySummary
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException  the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException  the supplied userId was not recognised
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws FunctionNotSupportedException   Function not supported
      */
@@ -289,16 +290,12 @@ public class SubjectAreaUtils {
         }
         SubjectAreaOMASAPIResponse response = null;
         if (status.equals(Status.DELETED)) {
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(className,
-                    methodName);
-            log.error(errorMessage);
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition();
+            throw new InvalidParameterException(messageDefinition,
                     className,
                     methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    "Status",
+                    Status.DELETED.name());
         }
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName );

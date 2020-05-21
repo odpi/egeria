@@ -6,11 +6,11 @@ package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 /**
- * The EntityNotDeletedException is thrown by the Subject Area OMAS when an entity is not deleted
+ * The EntityNotPurgedException is thrown by the Subject Area OMAS when an entity is not purged
  * value.
  */
 
-public class EntityNotDeletedException extends GuidOrientatedException {
+public class EntityNotPurgedException extends GuidOrientatedException {
 
     /**
      * This is the typical constructor used for creating an EntityNotDeletedException
@@ -18,12 +18,12 @@ public class EntityNotDeletedException extends GuidOrientatedException {
      * @param messageDefinition content of the message
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param guid              the userId of the entity that was not deleted
+     * @param guid              the userId of the entity that was not purged
      */
-    public EntityNotDeletedException(ExceptionMessageDefinition messageDefinition,
-                                     String className,
-                                     String actionDescription,
-                                     String guid) {
+    public EntityNotPurgedException(ExceptionMessageDefinition messageDefinition,
+                                    String className,
+                                    String actionDescription,
+                                    String guid) {
         super(messageDefinition, className, actionDescription, guid);
     }
 
@@ -36,13 +36,13 @@ public class EntityNotDeletedException extends GuidOrientatedException {
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
      * @param caughtError       previous error causing this exception
-     * @param guid              the userId of the entity that was not deleted
+     * @param guid              the userId of the entity that was not purged
      */
-    public EntityNotDeletedException(ExceptionMessageDefinition messageDefinition,
-                                     String className,
-                                     String actionDescription,
-                                     Throwable caughtError,
-                                     String guid) {
+    public EntityNotPurgedException(ExceptionMessageDefinition messageDefinition,
+                                    String className,
+                                    String actionDescription,
+                                    Throwable caughtError,
+                                    String guid) {
         super(messageDefinition, className, actionDescription, caughtError, guid);
     }
 

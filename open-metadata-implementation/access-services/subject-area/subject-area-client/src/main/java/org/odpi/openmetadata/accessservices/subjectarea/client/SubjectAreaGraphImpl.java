@@ -99,7 +99,7 @@ public class SubjectAreaGraphImpl extends SubjectAreaBaseImpl implements org.odp
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
         final String urlTemplate = this.omasServerURL +BASE_URL + "/%s";
         String url = String.format(urlTemplate, serverName, userId, guid );
 
@@ -147,10 +147,10 @@ public class SubjectAreaGraphImpl extends SubjectAreaBaseImpl implements org.odp
             url = url + queryStringSB.toString();
         }
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        Graph graph = DetectUtils.detectAndReturnGraph(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        Graph graph = DetectUtils.detectAndReturnGraph(className, methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }

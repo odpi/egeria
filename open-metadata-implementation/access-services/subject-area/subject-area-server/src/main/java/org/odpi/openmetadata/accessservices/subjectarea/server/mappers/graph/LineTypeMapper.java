@@ -17,12 +17,12 @@ public class LineTypeMapper {
     private static final String className = LineTypeMapper.class.getName();
 
     /**
-     * Map lineType to relationship type guid.
+     * Map lineType to relationship type userId.
      *
      * The lineType is the type of node that is exposed in the lineType API. The subject Area OMAs needs to convert
-     * the node type into a guid of an relationship type so it can be used to call omrs.
+     * the node type into a userId of an relationship type so it can be used to call omrs.
      * @param lineType lineType this is the type of node that is exposed in the nodetype API
-     * @return relationship Type guid.
+     * @return relationship Type userId.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     static public String  mapLineTypeToRelationshipTypeGuid(LineType lineType) throws InvalidParameterException {
@@ -41,8 +41,8 @@ public class LineTypeMapper {
     }
 
     /**
-     * convert an relationship type guid to a LineType
-     * @param guid relationship Type guid.
+     * convert an relationship type userId to a LineType
+     * @param guid relationship Type userId.
      * @return LineType nodetype
      */
     public static LineType mapRelationshipTypeGuidToLineType(String guid) {

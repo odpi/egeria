@@ -82,11 +82,11 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
         }
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePost(className,methodName,requestBody, url);
 
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowClassificationException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        Term term = DetectUtils.detectAndReturnTerm(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowClassificationException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        Term term = DetectUtils.detectAndReturnTerm(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -94,9 +94,9 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
     }
 
     /**
-     * Get a term by guid.
+     * Get a term by userId.
      * @param userId userId under which the request is performed
-     * @param guid guid of the term to get
+     * @param guid userId of the term to get
      * @return the requested term.
      *
      * Exceptions returned by the server
@@ -117,17 +117,17 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                                                               UnexpectedResponseException {
         final String methodName = "getTermByGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
         final String urlTemplate = this.omasServerURL +BASE_URL + "/%s";
         String url = String.format(urlTemplate,serverName,userId,guid);
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        Term term = DetectUtils.detectAndReturnTerm(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        Term term = DetectUtils.detectAndReturnTerm(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -137,8 +137,8 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * Get Term relationships
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
-     * @param guid   guid of the term to get
+     * @param guid   userId of the term to get
+     * @param guid   userId of the term to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -146,7 +146,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Term guid
+     * @return the relationships associated with the requested Term userId
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -170,7 +170,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
             MetadataServerUncontactableException {
         final String methodName = "getRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         List<Line> relationships = getRelationships(BASE_URL, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         if (log.isDebugEnabled()) {
@@ -186,7 +186,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * The GovernanceAction content if specified replaces what is on the server.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             guid of the term to update
+     * @param guid             userId of the term to update
      * @param suppliedTerm term to be updated
      * @return replaced term
      *
@@ -206,7 +206,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                                                                               MetadataServerUncontactableException {
         final String methodName = "replaceTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
 
         Term term = updateTerm(userId,guid,suppliedTerm,true);
@@ -225,7 +225,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             guid of the term to update
+     * @param guid             userId of the term to update
      * @param suppliedTerm term to be updated
      * @return a response which when successful contains the updated term
      * when not successful the following Exceptions can occur
@@ -244,7 +244,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                                                                                     MetadataServerUncontactableException {
         final String methodName = "updateTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         Term term = updateTerm(userId, guid, suppliedTerm, false);
         if (log.isDebugEnabled()) {
@@ -263,7 +263,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      *
      * 
      * @param userId userId under which the request is performed
-     * @param guid guid of the term to be deleted.
+     * @param guid userId of the term to be deleted.
      * @return the deleted term
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -271,7 +271,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws EntityNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -286,21 +286,21 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                                                                 EntityNotDeletedException {
         final String methodName = "deleteTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isPurge=false";
         String url = String.format(urlTemplate,serverName,userId,guid);
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        DetectUtils.detectAndThrowEntityNotDeletedException(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        DetectUtils.detectAndThrowEntityNotDeletedException(restResponse);
 
-        Term term = DetectUtils.detectAndReturnTerm(methodName,restResponse);
+        Term term = DetectUtils.detectAndReturnTerm(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -313,12 +313,12 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      *
      * 
      * @param userId userId under which the request is performed
-     * @param guid guid of the term to be deleted.
+     * @param guid userId of the term to be deleted.
      *
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws GUIDNotPurgedException a hard delete was issued but the term was not purged
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws EntityNotPurgedException a hard delete was issued but the term was not purged
+     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
      * @throws FunctionNotSupportedException Function not supported
      *
      * Client library Exceptions
@@ -326,27 +326,27 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      */
 
     public  void purgeTerm(String userId,String guid) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                MetadataServerUncontactableException,
-                                                                                GUIDNotPurgedException,
-                                                                                UnrecognizedGUIDException,
-                                                                                FunctionNotSupportedException {
+                                                             UserNotAuthorizedException,
+                                                             MetadataServerUncontactableException,
+                                                             UnrecognizedGUIDException,
+                                                             FunctionNotSupportedException,
+                                                             EntityNotPurgedException {
         final String methodName = "purgeTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isPurge=true";
         String url = String.format(urlTemplate,serverName,userId,guid);
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowGUIDNotPurgedException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowEntityNotPurgedException(restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -360,7 +360,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      *
      * 
      * @param userId userId under which the request is performed
-     * @param guid guid of the term to update
+     * @param userId userId of the term to update
      * @param suppliedTerm Term to be updated
      * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return the updated term.
@@ -382,10 +382,10 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                                                                                               UnexpectedResponseException {
         final String methodName = "updateTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL +"/%s?isReplace=%b";
         String url = String.format(urlTemplate,serverName,userId,guid,isReplace);
@@ -397,11 +397,11 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePut(className,methodName,requestBody,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
 
-        Term term = DetectUtils.detectAndReturnTerm(methodName,restResponse);
+        Term term = DetectUtils.detectAndReturnTerm(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -412,9 +412,9 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      *
      * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the term to restore
+     * @param guid       userId of the term to restore
      * @return the restored term
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied userId was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
@@ -430,20 +430,20 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
             UnexpectedResponseException {
         final String methodName = "restoreTerm";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s";
         String url = String.format(urlTemplate,serverName,userId,guid);
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePostNoBody(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        Term term = DetectUtils.detectAndReturnTerm(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        Term term = DetectUtils.detectAndReturnTerm(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -525,10 +525,10 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
             url = url + queryStringSB.toString();
         }
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName, restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName, restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName, restResponse);
-        List<Term> terms = DetectUtils.detectAndReturnTerms(methodName, restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        List<Term> terms = DetectUtils.detectAndReturnTerms(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }

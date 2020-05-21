@@ -72,7 +72,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             Project createdProject = handler.createProject(userId, suppliedProject);
             response = new ProjectResponse(createdProject);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -111,7 +111,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
                     guid);
             response = new ProjectResponse(obtainedProject);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -175,7 +175,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             projectsResponse.setProjects(projects);
             response = projectsResponse;
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -228,7 +228,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             linesResponse.setLines(lines);
             response = linesResponse;
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -285,7 +285,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             projectResponse.setProject(updatedProject);
             response = projectResponse;
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -352,7 +352,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
                 response = projectResponse;
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -395,7 +395,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             projectResponse.setProject(project);
             response = projectResponse;
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;

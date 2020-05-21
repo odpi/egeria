@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -84,8 +83,8 @@ public class SubjectAreaServicesInstance extends OCFOMASServiceInstance
                                                                      invalidParameterHandler,
                                                                      repositoryHelper,
                                                                      repositoryHandler,
-                                                                     oMRSAPIHelper,
-                                                                     errorHandler);
+                                                                     oMRSAPIHelper
+            );
 
             this.graphHandler= new SubjectAreaGraphHandler(serviceName,
                                                                serverName,

@@ -17,10 +17,10 @@ public class NodeTypeMapper {
     private static final String className = NodeTypeMapper.class.getName();
 
     /**
-     * Map nodeType to entity type guid.
+     * Map nodeType to entity type userId.
      *
      * The nodeType is the type of node that is exposed in the nodeType API. The subject Area OMAs needs to convert
-     * the node type into a guid of an entity type so it can be used to call omrs.
+     * the node type into a userId of an entity type so it can be used to call omrs.
      *
      * The supplied NodeType is mapped to an EntityType name :
      * <ul>
@@ -29,7 +29,7 @@ public class NodeTypeMapper {
      * <li> The NodeType name may map to en entity type with a classification  e.g. Taxonomy </li>
      * </ul>
      * @param nodeType nodeType this is the type of node that is exposed in the nodetype API
-     * @return entity Type guid.
+     * @return entity Type userId.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     static public String  mapNodeTypeToEntityTypeGuid(NodeType nodeType) throws InvalidParameterException {
@@ -47,8 +47,8 @@ public class NodeTypeMapper {
     }
 
     /**
-     * convert an entity type guid to a NodeType
-     * @param guid entity Type guid.
+     * convert an entity type userId to a NodeType
+     * @param guid entity Type userId.
      * @return NodeType nodetype
      */
     public static NodeType mapEntityTypeGuidToNodeType(String guid) {

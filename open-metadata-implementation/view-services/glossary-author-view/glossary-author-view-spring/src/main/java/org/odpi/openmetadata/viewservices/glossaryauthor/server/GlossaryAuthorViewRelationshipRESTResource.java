@@ -114,7 +114,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/has-as/{guid}")
@@ -143,7 +143,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @PostMapping(path = "/has-as/{guid}")
@@ -233,7 +233,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/related-terms/{guid}")
@@ -262,7 +262,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @PostMapping(path = "/related-terms/{guid}")
@@ -354,7 +354,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/synonyms/{guid}")
@@ -473,7 +473,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/antonyms/{guid}")
@@ -592,7 +592,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/translations/{guid}")
@@ -711,7 +711,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/used-in-contexts/{guid}")
@@ -831,7 +831,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/preferred-terms/{guid}")
@@ -952,7 +952,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/valid-values/{guid}")
@@ -1072,7 +1072,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/replacement-terms/{guid}")
@@ -1191,7 +1191,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/typed-bys/{guid}")
@@ -1310,7 +1310,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/is-as/{guid}")
@@ -1431,7 +1431,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/is-a-type-ofs/{guid}")
@@ -1554,7 +1554,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/term-categorizations/{guid}")
@@ -1654,7 +1654,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/term-anchor/{guid}")
@@ -1748,7 +1748,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/category-anchor/{guid}")
@@ -1863,7 +1863,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/project-scopes/{guid}")

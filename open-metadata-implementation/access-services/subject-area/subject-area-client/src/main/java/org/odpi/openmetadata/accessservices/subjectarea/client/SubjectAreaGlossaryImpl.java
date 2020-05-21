@@ -60,7 +60,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException  the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException  the supplied userId was not recognised
      * @throws ClassificationException Error processing a classification
      * @throws FunctionNotSupportedException   Function not supported
      *
@@ -87,24 +87,23 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePost(className,methodName,requestBody, url);
 
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
-        DetectUtils.detectAndThrowClassificationException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        Glossary glossary = DetectUtils.detectAndReturnGlossary(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
+        DetectUtils.detectAndThrowClassificationException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        Glossary glossary = DetectUtils.detectAndReturnGlossary(className, methodName, restResponse);
         // that the returned nodeType matches the requested one
         if (suppliedGlossary.getNodeType()!=null && !suppliedGlossary.getNodeType().equals(glossary.getNodeType())) {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.UNEXPECTED_NODETYPE;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    suppliedGlossary.getNodeType().name(),glossary.getNodeType().name());
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(
+                    errorCode.getMessageDefinition(),
                     className,
                     methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction()
+                    "NodeType",
+                    suppliedGlossary.getNodeType().name()
+
             );
         }
 
@@ -115,16 +114,16 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
     }
 
     /**
-     * Get a glossary by guid.
+     * Get a glossary by userId.
     *
      * @param userId userId under which the request is performed
-     * @param guid guid of the glossary to get
+     * @param guid userId of the glossary to get
      * @return the requested glossary.
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied userId was not recognised
      * @throws FunctionNotSupportedException   Function not supported
      *
      * Client library Exceptions
@@ -135,18 +134,18 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
     public  Glossary getGlossaryByGuid(String userId,String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
         final String methodName = "getGlossaryByGuid";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s";
         String url = String.format(urlTemplate,serverName,userId,guid);
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        Glossary glossary = DetectUtils.detectAndReturnGlossary(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        Glossary glossary = DetectUtils.detectAndReturnGlossary(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -156,8 +155,8 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * Get Glossary relationships
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the glossary to get
-     * @param guid   guid of the glossary to get
+     * @param guid   userId of the glossary to get
+     * @param guid   userId of the glossary to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -165,7 +164,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Glossary guid
+     * @return the relationships associated with the requested Glossary userId
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -189,7 +188,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
             MetadataServerUncontactableException {
         final String methodName = "getGlossaryRelationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid);
         }
         List<Line> relationships = getRelationships(BASE_URL, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         if (log.isDebugEnabled()) {
@@ -273,10 +272,10 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
             url = url + queryStringSB.toString();
         }
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        List<Glossary> glossaries = DetectUtils.detectAndReturnGlossaries(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        List<Glossary> glossaries = DetectUtils.detectAndReturnGlossaries(className, methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -294,7 +293,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      *
     *
      * @param userId           userId under which the request is performed
-     * @param guid             guid of the glossary to update
+     * @param guid             userId of the glossary to update
      * @param suppliedGlossary glossary to be updated
      * @return replaced glossary
      *
@@ -312,7 +311,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                               MetadataServerUncontactableException {
         final String methodName = "replaceGlossary";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         Glossary glossary = updateGlossary( userId, guid,suppliedGlossary,true);
         if (log.isDebugEnabled()) {
@@ -330,7 +329,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             guid of the glossary to update
+     * @param guid             userId of the glossary to update
      * @param suppliedGlossary glossary to be updated
      * @return a response which when successful contains the updated glossary
      * when not successful the following Exceptions can occur
@@ -347,7 +346,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                                     MetadataServerUncontactableException {
         final String methodName = "updateGlossary";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         Glossary glossary = updateGlossary(userId, guid,suppliedGlossary,false);
         if (log.isDebugEnabled()) {
@@ -367,9 +366,9 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      *
     *
      * @param userId userId under which the request is performed
-     * @param guid guid of the glossary to be deleted.
+     * @param guid userId of the glossary to be deleted.
      * @return the deleted glossary
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied userId was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -388,22 +387,22 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                                                                         EntityNotDeletedException {
         final String methodName = "deleteGlossary";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isPurge=false";
         String url = String.format(urlTemplate,serverName,userId,guid);
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        DetectUtils.detectAndThrowEntityNotDeletedException(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        DetectUtils.detectAndThrowEntityNotDeletedException(restResponse);
 
-        Glossary glossary = DetectUtils.detectAndReturnGlossary(methodName,restResponse);
+        Glossary glossary = DetectUtils.detectAndReturnGlossary(className, methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -418,12 +417,12 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      *
     *
      * @param userId userId under which the request is performed
-     * @param guid guid of the glossary to be deleted.
+     * @param guid userId of the glossary to be deleted.
      *
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied userId was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws GUIDNotPurgedException a hard delete was issued but the glossary was not purged
+     * @throws EntityNotPurgedException a hard delete was issued but the glossary was not purged
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -434,25 +433,27 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
                                                                                     UnrecognizedGUIDException,
-                                                                                    GUIDNotPurgedException,
+                                                                                    EntityNotPurgedException,
                                                                                     UnexpectedResponseException,
                                                                                     FunctionNotSupportedException {
         final String methodName = "purgeGlossary";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isPurge=true";
         String url = String.format(urlTemplate,serverName,userId,guid);
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
-        DetectUtils.detectAndThrowGUIDNotPurgedException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
+        DetectUtils.detectAndThrowEntityNotPurgedException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        DetectUtils.detectVoid(className, methodName, restResponse);
+
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -464,7 +465,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * qualified names to mismatch the Glossary name.
     *
      * @param userId userId under which the request is performed
-     * @param guid guid of the glossary to update
+     * @param userId userId of the glossary to update
      * @param suppliedGlossary Glossary to be updated
      * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return the updated glossary.
@@ -484,10 +485,10 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                                                UnexpectedResponseException {
         final String methodName = "updateGlossary";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isReplace=%b";
         String url = String.format(urlTemplate,serverName,userId,guid,isReplace);
@@ -499,10 +500,10 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePut(className,methodName,requestBody,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
 
-        Glossary glossary = DetectUtils.detectAndReturnGlossary(methodName,restResponse);
+        Glossary glossary = DetectUtils.detectAndReturnGlossary(className, methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -513,9 +514,9 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      *
      * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the glossary to restore
+     * @param guid       userId of the glossary to restore
      * @return the restored glossary
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied userId was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
@@ -531,21 +532,21 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
             UnexpectedResponseException {
         final String methodName = "restoreGlossary";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",userId=" + guid );
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"userId");
 
         final String urlTemplate = this.omasServerURL +BASE_URL+"/%s";
         String url = String.format(urlTemplate,serverName,userId,guid);
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePostNoBody(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
 
-        Glossary glossary = DetectUtils.detectAndReturnGlossary(methodName,restResponse);
+        Glossary glossary = DetectUtils.detectAndReturnGlossary(className, methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
