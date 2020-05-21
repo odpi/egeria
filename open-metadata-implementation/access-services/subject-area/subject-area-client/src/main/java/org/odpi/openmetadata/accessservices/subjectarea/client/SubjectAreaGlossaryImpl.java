@@ -117,7 +117,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      * Get a glossary by guid.
     *
      * @param userId userId under which the request is performed
-     * @param guid userId of the glossary to get
+     * @param guid guid of the glossary to get
      * @return the requested glossary.
      *
      * Exceptions returned by the server
@@ -366,7 +366,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      *
     *
      * @param userId userId under which the request is performed
-     * @param guid userId of the glossary to be deleted.
+     * @param guid guid of the glossary to be deleted.
      * @return the deleted glossary
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -417,7 +417,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
      *
     *
      * @param userId userId under which the request is performed
-     * @param guid userId of the glossary to be deleted.
+     * @param guid guid of the glossary to be deleted.
      *
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.

@@ -118,7 +118,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
     /**
      * Get a project by guid.
      * @param userId userId under which the request is performed
-     * @param guid userId of the project to get
+     * @param guid guid of the project to get
      * @return the requested project.
      *
      * Exceptions returned by the server
@@ -408,7 +408,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * that it is possible to undo the delete.
      *
      * @param userId userId under which the request is performed
-     * @param guid userId of the project to be deleted.
+     * @param guid guid of the project to be deleted.
      * @return the deleted project
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -458,7 +458,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * A purge means that the project will not exist after the operation.
      *
      * @param userId userId under which the request is performed
-     * @param guid userId of the project to be deleted.
+     * @param guid guid of the project to be deleted.
      *
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.

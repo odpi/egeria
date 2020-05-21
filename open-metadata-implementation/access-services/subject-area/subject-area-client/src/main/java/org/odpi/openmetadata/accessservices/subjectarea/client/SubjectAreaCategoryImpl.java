@@ -809,12 +809,12 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
         return category;
     }
 
-    /*
+    /**
      *  Update SubjectAreaDefinition.
      *
      *
      * @param userId userId under which the request is performed
-     * @param userId userId of the subjectAreaDefinition to update
+     * @param guid guid of the subjectAreaDefinition to update
      * @param suppliedSubjectAreaDefinition SubjectAreaDefinition to be updated
      * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return the updated subjectAreaDefinition.

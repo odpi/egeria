@@ -96,7 +96,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
     /**
      * Get a term by guid.
      * @param userId userId under which the request is performed
-     * @param guid userId of the term to get
+     * @param guid guid of the term to get
      * @return the requested term.
      *
      * Exceptions returned by the server
@@ -263,7 +263,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      *
      * 
      * @param userId userId under which the request is performed
-     * @param guid userId of the term to be deleted.
+     * @param guid guid of the term to be deleted.
      * @return the deleted term
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -313,7 +313,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      *
      * 
      * @param userId userId under which the request is performed
-     * @param guid userId of the term to be deleted.
+     * @param guid guid of the term to be deleted.
      *
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
