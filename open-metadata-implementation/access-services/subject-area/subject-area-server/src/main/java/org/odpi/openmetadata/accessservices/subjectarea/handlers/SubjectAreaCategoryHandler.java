@@ -213,12 +213,12 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
     
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the category to get. This could be a userId for a SubjectAreaDefintion, which is type of category
+     * @param guid       guid of the category to get. This could be a guid for a SubjectAreaDefinition, which is a type of category
      * @return response which when successful contains the category with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.
      * <li> InvalidParameterException            one of the parameters is null or invalid.
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised
      * </ul>
