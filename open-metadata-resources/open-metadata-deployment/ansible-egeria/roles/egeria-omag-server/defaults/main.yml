@@ -1,0 +1,74 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+app_name: 'server-chassis-spring'
+app_version: '1.5-SNAPSHOT'
+app_version_suffix: ''
+app_user: 'egeria'
+app_group: 'egeria'
+app_extra_libs:
+
+app_port: 8080
+app_host: 127.0.0.1
+
+# artifacts location information
+atr_artifactory_base: https://odpi.jfrog.io/odpi
+atr_repository: 'egeria-snapshot-local'
+atr_groupId: 'org/odpi/egeria'
+atr_name: 'server-chassis-spring'
+atr_type: 'jar'
+
+# default working directory
+home_dir: "/opt/odpi/egeria"
+atr_tmp_download: "{{ home_dir }}/{{ app_name }}/tmp/"
+
+# default value is we dont want logging
+atr_no_logging_key: true
+atr_validate_certs: true
+
+atr_download_timeout: 10
+
+# atr_full_name: "{{ atr_name ~ '-' ~ app_version ~ (( '-' ~ app_version_suffix ) if app_version_suffix|default(false, true) else '' ) ~ '.' ~ atr_type }}"
+atr_full_name: "{{ atr_name ~ (( '-' ~ app_version_suffix ) if app_version_suffix|default(false, true) else '-' ~ app_version ) ~ '.' ~ atr_type }}"
+atr_download_url: "{{ atr_artifactory_base }}/{{ atr_repository }}/{{ atr_groupId }}/{{ atr_name }}/{{ app_version }}/{{ atr_full_name }}"
+
+
+atr_artifactory_api_key: 
+
+atr_get_url_headers_str: "X-JFrog-Art-Api: {{ atr_artifactory_api_key }}"
+atr_get_url_headers_dict:
+    X-JFrog-Art-Api: "{{ atr_artifactory_api_key | default(false)}}"
+
+app_work_dir: "{{ home_dir }}/{{ app_name }}"
+app_full_path: "{{ app_work_dir }}/{{ atr_full_name }}"
+# app_config_dir: "{{ app_work_dir }}/config"
+app_config_dir: "{{ app_work_dir }}"
+app_tmp_dir: "{{ app_work_dir }}/tmp"
+#app_logs_dir: "{{ app_work_dir }}/logs"
+app_logs_dir: "/var/log/{{ app_name }}"
+app_libs_dir: "{{ app_work_dir }}/libs"
+app_data_dir: "{{ app_work_dir }}/data"
+app_keystore_dir: "{{ app_work_dir }}/keystore"
+
+app_cacerts_password: 
+app_keystore_password:
+app_service_environment:
+
+app_java_heap_size: '2G'
+app_java_options:
+
+app_default_java_options:
+  '-Xmx': "{{ app_java_heap_size }}"
+  '-Xms': "{{ app_java_heap_size }}"
+  '-Djava.security.egd': 'file:///dev/urandom'
+  '-Djava.io.tmpdir': '/tmp'
+  '-Dlogging.file.name': "{{ app_logs_dir }}/{{ app_name }}.log"
+  '-Dloader.path': "{{ app_libs_dir }}"
+  # '-Dserver.address': '{{ app_host }}'
+  '-Dserver.port': "{{ app_port }}"
+  '-Dserver.ssl.enabled': false
+
+app_service_java_options: "{{ app_default_java_options | combine(app_java_options|default({}, true)) }}"
+
+app_configs_dir: 'app-configs'

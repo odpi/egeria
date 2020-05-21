@@ -99,6 +99,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         this.externalSourceName = externalSourceName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException,
                                                                                PropertyServerException,
@@ -119,6 +122,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         return result.get(0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> createOrUpdateProcesses(String userId, List<Process> processes) throws
                                                                                         InvalidParameterException,
@@ -134,6 +140,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         return callProcessListPostRESTCall(userId, PROCESSES_METHOD_NAME, PROCESS_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws
                                                                                                              InvalidParameterException,
@@ -150,6 +159,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         return callGUIDPostRESTCall(userId, EXTERNAL_DATA_ENGINE_METHOD_NAME, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String createOrUpdateSchemaType(String userId, SchemaType schemaType) throws InvalidParameterException,
                                                                                         PropertyServerException,
@@ -165,6 +177,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         return callGUIDPostRESTCall(userId, SCHEMA_TYPE_METHOD_NAME, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException,
                                                                                                                 UserNotAuthorizedException,
@@ -179,7 +194,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         return callGUIDPostRESTCall(userId, PORT_IMPLEMENTATION_METHOD_NAME, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
@@ -197,6 +214,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         return callGUIDPostRESTCall(userId, methodName, PORT_ALIAS_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addLineageMappings(String userId, List<LineageMapping> lineageMappings) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
@@ -213,6 +233,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         callVoidPostRESTCall(userId, methodName, LINEAGE_MAPPINGS_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addPortsToProcess(String userId, List<String> portQualifiedNames, String processGUID) throws InvalidParameterException,
                                                                                                              UserNotAuthorizedException,

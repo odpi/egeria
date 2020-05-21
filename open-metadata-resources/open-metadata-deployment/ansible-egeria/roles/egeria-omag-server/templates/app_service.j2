@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+[Unit]
+Description={{ app_name }}-{{ app_version }} service
+After=network.target
+
+[Service]
+
+UMask=0027
+User={{ app_user }}
+Group={{ app_group }}
+
+{% if app_service_environment %}
+{% for k, v in app_service_environment.items() %}
+Environment="{{ k }}={{ v }}"
+{% endfor %}
+{% endif %}
+
+WorkingDirectory={{ app_work_dir }}
+
+ExecStartPre=/bin/sh -c "rm -fR {{ app_tmp_dir }}/*"
+ExecStart=/bin/sh -c "/usr/bin/java\
+{% for key, value in app_service_java_options | dictsort('key') %}
+{% if key.startswith('-X') %}
+ {{ key }}{{ value }}\
+{% endif -%}
+{% if key.startswith('-D') %}
+ {{ key }}={{ value }}\
+{% endif -%}
+{% endfor -%}
+{% if app_cacerts_password %}
+ -Djavax.net.ssl.trustStore={{ app_keystore_dir }}/cacerts -Djavax.net.ssl.trustStorePassword={{ app_cacerts_password }}\
+{% endif %}
+{% if app_keystore_password %}
+ -Djavax.net.ssl.keyStore={{ app_keystore_dir }}/keystore.jks -Djavax.net.ssl.keyStorePassword={{ app_keystore_password }}\
+{% endif %}
+ -jar {{ app_full_path }}{{ ( ' ' ~ app_service_args | sort() | join(' ') ) if app_service_args|default(false, true) else '' }}"
+
+PrivateTmp=yes
+StandardOutput=journal
+StandardError=journal
+
+#SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
