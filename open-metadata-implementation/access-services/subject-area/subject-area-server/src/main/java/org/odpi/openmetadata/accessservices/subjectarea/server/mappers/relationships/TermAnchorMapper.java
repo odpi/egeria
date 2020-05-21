@@ -37,7 +37,7 @@ public class TermAnchorMapper extends LineMapper
     }
 
     /**
-     * Get proxy2 userId
+     * Get proxy2 guid
      * The proxy has omrs type GlossaryTerm
      * @param line for this Line
      * @return guid for entity proxy 2

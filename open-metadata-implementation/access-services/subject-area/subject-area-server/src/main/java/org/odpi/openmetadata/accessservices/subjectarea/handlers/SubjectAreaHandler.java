@@ -92,7 +92,7 @@ public abstract class SubjectAreaHandler {
      *
      * @param restAPIName        ret API name
      * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param guid               userId of the term to get
+     * @param guid               guid of the term to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -242,7 +242,7 @@ public abstract class SubjectAreaHandler {
      * @param restAPIName             rest API name
      * @param userId                  user identity
      * @param entityGuid              globally unique identifier
-     * @param relationshipTypeGuid    the userId of the relationship type to restrict the relationships returned to this type. null means return all relationship types.
+     * @param relationshipTypeGuid    the guid of the relationship type to restrict the relationships returned to this type. null means return all relationship types.
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.

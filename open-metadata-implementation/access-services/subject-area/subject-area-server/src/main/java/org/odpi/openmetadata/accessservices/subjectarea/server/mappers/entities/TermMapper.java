@@ -37,7 +37,7 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
      * Map (convert) EntityDetail to Term or a sub type of Term
      * @param entityDetail the supplied EntityDetail
      * @return Term the equivalent Term to the supplied entityDetail.
-     * @throws InvalidParameterException the entity with this userId is not of the right type
+     * @throws InvalidParameterException the entity with this guid is not of the right type
      */
     public Term mapEntityDetailToNode(EntityDetail entityDetail) throws InvalidParameterException {
         String methodName = "mapEntityDetailToNode";

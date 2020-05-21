@@ -186,7 +186,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * The GovernanceAction content if specified replaces what is on the server.
      *
      * @param userId       userId under which the request is performed
-     * @param guid         userId of the term to update
+     * @param guid         guid of the term to update
      * @param suppliedTerm term to be updated
      * @return replaced term
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -225,7 +225,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * Status is not updated using this call.
      *
      * @param userId       userId under which the request is performed
-     * @param guid         userId of the term to update
+     * @param guid         guid of the term to update
      * @param suppliedTerm term to be updated
      * @return a response which when successful contains the updated term
      * when not successful the following Exceptions can occur
@@ -412,7 +412,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the term to restore
+     * @param guid   guid of the term to restore
      * @return the restored term
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
