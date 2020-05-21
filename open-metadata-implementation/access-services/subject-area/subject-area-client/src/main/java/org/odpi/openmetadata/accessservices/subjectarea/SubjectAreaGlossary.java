@@ -28,7 +28,7 @@ public interface SubjectAreaGlossary
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException  the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException  the supplied guid was not recognised
      * @throws ClassificationException Error processing a classification
      * @throws FunctionNotSupportedException   Function not supported
      *

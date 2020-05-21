@@ -208,7 +208,7 @@ import java.util.List;
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the term to restore
      * @return the restored term
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.

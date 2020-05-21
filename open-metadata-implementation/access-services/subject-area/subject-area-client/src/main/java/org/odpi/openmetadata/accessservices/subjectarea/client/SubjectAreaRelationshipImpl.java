@@ -82,7 +82,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -130,7 +130,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -160,7 +160,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -193,7 +193,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -234,7 +234,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -270,7 +270,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -298,7 +298,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -331,7 +331,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -376,7 +376,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -406,7 +406,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -439,7 +439,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -474,7 +474,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -511,7 +511,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -547,7 +547,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -578,7 +578,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -610,7 +610,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -654,7 +654,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -684,7 +684,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -721,7 +721,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -763,7 +763,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -799,7 +799,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -830,7 +830,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -863,7 +863,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -907,7 +907,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -936,7 +936,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -973,7 +973,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1013,7 +1013,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      *                                              Client library Exceptions
@@ -1051,7 +1051,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -1082,7 +1082,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1115,7 +1115,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1163,7 +1163,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -1193,7 +1193,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1230,7 +1230,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1270,7 +1270,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      *                                              Client library Exceptions
@@ -1307,7 +1307,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -1338,7 +1338,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1371,7 +1371,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1419,7 +1419,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -1449,7 +1449,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1486,7 +1486,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1526,7 +1526,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      *                                              Client library Exceptions
@@ -1564,7 +1564,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -1595,7 +1595,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1628,7 +1628,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1672,7 +1672,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -1698,7 +1698,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1735,7 +1735,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1775,7 +1775,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      *                                              Client library Exceptions
@@ -1812,7 +1812,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -1843,7 +1843,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1876,7 +1876,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1924,7 +1924,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -1954,7 +1954,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1991,7 +1991,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2031,7 +2031,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      *                                              Client library Exceptions
@@ -2068,7 +2068,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -2099,7 +2099,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2132,7 +2132,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2176,7 +2176,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -2206,7 +2206,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2243,7 +2243,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2283,7 +2283,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      *                                              Client library Exceptions
@@ -2321,7 +2321,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -2352,7 +2352,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2385,7 +2385,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2429,7 +2429,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -2459,7 +2459,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2496,7 +2496,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2536,7 +2536,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      *                                              Client library Exceptions
@@ -2573,7 +2573,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -2604,7 +2604,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2637,7 +2637,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2681,7 +2681,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -2711,7 +2711,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2748,7 +2748,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2788,7 +2788,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      *                                              Client library Exceptions
@@ -2826,7 +2826,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -2857,7 +2857,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2890,7 +2890,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2934,7 +2934,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -2960,7 +2960,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2997,7 +2997,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -3037,7 +3037,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      *                                              Client library Exceptions
@@ -3074,7 +3074,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -3105,7 +3105,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -3213,7 +3213,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -3263,7 +3263,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -3293,7 +3293,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -3333,7 +3333,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -3380,7 +3380,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -3418,7 +3418,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -3452,7 +3452,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -3490,7 +3490,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -3540,7 +3540,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -3570,7 +3570,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -3617,7 +3617,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -3655,7 +3655,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -3689,7 +3689,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -3726,7 +3726,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -3776,7 +3776,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -3806,7 +3806,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -3849,7 +3849,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -3896,7 +3896,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -3934,7 +3934,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -3968,7 +3968,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -4003,7 +4003,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -4047,7 +4047,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -4077,7 +4077,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -4114,7 +4114,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -4156,7 +4156,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -4192,7 +4192,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
@@ -4223,7 +4223,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -4253,7 +4253,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -4286,7 +4286,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server

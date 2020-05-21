@@ -114,7 +114,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
      * <li>ClassificationException              Error processing a classification.</li>
      * <li>StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
@@ -164,7 +164,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse getProjectByGuid(String userId, String guid) {
@@ -303,7 +303,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * @return a response which when successful contains the updated project
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -400,7 +400,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -477,7 +477,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * @return response which when successful contains the restored project
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
@@ -511,7 +511,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * @return a response which when successful contains the Project terms
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>

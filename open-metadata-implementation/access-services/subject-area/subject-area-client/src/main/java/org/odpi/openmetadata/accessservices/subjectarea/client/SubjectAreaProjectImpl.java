@@ -63,7 +63,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException  the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException  the supplied guid was not recognised
      * @throws ClassificationException Error processing a classification
      * @throws FunctionNotSupportedException   Function not supported
      *
@@ -124,7 +124,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws FunctionNotSupportedException   Function not supported
      *
      * Client library Exceptions
@@ -410,7 +410,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @param userId userId under which the request is performed
      * @param guid userId of the project to be deleted.
      * @return the deleted project
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -460,7 +460,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @param userId userId under which the request is performed
      * @param guid userId of the project to be deleted.
      *
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws EntityNotPurgedException a hard delete was issued but the project was not purged
@@ -555,7 +555,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       userId of the project to restore
      * @return the restored project
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.

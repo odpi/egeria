@@ -50,7 +50,7 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied userId was not recognised.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
      * <li> ClassificationException              Error processing a classification.</li>
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>

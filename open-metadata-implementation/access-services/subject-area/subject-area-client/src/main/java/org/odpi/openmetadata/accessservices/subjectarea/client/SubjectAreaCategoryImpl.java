@@ -52,7 +52,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws ClassificationException              Error processing a classification
      * @throws FunctionNotSupportedException        Function not supported
      *                                              <p>
@@ -100,7 +100,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws FunctionNotSupportedException        Function not supported
      *                                              <p>
      *                                              Client library Exceptions
@@ -433,7 +433,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   userId of the category to restore
      * @return the restored category
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
@@ -480,7 +480,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws ClassificationException              Error processing a classification
      * @throws FunctionNotSupportedException        Function not supported
      *                                              <p>
@@ -528,7 +528,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws FunctionNotSupportedException        Function not supported
      *                                              <p>
      *                                              Client library Exceptions
@@ -721,7 +721,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   userId of the subject area definition to restore
      * @return the restored subvject area definition
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.

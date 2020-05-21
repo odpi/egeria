@@ -271,7 +271,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws EntityNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -318,7 +318,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws EntityNotPurgedException a hard delete was issued but the term was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws FunctionNotSupportedException Function not supported
      *
      * Client library Exceptions
@@ -414,7 +414,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       userId of the term to restore
      * @return the restored term
-     * @throws UnrecognizedGUIDException the supplied userId was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
