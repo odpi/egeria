@@ -123,7 +123,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
     )  {
         return restAPI.findCategory(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
     }
-    /*
+    /**
      * Get Category relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant

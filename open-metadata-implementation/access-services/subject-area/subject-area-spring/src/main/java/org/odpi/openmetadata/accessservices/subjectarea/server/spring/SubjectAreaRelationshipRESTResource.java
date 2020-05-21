@@ -402,7 +402,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     @PostMapping( path = "/users/{userId}/relationships/antonyms")
     public SubjectAreaOMASAPIResponse createAntonym(@PathVariable String serverName, @PathVariable String userId, @RequestBody Antonym antonym)
     {
-        return restAPI.createAntonym(serverName, userId,antonym);
+        return restAPI.createAntonym(serverName, userId, antonym);
     }
     /**
      * Get a antonym relationship
