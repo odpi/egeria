@@ -76,13 +76,13 @@ public class SubjectAreaRESTServicesInstance {
     public void setOMRSAPIHelper(OMRSAPIHelper oMRSAPIHelper) {
         this.oMRSAPIHelper = oMRSAPIHelper;
     }
-    /*
+    /**
      * Get relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName ret API name
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param userId   userId of the term to get
+     * @param guid   guid of the term to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -92,14 +92,6 @@ public class SubjectAreaRESTServicesInstance {
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return the relationships associated with the requested guid
      *
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException   Function not supported
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
     public SubjectAreaOMASAPIResponse getRelationshipsFromGuid(String serverName,

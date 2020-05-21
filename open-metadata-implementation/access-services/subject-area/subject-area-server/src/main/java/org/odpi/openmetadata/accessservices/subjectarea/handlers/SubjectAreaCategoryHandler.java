@@ -213,7 +213,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
     
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the category to get. This could be a userId for a SubjectAreaDefintion, which is type of category
+     * @param guid       guid of the category to get. This could be a userId for a SubjectAreaDefintion, which is type of category
      * @return response which when successful contains the category with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
@@ -389,7 +389,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * Status is not updated using this call.
      *
      * @param userId           userId under which the request is performed
-     * @param guid             userId of the category to update
+     * @param guid             guid of the category to update
      * @param suppliedCategory category to be updated
      * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated category
@@ -485,7 +485,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
     
      * @param userId     userId under which the request is performed
-     * @param guid       userId of the category to be deleted.
+     * @param guid       guid of the category to be deleted.
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
@@ -540,7 +540,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
     
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the category to restore
+     * @param guid       guid of the category to restore
      * @return response which when successful contains the restored category
      * when not successful the following Exception responses can occur
      * <ul>

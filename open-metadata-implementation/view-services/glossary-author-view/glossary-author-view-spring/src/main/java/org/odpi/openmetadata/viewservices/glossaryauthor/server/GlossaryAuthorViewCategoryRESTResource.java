@@ -67,8 +67,8 @@ public class GlossaryAuthorViewCategoryRESTResource {
      *
      * @param serverName local UI server name
      * @param userId     userid
-     * @param guid       userId of the category to get
-     * @return response which when successful contains the category with the requested userId
+     * @param guid       guid of the category to get
+     * @return response which when successful contains the category with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>

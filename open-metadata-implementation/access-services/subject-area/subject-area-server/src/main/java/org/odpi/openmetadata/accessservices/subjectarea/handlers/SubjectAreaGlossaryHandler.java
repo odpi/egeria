@@ -306,7 +306,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * Status is not updated using this call.
      *
      * @param userId           unique identifier for requesting user, under which the request is performed
-     * @param guid             userId of the glossary to update
+     * @param guid             guid of the glossary to update
      * @param suppliedGlossary glossary to be updated
      * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated glossary
@@ -396,7 +396,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * when not successful the following Exceptions can occur
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the glossary to be deleted.
+     * @param guid       guid of the glossary to be deleted.
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
@@ -474,7 +474,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the glossary to restore
+     * @param guid       guid of the glossary to restore
      * @return response which when successful contains the restored glossary
      * when not successful the following Exception responses can occur
      * <ul>

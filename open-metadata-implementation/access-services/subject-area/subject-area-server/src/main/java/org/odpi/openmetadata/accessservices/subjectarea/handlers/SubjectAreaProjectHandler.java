@@ -258,7 +258,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * Get Project relationships
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param guid               userId of the term to get
+     * @param guid               guid of the project to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -297,7 +297,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * Status is not updated using this call.
      *
      * @param userId          unique identifier for requesting user, under which the request is performed
-     * @param guid            userId of the project to update
+     * @param guid            guid of the project to update
      * @param suppliedProject project to be updated
      * @param isReplace       flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated project
@@ -395,7 +395,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * when not successful the following Exceptions can occur
      *
      * @param userId  unique identifier for requesting user, under which the request is performed
-     * @param guid    userId of the project to be deleted.
+     * @param guid    guid of the project to be deleted.
      * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
@@ -506,7 +506,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      *
      * @param subjectAreaGraphHandler graph handler
      * @param userId                  unique identifier for requesting user, under which the request is performed
-     * @param guid                    userId of the Project to get
+     * @param guid                    guid of the Project to get
      * @param asOfTime                the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @return a response which when successful contains the Project terms
      * when not successful the following Exception responses can occur
