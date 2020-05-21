@@ -12,8 +12,8 @@ import java.util.List;
 
 import org.odpi.openmetadata.accessservices.cognos.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.cognos.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.AnalyticsModelingErrorCode;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDatabaseSchema;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerModule;
@@ -48,7 +48,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getDatabases() throws CognosCheckedException {
+	public void getDatabases() throws AnalyticsModelingCheckedException {
 		// setup repository
 		createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseEntity(DATABASE_ADWENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
@@ -66,13 +66,13 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getDatabasesEmptyRepository() throws CognosCheckedException {
+	public void getDatabasesEmptyRepository() throws AnalyticsModelingCheckedException {
 		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases();
 		assertTrue(databases.size() == 0, "Database list expected to be empty.");
 	}
 
 	@Test
-	public void getDatabaseSchemasWithEmptyCatalog() throws CognosCheckedException {
+	public void getDatabaseSchemasWithEmptyCatalog() throws AnalyticsModelingCheckedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String guidDataSource = entityDB.getGUID();
@@ -83,7 +83,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getDatabaseSchemas() throws CognosCheckedException {
+	public void getDatabaseSchemas() throws AnalyticsModelingCheckedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String guidDataSource = entityDB.getGUID();
@@ -102,7 +102,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getDatabaseSchemasSameNameForTwoCatalogs() throws CognosCheckedException {
+	public void getDatabaseSchemasSameNameForTwoCatalogs() throws AnalyticsModelingCheckedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
@@ -116,7 +116,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getSchemaTablesForEmptySchema() throws CognosCheckedException {
+	public void getSchemaTablesForEmptySchema() throws AnalyticsModelingCheckedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
@@ -131,17 +131,17 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String schemaName = "NonExistingSchemaName";
 
-		CognosCheckedException thrown = expectThrows(CognosCheckedException.class,
+		AnalyticsModelingCheckedException thrown = expectThrows(AnalyticsModelingCheckedException.class,
 				() -> databaseContextHandler.getSchemaTables(entityDB.getGUID(), schemaName));
 
-		assertEquals(CognosErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
+		assertEquals(AnalyticsModelingErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
 				thrown.getReportedErrorMessageId(), "Message Id is not correct");
 
 		assertTrue(thrown.getMessage().contains(schemaName), "Failed schema name should be in the message.");
 	}
 
 	@Test
-	public void getSchemaTables() throws CognosCheckedException {
+	public void getSchemaTables() throws AnalyticsModelingCheckedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		EntityDetail entitySchema = createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
@@ -229,9 +229,9 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	public void getModuleFailure_BadDataSourceGuid() {
 
 		String badGuid = "BadGuid";
-		CognosCheckedException thrown = expectThrows(CognosCheckedException.class,
+		AnalyticsModelingCheckedException thrown = expectThrows(AnalyticsModelingCheckedException.class,
 				() -> databaseContextHandler.getModule(badGuid, DATABASE_GOSALES, SCHEMA_DBO));
-		assertEquals(CognosErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition().getMessageId(),
+		assertEquals(AnalyticsModelingErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition().getMessageId(),
 				thrown.getReportedErrorMessageId(), "Message Id is not correct");
 
 		assertTrue(thrown.getMessage().contains(badGuid), "GUID should be in the message.");
@@ -243,10 +243,10 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 
 		String badSchema = "schemaUnknown";
-		CognosCheckedException thrown = expectThrows(CognosCheckedException.class,
+		AnalyticsModelingCheckedException thrown = expectThrows(AnalyticsModelingCheckedException.class,
 				() -> databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES, badSchema));
 
-		assertEquals(CognosErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
+		assertEquals(AnalyticsModelingErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
 				thrown.getReportedErrorMessageId(), "Message Id is not correct");
 
 		assertTrue(thrown.getMessage().contains(badSchema), "Failed schema name should be in the message.");

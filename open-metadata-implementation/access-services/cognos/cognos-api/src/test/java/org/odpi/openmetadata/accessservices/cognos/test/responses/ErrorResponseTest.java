@@ -6,8 +6,8 @@ package org.odpi.openmetadata.accessservices.cognos.test.responses;
 import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.Test;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.AnalyticsModelingErrorCode;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.responses.ErrorResponse;
 import org.odpi.openmetadata.accessservices.cognos.test.utils.TestUtilities;
 
@@ -28,8 +28,8 @@ public class ErrorResponseTest {
 	@Test
 	public void toJson() {
 		
-		CognosCheckedException ex = new CognosCheckedException(
-				CognosErrorCode.INCORRECT_MODEL_EXCEPTION.getMessageDefinition("guidEntity", "error description"),
+		AnalyticsModelingCheckedException ex = new AnalyticsModelingCheckedException(
+				AnalyticsModelingErrorCode.INCORRECT_MODEL_EXCEPTION.getMessageDefinition("guidEntity", "error description"),
 				"ErrorResponse",
 				"");
 		

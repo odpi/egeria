@@ -17,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * CognosServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class CognosServicesInstance extends OCFOMASServiceInstance
+public class AnalyticsModelingServicesInstance extends OCFOMASServiceInstance
 {
     private DatabaseContextHandler databaseContextHandler;
 
@@ -32,7 +32,7 @@ public class CognosServicesInstance extends OCFOMASServiceInstance
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
-    public CognosServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones,
+    public AnalyticsModelingServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones,
                                AuditLog auditLog, String localServerUserId, int maxPageSize) throws NewInstanceException {
     	
         super(AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName(), repositoryConnector, supportedZones, null, auditLog,

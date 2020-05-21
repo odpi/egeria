@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDataba
  * Response for request of the available database schemas. 
  *
  */
-public class SchemasResponse extends CognosOMASAPIResponse{
+public class SchemasResponse extends AnalyticsModelingOMASAPIResponse{
 
 	/**
 	 * Set list of schemas available for database.

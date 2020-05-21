@@ -7,10 +7,10 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.OMAGCheckedException
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 /**
- * Exception based on CognosErrorCode class {@link org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode}
+ * Exception based on CognosErrorCode class {@link org.odpi.openmetadata.accessservices.cognos.ffdc.AnalyticsModelingErrorCode}
  * 
  */
-public class CognosCheckedException extends OMAGCheckedExceptionBase {
+public class AnalyticsModelingCheckedException extends OMAGCheckedExceptionBase {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -21,7 +21,7 @@ public class CognosCheckedException extends OMAGCheckedExceptionBase {
 	 * @param actionDescription interrupted by the exception.
 	 * @param caughtError original cause of the exception.
 	 */
-    public CognosCheckedException(ExceptionMessageDefinition msg, String className, String actionDescription, Throwable caughtError) {
+    public AnalyticsModelingCheckedException(ExceptionMessageDefinition msg, String className, String actionDescription, Throwable caughtError) {
         super(msg, className, actionDescription, caughtError);
      }
     
@@ -31,7 +31,7 @@ public class CognosCheckedException extends OMAGCheckedExceptionBase {
 	 * @param className where exception was thrown.
 	 * @param actionDescription interrupted by the exception.
 	 */
-    public CognosCheckedException(ExceptionMessageDefinition msg, String className, String actionDescription) {
+    public AnalyticsModelingCheckedException(ExceptionMessageDefinition msg, String className, String actionDescription) {
         super(msg, className, actionDescription);
     }
     

@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerModule
  *
  */
 
-public class ModuleResponse extends CognosOMASAPIResponse {
+public class ModuleResponse extends AnalyticsModelingOMASAPIResponse {
 
 	/**
 	 * Set module definition.

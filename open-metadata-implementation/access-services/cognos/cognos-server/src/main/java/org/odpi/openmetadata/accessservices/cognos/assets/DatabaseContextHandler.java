@@ -18,8 +18,8 @@ import java.util.stream.Stream;
 import org.apache.commons.collections4.CollectionUtils;
 
 import org.odpi.openmetadata.accessservices.cognos.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.AnalyticsModelingErrorCode;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.model.*;
 import org.odpi.openmetadata.accessservices.cognos.model.module.*;
 import org.odpi.openmetadata.accessservices.cognos.model.module.Module;
@@ -71,9 +71,9 @@ public class DatabaseContextHandler {
 	/**
 	 * Get list of databases on the server.
 	 * @return list of database descriptors.
-	 * @throws CognosCheckedException in case of an repository operation failure.
+	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 */
-	public List<ResponseContainerDatabase> getDatabases() throws CognosCheckedException {
+	public List<ResponseContainerDatabase> getDatabases() throws AnalyticsModelingCheckedException {
 		
 		setContext("getDatabases");
 
@@ -104,9 +104,9 @@ public class DatabaseContextHandler {
 	 * 
 	 * @param guidDataSource defines database
 	 * @return list of schemas attributes.
-	 * @throws CognosCheckedException in case of an repository operation failure.
+	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 */
-	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String guidDataSource) throws CognosCheckedException {
+	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String guidDataSource) throws AnalyticsModelingCheckedException {
 
 		setContext("getDatabaseSchemas");
 
@@ -160,9 +160,9 @@ public class DatabaseContextHandler {
 	 * @param guidDataSource of the schema.
 	 * @param schema         name.
 	 * @return list of table names.
-	 * @throws CognosCheckedException if failed
+	 * @throws AnalyticsModelingCheckedException if failed
 	 */
-	public ResponseContainerSchemaTables getSchemaTables(String guidDataSource, String schema) throws CognosCheckedException {
+	public ResponseContainerSchemaTables getSchemaTables(String guidDataSource, String schema) throws AnalyticsModelingCheckedException {
 
 		setContext("getSchemaTables");
 
@@ -184,9 +184,9 @@ public class DatabaseContextHandler {
 	 * Get tables for the schema.
 	 * @param dbSchemaEntity schema entity of the requested tables
 	 * @return list of table entities that belongs to the schema.
-	 * @throws CognosCheckedException 
+	 * @throws AnalyticsModelingCheckedException 
 	 */
-	private List<EntityDetail> getTablesForSchema(EntityDetail dbSchemaEntity) throws CognosCheckedException {
+	private List<EntityDetail> getTablesForSchema(EntityDetail dbSchemaEntity) throws AnalyticsModelingCheckedException {
 
 		List<Relationship> allDbSchemaToSchemaType = omEntityDao.getRelationshipsForEntity(dbSchemaEntity, Constants.ASSET_SCHEMA_TYPE);
 
@@ -216,9 +216,9 @@ public class DatabaseContextHandler {
 	 * @param catalog of the module
 	 * @param schema of the module
 	 * @return module built for defined schema
-	 * @throws CognosCheckedException in case of an repository operation failure.
+	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 */
-	public ResponseContainerModule getModule(String databaseGuid, String catalog, String schema) throws CognosCheckedException {
+	public ResponseContainerModule getModule(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
 
 		setContext("getModule");
 
@@ -228,7 +228,7 @@ public class DatabaseContextHandler {
 		return ret;
 	}
 
-	private Module buildModule(String databaseGuid, String catalog, String schema) throws CognosCheckedException {
+	private Module buildModule(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
 		Module module = new Module();
 
 		module.setIdentifier(catalog + "." + schema);
@@ -236,7 +236,7 @@ public class DatabaseContextHandler {
 		return module;
 	}
 
-	private DataSource buildDataSource(String databaseGuid, String catalog, String schema) throws CognosCheckedException {
+	private DataSource buildDataSource(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
 		DataSource ds = new DataSource();
 		ds.setCatalog(catalog);
 		ds.setSchema(schema);
@@ -245,7 +245,7 @@ public class DatabaseContextHandler {
 		return ds;
 	}
 
-	private List<Table> buildTables(String databaseGuid, String schema) throws CognosCheckedException {
+	private List<Table> buildTables(String databaseGuid, String schema) throws AnalyticsModelingCheckedException {
 
 		EntityDetail schemaEntity = getSchemaEntityByName(databaseGuid, schema);
 		List<EntityDetail> tables = getTablesForSchema(schemaEntity);
@@ -269,7 +269,7 @@ public class DatabaseContextHandler {
 		try {
 			relationshipsTableColumns = omEntityDao.getRelationshipsForEntity(entityTable,
 					Constants.NESTED_SCHEMA_ATTRIBUTE);
-		} catch (CognosCheckedException e) {
+		} catch (AnalyticsModelingCheckedException e) {
 			// skip the table
 			return null;
 		}
@@ -362,11 +362,11 @@ public class DatabaseContextHandler {
 						EntityDetail schemaEntity;
 						schemaEntity = getParentEntity(tableEntity, Constants.ATTRIBUTE_FOR_SCHEMA);
 						fkColumn.setPkSchema(getEntityStringProperty(schemaEntity, Constants.DISPLAY_NAME));
-					} catch (CognosCheckedException exTable) {
+					} catch (AnalyticsModelingCheckedException exTable) {
 						// log foreign key from unknown schema
 						return;
 					}
-				} catch (CognosCheckedException exSchema) {
+				} catch (AnalyticsModelingCheckedException exSchema) {
 					// log foreign key from unknown table
 					return;
 				}
@@ -419,9 +419,9 @@ public class DatabaseContextHandler {
 	 * @param child whose parent is requested.
 	 * @param propertyName that defines relationship
 	 * @return parent entity.
-	 * @throws CognosCheckedException 
+	 * @throws AnalyticsModelingCheckedException 
 	 */
-	private EntityDetail getParentEntity(EntityDetail child, String propertyName) throws CognosCheckedException {
+	private EntityDetail getParentEntity(EntityDetail child, String propertyName) throws AnalyticsModelingCheckedException {
 		List<Relationship> columnRelationships = omEntityDao.getRelationshipsForEntity(child, propertyName);
 		// relationship table->column
 		Relationship columnTableRelationship = columnRelationships.stream()
@@ -437,7 +437,7 @@ public class DatabaseContextHandler {
 		EntityDetail columnEntity;
 		try {
 			columnEntity = omEntityDao.getEntityByGuid(tableTypeToColumns.getEntityTwoProxy().getGUID());
-		} catch (CognosCheckedException e) {
+		} catch (AnalyticsModelingCheckedException e) {
 			// skip the item
 			return null;
 		}
@@ -469,7 +469,7 @@ public class DatabaseContextHandler {
 			String dt = omEntityDao.getStringProperty(Constants.ODBC_TYPE, ap);
 			tableColumn.setDatatype(length == null ? dt : dt + "(" + length + ")");
 
-		} catch (CognosCheckedException e) {
+		} catch (AnalyticsModelingCheckedException e) {
 			// column is useless without data type information
 			return null;
 		}
@@ -494,15 +494,15 @@ public class DatabaseContextHandler {
 	 *
 	 * @param column for which the type is retrieved
 	 * @return the column type entity linked to column entity
-	 * @throws CognosCheckedException 
+	 * @throws AnalyticsModelingCheckedException 
 	 */
-	private EntityDetail getColumnType(EntityDetail column) throws CognosCheckedException {
+	private EntityDetail getColumnType(EntityDetail column) throws AnalyticsModelingCheckedException {
 
 		List<Relationship> columnToColumnType = omEntityDao.getRelationshipsForEntity(column, Constants.ATTACHED_NOTE_LOG);
 		return omEntityDao.getEntityByGuid(columnToColumnType.get(0).getEntityTwoProxy().getGUID());
 	}
 
-	private EntityDetail getSchemaEntityByName(String databaseGuid, String schema) throws CognosCheckedException {
+	private EntityDetail getSchemaEntityByName(String databaseGuid, String schema) throws AnalyticsModelingCheckedException {
 
 		EntityDetail dbEntity = omEntityDao.getEntityByGuid(databaseGuid);
 		List<Relationship> databaseToDbSchemaRelationships = omEntityDao.getRelationshipsForEntity(dbEntity, Constants.DATA_CONTENT_FOR_DATASET);
@@ -520,8 +520,8 @@ public class DatabaseContextHandler {
 					}
 					return null;
 				}).filter(Objects::nonNull).findFirst()
-				.orElseThrow(()-> new CognosCheckedException(
-						CognosErrorCode.SCHEMA_UNKNOWN.getMessageDefinition(schema),
+				.orElseThrow(()-> new AnalyticsModelingCheckedException(
+						AnalyticsModelingErrorCode.SCHEMA_UNKNOWN.getMessageDefinition(schema),
 						this.getClass().getSimpleName(),
 						"getSchemaEntityByName"));
 	}
@@ -536,7 +536,7 @@ public class DatabaseContextHandler {
 		List<Relationship> columnForeignKeys;
 		try {
 			columnForeignKeys = omEntityDao.getRelationshipsForEntity(columnEntity, Constants.FOREIGN_KEY);
-		} catch (CognosCheckedException e) {
+		} catch (AnalyticsModelingCheckedException e) {
 			// no foreign keys
 			return null;
 		}

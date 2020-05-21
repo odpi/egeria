@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDataba
  * Response for request of the available databases. 
  *
  */
-public class DatabasesResponse extends CognosOMASAPIResponse{
+public class DatabasesResponse extends AnalyticsModelingOMASAPIResponse{
 
 	/**
 	 * Set list of databases as response content.

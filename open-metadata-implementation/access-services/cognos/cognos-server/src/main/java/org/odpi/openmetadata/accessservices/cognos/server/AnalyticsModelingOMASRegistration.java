@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.cognos.server;
 
-import org.odpi.openmetadata.accessservices.cognos.admin.CognosAdmin;
+import org.odpi.openmetadata.accessservices.cognos.admin.AnalyticsModelingAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
@@ -15,7 +15,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOpe
  * information as confirmation that there is an implementation of this access
  * service in the server and it can be configured and used.
  */
-class CognosOMASRegistration {
+class AnalyticsModelingOMASRegistration {
 
 	/**
 	 * Pass information about this access service to the OMAG Server administration
@@ -24,7 +24,7 @@ class CognosOMASRegistration {
 	static void registerAccessService() {
 		AccessServiceDescription myDescription = AccessServiceDescription.COGNOS_OMAS;
 		AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-				ServiceOperationalStatus.ENABLED, CognosAdmin.class.getName());
+				ServiceOperationalStatus.ENABLED, AnalyticsModelingAdmin.class.getName());
 
 		OMAGAccessServiceRegistration.registerAccessService(myRegistration);
 	}

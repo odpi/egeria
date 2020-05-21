@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerSchemaTables;
 
-public class SchemaTablesResponse extends CognosOMASAPIResponse {
+public class SchemaTablesResponse extends AnalyticsModelingOMASAPIResponse {
 	
 	/**
 	 * Set list of tables of the schema.

@@ -27,7 +27,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  * </ul>
  */
 
-public enum CognosErrorCode implements ExceptionMessageSet {
+public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 
 	ADD_RELATIONSHIP_EXCEPTION(
 			"OMAS-COGNOS-001", 
@@ -125,7 +125,7 @@ public enum CognosErrorCode implements ExceptionMessageSet {
 	 * @param systemAction describes the result of the error
 	 * @param userAction describes how a consumer should correct the error.
 	 */
-	CognosErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction,
+	AnalyticsModelingErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction,
 			String userAction) {
 		this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
 				errorMessageId,
@@ -141,7 +141,7 @@ public enum CognosErrorCode implements ExceptionMessageSet {
 	 * @param systemAction describes the result of the error
 	 * @param userAction describes how a consumer should correct the error.
 	 */
-	CognosErrorCode(String errorMessageId, String errorMessage, String systemAction, String userAction) {
+	AnalyticsModelingErrorCode(String errorMessageId, String errorMessage, String systemAction, String userAction) {
 		this(500, errorMessageId, errorMessage, systemAction, userAction);
 	}
 

@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.cognos.utils.contentmanager;
 
 
 import org.odpi.openmetadata.accessservices.cognos.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.AnalyticsModelingErrorCode;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -72,15 +72,15 @@ public class OMEntityDaoForTests extends OMEntityDao {
                                                                         entity.getStatus());
     }
     
-    public void deleteEntity(EntityDetail entity) throws CognosCheckedException {
+    public void deleteEntity(EntityDetail entity) throws AnalyticsModelingCheckedException {
     	InstanceType instanceType = entity.getType();
     	try {
 			enterpriseConnector.getMetadataCollection().deleteEntity(Constants.COGNOS_USER_ID,
 					instanceType.getTypeDefGUID(), instanceType.getTypeDefName(), entity.getGUID());
 		} catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException
 				| FunctionNotSupportedException | UserNotAuthorizedException ex) {
-			throw new CognosCheckedException(
-					CognosErrorCode.DELETE_ENTITY_EXCEPTION.getMessageDefinition("QName", getEntityQName(entity)),
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.DELETE_ENTITY_EXCEPTION.getMessageDefinition("QName", getEntityQName(entity)),
 					this.getClass().getSimpleName(),
 					"deleteEntity",
 					ex);
@@ -96,13 +96,13 @@ public class OMEntityDaoForTests extends OMEntityDao {
      * @param entityOneGUID        giud of the first end of the relationship
      * @param entityTwoGUID        giud of the second end of the relationship
      * @return the created relationship
-     * @throws CognosCheckedException 
+     * @throws AnalyticsModelingCheckedException 
      */
     private Relationship addRelationship(String metadataCollectionId,
                                          String typeName,
                                          InstanceProperties instanceProperties,
                                          String entityOneGUID,
-                                         String entityTwoGUID) throws CognosCheckedException {
+                                         String entityTwoGUID) throws AnalyticsModelingCheckedException {
 
         Relationship relationship = null;
         try {
@@ -122,23 +122,23 @@ public class OMEntityDaoForTests extends OMEntityDao {
         } catch (StatusNotSupportedException | UserNotAuthorizedException | EntityNotKnownException 
         		| InvalidParameterException | RepositoryErrorException | PropertyErrorException 
         		| TypeErrorException | FunctionNotSupportedException ex) {
-			throw new CognosCheckedException(
-					CognosErrorCode.ADD_RELATIONSHIP_EXCEPTION.getMessageDefinition(typeName),
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.ADD_RELATIONSHIP_EXCEPTION.getMessageDefinition(typeName),
 					this.getClass().getSimpleName(),
 					"addRelationship",
 					ex);
         }
     }
     
-    public void updateEntityProperty(EntityDetail entity, InstanceProperties newProperties) throws CognosCheckedException {
+    public void updateEntityProperty(EntityDetail entity, InstanceProperties newProperties) throws AnalyticsModelingCheckedException {
     	try {
 			enterpriseConnector.getMetadataCollection().updateEntityProperties(Constants.COGNOS_USER_ID,
 					entity.getGUID(),
 					newProperties);
 		} catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException
 				| PropertyErrorException | UserNotAuthorizedException | FunctionNotSupportedException ex) {
-			throw new CognosCheckedException(
-					CognosErrorCode.UPDATE_PROPERTY_EXCEPTION.getMessageDefinition(getEntityQName(entity), newProperties.toString()),
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.UPDATE_PROPERTY_EXCEPTION.getMessageDefinition(getEntityQName(entity), newProperties.toString()),
 					this.getClass().getSimpleName(),
 					"updateEntityProperty",
 					ex);
@@ -147,7 +147,7 @@ public class OMEntityDaoForTests extends OMEntityDao {
 		}
     }
 
-    public void classifyEntity(EntityDetail entity, String classificationName, InstanceProperties classificationProperties) throws CognosCheckedException {
+    public void classifyEntity(EntityDetail entity, String classificationName, InstanceProperties classificationProperties) throws AnalyticsModelingCheckedException {
     	try {
 			enterpriseConnector.getMetadataCollection().classifyEntity(Constants.COGNOS_USER_ID,
 					entity.getGUID(),
@@ -156,8 +156,8 @@ public class OMEntityDaoForTests extends OMEntityDao {
 		} catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException
 				| PropertyErrorException | UserNotAuthorizedException | FunctionNotSupportedException 
 				| ClassificationErrorException ex) {
-			throw new CognosCheckedException(
-					CognosErrorCode.CLASSIFICATION_EXCEPTION.getMessageDefinition(getEntityQName(entity), classificationName),
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.CLASSIFICATION_EXCEPTION.getMessageDefinition(getEntityQName(entity), classificationName),
 					this.getClass().getSimpleName(),
 					"classifyEntity",
 					ex);
@@ -173,9 +173,9 @@ public class OMEntityDaoForTests extends OMEntityDao {
      * @param qualifiedName qualified name property of the entity to be retrieved
      * @param zoneRestricted
      * @return the existing entity with the given qualified name or null if it doesn't exist
-	 * @throws CognosCheckedException 
+	 * @throws AnalyticsModelingCheckedException 
      */
-    public EntityDetail getEntity(String typeName, String qualifiedName, boolean zoneRestricted) throws CognosCheckedException {
+    public EntityDetail getEntity(String typeName, String qualifiedName, boolean zoneRestricted) throws AnalyticsModelingCheckedException {
         Map<String, String>  properties = new HashMap<>();
         // GDW - need to convert qualifiedName to exactMatchRegex
         String qualifiedNameRegex = enterpriseConnector.getRepositoryHelper().getExactMatchRegex(qualifiedName);
@@ -207,11 +207,11 @@ public class OMEntityDaoForTests extends OMEntityDao {
      * @param guid1            is guid of first end of relationship
      * @param guid2            is guid of the second end f relationship
      * @return the relationship of the given type between the two entities; null if it doesn't exist
-     * @throws CognosCheckedException 
+     * @throws AnalyticsModelingCheckedException 
      */
     private Relationship checkRelationshipExists(String relationshipType,
                                          String guid1,
-                                         String guid2) throws CognosCheckedException {
+                                         String guid2) throws AnalyticsModelingCheckedException {
         List<Relationship> relationships = getRelationships(relationshipType, guid2);
         if (relationships == null || relationships.isEmpty()) {
         	return null;
@@ -221,7 +221,7 @@ public class OMEntityDaoForTests extends OMEntityDao {
                 && checkRelationshipEnds(relationship, guid1, guid2)).findFirst().orElse(null);
     }
 
-    public List<Relationship> getRelationships(String relationshipType, String guid) throws CognosCheckedException {
+    public List<Relationship> getRelationships(String relationshipType, String guid) throws AnalyticsModelingCheckedException {
 
         if (log.isDebugEnabled()) {
             log.debug("Retrieving relationships of type {} for entity {}", relationshipType, guid);
@@ -245,11 +245,11 @@ public class OMEntityDaoForTests extends OMEntityDao {
         }
     }
 
-    private CognosCheckedException buildRetrieveRelationshipException(String guid, String relationshipType,
+    private AnalyticsModelingCheckedException buildRetrieveRelationshipException(String guid, String relationshipType,
 			OMRSCheckedExceptionBase e, String name) {
     	
-		return new CognosCheckedException(
-				CognosErrorCode.GET_RELATIONSHIP_EXCEPTION.getMessageDefinition(relationshipType, guid, name),
+		return new AnalyticsModelingCheckedException(
+				AnalyticsModelingErrorCode.GET_RELATIONSHIP_EXCEPTION.getMessageDefinition(relationshipType, guid, name),
 				this.getClass().getSimpleName(),
 				"deleteEntity",
 				e);
@@ -286,12 +286,12 @@ public class OMEntityDaoForTests extends OMEntityDao {
      * @throws UserNotAuthorizedException
      * @throws TypeErrorException
      * @throws StatusNotSupportedException
-     * @throws CognosCheckedException 
+     * @throws AnalyticsModelingCheckedException 
      */
     public EntityDetail addEntity(String typeName,
                                   String qualifiedName,
                                   InstanceProperties properties,
-                                  boolean zoneRestricted) throws InvalidParameterException, PropertyErrorException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException, CognosCheckedException {
+                                  boolean zoneRestricted) throws InvalidParameterException, PropertyErrorException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException, AnalyticsModelingCheckedException {
         return addEntity(typeName, qualifiedName, properties, null, zoneRestricted);
     }
 
@@ -315,13 +315,13 @@ public class OMEntityDaoForTests extends OMEntityDao {
      * @throws ClassificationErrorException
      * @throws UserNotAuthorizedException
      * @throws RepositoryErrorException
-     * @throws CognosCheckedException 
+     * @throws AnalyticsModelingCheckedException 
      */
     public EntityDetail addEntity(String typeName,
                                   String qualifiedName,
                                   InstanceProperties properties,
                                   List<Classification> classifications,
-                                  boolean zoneRestricted) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeErrorException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, CognosCheckedException {
+                                  boolean zoneRestricted) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeErrorException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, AnalyticsModelingCheckedException {
 
         OMEntityWrapper wrapper = createOrUpdateEntity(typeName,
                                                         qualifiedName,
@@ -341,7 +341,7 @@ public class OMEntityDaoForTests extends OMEntityDao {
                                                                                InvalidParameterException, RepositoryErrorException,
                                                                                PropertyErrorException, TypeErrorException,
                                                                                PagingErrorException, ClassificationErrorException,
-                                                                               StatusNotSupportedException, EntityNotKnownException, CognosCheckedException {
+                                                                               StatusNotSupportedException, EntityNotKnownException, AnalyticsModelingCheckedException {
         EntityDetail entityDetail;
         OMEntityWrapper wrapper;
         entityDetail = getEntity(typeName, qualifiedName, zoneRestricted);
@@ -373,12 +373,12 @@ public class OMEntityDaoForTests extends OMEntityDao {
      * @param guid2            second end of the relationship
      * @param instanceProperties       specific to the relationship type
      * @return the existing relationship with the given qualified name or the newly created relationship with the given qualified name
-     * @throws CognosCheckedException 
+     * @throws AnalyticsModelingCheckedException 
      */
     public Relationship addRelationship(String relationshipType,
                                         String guid1,
                                         String guid2,
-                                        InstanceProperties instanceProperties) throws CognosCheckedException {
+                                        InstanceProperties instanceProperties) throws AnalyticsModelingCheckedException {
         Relationship relationship = checkRelationshipExists(relationshipType, guid1, guid2);
         if (relationship == null) {
             relationship = addRelationship("", relationshipType, instanceProperties, guid1, guid2);

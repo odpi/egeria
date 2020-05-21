@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.cognos.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.cognos.responses.CognosOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.cognos.server.CognosRestServices;
+import org.odpi.openmetadata.accessservices.cognos.responses.AnalyticsModelingOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.cognos.server.AnalyticsModelingRestServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,9 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 	url="https://egeria.odpi.org/open-metadata-implementation/access-services/cognos/"))
 
 
-public class CognosOMASResource {
+public class AnalyticsModelingOMASResource {
 
-    private final CognosRestServices restAPI = new CognosRestServices();
+    private final AnalyticsModelingRestServices restAPI = new AnalyticsModelingRestServices();
 
 	/**
 	 * Get list of databases.
@@ -36,7 +36,7 @@ public class CognosOMASResource {
 	 * @return Cognos response contains list of databases.
 	 */
 	@GetMapping(path = "/databases")
-	public CognosOMASAPIResponse getDatabases(
+	public AnalyticsModelingOMASAPIResponse getDatabases(
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId
 			)
@@ -52,7 +52,7 @@ public class CognosOMASResource {
 	 * @return Cognos response contains list of database schemas.
 	 */
 	@GetMapping(path = "/{dataSourceGUID}/schemas")
-	public CognosOMASAPIResponse getSchemas(
+	public AnalyticsModelingOMASAPIResponse getSchemas(
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
             @PathVariable("dataSourceGUID") String dataSource
@@ -72,7 +72,7 @@ public class CognosOMASResource {
 	 * @return Cognos response contains list of tables in the database schema.
 	 */
 	@PostMapping(path = "/{dataSourceGUID}/tables")
-	public CognosOMASAPIResponse getTables(
+	public AnalyticsModelingOMASAPIResponse getTables(
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
 			@PathVariable("dataSourceGUID") String dataSource,
@@ -95,7 +95,7 @@ public class CognosOMASResource {
 	 * @return physical module for the database schema.
 	 */
 	@PostMapping(path = "/{dataSourceGUID}/physicalModule")
-	public CognosOMASAPIResponse getPhysicalModule(
+	public AnalyticsModelingOMASAPIResponse getPhysicalModule(
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
 			@PathVariable("dataSourceGUID") String dataSource,

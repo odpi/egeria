@@ -35,7 +35,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
           @JsonSubTypes.Type(value = SchemaTablesResponse.class, name = "SchemaTablesResponse"),
           @JsonSubTypes.Type(value = ModuleResponse.class, name = "ModuleResponse")
         })
-public class CognosOMASAPIResponse extends FFDCResponseBase {
+public class AnalyticsModelingOMASAPIResponse extends FFDCResponseBase {
 	
 	private static final long serialVersionUID = 1L;
 	

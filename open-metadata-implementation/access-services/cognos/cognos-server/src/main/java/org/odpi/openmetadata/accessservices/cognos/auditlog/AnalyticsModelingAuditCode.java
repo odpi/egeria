@@ -21,7 +21,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  * <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum CognosAuditCode implements AuditLogMessageSet {
+public enum AnalyticsModelingAuditCode implements AuditLogMessageSet {
 
     SERVICE_INITIALIZING("OMAS-COGNOS-0001",
             OMRSAuditLogRecordSeverity.STARTUP,
@@ -105,7 +105,7 @@ public enum CognosAuditCode implements AuditLogMessageSet {
 	private AuditLogMessageDefinition messageDefinition;
 
 
-    CognosAuditCode(String logMessageId, OMRSAuditLogRecordSeverity severity, String logMessage, String systemAction, String userAction) {
+    AnalyticsModelingAuditCode(String logMessageId, OMRSAuditLogRecordSeverity severity, String logMessage, String systemAction, String userAction) {
         messageDefinition = new AuditLogMessageDefinition(logMessageId, severity,logMessage, systemAction, userAction);
     }
 

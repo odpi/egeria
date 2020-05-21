@@ -4,12 +4,12 @@ package org.odpi.openmetadata.accessservices.cognos.server;
 
 import java.util.List;
 
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerDatabaseSchema;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerModule;
 import org.odpi.openmetadata.accessservices.cognos.model.ResponseContainerSchemaTables;
-import org.odpi.openmetadata.accessservices.cognos.responses.CognosOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.cognos.responses.AnalyticsModelingOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.cognos.responses.DatabasesResponse;
 import org.odpi.openmetadata.accessservices.cognos.responses.ErrorResponse;
 import org.odpi.openmetadata.accessservices.cognos.responses.ModuleResponse;
@@ -24,11 +24,11 @@ import org.slf4j.LoggerFactory;
 /**
  * Server-side implementation of the Cognos OMAS interface for modeling.
  */
-public class CognosRestServices {
+public class AnalyticsModelingRestServices {
 
-	CognosInstanceHandler instanceHandler = new CognosInstanceHandler();
+	AnalyticsModelingInstanceHandler instanceHandler = new AnalyticsModelingInstanceHandler();
 
-	private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(CognosRestServices.class),
+	private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AnalyticsModelingRestServices.class),
 			AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName());
 	private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
@@ -39,10 +39,10 @@ public class CognosRestServices {
 	 * @param userId     of the user.
 	 * @return list of databases for the requested server/user.
 	 */
-	public CognosOMASAPIResponse getDatabases(String serverName, String userId) {
+	public AnalyticsModelingOMASAPIResponse getDatabases(String serverName, String userId) {
 
 		String methodName = "getDatabases";
-		CognosOMASAPIResponse ret;
+		AnalyticsModelingOMASAPIResponse ret;
 		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
 		try {
@@ -51,7 +51,7 @@ public class CognosRestServices {
 					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases();
 			response.setDatabasesList(databases);
 			ret = response;
-		} catch (CognosCheckedException e) {
+		} catch (AnalyticsModelingCheckedException e) {
 			ret = handleErrorResponse(e, methodName);
 		}
 
@@ -67,10 +67,10 @@ public class CognosRestServices {
 	 * @param dataSourceGuid of the requested database.
 	 * @return list of schemas for the requested database.
 	 */
-	public CognosOMASAPIResponse getSchemas(String serverName, String userId, String dataSourceGuid) {
+	public AnalyticsModelingOMASAPIResponse getSchemas(String serverName, String userId, String dataSourceGuid) {
 
 		String methodName = "getSchemas";
-		CognosOMASAPIResponse ret;
+		AnalyticsModelingOMASAPIResponse ret;
 		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
 		try {
@@ -79,7 +79,7 @@ public class CognosRestServices {
 					.getDatabaseContextHandler(serverName, userId, methodName).getDatabaseSchemas(dataSourceGuid);
 			response.setSchemaList(databasesSchemas);
 			ret = response;
-		} catch (CognosCheckedException e) {
+		} catch (AnalyticsModelingCheckedException e) {
 			ret = handleErrorResponse(e, methodName);
 		}
 
@@ -96,10 +96,10 @@ public class CognosRestServices {
 	 * @param schema       schema name on the database.
 	 * @return list of tables for the requested schema.
 	 */
-	public CognosOMASAPIResponse getTables(String serverName, String userId, String databaseGuid, String schema) {
+	public AnalyticsModelingOMASAPIResponse getTables(String serverName, String userId, String databaseGuid, String schema) {
 
 		String methodName = "getTables";
-		CognosOMASAPIResponse ret;
+		AnalyticsModelingOMASAPIResponse ret;
 		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
 		try {
@@ -108,7 +108,7 @@ public class CognosRestServices {
 					.getDatabaseContextHandler(serverName, userId, methodName).getSchemaTables(databaseGuid, schema);
 			response.setTableList(tables);
 			ret = response;
-		} catch (CognosCheckedException e) {
+		} catch (AnalyticsModelingCheckedException e) {
 			ret = handleErrorResponse(e, methodName);
 		}
 		restCallLogger.logRESTCallReturn(token, ret.toString());
@@ -125,11 +125,11 @@ public class CognosRestServices {
 	 * @param schema       schema name of the database.
 	 * @return module for the requested schema.
 	 */
-	public CognosOMASAPIResponse getModule(String serverName, String userId, String databaseGuid, String catalog,
+	public AnalyticsModelingOMASAPIResponse getModule(String serverName, String userId, String databaseGuid, String catalog,
 			String schema) {
 
 		String methodName = "getModule";
-		CognosOMASAPIResponse ret;
+		AnalyticsModelingOMASAPIResponse ret;
 		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
 		try {
@@ -139,7 +139,7 @@ public class CognosRestServices {
 					.getModule(databaseGuid, catalog, schema);
 			response.setModule(module);
 			ret = response;
-		} catch (CognosCheckedException e) {
+		} catch (AnalyticsModelingCheckedException e) {
 			ret = handleErrorResponse(e, "getModule");
 		}
 		
@@ -153,8 +153,8 @@ public class CognosRestServices {
 	 * @param methodName context
 	 * @return response with error definition.
 	 */
-	private CognosOMASAPIResponse handleErrorResponse(CognosCheckedException error, String methodName) {
-		CognosOMASAPIResponse ret = new ErrorResponse(error);
+	private AnalyticsModelingOMASAPIResponse handleErrorResponse(AnalyticsModelingCheckedException error, String methodName) {
+		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
 		restExceptionHandler.captureThrowable(ret, error, methodName);
 		return ret;
 	}

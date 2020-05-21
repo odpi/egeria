@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.odpi.openmetadata.accessservices.cognos.auditlog.CognosAuditCode;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
+import org.odpi.openmetadata.accessservices.cognos.auditlog.AnalyticsModelingAuditCode;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.AnalyticsModelingErrorCode;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -70,16 +70,16 @@ public class OMEntityDao {
      * @param fromElement index of the first entity.
      * @param pageSize number of entities to return.
      * @return list of matching entities
-     * @throws CognosCheckedException in case repository fails.
+     * @throws AnalyticsModelingCheckedException in case repository fails.
      */
-    public List<EntityDetail> findEntities(InstanceProperties matchProperties, String typeName, int fromElement, int pageSize) throws CognosCheckedException {
+    public List<EntityDetail> findEntities(InstanceProperties matchProperties, String typeName, int fromElement, int pageSize) throws AnalyticsModelingCheckedException {
         // GDW the matchProperties passed to this method should have already converted any exact match string
         // using the getExactMatchRegex repository helper method
         OMRSRepositoryHelper repositoryHelper = enterpriseConnector.getRepositoryHelper();
         TypeDef typeDef = repositoryHelper.getTypeDefByName(Constants.COGNOS_USER_ID, typeName);
         List<EntityDetail> existingEntities;
         try {
-            auditLog.logMessage(context, CognosAuditCode.FIND_ENTITIES.getMessageDefinition(typeDef.getName(),  matchProperties.toString()));
+            auditLog.logMessage(context, AnalyticsModelingAuditCode.FIND_ENTITIES.getMessageDefinition(typeDef.getName(),  matchProperties.toString()));
             existingEntities = enterpriseConnector.getMetadataCollection()
             		.findEntitiesByProperty(Constants.COGNOS_USER_ID,
                                             typeDef.getGUID(),
@@ -97,8 +97,8 @@ public class OMEntityDao {
         		| PagingErrorException ex) {
             String keys = String.join(",", matchProperties.getInstanceProperties().keySet());
             String values = matchProperties.getInstanceProperties().values().stream().map(InstancePropertyValue::valueAsString).collect(Collectors.joining(","));
-			throw new CognosCheckedException(
-					CognosErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition(keys, values),
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition(keys, values),
 					this.getClass().getSimpleName(),
 					"findEntities",
 					ex);
@@ -133,23 +133,23 @@ public class OMEntityDao {
 	 * 
 	 * @param guid of the entity to fetch.
 	 * @return entity with required GUID.
-	 * @throws CognosCheckedException if entity cannot be fetched: failed request to repository or entity not found.
+	 * @throws AnalyticsModelingCheckedException if entity cannot be fetched: failed request to repository or entity not found.
 	 */
-    public EntityDetail getEntityByGuid(String guid) throws CognosCheckedException  {
+    public EntityDetail getEntityByGuid(String guid) throws AnalyticsModelingCheckedException  {
         EntityDetail entity = null;
         try {
             entity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.COGNOS_USER_ID, guid);
         } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException 
         		| EntityProxyOnlyException | UserNotAuthorizedException ex) {
-			throw new CognosCheckedException(
-					CognosErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition(Constants.GUID, guid),
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition(Constants.GUID, guid),
 					this.getClass().getSimpleName(),
 					"getEntityByGuid",
 					ex);
         }
         if (entity == null) {
-			throw new CognosCheckedException(
-					CognosErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getMessageDefinition(Constants.GUID, guid),
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getMessageDefinition(Constants.GUID, guid),
 					this.getClass().getSimpleName(),
 					"getEntityByGuid");
         }
@@ -166,9 +166,9 @@ public class OMEntityDao {
 	 * @param entity whose relationships are requested.
 	 * @param relationshipType only relationship of the type are requested. All relationships are returned if null.
 	 * @return requested relationships.
-	 * @throws CognosCheckedException in case of repository fails.
+	 * @throws AnalyticsModelingCheckedException in case of repository fails.
 	 */
-	public List<Relationship> getRelationshipsForEntity(EntityDetail entity, String relationshipType) throws CognosCheckedException {
+	public List<Relationship> getRelationshipsForEntity(EntityDetail entity, String relationshipType) throws AnalyticsModelingCheckedException {
 		String relationshipTypeGuid = relationshipType == null ? null : getTypeDefGuidByName(relationshipType);
 		try {
 			return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.COGNOS_USER_ID,
@@ -176,8 +176,8 @@ public class OMEntityDao {
 		} catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException
 				| PropertyErrorException | PagingErrorException | FunctionNotSupportedException
 				| UserNotAuthorizedException ex) {
-			throw new CognosCheckedException(
-					CognosErrorCode.GET_RELATIONSHIP_EXCEPTION.getMessageDefinition(relationshipType, getEntityQName(entity)),
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.GET_RELATIONSHIP_EXCEPTION.getMessageDefinition(relationshipType, getEntityQName(entity)),
 					this.getClass().getSimpleName(),
 					"getRelationshipsForEntity",
 					ex);

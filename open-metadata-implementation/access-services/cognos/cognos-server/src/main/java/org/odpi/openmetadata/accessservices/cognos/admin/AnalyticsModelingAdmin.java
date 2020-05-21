@@ -6,9 +6,9 @@ package org.odpi.openmetadata.accessservices.cognos.admin;
 
 import java.util.List;
 
-import org.odpi.openmetadata.accessservices.cognos.auditlog.CognosAuditCode;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.CognosErrorCode;
-import org.odpi.openmetadata.accessservices.cognos.server.CognosServicesInstance;
+import org.odpi.openmetadata.accessservices.cognos.auditlog.AnalyticsModelingAuditCode;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.AnalyticsModelingErrorCode;
+import org.odpi.openmetadata.accessservices.cognos.server.AnalyticsModelingServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -27,13 +27,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * 
  *
  */
-public class CognosAdmin extends AccessServiceAdmin
+public class AnalyticsModelingAdmin extends AccessServiceAdmin
 {
 
     private OpenMetadataTopicConnector cognosOutTopicConnector;
     private AuditLog auditLog;
     private String serverName = null;
-    private CognosServicesInstance instance = null;
+    private AnalyticsModelingServicesInstance instance = null;
 
 
     /**
@@ -55,7 +55,7 @@ public class CognosAdmin extends AccessServiceAdmin
         
         final String actionDescription = "Initialize Cognos OMAS service.";
 
-        auditLog.logMessage(actionDescription, CognosAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
+        auditLog.logMessage(actionDescription, AnalyticsModelingAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
         this.auditLog = auditLog;
 
 		if (enterpriseConnector != null) {
@@ -79,7 +79,7 @@ public class CognosAdmin extends AccessServiceAdmin
             List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
                     accessServiceConfig.getAccessServiceName(), auditLog);
 
-            instance = new CognosServicesInstance(enterpriseConnector, supportedZones,
+            instance = new AnalyticsModelingServicesInstance(enterpriseConnector, supportedZones,
                     auditLog, serverUserName,  enterpriseConnector.getMaxPageSize());
 
        	
@@ -88,7 +88,7 @@ public class CognosAdmin extends AccessServiceAdmin
         } catch (Exception error) {
             auditLog.logException(
             		actionDescription,
-            		CognosAuditCode.getAuditLogMessageDefinition(
+            		AnalyticsModelingAuditCode.getAuditLogMessageDefinition(
             				OMAGAdminErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(),
             				AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName(),
             				error.getClass().getName(),
@@ -101,7 +101,7 @@ public class CognosAdmin extends AccessServiceAdmin
         }
         
         
-        auditLog.logMessage(actionDescription, CognosAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
+        auditLog.logMessage(actionDescription, AnalyticsModelingAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
     }
 
     /** 
@@ -114,19 +114,19 @@ public class CognosAdmin extends AccessServiceAdmin
      */
     private void startConnector(String actionDescription, String topicName, OpenMetadataTopicConnector topicConnector) throws OMAGConfigurationErrorException {
 
-        auditLog.logMessage(actionDescription, CognosAuditCode.SERVICE_REGISTERED_WITH_COGNOS_OUT_TOPIC.getMessageDefinition(topicName));
+        auditLog.logMessage(actionDescription, AnalyticsModelingAuditCode.SERVICE_REGISTERED_WITH_COGNOS_OUT_TOPIC.getMessageDefinition(topicName));
 
         try {
             topicConnector.start();
         } catch (ConnectorCheckedException e) {
         	
             auditLog.logException(actionDescription, 
-            		CognosAuditCode.getAuditLogMessageDefinition(
-            			CognosErrorCode.ERROR_INITIALIZING_COGNOS_TOPIC_CONNECTION.getMessageDefinition(), topicName, serverName),
+            		AnalyticsModelingAuditCode.getAuditLogMessageDefinition(
+            			AnalyticsModelingErrorCode.ERROR_INITIALIZING_COGNOS_TOPIC_CONNECTION.getMessageDefinition(), topicName, serverName),
             		e);
 
             throw new OMAGConfigurationErrorException(
-            		CognosErrorCode.ERROR_INITIALIZING_COGNOS_TOPIC_CONNECTION
+            		AnalyticsModelingErrorCode.ERROR_INITIALIZING_COGNOS_TOPIC_CONNECTION
             		.getMessageDefinition(topicName, serverName),
             		getClass().getSimpleName(),
             		actionDescription,
@@ -146,7 +146,7 @@ public class CognosAdmin extends AccessServiceAdmin
         	cognosOutTopicConnector.disconnect();
         } catch (ConnectorCheckedException error) {
             auditLog.logException(actionDescription,
-                    CognosAuditCode.SERVICE_INSTANCE_TERMINATION_FAILURE.getMessageDefinition(serverName),
+                    AnalyticsModelingAuditCode.SERVICE_INSTANCE_TERMINATION_FAILURE.getMessageDefinition(serverName),
                     error);
         }
 
@@ -155,6 +155,6 @@ public class CognosAdmin extends AccessServiceAdmin
             instance.shutdown();
         }
         
-        auditLog.logMessage(actionDescription, CognosAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
+        auditLog.logMessage(actionDescription, AnalyticsModelingAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
     }
 }

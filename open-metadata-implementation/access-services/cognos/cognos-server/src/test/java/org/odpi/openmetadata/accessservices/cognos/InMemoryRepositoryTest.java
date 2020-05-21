@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.cognos.utils.Constants;
 import org.odpi.openmetadata.accessservices.cognos.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.cognos.utils.QualifiedNameUtils;
@@ -170,13 +170,13 @@ public class InMemoryRepositoryTest {
 		} catch (InvalidParameterException | PropertyErrorException | RepositoryErrorException | EntityNotKnownException
 				| FunctionNotSupportedException | PagingErrorException | ClassificationErrorException
 				| UserNotAuthorizedException | TypeErrorException | StatusNotSupportedException 
-				| CognosCheckedException e) {
+				| AnalyticsModelingCheckedException e) {
 			fail("Failed create database entity.");
 		}
 		return null;
 	}
 	
-	protected EntityDetail createDatabaseSchemaEntity(String guidDB, String schemaName) throws CognosCheckedException {
+	protected EntityDetail createDatabaseSchemaEntity(String guidDB, String schemaName) throws AnalyticsModelingCheckedException {
 		EntityDetail db = omEntityDao.getEntityByGuid(guidDB);
 		String qualifiedName =  QualifiedNameUtils.buildQualifiedName(
 				omEntityDao.getEntityStringProperty(db, Constants.QUALIFIED_NAME),
@@ -205,7 +205,7 @@ public class InMemoryRepositoryTest {
 		return omEntityDao.getEntityStringProperty(entity, Constants.QUALIFIED_NAME);
 	}
 
-	protected EntityDetail createSchemaTable(EntityDetail schema, String tableName) throws CognosCheckedException {
+	protected EntityDetail createSchemaTable(EntityDetail schema, String tableName) throws AnalyticsModelingCheckedException {
 		
 		String method = "createSchemaTable";
 		List<Relationship> relationshipsRDBSchemaList = omEntityDao.getRelationships(Constants.ASSET_SCHEMA_TYPE, schema.getGUID());
@@ -322,9 +322,9 @@ public class InMemoryRepositoryTest {
      * Calculate position of the column.
      * @param tableEntity for this table
      * @return column position in order of adding to the table.
-     * @throws CognosCheckedException 
+     * @throws AnalyticsModelingCheckedException 
      */
-	private int getColumnPosition(EntityDetail tableEntity) throws CognosCheckedException {
+	private int getColumnPosition(EntityDetail tableEntity) throws AnalyticsModelingCheckedException {
 		List<Relationship> columnToColumnType = omEntityDao.getRelationshipsForEntity(tableEntity, Constants.NESTED_SCHEMA_ATTRIBUTE);
 		return columnToColumnType == null ? 0 : columnToColumnType.size();
 	}

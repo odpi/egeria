@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.cognos.responses;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.CognosCheckedException;
+import org.odpi.openmetadata.accessservices.cognos.ffdc.exceptions.AnalyticsModelingCheckedException;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ErrorResponse extends CognosOMASAPIResponse {
+public class ErrorResponse extends AnalyticsModelingOMASAPIResponse {
 
 	@JsonProperty("msg") 
 	private String message;
@@ -45,7 +45,7 @@ public class ErrorResponse extends CognosOMASAPIResponse {
 	 * Constructor initialized from exception thrown.
 	 * @param source of the error.
 	 */
-	public ErrorResponse(CognosCheckedException source) {
+	public ErrorResponse(AnalyticsModelingCheckedException source) {
 		setRelatedHTTPCode(source.getReportedHTTPCode());
 		message = source.getMessage();
 		errorCode = source.getReportedErrorMessageId();
