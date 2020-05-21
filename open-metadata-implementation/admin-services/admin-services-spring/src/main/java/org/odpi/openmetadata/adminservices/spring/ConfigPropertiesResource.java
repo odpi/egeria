@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 
-@Tag(name="Conformance Suite", description="The open metadata conformance suite provides a testing framework to help the developers integrate a specific technology into the open metadata ecosystem.", externalDocs=@ExternalDocumentation(description="Open Metadata Conformance Suite",url="https://egeria.odpi.org/open-metadata-conformance-suite/"))
+@Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
+        " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
+        "Governance (OMAG) services are active.",
+        externalDocs=@ExternalDocumentation(description="Further information",
+                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-an-omag-server.html"))
 
 
 public class ConfigPropertiesResource
