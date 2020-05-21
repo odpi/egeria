@@ -100,7 +100,7 @@ public abstract class SubjectAreaHandler {
      *                           0 means there is not limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested userId
+     * @return the relationships associated with the requested guid
      * <p>
      * when not successful the following Exception responses can occur
      * <ul>

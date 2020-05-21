@@ -199,7 +199,7 @@ public interface SubjectAreaCategory
 
      SubjectAreaDefinition createSubjectAreaDefinition(String userId, SubjectAreaDefinition suppliedSubjectAreaDefinition) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException ;
     /**
-     * Get a subjectAreaDefinition by userId.
+     * Get a subjectAreaDefinition by guid.
      * @param userId userId under which the request is performed
      * @param guid guid of the subjectAreaDefinition to get
      * @return the requested subjectAreaDefinition.

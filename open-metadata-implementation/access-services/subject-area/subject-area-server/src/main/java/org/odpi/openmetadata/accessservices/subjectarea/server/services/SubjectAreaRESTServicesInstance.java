@@ -90,7 +90,7 @@ public class SubjectAreaRESTServicesInstance {
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested userId
+     * @return the relationships associated with the requested guid
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -341,7 +341,7 @@ public class SubjectAreaRESTServicesInstance {
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param className  class name
      * @param guid       userId of the relationship to get
-     * @return response which when successful contains the relationship with the requested userId
+     * @return response which when successful contains the relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>

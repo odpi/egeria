@@ -116,7 +116,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
     }
 
     /**
-     * Get a project by userId.
+     * Get a project by guid.
      * @param userId userId under which the request is performed
      * @param guid userId of the project to get
      * @return the requested project.

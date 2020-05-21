@@ -91,7 +91,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
     }
 
     /**
-     * Get a category by userId.
+     * Get a category by guid.
      *
      * @param userId userId under which the request is performed
      * @param guid   userId of the category to get
@@ -519,7 +519,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
     }
 
     /**
-     * Get a subjectAreaDefinition by userId.
+     * Get a subjectAreaDefinition by guid.
      *
      * @param userId userId under which the request is performed
      * @param guid   userId of the subjectAreaDefinition to get

@@ -154,11 +154,11 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
     }
 
     /**
-     * Get a project by userId.
+     * Get a project by guid.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   userId of the project to get
-     * @return response which when successful contains the project with the requested userId
+     * @param guid   guid of the project to get
+     * @return response which when successful contains the project with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>

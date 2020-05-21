@@ -114,7 +114,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
     }
 
     /**
-     * Get a glossary by userId.
+     * Get a glossary by guid.
     *
      * @param userId userId under which the request is performed
      * @param guid userId of the glossary to get

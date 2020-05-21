@@ -65,7 +65,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the HAS A relationship to get
-     * @return response which when successful contains the term has a relationship with the requested userId
+     * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -184,7 +184,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the related term relationship to get
-     * @return response which when successful contains the related term relationship with the requested userId
+     * @return response which when successful contains the related term relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -304,7 +304,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the termCategorization relationship to get
-     * @return response which when successful contains the termCategorization relationship with the requested userId
+     * @return response which when successful contains the termCategorization relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -423,7 +423,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the related term relationship to get
-     * @return response which when successful contains the antonym relationship with the requested userId
+     * @return response which when successful contains the antonym relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -543,7 +543,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the translation relationship to get
-     * @return response which when successful contains the translation relationship with the requested userId
+     * @return response which when successful contains the translation relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -663,7 +663,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the usedInContext relationship to get
-     * @return response which when successful contains the usedInContext relationship with the requested userId
+     * @return response which when successful contains the usedInContext relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -781,7 +781,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the preferredTerm relationship to get
-     * @return response which when successful contains the preferredTerm relationship with the requested userId
+     * @return response which when successful contains the preferredTerm relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -902,7 +902,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the validValue relationship to get
-     * @return response which when successful contains the validValue relationship with the requested userId
+     * @return response which when successful contains the validValue relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1021,7 +1021,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the replacementTerm relationship to get
-     * @return response which when successful contains the replacementTerm relationship with the requested userId
+     * @return response which when successful contains the replacementTerm relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1141,7 +1141,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the termTYPEDBYRelationship relationship to get
-     * @return response which when successful contains the termTYPEDBYRelationship relationship with the requested userId
+     * @return response which when successful contains the termTYPEDBYRelationship relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1261,7 +1261,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the iSARelationship relationship to get
-     * @return response which when successful contains the iSARelationship relationship with the requested userId
+     * @return response which when successful contains the iSARelationship relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1381,7 +1381,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the termISATypeOFRelationship relationship to get
-     * @return response which when successful contains the termISATypeOFRelationship relationship with the requested userId
+     * @return response which when successful contains the termISATypeOFRelationship relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1502,7 +1502,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the termCategorizationRelationship relationship to get
-     * @return response which when successful contains the termCategorizationRelationship relationship with the requested userId
+     * @return response which when successful contains the termCategorizationRelationship relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1622,7 +1622,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the termAnchor Relationship to get
-     * @return response which when successful contains the termAnchorRelationship relationship with the requested userId
+     * @return response which when successful contains the termAnchorRelationship relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1715,7 +1715,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the categoryAnchor Relationship to get
-     * @return response which when successful contains the categoryAnchorRelationship relationship with the requested userId
+     * @return response which when successful contains the categoryAnchorRelationship relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1806,7 +1806,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the termCategorization relationship to get
-     * @return response which when successful contains the termCategorization relationship with the requested userId
+     * @return response which when successful contains the termCategorization relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1902,7 +1902,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the SemanticAssignment relationship to get
-     * @return response which when successful contains the SemanticAssignment relationship with the requested userId
+     * @return response which when successful contains the SemanticAssignment relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>

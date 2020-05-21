@@ -163,11 +163,11 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     }
 
     /**
-     * Get a glossary by userId.
+     * Get a glossary by guid.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       userId of the glossary to get
-     * @return response which when successful contains the glossary with the requested userId
+     * @param guid       guid of the glossary to get
+     * @return response which when successful contains the glossary with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>

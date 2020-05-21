@@ -94,7 +94,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
     }
 
     /**
-     * Get a term by userId.
+     * Get a term by guid.
      * @param userId userId under which the request is performed
      * @param guid userId of the term to get
      * @return the requested term.

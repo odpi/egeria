@@ -127,7 +127,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param className   class name
      * @param guid        userId of the relationship to get
-     * @return response which when successful contains the relationship with the requested userId
+     * @return response which when successful contains the relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
