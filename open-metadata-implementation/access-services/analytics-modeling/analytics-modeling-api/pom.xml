@@ -8,7 +8,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<parent>
-		<artifactId>cognos</artifactId>
+		<artifactId>analytics-modeling</artifactId>
 		<groupId>org.odpi.egeria</groupId>
 		<version>1.8-SNAPSHOT</version>
 	</parent>
@@ -21,12 +21,12 @@
 		<url>http://github.com/odpi/egeria/tree/master</url>
 	</scm>
 
-	<name>Cognos OMAS API</name>
+	<name>Analytics Modeling OMAS API</name>
 	<description>
-        Shared beans for the Cognos Open Metadata Access Service (OMAS).
+        Shared beans for the Analytics Modeling Open Metadata Access Service (OMAS).
 	</description>
 
-	<artifactId>cognos-api</artifactId>
+	<artifactId>analytics-modeling-api</artifactId>
 
 	<dependencies>
 		<dependency>

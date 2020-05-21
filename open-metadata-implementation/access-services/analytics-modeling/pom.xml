@@ -21,18 +21,18 @@
 		<url>http://github.com/odpi/egeria/tree/master</url>
 	</scm>
 
-    <name>Cognos OMAS</name>
+    <name>Analytics Modeling OMAS</name>
     <description>
-        The Cognos Open Metadata Access Service (OMAS) configures and manages metadata for Cognos IBM.
+        The Analytics Modeling Open Metadata Access Service (OMAS) configures and manages metadata for modeling.
     </description>
 
-    <artifactId>cognos</artifactId>
+    <artifactId>analytics-modeling</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>cognos-client</module>
-        <module>cognos-server</module>
-        <module>cognos-spring</module>
-        <module>cognos-api</module>
+        <module>analytics-modeling-client</module>
+        <module>analytics-modeling-server</module>
+        <module>analytics-modeling-spring</module>
+        <module>analytics-modeling-api</module>
     </modules>
 
 

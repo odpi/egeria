@@ -1226,13 +1226,13 @@
             </dependency>
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>cognos-api</artifactId>
+                <artifactId>analytics-modeling-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>cognos-api</artifactId>
+                <artifactId>analytics-modeling-api</artifactId>
 				<type>test-jar</type>
 				<scope>test</scope>
                 <version>${open-metadata.version}</version>
@@ -1240,21 +1240,21 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>cognos-client</artifactId>
+                <artifactId>analytics-modeling-client</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>cognos-server</artifactId>
+                <artifactId>analytics-modeling-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
             
              <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>cognos-spring</artifactId>
+                <artifactId>analytics-modeling-spring</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>

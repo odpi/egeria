@@ -203,7 +203,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>cognos-spring</artifactId>
+            <artifactId>analytics-modeling-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
