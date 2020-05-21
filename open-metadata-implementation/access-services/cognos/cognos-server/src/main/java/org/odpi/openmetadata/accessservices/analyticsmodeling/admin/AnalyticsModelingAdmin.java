@@ -69,7 +69,7 @@ public class AnalyticsModelingAdmin extends AccessServiceAdmin
             analyticsModelingOutTopicConnector =  super.getTopicConnector(accessServiceConfig.getAccessServiceOutTopic(),
             		OpenMetadataTopicConnector.class,
             		auditLog,
-                    AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName(),
+                    AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName(),
                     actionDescription);
 
             if (analyticsModelingOutTopicConnector != null) {
@@ -90,13 +90,13 @@ public class AnalyticsModelingAdmin extends AccessServiceAdmin
             		actionDescription,
             		AnalyticsModelingAuditCode.getAuditLogMessageDefinition(
             				OMAGAdminErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(),
-            				AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName(),
+            				AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName(),
             				error.getClass().getName(),
             				error.getMessage()),
             		error);
             
             super.throwUnexpectedInitializationException(actionDescription,
-                                                         AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName(),
+                                                         AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName(),
                                                          error);
         }
         

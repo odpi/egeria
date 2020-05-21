@@ -22,7 +22,7 @@ class AnalyticsModelingInstanceHandler extends OCFOMASServiceInstanceHandler {
 	 * Default constructor registers the access service
 	 */
 	AnalyticsModelingInstanceHandler() {
-        super(AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName());
+        super(AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName());
 
         AnalyticsModelingOMASRegistration.registerAccessService();
 	}

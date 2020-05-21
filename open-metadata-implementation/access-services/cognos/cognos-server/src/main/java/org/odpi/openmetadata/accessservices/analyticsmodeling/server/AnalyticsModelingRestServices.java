@@ -29,7 +29,7 @@ public class AnalyticsModelingRestServices {
 	AnalyticsModelingInstanceHandler instanceHandler = new AnalyticsModelingInstanceHandler();
 
 	private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AnalyticsModelingRestServices.class),
-			AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName());
+			AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName());
 	private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 	/**

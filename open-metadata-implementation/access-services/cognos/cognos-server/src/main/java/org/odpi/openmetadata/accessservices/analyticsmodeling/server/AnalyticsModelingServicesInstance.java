@@ -35,7 +35,7 @@ public class AnalyticsModelingServicesInstance extends OCFOMASServiceInstance
     public AnalyticsModelingServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones,
                                AuditLog auditLog, String localServerUserId, int maxPageSize) throws NewInstanceException {
     	
-        super(AccessServiceDescription.COGNOS_OMAS.getAccessServiceFullName(), repositoryConnector, supportedZones, null, auditLog,
+        super(AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName(), repositoryConnector, supportedZones, null, auditLog,
                 localServerUserId, maxPageSize);
         
         OMEntityDao omEntityDao = new OMEntityDao(repositoryConnector, supportedZones, auditLog);

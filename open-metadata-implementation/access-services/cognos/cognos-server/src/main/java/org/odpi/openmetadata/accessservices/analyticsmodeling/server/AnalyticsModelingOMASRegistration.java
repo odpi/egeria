@@ -22,7 +22,7 @@ class AnalyticsModelingOMASRegistration {
 	 * services.
 	 */
 	static void registerAccessService() {
-		AccessServiceDescription myDescription = AccessServiceDescription.COGNOS_OMAS;
+		AccessServiceDescription myDescription = AccessServiceDescription.ANALYTICS_MODELING_OMAS;
 		AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
 				ServiceOperationalStatus.ENABLED, AnalyticsModelingAdmin.class.getName());
 
