@@ -221,7 +221,7 @@ public class DatabaseContextHandler {
 
 		ResponseContainerModule ret = new ResponseContainerModule();
 		ret.setId(catalog + "_" + schema);
-		ret.setPhysicalModule(buildModule(databaseGuid, catalog, schema));
+		ret.setModule(buildModule(databaseGuid, catalog, schema));
 		return ret;
 	}
 

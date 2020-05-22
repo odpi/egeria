@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Metad
 /**
  * Response container for Analytics Modeling module representation.<br>
  * The container has following attributes:<br>
- * &emsp;physicalDefinition - Analytics Modeling module representation.<br>
+ * &emsp;module - Analytics Modeling module representation.<br>
  * 
  * The type of the container is 'module'.
  * 
@@ -15,7 +15,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Metad
  */
 public class ResponseContainerModule extends ResponseContainer {
 
-	private static final String PHYSICAL_DEFINITION = "physicalDefinition";
+	private static final String MODULE = "module";
 	public static final String TYPE_MODULE = "module";
 
 	/**
@@ -29,16 +29,16 @@ public class ResponseContainerModule extends ResponseContainer {
 	 * Set Analytics Modeling module.
 	 * @param value module definition to set.
 	 */
-	public void setPhysicalModule(MetadataModule value) {
-		setAttribute(PHYSICAL_DEFINITION, value);
+	public void setModule(MetadataModule value) {
+		setAttribute(MODULE, value);
 	}
 
 	/**
 	 * Get Analytics Modeling module.
 	 * @return Analytics Modeling module.
 	 */
-	public MetadataModule  getPhysicalModule() {
-		return (MetadataModule) getAttribute(PHYSICAL_DEFINITION);
+	public MetadataModule  getModule() {
+		return (MetadataModule) getAttribute(MODULE);
 	}
 
 
