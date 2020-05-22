@@ -3,51 +3,49 @@
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
 /**
- * The RelationshipNotDeletedException is thrown by the Subject Area OMAS when an relationship is not deleted
+ * The RelationshipNotDeletedException is thrown by the Subject Area OMAS when a relationship is not deleted
  * value.
  */
-public class RelationshipNotDeletedException extends SubjectAreaCheckedExceptionBase
-{
-    private final String guid;
+
+public class RelationshipNotDeletedException extends GuidOrientatedException {
 
     /**
-     * This is the typical constructor used for creating a RelationshipNotDeletedException.
+     * This is the typical constructor used for creating a RelationshipNotDeletedException
      *
-     * @param httpCode http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
+     * @param messageDefinition content of the message
+     * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param guid      guid of the relationship that was not deleted
+     * @param guid              the guid of the relationship that was not deleted
      */
-    public RelationshipNotDeletedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction,String guid)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-        this.guid=guid;
+    public RelationshipNotDeletedException(ExceptionMessageDefinition messageDefinition,
+                                           String className,
+                                           String actionDescription,
+                                           String guid) {
+        super(messageDefinition, className, actionDescription, guid);
     }
 
 
     /**
-     * This is the constructor used for creating a RelationshipNotDeletedException that resulted from a previous error.
+     * This is the constructor used for creating a RelationshipNotDeletedException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param httpCode http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
+     * @param messageDefinition content of the message
+     * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     * @param caughtError the error that resulted in this exception.
-     * @param guid        guid of the relationship that was not deleted
-     * */
-    public RelationshipNotDeletedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, String guid,Throwable caughtError)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
-        this.guid=guid;
+     * @param caughtError       previous error causing this exception
+     * @param guid              the guid of the relationship that was not deleted
+     */
+    public RelationshipNotDeletedException(ExceptionMessageDefinition messageDefinition,
+                                           String className,
+                                           String actionDescription,
+                                           Throwable caughtError,
+                                           String guid) {
+        super(messageDefinition, className, actionDescription, caughtError, guid);
     }
 
-    public String getGuid() {
-        return guid;
-    }
 }
+
+

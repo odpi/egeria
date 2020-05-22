@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.EntityNotDeletedException;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,25 +19,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InvalidParameterExceptionResponse extends SubjectAreaOMASAPIResponse
 {
-    protected String    exceptionClassName = null;
-    protected String    exceptionErrorMessage = null;
-    protected String    exceptionSystemAction = null;
-    protected String    exceptionUserAction = null;
-    // TODO add some useful fields here - like the field name that was incorrect and its value.
-    /**
-     * Default constructor
-     */
-    public InvalidParameterExceptionResponse()
+    protected String    invalidPropertyName = null;
+    protected String    invalidPropertyValue = null;
+
+    public InvalidParameterExceptionResponse(SubjectAreaCheckedException e)
     {
+        super(e);
         this.setResponseCategory(ResponseCategory.InvalidParameterException);
-    }
-    public InvalidParameterExceptionResponse(SubjectAreaCheckedExceptionBase e)
-    {
-        this();
-        this.exceptionClassName = e.getReportingClassName();
-        this.exceptionErrorMessage = e.getErrorMessage();
-        this.exceptionSystemAction = e.getReportedSystemAction();
-        this.exceptionUserAction = e.getReportedUserAction();
+        InvalidParameterException ipe = (InvalidParameterException)e;
+        this.invalidPropertyName = ipe.getInvalidPropertyName();
+        this.invalidPropertyValue = ipe.getInvalidPropertyValue();
     }
 
     @Override
@@ -45,92 +36,41 @@ public class InvalidParameterExceptionResponse extends SubjectAreaOMASAPIRespons
     {
         return "InvalidParameterExceptionResponse{" +
                 super.toString() +
-                "relatedHTTPCode=" + relatedHTTPCode +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                "category=" + this.responseCategory +
+                ", invalidPropertyName='" + invalidPropertyName + '\'' +
+                ", invalidPropertyValue='" + invalidPropertyValue +
                 '}';
     }
 
     /**
-     * Return the name of the Java class name to use to recreate the exception.
+     * Get the invalid property name
      *
-     * @return String name of the fully-qualified java class name
+     * @return the invalid property name
      */
-    public String getExceptionClassName()
-    {
-        return exceptionClassName;
+    public String getInvalidPropertyName() {
+        return invalidPropertyName;
     }
-
     /**
-     * Set up the name of the Java class name to use to recreate the exception.
+     * Set the invalid property name
      *
-     * @param exceptionClassName - String name of the fully-qualified java class name
+     * @param  invalidPropertyName String the invalid property name
      */
-    public void setExceptionClassName(String exceptionClassName)
-    {
-        this.exceptionClassName = exceptionClassName;
+    public void setInvalidPropertyName(String invalidPropertyName) {
+        this.invalidPropertyName = invalidPropertyName;
     }
-
     /**
-     * Return the error message associated with the exception.
+     * Get the invalid property value
      *
-     * @return string error message
+     * @return the invalid property value
      */
-    public String getExceptionErrorMessage()
-    {
-        return exceptionErrorMessage;
+    public String getInvalidPropertyValue() {
+        return invalidPropertyValue;
     }
-
     /**
-     * Set up the error message associated with the exception.
+     * Set the invalid property value
      *
-     * @param exceptionErrorMessage - string error message
+     * @param  invalidPropertyValue String the invalid property value
      */
-    public void setExceptionErrorMessage(String exceptionErrorMessage)
-    {
-        this.exceptionErrorMessage = exceptionErrorMessage;
-    }
-
-    /**
-     * Return the description of the action taken by the system as a result of the exception.
-     *
-     * @return - string description of the action taken
-     */
-    public String getExceptionSystemAction()
-    {
-        return exceptionSystemAction;
-    }
-
-    /**
-     * Set up the description of the action taken by the system as a result of the exception.
-     *
-     * @param exceptionSystemAction - string description of the action taken
-     */
-    public void setExceptionSystemAction(String exceptionSystemAction)
-    {
-        this.exceptionSystemAction = exceptionSystemAction;
-    }
-
-    /**
-     * Return the action that a user should take to resolve the problem.
-     *
-     * @return string instructions
-     */
-    public String getExceptionUserAction()
-    {
-        return exceptionUserAction;
-    }
-
-    /**
-     * Set up the action that a user should take to resolve the problem.
-     *
-     * @param exceptionUserAction - string instructions
-     */
-    public void setExceptionUserAction(String exceptionUserAction)
-    {
-        this.exceptionUserAction = exceptionUserAction;
+    public void setInvalidPropertyValue(String invalidPropertyValue) {
+        this.invalidPropertyValue = invalidPropertyValue;
     }
 }

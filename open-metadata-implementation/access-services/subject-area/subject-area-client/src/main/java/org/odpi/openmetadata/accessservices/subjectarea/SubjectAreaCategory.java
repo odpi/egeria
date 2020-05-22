@@ -112,7 +112,7 @@ public interface SubjectAreaCategory
      * A delete (also known as a soft delete) means that the category instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
-      * @param userId userId under which the request is performed
+     * @param userId userId under which the request is performed
      * @param guid guid of the category to be deleted.
      * @return the deleted category
      * Exceptions returned by the server
@@ -142,7 +142,7 @@ public interface SubjectAreaCategory
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws GUIDNotPurgedException a hard delete was issued but the category was not purged
+     * @throws EntityNotPurgedException a hard delete was issued but the category was not purged
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws FunctionNotSupportedException Function not supported.
      *
@@ -155,7 +155,7 @@ public interface SubjectAreaCategory
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
                                                                                     FunctionNotSupportedException,
-                                                                                    GUIDNotPurgedException,
+                                                                                    EntityNotPurgedException,
                                                                                     UnrecognizedGUIDException,
                                                                                     UnexpectedResponseException;
     /**
@@ -221,7 +221,6 @@ public interface SubjectAreaCategory
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the category to get
-     * @param guid   guid of the category to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -240,12 +239,13 @@ public interface SubjectAreaCategory
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     List<Line> getCategoryRelationships(String userId, String guid,
-                                               Date asOfTime,
-                                               int offset,
-                                               int pageSize,
-                                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                               String sequencingProperty) throws
+     List<Line> getCategoryRelationships(String userId,
+                                         String guid,
+                                         Date asOfTime,
+                                         int offset,
+                                         int pageSize,
+                                         org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                         String sequencingProperty) throws
             UserNotAuthorizedException,
             InvalidParameterException,
             FunctionNotSupportedException,
@@ -375,7 +375,7 @@ public interface SubjectAreaCategory
      *
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws GUIDNotPurgedException a hard delete was issued but the subjectAreaDefinition was not purged
+     * @throws EntityNotPurgedException a hard delete was issued but the subjectAreaDefinition was not purged
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws FunctionNotSupportedException Function not supported
      *
@@ -387,7 +387,7 @@ public interface SubjectAreaCategory
     void purgeSubjectAreaDefinition(String userId, String guid)  throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
-            GUIDNotPurgedException,
+            EntityNotPurgedException,
             UnrecognizedGUIDException,
             FunctionNotSupportedException,
             UnexpectedResponseException;
