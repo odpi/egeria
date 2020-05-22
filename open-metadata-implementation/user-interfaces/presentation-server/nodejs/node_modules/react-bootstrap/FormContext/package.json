@@ -1,6 +1,0 @@
-{
-  "name": "react-bootstrap/FormContext",
-  "private": true,
-  "main": "../cjs/FormContext.js",
-  "module": "../esm/FormContext.js"
-}
