@@ -144,7 +144,8 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse findProject(String serverName, String userId,
+    public  SubjectAreaOMASAPIResponse findProject(String serverName,
+                                                   String userId,
                                                    String searchCriteria,
                                                    Date asOfTime,
                                                    Integer offset,
@@ -193,7 +194,9 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * </ul>
      */
 
-    public  SubjectAreaOMASAPIResponse getProjectRelationships(String serverName, String userId,String guid,
+    public  SubjectAreaOMASAPIResponse getProjectRelationships(String serverName,
+                                                               String userId,
+                                                               String guid,
                                                                Date asOfTime,
                                                                Integer offset,
                                                                Integer pageSize,
@@ -332,7 +335,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the Project was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the Project was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the Project was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteProject(String serverName, String userId, String guid, Boolean isPurge) {

@@ -76,7 +76,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.
      * <li> InvalidParameterException            one of the parameters is null or invalid.
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised
      * <li> ClassificationException              Error processing a classification
@@ -114,7 +114,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
@@ -139,13 +139,12 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         }
         return response;
     }
-    /*
+    /**
      * Get Term relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param restAPIName rest API name
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
+     * @param guid   guid
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -155,17 +154,17 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return the relationships associated with the requested Term guid
      *
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException   Function not supported
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * </ul>
      */
 
-    public  SubjectAreaOMASAPIResponse getTermRelationships(String serverName, String userId,
+    public  SubjectAreaOMASAPIResponse getTermRelationships(String serverName,
+                                                            String userId,
                                                             String guid,
                                                             Date asOfTime,
                                                             Integer offset,
@@ -309,7 +308,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteTerm(String serverName, String userId, String guid, Boolean isPurge)
