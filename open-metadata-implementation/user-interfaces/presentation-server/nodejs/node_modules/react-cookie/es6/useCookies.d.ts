@@ -1,0 +1,4 @@
+import { Cookie, CookieSetOptions } from 'universal-cookie';
+export default function useCookies(dependencies?: string[]): [{
+    [name: string]: any;
+}, (name: string, value: Cookie, options?: CookieSetOptions) => void, (name: string, options?: CookieSetOptions) => void];

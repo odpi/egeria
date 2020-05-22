@@ -1,0 +1,23 @@
+$first: 52px;
+$second-variable: red;
+$global-variable: #123 !global; // inline comment here
+$references: $second-variable;
+$scss-function: lighten(#123, 10%);
+// some comments in here
+$scss-function-with-variable: darken($global-variable, 5%);
+$image: url(sample.svg);
+$image-with-quotes: url('sample.svg');
+$calculation: $first - 12px;
+//some more comments with a return after
+
+$multiple-variables: $first solid $second-variable;
+$multiple-calculations: $first - floor(12.5px);
+
+$gray-50: #fff;
+$gray-500: #f6f6f6;
+$uses-gray-500: $gray-500;
+
+$font-size-small: 15px;
+$font-size-large: 18px;
+$icon-font-size: $font-size-small !global;
+$icon-font-size-lg: $font-size-large !global;

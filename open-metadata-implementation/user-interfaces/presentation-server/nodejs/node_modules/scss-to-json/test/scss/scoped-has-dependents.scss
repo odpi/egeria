@@ -1,0 +1,10 @@
+%scoped {
+  $button-color: $blue-500;
+  $button-color-global: $button-color !global;
+  $tag-color: $green-500;
+  $tag-color-global: $tag-color !global;
+}
+
+html {
+  @extend %scoped;
+}

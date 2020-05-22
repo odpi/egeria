@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+/* eslint-disable no-console */
+'use strict';
+
+var fs = require('fs');
+var path = require('path');
+var minimist = require('minimist');
+
+var scssToJson = require('../');
+var opts = minimist(process.argv.slice(2), {
+  alias: {
+    h: 'help',
+    v: 'version',
+    d: 'dependencies',
+    s: 'scope'
+  }
+});
+
+var file = opts._[0];
+
+if (opts.version) {
+  console.log(require('../package.json').version);
+} else if (!file || file === 'help' || opts.help) {
+  fs.createReadStream(path.resolve(__dirname, 'usage.txt'))
+    .pipe(process.stdout)
+    .on('close', function() {
+      throw Error('Error reading usage.txt');
+    });
+} else {
+  var options = {};
+
+  if (opts.dependencies) {
+    options.dependencies = opts.dependencies.split(',').map(function(dependency) {
+      return { path: path.resolve(dependency) };
+    });
+  }
+
+  if (opts.scope) {
+    options.scope = opts.scope;
+  }
+
+  var result = JSON.stringify(scssToJson(file, options), null, 2);
+  console.log(result);
+}

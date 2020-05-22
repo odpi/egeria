@@ -1,0 +1,7 @@
+{
+  "extends": "./node_modules/wealthfront-javascript/.eslintrc",
+  "env": {
+    "browser": false,
+    "node": true
+  }
+}

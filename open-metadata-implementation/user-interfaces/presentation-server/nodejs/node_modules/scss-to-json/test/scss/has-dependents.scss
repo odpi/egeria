@@ -1,0 +1,4 @@
+$first: $blue;
+$global-variable: $red !global;
+$references: $first;
+$scss-function-with-variable: darken($red, 5%);

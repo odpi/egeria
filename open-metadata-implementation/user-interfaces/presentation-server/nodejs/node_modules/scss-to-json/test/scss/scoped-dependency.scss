@@ -1,0 +1,10 @@
+%scoped {
+  $blue: #00f;
+  $blue-500: $blue !global;
+  $green: #0f0;
+  $green-500: $green !global;
+}
+
+html {
+  @extend %scoped;
+}

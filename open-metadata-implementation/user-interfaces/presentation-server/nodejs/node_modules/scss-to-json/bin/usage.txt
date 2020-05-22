@@ -1,0 +1,11 @@
+Usage: node scss-to-json [options] [<file>]
+
+Options:
+
+    --dependencies -d    List of dependency files separated by comma.
+
+    --scope        -s    Variable used for scoping.
+
+    --version,     -v    Outputs the version number.
+
+    --help,        -h    Outputs this help screen.

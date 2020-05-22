@@ -1,0 +1,39 @@
+import { useContext, useEffect, useState, useRef, useMemo } from 'react';
+import CookiesContext from './CookiesContext';
+export default function useCookies(dependencies) {
+    var cookies = useContext(CookiesContext);
+    if (!cookies) {
+        throw new Error('Missing <CookiesProvider>');
+    }
+    var initialCookies = cookies.getAll();
+    var _a = useState(initialCookies), allCookies = _a[0], setCookies = _a[1];
+    var previousCookiesRef = useRef(allCookies);
+    useEffect(function () {
+        function onChange() {
+            var newCookies = cookies.getAll();
+            if (shouldUpdate(dependencies || null, newCookies, previousCookiesRef.current)) {
+                setCookies(newCookies);
+            }
+            previousCookiesRef.current = newCookies;
+        }
+        cookies.addChangeListener(onChange);
+        return function () {
+            cookies.removeChangeListener(onChange);
+        };
+    }, [cookies]);
+    var setCookie = useMemo(function () { return cookies.set.bind(cookies); }, [cookies]);
+    var removeCookie = useMemo(function () { return cookies.remove.bind(cookies); }, [cookies]);
+    return [allCookies, setCookie, removeCookie];
+}
+function shouldUpdate(dependencies, newCookies, oldCookies) {
+    if (!dependencies) {
+        return true;
+    }
+    for (var _i = 0, dependencies_1 = dependencies; _i < dependencies_1.length; _i++) {
+        var dependency = dependencies_1[_i];
+        if (newCookies[dependency] !== oldCookies[dependency]) {
+            return true;
+        }
+    }
+    return false;
+}

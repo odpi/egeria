@@ -1,0 +1,86 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+import * as React from 'react';
+import { Consumer } from './CookiesContext';
+// Only way to make function modules work with both TypeScript and Rollup
+var hoistStatics = require('hoist-non-react-statics');
+export default function withCookies(WrappedComponent) {
+    // @ts-ignore
+    var name = WrappedComponent.displayName || WrappedComponent.name;
+    var CookieWrapper = /** @class */ (function (_super) {
+        __extends(CookieWrapper, _super);
+        function CookieWrapper() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.onChange = function () {
+                // Make sure to update children with new values
+                _this.forceUpdate();
+            };
+            return _this;
+        }
+        CookieWrapper.prototype.listen = function () {
+            this.props.cookies.addChangeListener(this.onChange);
+        };
+        CookieWrapper.prototype.unlisten = function (cookies) {
+            (cookies || this.props.cookies).removeChangeListener(this.onChange);
+        };
+        CookieWrapper.prototype.componentDidMount = function () {
+            this.listen();
+        };
+        CookieWrapper.prototype.componentDidUpdate = function (prevProps) {
+            if (prevProps.cookies !== this.props.cookies) {
+                this.unlisten(prevProps.cookies);
+                this.listen();
+            }
+        };
+        CookieWrapper.prototype.componentWillUnmount = function () {
+            this.unlisten();
+        };
+        CookieWrapper.prototype.render = function () {
+            var _a = this.props, forwardedRef = _a.forwardedRef, cookies = _a.cookies, restProps = __rest(_a, ["forwardedRef", "cookies"]);
+            var allCookies = cookies.getAll();
+            return (React.createElement(WrappedComponent, __assign({}, restProps, { ref: forwardedRef, cookies: cookies, allCookies: allCookies })));
+        };
+        CookieWrapper.displayName = "withCookies(" + name + ")";
+        CookieWrapper.WrappedComponent = WrappedComponent;
+        return CookieWrapper;
+    }(React.Component));
+    var ForwardedComponent = React.forwardRef(function (props, ref) {
+        return (React.createElement(Consumer, null, function (cookies) { return (React.createElement(CookieWrapper, __assign({ cookies: cookies }, props, { forwardedRef: ref }))); }));
+    });
+    ForwardedComponent.displayName = CookieWrapper.displayName;
+    ForwardedComponent.WrappedComponent = CookieWrapper.WrappedComponent;
+    return hoistStatics(ForwardedComponent, WrappedComponent);
+}

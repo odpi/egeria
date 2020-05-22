@@ -1,0 +1,30 @@
+/**
+ * Copyright IBM Corp. 2016, 2018
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * @param {Function} propType The original prop type checker.
+ * @returns {Function} The new prop type checker for `onChange` that makes it required if `value` exists and `readOnly` does not exist.
+ */
+export default function requiredIfValueExists(propType) {
+  return function check(props, propName, componentName) {
+    var onChange = props[propName],
+        value = props.value,
+        readOnly = props.readOnly;
+    var exists = onChange !== undefined;
+    var valueExists = value !== undefined;
+
+    if (process.env.NODE_ENV !== "production" && !exists && valueExists && !readOnly) {
+      return new Error("You provided a value prop to `".concat(componentName, "` without an `onChange` handler. ") + 'This will render a read-only field. ' + 'If the field should be mutable use `defaultValue`. Otherwise, set either `onChange` or `readOnly`.');
+    }
+
+    for (var _len = arguments.length, rest = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
+      rest[_key - 3] = arguments[_key];
+    }
+
+    return propType.apply(void 0, [props, propName, componentName].concat(rest));
+  };
+}

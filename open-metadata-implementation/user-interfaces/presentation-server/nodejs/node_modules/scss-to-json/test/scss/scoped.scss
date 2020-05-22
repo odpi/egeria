@@ -1,0 +1,10 @@
+%scoped {
+  $first: 15px;
+  $global-variable: $first + 2 !global;
+  $color: #123;
+  $global-with-function: darken($color, 5%) !global;
+}
+
+html {
+  @extend %scoped;
+}
