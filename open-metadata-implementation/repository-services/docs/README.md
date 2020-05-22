@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Open Metadata Repository Services (OMRS) Overview
+# Open Metadata Repository Services (OMRS) Design
 
 Figure 1 shows the external APIs for the OMRS.
 

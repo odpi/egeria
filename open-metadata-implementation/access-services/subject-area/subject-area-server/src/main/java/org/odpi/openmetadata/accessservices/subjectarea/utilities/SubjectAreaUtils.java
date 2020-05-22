@@ -29,6 +29,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMA
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.*;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -278,16 +279,12 @@ public class SubjectAreaUtils {
         }
         SubjectAreaOMASAPIResponse response = null;
         if (status.equals(Status.DELETED)) {
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(className,
-                    methodName);
-            log.error(errorMessage);
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition();
+            throw new InvalidParameterException(messageDefinition,
                     className,
                     methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    "Status",
+                    Status.DELETED.name());
         }
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName );

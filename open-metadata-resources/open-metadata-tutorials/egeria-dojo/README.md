@@ -65,7 +65,7 @@ and take it all the way through the process to update Egeria's git repository.
 
 ----
 Links to content:
-* [Open Source Philosophy](egeria-dojo-day-2-1-open-source-philosphy.md)
+* [Open Source Philosophy](egeria-dojo-day-2-1-open-source-philosophy.md)
 * [Tools for Contributors](egeria-dojo-day-2-2-tools-for-contributors.md)
 * [Making a contribution - Step-by-Step](egeria-dojo-day-2-3-contribution-to-egeria.md)
 * [Types of Contribution](egeria-dojo-day-2-4-types-of-contribution.md)

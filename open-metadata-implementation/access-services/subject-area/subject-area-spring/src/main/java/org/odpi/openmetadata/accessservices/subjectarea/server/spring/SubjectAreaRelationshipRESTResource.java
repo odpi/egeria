@@ -114,7 +114,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/has-as/{guid}")
@@ -141,7 +141,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/has-as/{guid}")
@@ -229,7 +229,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/related-terms/{guid}")
@@ -256,7 +256,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/related-terms/{guid}")
@@ -346,7 +346,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/synonyms/{guid}")
@@ -402,7 +402,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     @PostMapping( path = "/users/{userId}/relationships/antonyms")
     public SubjectAreaOMASAPIResponse createAntonym(@PathVariable String serverName, @PathVariable String userId, @RequestBody Antonym antonym)
     {
-        return restAPI.createAntonym(serverName, userId,antonym);
+        return restAPI.createAntonym(serverName, userId, antonym);
     }
     /**
      * Get a antonym relationship
@@ -462,7 +462,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/antonyms/{guid}")
@@ -580,7 +580,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/translations/{guid}")
@@ -696,7 +696,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/used-in-contexts/{guid}")
@@ -816,7 +816,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/preferred-terms/{guid}")
@@ -937,7 +937,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/valid-values/{guid}")
@@ -1057,7 +1057,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/replacement-terms/{guid}")
@@ -1176,7 +1176,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/typed-bys/{guid}")
@@ -1294,7 +1294,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/is-as/{guid}")
@@ -1415,7 +1415,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
@@ -1540,7 +1540,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/term-categorizations/{guid}")
@@ -1640,7 +1640,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/term-anchor/{guid}")
@@ -1733,7 +1733,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/category-anchor/{guid}")
@@ -1845,7 +1845,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/relationships/project-scopes/{guid}")

@@ -13,6 +13,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.MessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
@@ -46,8 +48,7 @@ public class CategoryMapper extends EntityDetailMapper implements INodeMapper {
     public Category mapEntityDetailToNode(EntityDetail entityDetail) throws InvalidParameterException {
         String methodName = "mapEntityDetailToNode";
         String entityTypeName = entityDetail.getType().getTypeDefName();
-        if (repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),entityTypeName, GLOSSARY_CATEGORY)) {
-           // if (entityDetail.getClassifications().contains())
+        if (repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(), entityTypeName, GLOSSARY_CATEGORY)) {
             Category category = new Category();
             if (entityDetail.getClassifications()!=null) {
                 Set<String> classificationNames = entityDetail.getClassifications().stream().map(x -> x.getName()).collect(Collectors.toSet());
@@ -59,10 +60,13 @@ public class CategoryMapper extends EntityDetailMapper implements INodeMapper {
             mapEntityDetailToNode(category,entityDetail);
             return category;
         } else {
-            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.MAPPER_ENTITY_GUID_TYPE_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityDetail.getGUID(), entityTypeName, "GlossaryCategory");
-            log.error(errorMessage);
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.MAPPER_ENTITY_GUID_TYPE_ERROR.getMessageDefinition();
+            messageDefinition.setMessageParameters(entityDetail.getGUID(), entityTypeName, GLOSSARY_CATEGORY);
+            throw new InvalidParameterException(messageDefinition,
+                                                className,
+                                                methodName,
+                                                "Node Type",
+                                                null);
         }
     }
     /**

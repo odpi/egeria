@@ -50,7 +50,7 @@ public class TermAnchorMapper extends LineMapper
     }
 
     /**
-     * Get the relationship type def guid.
+     * Get the relationship type def guid
      * @param relationship the relationship associated with the typedef whose guid is returned.
      * @return guid of the typedef
      */

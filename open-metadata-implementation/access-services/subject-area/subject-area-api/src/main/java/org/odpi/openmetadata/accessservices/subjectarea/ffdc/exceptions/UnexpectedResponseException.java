@@ -3,51 +3,48 @@
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.responses.ResponseCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 /**
- * The UnexpectedResponseException is thrown by the Subject Area OMAS client when it receives an unexpected response.
- * This means that the unexpectedResponseCategory was not an expected error or the expected successful response.
+ * The UnexpectedResponseException is thrown by the Subject Area OMAS when an unexpected error occurs
  */
-public class UnexpectedResponseException extends SubjectAreaCheckedExceptionBase {
-    private String unexpectedResponseCategory=null;
+public class UnexpectedResponseException extends SubjectAreaCheckedException {
+    String unexpectedCategoryName;
+
     /**
-     * This is the typical constructor used for creating a unexpectedResponseCategoryNotPurgedException.
+     * This is the typical constructor used for creating a UnexpectedResponseException
      *
-     * @param httpCode           http response code to use if this exception flows over a rest call
-     * @param className          name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage       description of error
-     * @param systemAction       actions of the system as a result of the error
-     * @param userAction         instructions for correcting the error
-     * @param unexpectedResponseCategory unexpected response category
+     * @param messageDefinition      content of the message
+     * @param className              name of class reporting error
+     * @param actionDescription      description of function it was performing when error detected
+     * @param unexpectedCategoryName unexpected category name
      */
-    public UnexpectedResponseException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction, String unexpectedResponseCategory) {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-        this.unexpectedResponseCategory=unexpectedResponseCategory;
+    public UnexpectedResponseException(ExceptionMessageDefinition messageDefinition,
+                                       String className,
+                                       String actionDescription,
+                                       String unexpectedCategoryName) {
+        super(messageDefinition, className, actionDescription);
+        this.unexpectedCategoryName = unexpectedCategoryName;
     }
 
 
     /**
-     * This is the constructor used for creating a unexpectedResponseCategory.
+     * This is the constructor used for creating an UnexpectedResponseException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param httpCode          http response code to use if this exception flows over a rest call
+     * @param messageDefinition content of the message
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage      description of error
-     * @param systemAction      actions of the system as a result of the error
-     * @param userAction        instructions for correcting the error
-     * @param caughtError       the error that resulted in this exception.
-     * @param unexpectedResponseCategory unexpected response category
+     * @param caughtError       previous error causing this exception
      */
-    public UnexpectedResponseException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction, String unexpectedResponseCategory, Throwable caughtError) {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
-        this.unexpectedResponseCategory=unexpectedResponseCategory;
+    public UnexpectedResponseException(ExceptionMessageDefinition messageDefinition,
+                                       String className,
+                                       String actionDescription,
+                                       Throwable caughtError) {
+        super(messageDefinition, className, actionDescription, caughtError);
     }
 
-    public String getunexpectedResponseCategory() {
-        return unexpectedResponseCategory;
+    public String getUnexpectedCategoryName() {
+        return unexpectedCategoryName;
     }
-
 }

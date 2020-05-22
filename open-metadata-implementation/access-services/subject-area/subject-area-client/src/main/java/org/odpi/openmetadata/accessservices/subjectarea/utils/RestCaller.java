@@ -163,17 +163,11 @@ public class RestCaller {
             resultBody = result.getBody();
         } catch (Throwable error) {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    url,
-                    error.getMessage());
 
-            throw new MetadataServerUncontactableException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerUncontactableException(
+                    errorCode.getMessageDefinition(),
                     className,
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
+                    methodName);
         }
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -181,16 +175,14 @@ public class RestCaller {
             restResponse =  mapper.readValue(resultBody,SubjectAreaOMASAPIResponse.class);
         } catch (IOException ioException) {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_SIDE_API_REST_RESPONSE_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    url,
-                    ioException.getMessage());
+//            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+//                    url,
+//                    ioException.getMessage());
 
-            throw new MetadataServerUncontactableException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerUncontactableException(
+                    errorCode.getMessageDefinition(),
                     className,
                     methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
                     ioException);
         }
         return restResponse;
@@ -198,15 +190,11 @@ public class RestCaller {
 
     public static void throwJsonParseError (String className, String methodName,  JsonProcessingException error) throws InvalidParameterException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.UNABLE_TO_PARSE_SUPPLIED_JSON;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                error.getMessage());
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        //
+        throw new InvalidParameterException(errorCode.getMessageDefinition(),
                 className,
                 methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction(),
-                error);
+                "json",
+                "invalid");
     }
 }

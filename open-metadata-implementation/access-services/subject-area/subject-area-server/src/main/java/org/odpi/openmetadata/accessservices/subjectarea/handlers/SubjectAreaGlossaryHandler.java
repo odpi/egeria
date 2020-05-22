@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.EntityNotDeletedException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailsResponse;
@@ -21,6 +22,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidato
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -61,7 +63,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                       RepositoryHandler repositoryHandler,
                                       OMRSAPIHelper oMRSAPIHelper,
                                       RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName,invalidParameterHandler,repositoryHelper,repositoryHandler,oMRSAPIHelper,errorHandler);
+        super(serviceName, serverName,invalidParameterHandler,repositoryHelper,repositoryHandler,oMRSAPIHelper);
     }
 
 
@@ -122,8 +124,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li>ClassificationException              Error processing a classification.</li>
-     * <li>StatusNotSupportedException          A status value is not supported.</li>
+     * <li>ClassificationException               Error processing a classification.</li>
+     * <li>StatusNotSupportedException           A status value is not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createGlossary(String userId, Glossary suppliedGlossary) {
@@ -138,10 +140,12 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
 
             // need to check we have a name
             if (suppliedGlossaryName == null || suppliedGlossaryName.equals("")) {
-                SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CREATE_WITHOUT_NAME;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
-                log.error(errorMessage);
-                throw new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
+                ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CREATE_WITHOUT_NAME.getMessageDefinition();
+                throw new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(messageDefinition,
+                                                                                                                     className,
+                                                                                                                     methodName,
+                                                                                                                     "name",
+                                                                                                                     null);
             } else {
                 GlossaryMapper glossaryMapper = new GlossaryMapper(oMRSAPIHelper);
                 EntityDetail glossaryEntityDetail = glossaryMapper.mapNodeToEntityDetail(suppliedGlossary);
@@ -258,12 +262,11 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         }
         return response;
     }
-    /*
+    /**
      * Get Glossary relationships
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
+     * @param guid   guid
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -281,7 +284,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getGlossaryRelationships(String userId, String guid,
+    public SubjectAreaOMASAPIResponse getGlossaryRelationships(String userId,
+                                                               String guid,
                                                                Date asOfTime,
                                                                Integer offset,
                                                                Integer pageSize,
@@ -403,7 +407,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteGlossary(String userId, String guid, Boolean isPurge) {
@@ -445,11 +449,13 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                 response = getResponse(response);
                             }
                         } else {
-                            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE;
-                            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName, guid);
-                            log.error(errorMessage);
-                            InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
-                            response = new InvalidParameterExceptionResponse(e);
+                            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition();
+                            response = new EntityNotDeletedExceptionResponse(
+                                    new EntityNotDeletedException(messageDefinition,
+                                                                  className,
+                                                                  methodName,
+                                                                  guid)
+                            );
                         }
                     }
                 }

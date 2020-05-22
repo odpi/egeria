@@ -123,7 +123,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
     )  {
         return restAPI.findCategory(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
     }
-    /*
+    /**
      * Get Category relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -206,7 +206,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the category was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
      */
     @DeleteMapping( path = "/users/{userId}/categories/{guid}")

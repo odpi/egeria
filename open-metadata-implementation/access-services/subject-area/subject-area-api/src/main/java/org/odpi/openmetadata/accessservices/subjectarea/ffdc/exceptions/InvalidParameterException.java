@@ -3,16 +3,18 @@
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
 import java.util.Map;
 
 /**
  * The InvalidParameterException is thrown by the Subject Area OMAS when a parameter is null or an invalid
  * value.
  */
-public class InvalidParameterException extends SubjectAreaCheckedExceptionBase
-{
+public class InvalidParameterException extends SubjectAreaCheckedException {
     /**
      * invalid property name
+     *
      * @return invalid property name
      */
     public String getInvalidPropertyName() {
@@ -21,6 +23,7 @@ public class InvalidParameterException extends SubjectAreaCheckedExceptionBase
 
     /**
      * invalid property value
+     *
      * @return in valid property value
      */
     public String getInvalidPropertyValue() {
@@ -29,41 +32,47 @@ public class InvalidParameterException extends SubjectAreaCheckedExceptionBase
 
     private String invalidPropertyName;
     private String invalidPropertyValue;
-    private Map<String,Object> relatedProperties;
+    private Map<String, Object> relatedProperties;
+
     /**
-     * This is the typical constructor used for creating a InvalidParameterException.
+     * This is the typical constructor used for creating an InvalidParameterException
      *
-     * @param httpCode http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
-     * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
+     * @param messageDefinition    content of the message
+     * @param className            name of class reporting error
+     * @param actionDescription    description of function it was performing when error detected
+     * @param invalidPropertyName  invalidPropertyName if there is one
+     * @param invalidPropertyValue invalidPropertyValue if there is one
      */
-    public InvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
+    public InvalidParameterException(ExceptionMessageDefinition messageDefinition,
+                                     String className,
+                                     String actionDescription,
+                                     String invalidPropertyName,
+                                     String invalidPropertyValue) {
+        super(messageDefinition, className, actionDescription);
+
+        this.invalidPropertyName = invalidPropertyName;
+        this.invalidPropertyValue = invalidPropertyValue;
     }
 
 
     /**
-     * This is the constructor used for creating a InvalidParameterException that resulted from a previous error.
+     * This is the constructor used for creating an InvalidParameterException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param httpCode http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
-     * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param caughtError the error that resulted in this exception.
-     * */
-    public InvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
-    }
-
-    public InvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, String invalidPropertyName, String invalidPropertyValue) {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
+     * @param messageDefinition    content of the message
+     * @param className            name of class reporting error
+     * @param actionDescription    description of function it was performing when error detected
+     * @param caughtError          previous error causing this exception
+     * @param invalidPropertyName  invalidPropertyName if there is one
+     * @param invalidPropertyValue invalidPropertyValue if there is one
+     */
+    public InvalidParameterException(ExceptionMessageDefinition messageDefinition,
+                                     String className,
+                                     String actionDescription,
+                                     Throwable caughtError,
+                                     String invalidPropertyName,
+                                     String invalidPropertyValue) {
+        super(messageDefinition, className, actionDescription, caughtError);
         this.invalidPropertyName = invalidPropertyName;
         this.invalidPropertyValue = invalidPropertyValue;
     }

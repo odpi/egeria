@@ -65,7 +65,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
                     suppliedTerm);
             response = new TermResponse(createdTerm);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -104,7 +104,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
                     guid);
             response = new TermResponse(obtainedTerm);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -168,7 +168,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             termsResponse.setTerms(terms);
             response = termsResponse;
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -221,7 +221,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             linesResponse.setLines(lines);
             response = linesResponse;
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -278,7 +278,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             termResponse.setTerm(updatedTerm);
             response = termResponse;
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -345,7 +345,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
                 response = termResponse;
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -388,7 +388,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             termResponse.setTerm(term);
             response = termResponse;
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;

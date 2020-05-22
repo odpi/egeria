@@ -5,7 +5,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.subjectarea
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
@@ -79,7 +79,7 @@ public class SubjectAreaGlossaryController extends SecureController
             GlossaryResponse glossaryResponse = new GlossaryResponse();
             glossaryResponse.setGlossary(glossary);
             response = glossaryResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -109,7 +109,7 @@ public class SubjectAreaGlossaryController extends SecureController
             GlossaryResponse glossaryResponse = new GlossaryResponse();
             glossaryResponse.setGlossary(glossary);
             response = glossaryResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -159,7 +159,7 @@ public class SubjectAreaGlossaryController extends SecureController
             GlossariesResponse glossariesResponse = new GlossariesResponse();
             glossariesResponse.setGlossaries(glossaries);
             response = glossariesResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -203,7 +203,7 @@ public class SubjectAreaGlossaryController extends SecureController
             LinesResponse linesResponse = new LinesResponse();
             linesResponse.setLines(lines);
             response = linesResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -254,7 +254,7 @@ public class SubjectAreaGlossaryController extends SecureController
             GlossaryResponse glossaryResponse = new GlossaryResponse();
             glossaryResponse.setGlossary(updatedGlossary);
             response = glossaryResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -307,7 +307,7 @@ public class SubjectAreaGlossaryController extends SecureController
                 response = glossaryResponse;
             }
 
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -338,7 +338,7 @@ public class SubjectAreaGlossaryController extends SecureController
             GlossaryResponse glossaryResponse = new GlossaryResponse();
             glossaryResponse.setGlossary(glossary);
             response = glossaryResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
