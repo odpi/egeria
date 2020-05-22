@@ -4,7 +4,7 @@
 # Changing the OMAG Server Platform's Network Address
 
 By default the [OMAG Server Platform](../../../open-metadata-publication/website/omag-server) registers with the network
-using **http://localhost:8080**.  This is ok for testing, or
+using **https://localhost:9443**.  This is ok for testing, or
 where you only want to run one instance of the OMAG Server Platform
 on a single machine, but for many situations it is not sufficient.
 
@@ -60,14 +60,14 @@ strict.ssl=true
 ################################################
 logging.level.root=OFF
 
-server.address=http://localhost:8081
+server.address=https://localhost:9444
 ```
 
 [Start the OMAG server platform again](task-starting-omag-server.md)
 and issue the following REST call to check the server is running with the new server address.
 
 ```bash
-$ curl -X GET http://localhost:8081/open-metadata/platform-services/users/test/server-platform/origin
+$ curl --insecure -X GET https://localhost:9444/open-metadata/platform-services/users/test/server-platform/origin
 ODPi Egeria OMAG Server Platform
 ```
 

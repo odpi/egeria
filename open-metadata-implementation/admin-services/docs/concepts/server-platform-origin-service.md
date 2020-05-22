@@ -26,7 +26,7 @@ For example, this is the response from the ODPi Egeria implementation of the OMA
 which has an endpoint of `https://localhost:9443`.  Gary Geeke (`garygeeke`) is the administrator.
 
 ```bash
-$ curl -X GET https://localhost:9443/open-metadata/platform-services/users/garygeeke/server-platform-origin
+$ curl --insecure -X GET https://localhost:9443/open-metadata/platform-services/users/garygeeke/server-platform-origin
 ODPi Egeria OMAG Server Platform (version 1.8-SNAPSHOT)
 ```
 

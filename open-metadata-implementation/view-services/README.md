@@ -48,7 +48,7 @@ remote server called 'Server1' is:
          "viewServiceFullName":"Glossary Author",
          "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.glossaryauthor.admin.GlossaryAuthorViewAdmin",
          "viewServiceOperationalStatus":"ENABLED",
-         "omagserverPlatformRootURL":"http://localhost:8080",
+         "omagserverPlatformRootURL":"https://localhost:9443",
          "omagserverName":"Server1"
       }
    ],

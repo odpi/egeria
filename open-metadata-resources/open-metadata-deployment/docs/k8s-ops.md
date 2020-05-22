@@ -46,9 +46,9 @@ local-cp-zookeeper              ClusterIP   10.109.88.78     <none>        2181/
 local-cp-zookeeper-headless     ClusterIP   None             <none>        2888/TCP,3888/TCP                                                            42s
 local-openldap                  ClusterIP   10.97.145.22     <none>        389/TCP,636/TCP                                                              42s
 local-vdc-atlas-service         NodePort    10.107.206.23    <none>        21000:31000/TCP                                                              42s
-local-vdc-egeria-service        NodePort    10.103.23.234    <none>        8080:30080/TCP                                                               42s
+local-vdc-egeria-service        NodePort    10.103.23.234    <none>        9443:30080/TCP                                                               42s
 local-vdc-gaian-service         NodePort    10.99.183.202    <none>        6414:30414/TCP                                                               42s
-local-vdc-ibm-igc-service       NodePort    10.96.13.54      <none>        8080:30081/TCP,9446:32446/TCP                                                42s
+local-vdc-ibm-igc-service       NodePort    10.96.13.54      <none>        9443:30081/TCP,9446:32446/TCP                                                42s
 local-vdc-omrsmonitor-service   NodePort    10.96.170.162    <none>        58080:31080/TCP                                                              42s
 local-vdc-postgresql-service    NodePort    10.103.139.227   <none>        5432:30432/TCP                                                               42s
 local-vdc-ranger-service        NodePort    10.97.32.163     <none>        6080:32080/TCP,6182:30182/TCP,6083:31682/TCP,6183:32006/TCP,3306:31734/TCP   42s
@@ -74,10 +74,10 @@ Selector:                 app.kubernetes.io/component=egeria-service,app.kuberne
 Type:                     NodePort
 IP:                       10.103.23.234
 LoadBalancer Ingress:     localhost
-Port:                     <unset>  8080/TCP
-TargetPort:               8080/TCP
+Port:                     <unset>  9443/TCP
+TargetPort:               9443/TCP
 NodePort:                 <unset>  30080/TCP
-Endpoints:                10.1.0.98:8080
+Endpoints:                10.1.0.98:9443
 Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:                   <none>
@@ -176,9 +176,9 @@ local-cp-zookeeper-headless    ClusterIP  None            <none>       2888/TCP,
 local-cp-zookeeper             ClusterIP  10.109.88.78    <none>       2181/TCP                                                                    2m59s
 local-openldap                 ClusterIP  10.97.145.22    <none>       389/TCP,636/TCP                                                             2m59s
 local-vdc-atlas-service        NodePort   10.107.206.23   <none>       21000:31000/TCP                                                             2m59s
-local-vdc-egeria-service       NodePort   10.103.23.234   <none>       8080:30080/TCP                                                              2m59s
+local-vdc-egeria-service       NodePort   10.103.23.234   <none>       9443:30080/TCP                                                              2m59s
 local-vdc-gaian-service        NodePort   10.99.183.202   <none>       6414:30414/TCP                                                              2m59s
-local-vdc-igcproxy-service     NodePort   10.96.13.54     <none>       8080:30081/TCP                                                              2m59s
+local-vdc-igcproxy-service     NodePort   10.96.13.54     <none>       9443:30081/TCP                                                              2m59s
 local-vdc-omrsmonitor-service  NodePort   10.96.170.162   <none>       58080:31080/TCP                                                             2m59s
 local-vdc-postgresql-service   NodePort   10.103.139.227  <none>       5432:30432/TCP,22:30471/TCP                                                 2m59s
 local-vdc-ranger-service       NodePort   10.97.32.163    <none>       6080:32080/TCP,6182:30182/TCP,6083:31682/TCP,6183:32006/TCP,3306:31734/TCP  2m59s

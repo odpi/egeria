@@ -3,8 +3,16 @@
 
 # Command line Http request tools - HTTPie and Curl
 
+# httpie
 https://httpie.org/
 
+Note that Egeria is using https, so if you have not replaced the provided self-signed certificate, ensure to add '--verify no' to any requests 
+to skip certificate validation
+
+# curl
+
+Note that Egeria is using https, so if you have not replaced the provided self-signed certificate, ensure to add '--insecure' to any requests 
+to skip certificate validation
 
 
 ----

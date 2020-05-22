@@ -60,6 +60,9 @@ tests.
 An example collection of configuration calls for Postman can be found in
 [Egeria-CTS-RepositoryWorkbench](../../open-metadata-resources/open-metadata-samples/postman-rest-samples/collection/Egeria-CTS-RepositoryWorkbench.postman_collection.json).
 
+Egeria by default uses https:// requests with a self-signed certificate. Any PostMan users therefore will need to
+go into settings->general and turn off 'SSL certificate verification' or requests will fail.
+ 
 The OMAG Server also supports a REST API for querying the results of running
 the conformance suite tests.  These commands include:
 

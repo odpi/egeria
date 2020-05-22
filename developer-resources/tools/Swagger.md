@@ -8,8 +8,8 @@ Swagger automatically generates a website that documents the REST APIs supported
 It is based on the [Open API Specification (V3)](http://spec.openapis.org/oas/v3.0.3).
 
 The website is found at  `<serverURLroot>/swagger-ui.html`.
-For example if the platform is running at `http://localhost:8080`, the URL for Swagger is
-`http://localhost:8080/swagger-ui.html`
+For example if the platform is running at `https://localhost:9443`, the URL for Swagger is
+`https://localhost:9443/swagger-ui.html`
 
 The top of the page gives a general description of the OMAG Server platform plus
 a link to more documentation.

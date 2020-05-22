@@ -102,10 +102,10 @@ pod/lab-zookeeper-0                                 1/1     Running   0         
 NAME                                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
 service/lab-kafka                      ClusterIP   172.21.169.174   <none>        9092/TCP                     83s
 service/lab-kafka-headless             ClusterIP   None             <none>        9092/TCP                     83s
-service/lab-odpi-egeria-lab-core       NodePort    172.21.194.126   <none>        8080:30080/TCP               83s
-service/lab-odpi-egeria-lab-datalake   NodePort    172.21.71.217    <none>        8080:30081/TCP               83s
-service/lab-odpi-egeria-lab-dev        NodePort    172.21.233.139   <none>        8080:30082/TCP               83s
-service/lab-odpi-egeria-lab-factory    NodePort    172.21.1.162     <none>        8080:30083/TCP               83s
+service/lab-odpi-egeria-lab-core       NodePort    172.21.194.126   <none>        9443:30080/TCP               83s
+service/lab-odpi-egeria-lab-datalake   NodePort    172.21.71.217    <none>        9443:30081/TCP               83s
+service/lab-odpi-egeria-lab-dev        NodePort    172.21.233.139   <none>        9443:30082/TCP               83s
+service/lab-odpi-egeria-lab-factory    NodePort    172.21.1.162     <none>        9443:30083/TCP               83s
 service/lab-odpi-egeria-lab-jupyter    NodePort    172.21.35.112    <none>        8888:30888/TCP               83s
 service/lab-odpi-egeria-lab-ui         NodePort    172.21.43.217    <none>        8443:30443/TCP               83s
 service/lab-zookeeper                  ClusterIP   172.21.242.102   <none>        2181/TCP,2888/TCP,3888/TCP   83s
@@ -199,11 +199,11 @@ You can then deploy using
 
 ## Using the environment to extend notebooks or develop new ones
 
-  - If you are using a notebook written to assume 'localhost:8080' or similar, replace with the following fragment. This will use the correct defaults for the environment (k8s or compose), or localhost if these are not yet. :
-  corePlatformURL     = os.environ.get('corePlatformURL','http://localhost:8080')
-  dataLakePlatformURL = os.environ.get('dataLakePlatformURL','http://localhost:8081')
-  devPlatformURL      = os.environ.get('devPlatformURL','http://localhost:8082')
-  factoryPlatformURL  = os.environ.get('factoryPlatformURL','http://localhost:8083')
+  - If you are using a notebook written to assume 'localhost:9443' or similar, replace with the following fragment. This will use the correct defaults for the environment (k8s or compose), or localhost if these are not yet. :
+  corePlatformURL     = os.environ.get('corePlatformURL','https://localhost:9443')
+  dataLakePlatformURL = os.environ.get('dataLakePlatformURL','https://localhost:9444')
+  devPlatformURL      = os.environ.get('devPlatformURL','https://localhost:9445')
+  factoryPlatformURL  = os.environ.get('factoryPlatformURL','https://localhost:9446')
  - The notebooks downloaded from git are refreshed on each start. Ensure any modifications to notebooks are saved elsewhere
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -41,11 +41,11 @@ Components included are:
 
  ### Using the environment to extend notebooks or develop new ones
  
-  - If you are using a notebook written to assume 'localhost:8080' or similar, replace with the following fragment. This will use the correct defaults for the environment (k8s or compose), or localhost if these are not yet. :
-  corePlatformURL     = os.environ.get('corePlatformURL','http://localhost:8080')
-  dataLakePlatformURL = os.environ.get('dataLakePlatformURL','http://localhost:8081')
-  devPlatformURL      = os.environ.get('devPlatformURL','http://localhost:8082')
-  factoryPlatformURL  = os.environ.get('factoryPlatformURL','http://localhost:8083')
+  - If you are using a notebook written to assume 'localhost:9443' or similar, replace with the following fragment. This will use the correct defaults for the environment (k8s or compose), or localhost if these are not yet. :
+  corePlatformURL     = os.environ.get('corePlatformURL','https://localhost:9443')
+  dataLakePlatformURL = os.environ.get('dataLakePlatformURL','https://localhost:9444')
+  devPlatformURL      = os.environ.get('devPlatformURL','https://localhost:9445')
+  factoryPlatformURL  = os.environ.get('factoryPlatformURL','https://localhost:9446')
  - The notebooks downloaded from git are refreshed on each start. Ensure any modifications to notebooks are saved elsewhere
 
 
