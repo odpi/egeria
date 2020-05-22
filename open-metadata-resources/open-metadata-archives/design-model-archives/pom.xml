@@ -31,7 +31,7 @@
     <artifactId>design-model-archives</artifactId>
 
     <modules>
-        <module>base</module>
+        <module>design-model-archive-base</module>
         <module>cloud-information-model</module>
         <module>glossary-canonical-model</module>
     </modules>

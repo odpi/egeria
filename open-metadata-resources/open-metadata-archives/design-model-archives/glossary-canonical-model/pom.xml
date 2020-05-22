@@ -21,10 +21,11 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Design Model Archives</name>
+    <name>Glossary Canonical Model</name>
     <description>
-        The Design Model Archives provide utilities for loading common/standard design models from third parties.
+        The Glossary Canonical Model allows for loading common/standard glossary models from third parties.
     </description>
+
 
     <artifactId>glossary-canonical-model</artifactId>
 
