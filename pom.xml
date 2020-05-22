@@ -2563,6 +2563,7 @@
                         <exclude>**/*.csv</exclude>
                         <exclude>**/*.ipynb</exclude>
                         <exclude>**/*.png</exclude>
+                        <exclude>**/*.svg</exclude>
                         <exclude>**/*.iml</exclude>
                         <exclude>**/*.registrystore</exclude>
                         <exclude>**/*.results</exclude>
@@ -2590,6 +2591,7 @@
                         <exclude>**/**.code-workspace</exclude>
                         <exclude>config</exclude>
                         <exclude>**/LICENSE*.txt</exclude>
+                        <exclude>**/presentation-server/**</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
