@@ -33,6 +33,7 @@
         <module>access-services-samples</module>
         <module>admin-services-samples</module>
         <module>open-metadata-security-samples</module>
+        <module>discovery-service-sample</module>
     </modules>
 
 </project>
