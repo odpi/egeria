@@ -17,7 +17,7 @@ the types of Egeria OMAG Servers; Presentation Server is one of.
 
 ## For development
  * Add the presentation-server folder into [Visual Studio Code](https://code.visualstudio.com/). It will create a new workspace.
- * You can open a terminal in Visual Studio code to issue the npsm commands
+ * You can open a terminal in Visual Studio code to issue the npm commands
  * Set up your environment by running `npm install`
  * Build and start the server using `npm start`. Use other npm parameters as specified in [package.json](nodejs/package.json). 
 ## Setting up the downstream servers  
