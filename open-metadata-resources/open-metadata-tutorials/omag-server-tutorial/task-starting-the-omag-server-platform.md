@@ -51,7 +51,7 @@ This means your OMAG server platform is running.
 
 If you get an error that the port is in use, check for any applications using the same port. 
 
- Try the following command (replace 8080 accordingly if using a non standard port):
+ Try the following command (replace 9443 accordingly if using a non standard port):
 
 ```bash
 $ curl --insecure -X GET https://localhost:9443/open-metadata/platform-services/users/test/server-platform/origin

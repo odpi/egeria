@@ -25,7 +25,7 @@ The demo uses [Apache Kafka](http://kafka.apache.org/) in a Docker container. Se
 Start an OMAG server platform either from the
 [Egeria install](../../open-metadata-tutorials/omag-server-tutorial/task-starting-omag-server.md) or from IntelliJ.
 
-Here is the IntelliJ configuration for an OMAG server platform using port 8080. Note you should change to 9443 which is now the default for Egeria
+Here is the IntelliJ configuration for an OMAG server platform using port 8080. Note you should change to 9443 which is now the default for Egeria since switching to https by default
 
 ![Figure 2:](IntelliJ-OMAGServerPlatform-run-configuration.png)
 > Figure 2: OMAG Server Platform run configuration for port 8080
