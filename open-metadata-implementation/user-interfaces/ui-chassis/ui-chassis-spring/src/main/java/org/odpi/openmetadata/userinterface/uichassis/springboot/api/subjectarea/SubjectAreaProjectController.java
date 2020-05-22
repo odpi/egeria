@@ -5,7 +5,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.subjectarea
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaProject;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
@@ -73,7 +73,7 @@ public class SubjectAreaProjectController extends SecureController
             ProjectResponse projectResponse = new ProjectResponse();
             projectResponse.setProject(project);
             response = projectResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -103,7 +103,7 @@ public class SubjectAreaProjectController extends SecureController
             ProjectResponse projectResponse = new ProjectResponse();
             projectResponse.setProject(project);
             response = projectResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -153,7 +153,7 @@ public class SubjectAreaProjectController extends SecureController
             ProjectsResponse projectsResponse = new ProjectsResponse();
             projectsResponse.setProjects(projects);
             response = projectsResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -197,7 +197,7 @@ public class SubjectAreaProjectController extends SecureController
             LinesResponse linesResponse = new LinesResponse();
             linesResponse.setLines(lines);
             response = linesResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -248,7 +248,7 @@ public class SubjectAreaProjectController extends SecureController
             ProjectResponse projectResponse = new ProjectResponse();
             projectResponse.setProject(updatedProject);
             response = projectResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -299,7 +299,7 @@ public class SubjectAreaProjectController extends SecureController
                 response = projectResponse;
             }
 
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -330,7 +330,7 @@ public class SubjectAreaProjectController extends SecureController
             ProjectResponse projectResponse = new ProjectResponse();
             projectResponse.setProject(project);
             response = projectResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;

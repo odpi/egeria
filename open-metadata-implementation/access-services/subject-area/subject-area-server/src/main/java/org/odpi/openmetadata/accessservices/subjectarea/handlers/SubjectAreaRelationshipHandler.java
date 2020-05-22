@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.RelationshipResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.InvalidParameterExceptionResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.ResponseCategory;
@@ -16,14 +15,12 @@ import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineBund
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineBundleFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ResponseFactory;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGlossaryRESTServices;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRelationshipRESTServices;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -64,19 +61,23 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                           RepositoryHandler repositoryHandler,
                                           OMRSAPIHelper oMRSAPIHelper,
                                           RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper, errorHandler);
+        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper);
     }
+
     // nothing to change for relationships
     @Override
     protected SubjectAreaOMASAPIResponse getResponse(SubjectAreaOMASAPIResponse response) {
         return response;
     }
+
     /**
      * Create a Line (relationship), which is a link between two Nodes.
      * <p>
      *
-     * @param userId     userId under which the request is performed
-     * @param line       line to create
+     * @param restAPIName rest API name
+     * @param userId      userId under which the request is performed
+     * @param className   class name
+     * @param line        line to create
      * @return response, when successful contains the created line
      * when not successful the following Exception responses can occur
      * <ul>
@@ -118,11 +119,14 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         return response;
 
     }
+
     /**
      * Get a Line (relationship)
      *
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the relationship to get
+     * @param restAPIName rest API name
+     * @param userId      unique identifier for requesting user, under which the request is performed
+     * @param className   class name
+     * @param guid        guid of the relationship to get
      * @return response which when successful contains the relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
@@ -166,9 +170,11 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * Update a relationship.
      * <p>
      *
-     * @param userId                  userId under which the request is performed
-     * @param line                    the relationship to update
-     * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param restAPIName rest API name
+     * @param userId      userId under which the request is performed
+     * @param className   class name
+     * @param line        the relationship to update
+     * @param isReplace   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response,              when successful contains the updated Line
      * when not successful the following Exception responses can occur
      * <ul>
@@ -227,11 +233,10 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                 if (relationshipToUpdate.getProperties() == null || relationshipToUpdate.getProperties().getPropertyCount() == 0) {
                     // nothing to update.
                     // TODO may need to change this logic if effectivity updates can be made through this call.
-                    SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.LINE_UPDATE_ATTEMPTED_WITH_NO_PROPERTIES;
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
-                    log.error(errorMessage);
+                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.LINE_UPDATE_ATTEMPTED_WITH_NO_PROPERTIES.getMessageDefinition();
+
                     response = new InvalidParameterExceptionResponse(
-                            new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction())
+                            new InvalidParameterException(messageDefinition, className, methodName, "properties", null)
                     );
                 } else {
                     response = oMRSAPIHelper.callOMRSUpdateRelationship(restAPIName, userId, relationshipToUpdate);
@@ -250,12 +255,15 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         }
         return response;
     }
+
     /**
      * Delete a Line (relationship)
      *
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the HAS A relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     * @param restAPIName rest API name
+     * @param userId      unique identifier for requesting user, under which the request is performed
+     * @param className   class name
+     * @param guid        guid of the HAS A relationship to delete
+     * @param isPurge     true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete, the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -265,7 +273,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteLine(String restAPIName, String userId, String className, String guid, Boolean isPurge) {
@@ -305,12 +313,16 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         }
         return response;
     }
+
     /**
      * Restore a Line (relationship).
-     *
+     * <p>
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the relationship to restore
+     *
+     * @param restAPIName rest API name
+     * @param userId      unique identifier for requesting user, under which the request is performed
+     * @param className   class name
+     * @param guid        guid of the relationship to restore
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -320,7 +332,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> EntityNotPurgedException             a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreLine(String restAPIName, String userId, String className, String guid) {

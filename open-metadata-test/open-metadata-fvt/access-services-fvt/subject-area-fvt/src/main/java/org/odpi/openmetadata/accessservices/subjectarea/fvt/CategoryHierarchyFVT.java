@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
@@ -47,13 +47,15 @@ public class CategoryHierarchyFVT
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
-        } catch (SubjectAreaCheckedExceptionBase e)
+        } catch (SubjectAreaCheckedException e)
         {
             System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+        } catch (SubjectAreaFVTCheckedException e) {
+            System.out.println("ERROR: " + e.getMessage() );
         }
 
     }
-    public static void runWith2Servers(String url) throws SubjectAreaCheckedExceptionBase
+    public static void runWith2Servers(String url) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         CategoryHierarchyFVT fvt =new CategoryHierarchyFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
@@ -68,12 +70,12 @@ public class CategoryHierarchyFVT
         this.serverName=serverName;
     }
 
-    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedExceptionBase {
+    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException {
         CategoryHierarchyFVT fvt =new CategoryHierarchyFVT(url,serverName,userId);
         fvt.run();
     }
 
-    public void run() throws SubjectAreaCheckedExceptionBase
+    public void run() throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         SubjectArea subjectArea = null;
 
@@ -98,11 +100,11 @@ public class CategoryHierarchyFVT
 
     /**
      * Create top categories i.e. categories with no parent category
-     * @param glossaryGuid glossary guid
+     * @param glossaryGuid glossary userId
      * @return a set of created categories
-     * @throws SubjectAreaCheckedExceptionBase an error occurred.
+     * @throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException an error occurred.
      */
-    private Set<Category> createTopCategories(String glossaryGuid) throws SubjectAreaCheckedExceptionBase
+    private Set<Category> createTopCategories(String glossaryGuid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Set<Category> categories = new HashSet();
         for (int width_counter = 0; width_counter < WIDTH; width_counter++)
@@ -132,11 +134,11 @@ public class CategoryHierarchyFVT
      * Create children categories i.e. categories under the supplied parent category
      *
      * @param parent parent category
-     * @param glossaryGuid guid of the associated glossary
+     * @param glossaryGuid userId of the associated glossary
      * @return a set of created categories
-     * @throws SubjectAreaCheckedExceptionBase an error occurred.
+     * @throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException an error occurred.
      */
-    private Set<Category> createChildrenCategories(Category parent,String glossaryGuid) throws SubjectAreaCheckedExceptionBase
+    private Set<Category> createChildrenCategories(Category parent,String glossaryGuid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
 
         Set<Category> categories = new HashSet<>();
@@ -156,11 +158,11 @@ public class CategoryHierarchyFVT
      *
      * @param categoryName name of the category to create
      * @param parent       category under which to create this category
-     * @param glossaryGuid guid of the associated glossary
+     * @param glossaryGuid userId of the associated glossary
      * @return created category
-     * @throws SubjectAreaCheckedExceptionBase
+     * @throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
      */
-    private Category createCategoryWithParentGlossary(String categoryName, Category parent, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
+    private Category createCategoryWithParentGlossary(String categoryName, Category parent, String glossaryGuid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Category category = new Category();
         category.setName(categoryName);
@@ -172,19 +174,20 @@ public class CategoryHierarchyFVT
         category.setParentCategory(parentCategorysummary);
         Category newCategory = subjectAreaCategory.createCategory(userId, category);
         FVTUtils.validateNode(newCategory);
-        System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
+        System.out.println("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
         return newCategory;
     }
 
     /**
-     * Create a category associated with a glossary, identified with a guid.
+     * Create a category associated with a glossary, identified with a userId.
      *
      * @param categoryName name of the category to create
-     * @param glossaryGuid guid of the glossary to associate with this category
+     * @param glossaryGuid userId of the glossary to associate with this category
      * @return created category
-     * @throws SubjectAreaCheckedExceptionBase error
+     * @throws SubjectAreaCheckedException subject area error
+     * @throws SubjectAreaFVTCheckedException FVT error
      */
-    public  Category createCategoryWithGlossaryGuid(String categoryName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
+    public  Category createCategoryWithGlossaryGuid(String categoryName, String glossaryGuid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Category category = new Category();
         category.setName(categoryName);
@@ -193,7 +196,7 @@ public class CategoryHierarchyFVT
         category.setGlossary(glossarySummary);
         Category newCategory = subjectAreaCategory.createCategory(userId, category);
         FVTUtils.validateNode(newCategory);
-        System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
+        System.out.println("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
         return newCategory;
     }
 }

@@ -218,7 +218,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/glossaries/{guid}")

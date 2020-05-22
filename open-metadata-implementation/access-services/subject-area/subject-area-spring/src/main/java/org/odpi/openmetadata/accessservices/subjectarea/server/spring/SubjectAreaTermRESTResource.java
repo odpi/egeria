@@ -211,7 +211,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/terms/{guid}")

@@ -21,7 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/repository-services/users/{userId}/metadata-highway")
 
-@Tag(name="Open Metadata Repository Services (OMRS)", description="The Open Metadata Repository Services (OMRS) enable metadata repositories to exchange metadata irrespective of the technology, or technology supplier.", externalDocs=@ExternalDocumentation(description="Open Metadata Repository Services (OMRS)",url="https://egeria.odpi.org/open-metadata-implementation/repository-services/"))
+@Tag(name="Repository Services - Metadata Highway",
+        description="The Metadata Highway services are part of the Open Metadata Repository Services (OMRS). " +
+                "They provide information about the status and membership of Open Metadata Repository Cohorts" +
+                "that the local server is connected to.",
+        externalDocs=@ExternalDocumentation(description="Further information",
+                url="https://egeria.odpi.org/open-metadata-implementation/repository-services/"))
 
 
 public class MetadataHighwayServicesResource

@@ -3,41 +3,43 @@
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
 /**
- * The  FunctionNotSupportedException is thrown by the Subject Area OMAS due to a function not being supported.
+ * The FunctionNotSupportedException is thrown by the Subject Area OMAS when a function is not supported
  * value.
  */
-public class FunctionNotSupportedException extends SubjectAreaCheckedExceptionBase
+public class FunctionNotSupportedException extends SubjectAreaCheckedException
 {
     /**
-     * This is the typical constructor used for creating a  FunctionNotSupportedException.
+     * This is the typical constructor used for creating an FunctionNotSupportedException
      *
-     * @param httpCode http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
-     * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
      */
-    public FunctionNotSupportedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
+    public FunctionNotSupportedException(ExceptionMessageDefinition messageDefinition,
+                                   String                     className,
+                                   String                     actionDescription)
     {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
+        super(messageDefinition, className, actionDescription);
     }
 
 
     /**
-     * This is the constructor used for creating a  FunctionNotSupportedException that resulted from a previous error.
+     * This is the constructor used for creating an FunctionNotSupportedException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param httpCode http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
-     * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param caughtError the error that resulted in this exception.
-     * */
-    public FunctionNotSupportedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     */
+    public FunctionNotSupportedException(ExceptionMessageDefinition messageDefinition,
+                                   String                     className,
+                                   String                     actionDescription,
+                                   Throwable                  caughtError)
     {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+        super(messageDefinition, className, actionDescription, caughtError);
     }
 }
