@@ -17,8 +17,9 @@ the types of Egeria OMAG Servers; Presentation Server is one of.
 
 ## For development
  * Add the presentation-server folder into [Visual Studio Code](https://code.visualstudio.com/). It will create a new workspace.
- * Build and start the server using `npm start`. Use other npm parameters as specified in [package.json](nodejs/package.json). You
- can open a terminal in Visual Studio code and run `npm start` in the ide.  
+ * You can open a terminal in Visual Studio code to issue the npsm commands
+ * Set up your environment by running `npm install`
+ * Build and start the server using `npm start`. Use other npm parameters as specified in [package.json](nodejs/package.json). 
 ## Setting up the downstream servers  
  * You need to have configured an Access Point Server and View server. The Presentation server issue omvs calls to the View server
  which issues Open Metadata Access Service (OMAS) calls to the Access Point Server.        
