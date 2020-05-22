@@ -16,7 +16,7 @@ import java.util.List;
  *	}
  *
  */
-public class Module implements IModuleObject {
+public class MetadataModule implements IModuleObject {
 
 	private String identifier;
 	private String version = "9.0";	// fixed version matching MOSER XSD on the moment of development.

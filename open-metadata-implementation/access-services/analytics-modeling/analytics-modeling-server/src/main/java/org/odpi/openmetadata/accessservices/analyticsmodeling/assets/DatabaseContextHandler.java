@@ -225,8 +225,8 @@ public class DatabaseContextHandler {
 		return ret;
 	}
 
-	private Module buildModule(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
-		Module module = new Module();
+	private MetadataModule buildModule(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
+		MetadataModule module = new MetadataModule();
 
 		module.setIdentifier(catalog + "." + schema);
 		module.setDataSource(Arrays.asList(buildDataSource(databaseGuid, catalog, schema)));

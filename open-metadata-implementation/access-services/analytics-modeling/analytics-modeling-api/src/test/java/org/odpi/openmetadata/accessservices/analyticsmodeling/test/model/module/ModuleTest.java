@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.DataSource;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Module;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.MetadataModule;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUtilities;
 
 public class ModuleTest {
@@ -32,7 +32,7 @@ public class ModuleTest {
 
 	@Test
 	public void toJson() {
-		Module obj = new Module();
+		MetadataModule obj = new MetadataModule();
 
 		obj.setIdentifier(IDENTIFIER);
 		obj.setDataSource(sources);
@@ -43,13 +43,13 @@ public class ModuleTest {
 
 	@Test
 	public void toJsonEmpty() {
-		TestUtilities.assertObjectJson(new Module(), master_empty);
+		TestUtilities.assertObjectJson(new MetadataModule(), master_empty);
 	}
 
 	@Test
 	public void fromJson() {
 
-		Module obj = TestUtilities.readObjectJson(master, Module.class);
+		MetadataModule obj = TestUtilities.readObjectJson(master, MetadataModule.class);
 
 		assertEquals(IDENTIFIER, obj.getIdentifier());
 		assertEquals(VERSION, obj.getVersion());
@@ -63,7 +63,7 @@ public class ModuleTest {
 
 		String module = TestUtilities.readJsonFile("/src/test/resources/", "completeModule");
 
-		Module obj = TestUtilities.readObjectJson(module, Module.class);
+		MetadataModule obj = TestUtilities.readObjectJson(module, MetadataModule.class);
 
 		assertEquals("AdventureWorks2014.Person", obj.getIdentifier());
 		assertEquals(VERSION, obj.getVersion());

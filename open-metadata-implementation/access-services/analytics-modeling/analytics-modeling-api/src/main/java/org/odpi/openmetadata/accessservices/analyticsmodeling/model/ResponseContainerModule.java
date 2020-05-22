@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.analyticsmodeling.model;
 
-import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Module;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.MetadataModule;
 
 /**
  * Response container for Analytics Modeling module representation.<br>
@@ -29,7 +29,7 @@ public class ResponseContainerModule extends ResponseContainer {
 	 * Set Analytics Modeling module.
 	 * @param value module definition to set.
 	 */
-	public void setPhysicalModule(Module value) {
+	public void setPhysicalModule(MetadataModule value) {
 		setAttribute(PHYSICAL_DEFINITION, value);
 	}
 
@@ -37,8 +37,8 @@ public class ResponseContainerModule extends ResponseContainer {
 	 * Get Analytics Modeling module.
 	 * @return Analytics Modeling module.
 	 */
-	public Module  getPhysicalModule() {
-		return (Module) getAttribute(PHYSICAL_DEFINITION);
+	public MetadataModule  getPhysicalModule() {
+		return (MetadataModule) getAttribute(PHYSICAL_DEFINITION);
 	}
 
 
