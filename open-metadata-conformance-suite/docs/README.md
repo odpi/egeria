@@ -80,11 +80,11 @@ The client also outputs a summary of the test run.
 The example below is for an unsuccessful run:
 
 ```
-$ OpenMetadataConformanceTestReport cSuiteServer http://localhost:8081
+$ OpenMetadataConformanceTestReport cSuiteServer https://localhost:9444
 =======================================
  Open Metadata Conformance Test Report 
 =======================================
- ... contacting conformance suite server: cSuiteServer (http://localhost:8081)
+ ... contacting conformance suite server: cSuiteServer (https://localhost:9444)
 Conformance report from server:  cSuiteServer
 
 Number of tests: 847
@@ -100,11 +100,11 @@ Process finished with exit code 1
 This output is an example of a successful run:
 
 ```
-$ OpenMetadataConformanceTestReport cSuiteServer http://localhost:8081
+$ OpenMetadataConformanceTestReport cSuiteServer https://localhost:9444
 =======================================
  Open Metadata Conformance Test Report 
 =======================================
- ... contacting conformance suite server: cSuiteServer (http://localhost:8081)
+ ... contacting conformance suite server: cSuiteServer (https://localhost:9444)
 Conformance report from server:  cSuiteServer
 
 Number of tests: 848

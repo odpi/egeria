@@ -46,7 +46,7 @@ strict.ssl=true
 logging.level.root=OFF
 ```
 
-Edit the **application.properties** file and add **server.address=http://localhost:8081**
+Edit the **application.properties** file and add **server.address=https://localhost:9444**
 to the file:
 
 ```text
