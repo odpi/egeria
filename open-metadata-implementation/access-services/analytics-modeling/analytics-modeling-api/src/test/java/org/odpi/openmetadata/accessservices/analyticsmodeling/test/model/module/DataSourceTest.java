@@ -14,14 +14,14 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUti
 
 public class DataSourceTest {
 
-	private static final String DTASOURCE_NAME = "DTASOURCE_NAME";
+	private static final String DATASOURCE_NAME = "DATASOURCE_NAME";
 	private static final String SCHEMA = "SCHEMA";
 	private static final String CATALOG = "CATALOG";
 
 	String master = String.format("{%n" +
 			"  \"schema\" : \"SCHEMA\",%n" +
 			"  \"catalog\" : \"CATALOG\",%n" +
-			"  \"name\" : \"DTASOURCE_NAME\",%n" +
+			"  \"name\" : \"DATASOURCE_NAME\",%n" +
 			"  \"table\" : [ { }, { } ]%n" +
 			"}");
 
@@ -33,7 +33,7 @@ public class DataSourceTest {
 	public void toJson() {
 		DataSource obj = new DataSource();
 
-		obj.setName(DTASOURCE_NAME);
+		obj.setName(DATASOURCE_NAME);
 		obj.setCatalog(CATALOG);
 		obj.setSchema(SCHEMA);
 		obj.setTable(tables);
@@ -51,7 +51,7 @@ public class DataSourceTest {
 
 		DataSource obj = TestUtilities.readObjectJson(master, DataSource.class);
 
-		assertEquals(DTASOURCE_NAME, obj.getName());
+		assertEquals(DATASOURCE_NAME, obj.getName());
 		assertEquals(SCHEMA, obj.getSchema());
 		assertEquals(CATALOG, obj.getCatalog());
 		assertEquals(2, obj.getTable().size());
