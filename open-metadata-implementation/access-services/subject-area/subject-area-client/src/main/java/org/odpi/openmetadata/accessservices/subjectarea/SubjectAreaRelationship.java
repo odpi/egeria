@@ -22,7 +22,7 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -140,18 +140,18 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeTermHASARelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               GUIDNotPurgedException,
-                                                                                               UnrecognizedGUIDException,
-                                                                                               MetadataServerUncontactableException,
-                                                                                               UnexpectedResponseException
+                                                                      UserNotAuthorizedException,
+                                                                      UnrecognizedGUIDException,
+                                                                      MetadataServerUncontactableException,
+                                                                      UnexpectedResponseException,
+                                                                      RelationshipNotPurgedException
     ;
     /**
      * Restore a has a relationship
@@ -333,18 +333,18 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeRelatedTerm(String userId, String guid) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      GUIDNotPurgedException,
-                                                                                      UnrecognizedGUIDException,
-                                                                                      MetadataServerUncontactableException,
-                                                                                      UnexpectedResponseException
+                                                             UserNotAuthorizedException,
+                                                             RelationshipNotPurgedException,
+                                                             UnrecognizedGUIDException,
+                                                             MetadataServerUncontactableException,
+                                                             UnexpectedResponseException, RelationshipNotPurgedException, RelationshipNotPurgedException
     ;
     /**
      * Restore a related term relationship
@@ -501,18 +501,18 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeSynonymRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              GUIDNotPurgedException,
-                                                                                              UnrecognizedGUIDException,
-                                                                                              MetadataServerUncontactableException,
-                                                                                              UnexpectedResponseException
+                                                                     UserNotAuthorizedException,
+                                                                     RelationshipNotPurgedException,
+                                                                     UnrecognizedGUIDException,
+                                                                     MetadataServerUncontactableException,
+                                                                     UnexpectedResponseException, RelationshipNotPurgedException
     ;
     /**
      * Restore a Synonym relationship
@@ -668,18 +668,18 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeAntonymRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              GUIDNotPurgedException,
-                                                                                              UnrecognizedGUIDException,
-                                                                                              MetadataServerUncontactableException,
-                                                                                              UnexpectedResponseException
+                                                                     UserNotAuthorizedException,
+                                                                     RelationshipNotPurgedException,
+                                                                     UnrecognizedGUIDException,
+                                                                     MetadataServerUncontactableException,
+                                                                     UnexpectedResponseException, RelationshipNotPurgedException
     ;
     /**
      * Restore a Antonym relationship
@@ -840,18 +840,18 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeTranslationRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  GUIDNotPurgedException,
-                                                                                                  UnrecognizedGUIDException,
-                                                                                                  MetadataServerUncontactableException,
-                                                                                                  UnexpectedResponseException
+                                                                         UserNotAuthorizedException,
+                                                                         RelationshipNotPurgedException,
+                                                                         UnrecognizedGUIDException,
+                                                                         MetadataServerUncontactableException,
+                                                                         UnexpectedResponseException, RelationshipNotPurgedException
     ;
     /**
      * Restore a Translation relationship
@@ -1012,7 +1012,7 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1020,7 +1020,7 @@ public interface SubjectAreaRelationship
      */
     void purgeUsedInContextRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,
-                                                                                                    GUIDNotPurgedException,
+                                                                                                    RelationshipNotPurgedException,
                                                                                                     UnrecognizedGUIDException,
                                                                                                     MetadataServerUncontactableException,
                                                                                                     UnexpectedResponseException
@@ -1176,7 +1176,7 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1184,7 +1184,7 @@ public interface SubjectAreaRelationship
      */
     void purgePreferredTermRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,
-                                                                                                    GUIDNotPurgedException,
+                                                                                                    RelationshipNotPurgedException,
                                                                                                     UnrecognizedGUIDException,
                                                                                                     MetadataServerUncontactableException,
                                                                                                     UnexpectedResponseException
@@ -1348,7 +1348,7 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1356,7 +1356,7 @@ public interface SubjectAreaRelationship
      */
     void purgeValidValueRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
-                                                                                                 GUIDNotPurgedException,
+                                                                                                 RelationshipNotPurgedException,
                                                                                                  UnrecognizedGUIDException,
                                                                                                  MetadataServerUncontactableException,
                                                                                                  UnexpectedResponseException
@@ -1516,7 +1516,7 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1524,7 +1524,7 @@ public interface SubjectAreaRelationship
      */
     void purgeReplacementTermRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                                       UserNotAuthorizedException,
-                                                                                                      GUIDNotPurgedException,
+                                                                                                      RelationshipNotPurgedException,
                                                                                                       UnrecognizedGUIDException,
                                                                                                       MetadataServerUncontactableException,
                                                                                                       UnexpectedResponseException
@@ -1684,7 +1684,7 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1692,7 +1692,7 @@ public interface SubjectAreaRelationship
      */
     void purgeTermTYPEDBYRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                                               UserNotAuthorizedException,
-                                                                                                              GUIDNotPurgedException,
+                                                                                                              RelationshipNotPurgedException,
                                                                                                               UnrecognizedGUIDException,
                                                                                                               MetadataServerUncontactableException,
                                                                                                               UnexpectedResponseException
@@ -1852,7 +1852,7 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1860,7 +1860,7 @@ public interface SubjectAreaRelationship
      */
     void purgeIsaRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
-                                                                                          GUIDNotPurgedException,
+                                                                                          RelationshipNotPurgedException,
                                                                                           UnrecognizedGUIDException,
                                                                                           MetadataServerUncontactableException,
                                                                                           UnexpectedResponseException
@@ -2019,7 +2019,7 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2027,7 +2027,7 @@ public interface SubjectAreaRelationship
      */
     void purgeTermISATypeOFRelationship(String userId, String guid) throws InvalidParameterException,
                                                                                                                 UserNotAuthorizedException,
-                                                                                                                GUIDNotPurgedException,
+                                                                                                                RelationshipNotPurgedException,
                                                                                                                 UnrecognizedGUIDException,
                                                                                                                 MetadataServerUncontactableException,
                                                                                                                 UnexpectedResponseException
@@ -2188,7 +2188,7 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2196,7 +2196,7 @@ public interface SubjectAreaRelationship
      */
     void purgeTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
-            GUIDNotPurgedException,
+            RelationshipNotPurgedException,
             UnrecognizedGUIDException,
             MetadataServerUncontactableException,
             UnexpectedResponseException
@@ -2342,7 +2342,7 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2350,7 +2350,7 @@ public interface SubjectAreaRelationship
      */
     void purgeTermAnchorRelationship(String userId, String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
-            GUIDNotPurgedException,
+            RelationshipNotPurgedException,
             UnrecognizedGUIDException,
             MetadataServerUncontactableException,
             UnexpectedResponseException
@@ -2513,7 +2513,7 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2521,7 +2521,7 @@ public interface SubjectAreaRelationship
      */
     void purgeCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
-            GUIDNotPurgedException,
+            RelationshipNotPurgedException,
             UnrecognizedGUIDException,
             MetadataServerUncontactableException,
             UnexpectedResponseException
@@ -2679,7 +2679,7 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2687,7 +2687,7 @@ public interface SubjectAreaRelationship
      */
      void purgeProjectScopeRelationship(String userId, String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
-            GUIDNotPurgedException,
+            RelationshipNotPurgedException,
             UnrecognizedGUIDException,
             MetadataServerUncontactableException,
             UnexpectedResponseException

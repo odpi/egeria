@@ -64,7 +64,6 @@ public interface SubjectAreaProject
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Project to get
-     * @param guid   guid of the Project to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -83,12 +82,13 @@ public interface SubjectAreaProject
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-     List<Line> getProjectRelationships(String userId, String guid,
-                                         Date asOfTime,
-                                         int offset,
-                                         int pageSize,
-                                         org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                         String sequencingProperty) throws
+     List<Line> getProjectRelationships(String userId,
+                                        String guid,
+                                        Date asOfTime,
+                                        int offset,
+                                        int pageSize,
+                                        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                        String sequencingProperty) throws
             UserNotAuthorizedException,
             InvalidParameterException,
             FunctionNotSupportedException,
@@ -251,7 +251,7 @@ public interface SubjectAreaProject
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws GUIDNotPurgedException a hard delete was issued but the Project was not purged
+     * @throws EntityNotPurgedException a hard delete was issued but the Project was not purged
      * @throws FunctionNotSupportedException Function not supported
      *
      * Client library Exceptions
@@ -263,7 +263,7 @@ public interface SubjectAreaProject
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
                                                                                     UnrecognizedGUIDException,
-                                                                                    GUIDNotPurgedException,
+                                                                                    EntityNotPurgedException,
                                                                                     UnexpectedResponseException,
                                                                                     FunctionNotSupportedException ;
     /**

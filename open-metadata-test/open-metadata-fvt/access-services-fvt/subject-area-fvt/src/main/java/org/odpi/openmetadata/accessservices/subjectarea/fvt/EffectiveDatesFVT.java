@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
@@ -35,13 +35,15 @@ public class EffectiveDatesFVT
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
-        } catch (SubjectAreaCheckedExceptionBase e)
+        } catch (SubjectAreaCheckedException e)
         {
             System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+        } catch (SubjectAreaFVTCheckedException e) {
+            System.out.println("ERROR: " + e.getMessage() );
         }
 
     }
-    public EffectiveDatesFVT(String url, String serverName,String userId) throws SubjectAreaCheckedExceptionBase
+    public EffectiveDatesFVT(String url, String serverName,String userId) throws SubjectAreaCheckedException
     {
         subjectAreaTerm = new SubjectAreaImpl(serverName,url).getSubjectAreaTerm();
         System.out.println("Create a glossary");
@@ -50,7 +52,7 @@ public class EffectiveDatesFVT
         this.serverName=serverName;
         this.userId=userId;
     }
-    public static void runWith2Servers(String url) throws SubjectAreaCheckedExceptionBase
+    public static void runWith2Servers(String url) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         EffectiveDatesFVT fvt =new EffectiveDatesFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
@@ -58,7 +60,7 @@ public class EffectiveDatesFVT
         fvt2.run();
     }
 
-    public void run() throws SubjectAreaCheckedExceptionBase
+    public void run() throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         try
         {
@@ -86,27 +88,27 @@ public class EffectiveDatesFVT
         FVTUtils.validateNode(term5);
         if (term5.getGlossary()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term with no effectivity constraints expected an associated future Glossary,  ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Term with no effectivity constraints expected an associated future Glossary");
         }
 
         Term gotTerm5 = termFVT.getTermByGUID(term5.getSystemAttributes().getGUID());
         FVTUtils.validateNode(gotTerm5);
         if (gotTerm5.getGlossary()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term with no effectivity constraints expected an associated future Glossary,  ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Term with no effectivity constraints expected an associated future Glossary");
         }
         // update the term so that its effective dates not longer are compatible with the glossary
         Term futureTerm = termFVT.updateTermToFuture(gotTerm5.getSystemAttributes().getGUID(),term5);
         FVTUtils.validateNode(futureTerm);
         if (futureTerm.getGlossary()!=null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term expected associated future Glossary,  ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Term expected associated future Glossary");
         }
         futureTerm = termFVT.getTermByGUID(term5.getSystemAttributes().getGUID());
         FVTUtils.validateNode(futureTerm);
         if (futureTerm.getGlossary()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term expected no associated future Glossary,  ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Term expected no associated future Glossary");
         }
     }
 }

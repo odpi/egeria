@@ -20,7 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/repository-services/users/{userId}/audit-log")
 
-@Tag(name="Open Metadata Repository Services (OMRS)", description="The Open Metadata Repository Services (OMRS) enable metadata repositories to exchange metadata irrespective of the technology, or technology supplier.", externalDocs=@ExternalDocumentation(description="Open Metadata Repository Services (OMRS)",url="https://egeria.odpi.org/open-metadata-implementation/repository-services/"))
+@Tag(name="Repository Services - Audit Log", description="Details of the activity within an OMAG Server are written to " +
+        "the server's configured audit log destinations.  This service retrieves information about the audit log and its " +
+        "contents for a particular server.",
+        externalDocs= @ExternalDocumentation(description="Further information",
+                url="https://egeria.odpi.org/open-metadata-implementation/repository-services/"))
 
 
 public class AuditLogServicesResource
