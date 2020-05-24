@@ -6,9 +6,15 @@
 This page contains resources to help developers working on the Egeria project.
 It supplements the general [Community Guide](../Community-Guide.md).
 
-* [Developer Guidelines](Developer-Guidelines.md) 
+* [Programming Languages](languages)
+
+* [Tools and Technology Summaries](tools)
+
+* [Developer Guidelines](Developer-Guidelines.md)
+    * [Why the DCO?](why-the-dco.md)
     * [Creating Postman samples](Postman-Samples.md)
     * [Dependency Management](Dependency-Management.md)
+    * [Developer import of Egeria content using Gradle](Consuming-Egeria-Using_Gradle.md)
 
 * Project Processes
     * [Issue Tracking](Issue-Tracking.md)
@@ -17,11 +23,8 @@ It supplements the general [Community Guide](../Community-Guide.md).
     * [Feature Branches](Feature-Branch.md)
     * [Acclaim Badges](badges)
 
-* Technology Summaries
-   * [Spring and Spring Boot](Spring.md) - for building REST APIs
-   * [Swagger](tools/Swagger.md) - REST API documentation
-   * [Developer import of Egeria content using Gradle](Consuming-Egeria-Using_Gradle.md)
-  
+The [Egeria Dojo](../open-metadata-resources/open-metadata-tutorials/egeria-dojo) provides education
+on how to make a contribution to Egeria. 
 
 ----
 * Return to the [Community Guide](../Community-Guide.md)

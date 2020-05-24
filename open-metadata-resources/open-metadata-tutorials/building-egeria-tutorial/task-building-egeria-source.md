@@ -16,7 +16,7 @@ Issue the following command from the `egeria` directory.
 $ mvn clean install
 ``` 
 
-The build can take 5-15 minutes depending on the speed and load on your machine.  However eventually you will see the message:
+The build can take 15-30 minutes depending on the speed and load on your machine.  However eventually you will see the message:
 
 ```text
 [INFO] ------------------------------------------------------------------------
