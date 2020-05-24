@@ -222,7 +222,21 @@
         </fileSet>
 
         <fileSet>
-            <directory>../../open-metadata-resources/open-metadata-archives/design-model-archives/target</directory>
+            <directory>../../open-metadata-resources/open-metadata-archives/design-model-archives/cloud-information-model/target</directory>
+            <outputDirectory>./utilities</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-archives/design-model-archives/glossary-canonical-model/target</directory>
             <outputDirectory>./utilities</outputDirectory>
             <includes>
                 <include>*${open-metadata.version}*</include>
@@ -253,7 +267,7 @@
         <!-- Copy the archive utilities -->
 
         <fileSet>
-            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/target</directory>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/asset-reader-avro-sample/target</directory>
             <outputDirectory>./samples</outputDirectory>
             <includes>
                 <include>*${open-metadata.version}*</include>
@@ -267,7 +281,7 @@
         </fileSet>
 
         <fileSet>
-            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-samples/target</directory>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/asset-reader-csv-sample/target</directory>
             <outputDirectory>./samples</outputDirectory>
             <includes>
                 <include>*${open-metadata.version}*</include>
@@ -281,7 +295,77 @@
         </fileSet>
 
         <fileSet>
-            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/target</directory>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/asset-create-avro-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/asset-create-csv-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-client-samples/governance-leadership-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-client-samples/governance-zone-create-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/subject-area-definition-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/admin-services-samples/admin-services-config-metadata-server-sample/target</directory>
             <outputDirectory>./samples</outputDirectory>
             <includes>
                 <include>*${open-metadata.version}*</include>
@@ -666,7 +750,6 @@
             <directory>../../open-metadata-conformance-suite/open-metadata-conformance-suite-client/target/</directory>
             <outputDirectory>./conformance-suite</outputDirectory>
             <includes>
-                <include>lib/*.jar</include>
                 <include>*.jar</include>
             </includes>
             <excludes>

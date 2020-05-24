@@ -145,7 +145,7 @@
         <tomcat.version>9.0.35</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
-        <jena.version>3.14.0</jena.version>
+        <jena.version>3.15.0</jena.version>
         <commons-lang.version>3.10</commons-lang.version>
         <h2-database.version>1.4.200</h2-database.version>
         <jwt.version>0.9.1</jwt.version>
@@ -178,8 +178,9 @@
         <springdoc.version>1.3.9</springdoc.version>
         <classgraph.version>4.8.78</classgraph.version>
         <swagger.version>2.1.2</swagger.version>
-        <groovy.version>3.0.3</groovy.version>
+        <groovy.version>3.0.4</groovy.version>
         <micrometer-registry-prometheus.version>1.5.1</micrometer-registry-prometheus.version>
+        <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -927,6 +928,27 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>data-science-spring</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>cloud-information-model</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>glossary-canonical-model</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>design-model-archive-base</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2216,6 +2238,12 @@
                 <classifier>indy</classifier>
             </dependency>
 
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${jcl-over-slf4j.version}</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -2535,6 +2563,7 @@
                         <exclude>**/*.csv</exclude>
                         <exclude>**/*.ipynb</exclude>
                         <exclude>**/*.png</exclude>
+                        <exclude>**/*.svg</exclude>
                         <exclude>**/*.iml</exclude>
                         <exclude>**/*.registrystore</exclude>
                         <exclude>**/*.results</exclude>
@@ -2562,6 +2591,7 @@
                         <exclude>**/**.code-workspace</exclude>
                         <exclude>config</exclude>
                         <exclude>**/LICENSE*.txt</exclude>
+                        <exclude>**/presentation-server/**</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">

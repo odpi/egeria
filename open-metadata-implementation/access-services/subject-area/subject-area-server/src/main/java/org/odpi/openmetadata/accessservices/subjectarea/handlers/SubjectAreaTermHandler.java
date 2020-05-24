@@ -28,6 +28,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidato
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -70,7 +71,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
                                   RepositoryHandler repositoryHandler,
                                   OMRSAPIHelper oMRSAPIHelper,
                                   RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName,invalidParameterHandler,repositoryHelper,repositoryHandler,oMRSAPIHelper,errorHandler);
+        super(serviceName, serverName,invalidParameterHandler,repositoryHelper,repositoryHandler,oMRSAPIHelper);
     }
 
     /**
@@ -146,11 +147,12 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
                 // need to check we have a name
                 final String suppliedTermName = suppliedTerm.getName();
                 if (suppliedTermName == null || suppliedTermName.equals("")) {
-                    SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITHOUT_NAME;
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
-                    log.error(errorMessage);
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
-                }
+                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITHOUT_NAME.getMessageDefinition();
+                    throw new InvalidParameterException(messageDefinition,
+                                                        className,
+                                                        methodName,
+                                                        "Name",
+                                                        null);                }
                 TermMapper termMapper = new TermMapper(oMRSAPIHelper);
                 EntityDetail suppliedTermEntityDetail = termMapper.mapNodeToEntityDetail(suppliedTerm);
                 GlossarySummary suppliedGlossary = suppliedTerm.getGlossary();
@@ -560,7 +562,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler{
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
+     * <li> EntityNotPurgedException             a hard delete was issued but the term was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteTerm(String userId, String guid, Boolean isPurge) {

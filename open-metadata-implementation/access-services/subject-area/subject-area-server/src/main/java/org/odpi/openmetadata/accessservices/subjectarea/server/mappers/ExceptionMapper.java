@@ -2,11 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers;
 
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.InvalidParameterExceptionResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.PropertyServerExceptionResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.UserNotAuthorizedExceptionResponse;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
 public class ExceptionMapper {
@@ -18,34 +22,28 @@ public class ExceptionMapper {
      */
     public static SubjectAreaOMASAPIResponse getResponseFromOCFCheckedExceptionBase(OCFCheckedExceptionBase ocfCheckedExceptionBase) {
         SubjectAreaOMASAPIResponse response =null;
+        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.valueOf( ocfCheckedExceptionBase.getReportedErrorMessageId()).getMessageDefinition();
         if (ocfCheckedExceptionBase instanceof org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException) {
             InvalidParameterException e = new InvalidParameterException(
-                    ocfCheckedExceptionBase.getReportedHTTPCode(),
+                    messageDefinition,
                     ocfCheckedExceptionBase.getReportingClassName(),
                     ocfCheckedExceptionBase.getReportingActionDescription(),
-                    ocfCheckedExceptionBase.getErrorMessage(),
-                    ocfCheckedExceptionBase.getReportedSystemAction(),
-                    ocfCheckedExceptionBase.getReportedUserAction());
+                    "",
+                    null);
             response = new InvalidParameterExceptionResponse(e);
         } else if (ocfCheckedExceptionBase instanceof org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException) {
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException e  = new UserNotAuthorizedException(
-                    ocfCheckedExceptionBase.getReportedHTTPCode(),
+                    messageDefinition,
                     ocfCheckedExceptionBase.getReportingClassName(),
                     ocfCheckedExceptionBase.getReportingActionDescription(),
-                    ocfCheckedExceptionBase.getErrorMessage(),
-                    ocfCheckedExceptionBase.getReportedSystemAction(),
-                    ocfCheckedExceptionBase.getReportedUserAction(),
                     ((org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException) ocfCheckedExceptionBase).getUserId());
             response = new UserNotAuthorizedExceptionResponse(e);
         } else if (ocfCheckedExceptionBase instanceof org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException) {
-            InvalidParameterException e = new InvalidParameterException(
-                    ocfCheckedExceptionBase.getReportedHTTPCode(),
+            PropertyServerException e = new PropertyServerException(
+                    messageDefinition,
                     ocfCheckedExceptionBase.getReportingClassName(),
-                    ocfCheckedExceptionBase.getReportingActionDescription(),
-                    ocfCheckedExceptionBase.getErrorMessage(),
-                    ocfCheckedExceptionBase.getReportedSystemAction(),
-                    ocfCheckedExceptionBase.getReportedUserAction());
-            response = new InvalidParameterExceptionResponse(e);
+                    ocfCheckedExceptionBase.getReportingActionDescription());
+            response = new PropertyServerExceptionResponse(e);
         }
         return response;
     }
