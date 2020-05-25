@@ -3,7 +3,7 @@
 
 ![Green - Beginner sessions](egeria-dojo-session-coding-green-beginner-session.png)
 
-# Running Egeria on your machine - Step-by-Step
+# Types of contribution
 
 In this session, you will learn about the different types of contribution and how much knowledge of
 Egeria is required to complete one.
@@ -19,11 +19,12 @@ to make a contribution of that type.
 
 
 ----
-* Progress to [Participating in the community](egeria-dojo-day-1-4-participating-in-the-community.md)
+* Progress to [Becoming a contributor](egeria-dojo-day-2-5-becoming-a-contributor.md)
 
 
-* Return to [Egeria Project Introduction](egeria-dojo-day-1-2-project-introduction.md)
+* Return to [Contributing to Egeria - Step-by-Step](egeria-dojo-day-2-3-contribution-to-egeria.md)
 * Return to [Dojo Overview](.)
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

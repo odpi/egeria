@@ -18,7 +18,7 @@ Don't forget to take your breaks.  There is a lot of content to get through.
 * [Running metadata ecosystems](egeria-dojo-day-1-3-3-running-metadata-ecosystems.md)
 
 Congratulations, you have completed the final step in the largest session in the dojo.
-There is one more short section to go and you have completed Day 2.
+There is one more short section to go and you have completed Day 1.
 
 ----
 * Progress to [Participating in the community](egeria-dojo-day-1-4-participating-in-the-community.md)
