@@ -87,36 +87,36 @@ public class JanusGraphRemote extends JanusGraphEmbedded {
         final StringBuilder s = new StringBuilder();
 
         log.info("creating schema");
-        s.append("JanusGraphManagement management = graph.openManagement(); ");
-        s.append("boolean created = false; ");
+        s.append("JanusGraphManagement management = graph.openManagement();");
+        s.append("boolean created = false;");
 
         // naive check if the schema was previously created
 //        s.append(
 //                "if (management.getRelationTypes(RelationType.class).iterator().hasNext()) { management.rollback(); created = false; } else { ");
 ////        s = addLabel(s,vertexLabels);
 //        // vertex labels
-        s.append("management.makeVertexLabel(\"GlossaryTerm\").make(); ");
-        s.append("management.makeVertexLabel(\"RelationalColumn\").make(); ");
-        s.append("management.makeVertexLabel(\"RelationalTableType\").make(); ");
-        s.append("management.makeVertexLabel(\"RelationalTable\").make(); ");
-        s.append("management.makeVertexLabel(\"RelationalDbSchemaType\").make(); ");
-        s.append("management.makeVertexLabel(\"DeployedDbSchemaType\").make(); ");
-        s.append("management.makeVertexLabel(\"Database\").make(); ");
-        s.append("management.makeVertexLabel(\"Connection\").make(); ");
-        s.append("management.makeVertexLabel(\"Endpoint\").make(); ");
-        s.append("management.makeVertexLabel(\"Process\").make(); ");
-        s.append("management.makeVertexLabel(\"PortAlias\").make(); ");
-        s.append("management.makeVertexLabel(\"PortImplementation\").make(); ");
-        s.append("management.makeVertexLabel(\"TabularSchemaType\").make(); ");
-        s.append("management.makeVertexLabel(\"TabularColumn\").make(); ");
-        s.append("management.makeVertexLabel(\"TabularColumnType\").make(); ");
-        s.append("management.makeVertexLabel(\"FileFolder\").make(); ");
-        s.append("management.makeVertexLabel(\"SubProcess\").make(); ");
-
-        // edge labels
+//        s.append("management.makeVertexLabel(\"GlossaryTerm\").make();");
+//        s.append("management.makeVertexLabel(\"RelationalColumn\").make(); ");
+//        s.append("management.makeVertexLabel(\"RelationalTableType\").make(); ");
+//        s.append("management.makeVertexLabel(\"RelationalTable\").make(); ");
+//        s.append("management.makeVertexLabel(\"RelationalDbSchemaType\").make(); ");
+//        s.append("management.makeVertexLabel(\"DeployedDbSchemaType\").make(); ");
+//        s.append("management.makeVertexLabel(\"Database\").make(); ");
+//        s.append("management.makeVertexLabel(\"Connection\").make(); ");
+//        s.append("management.makeVertexLabel(\"Endpoint\").make(); ");
+//        s.append("management.makeVertexLabel(\"Process\").make(); ");
+//        s.append("management.makeVertexLabel(\"PortAlias\").make(); ");
+//        s.append("management.makeVertexLabel(\"PortImplementation\").make(); ");
+//        s.append("management.makeVertexLabel(\"TabularSchemaType\").make(); ");
+//        s.append("management.makeVertexLabel(\"TabularColumn\").make(); ");
+//        s.append("management.makeVertexLabel(\"TabularColumnType\").make(); ");
+//        s.append("management.makeVertexLabel(\"FileFolder\").make(); ");
+//        s.append("management.makeVertexLabel(\"SubProcess\").make(); ");
+//
+//        // edge labels
         s.append("management.makeEdgeLabel(\"SemanticAssignment\").make();");
         s.append("management.makeEdgeLabel(\"ProcessPort\").make(); ");
-        s.append("management.makeEdgeLabel(\"PortDelegation\").signature(reason).make(); ");
+        s.append("management.makeEdgeLabel(\"PortDelegation\").make(); ");
         s.append("management.makeEdgeLabel(\"PortSchema\").make(); ");
         s.append("management.makeEdgeLabel(\"AttributeForSchema\").make(); ");
         s.append("management.makeEdgeLabel(\"SchemaType\").make(); ");
@@ -131,18 +131,19 @@ public class JanusGraphRemote extends JanusGraphEmbedded {
         s.append("management.makeEdgeLabel(\"DataFlowWithProcess\").make(); ");
 
 //        // composite indexes
-        s.append(compositeIndex(s,"vertexIndexCompositevertex--guid",PROPERTY_KEY_ENTITY_GUID,true,Vertex.class));
+//        s.append(compositeIndex(s,"vertexIndexCompositevertex--guid",PROPERTY_KEY_ENTITY_GUID,true,Vertex.class));
 
         s.append("management.commit(); ");
 //                "created = true; }");
 
+        log.debug(s.toString());
         return s.toString();
 
     }
 
     private StringBuilder compositeIndex(StringBuilder s,String indexName,String propertyKeyName,boolean unique,Class classType)
     {
-        s.append("existingIndex").append(indexName).append("\"").append(" = management.getGraphIndex(").append(indexName).append(");");
+        s.append("existingIndex").append("\"").append(indexName).append("\"").append(" = management.getGraphIndex(").append(indexName).append(");");
         s.append("if (existingIndex)").append(indexName).append("\"").append("{ created = true; } else { ");
         s.append("existingPropertyKey").append(propertyKeyName).append(" = management.getPropertyKey(").append(propertyKeyName).append(");");
         s.append("if (existingPropertyKey").append(propertyKeyName).append(" != null){").append("propertyKey")
@@ -181,7 +182,7 @@ public class JanusGraphRemote extends JanusGraphEmbedded {
         s.append("management.updateIndex(").append(indexName).append(",SchemaAction.REINDEX);");
         s.append("}");
 
-        s.append("anagementSystem.awaitGraphIndexStatus(graph,").append(indexName).append(").status(SchemaStatus.ENABLED).timeout(10,ChronoUnit.SECONDS).call();");
+        s.append("ManagementSystem.awaitGraphIndexStatus(graph,").append(indexName).append(").status(SchemaStatus.ENABLED).timeout(10,ChronoUnit.SECONDS).call();");
 
         s.append("}");
         return  s;
