@@ -93,16 +93,15 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    LineageVerticesAndEdges ultimateSource(String guid, String... edgeLabels) throws OpenLineageException {
-        String methodName = "MainGraphConnector.ultimateSource";
+    LineageVerticesAndEdges ultimateSource(String guid, boolean includeProcesses, String... edgeLabels) throws OpenLineageException {
         GraphTraversalSource g = lineageGraph.traversal();
 
-        List<Vertex> vertexList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).until(inE(edgeLabels).count().is(0))
-                .repeat(inE(edgeLabels).outV().simplePath()).dedup().toList();
+        Graph sourceGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).until(inE(edgeLabels).count().is(0))
+                .repeat(inE(edgeLabels).subgraph("subGraph").outV().simplePath()).cap("subGraph").next();
 
-        detectProblematicCycle(methodName, vertexList);
+        LineageVerticesAndEdges lineageVerticesAndEdges = getLineageVerticesAndEdges(sourceGraph, includeProcesses);
 
-        return getCondensedLineage(guid, g, vertexList, SOURCE_CONDENSATION);
+        return getCondensedLineage(guid, g, lineageVerticesAndEdges, SOURCE_CONDENSATION);
     }
 
     /**
@@ -114,16 +113,15 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    LineageVerticesAndEdges ultimateDestination(String guid, String... edgeLabels) throws OpenLineageException {
-        String methodName = "MainGraphConnector.ultimateDestination";
+    LineageVerticesAndEdges ultimateDestination(String guid, boolean includeProcesses, String... edgeLabels) throws OpenLineageException {
         GraphTraversalSource g = lineageGraph.traversal();
 
-        List<Vertex> vertexList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).until(outE(edgeLabels).count().is(0))
-                .repeat(outE(edgeLabels).inV().simplePath()).dedup().toList();
+        Graph destinationGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).until(outE(edgeLabels).count().is(0))
+                .repeat(outE(edgeLabels).subgraph("subGraph").inV().simplePath()).cap("subGraph").next();
 
-        detectProblematicCycle(methodName, vertexList);
+        LineageVerticesAndEdges lineageVerticesAndEdges = getLineageVerticesAndEdges(destinationGraph, includeProcesses);
 
-        return getCondensedLineage(guid, g, vertexList, DESTINATION_CONDENSATION);
+        return getCondensedLineage(guid, g, lineageVerticesAndEdges, DESTINATION_CONDENSATION);
     }
 
     /**
@@ -159,9 +157,9 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format
      */
-    LineageVerticesAndEdges sourceAndDestination(String guid, String... edgeLabels) throws OpenLineageException {
-        LineageVerticesAndEdges ultimateSourceResponse = ultimateSource(guid, edgeLabels);
-        LineageVerticesAndEdges ultimateDestinationResponse = ultimateDestination(guid, edgeLabels);
+    LineageVerticesAndEdges sourceAndDestination(String guid, boolean includeProcesses, String... edgeLabels) throws OpenLineageException {
+        LineageVerticesAndEdges ultimateSourceResponse = ultimateSource(guid, includeProcesses, edgeLabels);
+        LineageVerticesAndEdges ultimateDestinationResponse = ultimateDestination(guid, includeProcesses, edgeLabels);
 
         Set<LineageVertex> sourceAndDestinationVertices = Stream.concat(ultimateSourceResponse.getLineageVertices().stream(),
                 ultimateDestinationResponse.getLineageVertices().stream()).collect(Collectors.toSet());
@@ -229,17 +227,20 @@ public class LineageGraphConnectorHelper {
      *
      * @return the subgraph in an Open Lineage specific format
      */
-    private LineageVerticesAndEdges getCondensedLineage(String guid, GraphTraversalSource g, List<Vertex> vertexList, String condensationType) {
+    private LineageVerticesAndEdges getCondensedLineage(String guid, GraphTraversalSource g, LineageVerticesAndEdges lineageVerticesAndEdges,
+                                                        String condensationType) {
+
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
+
         Vertex originalQueriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
-
-        Set<LineageVertex> lineageVertices = new HashSet<>();
-
-        Set<LineageEdge> lineageEdges = new HashSet<>();
-
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
-        lineageVertices.add(queriedVertex);
 
-        addCondensation(vertexList, lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex, condensationType);
+        if (CollectionUtils.isEmpty(lineageVertices)) {
+            lineageVerticesAndEdges.setLineageVertices(Collections.singleton(queriedVertex));
+        }
+
+        addCondensation(lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex, condensationType);
 
         addColumnProperties(lineageVertices);
 
@@ -328,28 +329,6 @@ public class LineageGraphConnectorHelper {
     }
 
     /**
-     * Check whether the ultimate sources/destinations of the queried node are included in a cyclic data flow.
-     * This is not supported by Open lineage Services.
-     *
-     * @param methodName The name of the calling method.
-     * @param vertexList The to be validated result of the Gremlin query.
-     *
-     * @throws OpenLineageException encoded exception from the server
-     */
-    private void detectProblematicCycle(String methodName, List<Vertex> vertexList) throws OpenLineageException {
-        if (!vertexList.isEmpty())
-            return;
-        OpenLineageServerErrorCode errorCode = OpenLineageServerErrorCode.LINEAGE_CYCLE;
-        throw new OpenLineageException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorCode.getFormattedErrorMessage(),
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
-    }
-
-
-    /**
      * Remove all nodes and edges from the response graph that are in between the sources and the queried node
      * and replace them by a single "condensed" node.
      *
@@ -360,31 +339,30 @@ public class LineageGraphConnectorHelper {
      * @param queriedVertex         The vertex which guid was queried by the user as an Open Lineage vertex object.
      * @param condensationType      the type of the condensed node
      */
-    private void addCondensation(List<Vertex> vertexList,
-                                 Set<LineageVertex> lineageVertices,
+    private void addCondensation(Set<LineageVertex> lineageVertices,
                                  Set<LineageEdge> lineageEdges,
                                  Vertex originalQueriedVertex,
                                  LineageVertex queriedVertex,
                                  String condensationType) {
-        //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
-        //when there isn't any.
-        if (vertexList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
-            return;
-        }
+//        //Only add condensed node if there is something to condense in the first place. The gremlin query returns the queried node
+//        //when there isn't any.
+//        if (vertexList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
+//            return;
+//        }
 
-        LineageVertex condensedVertex = new LineageVertex(getCondensedNodeId(condensationType), NODE_LABEL_CONDENSED);
-        condensedVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
-        lineageVertices.add(condensedVertex);
-
-        for (Vertex originalVertex : vertexList) {
-            LineageVertex newVertex = abstractVertex(originalVertex);
-
-            LineageEdge newEdge = new LineageEdge(EDGE_LABEL_CONDENSED, condensedVertex.getNodeID(), newVertex.getNodeID());
-            lineageVertices.add(newVertex);
-            lineageEdges.add(newEdge);
-        }
-        LineageEdge sourceEdge = new LineageEdge(EDGE_LABEL_CONDENSED, queriedVertex.getNodeID(), condensedVertex.getNodeID());
-        lineageEdges.add(sourceEdge);
+//        LineageVertex condensedVertex = new LineageVertex(getCondensedNodeId(condensationType), NODE_LABEL_CONDENSED);
+//        condensedVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
+//        lineageVertices.add(condensedVertex);
+//
+//        for (Vertex originalVertex : vertexList) {
+//            LineageVertex newVertex = abstractVertex(originalVertex);
+//
+//            LineageEdge newEdge = new LineageEdge(EDGE_LABEL_CONDENSED, condensedVertex.getNodeID(), newVertex.getNodeID());
+//            lineageVertices.add(newVertex);
+//            lineageEdges.add(newEdge);
+//        }
+//        LineageEdge sourceEdge = new LineageEdge(EDGE_LABEL_CONDENSED, queriedVertex.getNodeID(), condensedVertex.getNodeID());
+//        lineageEdges.add(sourceEdge);
     }
 
     /**
