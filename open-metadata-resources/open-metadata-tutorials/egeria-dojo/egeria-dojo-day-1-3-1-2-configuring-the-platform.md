@@ -3,13 +3,15 @@
 
 ![Blue - Intermediate sessions](egeria-dojo-session-coding-blue-intermediate-session.png)
 
-# Starting the OMAG Server Platform
+# S the OMAG Server Platform
 
-In this session, you will learn how to start up the OMAG Server Platform.
+In this session, you will learn how to set up the OMAG Server Platform.
 
 ![Starting Platform Content](egeria-dojo-day-1-3-1-2-starting-the-platform.png)
 
-https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-resources/open-metadata-samples/postman-rest-samples/Egeria.postman_environment.json
+In the previous session you downloaded an application called Postman.
+This tool 
+
 ----
 * Progress to [Configuring a metadata server on the platform](egeria-dojo-day-1-3-1-3-configuring-a-server.md)
 
