@@ -100,20 +100,20 @@
 			"response": []
 		},
 		{
-			"name": "Load Open Metadata Archive",
+			"name": "Load open metadata archive",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "text/plain",
-						"type": "text"
+						"type": "text",
+						"value": "text/plain"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "cp.cohort.cocoCohort",
+					"raw": "filename",
 					"options": {
 						"raw": {
 							"language": "text"
