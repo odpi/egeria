@@ -10,6 +10,16 @@ hosts many of the services provided by Egeria.
 
 ![Running Egeria prerequisites Content](egeria-dojo-day-1-3-1-1-platform-set-up-prerequisites.png)
 
+However, before we get started there are some steps to prepare your machine.
+
+For this session you will need:
+
+* [Docker Desktop](../../../developer-resources/tools/Docker.md)
+* [Apache Kafka](../../../developer-resources/tools/Apache-Kafka.md)
+* [Postman](../../../developer-resources/tools/Postman.md)
+
+Follow the links to find out a little bit about these technologies and 
+Do
 
 ----
 * Progress to [Starting the platform](egeria-dojo-day-1-3-1-2-starting-the-platform.md)
