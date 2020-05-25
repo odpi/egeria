@@ -40,8 +40,12 @@ When you attend the community meetings specifically, your name will be recorded 
 The agenda and minutes of our community meetings are publicly available on the [Egeria wiki](https://github.com/odpi/egeria/wiki).
 
 A member may make contributions to the Egeria content by submitting a
-Git pull request on the appropriate Git repository.   This will be reviewed and processed by the Egeria maintainers.
-Making a contribution is also described in the [Community Guide](./Community-Guide.md).
+GitHub pull request on the appropriate Git repository.
+This will be reviewed and processed by the **Egeria maintainers**.
+The process for making a contribution is described in the
+[Egeria Dojo](open-metadata-resources/open-metadata-tutorials/egeria-dojo) education.
+Each contribution is signed by the contributor to confirm they
+agree to our [Developer Certificate of Origin (DCO)](developer-resources/why-the-dco.md).
 
 Community members can progress to be **Egeria Contributors** and then **Egeria Maintainers**.
 
@@ -61,6 +65,8 @@ Being recognized as an Egeria contributor is done by nomination of an Egeria mai
 of Egeria maintainers to confirm. Once confirmed, you will receive 
 [an Egeria Contributor badge](developer-resources/badges) to add to
 your social profiles and/or website, and can publicly refer to yourself as an Egeria contributor.
+
+Egeria's contributors are recognized in the [contributors list](CONTRIBUTORS.md)
 
 ### Egeria project maintainers
 
@@ -84,8 +90,8 @@ A person wishing to become a maintainer sends a note to the existing maintainers
 at odpi-project-egeria-maintainers@lists.odpi.org, listing their Egeria contributions to date and
 requesting to be made a maintainer.
 The maintainers vote and if a majority agree then the requester
-is added to the maintainers list and given write access to our
-[git repository](https://github.com/odpi/egeria). 
+is added to the maintainers list and given write access to the
+[Egeria Git repositories](developer-resources/tools/Git-GitHub.md). 
 
 Once confirmed, you will receive an
 [an Egeria Maintainer badge](developer-resources/badges) to add to
@@ -145,93 +151,11 @@ to confirm it conforms to the [Developer Certificate of Origin (DCO)](https://de
 The Egeria team aim to create an official release of the open metadata and governance capability every month.
 This release will be available to include in products and other technology through
 [Maven's Central Repository](https://search.maven.org), or through a download from the ODPi site.
+Details of the releases are maintained in the [release notes](release-notes).
 
-In between official releases, the latest build is also available to developers, through the Egeria site.
+In between official releases, the latest build is also available to developers in GitHub.
 
-### Release Process Overview
-
-Releases are published to [Bintray](https://bintray.com/odpi) where they
-are GPG signed and distributed to [Maven
-Central](https://oss.sonatype.org).
-
-Creating a new release has the following stages:
-
-* Creating a branch off master for the release code.
-* Incrementing the release numbers in the pom files in master and committing through a pull request.
-* Within the branch removing "`-SNAPSHOT`" from all of the Egeria version
-  numbers in the pom files and committing with a pull request.
-* Staging a release through [Azure Pipelines](https://dev.azure.com/ODPi/Egeria/_release?_a=releases&definitionId=1&view=mine)
-* Verifying release criteria are met on the staged build
-* Promotion of the release from staging to release
-* Distribution of the release to [Bintray](https://bintray.com/odpi), which is then replicated to [Maven Central](https://oss.sonatype.org).
-* Documenting the release with a [Git Release](https://github.com/odpi/egeria/releases).
-
-### Release Process Steps for Maintainers
-
-New releases can be created by Egeria maintainers that have the
-appropriate access on [Azure
-Pipelines](https://dev.azure.com/ODPi/Egeria/_release).
-
-Creating a new release has the following stages following the release
-branch creation:
-
-1. Update the Azure [Release Pipeline](https://dev.azure.com/ODPi/Egeria/_release?_a=releases&definitionId=1&view=mine) to use the release branch
-   1. Click "`Edit`"
-   1. Click *\_ODPI\_Egeria\_Commit* under the "Artifacts" column
-   1. Modify *Default branch* to be the new release branch
-   1. Click *Save* to the right of the breadcrumb header
-1. Stage a release though [Azure Pipelines](https://dev.azure.com/ODPi/Egeria/_release?_a=releases&definitionId=1&view=mine)
-   1. Click *Create release*
-   1. Select commit id from *Version* dropdown.
-   1. Click *Create*
-
-   Pulling from the staging repository can be done through Maven with the
-   following settings:
-
-   ```
-   <repositories>
-     <repository>
-       <snapshots>
-         <enabled>false</enabled>
-       </snapshots>
-       <id>central</id>
-       <name>egeria-staging</name>
-       <url>https://odpi.jfrog.io/odpi/egeria-staging</url>
-     </repository>
-   </repositories>
-   <pluginRepositories>
-     <pluginRepository>
-       <snapshots>
-         <enabled>false</enabled>
-       </snapshots>
-       <id>central</id>
-       <name>egeria-staging</name>
-       <url>https://odpi.jfrog.io/odpi/egeria-staging</url>
-     </pluginRepository>
-   </pluginRepositories>
-   ```
-
-1. After the community verifies the staged artifacts meet the release
-   criteria, the *Promote to Release* step will be approved (and the
-   *Abandon Release* step canceled)
-   If the artifacts do not meet the criteria, the *Promote to Release*
-   step should be denied, and *Abandon Release* should be
-   approved. The release process should then be started again at step #2
-   from a different commit once changes have been merged.
-1. After the release promotion is approved, the artifacts will be
-   distributed to [Bintray](https://bintray.com/odpi) which will sign
-   them and sync them to [Maven Central](https://oss.sonatype.org).
-
-### Release Process Troubleshooting
-
-The Linux Foundation maintains a Knowledge Base (KB) of articles on
-possible issues that may arise during the release process:
- * [Including a New Package in the Release](https://confluence.linuxfoundation.org/display/ITKB/Including+Bintray+Packages+in+JCenter)
- * [Fixing Package Corruption](https://confluence.linuxfoundation.org/display/ITKB/Redistribute+Artifacts+to+Bintray)
- * [Getting Packages Synced to Maven-Central](https://confluence.linuxfoundation.org/display/ITKB/Sync+Artifacts+from+Bintray+to+Maven+Central)
-
-If the KB articles are not able to fix the problem, please open a ticket
-with [Linux Foundation support](https://jira.linuxfoundation.org/servicedesk/customer/portal/2)
+The process for creating a release is described in the [developer-resources](developer-resources/Release-Process.md)
 
 ## Conflict resolution and voting
 
@@ -240,6 +164,12 @@ between the persons involved. If a dispute cannot be decided independently, the 
 called in to decide an issue. If the maintainers themselves cannot decide an issue, the issue will
 be resolved by voting. The voting process is a simple majority in which each maintainer receives one vote.
 
+----
+* Return to [Egeria's Home Page](https://egeria.odpi.org)
+* Return to [Egeria's GitHub Top-level](https://github.com/odpi/egeria)
+
+
+* Link to [Egeria's Community Guide](Community-Guide.md)
 
 
 ----
