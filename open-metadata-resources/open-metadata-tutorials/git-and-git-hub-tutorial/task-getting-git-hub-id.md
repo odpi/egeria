@@ -9,7 +9,7 @@ have a GitHub id to work with the Egeria content.
 Creating a GitHub account can be done from the top of the [GitHub home page](https://github.com).
 Select the `Sign up` option.
 
-![GitHub Home Page](../../../developer-resources/tools/git-hub-home-page.png)
+![GitHub Home Page](../../../developer-resources/tools/git-hub-home-page.png#pagewidth)
 
 Once you have created your account then sign in.
 

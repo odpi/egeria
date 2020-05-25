@@ -10,7 +10,20 @@ to perform a variety of use cases.
 
 ![Running Egeria Content](egeria-dojo-day-1-3-running-egeria.png)
 
-Click on the links below to access each part of this session.
+There are four main ways to run Egeria on your machine:
+* Download the Egeria repository from GitHub, build it and run the resulting image.
+* Download the Egeria docker image and run it as a standalone container using docker desktop.
+* Download the Egeria repository and use the docker-compose scripts to run egeria with a supporting cast for other
+  technologies.
+* Download the Egeria repository and use the kubernetes helm charts to run egeria with a supporting cast for other
+  technologies.
+  
+This is in addition to the different ways that developers run Egeria when they are testing their contributions.
+
+Each of these methods has different benefits and costs. During the next two days you will have the opportunity to
+try each of these approaches so you can understand their pros and cons to make the best choice for your organization.
+
+Click on the links below in turn to access each part of this session.
 Don't forget to take your breaks.  There is a lot of content to get through.
 
 * [Platform set up and configuration](egeria-dojo-day-1-3-1-platform-set-up-and-configuration.md)

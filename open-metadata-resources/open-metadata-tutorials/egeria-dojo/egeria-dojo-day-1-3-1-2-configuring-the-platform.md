@@ -7,7 +7,7 @@
 
 In this session, you will learn how to set up the OMAG Server Platform.
 
-![Starting Platform Content](egeria-dojo-day-1-3-1-2-starting-the-platform.png)
+![Starting Platform Content](egeria-dojo-day-1-3-1-2-configuring-the-platform.png)
 
 In the previous session you downloaded an application called Postman.
 This tool 
