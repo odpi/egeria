@@ -14,13 +14,15 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COMPLEX_SCHEMA_TYPE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SCHEMA_ELEMENT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SEMANTIC_ASSIGNMENT;
 
 /**
  * The glossary handler provide methods to provide business glossary terms for lineage.
@@ -84,12 +86,11 @@ public class GlossaryHandler {
      * @param userId      userId
      * @param assetGuid   guid of the asset that has been created.
      * @param typeDefName the typeName of the asset.
-     * @return Glossary Term retrieved from the property server
      */
     private void getGlossary(String userId, String assetGuid, String typeDefName) throws OCFCheckedExceptionBase {
         final String methodName = "getGlossary";
 
-        String typeGuid = handlerHelper.getTypeName(userId, SEMANTIC_ASSIGNMENT);
+        String typeGuid = handlerHelper.getTypeByName(userId, SEMANTIC_ASSIGNMENT);
         List<Relationship> semanticAssignments = repositoryHandler.getRelationshipsByType(userId,
                 assetGuid,
                 typeDefName,
@@ -100,7 +101,9 @@ public class GlossaryHandler {
         if (semanticAssignments == null)
             return;
 
-        addSemanticAssignmentToContext(userId, semanticAssignments.toArray(new Relationship[0]));
+        EntityDetail glossaryTerm = repositoryHandler.getEntityByGUID(userId, assetGuid, "guid", typeDefName, methodName);
+
+        addSemanticAssignmentToContext(userId, glossaryTerm, semanticAssignments.toArray(new Relationship[0]));
     }
 
     /**
@@ -108,22 +111,10 @@ public class GlossaryHandler {
      *
      * @param userId              userId
      * @param semanticAssignments array of the semantic assignments
-     * @return true if semantic relationships exist, false otherwise
      */
-    private void addSemanticAssignmentToContext(String userId, Relationship... semanticAssignments) throws OCFCheckedExceptionBase {
-        final String methodName = "addSemanticAssignmentToContext";
-
-        List<EntityDetail> entityDetails = new ArrayList<>();
+    private void addSemanticAssignmentToContext(String userId, EntityDetail glossaryTerm, Relationship... semanticAssignments) throws OCFCheckedExceptionBase {
         for (Relationship relationship : semanticAssignments) {
-
-            String glossaryTermGuid = relationship.getEntityTwoProxy().getGUID();
-            EntityDetail glossaryTerm = repositoryHandler.getEntityByGUID(userId,
-                    glossaryTermGuid,
-                    "guid",
-                    GLOSSARY_TERM,
-                    methodName);
-
-            entityDetails.add(handlerHelper.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph, false));
+            handlerHelper.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph, false);
         }
     }
 
