@@ -7,6 +7,10 @@
 Jupyter notebooks to provide an interactive environment for running snippets of python code, interspersed
 with [Markdown](Markdown.md) documentation.
 
+This is an example of a Jupyter notebook from the [Open Metadata Labs](../../open-metadata-resources/open-metadata-labs).
+
+![Jupyter notebook](jupyter-notebook-browser-window.png#pagewidth)
+
 A free version of the latest Jupyter Notebook support (called **JupyterHub**) is available
 through the **Anaconda Navigator** desktop.  It can be downloaded from the following link:
 
