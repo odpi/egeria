@@ -93,7 +93,7 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    LineageVerticesAndEdges ultimateSource(String guid, boolean includeProcesses, String... edgeLabels) throws OpenLineageException {
+    LineageVerticesAndEdges ultimateSource(String guid, boolean includeProcesses, String... edgeLabels) {
         GraphTraversalSource g = lineageGraph.traversal();
 
         Graph sourceGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).until(inE(edgeLabels).count().is(0))
@@ -113,7 +113,7 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    LineageVerticesAndEdges ultimateDestination(String guid, boolean includeProcesses, String... edgeLabels) throws OpenLineageException {
+    LineageVerticesAndEdges ultimateDestination(String guid, boolean includeProcesses, String... edgeLabels) {
         GraphTraversalSource g = lineageGraph.traversal();
 
         Graph destinationGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).until(outE(edgeLabels).count().is(0))
@@ -157,7 +157,7 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format
      */
-    LineageVerticesAndEdges sourceAndDestination(String guid, boolean includeProcesses, String... edgeLabels) throws OpenLineageException {
+    LineageVerticesAndEdges sourceAndDestination(String guid, boolean includeProcesses, String... edgeLabels) {
         LineageVerticesAndEdges ultimateSourceResponse = ultimateSource(guid, includeProcesses, edgeLabels);
         LineageVerticesAndEdges ultimateDestinationResponse = ultimateDestination(guid, includeProcesses, edgeLabels);
 
@@ -220,10 +220,10 @@ public class LineageGraphConnectorHelper {
      * * Returns a subgraph containing all root and leaf nodes of the full graph that are connected with the queried node.
      * * The queried node can be a column or table.
      *
-     * @param guid             the guid of the queried node
-     * @param g                graph traversal object
-     * @param vertexList       list of vertexes to be condensed
-     * @param condensationType the type of the condensation
+     * @param guid                    the guid of the queried node
+     * @param g                       graph traversal object
+     * @param lineageVerticesAndEdges vertices and edges to be condensed
+     * @param condensationType        the type of the condensation
      *
      * @return the subgraph in an Open Lineage specific format
      */
@@ -237,7 +237,7 @@ public class LineageGraphConnectorHelper {
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
 
         if (CollectionUtils.isEmpty(lineageVertices)) {
-            lineageVerticesAndEdges.setLineageVertices(Collections.singleton(queriedVertex));
+            lineageVertices = Collections.singleton(queriedVertex);
         }
 
         addCondensation(lineageVertices, lineageEdges, originalQueriedVertex, queriedVertex, condensationType);
@@ -332,7 +332,6 @@ public class LineageGraphConnectorHelper {
      * Remove all nodes and edges from the response graph that are in between the sources and the queried node
      * and replace them by a single "condensed" node.
      *
-     * @param vertexList            The list of vertexes to be condensed.
      * @param lineageVertices       The list of all vertices returned by the Gremlin query.
      * @param lineageEdges          The list of all edges returned by the Gremlin query.
      * @param originalQueriedVertex The vertex which guid was queried by the user as the original Tinkerpop object.
