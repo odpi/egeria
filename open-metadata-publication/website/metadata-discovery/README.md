@@ -39,6 +39,7 @@ with:
 This metadata repository interface for metadata discovery tools is
 implemented by the
 [Discovery Engine OMAS](../../../open-metadata-implementation/access-services/discovery-engine).
+
 Egeria is also able to host automated metadata discovery services
 that implement the ODF interfaces in its
 [Discovery Server](../../../open-metadata-implementation/governance-servers/discovery-engine-services).

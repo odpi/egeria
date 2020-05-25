@@ -31,7 +31,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
 {
     private static final long   serialVersionUID      = 1L;
 
-    private String            attributeName         = null;
     private int               elementPosition       = 0;
     private int               minCardinality        = 0;
     private int               maxCardinality        = 0;
@@ -68,7 +67,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
 
         if (template != null)
         {
-            attributeName = template.getAttributeName();
             elementPosition = template.getElementPosition();
             minCardinality = template.getMinCardinality();
             maxCardinality = template.getMaxCardinality();
@@ -84,25 +82,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             nativeJavaClass = template.getNativeJavaClass();
             aliases = template.getAliases();
         }
-    }
-
-
-    /**
-     * Return the name of this schema attribute.
-     *
-     * @return String attribute name
-     */
-    public String getAttributeName() { return attributeName; }
-
-
-    /**
-     * Set up the name of this schema attribute.
-     *
-     * @param attributeName String attribute name
-     */
-    public void setAttributeName(String attributeName)
-    {
-        this.attributeName = attributeName;
     }
 
 
@@ -424,8 +403,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     public String toString()
     {
         return "SchemaAttributeProperties{" +
-                "attributeName='" + attributeName + '\'' +
-                ", elementPosition=" + elementPosition +
+                "elementPosition=" + elementPosition +
                 ", minCardinality=" + minCardinality +
                 ", maxCardinality=" + maxCardinality +
                 ", allowsDuplicateValues=" + allowsDuplicateValues +
@@ -445,8 +423,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", vendorProperties=" + getVendorProperties() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
@@ -485,7 +461,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 length == that.length &&
                 significantDigits == that.significantDigits &&
                 isNullable == that.isNullable &&
-                Objects.equals(attributeName, that.attributeName) &&
                 Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
                 sortOrder == that.sortOrder &&
                 Objects.equals(anchorGUID, that.anchorGUID) &&
@@ -502,7 +477,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), attributeName, elementPosition, minCardinality,
+        return Objects.hash(super.hashCode(),elementPosition, minCardinality,
                             maxCardinality, allowsDuplicateValues, orderedValues, defaultValueOverride,
                             sortOrder, anchorGUID, minimumLength, length, significantDigits, isNullable,
                             nativeJavaClass, aliases);

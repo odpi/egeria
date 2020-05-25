@@ -16,13 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = DatabaseDerivedColumnProperties.class, name = "DatabaseDerivedColumnProperties"),
-        })
+
 public class DerivedSchemaAttributeProperties extends SchemaAttributeProperties
 {
     private static final long     serialVersionUID = 1L;
@@ -86,7 +80,6 @@ public class DerivedSchemaAttributeProperties extends SchemaAttributeProperties
     {
         return "DerivedSchemaAttributeProperties{" +
                 "formula='" + formula + '\'' +
-                ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +
@@ -106,8 +99,6 @@ public class DerivedSchemaAttributeProperties extends SchemaAttributeProperties
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", vendorProperties=" + getVendorProperties() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +

@@ -5,16 +5,12 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * Static mapping methods to map between the node type and the Entity Type
  */
 public class NodeTypeMapper {
-    private static final Logger log = LoggerFactory.getLogger( NodeTypeMapper.class);
-    private static final String className = NodeTypeMapper.class.getName();
 
     /**
      * Map nodeType to entity type guid.

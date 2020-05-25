@@ -91,10 +91,9 @@ public class DatabaseElement extends DatabaseProperties implements MetadataEleme
                 ", databaseImportedFrom='" + getDatabaseImportedFrom() + '\'' +
                 ", createTime=" + getCreateTime() +
                 ", modifiedTime=" + getModifiedTime() +
-                ", encoding='" + getEncoding() + '\'' +
-                ", language='" + getLanguage() + '\'' +
+                ", encodingType='" + getEncodingType() + '\'' +
+                ", encodingLanguage='" + getEncodingLanguage() + '\'' +
                 ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", dataStoreProperties=" + getDataStoreProperties() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", owner='" + getOwner() + '\'' +
@@ -104,8 +103,6 @@ public class DatabaseElement extends DatabaseProperties implements MetadataEleme
                 ", latestChange='" + getLatestChange() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", vendorProperties=" + getVendorProperties() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +

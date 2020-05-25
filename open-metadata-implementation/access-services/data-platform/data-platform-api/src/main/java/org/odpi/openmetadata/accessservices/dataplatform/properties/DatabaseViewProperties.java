@@ -61,7 +61,7 @@ public class DatabaseViewProperties extends SchemaAttributeProperties
 
 
     /**
-     * Set up the name of the encoding style used in the data store.
+     * Set up the code that generates the value for this view.
      *
      * @param expression string name
      */
@@ -81,7 +81,6 @@ public class DatabaseViewProperties extends SchemaAttributeProperties
     {
         return "DatabaseViewProperties{" +
                 "expression='" + expression + '\'' +
-                ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +
@@ -101,8 +100,6 @@ public class DatabaseViewProperties extends SchemaAttributeProperties
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", vendorProperties=" + getVendorProperties() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +

@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.dataplatform.properties;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -29,12 +28,11 @@ public class DataStoreProperties extends AssetProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private Date                createTime          = null;
-    private Date                modifiedTime        = null;
-    private String              encoding            = null;
-    private String              language            = null;
-    private String              encodingDescription = null;
-    private Map<String, String> dataStoreProperties = null;
+    private Date   createTime          = null;
+    private Date   modifiedTime        = null;
+    private String encodingType        = null;
+    private String encodingLanguage    = null;
+    private String encodingDescription = null;
 
 
     /**
@@ -57,8 +55,11 @@ public class DataStoreProperties extends AssetProperties
 
         if (template != null)
         {
-            createTime = template.getCreateTime();
-            modifiedTime = template.getModifiedTime();
+            createTime          = template.getCreateTime();
+            modifiedTime        = template.getModifiedTime();
+            encodingType        = template.getEncodingType();
+            encodingLanguage    = template.getEncodingLanguage();
+            encodingDescription = template.getEncodingDescription();
         }
     }
 
@@ -112,20 +113,20 @@ public class DataStoreProperties extends AssetProperties
      *
      * @return string name
      */
-    public String getEncoding()
+    public String getEncodingType()
     {
-        return encoding;
+        return encodingType;
     }
 
 
     /**
      * Set up the name of the encoding style used in the data store.
      *
-     * @param encoding string name
+     * @param encodingType string name
      */
-    public void setEncoding(String encoding)
+    public void setEncodingType(String encodingType)
     {
-        this.encoding = encoding;
+        this.encodingType = encodingType;
     }
 
 
@@ -134,20 +135,20 @@ public class DataStoreProperties extends AssetProperties
      *
      * @return string language name
      */
-    public String getLanguage()
+    public String getEncodingLanguage()
     {
-        return language;
+        return encodingLanguage;
     }
 
 
     /**
      * Set up the name of the natural language used for text strings within the data store.
      *
-     * @param language string language name
+     * @param encodingLanguage string language name
      */
-    public void setLanguage(String language)
+    public void setEncodingLanguage(String encodingLanguage)
     {
-        this.language = language;
+        this.encodingLanguage = encodingLanguage;
     }
 
 
@@ -174,37 +175,6 @@ public class DataStoreProperties extends AssetProperties
 
 
     /**
-     * Return properties about the data store.
-     *
-     * @return name value pairs
-     */
-    public Map<String, String> getDataStoreProperties()
-    {
-        if (dataStoreProperties == null)
-        {
-            return null;
-        }
-        else if (dataStoreProperties.isEmpty())
-        {
-            return null;
-        }
-
-        return dataStoreProperties;
-    }
-
-
-    /**
-     * Set up properties about the data store.
-     *
-     * @param dataStoreProperties name value pairs
-     */
-    public void setDataStoreProperties(Map<String, String> dataStoreProperties)
-    {
-        this.dataStoreProperties = dataStoreProperties;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -215,10 +185,9 @@ public class DataStoreProperties extends AssetProperties
         return "DataStoreProperties{" +
                 "createTime=" + createTime +
                 ", modifiedTime=" + modifiedTime +
-                ", encoding='" + encoding + '\'' +
-                ", language='" + language + '\'' +
+                ", encodingType='" + encodingType + '\'' +
+                ", encodingLanguage='" + encodingLanguage + '\'' +
                 ", encodingDescription='" + encodingDescription + '\'' +
-                ", dataStoreProperties=" + dataStoreProperties +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", owner='" + getOwner() + '\'' +
@@ -228,8 +197,7 @@ public class DataStoreProperties extends AssetProperties
                 ", latestChange='" + getLatestChange() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
+                ", vendorProperties=" + getVendorProperties() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
@@ -260,10 +228,9 @@ public class DataStoreProperties extends AssetProperties
         DataStoreProperties that = (DataStoreProperties) objectToCompare;
         return Objects.equals(createTime, that.createTime) &&
                 Objects.equals(modifiedTime, that.modifiedTime) &&
-                Objects.equals(encoding, that.encoding) &&
-                Objects.equals(language, that.language) &&
-                Objects.equals(encodingDescription, that.encodingDescription) &&
-                Objects.equals(dataStoreProperties, that.dataStoreProperties);
+                Objects.equals(encodingType, that.encodingType) &&
+                Objects.equals(encodingLanguage, that.encodingLanguage) &&
+                Objects.equals(encodingDescription, that.encodingDescription);
     }
 
 
@@ -275,6 +242,6 @@ public class DataStoreProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), createTime, modifiedTime, encoding, language, encodingDescription, dataStoreProperties);
+        return Objects.hash(super.hashCode(), createTime, modifiedTime, encodingType, encodingLanguage, encodingDescription);
     }
 }

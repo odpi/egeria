@@ -73,7 +73,7 @@ public class DatabaseProperties extends DataStoreProperties
 
 
     /**
-     * Return the version of the database - often this is related to the version of its schema.
+     * Return the version of the database - often this is related to the version of its schemas.
      *
      * @return version name
      */
@@ -84,7 +84,7 @@ public class DatabaseProperties extends DataStoreProperties
 
 
     /**
-     * Set up the version of the database - often this is related to the version of its schema.
+     * Set up the version of the database - often this is related to the version of its schemas.
      *
      * @param databaseVersion version name
      */
@@ -95,7 +95,7 @@ public class DatabaseProperties extends DataStoreProperties
 
 
     /**
-     * Return the name of this database instance - useful is the same schema is deployed to multiple database instances.
+     * Return the name of this database instance - useful if the same schemas are deployed to multiple database instances.
      *
      * @return instance name
      */
@@ -106,7 +106,7 @@ public class DatabaseProperties extends DataStoreProperties
 
 
     /**
-     * Set up the name of this database instance - useful is the same schema is deployed to multiple database instances.
+     * Set up the name of this database instance - useful if the same schemas are deployed to multiple database instances.
      *
      * @param databaseInstance instance name
      */
@@ -153,10 +153,9 @@ public class DatabaseProperties extends DataStoreProperties
                 ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
                 ", createTime=" + getCreateTime() +
                 ", modifiedTime=" + getModifiedTime() +
-                ", encoding='" + getEncoding() + '\'' +
-                ", language='" + getLanguage() + '\'' +
+                ", encoding='" + getEncodingType() + '\'' +
+                ", language='" + getEncodingLanguage() + '\'' +
                 ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", dataStoreProperties=" + getDataStoreProperties() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", owner='" + getOwner() + '\'' +
@@ -166,8 +165,6 @@ public class DatabaseProperties extends DataStoreProperties
                 ", latestChange='" + getLatestChange() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';

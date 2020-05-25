@@ -124,16 +124,16 @@ abstract class MessageSetTest
         assertNotEquals("", messageDefinition.getSystemAction(), "Message definition "+messageDefinition.toString()+" has empty system action");
         assertNotEquals("", messageDefinition.getUserAction(), "Message definition "+messageDefinition.toString()+" has empty user action");
 
-        assertTrue(isUniqueOrdinal(messageDefinition.getMessageId()), "Message definition "+messageDefinition.toString()+" does not have a unique messageId");
-        assertTrue(isUniqueMessageTemplate(messageDefinition.getMessageTemplate()), "Message definition "+messageDefinition.toString()+" does not have a " +
+        assertTrue(isUniqueOrdinal(messageDefinition.getMessageId()), "Message definition "+messageDefinition.getMessageId()+" does not have a unique messageId");
+        assertTrue(isUniqueMessageTemplate(messageDefinition.getMessageTemplate()), "Message definition "+messageDefinition.getMessageId()+" does not have a " +
                 "unique messageTemplate");
-        assertTrue(isUniqueSystemAction(messageDefinition.getSystemAction()), "Message definition "+messageDefinition.toString()+" does not have a unique " +
+        assertTrue(isUniqueSystemAction(messageDefinition.getSystemAction()), "Message definition "+messageDefinition.getMessageId()+" does not have a unique " +
                 "system action");
-        assertTrue(isUniqueUserAction(messageDefinition.getUserAction()), "Message definition "+messageDefinition.toString()+" does not have a unique user " +
+        assertTrue(isUniqueUserAction(messageDefinition.getUserAction()), "Message definition "+messageDefinition.getMessageId()+" does not have a unique user " +
                 "action");
-        assertTrue(messageDefinition.getMessageId().startsWith(messageIdPrefix), "Message definition "+messageDefinition.toString()+" does not start with the " +
+        assertTrue(messageDefinition.getMessageId().startsWith(messageIdPrefix), "Message definition "+messageDefinition.getMessageId()+" does not start with the " +
                 "correct message prefix: "+messageIdPrefix);
-        assertFalse(messageDefinition.getMessageId().endsWith(" "), "Message definition "+messageDefinition.toString()+" has a space at the end of its messageId");
+        assertFalse(messageDefinition.getMessageId().endsWith(" "), "Message definition "+messageDefinition.getMessageId()+" has a space at the end of its messageId");
 
         if (messageParameters.length == 0)
         {

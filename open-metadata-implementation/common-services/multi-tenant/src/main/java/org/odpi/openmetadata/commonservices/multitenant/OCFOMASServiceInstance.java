@@ -16,27 +16,30 @@ import java.util.List;
  */
 public class OCFOMASServiceInstance extends OMASServiceInstance
 {
-    protected AssetHandler              assetHandler;
-    protected CertificationHandler      certificationHandler;
-    protected CommentHandler            commentHandler;
-    protected ConnectionHandler         connectionHandler;
-    protected ConnectorTypeHandler      connectorTypeHandler;
-    protected EndpointHandler           endpointHandler;
-    protected ExternalIdentifierHandler externalIdentifierHandler;
-    protected ExternalReferenceHandler  externalReferenceHandler;
-    protected GlossaryTermHandler       glossaryTermHandler;
-    protected InformalTagHandler        informalTagHandler;
-    protected LicenseHandler            licenseHandler;
-    protected LikeHandler               likeHandler;
-    protected LocationHandler           locationHandler;
-    protected MeaningHandler            meaningHandler;
-    protected NoteHandler               noteHandler;
-    protected NoteLogHandler            noteLogHandler;
-    protected RatingHandler             ratingHandler;
-    protected ReferenceableHandler      referenceableHandler;
-    protected RelatedMediaHandler       relatedMediaHandler;
-    protected SchemaTypeHandler         schemaTypeHandler;
-    protected ValidValuesHandler        validValuesHandler;
+    protected AssetHandler                    assetHandler;
+    protected CertificationHandler            certificationHandler;
+    protected CommentHandler                  commentHandler;
+    protected ConnectionHandler               connectionHandler;
+    protected ConnectorTypeHandler            connectorTypeHandler;
+    protected EndpointHandler                 endpointHandler;
+    protected ExternalIdentifierHandler       externalIdentifierHandler;
+    protected ExternalReferenceHandler        externalReferenceHandler;
+    protected FileSystemHandler               fileSystemHandler;
+    protected GlossaryTermHandler             glossaryTermHandler;
+    protected InformalTagHandler              informalTagHandler;
+    protected LicenseHandler                  licenseHandler;
+    protected LikeHandler                     likeHandler;
+    protected LocationHandler                 locationHandler;
+    protected MeaningHandler                  meaningHandler;
+    protected NoteHandler                     noteHandler;
+    protected NoteLogHandler                  noteLogHandler;
+    protected RatingHandler                   ratingHandler;
+    protected ReferenceableHandler            referenceableHandler;
+    protected RelatedMediaHandler             relatedMediaHandler;
+    protected SchemaTypeHandler               schemaTypeHandler;
+    protected SoftwareServerCapabilityHandler softwareServerCapabilityHandler;
+    protected ValidValuesHandler              validValuesHandler;
+    protected RelationalDataHandler           relationalDataHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -164,7 +167,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
         this.endpointHandler           = new EndpointHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.externalIdentifierHandler = new ExternalIdentifierHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.externalReferenceHandler  = new ExternalReferenceHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
-        this.glossaryTermHandler       = new GlossaryTermHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, lastAttachmentHandler);
+        this.glossaryTermHandler       = new GlossaryTermHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.informalTagHandler        = new InformalTagHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.licenseHandler            = new LicenseHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.likeHandler               = new LikeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
@@ -176,6 +179,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
         this.referenceableHandler      = new ReferenceableHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.relatedMediaHandler       = new RelatedMediaHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.schemaTypeHandler         = new SchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.softwareServerCapabilityHandler = new SoftwareServerCapabilityHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.validValuesHandler        = new ValidValuesHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
 
         this.assetHandler              = new AssetHandler(serviceName,
@@ -203,6 +207,33 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                                           defaultZones);
 
         validValuesHandler.setAssetHandler(assetHandler);
+
+        /*
+         * The following handlers add specialized methods on top of the basic OCF handlers
+         */
+        relationalDataHandler = new RelationalDataHandler(serviceName,
+                                                          serverName,
+                                                          invalidParameterHandler,
+                                                          repositoryHandler,
+                                                          repositoryHelper,
+                                                          defaultZones,
+                                                          supportedZones,
+                                                          publishZones,
+                                                          assetHandler,
+                                                          connectionHandler,
+                                                          schemaTypeHandler,
+                                                          softwareServerCapabilityHandler,
+                                                          glossaryTermHandler);
+
+        fileSystemHandler = new FileSystemHandler(serviceName,
+                                                  serverName,
+                                                  invalidParameterHandler,
+                                                  repositoryHandler,
+                                                  repositoryHelper,
+                                                  supportedZones,
+                                                  assetHandler,
+                                                  schemaTypeHandler,
+                                                  softwareServerCapabilityHandler);
 
         if (securityVerifier != null)
         {
@@ -337,6 +368,22 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return externalReferenceHandler;
+    }
+
+
+    /**
+     * Return the handler for managing filesystems, folders and files.
+     *
+     * @return file system handler
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    FileSystemHandler getFileSystemHandler() throws PropertyServerException
+    {
+        final String methodName = "getFileSystemHandler";
+
+        validateActiveRepository(methodName);
+
+        return fileSystemHandler;
     }
 
 
@@ -517,6 +564,22 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
 
 
     /**
+     * Return the handler for managing relational data assets, connections and schema.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    RelationalDataHandler getRelationalDataHandler() throws PropertyServerException
+    {
+        final String methodName = "getRelationalDataHandler";
+
+        validateActiveRepository(methodName);
+
+        return relationalDataHandler;
+    }
+
+
+    /**
      * Return the handler for managing schema objects.
      *
      * @return  handler object
@@ -529,6 +592,22 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return schemaTypeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing software server capability objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SoftwareServerCapabilityHandler getSoftwareServerCapabilityHandler() throws PropertyServerException
+    {
+        final String methodName = "getSoftwareServerCapabilityHandler";
+
+        validateActiveRepository(methodName);
+
+        return softwareServerCapabilityHandler;
     }
 
 

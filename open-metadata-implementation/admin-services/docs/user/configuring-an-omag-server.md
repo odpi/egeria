@@ -19,6 +19,13 @@ the ecosystem.
 > **Figure 1:** The different types of OMAG Servers organized into a hierarchy
 > that shows the types of roles they perform and how they integrate together
 
+The way to understand the diagram is that the arrows should be read as **IS A**.  For example,
+the **Repository Proxy IS A Cohort Member** and the **Cohort Member IS A OMAG Server**.
+This means that everything documented about a particular type of server is also true for
+all server types that point to it through the **IS A** arrow, all of the way down the hierarchy.
+
+Object-oriented software engineers would know of this type of relationship as behavior inheritance.
+
 The [configuration document](../concepts/configuration-document.md)
 for the OMAG Server determines which OMAG subsystems (and hence the types of open
 metadata and governance services) that should be activated in the OMAG Server.
@@ -34,6 +41,19 @@ Each of the configuration commands builds up sections in the configuration docum
 This document is stored in the configuration file after each configuration request so
 it is immediately available for use each time the open metadata services are activated
 in the OMAG Server.
+
+Many of the configuration values are
+[connections](../../../frameworks/open-connector-framework/docs/concepts/connection.md) to allow
+the server to create the connectors to the resources it needs.
+
+Figure 2 shows the different types of connectors and the OMAG Servers that use them.  The integration daemons
+each have their own type of connectors and so they are shown as a group.
+
+![Figure 2](../concepts/omag-server-connector-types.png)
+> **Figure 2:** the connector types supported by the OMAG Servers
+
+These connectors enable Egeria to run in different container types, or deployment environments and
+to connect to different third party technology.
 
 In the descriptions of the configuration commands, there are placeholders
 for the specific configuration values.  They are names of the value in double curly braces.

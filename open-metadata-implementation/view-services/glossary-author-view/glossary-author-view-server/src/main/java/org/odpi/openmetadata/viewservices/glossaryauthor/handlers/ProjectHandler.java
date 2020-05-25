@@ -215,14 +215,14 @@ public class ProjectHandler {
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the Project was not purged
+     * @throws EntityNotPurgedException               a hard delete was issued but the Project was not purged
      * @throws FunctionNotSupportedException        Function not supported
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public void purgeProject(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, GUIDNotPurgedException, UnexpectedResponseException, FunctionNotSupportedException, InvalidParameterException, UserNotAuthorizedException {
+    public void purgeProject(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, EntityNotPurgedException, UnexpectedResponseException, FunctionNotSupportedException, InvalidParameterException, UserNotAuthorizedException {
         subjectAreaProject.purgeProject(userId, guid);
     }
 

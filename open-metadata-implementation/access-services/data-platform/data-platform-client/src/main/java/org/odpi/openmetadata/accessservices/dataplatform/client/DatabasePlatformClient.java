@@ -6,8 +6,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.client;
 import org.odpi.openmetadata.accessservices.dataplatform.api.DatabasePlatformInterface;
 import org.odpi.openmetadata.accessservices.dataplatform.metadataelements.*;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.*;
-import org.odpi.openmetadata.accessservices.dataplatform.rest.DatabaseResponse;
-import org.odpi.openmetadata.accessservices.dataplatform.rest.DatabasesResponse;
+import org.odpi.openmetadata.accessservices.dataplatform.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
@@ -24,8 +23,6 @@ import java.util.List;
 public class DatabasePlatformClient extends ConnectedAssetClientBase implements DatabasePlatformInterface
 {
     private DataPlatformRESTClient restClient;               /* Initialized in constructor */
-
-    private static final String  serviceURLName = "data-platform";
 
     private final String integratorGUIDParameterName = "integratorGUID";
     private final String integratorNameParameterName = "integratorName";
@@ -146,11 +143,13 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
     {
         final String methodName                  = "createDatabase";
         final String propertiesParameterName     = "databaseProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(databaseProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix;
 
@@ -173,7 +172,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @param integratorGUID unique identifier of software server capability representing the caller
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseProperties properties to store
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element
      *
@@ -185,25 +184,27 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                              String             integratorGUID,
                                              String             integratorName,
                                              String             templateGUID,
-                                             DatabaseProperties databaseProperties) throws InvalidParameterException,
+                                             TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
         final String methodName                  = "createDatabaseFromTemplate";
         final String templateGUIDParameterName   = "templateGUID";
-        final String propertiesParameterName     = "databaseProperties";
+        final String propertiesParameterName     = "templateProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/from-template/{4}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
-                                                                  databaseProperties,
+                                                                  templateProperties,
                                                                   serverName,
                                                                   userId,
                                                                   integratorGUID,
@@ -236,16 +237,16 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                              PropertyServerException
     {
         final String methodName                  = "updateDatabase";
-        final String integratorGUIDParameterName = "integratorGUID";
-        final String integratorNameParameterName = "integratorName";
         final String elementGUIDParameterName    = "databaseGUID";
         final String propertiesParameterName     = "databaseProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(databaseProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}";
 
@@ -281,13 +282,15 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
     {
-        final String methodName = "publishDatabase";
+        final String methodName               = "publishDatabase";
+        final String elementGUIDParameterName = "databaseGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/publish";
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}/publish";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -295,7 +298,8 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                         serverName,
                                         userId,
                                         integratorGUID,
-                                        integratorName);
+                                        integratorName,
+                                        databaseGUID);
     }
 
 
@@ -320,13 +324,15 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        final String methodName = "withdrawDatabase";
+        final String methodName               = "withdrawDatabase";
+        final String elementGUIDParameterName = "databaseGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/withdraw";
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}/withdraw";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -334,7 +340,8 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                         serverName,
                                         userId,
                                         integratorGUID,
-                                        integratorName);
+                                        integratorName,
+                                        databaseGUID);
     }
 
 
@@ -414,13 +421,13 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = retrieveURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = retrieveURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
 
         DatabasesResponse restResult = restClient.callDatabasesGetRESTCall(methodName,
                                                                            urlTemplate,
-                                                                           searchString,
                                                                            serverName,
                                                                            userId,
+                                                                           searchString,
                                                                            startFrom,
                                                                            validatedPageSize);
 
@@ -450,20 +457,20 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        final String methodName = "getDatabasesByName";
+        final String methodName        = "getDatabasesByName";
         final String nameParameterName = "name";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = retrieveURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = retrieveURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
 
         DatabasesResponse restResult = restClient.callDatabasesGetRESTCall(methodName,
                                                                            urlTemplate,
-                                                                           name,
                                                                            serverName,
                                                                            userId,
+                                                                           name,
                                                                            startFrom,
                                                                            validatedPageSize);
 
@@ -501,7 +508,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = retrieveURLTemplatePrefix + "/for-integrator/{2}/{3}?startFrom={4}&pageSize={5}";
+        final String urlTemplate = retrieveURLTemplatePrefix + "/for-integrator/{2}/{3}?startFrom={4}&pageSize={5}";
 
         DatabasesResponse restResult = restClient.callDatabasesGetRESTCall(methodName,
                                                                            urlTemplate,
@@ -539,7 +546,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String   urlTemplate = retrieveURLTemplatePrefix + "/{2}";
+        final String urlTemplate = retrieveURLTemplatePrefix + "/{2}";
 
         DatabaseResponse restResult = restClient.callDatabaseGetRESTCall(methodName,
                                                                          urlTemplate,
@@ -611,7 +618,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseGUID unique identifier of the database where the schema is located
-     * @param databaseSchemaProperties properties about the database schema
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new database schema
      *
@@ -619,16 +626,40 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseSchemaFromTemplate(String                   userId,
-                                                   String                   integratorGUID,
-                                                   String                   integratorName,
-                                                   String                   templateGUID,
-                                                   String                   databaseGUID,
-                                                   DatabaseSchemaProperties databaseSchemaProperties) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
+    public String createDatabaseSchemaFromTemplate(String             userId,
+                                                   String             integratorGUID,
+                                                   String             integratorName,
+                                                   String             templateGUID,
+                                                   String             databaseGUID,
+                                                   TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
-        return null;
+        final String methodName                     = "createDatabaseSchemaFromTemplate";
+        final String templateGUIDParameterName      = "templateGUID";
+        final String parentElementGUIDParameterName = "databaseGUID";
+        final String propertiesParameterName        = "templateProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}/schemas/from-template/{5}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  templateProperties,
+                                                                  serverName,
+                                                                  userId,
+                                                                  integratorGUID,
+                                                                  integratorName,
+                                                                  databaseGUID,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
     }
 
 
@@ -653,8 +684,26 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        final String methodName = "updateDatabaseSchema";
+        final String methodName               = "updateDatabaseSchema";
+        final String elementGUIDParameterName = "databaseSchemaGUID";
+        final String propertiesParameterName  = "databaseProperties";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(databaseSchemaProperties, propertiesParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        databaseSchemaProperties,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseSchemaGUID);
     }
 
 
@@ -679,7 +728,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
+        final String methodName                  = "publishDatabaseSchema";
+        final String elementGUIDParameterName    = "databaseSchemaGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/publish";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseSchemaGUID);
     }
 
 
@@ -704,7 +770,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
+        final String methodName               = "withdrawDatabase";
+        final String elementGUIDParameterName = "databaseSchemaGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/withdraw";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseSchemaGUID);
     }
 
 
@@ -729,8 +812,27 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        final String methodName = "removeDatabaseSchema";
+        final String methodName                  = "removeDatabaseSchema";
+        final String elementGUIDParameterName    = "databaseSchemaGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/{5}/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseSchemaGUID,
+                                        qualifiedName);
     }
 
 
@@ -756,9 +858,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        final String methodName = "findDatabaseSchemas";
+        final String methodName                = "findDatabaseSchemas";
+        final String searchStringParameterName = "searchString";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/by-search-string/{2}?startFrom={3}&pageSize={4}";
+
+        DatabaseSchemasResponse restResult = restClient.callDatabaseSchemasGetRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       searchString,
+                                                                                       startFrom,
+                                                                                       validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -783,9 +900,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        final String methodName = "getSchemasForDatabase";
+        final String methodName                     = "getSchemasForDatabase";
+        final String parentElementGUIDParameterName = "databaseGUID";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "/{2}/schemas?startFrom={3}&pageSize={4}";
+
+        DatabaseSchemasResponse restResult = restClient.callDatabaseSchemasGetRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       databaseGUID,
+                                                                                       startFrom,
+                                                                                       validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -811,9 +943,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        final String methodName = "getDatabaseSchemasByName";
+        final String methodName        = "getDatabaseSchemasByName";
+        final String nameParameterName = "name";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/by-name/{2}?startFrom={3}&pageSize={4}";
+
+        DatabaseSchemasResponse restResult = restClient.callDatabaseSchemasGetRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       name,
+                                                                                       startFrom,
+                                                                                       validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -834,9 +981,21 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        final String methodName = "getDatabaseSchemaByGUID";
+        final String methodName        = "getDatabaseSchemaByGUID";
+        final String guidParameterName = "guid";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/{2}";
+
+        DatabaseSchemaResponse restResult = restClient.callDatabaseSchemaGetRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     guid);
+
+        return restResult.getElement();
     }
 
 
@@ -900,25 +1059,48 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
-     * @param databaseTableProperties properties about the database table
+     * @param templateProperties properties that override the template
      *
-     * @return unique identifier of the new database schema
+     * @return unique identifier of the new database table
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseTableFromTemplate(String                  userId,
-                                                  String                  integratorGUID,
-                                                  String                  integratorName,
-                                                  String                  templateGUID,
-                                                  String                  databaseSchemaGUID,
-                                                  DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
+    public String createDatabaseTableFromTemplate(String             userId,
+                                                  String             integratorGUID,
+                                                  String             integratorName,
+                                                  String             templateGUID,
+                                                  String             databaseSchemaGUID,
+                                                  TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
+        final String methodName                     = "createDatabaseTableFromTemplate";
+        final String templateGUIDParameterName      = "templateGUID";
+        final String parentElementGUIDParameterName = "databaseSchemaGUID";
+        final String propertiesParameterName        = "templateProperties";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/tables/from-template/{5}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  templateProperties,
+                                                                  serverName,
+                                                                  userId,
+                                                                  integratorGUID,
+                                                                  integratorName,
+                                                                  databaseSchemaGUID,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
     }
 
 
@@ -943,8 +1125,26 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        final String methodName = "updateDatabaseTable";
+        final String methodName               = "updateDatabaseTable";
+        final String elementGUIDParameterName = "databaseTableGUID";
+        final String propertiesParameterName  = "databaseTableProperties";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseTableGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(databaseTableProperties, propertiesParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        databaseTableProperties,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseTableGUID);
     }
 
 
@@ -969,8 +1169,27 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        final String methodName = "removeDatabaseTable";
+        final String methodName                  = "removeDatabaseTable";
+        final String elementGUIDParameterName    = "databaseTableGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseTableGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}/{5}/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseTableGUID,
+                                        qualifiedName);
     }
 
 
@@ -996,9 +1215,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        final String methodName = "findDatabaseTables";
+        final String methodName                = "findDatabaseTables";
+        final String searchStringParameterName = "searchString";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/tables/by-search-string/{2}?startFrom={3}&pageSize={4}";
+
+        DatabaseTablesResponse restResult = restClient.callDatabaseTablesGetRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     searchString,
+                                                                                     startFrom,
+                                                                                     validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -1023,9 +1257,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        final String methodName = "getTablesForDatabaseSchema";
+        final String methodName                     = "getTablesForDatabaseSchema";
+        final String parentElementGUIDParameterName = "databaseSchemaGUID";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/{2}/tables?startFrom={3}&pageSize={4}";
+
+        DatabaseTablesResponse restResult = restClient.callDatabaseTablesGetRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     databaseSchemaGUID,
+                                                                                     startFrom,
+                                                                                     validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -1051,9 +1300,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        final String methodName = "getDatabaseTablesByName";
+        final String methodName        = "getDatabaseTablesByName";
+        final String nameParameterName = "name";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/tables/by-name/{2}?startFrom={3}&pageSize={4}";
+
+        DatabaseTablesResponse restResult = restClient.callDatabaseTablesGetRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     name,
+                                                                                     startFrom,
+                                                                                     validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -1074,9 +1338,21 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        final String methodName = "getDatabaseTableByGUID";
+        final String methodName        = "getDatabaseTableByGUID";
+        final String guidParameterName = "guid";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/tables/{2}";
+
+        DatabaseTableResponse restResult = restClient.callDatabaseTableGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   guid);
+
+        return restResult.getElement();
     }
 
 
@@ -1136,7 +1412,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
-     * @param databaseViewProperties properties for the new view
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the database view
      *
@@ -1144,17 +1420,40 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseViewFromTemplate(String                  userId,
-                                                 String                  integratorGUID,
-                                                 String                  integratorName,
-                                                 String                  templateGUID,
-                                                 String                  databaseSchemaGUID,
-                                                 DatabaseTableProperties databaseViewProperties) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+    public String createDatabaseViewFromTemplate(String             userId,
+                                                 String             integratorGUID,
+                                                 String             integratorName,
+                                                 String             templateGUID,
+                                                 String             databaseSchemaGUID,
+                                                 TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
+        final String methodName                     = "createDatabaseViewFromTemplate";
+        final String templateGUIDParameterName      = "templateGUID";
+        final String parentElementGUIDParameterName = "databaseSchemaGUID";
+        final String propertiesParameterName        = "templateProperties";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/tables/views/from-template/{5}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  templateProperties,
+                                                                  serverName,
+                                                                  userId,
+                                                                  integratorGUID,
+                                                                  integratorName,
+                                                                  databaseSchemaGUID,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
     }
 
 
@@ -1179,7 +1478,26 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        final String methodName = "updateDatabaseView";
+        final String methodName               = "updateDatabaseView";
+        final String elementGUIDParameterName = "databaseViewGUID";
+        final String propertiesParameterName  = "databaseViewProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseViewGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(databaseViewProperties, propertiesParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/views/{4}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        databaseViewProperties,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseViewGUID);
     }
 
 
@@ -1204,8 +1522,27 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        final String methodName = "removeDatabaseView";
+        final String methodName                  = "removeDatabaseView";
+        final String elementGUIDParameterName    = "databaseViewGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseViewGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/views/{4}/{5}/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseViewGUID,
+                                        qualifiedName);
     }
 
 
@@ -1231,9 +1568,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        final String methodName = "findDatabaseViews";
+        final String methodName                = "findDatabaseViews";
+        final String searchStringParameterName = "searchString";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/tables/views/by-search-string/{2}?startFrom={3}&pageSize={4}";
+
+        DatabaseViewsResponse restResult = restClient.callDatabaseViewsGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   searchString,
+                                                                                   startFrom,
+                                                                                   validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -1258,9 +1610,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        final String methodName = "getViewsForDatabaseSchema";
+        final String methodName                     = "getViewsForDatabaseSchema";
+        final String parentElementGUIDParameterName = "databaseSchemaGUID";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/{2}/tables/views?startFrom={3}&pageSize={4}";
+
+        DatabaseViewsResponse restResult = restClient.callDatabaseViewsGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   databaseSchemaGUID,
+                                                                                   startFrom,
+                                                                                   validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -1286,9 +1653,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        final String methodName = "getDatabaseViewsByName";
+        final String methodName        = "getDatabaseViewsByName";
+        final String nameParameterName = "name";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/tables/views/by-name/{2}?startFrom={3}&pageSize={4}";
+
+        DatabaseViewsResponse restResult = restClient.callDatabaseViewsGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   name,
+                                                                                   startFrom,
+                                                                                   validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -1309,9 +1691,21 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        final String methodName = "getDatabaseViewByGUID";
+        final String methodName        = "getDatabaseViewByGUID";
+        final String guidParameterName = "guid";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/tables/views/{2}";
+
+        DatabaseViewResponse restResult = restClient.callDatabaseViewGetRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 guid);
+
+        return restResult.getElement();
     }
 
 
@@ -1377,7 +1771,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for the new column
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the database column
      *
@@ -1385,119 +1779,40 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseColumnFromTemplate(String                   userId,
-                                                   String                   integratorGUID,
-                                                   String                   integratorName,
-                                                   String                   templateGUID,
-                                                   String                   databaseTableGUID,
-                                                   DatabaseColumnProperties databaseColumnProperties) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
+    public String createDatabaseColumnFromTemplate(String             userId,
+                                                   String             integratorGUID,
+                                                   String             integratorName,
+                                                   String             templateGUID,
+                                                   String             databaseTableGUID,
+                                                   TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
-        return null;
-    }
-
-
-    /**
-     * Create a new metadata element to represent a database derived column.
-     *
-     * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
-     * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for the new column
-     *
-     * @return unique identifier of the new metadata element for the database column
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createDatabaseDerivedColumn(String                          userId,
-                                              String                          integratorGUID,
-                                              String                          integratorName,
-                                              String                          databaseTableGUID,
-                                              DatabaseDerivedColumnProperties databaseColumnProperties) throws InvalidParameterException,
-                                                                                                               UserNotAuthorizedException,
-                                                                                                               PropertyServerException
-    {
-        final String methodName                     = "createDatabaseDerivedColumn";
+        final String methodName                     = "createDatabaseColumnFromTemplate";
+        final String templateGUIDParameterName      = "templateGUID";
         final String parentElementGUIDParameterName = "databaseTableGUID";
-        final String propertiesParameterName        = "databaseColumnProperties";
+        final String propertiesParameterName        = "templateProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}/columns/derived";
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}/columns/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
-                                                                  databaseColumnProperties,
+                                                                  templateProperties,
                                                                   serverName,
                                                                   userId,
                                                                   integratorGUID,
                                                                   integratorName,
-                                                                  databaseTableGUID);
+                                                                  databaseTableGUID,
+                                                                  templateGUID);
 
         return restResult.getGUID();
-    }
-
-
-    /**
-     * Create a new metadata element to represent a database derived column using an existing metadata element as a template.
-     *
-     * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for the new column
-     *
-     * @return unique identifier of the new metadata element for the database column
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createDatabaseDerivedColumnFromTemplate(String                          userId,
-                                                          String                          integratorGUID,
-                                                          String                          integratorName,
-                                                          String                          templateGUID,
-                                                          String                          databaseTableGUID,
-                                                          DatabaseDerivedColumnProperties databaseColumnProperties) throws InvalidParameterException,
-                                                                                                                           UserNotAuthorizedException,
-                                                                                                                           PropertyServerException
-    {
-        return null;
-    }
-
-
-    /**
-     * Create a link to the data value that is used to derive a database column.
-     *
-     * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
-     * @param databaseColumnGUID unique identifier of the derived column
-     * @param databaseQueryProperties properties for the query
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void addQueryTargetToDerivedColumn(String                  userId,
-                                              String                  integratorGUID,
-                                              String                  integratorName,
-                                              String                  databaseColumnGUID,
-                                              DatabaseQueryProperties databaseQueryProperties) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
-    {
-        final String methodName = "addQueryTargetToDerivedColumn";
-
     }
 
 
@@ -1522,34 +1837,26 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        final String methodName = "updateDatabaseColumn";
+        final String methodName               = "updateDatabaseColumn";
+        final String elementGUIDParameterName = "databaseColumnGUID";
+        final String propertiesParameterName  = "databaseColumnProperties";
 
-    }
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
 
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}";
 
-    /**
-     * Update the metadata element representing a database derived column.
-     *
-     * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
-     * @param databaseColumnGUID unique identifier of the metadata element to update
-     * @param databaseColumnProperties new properties for the metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void updateDatabaseDerivedColumn(String                          userId,
-                                            String                          integratorGUID,
-                                            String                          integratorName,
-                                            String                          databaseColumnGUID,
-                                            DatabaseDerivedColumnProperties databaseColumnProperties) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
-    {
-        final String methodName = "updateDatabaseDerivedColumn";
-
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        databaseColumnProperties,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseColumnGUID);
     }
 
 
@@ -1574,8 +1881,27 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        final String methodName = "removeDatabaseColumn";
+        final String methodName                  = "removeDatabaseColumn";
+        final String elementGUIDParameterName    = "databaseColumnGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/{5}/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseColumnGUID,
+                                        qualifiedName);
     }
 
 
@@ -1601,9 +1927,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        final String methodName = "findDatabaseColumns";
+        final String methodName                = "findDatabaseColumns";
+        final String searchStringParameterName = "searchString";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/tables/columns/by-search-string/{2}?startFrom={3}&pageSize={4}";
+
+        DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsGetRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       searchString,
+                                                                                       startFrom,
+                                                                                       validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -1628,9 +1969,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        final String methodName = "getColumnsForDatabaseTable";
+        final String methodName                     = "getColumnsForDatabaseTable";
+        final String parentElementGUIDParameterName = "databaseTableGUID";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/tables/{2}/columns?startFrom={3}&pageSize={4}";
+
+        DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsGetRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       databaseTableGUID,
+                                                                                       startFrom,
+                                                                                       validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -1656,9 +2012,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        final String methodName = "getDatabaseColumnsByName";
+        final String methodName        = "getDatabaseColumnsByName";
+        final String nameParameterName = "name";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/tables/columns/by-name/{2}?startFrom={3}&pageSize={4}";
+
+        DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsGetRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       name,
+                                                                                       startFrom,
+                                                                                       validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -1679,9 +2050,21 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        final String methodName = "getDatabaseColumnByGUID";
+        final String methodName        = "getDatabaseColumnByGUID";
+        final String guidParameterName = "guid";
 
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+
+        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/tables/columns/{2}";
+
+        DatabaseColumnResponse restResult = restClient.callDatabaseColumnGetRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     guid);
+
+        return restResult.getElement();
     }
 
 
@@ -1711,8 +2094,26 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
-        final String methodName = "setPrimaryKeyOnColumn";
+        final String methodName                     = "setPrimaryKeyOnColumn";
+        final String parentElementGUIDParameterName = "databaseColumnGUID";
+        final String propertiesParameterName        = "databasePrimaryKeyProperties";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseColumnGUID, parentElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(databasePrimaryKeyProperties, propertiesParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/primary-key";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        databasePrimaryKeyProperties,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseColumnGUID);
     }
 
 
@@ -1735,8 +2136,24 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        final String methodName = "removePrimaryKeyFromColumn";
+        final String methodName                     = "removePrimaryKeyFromColumn";
+        final String parentElementGUIDParameterName = "databaseColumnGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseColumnGUID, parentElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/primary-key/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        databaseColumnGUID);
     }
 
 
@@ -1748,7 +2165,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @param integratorGUID unique identifier of software server capability representing the caller
      * @param integratorName unique name of software server capability representing the caller
      * @param primaryKeyColumnGUID unique identifier of the column containing the primary key
-     * @param foreignKeyColumnGUID unique identifier of the column containing the primary key from theo other table
+     * @param foreignKeyColumnGUID unique identifier of the column containing the primary key from the other table
      * @param databaseForeignKeyProperties properties about the foreign key relationship
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1764,8 +2181,29 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                                             UserNotAuthorizedException,
                                                                                                             PropertyServerException
     {
-        final String methodName = "addForeignKeyRelationship";
+        final String methodName                      = "addForeignKeyRelationship";
+        final String primaryElementGUIDParameterName = "primaryKeyColumnGUID";
+        final String foreignElementGUIDParameterName = "foreignKeyColumnGUID";
+        final String propertiesParameterName         = "databaseForeignKeyProperties";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(primaryKeyColumnGUID, primaryElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(foreignKeyColumnGUID, foreignElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(databaseForeignKeyProperties, propertiesParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/foreign-key/{5}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        databaseForeignKeyProperties,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        foreignKeyColumnGUID,
+                                        primaryKeyColumnGUID);
     }
 
 
@@ -1790,7 +2228,26 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        final String methodName = "removeForeignKeyRelationship";
+        final String methodName                      = "removeForeignKeyRelationship";
+        final String primaryElementGUIDParameterName = "primaryKeyColumnGUID";
+        final String foreignElementGUIDParameterName = "foreignKeyColumnGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(primaryKeyColumnGUID, primaryElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(foreignKeyColumnGUID, foreignElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/foreign-key/{5}/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        integratorGUID,
+                                        integratorName,
+                                        foreignKeyColumnGUID,
+                                        primaryKeyColumnGUID);
     }
 }

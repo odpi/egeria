@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Criticality;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Retention;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.ConfidenceLevel;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.ConfidentialityLevel;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.CriticalityLevel;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.RetentionBasis;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
@@ -46,13 +45,15 @@ public class TermFVT
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
-        } catch (SubjectAreaCheckedExceptionBase e)
+        } catch (SubjectAreaCheckedException e)
         {
             System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+        } catch (SubjectAreaFVTCheckedException e) {
+            System.out.println("ERROR: " + e.getMessage() );
         }
 
     }
-    public TermFVT(String url,String serverName,String userId) throws SubjectAreaCheckedExceptionBase
+    public TermFVT(String url,String serverName,String userId) throws SubjectAreaCheckedException
     {
         subjectAreaTerm = new SubjectAreaImpl(serverName,url).getSubjectAreaTerm();
         System.out.println("Create a glossary");
@@ -60,7 +61,7 @@ public class TermFVT
         this.serverName=serverName;
         this.userId=userId;
     }
-    public static void runWith2Servers(String url) throws SubjectAreaCheckedExceptionBase
+    public static void runWith2Servers(String url) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         TermFVT fvt =new TermFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
@@ -68,22 +69,22 @@ public class TermFVT
         fvt2.run();
     }
 
-    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedExceptionBase {
+    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException {
         TermFVT fvt =new TermFVT(url,serverName,userId);
         fvt.run();
     }
 
-    public void run() throws SubjectAreaCheckedExceptionBase
+    public void run() throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Glossary glossary= glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         System.out.println("Create a term1");
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
         Term term1 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term1);
-        System.out.println("Create a term2 using glossary guid");
+        System.out.println("Create a term2 using glossary userId");
         Term term2 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term2);
-        System.out.println("Create a term2 using glossary guid");
+        System.out.println("Create a term2 using glossary userId");
 
         Term termForUpdate = new Term();
         termForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
@@ -113,16 +114,16 @@ public class TermFVT
         Term term3 = createTermWithGovernanceActions(DEFAULT_TEST_TERM_NAME, glossaryGuid,governanceActions);
         FVTUtils.validateNode(term3);
         if (!governanceActions.getConfidence().getLevel().equals(term3.getGovernanceActions().getConfidence().getLevel())){
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions confidence not returned  as expected", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidence not returned  as expected");
         }
         if (!governanceActions.getConfidentiality().getLevel().equals(term3.getGovernanceActions().getConfidentiality().getLevel())) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions confidentiality not returned  as expected", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidentiality not returned  as expected");
         }
         if (!governanceActions.getRetention().getBasis().equals(term3.getGovernanceActions().getRetention().getBasis())) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions retention not returned  as expected", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions retention not returned  as expected");
         }
         if (!governanceActions.getCriticality().getLevel().equals(term3.getGovernanceActions().getCriticality().getLevel())) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions criticality not returned  as expected", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions criticality not returned  as expected");
         }
         GovernanceActions governanceActions2 = create2ndGovernanceActions();
         System.out.println("Update term3 with and change governance actions");
@@ -133,16 +134,16 @@ public class TermFVT
         Term updatedTerm3 = updateTerm(term3.getSystemAttributes().getGUID(), term3ForUpdate);
         FVTUtils.validateNode(updatedTerm3);
         if (!governanceActions2.getConfidence().getLevel().equals(updatedTerm3.getGovernanceActions().getConfidence().getLevel())){
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions confidence not returned  as expected", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidence not returned  as expected");
         }
         if (!governanceActions2.getConfidentiality().getLevel().equals(updatedTerm3.getGovernanceActions().getConfidentiality().getLevel())) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions confidentiality not returned  as expected", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidentiality not returned  as expected");
         }
         if (!(updatedTerm3.getGovernanceActions().getRetention()==null)) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions retention not null as expected", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions retention not null as expected");
         }
         if (!(updatedTerm3.getGovernanceActions().getCriticality().getLevel()==null)) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions criticality not returned  as expected", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions criticality not returned  as expected");
         }
 
         System.out.println("create terms to find");
@@ -159,24 +160,24 @@ public class TermFVT
 
         List<Term>  results = findTerms("zzz");
         if (results.size() !=1 ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " +results.size());
         }
         results = findTerms("yyy");
         if (results.size() !=2 ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 2 back on the find got " +results.size(), "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on the find got " +results.size());
         }
         //soft delete a term and check it is not found
         Term deleted4 = deleteTerm(termForFind2.getSystemAttributes().getGUID());
         FVTUtils.validateNode(deleted4);
         results = findTerms("yyy");
         if (results.size() !=1 ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " +results.size());
         }
 
        // search for a term with a name with spaces in
         results = findTerms("This is a Term with spaces in name");
         if (results.size() !=1 ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " +results.size());
         }
         Term term = results.get(0);
         long now = new Date().getTime();
@@ -187,10 +188,10 @@ public class TermFVT
         term.setEffectiveToTime(toTermTime);
         Term updatedFutureTerm = updateTerm(term.getSystemAttributes().getGUID(),term);
         if (updatedFutureTerm.getEffectiveFromTime().getTime()!=fromTermTime.getTime()) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected term from time to update", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected term from time to update");
         }
         if (updatedFutureTerm.getEffectiveToTime().getTime()!=toTermTime.getTime()) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected term to time to update", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected term to time to update");
         }
         Date fromGlossaryTime = new Date(now+8*1000*60*60*24);
         Date toGlossaryTime = new Date(now+9*1000*60*60*24);
@@ -199,10 +200,10 @@ public class TermFVT
         Glossary updatedFutureGlossary= glossaryFVT.updateGlossary(glossaryGuid,glossary);
 
         if (updatedFutureGlossary.getEffectiveFromTime().getTime()!=fromGlossaryTime.getTime()) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary from time to update", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary from time to update");
         }
         if (updatedFutureGlossary.getEffectiveToTime().getTime()!=toGlossaryTime.getTime()) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary to time to update", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary to time to update");
         }
 
         Term newTerm = getTermByGUID(term.getSystemAttributes().getGUID());
@@ -210,20 +211,20 @@ public class TermFVT
         GlossarySummary glossarySummary =  newTerm.getGlossary();
 
         if (glossarySummary.getFromEffectivityTime().getTime()!=fromGlossaryTime.getTime()) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary summary from time to update", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary from time to update");
         }
         if (glossarySummary.getToEffectivityTime().getTime()!=toGlossaryTime.getTime()) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary summary to time to update", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary to time to update");
         }
 
         if (glossarySummary.getRelationshipguid() ==null) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary summary non null relationship", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary non null relationship");
         }
         if (glossarySummary.getFromRelationshipEffectivityTime() !=null) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary summary null relationship from time", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary null relationship from time");
         }
         if (glossarySummary.getToRelationshipEffectivityTime() !=null) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary summary null relationship to time", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary null relationship to time");
         }
         Term term5 = new Term();
         term5.setSpineObject(true);
@@ -233,7 +234,7 @@ public class TermFVT
         term5.setGlossary(glossarySummary);
         Term createdTerm5 = issueCreateTerm(term5);
         if (createdTerm5.isSpineObject() == false) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected isSpineObject to be true ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected isSpineObject to be true ");
         }
         Term term6 = new Term();
         term6.setSpineAttribute(true);
@@ -243,7 +244,7 @@ public class TermFVT
         term6.setGlossary(glossarySummary);
         Term createdTerm6 = issueCreateTerm(term6);
         if (createdTerm6.isSpineAttribute() == false) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected isSpineAttribute to be true ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected isSpineAttribute to be true ");
         }
         Term term7 = new Term();
         term7.setObjectIdentifier(true);
@@ -253,12 +254,12 @@ public class TermFVT
         term7.setGlossary(glossarySummary);
         Term createdTerm7 = issueCreateTerm(term7);
         if (createdTerm7.isObjectIdentifier() == false) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected isObjectIdentifier to be true ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected isObjectIdentifier to be true ");
         }
 
     }
 
-    public  Term createTerm(String termName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
+    public  Term createTerm(String termName, String glossaryGuid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Term term = getTermForInput(termName, glossaryGuid);
         return issueCreateTerm(term);
@@ -268,7 +269,7 @@ public class TermFVT
         Term newTerm = subjectAreaTerm.createTerm(this.userId, term);
         if (newTerm != null)
         {
-            System.out.println("Created Term " + newTerm.getName() + " with guid " + newTerm.getSystemAttributes().getGUID());
+            System.out.println("Created Term " + newTerm.getName() + " with userId " + newTerm.getSystemAttributes().getGUID());
         }
         return newTerm;
     }
@@ -282,7 +283,7 @@ public class TermFVT
         return term;
     }
 
-    public  Term createTermWithGovernanceActions(String termName, String glossaryGuid,GovernanceActions governanceActions) throws SubjectAreaCheckedExceptionBase
+    public  Term createTermWithGovernanceActions(String termName, String glossaryGuid,GovernanceActions governanceActions) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Term term = getTermForInput(termName, glossaryGuid);
         term.setGovernanceActions(governanceActions);
@@ -328,16 +329,16 @@ public class TermFVT
     }
 
 
-    public Term getTermByGUID(String guid) throws SubjectAreaCheckedExceptionBase
+    public Term getTermByGUID(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Term term = subjectAreaTerm.getTermByGuid(this.userId, guid);
         if (term != null)
         {
-            System.out.println("Got Term " + term.getName() + " with guid " + term.getSystemAttributes().getGUID() + " and status " + term.getSystemAttributes().getStatus());
+            System.out.println("Got Term " + term.getName() + " with userId " + term.getSystemAttributes().getGUID() + " and status " + term.getSystemAttributes().getStatus());
         }
         return term;
     }
-    public List<Term> findTerms(String criteria) throws SubjectAreaCheckedExceptionBase
+    public List<Term> findTerms(String criteria) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         List<Term> terms = subjectAreaTerm.findTerm(
                 this.userId,
@@ -350,7 +351,7 @@ public class TermFVT
         return terms;
     }
 
-    public Term updateTerm(String guid, Term term) throws SubjectAreaCheckedExceptionBase
+    public Term updateTerm(String guid, Term term) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Term updatedTerm = subjectAreaTerm.updateTerm(this.userId, guid, term);
         if (updatedTerm != null)
@@ -359,7 +360,7 @@ public class TermFVT
         }
         return updatedTerm;
     }
-    public Term restoreTerm(String guid) throws SubjectAreaCheckedExceptionBase
+    public Term restoreTerm(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Term restoredTerm = subjectAreaTerm.restoreTerm(this.userId, guid);
         if (restoredTerm != null)
@@ -368,7 +369,7 @@ public class TermFVT
         }
         return restoredTerm;
     }
-    public Term updateTermToFuture(String guid, Term term) throws SubjectAreaCheckedExceptionBase
+    public Term updateTermToFuture(String guid, Term term) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         long now = new Date().getTime();
 
@@ -383,7 +384,7 @@ public class TermFVT
         return updatedTerm;
     }
 
-    public Term deleteTerm(String guid) throws SubjectAreaCheckedExceptionBase
+    public Term deleteTerm(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Term deletedTerm = subjectAreaTerm.deleteTerm(this.userId, guid);
         if (deletedTerm != null)
@@ -393,7 +394,7 @@ public class TermFVT
         return deletedTerm;
     }
 
-    public void purgeTerm(String guid) throws SubjectAreaCheckedExceptionBase
+    public void purgeTerm(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         subjectAreaTerm.purgeTerm(this.userId, guid);
         System.out.println("Purge succeeded");

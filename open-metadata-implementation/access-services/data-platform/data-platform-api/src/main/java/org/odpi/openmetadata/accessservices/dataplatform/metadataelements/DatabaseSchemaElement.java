@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.DatabaseProperties;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DatabaseSchemaProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -21,8 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DatabaseSchemaElement extends DatabaseProperties implements MetadataElement,
-                                                                         Serializable
+public class DatabaseSchemaElement extends DatabaseSchemaProperties implements MetadataElement,
+                                                                               Serializable
 {
     private static final long     serialVersionUID = 1L;
 
@@ -86,16 +86,6 @@ public class DatabaseSchemaElement extends DatabaseProperties implements Metadat
     {
         return "DatabaseSchemaElement{" +
                 "elementHeader=" + elementHeader +
-                ", databaseType='" + getDatabaseType() + '\'' +
-                ", databaseVersion='" + getDatabaseVersion() + '\'' +
-                ", databaseInstance='" + getDatabaseInstance() + '\'' +
-                ", databaseImportedFrom='" + getDatabaseImportedFrom() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", modifiedTime=" + getModifiedTime() +
-                ", encoding='" + getEncoding() + '\'' +
-                ", language='" + getLanguage() + '\'' +
-                ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", dataStoreProperties=" + getDataStoreProperties() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", owner='" + getOwner() + '\'' +
@@ -105,8 +95,6 @@ public class DatabaseSchemaElement extends DatabaseProperties implements Metadat
                 ", latestChange='" + getLatestChange() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", vendorProperties=" + getVendorProperties() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +

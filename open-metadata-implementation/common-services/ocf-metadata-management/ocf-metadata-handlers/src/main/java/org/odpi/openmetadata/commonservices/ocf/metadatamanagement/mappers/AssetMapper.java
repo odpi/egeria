@@ -34,6 +34,26 @@ public class AssetMapper
     public static final String DATA_STORE_TYPE_NAME                      = "DataStore";
     /* Asset */
 
+    public static final String CREATE_TIME_PROPERTY_NAME                 = "createTime";                            /* from DataStore entity */
+    public static final String MODIFIED_TIME_PROPERTY_NAME               = "modifiedTime";                          /* from DataStore entity */
+
+    public static final String DATA_STORE_ENCODING_CLASSIFICATION_GUID   = "f08e48b5-6b66-40f5-8ff6-c2bfe527330b";
+    public static final String DATA_STORE_ENCODING_CLASSIFICATION_NAME   = "DataStoreEncoding";
+
+    public static final String ENCODING_TYPE_PROPERTY_NAME               = "encoding";      /* from DataStoreEncoding classification */
+    public static final String ENCODING_LANGUAGE_PROPERTY_NAME           = "language";      /* from DataStoreEncoding classification */
+    public static final String ENCODING_DESCRIPTION_PROPERTY_NAME        = "description";   /* from DataStoreEncoding classification */
+    public static final String ENCODING_PROPERTIES_PROPERTY_NAME         = "properties";    /* from DataStoreEncoding classification */
+
+    public static final String DATABASE_TYPE_GUID                        = "0921c83f-b2db-4086-a52c-0d10e52ca078";  /* from Area 2 */
+    public static final String DATABASE_TYPE_NAME                        = "Database";
+    /* DataStore */
+
+    public static final String DATABASE_TYPE_PROPERTY_NAME               = "type";          /* from Database entity */
+    public static final String DATABASE_VERSION_PROPERTY_NAME            = "version";       /* from Database entity */
+    public static final String DATABASE_INSTANCE_PROPERTY_NAME           = "instance";      /* from Database entity */
+    public static final String DATABASE_IMPORTED_FROM_PROPERTY_NAME      = "importedFrom";  /* from Database entity */
+
     public static final String FILE_FOLDER_TYPE_GUID                     = "229ed5cc-de31-45fc-beb4-9919fd247398";  /* from Area 2 */
     public static final String FILE_FOLDER_TYPE_NAME                     = "FileFolder";
     /* DataStore */
@@ -79,8 +99,22 @@ public class AssetMapper
     public static final String JSON_FILE_TYPE_NAME                       = "JSONFile";
     /* DataFile */
 
+    public static final String DATA_SET_TYPE_GUID                        = "1449911c-4f44-4c22-abc0-7540154feefb";  /* from Area 0 */
+    public static final String DATA_SET_TYPE_NAME                        = "DataSet";
+    /* Asset */
+
+    public static final String DEPLOYED_DATABASE_SCHEMA_TYPE_GUID        = "eab811ec-556a-45f1-9091-bc7ac8face0f";  /* from Area 2 */
+    public static final String DEPLOYED_DATABASE_SCHEMA_TYPE_NAME        = "DeployedDatabaseSchema";
+    /* DataSet */
+
+    public static final String DATA_CONTENT_FOR_DATA_SET_TYPE_GUID       = "b827683c-2924-4df3-a92d-7be1888e23c0";  /* from Area 2 */
+    public static final String DATA_CONTENT_FOR_DATA_SET_TYPE_NAME       = "DataContentForDataSet";
+    /* End1 = Asset; End 2 = DataSet */
+
     public static final String SERVER_ASSET_USE_TYPE_GUID                = "92b75926-8e9a-46c7-9d98-89009f622397";  /* from Area 0 */
     public static final String SERVER_ASSET_USE_TYPE_NAME                = "ServerAssetUse";
+    /* End1 = SoftwareServerCapability; End 2 = Asset */
+
 
     public static final String USE_TYPE_PROPERTY_NAME                    = "useType";                         /* from ServerAssetUse relationship */
     /* public static final String DESCRIPTION_PROPERTY_NAME              = "description";                        from ServerAssetUse relationship */

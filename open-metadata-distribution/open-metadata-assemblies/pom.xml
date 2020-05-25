@@ -43,7 +43,6 @@
                         <configuration>
                             <skipAssembly>false</skipAssembly>
                             <descriptors>
-                                <descriptor>src/main/assemblies/src-package.xml</descriptor>
                                 <descriptor>src/main/assemblies/egeria-omag.xml</descriptor>
                                 <descriptor>src/main/assemblies/egeria-deploy.xml</descriptor>
                             </descriptors>

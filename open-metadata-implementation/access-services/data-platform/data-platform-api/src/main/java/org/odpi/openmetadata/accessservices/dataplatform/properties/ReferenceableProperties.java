@@ -33,9 +33,6 @@ public class ReferenceableProperties implements Serializable
 
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
-    private List<String>         meanings             = null;
-
-    private List<Classification> classifications      = null;
 
     private Map<String, String>  vendorProperties     = null;
 
@@ -62,8 +59,7 @@ public class ReferenceableProperties implements Serializable
         {
             qualifiedName        = template.getQualifiedName();
             additionalProperties = template.getAdditionalProperties();
-            meanings             = template.getMeanings();
-            classifications      = template.getClassifications();
+
             typeName             = template.getTypeName();
             extendedProperties   = template.getExtendedProperties();
         }
@@ -127,72 +123,6 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Return the assigned meanings for this metadata entity.
-     *
-     * @return list of meanings
-     */
-    public List<String> getMeanings()
-    {
-        if (meanings == null)
-        {
-            return null;
-        }
-        else if (meanings.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(meanings);
-        }
-    }
-
-
-    /**
-     * Set up the assigned meanings for this metadata entity.
-     *
-     * @param meanings list of meanings
-     */
-    public void setMeanings(List<String> meanings)
-    {
-        this.meanings = meanings;
-    }
-
-
-    /**
-     * Return the list of classifications associated with the object.
-     *
-     * @return Classifications  list of classifications
-     */
-    public List<Classification> getClassifications()
-    {
-        if (classifications == null)
-        {
-            return null;
-        }
-        else if (classifications.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(classifications);
-        }
-    }
-
-
-    /**
-     * Set up the classifications associated with this object.
-     *
-     * @param classifications list of classifications
-     */
-    public void setClassifications(List<Classification> classifications)
-    {
-        this.classifications = classifications;
-    }
-
-
-    /**
      * Return specific properties for the data platform vendor.
      *
      * @return name value pairs
@@ -226,7 +156,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Return the name of the open metadata type for this element.
+     * Return the name of the open metadata type for this metadata element.
      *
      * @return string name
      */
@@ -293,8 +223,6 @@ public class ReferenceableProperties implements Serializable
         return "ReferenceableProperties{" +
                 "qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
-                ", meanings=" + meanings +
-                ", classifications=" + classifications +
                 ", vendorProperties=" + vendorProperties +
                 ", typeName='" + typeName + '\'' +
                 ", extendedProperties=" + extendedProperties +
@@ -322,8 +250,6 @@ public class ReferenceableProperties implements Serializable
         ReferenceableProperties that = (ReferenceableProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
                 Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(meanings, that.meanings) &&
-                Objects.equals(classifications, that.classifications) &&
                 Objects.equals(vendorProperties, that.vendorProperties) &&
                 Objects.equals(typeName, that.typeName) &&
                 Objects.equals(extendedProperties, that.extendedProperties);
@@ -338,7 +264,6 @@ public class ReferenceableProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, additionalProperties, meanings, classifications,
-                            vendorProperties, typeName, extendedProperties);
+        return Objects.hash(qualifiedName, additionalProperties, vendorProperties, typeName, extendedProperties);
     }
 }

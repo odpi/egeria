@@ -35,14 +35,32 @@ import java.util.*;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Egeria",
+                title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
                 version = "1.8-SNAPSHOT",
-                description = "Egeria Open Metadata",
+                description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
+                        "\n" +
+                        "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +
+                        "The configuration operations of the admin services create configuration documents, one for each OMAG Server.  " +
+                        "Inside a configuration document is the definition of which OMAG services to activate in the server. " +
+                        "These include the repository services (any type of server), the access services (for metadata access points " +
+                        "and metadata servers), governance services (for governance servers) and view services (for view servers).  " +
+                        "Once a configuration document is defined, the OMAG Server can be started and stopped multiple times by " +
+                        "the admin services server instance operations.  \n" +
+                        "\n" +
+                        "The OMAG Server Platform also supports platform services to query details of the servers running on the platform.\n" +
+                        "\n" +
+                        "The OMAG Server Platform can host multiple OMAG servers at any one time. " +
+                        "Each OMAG server is isolated within the server platform and so the OMAG server platform can be used to support multi-tenant " +
+                        "operation for a cloud service, " +
+                        "or host a variety of different OMAG Servers needed at a particular location.\n" +
+                        "\n" +
+                        "Click on the documentation link to find out more ...",
                 license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0"),
-                contact = @Contact(url = "https://egeria.odpi.org", name = "ODPi", email = "odpi-project-egeria@lists.odpi.org")
+                contact = @Contact(url = "https://egeria.odpi.org", name = "ODPi Egeria Project", email = "odpi-project-egeria@lists.odpi.org")
         ),
 
-        externalDocs = @ExternalDocumentation(description = "OMAG Server Chassis documentation.", url="https://egeria.odpi.org/open-metadata-implementation/server-chassis/")
+        externalDocs = @ExternalDocumentation(description = "OMAG Server Platform documentation",
+                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.html")
         )
 
 

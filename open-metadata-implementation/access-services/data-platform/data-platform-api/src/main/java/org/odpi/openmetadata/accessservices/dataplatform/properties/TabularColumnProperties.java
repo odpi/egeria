@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -27,9 +28,8 @@ public class TabularColumnProperties extends SchemaAttributeProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private  String     dataType = null;
-    private  String     defaultValue = null;
-
+    private String                        dataType     = null;
+    private String                        defaultValue = null;
 
     /**
      * Default constructor used by subclasses
@@ -60,7 +60,7 @@ public class TabularColumnProperties extends SchemaAttributeProperties
     /**
      * Return the data type for this element.  Null means unknown data type.
      *
-     * @return String data type name
+     * @return string data type name
      */
     public String getDataType() { return dataType; }
 
@@ -79,7 +79,7 @@ public class TabularColumnProperties extends SchemaAttributeProperties
     /**
      * Return the default value for the element.  Null means no default value set up.
      *
-     * @return String containing default value
+     * @return string containing default value
      */
     public String getDefaultValue() { return defaultValue; }
 
@@ -95,6 +95,7 @@ public class TabularColumnProperties extends SchemaAttributeProperties
     }
 
 
+
     /**
      * Standard toString method.
      *
@@ -106,7 +107,6 @@ public class TabularColumnProperties extends SchemaAttributeProperties
         return "TabularColumnProperties{" +
                 "dataType='" + dataType + '\'' +
                 ", defaultValue='" + defaultValue + '\'' +
-                ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +
@@ -126,8 +126,6 @@ public class TabularColumnProperties extends SchemaAttributeProperties
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", vendorProperties=" + getVendorProperties() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
