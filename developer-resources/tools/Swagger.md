@@ -51,11 +51,11 @@ using the `@Operation` annotation.
 ![Swagger UI Operation](swagger-ui-operation-annotations.png)
 
 ----
+* Return to [Developer Tools](.)
 
-* Return to [Tools](.)
-* Return to [Developer Resources](..)
-* Return to the [Egeria Dojo](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
 
+* Link to [Egeria's Community Guide](../../Community-Guide.md)
+* Link to the [Egeria Dojo Education](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

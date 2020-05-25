@@ -1,31 +1,29 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Open Metadata Tutorials
+# Learning about ODPi Egeria
 
-ODPi Egeria is a big project tackling a complex problem. 
-The open metadata tutorials provide guided learning on different topics related to using ODPi Egeria.
-Our initial focus for the tutorials is to help you explore the capabilities of ODPi Egeria.
-Therefore the **getting started** section covers the minimum effort needed to get the technology running
-followed by a series of persona-driven labs, allowing you to explore areas of interest.
+Egeria is a big project tackling a complex problem.
+The [Egeria Dojo](egeria-dojo) provides guided learning to help you get up to
+speed quickly with different topics.  It has 3 parts:
 
-Need a quick refresher on some of the technologies involved? Check out the [Beginner's Guide](beginners-guide).
+* Learn how to set up and run Egeria on you own machine.
+* Learn how to make a contribution to Egeria
+* Learn how to become either an advocate or a maintainer
 
-## Getting started
+It is organized so you can work through it as an intensive 3 day course, or
+work at you own pace, dipping in and out as the interest takes you.
 
-* [Running the open metadata hands-on labs](../open-metadata-labs)
+In addition, there are the [Hands on Labs](../open-metadata-labs).
+These provide an interactive environment that allow you to
+experiment with different capabilities of Egeria.
 
-## Advanced topics
+* Learn more about the [Egeria Dojo](egeria-dojo)
+* Link to the [Hands on Labs](../open-metadata-labs) 
 
-* [Downloading and building Egeria](building-egeria-tutorial)
-* [Installing Egeria](installing-egeria-tutorial)
-* [Configuring and running Egeria's OMAG Server Platform and OMAG Servers](omag-server-tutorial)
-
-## Beginner's Guide
-
-* [Git, Java, Maven, Kafka, ZooKeeper, Jupyter, Docker, Kubernetes, Helm ... eh?](beginners-guide)
-
-
+----
+* Return to [Site Map](../../Content-Organization.md)
+* Return to [Home Page](../../index.md)
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
