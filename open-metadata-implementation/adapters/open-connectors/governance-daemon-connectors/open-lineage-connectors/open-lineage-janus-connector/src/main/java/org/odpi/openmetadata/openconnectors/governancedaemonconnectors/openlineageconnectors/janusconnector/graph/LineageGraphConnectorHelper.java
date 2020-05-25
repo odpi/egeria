@@ -379,11 +379,11 @@ public class LineageGraphConnectorHelper {
         for (Vertex originalVertex : vertexList) {
             LineageVertex newVertex = abstractVertex(originalVertex);
 
-            LineageEdge newEdge = getEdge(condensedVertex, newVertex, condensationType);
+            LineageEdge newEdge = new LineageEdge(EDGE_LABEL_CONDENSED, condensedVertex.getNodeID(), newVertex.getNodeID());
             lineageVertices.add(newVertex);
             lineageEdges.add(newEdge);
         }
-        LineageEdge sourceEdge = getEdge(queriedVertex, condensedVertex, condensationType);
+        LineageEdge sourceEdge = new LineageEdge(EDGE_LABEL_CONDENSED, queriedVertex.getNodeID(), condensedVertex.getNodeID());
         lineageEdges.add(sourceEdge);
     }
 
