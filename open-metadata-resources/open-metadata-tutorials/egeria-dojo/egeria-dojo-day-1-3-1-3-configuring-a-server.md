@@ -25,8 +25,12 @@ Using the `Egeria-admin-services-server-configuration` Postman collection and th
 from the [Admin services user guide on metadata servers](../../../open-metadata-implementation/admin-services/docs/concepts/metadata-server.md)
 create the configuration for `myMetadataServer` as follows.  For each value, find the right REST API request in the
 Postman collection.  Then look at where the values come from.  Sometimes you will need to change the variable
-value in the Egeria Environment, sometimes you can type it directly into the request URL and otehr times,
+value in the Egeria Environment, sometimes you can type it directly into the request URL and other times,
 the request in Postman is just what you need.
+
+Each time you add a configuration value, 
+[retrieve the server's configuration](../../../open-metadata-implementation/admin-services/docs/concepts/configuration-document.md)
+to see how the effect of your requests are changing the server's configuration.
 
 * **local server URL root** to `http://localhost:18080`
 
@@ -39,13 +43,20 @@ the request in Postman is just what you need.
 * **localServerPassword** to `myMetadataServerPassword`
 
 * **maxPageSize** - the maximum page size that can be set on requests to the server. The default value is 1000.
-* [Setting basic properties for an OMAG server](../user/configuring-omag-server-basic-properties.md)
-* [Configuring the server security connector](../user/configuring-the-server-security-connector.md)
-* [Configuring the local repository](../user/configuring-the-local-repository.md)
-* [Configuring registration to a cohort](../user/configuring-registration-to-a-cohort.md)
-* [Configuring the Asset Owner Open Metadata Access Services (OMASs)](../user/configuring-the-access-services.md)
 
+* Add a graph local repository
 
+* Configure the **Asset Owner* Open Metadata Access Service (OMAS)
+
+* Set up the Coco Pharmaceutical **Server** Security connector to provide authorization checks for inbound REST API calls.
+
+Once the configuration is complete you are ready to move on to the next section.
+
+## Test yourself
+
+* What is the name of the place where a server's configuration is assembled?
+* What determines where the server configuration is stored?
+* What is the quickest way to discover what has recently changed in a server's configuration?
 
 ----
 
