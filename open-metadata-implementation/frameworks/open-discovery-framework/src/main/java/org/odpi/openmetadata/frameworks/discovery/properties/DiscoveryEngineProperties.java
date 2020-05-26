@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.discovery.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareServerCapability;
 
 import java.util.Objects;
 
@@ -19,17 +19,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DiscoveryEngineProperties extends Referenceable
+public class DiscoveryEngineProperties extends SoftwareServerCapability
 {
     private static final long    serialVersionUID = 1L;
-
-    protected String displayName     = null;
-    protected String description     = null;
-    protected String typeDescription = null;
-    protected String version         = null;
-    protected String patchLevel      = null;
-    protected String source          = null;
-
 
     /**
      * Default constructor.
@@ -48,150 +40,7 @@ public class DiscoveryEngineProperties extends Referenceable
     public DiscoveryEngineProperties(DiscoveryEngineProperties  template)
     {
         super(template);
-
-        if (template != null)
-        {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
-            typeDescription = template.getTypeDescription();
-            version = template.getVersion();
-            patchLevel = template.getPatchLevel();
-            source = template.getSource();
-        }
     }
-
-
-    /**
-     * Return the display name for messages and UI.
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name for messages and UI.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of the discovery engine.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the discovery engine.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return the description of the type of discovery engine this is.
-     *
-     * @return string description
-     */
-    public String getTypeDescription()
-    {
-        return typeDescription;
-    }
-
-
-    /**
-     * Set up the description of the type of discovery engine this is.
-     *
-     * @param typeDescription string
-     */
-    public void setTypeDescription(String typeDescription)
-    {
-        this.typeDescription = typeDescription;
-    }
-
-
-    /**
-     * Return the version of the discovery engine.
-     *
-     * @return version string
-     */
-    public String getVersion()
-    {
-        return version;
-    }
-
-
-    /**
-     * Set up the version string of the discovery engine.
-     *
-     * @param version string
-     */
-    public void setVersion(String version)
-    {
-        this.version = version;
-    }
-
-
-    /**
-     * Return the patch level of the discovery engine.
-     *
-     * @return patch level string
-     */
-    public String getPatchLevel()
-    {
-        return patchLevel;
-    }
-
-
-    /**
-     * Set up the patch level of the discovery engine.
-     *
-     * @param patchLevel string
-     */
-    public void setPatchLevel(String patchLevel)
-    {
-        this.patchLevel = patchLevel;
-    }
-
-
-    /**
-     * Return the source of the discovery engine implementation.
-     *
-     * @return string url
-     */
-    public String getSource()
-    {
-        return source;
-    }
-
-
-    /**
-     * Set up the source of the discovery engine implementation.
-     *
-     * @param source string url
-     */
-    public void setSource(String source)
-    {
-        this.source = source;
-    }
-
 
     /**
      * Standard toString method.

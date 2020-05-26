@@ -797,6 +797,7 @@ public class DiscoveryConfigurationServices
         String              owner                = null;
         OwnerType           ownerType            = null;
         List<String>        zoneMembership       = null;
+        Map<String, String> origin               = null;
         String              latestChange         = null;
         Connection          connection           = null;
         Map<String, String> additionalProperties = null;
@@ -814,6 +815,7 @@ public class DiscoveryConfigurationServices
             owner = requestBody.getOwner();
             ownerType = requestBody.getOwnerType();
             zoneMembership = requestBody.getZoneMembership();
+            origin = requestBody.getOrigin();
             latestChange = requestBody.getLatestChange();
             connection = requestBody.getConnection();
             additionalProperties = requestBody.getAdditionalProperties();
@@ -834,6 +836,7 @@ public class DiscoveryConfigurationServices
                                            owner,
                                            ownerType,
                                            zoneMembership,
+                                           origin,
                                            latestChange,
                                            connection,
                                            additionalProperties,

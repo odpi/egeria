@@ -19,7 +19,7 @@ public class LineTypeMapper {
     /**
      * Map lineType to relationship type guid.
      *
-     * The lineType is the type of node that is exposed in the lineType API. The subject Area OMAs needs to convert
+     * The lineType is the type of node that is exposed in the lineType API. The subject Area OMAS needs to convert
      * the node type into a guid of an relationship type so it can be used to call omrs.
      * @param lineType lineType this is the type of node that is exposed in the nodetype API
      * @return relationship Type guid.
@@ -27,25 +27,16 @@ public class LineTypeMapper {
      */
     static public String  mapLineTypeToRelationshipTypeGuid(LineType lineType) throws InvalidParameterException {
         String relationshipTypeName = lineType.name();
-        return OpenMetadataTypesArchiveAccessor.getInstance().getRelationshipDefByName(relationshipTypeName).getGUID();
-    }
-
-    /**
-     * convert an relationship type guid to a LineType
-     * @param guid relationship Type guid.
-     * @return LineType nodetype
-     */
-    public static LineType mapRelationshipTypeGuidToLineType(String guid) {
-        String lineTypeName = OpenMetadataTypesArchiveAccessor.getInstance().getRelationshipDefByGuid(guid).getName();
-
-        LineType lineType = null;
-        for (LineType lineTypeToCheck : LineType.values()) {
-            if (lineTypeToCheck.name().equals(lineTypeName)) {
-                lineType = lineTypeToCheck;
-                break;
-            }
+        if (lineType.equals(LineType.Hasa)) {
+            relationshipTypeName ="TermHASARelationship";
+        } else if (lineType.equals(LineType.Isa)) {
+            relationshipTypeName ="ISARelationship";
+        } else if (lineType.equals(LineType.IsaTypeOf)) {
+            relationshipTypeName ="TermISATypeOFRelationship";
+        } else if (lineType.equals(LineType.TypedBy)) {
+            relationshipTypeName ="TermTYPEDBYRelationship";
         }
-        //TODO deal with nodetypes that are actually classifications in OMRS.
-        return lineType;
+
+        return OpenMetadataTypesArchiveAccessor.getInstance().getRelationshipDefByName(relationshipTypeName).getGUID();
     }
 }

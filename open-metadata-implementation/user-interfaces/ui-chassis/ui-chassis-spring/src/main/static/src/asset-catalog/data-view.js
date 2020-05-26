@@ -14,10 +14,6 @@ class DataView extends PolymerElement {
     static get template() {
         return html`
       <style include="shared-styles">
-        :host {
-          display: block;
-          padding: 10px 20px;
-        }
         
       </style>
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>

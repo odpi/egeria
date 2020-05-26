@@ -10,7 +10,7 @@
     <parent>
         <artifactId>asset-owner</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.7-SNAPSHOT</version>
+        <version>1.8-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -88,32 +88,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>avro-file-connector</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>basic-file-connector</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>csv-file-connector</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-folder-connector</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>odf-metadata-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-handler</artifactId>
         </dependency>
 
         <dependency>

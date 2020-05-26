@@ -88,13 +88,14 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
 
 
     /**
-     * Get the supportedZones for a specific service.
+     * Get the supportedZones for a specific service. This is used in services that are shared by different
+     * access services.
      *
      * @param userId calling user
      * @param serverName name of this server
      * @param callingServiceURLName url fragment that indicates the service name
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return specific service instance
+     * @return list of governance zones
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      * @throws PropertyServerException the service name is not known - indicating a logic error
@@ -120,13 +121,14 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
 
 
     /**
-     * Get the defaultZones for a specific service.
+     * Get the defaultZones for a specific service.  This is used in services that are shared by different
+     * access services.
      *
      * @param userId calling user
      * @param serverName name of this server
      * @param callingServiceURLName url fragment that indicates the service name
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return specific service instance
+     * @return list of governance zones
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      * @throws PropertyServerException the service name is not known - indicating a logic error
@@ -149,6 +151,40 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
 
         return null;
     }
+
+
+    /**
+     * Get the publish for a specific service.  This is used in services that are shared by different
+     * access services.
+     *
+     * @param userId calling user
+     * @param serverName name of this server
+     * @param callingServiceURLName url fragment that indicates the service name
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return list of governance zones
+     * @throws InvalidParameterException the server name is not known
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public List<String> getPublishZones(String  userId,
+                                        String  serverName,
+                                        String  callingServiceURLName,
+                                        String  serviceOperationName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        OMASServiceInstance callingServiceInstance = this.getCallingServiceInstance(userId,
+                                                                                    serverName,
+                                                                                    callingServiceURLName,
+                                                                                    serviceOperationName);
+        if (callingServiceInstance != null)
+        {
+            return callingServiceInstance.getPublishZones();
+        }
+
+        return null;
+    }
+
 
     /**
      * Retrieve the specific handler for the access service.
@@ -387,6 +423,37 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
         if (instance != null)
         {
             return instance.getExternalReferenceHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    public FileSystemHandler getFileSystemHandler(String userId,
+                                                  String serverName,
+                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getFileSystemHandler();
         }
 
         return null;
@@ -734,6 +801,36 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
+    public RelationalDataHandler getRelationalDataHandler(String userId,
+                                                          String serverName,
+                                                          String serviceOperationName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getRelationalDataHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
     public SchemaTypeHandler getSchemaTypeHandler(String userId,
                                                   String serverName,
                                                   String serviceOperationName) throws InvalidParameterException,
@@ -747,6 +844,36 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
         if (instance != null)
         {
             return instance.getSchemaTypeHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    public SoftwareServerCapabilityHandler getSoftwareServerCapabilityHandler(String userId,
+                                                                              String serverName,
+                                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
+    {
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getSoftwareServerCapabilityHandler();
         }
 
         return null;

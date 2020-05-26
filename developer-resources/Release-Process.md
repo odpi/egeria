@@ -3,23 +3,28 @@
 
 # Release Management
 
+New releases can be created by Egeria maintainers that have the
+appropriate access on [Azure Pipelines](https://dev.azure.com/ODPi/Egeria/_release).
+
+Releases are published to [Bintray](https://bintray.com/odpi) where they
+are GPG signed and distributed to [Maven Central](https://oss.sonatype.org).
+ 
 ## Overall Release Policy
 
 * Aim to release approximately every month
 * Typically target end of month for external availability
 * Will only release an update between releases in exceptional circumstances
-* Preserves backwards compatability as much as possible
+* Preserves backwards compatibility as much as possible
 * Try and maintain regular heartbeat - even if completion of some features continues in a subsequent release
 * master kept open for new code features
-
 
 ## Obtaining releases / artifacts
 
 * Maven Central - https://mvnrepository.com/artifact/org.odpi.egeria - typically used by other developers integrating with our code
 * Github Release - https://github.com/odpi/egeria/releases - source code in zip & tar.gz formats
 * Git - 'git checkout Vx.y' to get version as-shipped (each release is tagged at the point it is shipped)
-* Release notes are available online (in master) at https://github.com/odpi/egeria/tree/master/release-notes
- 
+* Release notes are available online (in master) at [https://github.com/odpi/egeria/tree/master/release-notes](../release-notes).
+
  ## Release process summary
  
  * Agree schedule
@@ -59,7 +64,7 @@
 #### 4. Update master version & cleanup notes
 * `git checkout master`
 * `git pull upstream master`
-* Edit all files (command line or IDE) to replace 'x.y-SNAPSHOT' with the next version, ie change '1.3-SNAPSHOT' to '1.7-SNAPSHOT'. Most of the changes are in pom.xml files, however some code & documentation also has references to our versions and all need modifying. 
+* Edit all files (command line or IDE) to replace 'x.y-SNAPSHOT' with the next version, ie change '1.3-SNAPSHOT' to '1.8-SNAPSHOT'. Most of the changes are in pom.xml files, however some code & documentation also has references to our versions and all need modifying. 
 * If using an IDE like IntelliJ make sure you have all hits by searching again as by default only a limited number of hits are shown - see https://youtrack.jetbrains.com/issue/IDEA-157855 for Intellij advice.
 * Commit
 * Now remove all the release notes from the 'release-notes' directory other than README.md - so users will always get directed to the latest in master
@@ -104,6 +109,18 @@
 
 ## Useful links
 * Azure pipelines - https://dev.azure.com/odpi/egeria/_build
+
+## Release Process Troubleshooting
+ 
+ The Linux Foundation maintains a Knowledge Base (KB) of articles on
+ possible issues that may arise during the release process:
+  * [Including a New Package in the Release](https://confluence.linuxfoundation.org/display/ITKB/Including+Bintray+Packages+in+JCenter)
+  * [Fixing Package Corruption](https://confluence.linuxfoundation.org/display/ITKB/Redistribute+Artifacts+to+Bintray)
+  * [Getting Packages Synced to Maven-Central](https://confluence.linuxfoundation.org/display/ITKB/Sync+Artifacts+from+Bintray+to+Maven+Central)
+ 
+ If the KB articles are not able to fix the problem, please open a ticket
+ with [Linux Foundation support](https://jira.linuxfoundation.org/servicedesk/customer/portal/2)
+ 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

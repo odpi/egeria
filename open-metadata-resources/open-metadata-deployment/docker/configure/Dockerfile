@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project
 
-FROM alpine:3.11.5
-ARG version=1.7-SNAPSHOT
+FROM alpine:3.11.6
+ARG version=1.8-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
@@ -33,6 +33,7 @@ RUN groupadd -r config -g 1000 && useradd --no-log-init -r -g config -u 1000 -d 
 COPY --chown=config:config dist/check-availability.sh /check-availability.sh
 
 WORKDIR /opt/config
-USER config:config
+# Must use numeric userid here to meet k8s security checks
+USER 1000:1000
 
 ENTRYPOINT ["/check-availability.sh"]

@@ -69,6 +69,10 @@ public class CertificationConverter extends ReferenceableConverter
 
                 if (instanceProperties != null)
                 {
+                    bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName,
+                                                                                ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                instanceProperties,
+                                                                                methodName));
                     bean.setSummary(repositoryHelper.removeStringProperty(serviceName,
                                                                           GovernanceDefinitionMapper.SUMMARY_PROPERTY_NAME,
                                                                           instanceProperties,

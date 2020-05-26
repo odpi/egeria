@@ -19,9 +19,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodes
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.NodeSummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchorRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchorRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.LinesResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.ResponseCategory;
@@ -29,6 +29,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMA
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.*;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -143,7 +144,7 @@ public class SubjectAreaUtils {
      * @param term supplied term
      * @return response object - glossary summary or an error
      */
-    public static  SubjectAreaOMASAPIResponse  getGlossarySummaryForTerm(String restAPIName, String userId, OMRSAPIHelper omrsapiHelper, TermAnchorRelationship termAnchorRelationship,Term term)  {
+    public static  SubjectAreaOMASAPIResponse  getGlossarySummaryForTerm(String restAPIName, String userId, OMRSAPIHelper omrsapiHelper, TermAnchor termAnchorRelationship, Term term)  {
         String glossaryGuid = termAnchorRelationship.getGlossaryGuid();
         SubjectAreaOMASAPIResponse response = omrsapiHelper.callOMRSGetEntityByGuid(restAPIName, userId,glossaryGuid);
         if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
@@ -171,7 +172,7 @@ public class SubjectAreaUtils {
      * @return Glossary summary for Category
      */
     public static  SubjectAreaOMASAPIResponse  getGlossarySummaryForCategory(String restAPIName, String userId, OMRSAPIHelper omrsapiHelper, Line line)  {
-        CategoryAnchorRelationship categoryAnchorRelationship = (CategoryAnchorRelationship) line;
+        CategoryAnchor categoryAnchorRelationship = (CategoryAnchor) line;
         String glossaryGuid = categoryAnchorRelationship.getGlossaryGuid();
         SubjectAreaOMASAPIResponse response = omrsapiHelper.callOMRSGetEntityByGuid(restAPIName, userId, glossaryGuid);
         if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
@@ -289,16 +290,12 @@ public class SubjectAreaUtils {
         }
         SubjectAreaOMASAPIResponse response = null;
         if (status.equals(Status.DELETED)) {
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(className,
-                    methodName);
-            log.error(errorMessage);
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition();
+            throw new InvalidParameterException(messageDefinition,
                     className,
                     methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    "Status",
+                    Status.DELETED.name());
         }
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName );

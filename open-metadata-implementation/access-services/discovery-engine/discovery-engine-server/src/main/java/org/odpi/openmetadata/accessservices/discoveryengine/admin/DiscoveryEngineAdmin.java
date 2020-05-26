@@ -167,7 +167,7 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
      */
     public void shutdown()
     {
-        final String              actionDescription = "shutdown";
+        final String actionDescription = "shutdown";
 
         if (this.instance != null)
         {

@@ -2,7 +2,7 @@
 # Copyright Contributors to the Egeria project.
 
 FROM openjdk:8-jre-alpine
-ARG version=1.7-SNAPSHOT
+ARG version=1.8-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
@@ -43,7 +43,9 @@ COPY --chown=egeria:egeria target/assembly /opt/egeria
 EXPOSE 8080 5005
 
 WORKDIR /opt/egeria
-USER egeria:egeria
+
+# Require use of numeric userids to meet some container security checks
+USER 8080:8080
 
 # Spring loader path for connectors etc
 ENV LOADER_PATH=/opt/egeria/server/lib

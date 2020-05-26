@@ -29,6 +29,7 @@ public class TypeDefPatch extends TypeDefElementHeader
 
     private String                        typeDefGUID              = null;
     private String                        typeDefName              = null;
+    private TypeDefStatus                 typeDefStatus            = null;
     private long                          applyToVersion           = 0L;
     private long                          updateToVersion          = 0L;
     private String                        newVersionName           = null;
@@ -67,6 +68,7 @@ public class TypeDefPatch extends TypeDefElementHeader
         {
             typeDefGUID              = template.getTypeDefGUID();
             typeDefName              = template.getTypeDefName();
+            typeDefStatus            = template.getTypeDefStatus();
             applyToVersion           = template.getApplyToVersion();
             updateToVersion          = template.getUpdateToVersion();
             newVersionName           = template.getNewVersionName();
@@ -125,6 +127,28 @@ public class TypeDefPatch extends TypeDefElementHeader
      */
     public void setTypeDefName(String typeDefName) {
         this.typeDefName = typeDefName;
+    }
+
+
+    /**
+     * Return any change in status for the TypeDef.
+     *
+     * @return TypeDefStatus enum
+     */
+    public TypeDefStatus getTypeDefStatus()
+    {
+        return typeDefStatus;
+    }
+
+
+    /**
+     * Set up a change in the status of the TypeDef
+     *
+     * @param typeDefStatus enum
+     */
+    public void setTypeDefStatus(TypeDefStatus typeDefStatus)
+    {
+        this.typeDefStatus = typeDefStatus;
     }
 
 
@@ -533,6 +557,7 @@ public class TypeDefPatch extends TypeDefElementHeader
         return "TypeDefPatch{" +
                 "typeDefGUID='" + typeDefGUID + '\'' +
                 ", typeDefName='" + typeDefName + '\'' +
+                ", typeDefStatus='" + typeDefStatus + '\'' +
                 ", applyToVersion=" + applyToVersion +
                 ", updateToVersion=" + updateToVersion +
                 ", newVersionName='" + newVersionName + '\'' +
@@ -572,7 +597,10 @@ public class TypeDefPatch extends TypeDefElementHeader
                 updateToVersion == that.updateToVersion &&
                 Objects.equals(typeDefGUID, that.typeDefGUID) &&
                 Objects.equals(typeDefName, that.typeDefName) &&
+                typeDefStatus == that.typeDefStatus &&
                 Objects.equals(newVersionName, that.newVersionName) &&
+                Objects.equals(updatedBy, that.updatedBy) &&
+                Objects.equals(updateTime, that.updateTime) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(descriptionGUID, that.descriptionGUID) &&
                 Objects.equals(propertyDefinitions, that.propertyDefinitions) &&

@@ -43,6 +43,8 @@ are defined in a **[configuration document](../concepts/configuration-document.m
 When the configuration document is loaded into the OMAG server platform, the OMAG server that it describes
 is started, and the subsystems defined in the configuration document are activated for that server.
 
+## OMAG Servers
+
 In an open metadata landscape, it is anticipated that there may be multiple
 instances of the OMAG Server running in an OMAG Server Platform, each performing a different role.
 Each of these server instances would have their own configuration document allowing them
@@ -50,11 +52,26 @@ to have different subsystems active.
 
 Figure 2 shows different choices for distributing OMAG Servers on the OMAG Platforms.
 
-![Figure 2](../concepts/omag-server-deployment-choices.png)
+![Figure 2](../concepts/egeria-operations-server-choices-no-description.png)
 > **Figure 2:** OMAG Server deployment choices.  An OMAG Server may have multiple copies of the
 > same type of OMAG Server on a platform (multi-tenant operation for a cloud service),
-> or different types of OMAG Server on a platform, or a separate platform for each OMAG Server.
+> or different types of OMAG Server on a platform, or a separate platform for each OMAG Server
 >([more information](../concepts/omag-server.md)).
+
+The choices are as follows:
+
+* **A** - Each OMAG Server has its own dedicated OMAG Server Platform - useful when only one server is needed
+in a deployment environment, or there is a desire to keep each server isolated in its own stack.
+
+* **B** - Multiple OMAG Servers are hosted on the same OMAG Server Platform.  The OMAG Server Platform routes
+inbound requests to the right server based on the server name specified in the request URL.
+The servers may all be of the same type (multi-tenant operation) or be a set of collaborating servers
+of different types consolidated on to the same platform.
+
+* **C** - Multiple copies of same server instance running on different platforms to provide
+high availability and distribution of workload (horizontal scalability).
+
+## Configuring an OMAG Server
 
 The configuration document for a specific OMAG server is identified by the server's name.
 This is passed on the URL of every admin services API request along with the user
@@ -91,8 +108,15 @@ restarts of the OMAG Server Platform.
 
 ## Examples of configuration calls
 
-The postman collection illustrates many of the configuration calls: 
-[admin-services-configuration.postman_collection.json](../../admin-services-configuration.postman_collection.json)
+The admin-services modules has three [Postman](../../../../developer-resources/tools/Postman.md)
+collections to illustrate many of the configuration and operation calls: 
+
+* [Egeria-admin-services-platform-configuration.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-platform-configuration.postman_environment.json) -
+setting up and configuring the OMAG Server Platform.
+* [Egeria-admin-services-server-configuration.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-server-configuration.postman_environment.json) -
+setting up and configuring the variety of OMAG Servers.
+* [Egeria-admin-services-operational.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-operational.postman_environment.json) -
+operating the OMAG Servers.
 
 
 ----

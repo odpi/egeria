@@ -65,6 +65,7 @@ public enum AssetConsumerErrorCode implements ExceptionMessageSet
             "The unique identifier of the asset is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
      ;
 
+    private static final long    serialVersionUID = 1L;
 
     private ExceptionMessageDefinition messageDefinition;
 

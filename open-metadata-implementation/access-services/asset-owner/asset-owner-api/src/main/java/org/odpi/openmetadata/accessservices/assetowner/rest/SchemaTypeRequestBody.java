@@ -92,6 +92,18 @@ public class SchemaTypeRequestBody extends AssetOwnerOMASAPIRequestBody
 
 
     /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(schemaTypeProperties);
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style

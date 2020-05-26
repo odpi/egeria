@@ -127,9 +127,9 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                     throw new ConnectorCheckedException(KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(error.getClass().getName(),
                                                                                                                                           topicName,
                                                                                                                                           error.getMessage()),
-                            this.getClass().getName(),
-                            methodName,
-                            error);
+                                                                                                                                          this.getClass().getName(),
+                                                                                                                                          methodName,
+                                                                                                                                          error);
                 }
                 if (eventRetryCount == 10)
                 {

@@ -49,6 +49,7 @@ public enum DataPrivacyAuditCode implements AuditLogMessageSet
 
     ;
 
+    private static final long    serialVersionUID = 1L;
 
     AuditLogMessageDefinition messageDefinition;
 
@@ -67,10 +68,10 @@ public enum DataPrivacyAuditCode implements AuditLogMessageSet
      * @param userAction - instructions for resolving the situation, if any
      */
     DataPrivacyAuditCode(String                     messageId,
-                               OMRSAuditLogRecordSeverity severity,
-                               String                     message,
-                               String                     systemAction,
-                               String                     userAction)
+                         OMRSAuditLogRecordSeverity severity,
+                         String                     message,
+                         String                     systemAction,
+                         String                     userAction)
     {
         messageDefinition = new AuditLogMessageDefinition(messageId,
                                                           severity,

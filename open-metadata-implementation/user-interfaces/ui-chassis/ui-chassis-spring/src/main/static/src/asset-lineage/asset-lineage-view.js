@@ -23,7 +23,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     <style include="shared-styles">
         :host {
           display: block;
-          padding: 2px 20px;
+          margin: 0 24px;
         }
         
         .container {
@@ -143,16 +143,32 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         this._reload(this.routeData.usecase, this.$.processMenu.value);
     }
 
-    _graphDataChanged(data) {
-        console.debug(data);
+    _graphDataChanged(data, newData) {
+        console.debug("oldData" + JSON.stringify(data));
+        console.debug("newData" + JSON.stringify(newData));
         if (data === null || data === undefined) {
-            data = { nodes : [],
-                     edges : []};
-        } else {
-            for (var i = 0; i < data.nodes.length; i++) {
-                data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "", '<br>');
-                if(data.nodes[i].properties['tableDisplayName'])
-                      data.nodes[i].label += ' \n Table : ' + data.nodes[i].properties['tableDisplayName'];
+            if (newData != null) {
+                data = newData;
+            } else {
+                data = {
+                    nodes: [],
+                    edges: []
+                };
+            }
+        }
+        for (var i = 0; i < data.nodes.length; i++) {
+            data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "", '<br>');
+            if (data.nodes[i].properties == null) {
+                continue;
+            }
+            let displayName;
+            if (data.nodes[i].properties['tableDisplayName'] != null) {
+                displayName = data.nodes[i].properties['tableDisplayName']
+            } else if (data.nodes[i].properties['vertex--tableDisplayName'] != null) {
+                displayName = data.nodes[i].properties['vertex--tableDisplayName']
+            }
+            if (displayName != null) {
+                data.nodes[i].label += ' \n Table : ' + displayName;
             }
         }
         this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
@@ -37,10 +38,10 @@ public class OpenMetadataTypesArchive
     private static final String                  archiveName        = "Open Metadata Types";
     private static final String                  archiveDescription = "Standard types for open metadata repositories.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
-    private static final String                  archiveVersion     = "1.6";
+    private static final String                  archiveVersion     = "1.8";
     private static final String                  originatorName     = "ODPi Egeria";
     private static final String                  originatorLicense  = "Apache 2.0";
-    private static final Date                    creationDate       = new Date(1516313040008L);
+    private static final Date                    creationDate       = new Date(1588261366992L);
 
     /*
      * Specific values for initializing TypeDefs
@@ -98,16 +99,8 @@ public class OpenMetadataTypesArchive
 
         if (this.archiveBuilder != null)
         {
-            OpenMetadataTypesArchive1_5  previousTypes = new OpenMetadataTypesArchive1_5(archiveBuilder);
-
             /*
-             * Call each of the methods to systematically add the contents of the archive.
-             * The original types are added first.
-             */
-            previousTypes.getOriginalTypes();
-
-            /*
-             * Calls for new types go here
+             * Build the type archive.
              */
             this.getOriginalTypes();
 
@@ -135,33 +128,56 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
-        update0501SchemaElements();
-        update0505SchemaAttributes();
+        OpenMetadataTypesArchive1_7  previousTypes = new OpenMetadataTypesArchive1_7(archiveBuilder);
+
+        /*
+         * Pull the types from previous releases.
+         */
+        previousTypes.getOriginalTypes();
+
+
+        /*
+         * Calls for new types go here
+         */
+        update0010BaseModel();
+        add0057IntegrationCapabilities();
+        update0224Databases();
         update0512DerivedSchemaAttributes();
+        update0130Projects();
     }
 
 
-    private void update0501SchemaElements()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateSchemaElementEntity());
-    }
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 
 
     /**
-     * 0501 - SchemaElement entity is changed to allow a schema element to be marked as deprecated.
+     * 0010 Base Model - add Template Classification.
      */
-    private TypeDefPatch updateSchemaElementEntity()
+    private void update0010BaseModel()
     {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SchemaElement";
+        this.archiveBuilder.addClassificationDef(addTemplateClassification());
+    }
 
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
+    private ClassificationDef addTemplateClassification()
+    {
+        final String guid = "25fad4a2-c2d6-440d-a5b1-e537881f84ee";
 
+        final String name            = "Template";
+        final String description     = "Marks the referenceable as a template for creating new objects.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Referenceable";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 false);
 
         /*
          * Build the attributes
@@ -169,236 +185,229 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "isDeprecated";
-        final String attribute1Description     = "This element may still be used but is flagged that it will be removed at some point in the future.";
+
+        final String attribute1Name            = "name";
+        final String attribute1Description     = "Unique name of the template.";
         final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
-                                                            attribute1Description,
-                                                            attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private void update0505SchemaAttributes()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateSchemaAttributeEntity());
-        this.archiveBuilder.addTypeDefPatch(updateTypeEmbeddedAttributeClassification());
-    }
-
-
-    /**
-     * 0505 - SchemaAttribute entity is changed to show deprecated properties
-     */
-    private TypeDefPatch updateSchemaAttributeEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SchemaAttribute";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "minimumLength";
-        final String attribute1Description     = "Minimum length of the data value (zero means unlimited).";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "length";
-        final String attribute2Description     = "Length of the data field (zero means unlimited).";
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description of the template and how/where it is used.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "significantDigits";
-        final String attribute3Description     = "Number of significant digits to the right of decimal point (zero means it is an integer).";
+        final String attribute3Name            = "additionalProperties";
+        final String attribute3Description     = "Additional information that is useful to the consumer of the template.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "isNullable";
-        final String attribute4Description     = "Accepts null values or not.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute6Name            = "cardinality";
-        final String attribute6Description     = "Number of occurrences of this attribute allowed (deprecated).";
-        final String attribute6DescriptionGUID = null;
-        final String attribute6ReplacedBy      = "maxCardinality";
-        final String attribute7Name            = "name";
-        final String attribute7Description     = "Name of schema attribute (deprecated).";
-        final String attribute7DescriptionGUID = null;
-        final String attribute7ReplacedBy      = "displayName";
 
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
-                                                        attribute2Description,
-                                                        attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
-                                                        attribute3Description,
-                                                        attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute4Name,
-                                                            attribute4Description,
-                                                            attribute4DescriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
-        property.setReplacedByAttribute(attribute6ReplacedBy);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
-        property.setReplacedByAttribute(attribute7ReplacedBy);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /**
-     * 0505 - TypeEmbeddedAttribute classification is changed to include more values of schema type
-     */
-    private TypeDefPatch updateTypeEmbeddedAttributeClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "TypeEmbeddedAttribute";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name             = "schemaTypeName";
-        final String attribute1Description      = "Type name for the schema type.";
-        final String attribute1DescriptionGUID  = null;
-        final String attribute2Name             = "qualifiedName";
-        final String attribute2Description      = "Unique name for the schema type.";
-        final String attribute2DescriptionGUID  = null;
-        final String attribute3Name             = "displayName";
-        final String attribute3Description      = "Display name for the schema type.";
-        final String attribute3DescriptionGUID  = null;
-        final String attribute4Name             = "description";
-        final String attribute4Description      = "Description of the schema type.";
-        final String attribute4DescriptionGUID  = null;
-        final String attribute5Name             = "versionNumber";
-        final String attribute5Description      = "Version of the schema type.";
-        final String attribute5DescriptionGUID  = null;
-        final String attribute6Name             = "author";
-        final String attribute6Description      = "User name of the person or process that created the schema type.";
-        final String attribute6DescriptionGUID  = null;
-        final String attribute7Name             = "usage";
-        final String attribute7Description      = "Guidance on how the schema should be used.";
-        final String attribute7DescriptionGUID  = null;
-        final String attribute8Name             = "defaultValue";
-        final String attribute8Description      = "Initial value for data stored in this schema type (primitive and enum types).";
-        final String attribute8DescriptionGUID  = null;
-        final String attribute9Name             = "fixedValue";
-        final String attribute9Description      = "Fixed value for data stored in this schema type (literal schema type).";
-        final String attribute9DescriptionGUID  = null;
-        final String attribute10Name            = "additionalProperties";
-        final String attribute10Description     = "Additional properties for the schema type.";
-        final String attribute10DescriptionGUID = null;
-        final String attribute11Name            = "isDeprecated";
-        final String attribute11Description     = "This element may still be used but is flagged that it will be removed at some point in the " +
-                "future.";
-        final String attribute11DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
+                                                                    attribute3Description,
+                                                                    attribute3DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute8Name,
-                                                           attribute8Description,
-                                                           attribute8DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute9Name,
-                                                           attribute9Description,
-                                                           attribute9DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute10Name,
-                                                                    attribute10Description,
-                                                                    attribute10DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute11Name,
-                                                            attribute11Description,
-                                                            attribute11DescriptionGUID);
-        properties.add(property);
-        typeDefPatch.setPropertyDefinitions(properties);
 
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * 0057 - Integration capabilities describe the different types of integration capabilities.
+     * Initially these are Egeria's integration daemons.
+     */
+    private void add0057IntegrationCapabilities()
+    {
+        this.archiveBuilder.addEntityDef(addMetadataIntegrationCapabilityEntity());
+
+        this.archiveBuilder.addClassificationDef(addDataPlatformIntegrationClassification());
+        this.archiveBuilder.addClassificationDef(addDataEngineIntegrationClassification());
+    }
+
+
+    private EntityDef addMetadataIntegrationCapabilityEntity()
+    {
+        final String guid            = "cc6d2d77-626c-4d0d-aa22-0a491b5fee94";
+        final String name            = "MetadataIntegrationCapability";
+        final String description     = "Defines a capability that exchanges metadata between servers.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SoftwareServerCapability";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+    }
+
+
+    private ClassificationDef addDataPlatformIntegrationClassification()
+    {
+        final String guid = "2356af59-dda5-45ad-927f-540bed6b281d";
+
+        final String name            = "DataPlatformIntegration";
+        final String description     = "Integrating metadata about data platforms.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "MetadataIntegrationCapability";
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+    }
+
+    /**
+     * 0130 - update ProjectScope description
+     */
+    private void update0130Projects()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateProjectScopeRelationship());
+    }
+
+    /**
+     * The ProjectScope has an attribute with the incorrect type of Date. It is not possible to patch an attribute to change its type for
+     * compatibility reasons. This patch deprecates the old scopeDescription (with Date type) and introduces a new description (with
+     * String type).
+     *
+     * @return the type def patch
+     */
+    private TypeDefPatch updateProjectScopeRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ProjectScope";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "scopeDescription";
+        final String attribute1Description     = "Deprecated attribute. Use the description attribute to describe the scope.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description of how each item is related to the project.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
+    }
+
+    private ClassificationDef addDataEngineIntegrationClassification()
+    {
+        final String guid = "b675a6d1-7dd7-4b20-b91b-43b358dfe0cf";
+
+        final String name            = "DataEngineIntegration";
+        final String description     = "Integrating metadata from data engines.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "MetadataIntegrationCapability";
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * 0224 - Add the databasePlatform to cover the software server capability for the database server.
+     */
+    private void update0224Databases()
+    {
+        this.archiveBuilder.addEntityDef(addDatabasePlatformEntity());
+    }
+
+
+    private EntityDef addDatabasePlatformEntity()
+    {
+        final String guid            = "68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9";
+        final String name            = "DatabasePlatform";
+        final String description     = "Defines a capability that manages data organized as relational schemas.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SoftwareServerCapability";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
     }
 
 
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * 0512 - Add the queryId to identify how the query is used in a complex formula.
+     */
     private void update0512DerivedSchemaAttributes()
     {
-        this.archiveBuilder.addTypeDefPatch(updateDerivedSchemaAttributeEntity());
+        this.archiveBuilder.addTypeDefPatch(updateSchemaQueryImplementationRelationship());
     }
 
-    /**
-     * 0512 - SchemaAttribute entity is changed to show deprecated properties
-     */
-    private TypeDefPatch updateDerivedSchemaAttributeEntity()
+
+    private TypeDefPatch updateSchemaQueryImplementationRelationship()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "DerivedSchemaAttribute";
+        final String typeName = "SchemaQueryImplementation";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
-
 
         /*
          * Build the attributes
@@ -406,89 +415,24 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "comment";
-        final String attribute1Description     = "Comment from source system (deprecated).";
+        final String attribute1Name            = "queryId";
+        final String attribute1Description     = "Identifier for placeholder in derived schema attribute's formula.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "id";
-        final String attribute2Description     = "Id of derived schema attribute (deprecated).";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "aggregatingFunction";
-        final String attribute3Description     = "Aggregating function of derived schema attribute (deprecated).";
-        final String attribute3DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
+
     }
 
 
-    /**
-     * 0534 - replace fraction with significantDigit in SchemaAttribute
-     */
-    private TypeDefPatch updateRelationalColumnEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DerivedSchemaAttribute";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
 
 
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "fraction";
-        final String attribute1Description     = "Number of significant digits to the right of decimal point (deprecated).";
-        final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "significantDigits";
-        final String attribute2Name            = "isUnique";
-        final String attribute2Description     = "Data is unique or not.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute2ReplacedBy      = "allowsDuplicateValues";
-
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute1ReplacedBy);
-        properties.add(property);
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
-                                                            attribute2Description,
-                                                            attribute2DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute2ReplacedBy);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
     /*
      * ========================================================================
@@ -496,11 +440,112 @@ public class OpenMetadataTypesArchive
      * ========================================================================
      */
 
+
     /*
      * -------------------------------------------------------------------------------------------------------
      */
 
-    private void add0575ProcessSchemas()
+    /**
+     * 0217 Automated Processes defines a Process is automated (as opposed to manual procedure).
+     */
+    private void add0217AutomatedProcesses()
+    {
+        /* placeholder */
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0260Transformations()
+    {
+        /* placeholder */
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void add0265AnalyticsAssets()
+    {
+        /* placeholder */
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void add0270IoTAssets()
+    {
+        /* placeholder */
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0280ModelAssets()
+    {
+        /* placeholder */
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0435 Governance Rules define details of a governance rule implementation.
+     */
+    private void add0435GovernanceRules()
+    {
+        /* placeholder */
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0447GovernanceProcesses()
+    {
+        /* placeholder */
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0452GovernanceDaemons()
+    {
+        /* placeholder */
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0480RightsManagement()
+    {
+        /* placeholder */
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0550LogicSpecificationModel()
     {
         /* placeholder */
     }
@@ -509,72 +554,9 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
-    /**
-     * 580 Solution Blueprints enable the recording of solution component models
-     */
-    private void add580SolutionBlueprints()
+    private void add0560MappingModel()
     {
-        this.archiveBuilder.addEntityDef(getSolutionBlueprintEntity());
-        this.archiveBuilder.addEntityDef(getSolutionBlueprintTemplateEntity());
-        this.archiveBuilder.addEntityDef(getNestedSolutionBlueprintEntity());
-
-        this.archiveBuilder.addRelationshipDef(getSolutionTypeRelationship());
-        this.archiveBuilder.addRelationshipDef(getSolutionBlueprintComponentRelationship());
-        this.archiveBuilder.addRelationshipDef(getSolutionBlueprintHierarchyRelationship());
-    }
-
-
-    private EntityDef getSolutionBlueprintEntity()
-    {
-        final String guid = "4aa47799-5128-4eeb-bd72-e357b49f8bfe";
-
-        // TODO
-        return null;
-    }
-
-
-    private EntityDef getSolutionBlueprintTemplateEntity()
-    {
-        final String guid = "f671e1fc-b204-4ee6-a4e2-da1633ecf50e";
-
-        // TODO
-        return null;
-    }
-
-
-    private EntityDef getNestedSolutionBlueprintEntity()
-    {
-        final String guid = "b83f3d42-f3f7-4155-ae65-58fb44ea7644";
-
-        // TODO
-        return null;
-    }
-
-
-    private RelationshipDef getSolutionTypeRelationship()
-    {
-        final String guid = "f1ae975f-f11a-467b-8c7a-b023081e4712";
-
-        // TODO
-        return null;
-    }
-
-
-    private RelationshipDef getSolutionBlueprintComponentRelationship()
-    {
-        final String guid = "a43b4c9c-52c2-4819-b3cc-9d07d49a11f2";
-
-        // TODO
-        return null;
-    }
-
-
-    private RelationshipDef getSolutionBlueprintHierarchyRelationship()
-    {
-        final String guid = "2a9e56c3-bcf6-41de-bbe9-1e63b81d3114";
-
-        // TODO
-        return null;
+        /* placeholder */
     }
 
 
@@ -582,91 +564,6 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
-    /**
-     * 0581 Solution Ports and Wires defines how communication ports are connected to the solution components.
-     */
-    private void add0581SolutionPortsAndWires()
-    {
-        this.archiveBuilder.addEntityDef(getSolutionPortEntity());
 
-        this.archiveBuilder.addRelationshipDef(getSolutionLinkingWireRelationship());
-        this.archiveBuilder.addRelationshipDef(getSolutionPortRelationship());
-        this.archiveBuilder.addRelationshipDef(getSolutionPortDelegationRelationship());
-    }
-
-
-    private EntityDef getSolutionPortEntity()
-    {
-        final String guid = "62ef448c-d4c1-4c94-a565-5e5625f6a57b";
-
-        // TODO
-        return null;
-    }
-
-
-    private RelationshipDef getSolutionLinkingWireRelationship()
-    {
-        final String guid = "892a3d1c-cfb8-431d-bd59-c4d38833bfb0";
-
-        // TODO
-        return null;
-    }
-
-
-    private RelationshipDef getSolutionPortRelationship()
-    {
-        final String guid = "5652d03a-f6c9-411a-a3e4-f490d3856b64";
-
-        // TODO
-        return null;
-    }
-
-
-    private RelationshipDef getSolutionPortDelegationRelationship()
-    {
-        final String guid = "8335e6ed-fd86-4000-9bc5-5203062f28ba";
-
-        // TODO
-        return null;
-    }
-
-    /*
-     * ========================================
-     * AREA 7: lineage
-     */
-
-    /**
-     * Add the types for lineage
-     */
-    private void addArea7Types()
-    {
-        /*
-         * The types for area 7 are not yet defined, this method is a placeholder.
-         */
-        // TODO
-
-        /* Spare GUIDs
-
-final String guid = "e8303911-ba1c-4640-974e-c4d57ee1b310";
-final String guid = "6dfba6ce-e925-4281-880d-d04100c5b991";
-final String guid = "91ff7542-c275-4cd3-b367-97eec3360422";
-final String guid = "9e187e1e-2547-46bd-b0ee-c33ac6df4a1f";
-final String guid = "79ac27f6-be9c-489f-a7c2-b9add0bf705c";
-final String guid = "873e29bd-ca14-4833-a6bb-9ebdf89b5b1b";
-final String guid = "fa6de61d-98cb-48c4-b21f-ab7186235fd4";
-final String guid = "6d9980b2-5c0b-4314-8d8d-9fa45f8904d1";
-final String guid = "fcdccfa3-e9f0-4543-8720-1958799fb6dc";
-final String guid = "94715275-0520-43e9-81fe-4fe8ec3d8f3a";
-final String guid = "d0dd0ac7-01f4-48e0-ae4d-4f7268573fa8";
-final String guid = "b472a2ec-f419-4d3f-86fb-e9d97365f961";
-final String guid = "9062df4c-9f4a-4012-a67a-968d7a3f4bcf";
-final String guid = "685f91fb-c74b-437b-a9b6-c5e557c6d3b2";
-final String guid = "7f53928f-9148-4710-ad37-47633f33cb08";
-final String guid = "33ec3aaa-dfb6-4f58-8d5d-c42d077be1b3";
-final String guid = "0ac0e793-6727-45d2-9403-06bd19d9ce2e";
-final String guid = "1dfdec0f-f206-4db7-bac8-ec344205fb3c";
-final String guid = "6ad18aa4-f5fc-47e7-99e1-80acfc536c9a";
-        */
-    }
 }
 

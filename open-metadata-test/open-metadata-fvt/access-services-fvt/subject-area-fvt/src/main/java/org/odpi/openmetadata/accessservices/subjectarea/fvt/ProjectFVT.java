@@ -11,7 +11,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,7 +35,7 @@ public class ProjectFVT
         this.serverName=serverName;
         this.userId=userId;
     }
-    public static void runWith2Servers(String url) throws SubjectAreaCheckedExceptionBase
+    public static void runWith2Servers(String url) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         ProjectFVT fvt =new ProjectFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
@@ -54,18 +53,20 @@ public class ProjectFVT
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
-        } catch (SubjectAreaCheckedExceptionBase e)
+        } catch (SubjectAreaCheckedException e)
         {
             System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+        } catch (SubjectAreaFVTCheckedException e) {
+            System.out.println("ERROR: " + e.getMessage() );
         }
     }
 
-    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedExceptionBase {
+    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException {
         ProjectFVT fvt =new ProjectFVT(url,serverName,userId);
         fvt.run();
     }
 
-    public void run() throws SubjectAreaCheckedExceptionBase
+    public void run() throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         System.out.println("Create a project");
         Project project = createProject(serverName+" "+DEFAULT_TEST_PROJECT_NAME);
@@ -75,7 +76,7 @@ public class ProjectFVT
 
         List<Project> results = findProjects(null);
         if (results.size() !=2 ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 2 back on the find got " +results.size(), "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on the find got " +results.size());
         }
 
         Project projectForUpdate = new Project();
@@ -119,33 +120,33 @@ public class ProjectFVT
 
         results = findProjects(DEFAULT_TEST_PROJECT_NAME5);
         if (results.size() !=1 ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " +results.size());
         }
         results = findProjects(DEFAULT_TEST_PROJECT_NAME6);
         if (results.size() !=2 ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 2 back on the find got " +results.size(), "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on the find got " +results.size());
         }
         //soft delete a project and check it is not found
         Project deleted4 = deleteProject(projectForFind2.getSystemAttributes().getGUID());
         FVTUtils.validateNode(deleted4);
         results = findProjects(DEFAULT_TEST_PROJECT_NAME6);
         if (results.size() !=1 ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " +results.size());
         }
 
         // search for a project with a name with spaces in
         results = findProjects("This is a Project with spaces in name");
         if (results.size() !=1 ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " +results.size());
         }
         Project projectForGraph = createProject(DEFAULT_TEST_PROJECT_NAME4);
         List<Term> terms = getProjectTerms(projectForGraph.getSystemAttributes().getGUID());
         if (terms != null ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected null got " +terms.size(), "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected null got " +terms.size());
         }
     }
 
-    public  Project createProject(String projectName) throws SubjectAreaCheckedExceptionBase
+    public  Project createProject(String projectName) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Project project = getProjectForInput(projectName);
         return issueCreateProject(project);
@@ -155,7 +156,7 @@ public class ProjectFVT
         Project newProject = subjectAreaProject.createProject(this.userId, project);
         if (newProject != null)
         {
-            System.out.println("Created Project " + newProject.getName() + " with guid " + newProject.getSystemAttributes().getGUID());
+            System.out.println("Created Project " + newProject.getName() + " with userId " + newProject.getSystemAttributes().getGUID());
         }
         return newProject;
     }
@@ -171,7 +172,7 @@ public class ProjectFVT
         return glossaryProject;
     }
 
-    public List<Project> findProjects(String criteria) throws SubjectAreaCheckedExceptionBase
+    public List<Project> findProjects(String criteria) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         List<Project> projects = subjectAreaProject.findProject(
                 this.userId,
@@ -184,19 +185,19 @@ public class ProjectFVT
         return projects;
     }
 
-    public  Project getProjectByGUID(String guid) throws SubjectAreaCheckedExceptionBase {
+    public  Project getProjectByGUID(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException {
         Project project = subjectAreaProject.getProjectByGuid(this.userId, guid);
         FVTUtils.validateNode(project);
-        System.out.println("Got Project " + project.getName() + " with guid " + project.getSystemAttributes().getGUID() + " and status " + project.getSystemAttributes().getStatus());
+        System.out.println("Got Project " + project.getName() + " with userId " + project.getSystemAttributes().getGUID() + " and status " + project.getSystemAttributes().getStatus());
 
         return project;
     }
-    public  List<Term> getProjectTerms(String guid) throws SubjectAreaCheckedExceptionBase {
+    public  List<Term> getProjectTerms(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException {
         List<Term> terms = subjectAreaProject.getProjectTerms(this.userId, guid,null);
-        System.out.println("Got terms from project with guid " + guid);
+        System.out.println("Got terms from project with userId " + guid);
         return terms;
     }
-    public  Project updateProject(String guid, Project project) throws SubjectAreaCheckedExceptionBase
+    public  Project updateProject(String guid, Project project) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Project updatedProject = subjectAreaProject.updateProject(this.userId, guid, project);
         FVTUtils.validateNode(updatedProject);
@@ -204,14 +205,14 @@ public class ProjectFVT
         return updatedProject;
     }
 
-    public Project deleteProject(String guid) throws SubjectAreaCheckedExceptionBase
+    public Project deleteProject(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Project deletedProject = subjectAreaProject.deleteProject(this.userId, guid);
         FVTUtils.validateNode(deletedProject);
         System.out.println("Deleted Project name is " + deletedProject.getName());
         return deletedProject;
     }
-    public Project restoreProject(String guid) throws SubjectAreaCheckedExceptionBase
+    public Project restoreProject(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Project restoredProject = subjectAreaProject.restoreProject(this.userId, guid);
         FVTUtils.validateNode(restoredProject);
@@ -219,7 +220,7 @@ public class ProjectFVT
         return restoredProject;
     }
 
-    public  void purgeProject(String guid) throws SubjectAreaCheckedExceptionBase
+    public  void purgeProject(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         subjectAreaProject.purgeProject(this.userId, guid);
         System.out.println("Purge succeeded");

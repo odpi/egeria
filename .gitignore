@@ -88,13 +88,15 @@ egeria-lineage-repositories/**
 # Ignore local graph repo
 *-graph-repository/**
 
-# Ignore archives
-CloudInformationModel.json
-CloudInformationModelGUIDMap.json
-DataStoreConnectorTypes.json
-DataStoreConnectorsGUIDMap.json
-OpenMetadataTypes.json
+# Ignore archives if they are in the top level directory
+./CloudInformationModel.json
+./DataStoreConnectorTypes.json
+./OpenMetadataTypes.json
+./*Archive.json
+./*GUIDMap.json
 
+# Ignore any json files generated during junit
+open-metadata-resources/open-metadata-archives/design-model-archives/*.json
 
 # Ignore Subject Area OMAS older Generated output so it is not checked in.
 open-metadata-implementation/access-services/subject-area/subject-area-server/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/generated/**
@@ -102,6 +104,14 @@ open-metadata-implementation/access-services/subject-area/subject-area-server/sr
 
 # Ignore fvt Generated output
 open-metadata-test/open-metadata-fvt/open-types-fvt/open-types-test/src/**
+
+# Ignore Presentation Server generated output and downloaded content
+open-metadata-implementation/user-interfaces/presentation-server/nodejs/dist/**
+open-metadata-implementation/user-interfaces/presentation-server/nodejs/node_modules/**
+open-metadata-implementation/user-interfaces/presentation-server/nodejs/package-lock.json
+open-metadata-implementation/user-interfaces/presentation-server/nodejs/.vscode
+open-metadata-implementation/user-interfaces/presentation-server/nodejs/*.log
+open-metadata-implementation/user-interfaces/presentation-server/nodejs/yarn.lock
 
 # Ignore Deployment / Samples Generated content
 open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/cache/**
