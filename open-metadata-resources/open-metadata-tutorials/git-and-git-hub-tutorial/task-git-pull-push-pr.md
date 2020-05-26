@@ -39,6 +39,8 @@ and then making any necessary changes to merge conflicts, and commit/push as abo
 
 ### Creating a pull request
 
+Pull requests are created on GitHub, so go to your browser window.
+
 The easiest way to create a pull request is by navigating to your local fork of the Egeria repository eg. `https://github.com/USER/egeria`,
 selecting your working branch,
 and clicking on 'pull request'.

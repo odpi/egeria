@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "5945c22c-6e82-4501-b87a-c72592b78097",
+		"name": "Egeria-repository-services-local-repository",
+		"description": "This collection highlights some of the REST API calls support by a local repository found either in a metadata server or a repository proxy.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get metadata collection id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-collection-id",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"metadata-collection-id"
+					]
+				},
+				"description": "Return the unique identifer of the collection of metadata originating from this repository."
+			},
+			"response": []
+		},
+		{
+			"name": "Find type definitions by name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/by-name?name=Asset",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"types",
+						"by-name"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Asset"
+						}
+					]
+				},
+				"description": "Return the definitions of types with a matching name to the request."
+			},
+			"response": []
+		},
+		{
+			"name": "Get entity by GUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/entity/put-guid-value-here",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"instances",
+						"entity",
+						"put-guid-value-here"
+					]
+				},
+				"description": "Return the entity instance with the requested unique identifer.  Replace the `put-guid-value-here` placeholder with the real GUID of the instance."
+			},
+			"response": []
+		},
+		{
+			"name": "Get relationships connected to entity",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"TypeLimitedFindRequest\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/entity/put-guid-value-here/relationships",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"instances",
+						"entity",
+						"put-guid-value-here",
+						"relationships"
+					]
+				},
+				"description": "Return the list of relationships connected to the entity instance with the requested unique identifer.  Replace the `put-guid-value-here` placeholder with the real GUID of the instance."
+			},
+			"response": []
+		},
+		{
+			"name": "Get relationship by GUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/relationship/put-guid-value-here",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"instances",
+						"relationship",
+						"put-guid-value-here"
+					]
+				},
+				"description": "Return the relationship instance with the requested unique identifer.  Replace the `put-guid-value-here` placeholder with the real GUID of the instance."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
