@@ -13,7 +13,7 @@ the Egeria runtime - that is the
 is started at port http 8080.
 
 This container can be incorporated into larger container orchestration environments or used standalone.
-This tutorial describes how to use it standalone.  The [hands-on labs](../../open-metadata-labs)
+This tutorial describes how to use it standalone.  The [Open Metadata Labs](../../open-metadata-labs)
 use this container with either the `docker-compose` or `Kubernetes`
 container services to create a complete open metadata solution.
 Link to [Hands-on Labs Infrastructure Guide](../lab-infrastructure-guide) to learn more.
@@ -218,11 +218,11 @@ If you now click on the whitespace of the container's entry, a new section opens
 ----
 
 Congratulations, you are familiar enough with running docker containers to continue with the
-[Egeria Dojo](../egeria-dojo/egeria-dojo-day-1-3-1-1-platform-set-up-prerequisites.png).
+[Egeria Dojo](../egeria-dojo/egeria-dojo-day-1-3-1-1-platform-set-up-prerequisites.md).
 
 
 ----
-* Return to [Egeria Dojo](../egeria-dojo/egeria-dojo-day-1-3-1-1-platform-set-up-prerequisites.png)
+* Return to [Egeria Dojo](../egeria-dojo/egeria-dojo-day-1-3-1-1-platform-set-up-prerequisites.md)
 
 
 * Link to [other tutorials](..)
