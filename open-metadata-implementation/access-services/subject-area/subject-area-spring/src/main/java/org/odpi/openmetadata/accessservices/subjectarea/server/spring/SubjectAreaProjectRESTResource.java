@@ -9,10 +9,11 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaProjectRESTServices;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+
+import static org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance.*;
 
 
 /**
@@ -21,10 +22,8 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
-
 @Tag(name = "Subject Area OMAS", description = "The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs = @ExternalDocumentation(description = "Subject Area Open Metadata Access Service (OMAS)", url = "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
-
-public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInstance {
+public class SubjectAreaProjectRESTResource {
     private SubjectAreaProjectRESTServices restAPI = new SubjectAreaProjectRESTServices();
 
     /**
@@ -119,7 +118,8 @@ public class SubjectAreaProjectRESTResource extends SubjectAreaRESTServicesInsta
     ) {
         return restAPI.findProject(serverName, userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
-    /*
+
+    /**
      * Get Project relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant

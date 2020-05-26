@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
+import static org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance.*;
+
 
 /**
  * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
@@ -21,10 +23,8 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
-
 @Tag(name = "Subject Area OMAS", description = "The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs = @ExternalDocumentation(description = "Subject Area Open Metadata Access Service (OMAS)", url = "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
-
-public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance {
+public class SubjectAreaTermRESTResource {
     private SubjectAreaTermRESTServices restAPI = new SubjectAreaTermRESTServices();
 
     /**
