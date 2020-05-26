@@ -191,7 +191,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
             var filteredNodes = [];
             for (var i = 0; i < data.nodes.length; i++) {
-                if (data.nodes[i].group !== "DataFile"/*"Process"*/) {
+                if (data.nodes[i].group !== "GlossaryTerm") {
                     filteredNodes.push(data.nodes[i]);
                 } else {
                     for (var j = 0; j < data.edges[j].length; j++) {
