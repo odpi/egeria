@@ -60,6 +60,11 @@ Alternatively read on for more information.
 
 The guides provide step-by-step guidance on a specific aspect of working with Egeria.
 
+* [Community Guide](Community-Guide.md) - describes how to join the Egeria community to participate
+  in discussions and other activities.
+  
+* [Operations Guide](Egeria-Operations.md) - describes the governance processes used by the Egeria community.
+
 * [Building an Asset Catalog](open-metadata-publication/website/cataloging-assets) - provides
   guidance on the different approaches offered by Egeria to maintain a catalog service.
   A catalog service enables

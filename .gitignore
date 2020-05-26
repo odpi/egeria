@@ -88,12 +88,12 @@ egeria-lineage-repositories/**
 # Ignore local graph repo
 *-graph-repository/**
 
-# Ignore archives
-CloudInformationModel.json
-DataStoreConnectorTypes.json
-OpenMetadataTypes.json
-*Archive.json
-*GUIDMap.json
+# Ignore archives if they are in the top level directory
+./CloudInformationModel.json
+./DataStoreConnectorTypes.json
+./OpenMetadataTypes.json
+./*Archive.json
+./*GUIDMap.json
 
 # Ignore any json files generated during junit
 open-metadata-resources/open-metadata-archives/design-model-archives/*.json
