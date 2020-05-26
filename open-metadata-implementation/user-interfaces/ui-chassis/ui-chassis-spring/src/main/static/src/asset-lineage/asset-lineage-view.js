@@ -187,25 +187,39 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 data.nodes[i].label += ' \n Table : ' + displayName;
             }
         }
-
         if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
             var filteredNodes = [];
+            var nodesToRemove = [];
+            var filteredEdges = [];
             for (var i = 0; i < data.nodes.length; i++) {
                 if (data.nodes[i].group !== "GlossaryTerm") {
                     filteredNodes.push(data.nodes[i]);
                 } else {
-                    for (var j = 0; j < data.edges[j].length; j++) {
-                        if (data.edges[j].from === data.nodes[i].id) {
-                            data.edges[j].from = data.edges[i].from;
-
-                        }
-                        if (data.edges[j].to === data.edges[i].id) {
-                            data.edges[j].to = data.edges[i].to;
+                    nodesToRemove.push(data.nodes[i])
+                }
+            }
+            for (var j = 0; j < data.edges.length; j++) {
+                var edgeRemoved = false;
+                for (var i = 0; i < nodesToRemove.length; i++) {
+                    if (data.edges[j].from === nodesToRemove[i].id) {
+                        for (var k = 0; k < data.edges.length; k++) {
+                            if (data.edges[k].to === nodesToRemove[i].id) {
+                                edgeRemoved = true;
+                                filteredEdges.push({
+                                    to : data.edges[j].to,
+                                    from : data.edges[k].from,
+                                    label : data.edges[k].label
+                                })
+                            }
                         }
                     }
                 }
+                if (edgeRemoved === false) {
+                    filteredEdges.push(data.edges[j])
+                }
             }
             data.nodes = filteredNodes;
+            data.edges = filteredEdges;
         }
         this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
     }
