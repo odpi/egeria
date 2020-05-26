@@ -72,7 +72,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     </vaadin-tabs>
     
     <div>
-        <vaadin-select id="processMenu" value="false" >
+        <vaadin-select id="processMenu" value="true" >
           <template>
             <vaadin-list-box>
               <vaadin-item value="true" selected>Include ETL Jobs</vaadin-item>
@@ -80,8 +80,19 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             </vaadin-list-box>
             </template>
         </vaadin-select>
+
     </div>
-    
+    <div hidden = "[[_hideIncludeGlossaryTerms(routeData.usecase)]]">
+     <vaadin-select id="glossaryTermMenu" value="true">
+            <template>
+                <vaadin-list-box>
+                  <vaadin-item value="true" selected>Include Glossary Term</vaadin-item>
+                  <vaadin-item value="false">Exclude Glossary Term</vaadin-item>
+                </vaadin-list-box>  
+            </template>
+        </vaadin-select>
+    </div>
+
     <div class="container" id="container">
         <vis-graph id="visgraph" data=[[graphData]]></vis-graph>
     </div>
@@ -90,7 +101,12 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
 
     ready() {
         super.ready();
-        this.$.processMenu.addEventListener('value-changed', () => this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
+        this.$.processMenu.addEventListener('value-changed', () =>
+            this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
+
+        this.$.glossaryTermMenu.addEventListener('value-changed', () =>
+            this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
+
     }
 
     static get properties() {
@@ -171,22 +187,41 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 data.nodes[i].label += ' \n Table : ' + displayName;
             }
         }
+
+        if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
+            var filteredNodes = [];
+            for (var i = 0; i < data.nodes.length; i++) {
+                if (data.nodes[i].group !== "DataFile"/*"Process"*/) {
+                    filteredNodes.push(data.nodes[i]);
+                } else {
+                    for (var j = 0; j < data.edges[j].length; j++) {
+                        if (data.edges[j].from === data.nodes[i].id) {
+                            data.edges[j].from = data.edges[i].from;
+
+                        }
+                        if (data.edges[j].to === data.edges[i].id) {
+                            data.edges[j].to = data.edges[i].to;
+                        }
+                    }
+                }
+            }
+            data.nodes = filteredNodes;
+        }
         this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
     }
 
-  _ultimateSource(guid, includeProcesses) {
+    _ultimateSource(guid, includeProcesses) {
       if (includeProcesses === null || includeProcesses === undefined) {
-         includeProcesses  = "false";
+         includeProcesses  = "true";
       }
       this.$.visgraph.options.groups = this.groups;
       this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?includeProcesses=' + includeProcesses;
       this.$.tokenAjax._go();
   }
 
-
       _endToEndLineage(guid, includeProcesses){
           if (includeProcesses === null || includeProcesses === undefined) {
-              includeProcesses  = "false";
+              includeProcesses  = "true";
           }
           this.$.visgraph.options.groups = this.groups;
           this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/end2end?includeProcesses=' + includeProcesses;
@@ -195,7 +230,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
 
       _ultimateDestination(guid, includeProcesses){
           if (includeProcesses === null || includeProcesses === undefined) {
-              includeProcesses  = "false";
+              includeProcesses  = "true";
           }
           this.$.visgraph.options.groups = this.groups;
           this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-destination?includeProcesses=' + includeProcesses;
@@ -204,7 +239,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
 
       _glossaryLineage(guid, includeProcesses){
           if (includeProcesses === null || includeProcesses === undefined) {
-              includeProcesses  = "false";
+              includeProcesses  = "true";
           }
           this.$.visgraph.options.groups = this.groups;
           this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?includeProcesses=' + includeProcesses;
@@ -213,7 +248,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
 
       _sourceAndDestination(guid, includeProcesses){
           if (includeProcesses === null || includeProcesses === undefined) {
-              includeProcesses  = "false";
+              includeProcesses  = "true";
           }
           this.$.visgraph.options.groups = this.groups;
           this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/source-and-destination?includeProcesses=' + includeProcesses;
@@ -221,7 +256,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
       }
 
     _reload(usecase, includeProcesses) {
-
         switch (usecase) {
             case 'ultimateSource':
                 this._ultimateSource(this.routeData.guid, includeProcesses);
@@ -240,8 +274,13 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 break;
         }
     }
+
     _getUseCase(usecase){
       return this.usecases.indexOf(usecase);
+    }
+
+    _hideIncludeGlossaryTerms(usecase) {
+        return !("ultimateDestination" === usecase || "ultimateSource" === usecase) ;
     }
 }
 
