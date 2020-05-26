@@ -32,17 +32,29 @@ import java.util.List;
  */
 public class OMRSAPIHelper {
 
-    // logging
     private static final Logger log = LoggerFactory.getLogger(OMRSAPIHelper.class);
     private static final String className = OMRSAPIHelper.class.getName();
+    private final String serviceName;
+    private final String serverName;
+    private OMRSRepositoryHelper omrsRepositoryHelper;
+    private OMRSMetadataCollection omrsMetadataCollection;
 
-    private OMRSMetadataCollection oMRSMetadataCollection=null;
-    final private String serviceName;
-    private String serverName = null;
-    private OMRSRepositoryHelper omrsRepositoryHelper = null;
-
-    public OMRSAPIHelper(String serviceName) {
+    /**
+     * @param serviceName             name of the consuming service
+     * @param serverName              name of this server instance
+     * @param repositoryHelper        helper used by the converters
+     * @param omrsMetadataCollection  metadata collection for the repository
+     * */
+    public OMRSAPIHelper(
+            String serviceName,
+            String serverName,
+            OMRSRepositoryHelper repositoryHelper,
+            OMRSMetadataCollection omrsMetadataCollection
+    ) {
         this.serviceName = serviceName;
+        this.serverName = serverName;
+        this.omrsRepositoryHelper = repositoryHelper;
+        this.omrsMetadataCollection = omrsMetadataCollection;
     }
 
     /**
@@ -55,19 +67,11 @@ public class OMRSAPIHelper {
 
     public OMRSMetadataCollection getOMRSMetadataCollection(String restAPIName) throws MetadataServerUncontactableException {
         validateInitialization(restAPIName);
-        return oMRSMetadataCollection;
+        return this.omrsMetadataCollection;
     }
 
     public OMRSRepositoryHelper getOMRSRepositoryHelper() {
-        return omrsRepositoryHelper;
-    }
-
-    public void setOMRSMetadataCollection(OMRSMetadataCollection oMRSMetadataCollection) {
-        this.oMRSMetadataCollection = oMRSMetadataCollection;
-    }
-
-    public void setOmrsRepositoryHelper(OMRSRepositoryHelper omrsRepositoryHelper) {
-        this.omrsRepositoryHelper = omrsRepositoryHelper;
+        return this.omrsRepositoryHelper;
     }
 
     /**
@@ -84,7 +88,7 @@ public class OMRSAPIHelper {
         }
 
         try {
-            this.oMRSMetadataCollection = connector.getMetadataCollection();
+            this.omrsMetadataCollection = connector.getMetadataCollection();
             this.omrsRepositoryHelper = connector.getRepositoryHelper();
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.METADATA_SERVER_UNCONTACTABLE_ERROR.getMessageDefinition();
@@ -107,7 +111,7 @@ public class OMRSAPIHelper {
      */
     private void validateInitialization(String restAPIName) throws MetadataServerUncontactableException {
 
-        if (oMRSMetadataCollection == null) {
+        if (omrsMetadataCollection == null) {
             if (this.omrsRepositoryHelper == null) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition();
 

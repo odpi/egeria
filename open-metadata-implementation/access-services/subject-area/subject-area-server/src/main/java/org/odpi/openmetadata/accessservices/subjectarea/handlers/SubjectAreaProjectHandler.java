@@ -18,11 +18,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.proje
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.ProjectMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaProjectRESTServices;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -47,20 +44,10 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * Construct the Subject Area Project Handler
      * needed to operate within a single server instance.
      *
-     * @param serviceName             name of the consuming service
-     * @param serverName              name of this server instance
-     * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
      * @param oMRSAPIHelper           OMRS API helper
      */
-    public SubjectAreaProjectHandler(String serviceName,
-                                     String serverName,
-                                     InvalidParameterHandler invalidParameterHandler,
-                                     OMRSRepositoryHelper repositoryHelper,
-                                     RepositoryHandler repositoryHandler,
-                                     OMRSAPIHelper oMRSAPIHelper) {
-        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper);
+    public SubjectAreaProjectHandler(OMRSAPIHelper oMRSAPIHelper) {
+        super(oMRSAPIHelper);
     }
 
     /**
@@ -123,8 +110,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
         final String methodName = "createProject";
         SubjectAreaOMASAPIResponse response = null;
 
-        SubjectAreaProjectRESTServices projectRESTServices = new SubjectAreaProjectRESTServices();
-        projectRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
             InputValidator.validateNodeType(className, methodName, suppliedProject.getNodeType(), NodeType.Project, NodeType.GlossaryProject);
             String suppliedProjectName = suppliedProject.getName();
@@ -170,8 +155,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
     public SubjectAreaOMASAPIResponse getProjectByGuid(String userId, String guid) {
         final String methodName = "getProjectByGuid";
         SubjectAreaOMASAPIResponse response = null;
-        SubjectAreaProjectRESTServices projectRESTServices = new SubjectAreaProjectRESTServices();
-        projectRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
 
         try {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
@@ -216,8 +199,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
 
         final String methodName = "findProject";
         SubjectAreaOMASAPIResponse response = null;
-        SubjectAreaProjectRESTServices projectRESTServices = new SubjectAreaProjectRESTServices();
-        projectRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
 
         /*
          * If no search criteria is supplied then we return all projects, this should not be too many.
@@ -313,11 +294,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
     public SubjectAreaOMASAPIResponse updateProject(String userId, String guid, Project suppliedProject, boolean isReplace) {
         final String methodName = "updateProject";
         SubjectAreaOMASAPIResponse response = null;
-        SubjectAreaProjectRESTServices projectRESTServices = new SubjectAreaProjectRESTServices();
-        projectRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
 
         try {
-
             InputValidator.validateNodeType(className, methodName, suppliedProject.getNodeType(), NodeType.Project, NodeType.GlossaryProject);
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
@@ -411,8 +389,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
     public SubjectAreaOMASAPIResponse deleteProject(String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteProject";
         SubjectAreaOMASAPIResponse response = null;
-        SubjectAreaProjectRESTServices projectRESTServices = new SubjectAreaProjectRESTServices();
-        projectRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             // do not delete if there is project content (terms or categories)
@@ -486,8 +462,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
     public SubjectAreaOMASAPIResponse restoreProject(String userId, String guid) {
         final String methodName = "restoreProject";
         SubjectAreaOMASAPIResponse response = null;
-        SubjectAreaProjectRESTServices projectRESTServices = new SubjectAreaProjectRESTServices();
-        projectRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
@@ -521,9 +495,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
             String userId,
             String guid,
             Date asOfTime
-                                                     ) {
-
-
+    ) {
         // find all nodes, project and its subclass GlossaryProject, Term and its subclass Activity
         String nodeFilter = (new HashSet<>(Arrays.asList(NodeType.Project, NodeType.Term, NodeType.GlossaryProject, NodeType.Activity))).toString();
         // filter on the project scope relationship
@@ -556,6 +528,4 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
         }
         return response;
     }
-
-
 }
