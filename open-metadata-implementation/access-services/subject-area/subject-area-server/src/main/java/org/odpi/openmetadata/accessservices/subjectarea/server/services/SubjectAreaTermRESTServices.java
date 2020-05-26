@@ -27,7 +27,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermRESTServices.class);
 
     private static final String className = SubjectAreaTermRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
 
     public static final Set<String> SUBJECT_AREA_TERM_CLASSIFICATIONS= new HashSet(Arrays.asList(

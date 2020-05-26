@@ -30,7 +30,7 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
 {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGraphRESTServices.class);
     private static final String className = SubjectAreaGraphRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
 
     /**

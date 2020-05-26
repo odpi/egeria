@@ -31,7 +31,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
 {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaProjectRESTServices.class);
     private static final String className = SubjectAreaProjectRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
 
     /**

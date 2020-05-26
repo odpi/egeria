@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaRelationshipRESTServices.class);
     private static final String className = SubjectAreaRelationshipRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
 
     /**
