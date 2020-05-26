@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import Home from "./components/Home";
 import GlossaryAuthor from "./components/GlossaryAuthor";
+import RepositoryExplorer from "./components/RepositoryExplorer/RepositoryExplorer";
 import TypeExplorer from "./components/TypeExplorer";
 import { Link, Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -33,6 +34,9 @@ export default class StoryContent extends Component {
           <Route path={this.props.match.url + "/home"} component={Home} />
           <Route path={this.props.match.url + "/glossary-author"}>
             <GlossaryAuthor />
+          </Route>
+          <Route path={this.props.match.url + "/repository-explorer"}>
+            <RepositoryExplorer />
           </Route>
           <Route path={this.props.match.url + "/type-explorer"}>
             <TypeExplorer />

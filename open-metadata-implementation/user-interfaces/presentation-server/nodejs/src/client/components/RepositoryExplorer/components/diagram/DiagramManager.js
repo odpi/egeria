@@ -9,7 +9,6 @@ import Diagram                            from "./Diagram";
 
 import { InstancesContext }               from "../../contexts/InstancesContext";
 
-import Graph2 from "../../OLD MODULES/Graph2";
 
 
 
