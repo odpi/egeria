@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 
+import java.util.Map;
 import java.util.Set;
 
 public interface LineageGraph extends OpenLineageGraphConnector {
@@ -31,6 +32,21 @@ public interface LineageGraph extends OpenLineageGraphConnector {
      * @param lineageRelationship relationship to be updated
      */
     void updateRelationship(LineageRelationship lineageRelationship);
+
+    /**
+     * Updates an entity's classification in the Graph
+     *
+     * @param assetContext asset context
+     */
+    void updateClassification(Map<String, Set<GraphContext>> assetContext);
+
+    /**
+     * Deletes an entity's classification in the Graph
+     *
+     * @param entityGuid entity guid
+     * @param classificationContext classification context
+     */
+    void deleteClassification(String entityGuid, Map<String, Set<GraphContext>> classificationContext);
 
     /**
      * Deletes a relationship in the graph
