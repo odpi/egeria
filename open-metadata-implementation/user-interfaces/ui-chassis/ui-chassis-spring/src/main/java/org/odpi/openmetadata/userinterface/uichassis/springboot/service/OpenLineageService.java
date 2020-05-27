@@ -146,20 +146,17 @@ public class OpenLineageService {
             graphData.put(NODES_LABEL, listNodes);
         }
 
-        listNodes = Optional.ofNullable(response.getLineageVertices())
+        listNodes = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageVertices)
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
-                .map(v -> createNode(v))
+                .map(this::createNode)
                 .collect(Collectors.toList());
 
-        listEdges = Optional.ofNullable(response.getLineageEdges())
-                .map(e -> e.stream())
+        listEdges = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageEdges)
+                .map(Collection::stream)
                 .orElseGet(Stream::empty)
-                .map(e -> {
-                    Edge newEdge = new Edge(e.getSourceNodeID(),
-                            e.getDestinationNodeID());
-                    return newEdge;
-                })
+                .map(e -> new Edge(e.getSourceNodeID(),
+                        e.getDestinationNodeID()))
                 .collect(Collectors.toList());
 
         graphData.put(EDGES_LABEL, listEdges);
