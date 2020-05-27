@@ -302,9 +302,9 @@ public class AvroFileReaderSample
         }
 
         String  fileName = args[0];
-        String  serverName = "cocoMDS1";
-        String  serverURLRoot = "https://localhost:9443";
-        String  clientUserId = "garygeeke";
+        String  serverName = "cocoMDS4";
+        String  serverURLRoot = "https://localhost:9444";
+        String  clientUserId = "erinoverview";
 
 
         if (args.length > 1)
