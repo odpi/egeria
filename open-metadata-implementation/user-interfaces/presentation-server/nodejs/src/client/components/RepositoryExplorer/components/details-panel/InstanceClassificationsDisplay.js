@@ -27,10 +27,8 @@ export default function InstanceClassificationsDisplay(props) {
     let classificationNamesSorted = Object.keys(classificationMap).sort();
     
     let classificationList = classificationNamesSorted.map( (clsName) => 
-        <li className="details-sublist-item" key={clsName}> {clsName} :
-          { 
-            <div><InstancePropertiesDisplay properties={classificationMap[clsName].properties} /></div>       
-          } 
+        <li className="details-sublist-item" key={clsName}> {clsName} :          
+            <InstancePropertiesDisplay properties={classificationMap[clsName].properties} />               
         </li>
         
     );
@@ -41,22 +39,18 @@ export default function InstanceClassificationsDisplay(props) {
   if (instClassifications === undefined || instClassifications === null || instClassifications.length ===0 ) {
 
     classifications = (
-     
-        <ul className="details-sublist">           
-          <li>list is empty</li>     
-        </ul>        
-     
+      <ul className="details-sublist">           
+        <li>list is empty</li>     
+      </ul>
     )
   }
 
   else {
    
     classifications = (  
-      <div>       
-         <ul className="details-sublist">           
-           {expandClassifications(instClassifications)}          
-        </ul>
-      </div>
+      <ul className="details-sublist">           
+        {expandClassifications(instClassifications)}          
+      </ul>
     );
   }
 
