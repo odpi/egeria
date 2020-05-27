@@ -60,10 +60,12 @@ const RepoServerContextProvider = (props) => {
   /*
    * Define the basic body parameters that are mandatory across requests to the Repository Explorer API
    */
-  const baseBody = {
-    serverName       : repositoryServerName,
-    serverURLRoot    : repositoryServerURLRoot,
-    enterpriseOption : repositoryServerEnterpriseOption
+  const buildBaseBody = () => {
+    const base = {
+      serverName       : repositoryServerName,
+      serverURLRoot    : repositoryServerURLRoot,
+      enterpriseOption : repositoryServerEnterpriseOption };
+    return base;
   };
 
   /*
@@ -84,7 +86,7 @@ const RepoServerContextProvider = (props) => {
     //console.log("url is "+url);
 
     // Add any (optional) bodyParms to the baseBody
-    const body = Object.assign(baseBody, bodyParms);
+    const body = Object.assign(buildBaseBody(), bodyParms);
   
     fetch(url, {
       method     : "POST",
