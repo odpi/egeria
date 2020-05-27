@@ -39,7 +39,7 @@ public class DatabasePrimaryKeyProperties implements Serializable
 
 
     /**
-     * Copy/clone constructor for an Endpoint.
+     * Copy/clone constructor for a primary key.
      *
      * @param template template object to copy.
      */

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
@@ -38,12 +38,14 @@ public class SubjectAreaDefinitionCategoryFVT
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
-        } catch (SubjectAreaCheckedExceptionBase e)
+        } catch (SubjectAreaCheckedException e)
         {
             System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+        } catch (SubjectAreaFVTCheckedException e) {
+            System.out.println("ERROR: " + e.getMessage() );
         }
     }
-    public static void runWith2Servers(String url) throws SubjectAreaCheckedExceptionBase
+    public static void runWith2Servers(String url) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         SubjectAreaDefinitionCategoryFVT fvt =new SubjectAreaDefinitionCategoryFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
@@ -59,13 +61,13 @@ public class SubjectAreaDefinitionCategoryFVT
         this.userId=userId;
     }
 
-    public static void runIt(String url, String serverName, String userId)  throws SubjectAreaCheckedExceptionBase{
+    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException {
 
         SubjectAreaDefinitionCategoryFVT fvt =new SubjectAreaDefinitionCategoryFVT(url,serverName,userId);
         fvt.run();
     }
 
-    public void run() throws SubjectAreaCheckedExceptionBase
+    public void run() throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         System.out.println("Create a glossary");
         Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
@@ -110,7 +112,7 @@ public class SubjectAreaDefinitionCategoryFVT
 
         }
     }
-    private SubjectAreaDefinition createSubjectAreaDefinitionWithParentGlossaryGuid(String subjectAreaName, String parentGuid, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
+    private SubjectAreaDefinition createSubjectAreaDefinitionWithParentGlossaryGuid(String subjectAreaName, String parentGuid, String glossaryGuid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         SubjectAreaDefinition subjectArea = new SubjectAreaDefinition();
         subjectArea.setName(subjectAreaName);
@@ -130,7 +132,7 @@ public class SubjectAreaDefinitionCategoryFVT
         return newSubjectAreaDefinition;
     }
 
-    public  SubjectAreaDefinition createSubjectAreaDefinitionWithGlossaryGuid(String subjectAreaName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
+    public  SubjectAreaDefinition createSubjectAreaDefinitionWithGlossaryGuid(String subjectAreaName, String glossaryGuid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         SubjectAreaDefinition subjectArea = new SubjectAreaDefinition();
         subjectArea.setName(subjectAreaName);
@@ -140,23 +142,23 @@ public class SubjectAreaDefinitionCategoryFVT
         SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(this.userId, subjectArea);
         if (newSubjectAreaDefinition != null)
         {
-            System.out.println("Created SubjectAreaDefinition " + newSubjectAreaDefinition.getName() + " with guid " + newSubjectAreaDefinition.getSystemAttributes().getGUID());
+            System.out.println("Created SubjectAreaDefinition " + newSubjectAreaDefinition.getName() + " with userId " + newSubjectAreaDefinition.getSystemAttributes().getGUID());
         }
         return newSubjectAreaDefinition;
     }
 
 
-    public  SubjectAreaDefinition getSubjectAreaDefinitionByGUID(String guid) throws SubjectAreaCheckedExceptionBase
+    public  SubjectAreaDefinition getSubjectAreaDefinitionByGUID(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         SubjectAreaDefinition subjectArea = subjectAreaCategory.getSubjectAreaDefinitionByGuid(this.userId, guid);
         if (subjectArea != null)
         {
-            System.out.println("Got SubjectAreaDefinition " + subjectArea.getName() + " with guid " + subjectArea.getSystemAttributes().getGUID() + " and status " + subjectArea.getSystemAttributes().getStatus());
+            System.out.println("Got SubjectAreaDefinition " + subjectArea.getName() + " with userId " + subjectArea.getSystemAttributes().getGUID() + " and status " + subjectArea.getSystemAttributes().getStatus());
         }
         return subjectArea;
     }
 
-    public SubjectAreaDefinition updateSubjectAreaDefinition(String guid, SubjectAreaDefinition subjectArea) throws SubjectAreaCheckedExceptionBase
+    public SubjectAreaDefinition updateSubjectAreaDefinition(String guid, SubjectAreaDefinition subjectArea) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         SubjectAreaDefinition updatedSubjectAreaDefinition = subjectAreaCategory.updateSubjectAreaDefinition(this.userId, guid, subjectArea);
         if (updatedSubjectAreaDefinition != null)
@@ -166,7 +168,7 @@ public class SubjectAreaDefinitionCategoryFVT
         return updatedSubjectAreaDefinition;
     }
 
-    public SubjectAreaDefinition deleteSubjectAreaDefinition(String guid) throws SubjectAreaCheckedExceptionBase
+    public SubjectAreaDefinition deleteSubjectAreaDefinition(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         SubjectAreaDefinition deletedSubjectAreaDefinition = subjectAreaCategory.deleteSubjectAreaDefinition(this.userId, guid);
         if (deletedSubjectAreaDefinition != null)
@@ -176,12 +178,12 @@ public class SubjectAreaDefinitionCategoryFVT
         return deletedSubjectAreaDefinition;
     }
 
-    public void purgeSubjectAreaDefinition(String guid) throws SubjectAreaCheckedExceptionBase
+    public void purgeSubjectAreaDefinition(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         subjectAreaCategory.purgeSubjectAreaDefinition(this.userId, guid);
         System.out.println("Purge succeeded");
     }
-    public SubjectAreaDefinition restoreSubjectAreaDefinition(String guid) throws SubjectAreaCheckedExceptionBase
+    public SubjectAreaDefinition restoreSubjectAreaDefinition(String guid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         SubjectAreaDefinition restoredSubjectAreaDefinition = subjectAreaCategory.restoreSubjectAreaDefinition(this.userId, guid);
         if (restoredSubjectAreaDefinition != null)

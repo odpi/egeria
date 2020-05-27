@@ -172,7 +172,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @param integratorGUID unique identifier of software server capability representing the caller
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseProperties properties to store
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element
      *
@@ -184,27 +184,27 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                              String             integratorGUID,
                                              String             integratorName,
                                              String             templateGUID,
-                                             DatabaseProperties databaseProperties) throws InvalidParameterException,
+                                             TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
         final String methodName                  = "createDatabaseFromTemplate";
         final String templateGUIDParameterName   = "templateGUID";
-        final String propertiesParameterName     = "databaseProperties";
+        final String propertiesParameterName     = "templateProperties";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(databaseProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/from-template/{4}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
-                                                                  databaseProperties,
+                                                                  templateProperties,
                                                                   serverName,
                                                                   userId,
                                                                   integratorGUID,
@@ -618,7 +618,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseGUID unique identifier of the database where the schema is located
-     * @param databaseSchemaProperties properties about the database schema
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new database schema
      *
@@ -626,32 +626,32 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseSchemaFromTemplate(String                   userId,
-                                                   String                   integratorGUID,
-                                                   String                   integratorName,
-                                                   String                   templateGUID,
-                                                   String                   databaseGUID,
-                                                   DatabaseSchemaProperties databaseSchemaProperties) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
+    public String createDatabaseSchemaFromTemplate(String             userId,
+                                                   String             integratorGUID,
+                                                   String             integratorName,
+                                                   String             templateGUID,
+                                                   String             databaseGUID,
+                                                   TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         final String methodName                     = "createDatabaseSchemaFromTemplate";
         final String templateGUIDParameterName      = "templateGUID";
         final String parentElementGUIDParameterName = "databaseGUID";
-        final String propertiesParameterName        = "databaseSchemaProperties";
+        final String propertiesParameterName        = "templateProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseSchemaProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
         final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}/schemas/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
-                                                                  databaseSchemaProperties,
+                                                                  templateProperties,
                                                                   serverName,
                                                                   userId,
                                                                   integratorGUID,
@@ -1059,7 +1059,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
-     * @param databaseTableProperties properties about the database table
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new database table
      *
@@ -1067,32 +1067,32 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseTableFromTemplate(String                  userId,
-                                                  String                  integratorGUID,
-                                                  String                  integratorName,
-                                                  String                  templateGUID,
-                                                  String                  databaseSchemaGUID,
-                                                  DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
+    public String createDatabaseTableFromTemplate(String             userId,
+                                                  String             integratorGUID,
+                                                  String             integratorName,
+                                                  String             templateGUID,
+                                                  String             databaseSchemaGUID,
+                                                  TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         final String methodName                     = "createDatabaseTableFromTemplate";
         final String templateGUIDParameterName      = "templateGUID";
         final String parentElementGUIDParameterName = "databaseSchemaGUID";
-        final String propertiesParameterName        = "databaseTableProperties";
+        final String propertiesParameterName        = "templateProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseTableProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
         final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/tables/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
-                                                                  databaseTableProperties,
+                                                                  templateProperties,
                                                                   serverName,
                                                                   userId,
                                                                   integratorGUID,
@@ -1412,7 +1412,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
-     * @param databaseViewProperties properties for the new view
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the database view
      *
@@ -1420,32 +1420,32 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseViewFromTemplate(String                  userId,
-                                                 String                  integratorGUID,
-                                                 String                  integratorName,
-                                                 String                  templateGUID,
-                                                 String                  databaseSchemaGUID,
-                                                 DatabaseTableProperties databaseViewProperties) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+    public String createDatabaseViewFromTemplate(String             userId,
+                                                 String             integratorGUID,
+                                                 String             integratorName,
+                                                 String             templateGUID,
+                                                 String             databaseSchemaGUID,
+                                                 TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName                     = "createDatabaseViewFromTemplate";
         final String templateGUIDParameterName      = "templateGUID";
         final String parentElementGUIDParameterName = "databaseSchemaGUID";
-        final String propertiesParameterName        = "databaseViewProperties";
+        final String propertiesParameterName        = "templateProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseViewProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
         final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/tables/views/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
-                                                                  databaseViewProperties,
+                                                                  templateProperties,
                                                                   serverName,
                                                                   userId,
                                                                   integratorGUID,
@@ -1771,7 +1771,7 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @param integratorName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for the new column
+     * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the database column
      *
@@ -1779,32 +1779,32 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseColumnFromTemplate(String                   userId,
-                                                   String                   integratorGUID,
-                                                   String                   integratorName,
-                                                   String                   templateGUID,
-                                                   String                   databaseTableGUID,
-                                                   DatabaseColumnProperties databaseColumnProperties) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
+    public String createDatabaseColumnFromTemplate(String             userId,
+                                                   String             integratorGUID,
+                                                   String             integratorName,
+                                                   String             templateGUID,
+                                                   String             databaseTableGUID,
+                                                   TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         final String methodName                     = "createDatabaseColumnFromTemplate";
         final String templateGUIDParameterName      = "templateGUID";
         final String parentElementGUIDParameterName = "databaseTableGUID";
-        final String propertiesParameterName        = "databaseViewProperties";
+        final String propertiesParameterName        = "templateProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
         invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
         final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}/columns/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
-                                                                  databaseColumnProperties,
+                                                                  templateProperties,
                                                                   serverName,
                                                                   userId,
                                                                   integratorGUID,
@@ -1813,151 +1813,6 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
                                                                   templateGUID);
 
         return restResult.getGUID();
-    }
-
-
-    /**
-     * Create a new metadata element to represent a database derived column.
-     *
-     * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
-     * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for the new column
-     *
-     * @return unique identifier of the new metadata element for the database column
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createDatabaseDerivedColumn(String                          userId,
-                                              String                          integratorGUID,
-                                              String                          integratorName,
-                                              String                          databaseTableGUID,
-                                              DatabaseDerivedColumnProperties databaseColumnProperties) throws InvalidParameterException,
-                                                                                                               UserNotAuthorizedException,
-                                                                                                               PropertyServerException
-    {
-        final String methodName                     = "createDatabaseDerivedColumn";
-        final String parentElementGUIDParameterName = "databaseTableGUID";
-        final String propertiesParameterName        = "databaseColumnProperties";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}/columns/derived";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  databaseColumnProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  integratorGUID,
-                                                                  integratorName,
-                                                                  databaseTableGUID);
-
-        return restResult.getGUID();
-    }
-
-
-    /**
-     * Create a new metadata element to represent a database derived column using an existing metadata element as a template.
-     *
-     * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for the new column
-     *
-     * @return unique identifier of the new metadata element for the database column
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createDatabaseDerivedColumnFromTemplate(String                          userId,
-                                                          String                          integratorGUID,
-                                                          String                          integratorName,
-                                                          String                          templateGUID,
-                                                          String                          databaseTableGUID,
-                                                          DatabaseDerivedColumnProperties databaseColumnProperties) throws InvalidParameterException,
-                                                                                                                           UserNotAuthorizedException,
-                                                                                                                           PropertyServerException
-    {
-        final String methodName                     = "createDatabaseDerivedColumnFromTemplate";
-        final String templateGUIDParameterName      = "templateGUID";
-        final String parentElementGUIDParameterName = "databaseTableGUID";
-        final String propertiesParameterName        = "databaseViewProperties";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}/columns/derived/from-template/{5}";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  databaseColumnProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  integratorGUID,
-                                                                  integratorName,
-                                                                  databaseTableGUID,
-                                                                  templateGUID);
-
-        return restResult.getGUID();
-    }
-
-
-    /**
-     * Create a link to the data value that is used to derive a database column.
-     *
-     * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
-     * @param databaseColumnGUID unique identifier of the derived column
-     * @param databaseQueryProperties properties for the query
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void addQueryTargetToDerivedColumn(String                  userId,
-                                              String                  integratorGUID,
-                                              String                  integratorName,
-                                              String                  databaseColumnGUID,
-                                              DatabaseQueryProperties databaseQueryProperties) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
-    {
-        final String methodName                     = "addQueryTargetToDerivedColumn";
-        final String parentElementGUIDParameterName = "databaseColumnGUID";
-        final String propertiesParameterName        = "databaseQueryProperties";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseColumnGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseQueryProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/query-target";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        databaseQueryProperties,
-                                        serverName,
-                                        userId,
-                                        integratorGUID,
-                                        integratorName,
-                                        databaseColumnGUID);
     }
 
 
@@ -1993,50 +1848,6 @@ public class DatabasePlatformClient extends ConnectedAssetClientBase implements 
         invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
 
         final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        databaseColumnProperties,
-                                        serverName,
-                                        userId,
-                                        integratorGUID,
-                                        integratorName,
-                                        databaseColumnGUID);
-    }
-
-
-    /**
-     * Update the metadata element representing a database derived column.
-     *
-     * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
-     * @param databaseColumnGUID unique identifier of the metadata element to update
-     * @param databaseColumnProperties new properties for the metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void updateDatabaseDerivedColumn(String                          userId,
-                                            String                          integratorGUID,
-                                            String                          integratorName,
-                                            String                          databaseColumnGUID,
-                                            DatabaseDerivedColumnProperties databaseColumnProperties) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
-    {
-        final String methodName               = "updateDatabaseDerivedColumn";
-        final String elementGUIDParameterName = "databaseColumnGUID";
-        final String propertiesParameterName  = "databaseColumnProperties";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/derived/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,

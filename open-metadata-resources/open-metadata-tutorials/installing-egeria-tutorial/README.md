@@ -68,7 +68,10 @@ $ cd server/omag-server*
 $ resources				server-chassis-spring-1.8-SNAPSHOT.jar
 ```
 
-This means you have completed this tutorial and are ready to [choose the next step](..).
+This means you have completed this tutorial and are ready to choose the next step.
+
+----
+* Return to [Egeria Dojo](../egeria-dojo/egeria-dojo-day-2-3-contribution-to-egeria.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
