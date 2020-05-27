@@ -18,7 +18,10 @@ is the `pom.xml` file in the
 When the maven command is run, it passes through the
 hierarchy of modules multiple times.  Each pass processes a particular lifecycle phase of
 the build (this is so, for example, java source files are compiled before the resulting
-object files are packaged into a jar file).
+object files are packaged into a jar file).  This processing
+includes locating and downloading
+external libraries and dependencies.
+The directory where these external dependencies is stored is called `.m2`.
 
 The command to perform a complete rebuild of the project
 is
@@ -29,18 +32,12 @@ $ mvn clean install
 ```
 More details on Maven itself is on the [Apache Maven site](https://maven.apache.org/).
 More details on Egeria's use of Maven is located in [Dependency Management](../Dependency-Management.md).
+The [Building Egeria](../../open-metadata-resources/open-metadata-tutorials/building-egeria-tutorial) tutorial
+covers more details on the build process.
 
-----
-[Apache Maven](https://maven.apache.org) is a tool to describe and manage the technical aspects of a
-software project. For example, it can be used to define various dependencies a project like Egeria has on
-other pre-existing software projects or libraries. This information can then be used during the build
-process to ensure that all of the necessary software is bundled together.
+## Installing Maven
 
-When you are asked to run `mvn clean install` in the [Building the Egeria Source tutorial](../building-egeria-tutorial/task-building-egeria-source.md),
-you are instructing Maven to go through the Egeria source code and build the project: including all of these
-external libraries and dependencies (including downloading them automatically, when needed).
-
-You can check if Maven installed by running the command `mvn --version` from the command-line.
+You can check if Maven installed on your machine by running the command `mvn --version` from the command-line.
 
 Maven can be installed:
 
