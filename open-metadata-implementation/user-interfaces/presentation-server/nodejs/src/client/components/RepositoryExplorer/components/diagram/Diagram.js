@@ -209,8 +209,8 @@ export default function Diagram(props) {
       .attr('y2',            node_radius*2.0)
       .attr('stroke',       egeria_primary_color_string)       
       .attr('stroke-width', '2px')        
-      .on("click", d => { nodeClicked(d.id); })  // The node's id is the entityGUID
-      .on("dblclick",function(d) { unpin(d); })
+      .on("click", d => { if (d3.event.shiftKey) {unpin(d);} else {nodeClicked(d.id); }})   // The node's id is the entityGUID
+      //.on("dblclick",function(d) { unpin(d); })
       ;
 
     enter_set.append('circle')
@@ -230,7 +230,7 @@ export default function Diagram(props) {
       .attr("stroke-width", "0")
       .attr("dx",           20)
       .attr("dy",           ".35em")
-      .on("click", d => { nodeClicked(d.id); })  // The node's id is the entityGUID
+      .on("click", d => { if (d3.event.shiftKey) {unpin(d);} else {nodeClicked(d.id); }})   // The node's id is the entityGUID
       ;
 
     /* Check all labels are up to date.

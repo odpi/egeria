@@ -82,6 +82,11 @@ const RepoServerContextProvider = (props) => {
    */ 
   const repositoryPOST = (uri, bodyParms, callback) => {
 
+    if (identificationContext.userId === "") {
+      alert("There is no user context, please login to the UI");
+      return;
+    }
+    
     const url =  identificationContext.getRestURL("rex") + "/" + uri;
     //console.log("url is "+url);
 
