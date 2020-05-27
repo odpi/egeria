@@ -27,7 +27,7 @@ export default function Diagram(props) {
   console.log("Diagram: being rendered ");
 
   
-  const width                       = 1100;
+  const width                       = 1070;
   const height                      = 1100;
   const node_radius                 = 10;
   const node_margin                 = 20;  // note that this is only the basis for a computed margin
@@ -218,8 +218,8 @@ export default function Diagram(props) {
       .attr('stroke',       egeria_primary_color_string)       
       .attr('stroke-width', '2px')
       .attr('fill',         'white')      
-      .on("click", d => { nodeClicked(d.id); })  // The node's id is the entityGUID
-      .on("dblclick",function(d) { unpin(d); })
+      .on("click", d => { if (d3.event.shiftKey) {unpin(d);} else {nodeClicked(d.id); }})  // The node's id is the entityGUID
+      //.on("dblclick",function(d) { unpin(d); })
       ;
 
     enter_set.append('text')  
@@ -360,7 +360,7 @@ export default function Diagram(props) {
     const nodes = svg.selectAll(".node")   // TODO - try to move this out as a cpt let variable
 
     // Keep nodes in the viewbox, with a safety margin so that (curved) links are unlikely to stray...
-    nodes.attr('cx',function(d) { return d.x = Math.max(node_margin, Math.min(width  - 4 * node_margin, d.x)); });
+    nodes.attr('cx',function(d) { return d.x = Math.max(node_margin, Math.min(width  - 8 * node_margin, d.x)); });
     nodes.attr('cy',function(d) { return d.y = Math.max(node_margin, Math.min(height -     node_margin, d.y)); });
     nodes.attr('transform', function(d) { return "translate(" + d.x + "," + d.y + ")";});
     
