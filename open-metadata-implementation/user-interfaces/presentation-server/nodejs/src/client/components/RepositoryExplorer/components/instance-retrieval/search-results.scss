@@ -5,13 +5,12 @@
 .dialog-text {
   text-align     : left;
   font-size      : 12px;
-  padding        : 20px;
+  padding        : 5px;
 }
 
 .dialog-list {
   margin-left    : 20px;
-  margin-bottom  : 5px;
-  padding        : 10px;
+  padding        : 5px;
 }
 
 .status-update {
@@ -20,15 +19,20 @@
 }
 
 .search-results-area {
-  height         : 250px;
-  width          : 700px; 
+  height         : 200px;
+  width          : 750px; 
   overflow       : auto;
 }
 
 .search-results-list {
   text-align     : 'left';  
-  padding        : 20px;
+  padding        : 5px 20px 5px 20px;
 };
+
+.search-result-label {
+  padding       : 5px;
+  font-size     : 12px;
+}
 
 .multiselect-button-container {
   height         : 50px;

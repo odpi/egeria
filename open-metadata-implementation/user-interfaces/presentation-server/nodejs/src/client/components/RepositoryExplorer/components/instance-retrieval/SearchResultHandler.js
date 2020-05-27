@@ -67,15 +67,15 @@ export default function SearchResultHandler(props) {
       
         <div  className="dialog-text">
                   
-          <p>
+          <p  className="dialog-text">
           {searchCategory} search on server {serverName} using expression &quot;{searchText}&quot;
           </p>
-          <p>
+          <p  className="dialog-text">
           Type filter : 
             {searchType !== "" ? " "+searchType : " none"}
           </p>
           
-          <p>
+          <p  className="dialog-text">
           Classification filters : 
             {searchClassifications !== null && searchClassifications.length>0 
               ? searchClassifications.map(c => <li className="details-sublist-item" key={c}> {c}  </li>)
@@ -150,15 +150,15 @@ export default function SearchResultHandler(props) {
         if (searchCategory === "Entity") {
           resultsDisplay = (  
             <div>
-              <p>
+              <p  className="dialog-text">
               <b>Entities</b>
               </p>
               <div className="search-results-list">
                 {results.map(res => ( 
                  <div key={res.entityGUID}>
-                   <label key={res.entityGUID}> 
+                   <label className="search-result-label" key={res.entityGUID}> 
                    <input type="checkbox" id={res.entityGUID} value={res.checked} onChange={resultToggled} checked={res.checked}/>
-                     {res.label} {res.entityGUID} homed in repository {res.metadataCollectionName}          
+                     {res.label} ({res.entityGUID}) homed in repository {res.metadataCollectionName}          
                    </label> 
                    <br/> 
                  </div>
@@ -170,15 +170,15 @@ export default function SearchResultHandler(props) {
         else { // Relationships...
           resultsDisplay = (  
             <div>
-              <p>
+              <p  className="dialog-text">
               <b>Relationships</b>
               </p>
               <div className="search-results-list">
                 {results.map(res => ( 
                   <div key={res.relationshipGUID}>
-                    <label key={res.relationshipGUID}> 
-                    <input type="checkbox" id={res.relationshipGUID} value={res.checked} onChange={resultChecked} checked={res.checked}/>
-                      {res.label} {res.relationshipGUID} homed in repository {res.metadataCollectionName}          
+                    <label  className="search-result-label" key={res.relationshipGUID}> 
+                    <input type="checkbox" id={res.relationshipGUID} value={res.checked} onChange={resultToggled} checked={res.checked}/>
+                      {res.label} ({res.relationshipGUID}) homed in repository {res.metadataCollectionName}          
                     </label> 
                     <br/> 
                  </div>
@@ -194,15 +194,15 @@ export default function SearchResultHandler(props) {
          <div  className="dialog-text">
       
         
-           <p>
+           <p  className="dialog-text">
            {searchCategory} search on server {serverName} using expression &quot;{searchText}&quot;
            </p>
-           <p>
+           <p  className="dialog-text">
            Type filter : 
              {searchType !== "" ? " "+searchType : " none"}
            </p>
         
-           <p>
+           <p  className="dialog-text">
            Classification filters : 
              {searchClassifications !== null && searchClassifications.length>0 
                ? searchClassifications.map(c => <li className="details-sublist-item" key={c}> {c}  </li>)
@@ -210,7 +210,7 @@ export default function SearchResultHandler(props) {
            </p>
        
 
-           <p>
+           <p  className="dialog-text">
            Please select instances to add to the graph.  
            </p>     
 
