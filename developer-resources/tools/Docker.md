@@ -45,6 +45,8 @@ is installed like a standard application.
 Once it is installed, it can be launched like any
 application, such as through the launchpad/start menu.
 
+## Next steps
+
 If you are working through the Egeria Dojo, you can
 return to the guide for [Day 1 of the Egeria Dojo](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo/egeria-dojo-day-1-3-1-1-platform-set-up-prerequisites.md)
 

@@ -820,7 +820,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-url-root/server-url-root-for-caller",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-url-root-for-caller",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -831,7 +831,6 @@
 										"{{user}}",
 										"servers",
 										"{{server}}",
-										"server-url-root",
 										"server-url-root-for-caller"
 									]
 								},

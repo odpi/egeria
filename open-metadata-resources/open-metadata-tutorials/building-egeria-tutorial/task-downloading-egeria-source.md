@@ -25,11 +25,14 @@ $ cd egeria
 ```
 
 You are now ready to [build the egeria source](task-building-egeria-source.md).
+
 Alternatively you can [use docker-compose](../lab-infrastructure-guide/running-docker-compose.md)
-to set up the infrastructure to run the [Hands on Labs](../../open-metadata-labs)
+to set up the infrastructure to run the [Open Metadata Labs](../../open-metadata-labs).
+
+If you are working on the Dojo return to [Day 1](../egeria-dojo/egeria-dojo-day-1-3-2-4-second-server.md)
 
 ----
-* Return to [Egeria Dojo](../egeria-dojo/egeria-dojo-day-1-3-2-running-metadata-servers.md)
+* Return to [Egeria Dojo](../egeria-dojo/egeria-dojo-day-1-3-2-4-second-server.md)
 * Return to [Building Egeria Tutorial](.)
 
 

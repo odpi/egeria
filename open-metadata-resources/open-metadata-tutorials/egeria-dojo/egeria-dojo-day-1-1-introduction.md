@@ -16,7 +16,7 @@ This session provides background information to the Egeria project
 using a presentation.
 
 The charts for the presentation are located here:
-[https://github.com/odpi/data-governance/tree/master/workshops/may-2020/egeria-dojo-day-1-1-introduction.pptx](https://github.com/odpi/data-governance/tree/master/workshops/may-2020/egeria-dojo-day-1-1-introduction.pptx).
+[https://github.com/odpi/data-governance/tree/master/workshops/may-2020/egeria-dojo-day-1-1-introduction.pptx](https://github.com/odpi/data-governance/tree/master/workshops/may-2020).
 
 
 ## Test yourself
