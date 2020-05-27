@@ -25,7 +25,7 @@ export default function ConnectionDetails(props) {
    * Handler for change to instance GUID field
    */
   const updatedServerName = (evt) => {
-    //console.log("ConnectionDetails: serverName updated, now :"+evt.target.value);
+    console.log("ConnectionDetails: serverName being updated to :"+evt.target.value);
     repoServerContext.setRepositoryServerName(evt.target.value);
   }
 
@@ -33,7 +33,7 @@ export default function ConnectionDetails(props) {
    * Handler for change to instance GUID field
    */
   const updatedServerURLRoot = (evt) => {
-    //console.log("ConnectionDetails: serverURLRoot updated, now :"+evt.target.value);
+    console.log("ConnectionDetails: serverURLRoot updated, now :"+evt.target.value);
     repoServerContext.setRepositoryServerURLRoot(evt.target.value);
   }
 
@@ -41,7 +41,7 @@ export default function ConnectionDetails(props) {
    * Handler for change to instance GUID field
    */
   const updatedEnterpriseOption = (evt) => {
-    //console.log("ConnectionDetails: enterpriseOption updated to :"+enterpriseOption?"false":"true");
+    console.log("ConnectionDetails: enterpriseOption toggled to :"+repoServerContext.repositoryServerEnterpriseOption?"false":"true");
     repoServerContext.setRepositoryServerEnterpriseOption(!repoServerContext.repositoryServerEnterpriseOption);
   }
 
@@ -64,13 +64,13 @@ export default function ConnectionDetails(props) {
 
         <label htmlFor="serverNameField">Server name: </label>
         <input name="serverNameField"
-           value = { repoServerContext.serverName }      
+           value = { repoServerContext.repositoryServerName }      
            onChange = { updatedServerName }   />
         <br />
 
         <label htmlFor="serverURLRootField">Server URL root: </label>
         <input name="serverURLRootField"
-           value = { repoServerContext.serverURLRoot }      
+           value = { repoServerContext.repositoryServerURLRoot }      
            onChange = { updatedServerURLRoot }  /> 
        <br />
          
@@ -79,7 +79,7 @@ export default function ConnectionDetails(props) {
                id="cbEnterprise" 
                name="cbEnterprise" 
                onChange={updatedEnterpriseOption} 
-               value={ repoServerContext.enterpriseOption }  />
+               value={ repoServerContext.repositoryServerEnterpriseOption }  />
         <br />
           
         <button className="top-control-button"  onClick = { setServerDetails } >

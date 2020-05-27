@@ -251,7 +251,7 @@ export default function SearchResultHandler(props) {
   // Emulate componentDidMount - to append the wrapper element
   const componentDidMount = () => {
 
-    console.log("SRH: status is "+props.status);
+    //: status is "+props.status);
 
     //if (props.live) {
     //  if (results !== undefined && results !== null && results.length > 0) {
@@ -264,17 +264,17 @@ export default function SearchResultHandler(props) {
     //  }   
     //}
     if (props.status === "idle") {
-      console.log("SRH: do nothing");
+      //console.log("SRH: do nothing");
     }
     if (props.status === "pending") {
-      console.log("SRH: trigger portal");
+      //console.log("SRH: trigger portal");
       triggerPortal();
     }
     if (props.status === "cancelled") {
-      console.log("SRH: do nothing");
+      //console.log("SRH: do nothing");
     }
     if (props.status === "complete") {
-      console.log("SRH: trigger portal");
+      //console.log("SRH: trigger portal");
       triggerPortal();
     }
 

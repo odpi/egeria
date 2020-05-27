@@ -21,6 +21,9 @@ export const RepoServerContextConsumer = RepoServerContext.Consumer;
 
 const RepoServerContextProvider = (props) => {
 
+  
+
+
   const identificationContext = useContext(IdentificationContext);
   
 
@@ -31,16 +34,28 @@ const RepoServerContextProvider = (props) => {
   const [repositoryServerURLRoot, setRepositoryServerURLRoot]                   = useState("http://localhost:8082");  
   const [repositoryServerEnterpriseOption, setRepositoryServerEnterpriseOption] = useState(false);  
 
+  console.log("RepoServerContext: being rendered, serverName: "+repositoryServerName);
+  //console.log("RepoServerContext: being rendered, serverName: "+repositoryServerName+" ent option: "+repositoryServerEnterpriseOption.toString());
 
   /*
    *  Set all three of the repository server and scope attributes
    */
-  const setServerDetails = (details) => {
-    setRepositoryServerName(details.serverName);
-    setRepositoryServerURLRoot(details.serverURLRoot);
-    setRepositoryServerEnterpriseOption(details.enterpriseOption);
-  };
+  //const setServerDetails = async (details) => {
+//    await setRepositoryServerName(details.serverName);
+//    setRepositoryServerURLRoot(details.serverURLRoot);
+//    setRepositoryServerEnterpriseOption(details.enterpriseOption);
+//  };
    
+  // TODO - if this works you will need to add similar mewthods for serverName and serverURLRoot
+  const getRepositoryServerEnterpriseOption = () => {
+    console.log("RepoServerContext: getRepositoryServerEnterpriseOption will return "+repositoryServerEnterpriseOption.toString());
+    return repositoryServerEnterpriseOption;
+  }
+
+  const getRepositoryServerName = () => {
+    console.log("RepoServerContext: getRepositoryServerName will return "+repositoryServerName);
+    return repositoryServerName;
+  }
 
   /*
    * Define the basic body parameters that are mandatory across requests to the Repository Explorer API
@@ -86,13 +101,15 @@ const RepoServerContextProvider = (props) => {
   return (
     <RepoServerContext.Provider
       value={{
-        setServerDetails,
+        //setServerDetails,
         repositoryServerName, 
         setRepositoryServerName,
+        getRepositoryServerName,
         repositoryServerURLRoot, 
         setRepositoryServerURLRoot,
         repositoryServerEnterpriseOption, 
-        setRepositoryServerEnterpriseOption,       
+        setRepositoryServerEnterpriseOption,      
+        getRepositoryServerEnterpriseOption,      
         repositoryPOST              
       }}
     >      

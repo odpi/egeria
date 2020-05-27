@@ -23,9 +23,13 @@ export const InstancesContextConsumer = InstancesContext.Consumer;
 
 const InstancesContextProvider = (props) => {
 
+
   const repositoryServerContext = useContext(RepoServerContext);
   //console.log("InstancesContext repositoryServerContext", repositoryServerContext);
 
+  console.log("InstancesContext: being rendered, serverName: "+repositoryServerContext.repositoryServerName);
+  //console.log("InstancesContext: being rendered, serverName is: "+repositoryServerContext.repositoryServerName+" ent option: "+repositoryServerContext.repositoryServerEnterpriseOption.toString());
+  
 
   /*
    * The focusInstance is the instance (entity or relationship) that is the user's current
@@ -464,10 +468,12 @@ const InstancesContextProvider = (props) => {
    * A component has requested that the focus is changed to the entity with the specified GUID.
    */
   const changeFocusEntity = (entityGUID) => {
+    console.log("InstancesContext: changeFocusEntity called with guid "+entityGUID);
     /*
      * If the entity is the current focus - deselect it.
      */
     if (entityGUID === focus.instanceGUID) {
+      console.log("InstancesContext: changeFocusEntity will clear focus");
       clearFocusInstance();         
     }
 
@@ -483,8 +489,13 @@ const InstancesContextProvider = (props) => {
         const gen = gens[genId-1];
         const entityDigest = gen.entities[entityGUID];
         const home = entityDigest.metadataCollectionName;
-        const serverName = repositoryServerContext.repositoryServerName;              
-        const enterpriseOption = repositoryServerContext.repositoryServerEnterpriseOption;
+        const serverName = repositoryServerContext.repositoryServerName;            
+        // TODO - clean up experiments!
+        console.log("InstancesContext: changeFocusEntity see repo context serverName as "+serverName);  
+        console.log("InstancesContext: changeFocusEntity call repo context getRepositoryServerName");
+        const serverName2 = repositoryServerContext.getRepositoryServerName();
+        console.log("InstancesContext: changeFocusEntity got back "+serverName2);
+        const enterpriseOption = repositoryServerContext.getRepositoryServerEnterpriseOption();
         if (enterpriseOption === true || serverName === home ) {
           loadEntity(entityGUID);                  
         }
@@ -836,7 +847,7 @@ const InstancesContextProvider = (props) => {
         setGens,
         getLatestActiveGenId,
         removeGen,       
-        getLatestGen,
+        getLatestGen,        
         guidToGenId              // only added this for debug in i-r - should be encapsulated in InstancesContext
       }}
     >      

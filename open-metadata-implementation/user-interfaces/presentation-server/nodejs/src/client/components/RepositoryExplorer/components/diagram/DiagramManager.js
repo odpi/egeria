@@ -9,7 +9,7 @@ import Diagram                            from "./Diagram";
 
 import { InstancesContext }               from "../../contexts/InstancesContext";
 
-
+import { RepoServerContext }                          from "../../contexts/RepoServerContext";
 
 
 export default function DiagramManager(props) {
@@ -17,7 +17,11 @@ export default function DiagramManager(props) {
   // Access instancesContext to get access to gens
   const instancesContext = useContext(InstancesContext);
  
-  
+  // TODO - state update experiment
+  const repositoryServerContext = useContext(RepoServerContext);
+
+
+  console.log("DiagramManager: being rendered, severName: "+repositoryServerContext.repositoryServerName+" ent option: "+repositoryServerContext.repositoryServerEnterpriseOption.toString());
 
   
   /*
@@ -267,8 +271,22 @@ export default function DiagramManager(props) {
    */
   const onNodeClick = (guid) => {    
 
+    const repositoryServerName = repositoryServerContext.getRepositoryServerName();
+    //const enterpriseOption = repositoryServerContext.getRepositoryServerEnterpriseOption();
+    console.log("DiagramManager: onNodeClick, severName: "+repositoryServerName);
+
     instancesContext.changeFocusEntity(guid);
     
+  };
+
+  const simNodeClick = () => {   
+    const repositoryServerName = repositoryServerContext.getRepositoryServerName();
+    //const enterpriseOption = repositoryServerContext.getRepositoryServerEnterpriseOption(); 
+    console.log("DiagramManager: simNodeClick, severName: "+repositoryServerName);
+    console.log("DiagramManager: simNodeClick, calling onNodeClick...");
+    onNodeClick(nodeArray[0].entityGUID);
+    
+    //instancesContext.changeFocusEntity(guid);    
   };
 
   /*
@@ -328,6 +346,10 @@ export default function DiagramManager(props) {
     <div>
 
       <h2>Diagram Manager</h2>
+
+      <button className="top-control-button"  onClick = { simNodeClick } >
+          Simulate a node click
+        </button>
       
       <Diagram nodes={nodeArray} 
                links={linkArray} 

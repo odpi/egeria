@@ -12,7 +12,7 @@ import * as DiagramUtils                         from "./DiagramUtils";
 
 import { InstancesContext }                      from "../../contexts/InstancesContext";
 
-
+import { RepoServerContext }                          from "../../contexts/RepoServerContext";
 
 
 export default function Diagram(props) {
@@ -22,7 +22,9 @@ export default function Diagram(props) {
   // Access instancesContext to get access to focus information
   const instancesContext = useContext(InstancesContext);
 
-   
+  const repositoryServerContext = useContext(RepoServerContext);
+
+  console.log("Diagram: being rendered ");
 
   
   const width                       = 1100;
@@ -60,7 +62,7 @@ export default function Diagram(props) {
   let loc_force;
 
   /*
-   * The use of diagramFocusGUID is to endsure that the instancesContext focus is visible in the 
+   * The use of diagramFocusGUID is to ensure that the instancesContext focus is visible in the 
    * Diagram component. A function can either use it, or call instancesContext.focus directly.
    */ 
   let diagramFocusGUID;
@@ -167,11 +169,11 @@ export default function Diagram(props) {
         });
         /* Catch any disconnected nodes */
         props.nodes.forEach( n => {          
-          console.log("Diagram - node "+n.label+" has start pos x = "+n.x+" y = "+n.y);
+          //console.log("Diagram - node "+n.label+" has start pos x = "+n.x+" y = "+n.y);
           if (n.x === null || n.y === null) {
              n.x = width/2;
              n.y = DiagramUtils.yPlacement(n, height, props.numGens);
-             console.log("Diagram - node "+n.label+"  assigned start pos x = "+n.x+" y = "+n.y);
+             //console.log("Diagram - node "+n.label+"  assigned start pos x = "+n.x+" y = "+n.y);
           }          
         });      
       
@@ -292,9 +294,9 @@ export default function Diagram(props) {
 
 
   /*
-   *  This function is called to determine whether the color of a node - if the node is selected then a decision
-   *  will alerady have been made about color. So assume it is not selected. Nodes from different repositories in
-   *  different colors.  
+   *  This function is called to determine the color of a node - if the node is selected then a decision
+   *  will already have been made about color. So assume it is not selected. Nodes from different repositories 
+   *  are filled using different colors.
    */
   const nodeColor = (d) => {
 
@@ -402,7 +404,7 @@ export default function Diagram(props) {
   //console.log("Diagram2: render method");
 
   const createSim = () => {
-    //console.log("Diagram2: creating sim");
+    console.log("Diagram: create sim");
 
     if (!loc_force) {
       loc_force = d3.forceSimulation(props.nodes)
@@ -448,21 +450,22 @@ export default function Diagram(props) {
 
   const startSim = () => {
     if (loc_force) {      
-      //console.log("Diagram2: starting sim");    
+      console.log("Diagram: restart sim");    
       loc_force.restart();
     }
   };
   
   const updateData = () => {
+    console.log("Diagram: updateData");
     //console.log("Diagram2: useEffect binding links");
     updateLinks();
     //console.log("Diagram2: useEffect binding nodes");
     updateNodes();
   };
 
-  const setDiagramFocus = () => {
+  const setDiagramFocus = () => {    
     diagramFocusGUID = instancesContext.focus.instanceGUID;
-    //console.log("Diagram2: diagramFocusGUID "+diagramFocusGUID);
+    console.log("Diagram: setDiagramFocus to guid "+diagramFocusGUID);
   };
 
 
@@ -482,7 +485,8 @@ export default function Diagram(props) {
       }
     },
     // dependencies...  
-    [d3Container.current, props.nodes, props.links, instancesContext.focus]
+    // WORKS [d3Container.current, props.nodes, props.links, instancesContext.focus, repositoryServerContext]
+    [d3Container.current, props.nodes, props.links, instancesContext.focus, props.onNodeClick, props.onLinkClick]
   )
  
  
