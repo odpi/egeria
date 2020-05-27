@@ -3,15 +3,19 @@
 
 
 .dialog-text {
-  text-align : left;
-  font-size  : 12px;
-  padding    : 20px;
+  text-align    : left;
+  font-size     : 12px;
+  padding       : 5px;
 }
 
 .dialog-list {
   margin-left   : 20px;
+  padding       : 5px;  
+}
+
+.dialog-list-item {  
   margin-bottom : 5px;
-  padding       : 10px;
+  padding       : 5px;
   font-size     : 12px;
 }
 
@@ -20,9 +24,8 @@
   margin-bottom  : 30px;  
 }
 
-
 .traversal-results-area {
-  height         : 250px;
+  height         : 200px;
   width          : 700px; 
   overflow       : auto;
 }
@@ -45,6 +48,11 @@
   float      : left;
   width      : 33.33%;
   text-align : left;
+}
+
+.traversal-filter-label {
+  padding       : 5px;
+  font-size     : 12px;
 }
 
 .multiselect-button-container {

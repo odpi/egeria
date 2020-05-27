@@ -78,20 +78,20 @@ export default function TraversalResultHandler(props) {
       
         <div className="dialog-text">
             
-          <p>
+          <p className="dialog-text">
           To restrict the traversal to specific types, select the types to include.
           </p>
   
-          <p>
+          <p  className="dialog-text">
           In each column:
           </p>
   
           <ul className="dialog-list">
-            <li>If NO types are checked, there is no filtering for the category. All types are permitted.</li>
-            <li>If ANY (or all) types are checked, the traversal will be restricted to the checked types.</li>
+            <li className="dialog-list-item">If NO types are checked, there is no filtering for the category. All types are permitted.</li>
+            <li className="dialog-list-item">If ANY (or all) types are checked, the traversal will be restricted to the checked types.</li>
           </ul>
           
-          <p>
+          <p  className="dialog-text">
           A neighboring entity can be reached if its entity type and connecting relationship type 
           are permitted and the neighboring entity has at least one of the checked classifications.          
           </p>
@@ -160,10 +160,10 @@ export default function TraversalResultHandler(props) {
           <div className="table" >
             <div className="row">
               <div className="column">
-                <p><b>Entity Types</b></p>
+                <p className="dialog-text"><b>Entity Types</b></p>
                 {entityTypes.map(type => ( 
                   <div key={type.name}>
-                    <label key={type.name}> 
+                    <label className="traversal-filter-label" key={type.name}> 
                       <input type="checkbox" id={type.name} value={type.checked} onChange={entityFilterChanged} checked={type.checked}/>
                       {type.name} ( {type.count} )         
                     </label> 
@@ -172,10 +172,10 @@ export default function TraversalResultHandler(props) {
                 ))}    
               </div>
               <div className="column">
-                <p><b>Relationship Types</b></p>
+                <p className="dialog-text"><b>Relationship Types</b></p>
                 {relationshipTypes.map(type => ( 
                   <div key={type.name}>
-                    <label key={type.name}> 
+                    <label  className="traversal-filter-label" key={type.name}> 
                       <input type="checkbox" id={type.name} value={type.checked} onChange={relationshipFilterChanged} checked={type.checked}/>
                       {type.name} ( {type.count} )         
                     </label> 
@@ -184,10 +184,10 @@ export default function TraversalResultHandler(props) {
                 ))}    
               </div>
               <div className="column">
-                <p><b>Classification Types</b></p>
+                <p className="dialog-text"><b>Classification Types</b></p>
                 {classificationTypes.map(type => ( 
                   <div key={type.name}>
-                    <label key={type.name}> 
+                    <label  className="traversal-filter-label" key={type.name}> 
                       <input type="checkbox" id={type.name} value={type.checked} onChange={classificationFilterChanged} checked={type.checked}/>
                       {type.name} ( {type.count} )         
                     </label> 
@@ -208,20 +208,20 @@ export default function TraversalResultHandler(props) {
       
           <div className="dialog-text">
           
-          <p>
+          <p  className="dialog-text">
           If you wish to restrict the traversal to specific types, please select the types to include. 
           </p>
 
-          <p>
+          <p  className="dialog-text">
           For each category (column):
           </p>
 
           <ul className="dialog-list">
-            <li>If NO types are checked, there is no filtering for the category. All types are permitted.</li>
-            <li>If ANY (or all) types are checked, the traversal will be restricted to the checked types.</li>
+            <li  className="dialog-list-item">If NO types are checked, there is no filtering for the category. All types are permitted.</li>
+            <li  className="dialog-list-item">If ANY (or all) types are checked, the traversal will be restricted to the checked types.</li>
           </ul>
         
-          <p>
+          <p  className="dialog-text">
           A neighboring entity can be reached if its entity type is permitted, it has one or more of any
           required classifications and the connecting relationship type is permitted.
           </p>
@@ -263,20 +263,20 @@ export default function TraversalResultHandler(props) {
   // Emulate componentDidMount - to append the wrapper element
   const componentDidMount = () => {
     
-    console.log("TRH: status is "+props.status);
+    //console.log("TRH: status is "+props.status);
 
     if (props.status === "idle") {
-      console.log("TRH: do nothing");
+      //console.log("TRH: do nothing");
     }
     if (props.status === "pending") {
-      console.log("TRH: trigger portal");
+      //console.log("TRH: trigger portal");
       triggerPortal();
     }
     if (props.status === "cancelled") {
-      console.log("TRH: do nothing");
+      //console.log("TRH: do nothing");
     }
     if (props.status === "complete") {
-      console.log("TRH: trigger portal");
+      //console.log("TRH: trigger portal");
       triggerPortal();
     }
 
