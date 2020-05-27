@@ -58,7 +58,7 @@ in either a docker container or kubernetes,
 the `baseURL` variable will probably need to be changed to
 `http://localhost:18080`.
 
-![Egeria environment variable values](../../../developer-resources/tools/postman-egeria-environment-values.png)
+![Egeria environment variable values](../../../developer-resources/tools/postman-egeria-environment-values.png#pagewidth)
 
 These values can be changed at any time when you are using
 Postman so you can direct requests to different servers and
@@ -71,16 +71,21 @@ Postman request collections as new APIs are added
 to the platform.
 
 The most popular collections are for the 
-platform and administration services.
+platform and administration services.  We will also use the collections from the repository services and asset owner
+OMAS.
 
 These collections are located in GitHub at the following
 locations:
 
-* [https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/platform-services/Egeria-platform-services.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/platform-services/Egeria-platform-services.postman_environment.json)
-* [https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-platform-configuration.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-platform-configuration.postman_environment.json)
-* [https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-server-configuration.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-server-configuration.postman_environment.json)
-* [https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-operational.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-operational.postman_environment.json)
 
+* [https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/platform-services/Egeria-platform-services.postman_collection.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/platform-services/Egeria-platform-services.postman_collection.json)
+* [https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-platform-configuration.postman_collection.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-platform-configuration.postman_collection.json)
+* [https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-server-configuration.postman_collection.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-server-configuration.postman_collection.json)
+* [https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-operational.postman_collection.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-operational.postman_collection.json)
+* [https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/repository-services/Egeria-repository-services-audit-log.postman_collection.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/repository-services/Egeria-repository-services-audit-log.postman_collection.json)
+* [https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/repository-services/Egeria-repository-services-local-repository.postman_collection.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/repository-services/Egeria-repository-services-local-repository.postman_collection.json)
+* [https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/repository-services/Egeria-repository-services-metadata-highway.postman_collection.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/repository-services/Egeria-repository-services-metadata-highway.postman_collection.json)
+* [https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/access-services/asset-owner/Egeria-asset-owner-omas.postman_collection.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/access-services/asset-owner/Egeria-asset-owner-omas.postman_collection.json)
 
 Using the import option again, load each of these collections
 in turn.  You will see them populate the left-hand menu.
