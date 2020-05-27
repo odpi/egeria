@@ -24,33 +24,32 @@ export default function RelationshipDisplay(props) {
     
     return (
       <div className="instance-details-container">
-        <div className="instance-details-item">Relationship {label}</div>
-        <div className="instance-details-item">Added in gen: {gen}</div>        
-        <div className="instance-details-item">Type: {relationship.type.typeDefName}</div>       
-        <div className="instance-details-item">Version: {relationship.version}</div>
-        <div className="instance-details-item">Status: <InstanceStatusDisplay inst={relationship} /></div>
-        <div className="instance-details-item">Properties:</div>
-        <div className="instance-details-item"><InstancePropertiesDisplay properties={relationship.properties} /></div>       
-        <div className="instance-details-item">GUID: {relationship.guid}</div>
-        <div className="instance-details-item">Home Repository: 
+        <div className="instance-details-item">Relationship : {label}</div>
+        <div className="instance-details-item">Added in gen : {gen}</div>        
+        <div className="instance-details-item">Type : {relationship.type.typeDefName}</div>       
+        <div className="instance-details-item">Version : {relationship.version}</div>
+        <div className="instance-details-item">Status : <InstanceStatusDisplay inst={relationship} /></div>
+        <div className="instance-details-item">Properties : { !relationship.properties ? "empty" :
+              <InstancePropertiesDisplay properties={relationship.properties} />}</div>         
+        <div className="instance-details-item">GUID : {relationship.guid}</div>
+        <div className="instance-details-item">Home Repository : 
           <ul className="details-sublist">
             <li className="details-sublist-item">metadataCollectionName : {relationship.metadataCollectionName}</li>
             <li className="details-sublist-item">metadataCollectionId : {relationship.metadataCollectionId}</li>
           </ul>
         </div>
-        <div className="instance-details-item">OMRS Control Properties:
+        <div className="instance-details-item">OMRS Control Properties :
           <ul className="details-sublist">
             <li className="details-sublist-item">createdBy : {relationship.createdBy}</li>
             <li className="details-sublist-item">createTime : {relationship.createTime}</li>
             <li className="details-sublist-item">updatedBy : {relationship.updatedBy ? relationship.updatedBy : "empty"}</li>
             <li className="details-sublist-item">updateTime : {relationship.updateTime ? relationship.updateTime : "empty"}</li>
-            <li className="details-sublist-item">maintainedBy : {relationship.maintainedBy ? 
-                <ul className="details-sublist">
-                  {relationship.maintainedBy.sort().map( (mtr) => <li className="details-sublist-item" key={mtr}> {mtr}</li> )}
-                </ul>
-                :
-                "empty"}
-            </li>          
+            <li className="details-sublist-item">maintainedBy  { !relationship.maintainedBy ? "empty" :
+              <ul className="details-sublist">
+                {relationship.maintainedBy.sort().map( (mtr) => <li className="details-sublist-item" key={mtr}> {mtr}</li> )}      
+              </ul>
+              }              
+            </li>         
             <li className="details-sublist-item">instanceLicense : {relationship.instanceLicense ? relationship.instanceLicense : "empty"}</li>
             <li className="details-sublist-item">instanceProvenanceType : {relationship.instanceProvenanceType ? relationship.instanceProvenanceType : "empty"}</li> 
             <li className="details-sublist-item">replicatedBy : {relationship.replicatedBy ? relationship.replicatedBy : "empty"}</li>

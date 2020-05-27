@@ -60,12 +60,11 @@ export default function InstancePropertiesDisplay(props) {
   }
   else {
    
-    properties = (  
-      <div>       
-         <ul className="details-sublist">           
-           {expandProperties(instProps)}          
-        </ul>
-      </div>
+    properties = (              
+      <ul className="details-sublist">       
+       {expandProperties(instProps)}          
+      </ul>
+      
     );
   }
 

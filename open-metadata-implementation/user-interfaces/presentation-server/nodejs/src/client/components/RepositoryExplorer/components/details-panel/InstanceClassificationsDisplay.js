@@ -41,11 +41,11 @@ export default function InstanceClassificationsDisplay(props) {
   if (instClassifications === undefined || instClassifications === null || instClassifications.length ===0 ) {
 
     classifications = (
-      <div>
+     
         <ul className="details-sublist">           
           <li>list is empty</li>     
         </ul>        
-      </div>
+     
     )
   }
 
