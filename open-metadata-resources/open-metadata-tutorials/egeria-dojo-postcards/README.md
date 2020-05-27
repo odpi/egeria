@@ -10,7 +10,7 @@ This session challenges participants to create a markdown file in this folder an
 README file.
 
 ## List of Postcards
-
+from [Jerome Nilmeier](from-Jerome-Nilmeier.md)
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
