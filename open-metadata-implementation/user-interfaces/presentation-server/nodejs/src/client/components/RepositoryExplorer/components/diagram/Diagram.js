@@ -17,11 +17,8 @@ import { InstancesContext }                                from "../../contexts/
 
 export default function Diagram(props) {
 
-  console.log("Diagram: being rendered ");
-
   // Access instancesContext to get access to focus information
   const instancesContext = useContext(InstancesContext);
-
   
   /*
    * We need a force-directed sim, which should be created on load of the component.
@@ -59,7 +56,6 @@ export default function Diagram(props) {
   const pinningRef = useRef();
   pinningRef.current = pinningOption;
   
-  console.log("Diagram: pinning is "+pinningOption.toString());
   
   const width                       = 1070;
   const height                      = 1100;
@@ -75,13 +71,15 @@ export default function Diagram(props) {
    *  set to - this is done via a CSS variable. For most purposes the CSS variable is
    *  sufficient - but the network-diagram will dynamically color switch as elements are
    *  selected - so we need the primary color accessible at runtime. We also need to
-   * set up a slightly dark shade of the primary color for text labels against white
-   * background.
+   *  set up a slightly dark shade of the primary color for text labels against white
+   *  background.
    */
 
-   // TODO - colors are currently hard-coded rather than being retrieved from computed styles
-   // styles = window.getComputedStyle(this);
-   // egeria_primary_color_string = styles.getPropertyValue('--egeria-primary-color');
+   /*
+    * NOTE - colors are currently hard-coded rather than being retrieved from computed styles
+    * styles = window.getComputedStyle(this);
+    * egeria_primary_color_string = styles.getPropertyValue('--egeria-primary-color');
+    */
    const splitPrimary             = egeria_primary_color_string.split(' ');
    const strippedPrimary          = splitPrimary[splitPrimary.length-1];   
    const egeria_text_color_string = DiagramUtils.alterShade(strippedPrimary, -20);
@@ -194,12 +192,10 @@ export default function Diagram(props) {
           }      
         });
         /* Catch any disconnected nodes */
-        props.nodes.forEach( n => {          
-          //console.log("Diagram - node "+n.label+" has start pos x = "+n.x+" y = "+n.y);
+        props.nodes.forEach( n => {
           if (n.x === null || n.y === null) {
              n.x = width/2;
              n.y = DiagramUtils.yPlacement(n, height, props.numGens);
-             //console.log("Diagram - node "+n.label+"  assigned start pos x = "+n.x+" y = "+n.y);
           }          
         });      
       
@@ -236,7 +232,6 @@ export default function Diagram(props) {
       .attr('stroke',       egeria_primary_color_string)       
       .attr('stroke-width', '2px')        
       .on("click", d => { if (d3.event.shiftKey) {unpin(d);} else {nodeClicked(d.id); }})   // The node's id is the entityGUID
-      //.on("dblclick",function(d) { unpin(d); })
       ;
 
     enter_set.append('circle')
@@ -245,7 +240,6 @@ export default function Diagram(props) {
       .attr('stroke-width', '2px')
       .attr('fill',         'white')      
       .on("click", d => { if (d3.event.shiftKey) {unpin(d);} else {nodeClicked(d.id); }})  // The node's id is the entityGUID
-      //.on("dblclick",function(d) { unpin(d); })
       ;
 
     enter_set.append('text')  
@@ -298,17 +292,12 @@ export default function Diagram(props) {
 
  
   const nodeClicked = (guid) => {
-   
-    //const focusGUID = instancesContext.focus.instanceGUID;
-    //console.log("Diagram: nodeClicked thinks that focusGUID is "+focusGUID);
+
     props.onNodeClick(guid);
-   
   }
 
   const linkClicked = (guid) => {
-   
-    //const focusGUID = instancesContext.focus.instanceGUID;
-    //console.log("Diagram: linkClicked thinks that focusGUID is "+focusGUID);
+
     props.onLinkClick(guid);
   }
 
@@ -371,13 +360,11 @@ export default function Diagram(props) {
    */
   const tick = () => {
 
-    // TODO - performance refinements??
-
     const focusGUID = diagramFocusGUID;
    
-    const svg = d3.select(d3Container.current);  // TODO - try to move this out as well....
+    const svg = d3.select(d3Container.current);
 
-    const nodes = svg.selectAll(".node")   // TODO - try to move this out as a cpt let variable
+    const nodes = svg.selectAll(".node");
 
     // Keep nodes in the viewbox, with a safety margin so that (curved) links are unlikely to stray...
     nodes.attr('cx',function(d) { return d.x = Math.max(node_margin, Math.min(width  - 8 * node_margin, d.x)); });
@@ -405,7 +392,6 @@ export default function Diagram(props) {
        .attr('d', function(d) { return DiagramUtils.path_func(d, link_distance).path; })
        .lower();
 
-       // TODO - do not call path_func twice below...
     links.selectAll('text')
        .attr("x", function(d) { return d.x = DiagramUtils.path_func(d, link_distance).midpoint.x; } )
        .attr("y", function(d) { return d.y = DiagramUtils.path_func(d, link_distance).midpoint.y; } )
@@ -421,17 +407,12 @@ export default function Diagram(props) {
             
   };
 
-  //console.log("Diagram2: render method");
 
   const createSim = () => {
-    console.log("Diagram: create sim");
 
     if (!loc_force) {
       loc_force = d3.forceSimulation(props.nodes)
         .force('horiz', d3.forceX(width/2).strength(0.01))
-        //.force('vert', d3.forceY()
-        //  .strength(0.1)
-        //  .y(function(d) {return DiagramUtils.yPlacement(d, height, props.numGens);}))       
         .force('repulsion', d3.forceManyBody().strength(-500))        
         .alphaDecay(.002)
         .alphaMin(0.001)
@@ -475,30 +456,23 @@ export default function Diagram(props) {
   };
 
   const startSim = () => {
-    if (loc_force) {      
-      console.log("Diagram: restart sim");    
+    if (loc_force) {
       loc_force.restart();
     }
   };
   
   const updateData = () => {
-    console.log("Diagram: updateData");
-    //console.log("Diagram2: useEffect binding links");
     updateLinks();
-    //console.log("Diagram2: useEffect binding nodes");
     updateNodes();
   };
 
   const setDiagramFocus = () => {    
     diagramFocusGUID = instancesContext.focus.instanceGUID;
-    //console.log("Diagram: setDiagramFocus to guid "+diagramFocusGUID);
   };
 
   const updatedPinningOption = () => {
-    console.log("Diagram: pinningOption will be set to :"+(!pinningOption).toString());
    
     setPinningOption(!pinningOption);
-    
     if (pinningOption) {
       /*
        * If pinning was true, nodes may be pinned, so ensure all nodes are unpinned
@@ -529,9 +503,6 @@ export default function Diagram(props) {
   )
  
  
-
-
-
   return (
     <div>
 
