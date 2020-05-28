@@ -9,7 +9,6 @@ class VisGraph extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
-        <style>
           :host {
             display: block;
             box-sizing: border-box;
