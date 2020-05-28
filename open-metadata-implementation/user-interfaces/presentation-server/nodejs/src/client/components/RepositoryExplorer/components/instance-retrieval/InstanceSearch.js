@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
@@ -18,13 +18,26 @@ import "./instance-retriever.scss"
 
 export default function InstanceSearch(props) {
 
+  
+
 
   const repositoryServerContext = useContext(RepoServerContext);
 
   const instancesContext        = useContext(InstancesContext);
 
 
+  /*
+   * status records the state of the current search (if any) to allow for cancellation
+   * There is also a useRef for current state so that the callbacks from the POSTs can
+   * read the **current** version of state, which may have changed since the callback 
+   * was registered (i.e. on the POST call). In the event of a cancel, status should 
+   * have changed to 'cancelled' and we need the callback to see the change.
+   */
   const [status, setStatus] = useState("idle");  // { "idle", "pending", "cancelled:", "complete" }
+  const statusRef = useRef();
+  statusRef.current = status;
+
+  console.log("InstanceSearch: rendering, status is "+status);
 
   
   // Search settings may be updated by callbacks from the FilterManager - note that when the user selects a filter type
@@ -127,9 +140,9 @@ export default function InstanceSearch(props) {
    * Handle completion of entity search
    */
   const _findEntities = (json) => {    
-    console.log("_findEntities status is "+status);
+    console.log("_findEntities status is "+status+" and statusRef is "+statusRef.current);
 
-    if (status !== "cancelled" && status !== "complete") {
+    if (statusRef.current !== "cancelled" && statusRef.current !== "complete") {
       if (json !== null) {
         let entityDigests = json.entities;           
         let instances = [];
@@ -162,6 +175,7 @@ export default function InstanceSearch(props) {
     }
 
     else {
+      console.log("InstanceSearch: _findEntities called but search was already cancelled/complete ----> IDLE");
       setStatus("idle");
     }
    
@@ -196,7 +210,7 @@ export default function InstanceSearch(props) {
    */
   const _findRelationships = (json) => {   
    
-    if (status !== "cancelled" && status !== "complete") {
+    if (statusRef.current !== "cancelled" && statusRef.current !== "complete") {
       if (json !== null) {
         let relationshipDigests = json.relationships;      
         //console.log("_findRelationships: got back ..."+relationshipDigests);
