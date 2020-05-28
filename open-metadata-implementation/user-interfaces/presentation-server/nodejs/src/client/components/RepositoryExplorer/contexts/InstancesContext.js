@@ -6,7 +6,7 @@ import React, { createContext, useContext, useState } from "react";
 
 import PropTypes                                      from "prop-types";
 
-import { RepoServerContext }                          from "./RepoServerContext";
+import { RepositoryServerContext }                    from "./RepositoryServerContext";
 
 
 /*
@@ -15,7 +15,7 @@ import { RepoServerContext }                          from "./RepoServerContext"
  * following the completion of a search and the selection by the user of which searched
  * instances they want to add to the graph.
  * 
- * The InstancesContext depends on the RepoServerContext for retrievals and searches.
+ * The InstancesContext depends on the RepositoryServerContext for retrievals and searches.
  */
 export const InstancesContext         = createContext();
 
@@ -24,12 +24,10 @@ export const InstancesContextConsumer = InstancesContext.Consumer;
 const InstancesContextProvider = (props) => {
 
 
-  const repositoryServerContext = useContext(RepoServerContext);
-  //console.log("InstancesContext repositoryServerContext", repositoryServerContext);
+  const repositoryServerContext = useContext(RepositoryServerContext);
 
-  console.log("InstancesContext: being rendered, serverName: "+repositoryServerContext.repositoryServerName);
-  //console.log("InstancesContext: being rendered, serverName is: "+repositoryServerContext.repositoryServerName+" ent option: "+repositoryServerContext.repositoryServerEnterpriseOption.toString());
-  
+  //console.log("InstancesContext: being rendered, serverName: "+repositoryServerContext.repositoryServerName);
+ 
 
   /*
    * The focusInstance is the instance (entity or relationship) that is the user's current

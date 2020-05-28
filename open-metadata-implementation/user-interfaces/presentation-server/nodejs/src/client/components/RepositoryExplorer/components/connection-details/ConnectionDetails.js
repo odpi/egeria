@@ -4,7 +4,7 @@
 
 import React, { useContext }           from "react";
 
-import { RepoServerContext }           from "../../contexts/RepoServerContext";
+import { RepositoryServerContext }     from "../../contexts/RepositoryServerContext";
 
 import { TypesContext }                from "../../contexts/TypesContext";  
 
@@ -17,7 +17,7 @@ import "./connection-details.scss"
 
 export default function ConnectionDetails(props) {
   
-  const repoServerContext = useContext(RepoServerContext);
+  const repositoryServerContext = useContext(RepositoryServerContext);
 
   const typesContext      = useContext(TypesContext);
 
@@ -25,32 +25,32 @@ export default function ConnectionDetails(props) {
    * Handler for change to instance GUID field
    */
   const updatedServerName = (evt) => {
-    console.log("ConnectionDetails: serverName being updated to :"+evt.target.value);
-    repoServerContext.setRepositoryServerName(evt.target.value);
+    //console.log("ConnectionDetails: serverName being updated to :"+evt.target.value);
+    repositoryServerContext.setRepositoryServerName(evt.target.value);
   }
 
   /*
    * Handler for change to instance GUID field
    */
   const updatedServerURLRoot = (evt) => {
-    console.log("ConnectionDetails: serverURLRoot updated, now :"+evt.target.value);
-    repoServerContext.setRepositoryServerURLRoot(evt.target.value);
+    //console.log("ConnectionDetails: serverURLRoot updated, now :"+evt.target.value);
+    repositoryServerContext.setRepositoryServerURLRoot(evt.target.value);
   }
 
   /*
    * Handler for change to instance GUID field
    */
   const updatedEnterpriseOption = (evt) => {
-    console.log("ConnectionDetails: enterpriseOption toggled, current value is: "+repoServerContext.repositoryServerEnterpriseOption.toString());
-    repoServerContext.setRepositoryServerEnterpriseOption(!repoServerContext.repositoryServerEnterpriseOption);
+    //console.log("ConnectionDetails: enterpriseOption toggled, current value is: "+repositoryServerContext.repositoryServerEnterpriseOption.toString());
+    repositoryServerContext.setRepositoryServerEnterpriseOption(!repositoryServerContext.repositoryServerEnterpriseOption);
   }
 
 
   const setServerDetails = () => {
-    //repoServerContext.setServerDetails(
-    //  { serverName       : serverName, 
-    //    serverURLRoot    : serverURLRoot, 
-    //    enterpriseOption : enterpriseOption});
+    /*
+     * There is nothing to actually 'set' here - but this operation initiates the load of type information
+     * from the specified repository server
+     */
     typesContext.loadTypeInfo()
   }
   
@@ -64,13 +64,13 @@ export default function ConnectionDetails(props) {
 
         <label htmlFor="serverNameField">Server name: </label>
         <input name="serverNameField"
-           value = { repoServerContext.repositoryServerName }      
+           value = { repositoryServerContext.repositoryServerName }      
            onChange = { updatedServerName }   />
         <br />
 
         <label htmlFor="serverURLRootField">Server URL root: </label>
         <input name="serverURLRootField"
-           value = { repoServerContext.repositoryServerURLRoot }      
+           value = { repositoryServerContext.repositoryServerURLRoot }      
            onChange = { updatedServerURLRoot }  /> 
        <br />
          
@@ -79,8 +79,8 @@ export default function ConnectionDetails(props) {
                id="cbEnterprise" 
                name="cbEnterprise" 
                onChange={updatedEnterpriseOption} 
-               checked={ repoServerContext.repositoryServerEnterpriseOption } 
-               value={ repoServerContext.repositoryServerEnterpriseOption }  />
+               checked={ repositoryServerContext.repositoryServerEnterpriseOption } 
+               value={ repositoryServerContext.repositoryServerEnterpriseOption }  />
         <br />
           
         <button className="top-control-button"  onClick = { setServerDetails } >

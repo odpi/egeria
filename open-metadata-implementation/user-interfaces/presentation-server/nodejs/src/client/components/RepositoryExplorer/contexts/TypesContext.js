@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState }   from "react";
 
-import PropTypes from "prop-types";
+import PropTypes                                        from "prop-types";
 
-import { RepoServerContext } from "./RepoServerContext";
+import { RepositoryServerContext }                      from "./RepositoryServerContext";
 
 
 
@@ -22,11 +22,9 @@ export const TypesContextConsumer = TypesContext.Consumer;
 
 const TypesContextProvider = (props) => {
 
-  const repositoryServerContext = useContext(RepoServerContext);
-  //console.log("TypesContext repositoryServerContext", repositoryServerContext);
+  const repositoryServerContext    = useContext(RepositoryServerContext);
 
-
-  const [tex, setTex] = useState({});    // tex object is initially empty
+  const [tex, setTex]              = useState({});    // tex object is initially empty
 
 
 
@@ -36,8 +34,8 @@ const TypesContextProvider = (props) => {
    */
   const loadTypeInfo = () => {
 
-    console.log("TypesContextProvider: Retrieve the types from the repository server...");      
-    repositoryServerContext.repositoryPOST("types", null, _loadTypeInfo);    
+    //console.log("TypesContextProvider: Retrieve the types from the repository server...");      
+    repositoryServerContext.repositoryPOST("types", null, _loadTypeInfo);
   };
 
   const _loadTypeInfo = (json) => {

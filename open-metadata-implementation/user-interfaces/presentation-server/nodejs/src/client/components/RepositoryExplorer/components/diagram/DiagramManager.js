@@ -9,7 +9,6 @@ import Diagram                            from "./Diagram";
 
 import { InstancesContext }               from "../../contexts/InstancesContext";
 
-//import { RepoServerContext }                          from "../../contexts/RepoServerContext";
 
 
 export default function DiagramManager(props) {
@@ -17,10 +16,7 @@ export default function DiagramManager(props) {
   // Access instancesContext to get access to gens
   const instancesContext = useContext(InstancesContext);
  
-  // TODO - state update experiment
-  //const repositoryServerContext = useContext(RepoServerContext);
-  //console.log("DiagramManager: being rendered, severName: "+repositoryServerContext.repositoryServerName+" ent option: "+repositoryServerContext.repositoryServerEnterpriseOption.toString());
-
+  
   
   /*
    * nodeArray is stateful contiguous array of nodes - which resemble entity digests.

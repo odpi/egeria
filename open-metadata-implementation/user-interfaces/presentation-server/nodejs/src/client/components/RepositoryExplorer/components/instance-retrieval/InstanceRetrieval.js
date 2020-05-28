@@ -1,12 +1,11 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
 import React, { useContext, useState } from "react";
 
 import PropTypes                       from "prop-types";
 
 import { InstancesContext }            from "../../contexts/InstancesContext";
-
-//import { RepoServerContext }           from "./contexts/RepoServerContext";
-
-//import SearchResultHandler             from "./SearchResultHandler";
 
 import "./instance-retriever.scss"
 
@@ -14,22 +13,12 @@ import "./instance-retriever.scss"
 export default function InstanceRetrieval(props) {
 
 
-  //const repositoryServerContext = useContext(RepoServerContext);
+  const instancesContext                      = useContext(InstancesContext);
 
-  const instancesContext        = useContext(InstancesContext);
-
-
-
-  
-  const [categoryToLoad, setCategoryToLoad]                 = useState("Entity");
-  const [guidToLoad, setGuidToLoad]                         = useState("");
+  const [categoryToLoad, setCategoryToLoad]   = useState("Entity");
+  const [guidToLoad, setGuidToLoad]           = useState("");
 
   
-  
-/* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the ODPi Egeria project. */
-
-
   /*
    * Handler for radio buttons to select category for load by GUID
    */

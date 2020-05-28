@@ -7,7 +7,7 @@ import PropTypes                                 from "prop-types";
 
 import { InstancesContext }                      from "../../contexts/InstancesContext";
 
-import { RepoServerContext }                     from "../../contexts/RepoServerContext";
+import { RepositoryServerContext }               from "../../contexts/RepositoryServerContext";
 
 import TraversalResultHandler                    from "./TraversalResultHandler";
 
@@ -20,7 +20,7 @@ export default function GraphControls(props) {
 
   const instancesContext        = useContext(InstancesContext);
   
-  const repositoryServerContext = useContext(RepoServerContext);
+  const repositoryServerContext = useContext(RepositoryServerContext);
 
   
   /*

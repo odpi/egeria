@@ -4,29 +4,25 @@
 
 import React, { createContext, useState, useContext } from "react";
 
-import PropTypes from "prop-types";
+import PropTypes                                      from "prop-types";
 
-import { IdentificationContext } from "../../../contexts/IdentificationContext";
-
-
-
-export const RepoServerContext = createContext();
-
-export const RepoServerContextConsumer = RepoServerContext.Consumer;
+import { IdentificationContext }                      from "../../../contexts/IdentificationContext";
 
 
 
 
+export const RepositoryServerContext = createContext();
+
+export const RepositoryServerContextConsumer = RepositoryServerContext.Consumer;
 
 
-const RepoServerContextProvider = (props) => {
+
+
+const RepositoryServerContextProvider = (props) => {
 
   
-
-
   const identificationContext = useContext(IdentificationContext);
   
-
   /*
    * It is possible to set up defaults for the context here .... although not actually wanted in production....
    */
@@ -34,26 +30,13 @@ const RepoServerContextProvider = (props) => {
   const [repositoryServerURLRoot, setRepositoryServerURLRoot]                   = useState("http://localhost:8082");  
   const [repositoryServerEnterpriseOption, setRepositoryServerEnterpriseOption] = useState(false);  
 
-  console.log("RepoServerContext: being rendered, serverName: "+repositoryServerName);
-  //console.log("RepoServerContext: being rendered, serverName: "+repositoryServerName+" ent option: "+repositoryServerEnterpriseOption.toString());
-
-  /*
-   *  Set all three of the repository server and scope attributes
-   */
-  //const setServerDetails = async (details) => {
-//    await setRepositoryServerName(details.serverName);
-//    setRepositoryServerURLRoot(details.serverURLRoot);
-//    setRepositoryServerEnterpriseOption(details.enterpriseOption);
-//  };
    
-  // TODO - if this works you will need to add similar mewthods for serverName and serverURLRoot
+ 
   const getRepositoryServerEnterpriseOption = () => {
-    console.log("RepoServerContext: getRepositoryServerEnterpriseOption will return "+repositoryServerEnterpriseOption.toString());
     return repositoryServerEnterpriseOption;
   }
 
   const getRepositoryServerName = () => {
-    console.log("RepoServerContext: getRepositoryServerName will return "+repositoryServerName);
     return repositoryServerName;
   }
 
@@ -88,8 +71,7 @@ const RepoServerContextProvider = (props) => {
     }
     
     const url =  identificationContext.getRestURL("rex") + "/" + uri;
-    //console.log("url is "+url);
-
+    
     // Add any (optional) bodyParms to the baseBody
     const body = Object.assign(buildBaseBody(), bodyParms);
   
@@ -106,9 +88,8 @@ const RepoServerContextProvider = (props) => {
   
 
   return (
-    <RepoServerContext.Provider
-      value={{
-        //setServerDetails,
+    <RepositoryServerContext.Provider
+      value={{       
         repositoryServerName, 
         setRepositoryServerName,
         getRepositoryServerName,
@@ -121,13 +102,13 @@ const RepoServerContextProvider = (props) => {
       }}
     >      
     {props.children}
-    </RepoServerContext.Provider>
+    </RepositoryServerContext.Provider>
   );
 };
 
-RepoServerContextProvider.propTypes = {
+RepositoryServerContextProvider.propTypes = {
   children: PropTypes.node  
 };
 
-export default RepoServerContextProvider;
+export default RepositoryServerContextProvider;
 

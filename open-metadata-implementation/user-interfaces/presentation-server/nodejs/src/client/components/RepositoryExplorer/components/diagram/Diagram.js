@@ -12,7 +12,7 @@ import * as DiagramUtils                                   from "./DiagramUtils"
 
 import { InstancesContext }                                from "../../contexts/InstancesContext";
 
-import { RepoServerContext }                               from "../../contexts/RepoServerContext";
+
 
 
 export default function Diagram(props) {
@@ -22,7 +22,6 @@ export default function Diagram(props) {
   // Access instancesContext to get access to focus information
   const instancesContext = useContext(InstancesContext);
 
-  const repositoryServerContext = useContext(RepoServerContext);  // TODO - check if still needed....
   
   /*
    * We need a force-directed sim, which should be created on load of the component.

@@ -7,7 +7,7 @@ import PropTypes                       from "prop-types";
 
 import { InstancesContext }            from "../../contexts/InstancesContext";
 
-import { RepoServerContext }           from "../../contexts/RepoServerContext";
+import { RepositoryServerContext }     from "../../contexts/RepositoryServerContext";
 
 import FilterManager                   from "./FilterManager";
 
@@ -21,7 +21,7 @@ export default function InstanceSearch(props) {
   
 
 
-  const repositoryServerContext = useContext(RepoServerContext);
+  const repositoryServerContext = useContext(RepositoryServerContext);
 
   const instancesContext        = useContext(InstancesContext);
 
