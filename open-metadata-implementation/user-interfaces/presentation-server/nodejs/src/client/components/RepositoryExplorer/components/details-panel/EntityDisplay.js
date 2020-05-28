@@ -65,18 +65,6 @@ export default function EntityDisplay(props) {
     );
   }
 
-  // Notes on content and styling... Some of these live in relationship display module.
-  
-  // TODO - add link from enum details back to entity type (linkable)
-  // TODO - add entity links (linkable)
-  // TODO - add relationship links (collapsible containing content containing linkable)
-  
-  // TODO - add enum links (linkable)
-
-  // TODO - add entity detailed type information (collapsible containing content) - needs event listener
-  // TODO - add relationship detailed type information (collapsible containing content) - needs event listener
-  // TODO - entity proxy is a 'highlight'
-
   EntityDisplay.propTypes = {
     expEntity: PropTypes.object
   };
