@@ -9,6 +9,8 @@ import InstanceStatusDisplay     from "./InstanceStatusDisplay";
 
 import InstancePropertiesDisplay from "./InstancePropertiesDisplay";
 
+import EntityProxyDisplay        from "./EntityProxyDisplay";
+
 import "./details-panel.scss";
 
 
@@ -37,6 +39,14 @@ export default function RelationshipDisplay(props) {
           <li className="details-sublist-item">metadataCollectionId : {relationship.metadataCollectionId}</li>
         </ul>
       </div>
+      <div className="instance-details-item">Relationship Ends :
+        <div className="details-sub-container">
+          Entity One : <EntityProxyDisplay entityProxy={relationship.entityOneProxy} />
+        </div>
+        <div className="details-sub-container">
+          Entity Two : <EntityProxyDisplay entityProxy={relationship.entityTwoProxy} />
+        </div>
+      </div>
       <div className="instance-details-item">OMRS Control Properties :
         <ul className="details-sublist">
           <li className="details-sublist-item">createdBy : {relationship.createdBy}</li>
@@ -64,3 +74,36 @@ export default function RelationshipDisplay(props) {
   expRelationship: PropTypes.object
  };
   
+
+ /***
+  * 
+  * 
+ // For each entity proxy we want to see GUID, version, status, properties, typeName, metadataCollectionId, metadataCollectionName
+    // If the user wants to see entity control information they can click on the entity.
+    // properties are under uniqueProperties.instanceProperties
+    relationshipAddEnds(details, relationship) {
+
+       
+
+       
+    displayEntityProxy(details, entityProxy) {
+
+        var proxyBox = document.createElement("div");
+        proxyBox.className = "highlight";
+        details.appendChild(proxyBox);
+
+        // GUID
+        this.entityAddGUID(proxyBox, entityProxy);
+        // TypeName
+        this.entityAddTypeName(proxyBox, entityProxy)
+        // Version
+        this.entityAddVersion(proxyBox, entityProxy);
+        // Status
+        this.entityAddStatus(proxyBox, entityProxy);
+        // Properties
+        this.entityProxyAddUniqueProperties(proxyBox, entityProxy);
+        // Home
+        this.entityAddHome(proxyBox, entityProxy);
+
+    }
+  */

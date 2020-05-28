@@ -7,7 +7,6 @@
   padding           : 5px;
   background-color  : rgb(240, 240, 240);
   font-size         : 12px;
-  padding           : 5px;
 }
 
 .instance-details-item {
@@ -20,8 +19,22 @@
 }
 
 .details-sublist-item {
+  margin-top        : 3px;
   padding           : inherit;
 }
+
+.details-sub-container {
+  padding            : 5px;
+}
+
+.details-sub-group {
+  padding            : 0px;
+}
+.details-sub-item {
+  margin-top        : 3px;
+  padding           : inherit;
+}
+
 
 
 .linkable {
