@@ -785,5 +785,16 @@
             <directoryMode>0755</directoryMode>
         </fileSet>
 
+        <!-- include the key store -->
+        <fileSet>
+            <directory>../..</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>truststore.p12</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
     </fileSets>
 </assembly>
