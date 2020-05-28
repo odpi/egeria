@@ -42,7 +42,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     <app-route route="{{route}}" pattern="/:usecase/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
      
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
-    <token-ajax id="tokenAjaxDetails" last-response="{{items}}" ></token-ajax>
+    <token-ajax id="tokenAjaxDetails" last-response="{{item}}" ></token-ajax>
     
     <vaadin-tabs id ="useCases" selected="[[_getUseCase(routeData.usecase)]]" >
       <vaadin-tab value="ultimateSource">
@@ -136,12 +136,16 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
 
     static get observers() {
         return [
-            '_routeChanged(routeData)'
+            '_routeChanged(route)'
         ];
     }
 
-    _routeChanged(routeData){
-        this._reload(this.routeData.usecase, this.$.processMenu.value);
+    _routeChanged(route){
+        if (this.route.prefix === '/asset-lineage') {
+            this.$.tokenAjaxDetails.url = '/api/assets/' + this.routeData.guid;
+            this.$.tokenAjaxDetails._go();
+            this._reload(this.routeData.usecase, this.$.processMenu.value);
+        }
     }
 
     _graphDataChanged(data, newData) {
