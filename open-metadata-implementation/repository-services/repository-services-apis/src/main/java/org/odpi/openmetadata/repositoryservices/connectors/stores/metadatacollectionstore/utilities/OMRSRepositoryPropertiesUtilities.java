@@ -568,7 +568,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
                             if (primitivePropertyValue.getPrimitiveValue() != null)
                             {
-                                return Integer.valueOf(primitivePropertyValue.getPrimitiveValue().toString());
+                                return Integer.parseInt(primitivePropertyValue.getPrimitiveValue().toString());
                             }
                         }
                     }
@@ -739,7 +739,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
                             if (primitivePropertyValue.getPrimitiveValue() != null)
                             {
-                                return Boolean.valueOf(primitivePropertyValue.getPrimitiveValue().toString());
+                                return Boolean.parseBoolean(primitivePropertyValue.getPrimitiveValue().toString());
                             }
                         }
                     }

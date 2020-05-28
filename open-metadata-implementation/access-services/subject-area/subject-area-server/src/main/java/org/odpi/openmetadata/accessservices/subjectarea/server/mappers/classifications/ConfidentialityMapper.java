@@ -42,7 +42,7 @@ public class ConfidentialityMapper extends ClassificationMapper{
         stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"notes",omrsClassificationProperties,"");
         confidentiality.setNotes(stringValue);
 
-        Integer intValue  = repositoryHelper.getIntProperty(omrsapiHelper.getServiceName(),"confidence",omrsClassificationProperties,"");
+        int intValue  = repositoryHelper.getIntProperty(omrsapiHelper.getServiceName(),"confidence",omrsClassificationProperties,"");
         confidentiality.setConfidence(intValue);
         intValue  = repositoryHelper.getIntProperty(omrsapiHelper.getServiceName(),"level",omrsClassificationProperties,"");
         confidentiality.setLevel(intValue);
