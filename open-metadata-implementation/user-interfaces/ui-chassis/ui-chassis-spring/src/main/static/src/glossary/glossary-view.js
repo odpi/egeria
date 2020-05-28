@@ -14,7 +14,7 @@ class GlossaryView extends PolymerElement {
         :host {
           display: block;
           margin: 0 24px;
-          min-height: 100ch;
+          min-height: var(--egeria-view-min-height);
           --iron-icon-width:16px;
           --iron-icon-height:16px;
         }
@@ -38,7 +38,7 @@ class GlossaryView extends PolymerElement {
       <token-ajax id="tokenAjax" last-response="{{glossaries}}" url="/api/glossaries" auto></token-ajax>
       <token-ajax id="tokenAjaxCategories" last-response="{{categories}}"></token-ajax>
       <token-ajax id="tokenAjaxTerms" last-response="{{terms}}"></token-ajax>
-      <vaadin-split-layout orientation="vertical" style="min-height: 100ch">
+      <vaadin-split-layout orientation="vertical" style="min-height: inherit">
             <vaadin-split-layout>
                 <div class="grid-container"> 
                   <vaadin-grid id="glossaries" items="[[glossaries]]" theme="row-stripes" 

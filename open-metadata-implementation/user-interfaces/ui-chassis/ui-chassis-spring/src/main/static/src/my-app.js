@@ -49,10 +49,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         :host {
            display: block;
         };
-        iron-pages {
-            height: max-content;
-            height: -webkit-fill-available;
-        };
         app-drawer-layout:not([narrow]) [drawer-toggle] {
           display: none;
         };
