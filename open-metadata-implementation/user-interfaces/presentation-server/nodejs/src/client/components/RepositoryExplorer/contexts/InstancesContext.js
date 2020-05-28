@@ -26,7 +26,6 @@ const InstancesContextProvider = (props) => {
 
   const repositoryServerContext = useContext(RepositoryServerContext);
 
-  //console.log("InstancesContext: being rendered, serverName: "+repositoryServerContext.repositoryServerName);
  
 
   /*
@@ -322,7 +321,6 @@ const InstancesContextProvider = (props) => {
      * Because this is processing the retrieval of a single relationship, that relationship becomes the focus
      */
     setFocusRelationship(expRelationship);
-    console.log("Hmmm...");
   }
 
 
@@ -464,12 +462,12 @@ const InstancesContextProvider = (props) => {
    * A component has requested that the focus is changed to the entity with the specified GUID.
    */
   const changeFocusEntity = (entityGUID) => {
-    console.log("InstancesContext: changeFocusEntity called with guid "+entityGUID);
+
     /*
      * If the entity is the current focus - deselect it.
      */
+
     if (entityGUID === focus.instanceGUID) {
-      console.log("InstancesContext: changeFocusEntity will clear focus");
       clearFocusInstance();         
     }
 
@@ -480,6 +478,7 @@ const InstancesContextProvider = (props) => {
        * can be retrieved. If not, then check enterprise flag is on and if not provide an alert
        * to advise the user that the entity will only be retrieved if enterprise is set.
        */
+
       if (guidToGenId[entityGUID] !== undefined) {
         const genId            = guidToGenId[entityGUID];
         const gen              = gens[genId-1];
@@ -953,7 +952,7 @@ const InstancesContextProvider = (props) => {
         default:
           /*
            *  Found a gen result with no operation type.
-           *  Put message to console and add error message to gen so this is noticed in history.
+           *  Add error message to gen so this is noticed in history....
            */
           querySummary = "Operation not recognised!";
           break;
