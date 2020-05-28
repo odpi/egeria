@@ -434,11 +434,10 @@ export default function Diagram(props) {
     if (!loc_force) {
       loc_force = d3.forceSimulation(props.nodes)
         .force('horiz', d3.forceX(width/2).strength(0.01))
-        .force('vert', d3.forceY()
-          .strength(0.1)
-          .y(function(d) {return DiagramUtils.yPlacement(d, height, props.numGens);}))       
-        .force('repulsion', d3.forceManyBody().strength(-500))
-        //.alphaDecay(.0005)
+        //.force('vert', d3.forceY()
+        //  .strength(0.1)
+        //  .y(function(d) {return DiagramUtils.yPlacement(d, height, props.numGens);}))       
+        .force('repulsion', d3.forceManyBody().strength(-500))        
         .alphaDecay(.002)
         .alphaMin(0.001)
         .alphaTarget(0.0005)
@@ -497,7 +496,7 @@ export default function Diagram(props) {
 
   const setDiagramFocus = () => {    
     diagramFocusGUID = instancesContext.focus.instanceGUID;
-    console.log("Diagram: setDiagramFocus to guid "+diagramFocusGUID);
+    //console.log("Diagram: setDiagramFocus to guid "+diagramFocusGUID);
   };
 
 
@@ -516,8 +515,7 @@ export default function Diagram(props) {
         setDiagramFocus();     
       }
     },
-    // dependencies...  
-    // WORKS [d3Container.current, props.nodes, props.links, instancesContext.focus, repositoryServerContext]
+  
     [d3Container.current, props.nodes, props.links, instancesContext.focus, props.onNodeClick, props.onLinkClick, layoutMode]
   )
  
