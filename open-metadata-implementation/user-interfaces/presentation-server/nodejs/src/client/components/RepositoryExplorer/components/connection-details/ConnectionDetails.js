@@ -41,7 +41,7 @@ export default function ConnectionDetails(props) {
    * Handler for change to instance GUID field
    */
   const updatedEnterpriseOption = (evt) => {
-    console.log("ConnectionDetails: enterpriseOption toggled to :"+repoServerContext.repositoryServerEnterpriseOption?"false":"true");
+    console.log("ConnectionDetails: enterpriseOption toggled, current value is: "+repoServerContext.repositoryServerEnterpriseOption.toString());
     repoServerContext.setRepositoryServerEnterpriseOption(!repoServerContext.repositoryServerEnterpriseOption);
   }
 
@@ -79,6 +79,7 @@ export default function ConnectionDetails(props) {
                id="cbEnterprise" 
                name="cbEnterprise" 
                onChange={updatedEnterpriseOption} 
+               checked={ repoServerContext.repositoryServerEnterpriseOption } 
                value={ repoServerContext.repositoryServerEnterpriseOption }  />
         <br />
           
