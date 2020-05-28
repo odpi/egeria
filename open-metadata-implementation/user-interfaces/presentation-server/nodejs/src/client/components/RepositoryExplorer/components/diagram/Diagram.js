@@ -2,29 +2,62 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 
-import React, { useRef, useEffect, useContext }  from "react";
+import React, { useRef, useState, useEffect, useContext }  from "react";
 
-import PropTypes                                 from "prop-types";
+import PropTypes                                           from "prop-types";
 
-import * as d3                                   from "d3";
+import * as d3                                             from "d3";
 
-import * as DiagramUtils                         from "./DiagramUtils";
+import * as DiagramUtils                                   from "./DiagramUtils";
 
-import { InstancesContext }                      from "../../contexts/InstancesContext";
+import { InstancesContext }                                from "../../contexts/InstancesContext";
 
-import { RepoServerContext }                          from "../../contexts/RepoServerContext";
+import { RepoServerContext }                               from "../../contexts/RepoServerContext";
 
 
 export default function Diagram(props) {
 
-
+  console.log("Diagram: being rendered ");
 
   // Access instancesContext to get access to focus information
   const instancesContext = useContext(InstancesContext);
 
-  const repositoryServerContext = useContext(RepoServerContext);
+  const repositoryServerContext = useContext(RepoServerContext);  // TODO - check if still needed....
+  
+  /*
+   * We need a force-directed sim, which should be created on load of the component.
+   * It should be restarted when the data is updated. 
+   * We mustn't make it part of the Diagram's state else we'll run into rendering loop issues.
+   * So make it soft and initialise it and check it on the calls to useEffect.
+   */
 
-  console.log("Diagram: being rendered ");
+  let loc_force;
+
+
+  /*
+   * layoutMode can be switched between Temporal and Proximal - the default is Temporal.
+   * Temporal layout mode will cascade generations down the diagram.
+   * Proximal layout mode allows the graph to organise itself based on connections.
+   */
+  const [layoutMode, setLayoutMode] = useState("Temporal");
+
+  const changeLayoutMode = () => {
+   
+    if (layoutMode === "Proximal") {
+      setLayoutMode("Temporal");
+    }      
+    else {
+      setLayoutMode("Proximal"); 
+    }
+    /*
+     * Just a small nudge...
+     */
+    loc_force.alpha(0.1);
+    loc_force.restart();
+  }
+
+
+  
 
   
   const width                       = 1070;
@@ -52,15 +85,7 @@ export default function Diagram(props) {
    const strippedPrimary          = splitPrimary[splitPrimary.length-1];   
    const egeria_text_color_string = DiagramUtils.alterShade(strippedPrimary, -20);
 
-  /*
-   * We need a force-directed sim, which should be created on load of the component.
-   * It should be restarted when the data is updated. 
-   * We mustn't make it part of the Diagram's state else we'll run into rendering loop issues.
-   * So make it soft and initialise it and check it on the calls to useEffect.
-   */
-
-  let loc_force;
-
+  
   /*
    * The use of diagramFocusGUID is to ensure that the instancesContext focus is visible in the 
    * Diagram component. A function can either use it, or call instancesContext.focus directly.
@@ -422,7 +447,14 @@ export default function Diagram(props) {
           .links(props.links)
           .id(DiagramUtils.nodeId)
           .distance(link_distance)
-          .strength(function(d) { return DiagramUtils.ls(d);})) ;          
+          .strength(function(d) { return DiagramUtils.ls(d);})) ;      
+          
+      if (layoutMode === "Temporal") {            
+        loc_force.force('vert', d3.forceY().strength(0.1).y(function(d) {return DiagramUtils.yPlacement(d, height, props.numGens);}));
+      }      
+      else {            
+        loc_force.force('vert', d3.forceY(height/2).strength(0.001))
+      }
 
       loc_force.on('tick', tick);  // this does no good if you setForce(loc_force)      
     }
@@ -486,7 +518,7 @@ export default function Diagram(props) {
     },
     // dependencies...  
     // WORKS [d3Container.current, props.nodes, props.links, instancesContext.focus, repositoryServerContext]
-    [d3Container.current, props.nodes, props.links, instancesContext.focus, props.onNodeClick, props.onLinkClick]
+    [d3Container.current, props.nodes, props.links, instancesContext.focus, props.onNodeClick, props.onLinkClick, layoutMode]
   )
  
  
@@ -495,12 +527,37 @@ export default function Diagram(props) {
 
   return (
     <div>
-      <svg className="d3-component"
-        width={width} 
-        height={height} 
-        ref={d3Container}>        
-      </svg>              
+
+      <div>
+        <label htmlFor="layoutMode">Layout : </label>
+        <input type="radio" 
+               id="modeTemporal" 
+               name="layoutMode" 
+               value="Temporal" 
+               checked={layoutMode === "Temporal"}
+               onChange={changeLayoutMode}/>
+        <label htmlFor="modeTemporal">Time-based</label>
+        
+        <input type="radio" 
+               id="modeProximal" 
+               name="layoutMode" 
+               value="Proximal" 
+               checked={layoutMode === "Proximal"}
+               onChange={changeLayoutMode} />
+        <label htmlFor="modeProximal">Proximity-based</label>
+
+        <br />
+      </div>
+      <div>
+        <svg className="d3-component"
+          width={width} 
+          height={height} 
+          ref={d3Container}>        
+        </svg>              
+      </div>
+
     </div>
+    
   );
 }
 

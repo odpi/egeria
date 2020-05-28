@@ -48,6 +48,7 @@ export default function DiagramManager(props) {
    */
   const [lastGenProcessed, setLastGenProcessed] = useState(0);
 
+  
  
 
   /*
@@ -296,6 +297,8 @@ export default function DiagramManager(props) {
 
   };
 
+
+  
   
 
   /*
@@ -345,7 +348,8 @@ export default function DiagramManager(props) {
 
       <h2>Diagram Manager</h2>
 
-
+     
+   
       
       <Diagram nodes={nodeArray} 
                links={linkArray} 
