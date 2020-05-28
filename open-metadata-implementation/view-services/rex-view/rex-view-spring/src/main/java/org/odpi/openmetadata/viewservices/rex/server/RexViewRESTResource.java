@@ -174,11 +174,11 @@ public class RexViewRESTResource {
      * @param body         request body containing parameters to formulate repository request
      * @return response object containing the InstanceGraph for the traversal or exception information
      */
-    @PostMapping("/instances/rex-pre-traversal")
+    @PostMapping("/instances/pre-traversal")
     public RexPreTraversalResponse rexPreTraversal(@PathVariable String                 serverName,
                                                    @PathVariable String                 userId,
                                                    @RequestBody RexTraversalRequestBody body) {
-        return restAPI.rexPreTraversal(serverName, userId, body);
+        return restAPI.preTraversal(serverName, userId, body);
 
 
 
@@ -199,11 +199,11 @@ public class RexViewRESTResource {
      * @param body         request body containing parameters to formulate repository request
      * @return response object containing the InstanceGraph for the traversal or exception information
      */
-    @PostMapping("/instances/rex-traversal")
+    @PostMapping("/instances/traversal")
     public RexTraversalResponse rexTraversal(@PathVariable String                 serverName,
                                              @PathVariable String                 userId,
                                              @RequestBody RexTraversalRequestBody body) {
-        return restAPI.rexTraversal(serverName, userId, body);
+        return restAPI.traversal(serverName, userId, body);
 
 
 

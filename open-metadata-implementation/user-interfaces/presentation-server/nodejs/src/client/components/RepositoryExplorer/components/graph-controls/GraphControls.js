@@ -87,7 +87,7 @@ export default function GraphControls(props) {
     setTraversalSpecification(traversalSpec);
 
     // No filtering is applied to the pre-traversal...
-    repositoryServerContext.repositoryPOST("instances/rex-pre-traversal", 
+    repositoryServerContext.repositoryPOST("instances/pre-traversal", 
       { entityGUID : entityGUID,
         depth      : 1            },  // depth is always limited to 1
         _preTraversal); 

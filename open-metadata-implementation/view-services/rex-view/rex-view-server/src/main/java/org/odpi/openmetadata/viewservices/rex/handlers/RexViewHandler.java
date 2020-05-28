@@ -586,7 +586,7 @@ public class RexViewHandler
      * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
      * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
      */
-    public RexPreTraversal rexPreTraversal(String          userId,
+    public RexPreTraversal preTraversal(String          userId,
                                            String          repositoryServerName,
                                            String          repositoryServerURLRoot,
                                            boolean         enterpriseOption,
@@ -785,7 +785,7 @@ public class RexViewHandler
      * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
      * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
      */
-    public RexTraversal rexTraversal(String          userId,
+    public RexTraversal traversal(String          userId,
                                      String          repositoryServerName,
                                      String          repositoryServerURLRoot,
                                      boolean         enterpriseOption,

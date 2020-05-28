@@ -369,11 +369,11 @@ public class RexViewRESTServices {
      * </ul>
      */
 
-    public RexPreTraversalResponse rexPreTraversal(String                  serverName,
+    public RexPreTraversalResponse preTraversal(String                  serverName,
                                                    String                  userId,
                                                    RexTraversalRequestBody requestBody) {
 
-        final String methodName = "rexPreTraversal";
+        final String methodName = "preTraversal";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -387,7 +387,7 @@ public class RexViewRESTServices {
             if (requestBody != null) {
                 RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
 
-                RexPreTraversal preTraversal = handler.rexPreTraversal(userId,
+                RexPreTraversal preTraversal = handler.preTraversal(userId,
                                                                        requestBody.getServerName(),
                                                                        requestBody.getServerURLRoot(),
                                                                        requestBody.getEnterpriseOption(),
@@ -440,11 +440,11 @@ public class RexViewRESTServices {
      * </ul>
      */
 
-    public RexTraversalResponse rexTraversal(String                  serverName,
+    public RexTraversalResponse traversal(String                  serverName,
                                              String                  userId,
                                              RexTraversalRequestBody requestBody) {
 
-        final String methodName = "rexTraversal";
+        final String methodName = "traversal";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -458,7 +458,7 @@ public class RexViewRESTServices {
             if (requestBody != null) {
                 RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
 
-                RexTraversal traversal = handler.rexTraversal(userId,
+                RexTraversal traversal = handler.traversal(userId,
                                                               requestBody.getServerName(),
                                                               requestBody.getServerURLRoot(),
                                                               requestBody.getEnterpriseOption(),

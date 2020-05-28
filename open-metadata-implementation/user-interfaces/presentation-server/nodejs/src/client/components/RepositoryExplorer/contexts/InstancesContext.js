@@ -711,7 +711,7 @@ const InstancesContextProvider = (props) => {
     console.log("InstanceRetriever: explore starting at the focus entity");
    
     repositoryServerContext.repositoryPOST(
-      "instances/rex-traversal", 
+      "instances/traversal", 
       { entityGUID             :  getFocusGUID(),
         depth                  :  1,
         entityTypeGUIDs        :  selectedEntityTypes,
