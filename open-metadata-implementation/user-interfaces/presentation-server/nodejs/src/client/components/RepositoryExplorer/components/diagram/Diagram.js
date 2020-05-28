@@ -56,9 +56,11 @@ export default function Diagram(props) {
     loc_force.restart();
   }
 
-
+  const [pinningOption, setPinningOption] = useState(true);
+  const pinningRef = useRef();
+  pinningRef.current = pinningOption;
   
-
+  console.log("Diagram: pinning is "+pinningOption.toString());
   
   const width                       = 1070;
   const height                      = 1100;
@@ -270,31 +272,25 @@ export default function Diagram(props) {
 
  
   const dragstarted = (d) => {
-    if (!d3.event.active)
-      loc_force.alphaTarget(0.1).restart(); // provides smooth drag behaviour    
+    // NO OP
   }
 
   const dragged = (d) => {
-    // Impose a minimum drag tolerance - if the user happens to move the mouse one pixel during a click
-    // don't treat that as a drag event.
-    // If already dragging do not impose a minimum...
-    //console.log("dragged: x "+d.x+" y "+d.y+" fx "+d.fx+" fy "+d.fy);
-    if ( d.fx || d.fy ) 
+    if (pinningRef.current) {      
       d.fx = d3.event.x, d.fy = d3.event.y;
-    else {
-      // First movement...
-      if ( Math.abs(d3.event.x - d.x) > 2 || Math.abs(d3.event.y - d.y) > 2 )
-        d.fx = d3.event.x, d.fy = d3.event.y;    
-      //else
-      //  console.log("drag too small - not registered");
     }
+    else {     
+      d.x = d3.event.x, d.y = d3.event.y;
+    }
+    /*
+     * Provide a gentle nudge
+     */
+    loc_force.alpha(0.2).restart();
   }
+  
 
   const dragended = (d) => {
-    if (!d3.event.active) {
-      //loc_force.alphaTarget(0.3);
-      loc_force.alphaTarget(0.0005);
-    }  
+    // NO OP
   }
 
   const unpin = (d) => {
@@ -499,6 +495,20 @@ export default function Diagram(props) {
     //console.log("Diagram: setDiagramFocus to guid "+diagramFocusGUID);
   };
 
+  const updatedPinningOption = () => {
+    console.log("Diagram: pinningOption will be set to :"+(!pinningOption).toString());
+   
+    setPinningOption(!pinningOption);
+    
+    if (pinningOption) {
+      /*
+       * If pinning was true, nodes may be pinned, so ensure all nodes are unpinned
+       */
+      props.nodes.forEach(n => unpin(n));
+
+    }
+  };
+
 
   useEffect(
     () => {      
@@ -544,13 +554,28 @@ export default function Diagram(props) {
                onChange={changeLayoutMode} />
         <label htmlFor="modeProximal">Proximity-based</label>
 
-        <br />
       </div>
+
+      <br />
+
+      <div>
+
+        <label htmlFor="cbPinning">Pin dragged entities : </label>
+        <input type="checkbox" 
+               id="cbPinning" 
+               name="cbPinning" 
+               checked={ pinningOption }
+               onChange={updatedPinningOption} 
+               value={ pinningOption }  />
+      </div>
+      
+      <br />
+      
       <div>
         <svg className="d3-component"
-          width={width} 
-          height={height} 
-          ref={d3Container}>        
+             width={width} 
+             height={height} 
+             ref={d3Container}>        
         </svg>              
       </div>
 
