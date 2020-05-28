@@ -22,14 +22,15 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     return html`
     <style include="shared-styles">
         :host {
-          display: block;
-          margin: 0 24px;
+          display: flex;
+          flex-flow: column;
+          margin:var(--egeria-view-margin);
+          min-height: var(--egeria-view-min-height);
         }
         
         .container {
-          margin: auto; 
-          height: calc(100vh - 130px);
           background-color: white;
+          flex-grow: 1;
         }
         #useCases {
             color: var(--egeria-primary-color);

@@ -13,7 +13,7 @@ class GlossaryView extends PolymerElement {
       <style include="shared-styles">
         :host {
           display: block;
-          margin: 0 24px;
+          margin:var(--egeria-view-margin);
           min-height: var(--egeria-view-min-height);
           --iron-icon-width:16px;
           --iron-icon-height:16px;
