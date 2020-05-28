@@ -462,8 +462,6 @@ const InstancesContextProvider = (props) => {
   }
 
 
-
-
   /*
    * A component has requested that the focus is changed to the entity with the specified GUID.
    */
@@ -734,7 +732,8 @@ const InstancesContextProvider = (props) => {
         let rexTraversal = json.rexTraversal;
         if (rexTraversal !== null) {
           console.log("_explore: got back rexTraversal..."+rexTraversal);
-          processRetrievedTraversal(rexTraversal);        
+          rexTraversal.operation = "traversal";
+          processRetrievedTraversal(rexTraversal);
           return;
         }
       }  
@@ -813,12 +812,206 @@ const InstancesContextProvider = (props) => {
   }
 
 
-  const history = () => {
+  /*
+   * getHistory compiles a history list describing the exploration from gen 1 onwards.
+   */
+  const getHistory = () => {
 
-    
+    // Build a history as a list of gens with summaries...
+    let historyList = [];
+
+    const testData = false;
+
+    if (testData) {
+
+      for (let i=0; i<10 ; i++) {
+        let item = {}
+        item.gen = i+1;
+        item.query = "Operation "+item.gen;
+        item.instances = [];
+        item.instances.push( { category : "First", label : "FirstLabel", guid : "1111-1111" } );
+        item.instances.push( { category : "Next", label : "NextLabel", guid : "2222-2222" } );
+        item.instances.push( { category : "Almost", label : "AlmostLabel", guid : "3333-3333" } );
+        item.instances.push( { category : "Last", label : "LastLabel", guid : "4444-4444" } );
+      
+        historyList.push(item);
+      }
+
+    }
+
+    else {
+
+      /* Each gen consists of the following:
+       *
+       *   private String               entityGUID;               // must be non-null
+       *   private List<String>         entityTypeGUIDs;          // a list of type guids or null
+       *   private List<String>         relationshipTypeGUIDs;    // a list of type guids or null
+       *   private List<String>         classificationNames;      // a list of names or null
+       *   private Integer              depth;                    // the depth used to create the subgraph
+       *   private Integer              gen;                      // which generation this subgraph pertains to
+       *
+       *   There are also fields that contain maps of instance summaries.
+       *   An instance summary is much smaller than the full instance.
+       *   The entities map is keyed by entityGUID and the value part consists of
+       *       { entityGUID, label, gen }
+       *   The relationships map is keyed by relationshipGUID and the value part consists of
+       *       { relationshipGUID, end1GUID, end2GUID, idx, label, gen }
+       *   The above value types are described by the RexEntityDigest and RexRelationshipDigest Java classes.
+       *   private Map<String,RexEntityDigest>         entities;
+       *   private Map<String,RexRelationshipDigest>   relationships;
+       *
+       *   The traversal is augmented in the client by the addition of an operation field. This is only meaningful in the
+       *   client code.
+       *   private String                operation  - has values { 'getEntity' | 'getRelationship' | 'traversal' }
+       */
+
+      for (let i=0; i<gens.length; i++) {
+        const gen = i+1;
+        const genContent = gens[i];
+
+        /*
+         *  Build the query description
+         */
+
+        /*
+         * The querySummary always starts with the Repository Server's name
+         */
+
+        const serverName = genContent.serverName;
+        let querySummary = "["+serverName+"]";
+
+        switch (genContent.operation) {
+
+          case "getEntity":
+            /*
+            * Format querySummary as "Entity retrieval \n GUID: <guid>"
+            */
+            querySummary = querySummary.concat(" Entity retrieval using GUID");
+            break;
+
+          case "getRelationship":
+            /*
+            * Format querySummary as "Relationship retrieval \n GUID: <guid>"
+            */
+            querySummary = querySummary.concat(" Relationship retrieval using GUID");
+            break;
+
+          case "traversal":
+            /*
+             * Format querySummary as "Traversal"
+             * Would like to present user with label rather than guid. genContent.root contains GUID.
+             * The reason for the lookup is that the root of the traversal will not be in the same gen
+             * as the traversal results. It is not known which gen it is (except it must have existed prior
+             * to traversal).
+             */
+            {
+              const entityGUID    = genContent.entityGUID;
+              const rootGenNumber = guidToGenId[entityGUID];
+              const rootGen       = gens[rootGenNumber-1];
+              const rootDigest    = rootGen.entities[entityGUID];
+              const rootLabel     = rootDigest.label;
+              querySummary        = querySummary.concat(" Traversal from entity "+rootLabel);
+              querySummary        = querySummary.concat(" Depth: "+genContent.depth);
+              // Entity Type Filters - show type names rather than type GUIDs
+              querySummary        = querySummary.concat(" Entity Type Filters: ");
+              var entityTypeNames = genContent.entityTypeNames;
+              if (entityTypeNames != undefined && entityTypeNames != null) {
+                let first = true;
+                entityTypeNames.forEach(function(etn){
+                  if (first) {
+                    first = false;
+                    querySummary = querySummary.concat(etn);
+                  }
+                  else {
+                    querySummary = querySummary.concat(", "+etn);
+                  }
+                });
+              }            
+              else
+                querySummary = querySummary.concat("none");
+            }
+
+            // Relationship Type Filters - show type names rather than type GUIDs
+            querySummary = querySummary.concat(" Relationship Type Filters: ");
+            var relationshipTypeNames = genContent.relationshipTypeNames;
+            if (relationshipTypeNames != undefined && relationshipTypeNames != null) {
+              let first = true;
+              relationshipTypeNames.forEach(function(rtn){
+                if (first) {
+                  first = false;
+                  querySummary = querySummary.concat(rtn);
+                }
+                else {
+                  querySummary = querySummary.concat(", "+rtn);
+                }
+              });
+            }
+            else
+              querySummary = querySummary.concat("none"); 
+
+            // Classification Filters - shown as names
+            querySummary = querySummary.concat(" Classification Filters: ");
+            var ClassificationNames = genContent.ClassificationNames;
+            if (ClassificationNames != undefined && ClassificationNames != null) {
+              let first = true;
+              ClassificationNames.forEach(function(rtn){
+                if (first) {
+                  first = false;
+                  querySummary = querySummary.concat(rtn);
+                }
+                else {
+                  querySummary = querySummary.concat(", "+rtn);
+                }
+              });
+            }
+            else
+              querySummary = querySummary.concat("none");
+  
+            break;
+
+
+          case "entitySearch":
+            /*
+             * Format querySummary as "Entity retrieval \n GUID: <guid>"
+             */
+            querySummary = querySummary.concat(" Entity Search");
+            querySummary = querySummary.concat(" expression ["+genContent.searchText+"]");
+            break;
+
+          default:
+            /*
+             *  Found a gen result with no operation type.
+             *  Put message to console and add error message to gen so this is noticed in history.
+             */
+            querySummary = "Operation not recognised!";
+            break;
+        }
+
+        /*
+         *  Build the instances section
+         */
+        const instanceList = [];
+        const entities = genContent.entities;
+        for (let guid in entities) {
+          const ent = entities[guid];
+          instanceList.push( { "category" : "Entity" , "label" : ent.label , "guid" : ent.entityGUID } );
+        }
+
+        const relationships = genContent.relationships;
+        for (let guid in relationships) {
+          const rel = relationships[guid];
+          instanceList.push( { "category" : "Relationship" , "label" : rel.label , "guid" : rel.relationshipGUID } );
+        }
+        var historyItem = {  "gen" : gen , "query" : querySummary , "instances" : instanceList};
+
+        historyList.push(historyItem);
+      }
+    }
+
+    return historyList;
+
+
   }
-
-
 
  
   return (
@@ -835,7 +1028,8 @@ const InstancesContextProvider = (props) => {
         changeFocusRelationship,
         getFocusCategory,
         clearFocusInstance,
-        clear,     
+        clear,    
+        getHistory, 
         loadEntity,
         _loadEntity,
         loadRelationship,

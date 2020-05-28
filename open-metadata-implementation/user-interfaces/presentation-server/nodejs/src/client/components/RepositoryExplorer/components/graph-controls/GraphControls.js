@@ -11,6 +11,8 @@ import { RepoServerContext }                     from "../../contexts/RepoServer
 
 import TraversalResultHandler                    from "./TraversalResultHandler";
 
+import HistoryResultHandler                      from "./HistoryResultHandler";
+
 import "../../rex.scss";
 
 
@@ -31,6 +33,12 @@ export default function GraphControls(props) {
   const [status, setStatus] = useState("idle");  // { "idle", "pending", "cancelled:", "complete" }
   const statusRef = useRef();
   statusRef.current = status;
+
+  const [histStatus, setHistStatus] = useState("idle");  // { "idle", "pending", "cancelled:", "complete" }
+  const histStatusRef = useRef();
+  histStatusRef.current = histStatus;
+
+  const [history, setHistory]                  = useState([]); 
 
   console.log("GraphControls: rendering, status is "+status);
 
@@ -351,6 +359,25 @@ export default function GraphControls(props) {
     setPreTraversalClassificationTypes(updates); 
 
   }
+
+  const getHistory = () => {
+
+    setHistory(instancesContext.getHistory());
+    setHistStatus("complete");
+  };
+
+const cancelHistoryModal = () => {
+  // NO OP really
+  setHistStatus("idle");
+};
+
+const submitHistoryModal = () => {
+  // NO OP really
+  setHistStatus("idle");
+};
+
+
+
   
   
   return (
@@ -377,7 +404,7 @@ export default function GraphControls(props) {
         </button>
        
         <button className="graph-control-button" 
-          onClick = { () => instancesContext.history() }  >
+          onClick = { () => getHistory() }  >
           History
         </button>      
 
@@ -392,6 +419,10 @@ export default function GraphControls(props) {
                                 onSubmit              = { submitTraversalModal } />
         
 
+        <HistoryResultHandler   status                = { histStatus }                                
+                                history               = { history }                                                                
+                                onCancel              = { cancelHistoryModal }
+                                onSubmit              = { submitHistoryModal } />
                
 
     </div>     
