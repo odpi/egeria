@@ -74,7 +74,7 @@ public class ProjectMapper extends EntityDetailMapper implements INodeMapper {
     }
     @Override
     protected List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> getInlinedClassifications(Node node) {
-        List inlinedClassifications = new ArrayList<>();
+        List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> inlinedClassifications = new ArrayList<>();
         if (node.getNodeType() == NodeType.GlossaryProject) {
             org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.GlossaryProject glossaryProjectClassification =new org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.GlossaryProject();
             // add to inlined classifications
