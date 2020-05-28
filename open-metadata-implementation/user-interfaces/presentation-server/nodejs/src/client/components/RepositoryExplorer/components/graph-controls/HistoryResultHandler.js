@@ -28,90 +28,79 @@ export default function HistoryResultHandler(props) {
     props.onSubmit();
   }
 
-
-
   const triggerPortal = () => {
 
     let dialogDisplay;
 
+    if (!history || history.length === 0) {
 
-    
-    // TODO - alignment
-  
-
-      if (!history || history.length === 0) {
-        /* 
-         * There is nothing to display... 
-         */
-        console.log("TraversalResultHandler: no results, nothing to render");
+      /* 
+       * There is nothing to display... 
+       */
      
-        dialogDisplay = (
+      dialogDisplay = (
       
-        <div className="dialog-text">
+      <div className="dialog-text">
             
-          <p>
-          There is no history yet, as no operations have been performed and saved into the graph.
-          </p>
+        <p>
+        There is no history yet, as no operations have been performed and saved into the graph.
+        </p>  
   
-      
-  
-          <div className="dismiss-button-container">                     
-            <button className="multiselect-button" onClick={cancelCallback}>  Cancel  </button>
-            <button className="multiselect-button" onClick={submitCallback}>  OK     </button>
-          </div>
+        <div className="dismiss-button-container">                     
+          <button className="multiselect-button" onClick={cancelCallback}>  Cancel  </button>
+          <button className="multiselect-button" onClick={submitCallback}>  OK     </button>
+        </div>
               
-         </div>
+      </div>
         
-        );
-      }
+      );
+    }
     
-      else {
+    else {
 
+      /* 
+       * There is history to display... 
+       */
 
-        let resultsDisplay = (         
+      let resultsDisplay = (         
 
-          <div className="table" >
-            {history.map( item => (
-              <div key={item.gen} className="row">
-                <div className="gencolumn">
-                  {item.gen}
-                </div>
-                <div className="qrycolumn">
-                  <div className="query-text">
-                    {item.query}
-                  </div>
-                </div>
-                <div className="inscolumn">
-                  <ul>
-                    {item.instances.map(inst => (
-                      <li key={inst.label}>{inst.category} {inst.label} ({inst.guid})</li>
-                    ))}                                     
-                  </ul>
+        <div className="table" >
+          {history.map( item => (
+            <div key={item.gen} className="row">
+              <div className="gencolumn">
+                {item.gen}
+              </div>
+              <div className="qrycolumn">
+                <div className="query-text">
+                  {item.query}
                 </div>
               </div>
-            ) )}
-          </div>
-        );
+              <div className="inscolumn">
+                <ul>
+                  {item.instances.map(inst => (
+                    <li key={inst.label}>{inst.category} {inst.label} ({inst.guid})</li>
+                  ))}                                     
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
 
 
-        dialogDisplay = (
+      dialogDisplay = (
       
-          <div className="dialog-text">
+        <div className="dialog-text">
           
           <p  className="dialog-text">
-          The following operations have been performed, with the instances returned at each stage:
+          The following operations have been performed, with the instances added at each stage:
           </p>    
    
           <hr></hr>
                
-          <div className="history-results-area">
-                            
+          <div className="history-results-area">                        
             {resultsDisplay}
-       
           </div>
-
-        
-      
 
           <div className="dismiss-button-container">                     
             <button className="multiselect-button" onClick={cancelCallback}>  Cancel  </button>
@@ -120,24 +109,21 @@ export default function HistoryResultHandler(props) {
             
         </div>
       
-        );
-      }
+      );
+    }
 
-    
- 
-    interactionContext.showPortal(dialogDisplay); //, () => submitCallback, () => cancelCallback);
+
+    interactionContext.showPortal(dialogDisplay);
   };
 
 
-  // Emulate componentDidMount - to append the wrapper element
-  const componentDidMount = () => {
-    
-    if (props.status === "complete") {
-      //console.log("HRH: trigger portal");
+  /*
+   * Emulate componentDidMount - to append the wrapper element
+   */
+  const componentDidMount = () => {    
+    if (props.status === "complete") {      
       triggerPortal();
-    }
-
-   
+    }   
   };
   useEffect (componentDidMount ,[ props.status, props.history ]);
   
