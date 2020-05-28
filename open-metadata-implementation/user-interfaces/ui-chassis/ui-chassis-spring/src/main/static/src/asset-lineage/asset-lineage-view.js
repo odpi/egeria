@@ -43,41 +43,40 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
      
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
     <token-ajax id="tokenAjaxDetails" last-response="{{item}}" ></token-ajax>
-    
-    <vaadin-tabs id ="useCases" selected="[[_getUseCase(routeData.usecase)]]" >
-      <vaadin-tab value="ultimateSource">
-        <a href="[[rootPath]]#/asset-lineage/ultimateSource/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
-            Ultimate Source
-        </a>
-      </vaadin-tab>
-      <vaadin-tab value="endToEnd">
-        <a href="[[rootPath]]#/asset-lineage/endToEnd/[[routeData.guid]]" tabindex="-1"  rel="noopener"> 
-            End to End Lineage
-        </a>
-      </vaadin-tab>
-      <vaadin-tab value="ultimateDestination">
-        <a href="[[rootPath]]#/asset-lineage/ultimateDestination/[[routeData.guid]]" tabindex="-1"  rel="noopener"> 
-            Ultimate Destination
-        </a>
-      </vaadin-tab>
-      <vaadin-tab value="glossaryLineage">
-        <a href="[[rootPath]]#/asset-lineage/glossaryLineage/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
-            Glossary Lineage
-        </a>
-      </vaadin-tab>
-      <vaadin-tab value="sourceAndDestination">
-        <a href="[[rootPath]]#/asset-lineage/sourceAndDestination/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
-            Source and Destination
-        </a>
-      </vaadin-tab>
-    </vaadin-tabs>
-    
     <div>
-        <vaadin-select id="processMenu" value="false" >
+        <vaadin-tabs id ="useCases" selected="[[_getUseCase(routeData.usecase)]]" >
+          <vaadin-tab value="ultimateSource">
+            <a href="[[rootPath]]#/asset-lineage/ultimateSource/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
+                Ultimate Source
+            </a>
+          </vaadin-tab>
+          <vaadin-tab value="endToEnd">
+            <a href="[[rootPath]]#/asset-lineage/endToEnd/[[routeData.guid]]" tabindex="-1"  rel="noopener"> 
+                End to End Lineage
+            </a>
+          </vaadin-tab>
+          <vaadin-tab value="ultimateDestination">
+            <a href="[[rootPath]]#/asset-lineage/ultimateDestination/[[routeData.guid]]" tabindex="-1"  rel="noopener"> 
+                Ultimate Destination
+            </a>
+          </vaadin-tab>
+          <vaadin-tab value="glossaryLineage">
+            <a href="[[rootPath]]#/asset-lineage/glossaryLineage/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
+                Glossary Lineage
+            </a>
+          </vaadin-tab>
+          <vaadin-tab value="sourceAndDestination">
+            <a href="[[rootPath]]#/asset-lineage/sourceAndDestination/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
+                Source and Destination
+            </a>
+          </vaadin-tab>
+        </vaadin-tabs>
+    
+        <vaadin-select id="processMenu" value="true" >
           <template>
             <vaadin-list-box>
-              <vaadin-item value="true" selected>Include ETL Jobs</vaadin-item>
-              <vaadin-item value="false">Exclude ETL Jobs</vaadin-item>
+              <vaadin-item value="true" selected>With ETL Jobs</vaadin-item>
+              <vaadin-item value="false">Without ETL Jobs</vaadin-item>
             </vaadin-list-box>
             </template>
         </vaadin-select>
