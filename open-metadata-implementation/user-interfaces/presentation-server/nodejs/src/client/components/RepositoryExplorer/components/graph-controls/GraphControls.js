@@ -1,15 +1,15 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import React, { useContext, useState }   from "react";
+import React, { useContext, useState, useRef }   from "react";
 
-import PropTypes                         from "prop-types";
+import PropTypes                                 from "prop-types";
 
-import { InstancesContext }              from "../../contexts/InstancesContext";
+import { InstancesContext }                      from "../../contexts/InstancesContext";
 
-import { RepoServerContext }             from "../../contexts/RepoServerContext";
+import { RepoServerContext }                     from "../../contexts/RepoServerContext";
 
-import TraversalResultHandler            from "./TraversalResultHandler";
+import TraversalResultHandler                    from "./TraversalResultHandler";
 
 import "../../rex.scss";
 
@@ -20,7 +20,22 @@ export default function GraphControls(props) {
   
   const repositoryServerContext = useContext(RepoServerContext);
 
-  const [status, setStatus]                                                    = useState("idle");
+  
+  /*
+   * status records the state of the current traversal request (if any) for cancellation
+   * There is also a useRef for current state so that the callbacks from the POSTs can
+   * read the **current** version of state, which may have changed since the callback 
+   * was registered (i.e. on the POST call). In the event of a cancel, status should 
+   * have changed to 'cancelled' and we need the callback to see the change.
+   */
+  const [status, setStatus] = useState("idle");  // { "idle", "pending", "cancelled:", "complete" }
+  const statusRef = useRef();
+  statusRef.current = status;
+
+  console.log("GraphControls: rendering, status is "+status);
+
+
+
   const [traversalSpecification, setTraversalSpecification]                    = useState({}); 
   const [preTraversalEntityTypes, setPreTraversalEntityTypes]                  = useState([]); 
   const [preTraversalRelationshipTypes, setPreTraversalRelationshipTypes]      = useState([]); 
@@ -76,7 +91,7 @@ export default function GraphControls(props) {
    */
   const _preTraversal = (json) => {  
 
-    if (status !== "cancelled" && status !== "complete") {
+    if (statusRef.current !== "cancelled" && statusRef.current !== "complete") {
 
       if (json !== null) {
 
