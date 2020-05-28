@@ -68,42 +68,7 @@ export default function RelationshipDisplay(props) {
   );
 }
 
- // TODO - add display of ends
  
  RelationshipDisplay.propTypes = {
   expRelationship: PropTypes.object
  };
-  
-
- /***
-  * 
-  * 
- // For each entity proxy we want to see GUID, version, status, properties, typeName, metadataCollectionId, metadataCollectionName
-    // If the user wants to see entity control information they can click on the entity.
-    // properties are under uniqueProperties.instanceProperties
-    relationshipAddEnds(details, relationship) {
-
-       
-
-       
-    displayEntityProxy(details, entityProxy) {
-
-        var proxyBox = document.createElement("div");
-        proxyBox.className = "highlight";
-        details.appendChild(proxyBox);
-
-        // GUID
-        this.entityAddGUID(proxyBox, entityProxy);
-        // TypeName
-        this.entityAddTypeName(proxyBox, entityProxy)
-        // Version
-        this.entityAddVersion(proxyBox, entityProxy);
-        // Status
-        this.entityAddStatus(proxyBox, entityProxy);
-        // Properties
-        this.entityProxyAddUniqueProperties(proxyBox, entityProxy);
-        // Home
-        this.entityAddHome(proxyBox, entityProxy);
-
-    }
-  */
