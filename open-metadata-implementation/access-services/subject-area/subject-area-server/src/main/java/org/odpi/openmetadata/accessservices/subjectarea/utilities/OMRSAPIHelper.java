@@ -320,7 +320,9 @@ public class OMRSAPIHelper {
                                                             String entityTypeGUID,
                                                             Date asOfTime,
                                                             int fromEntityElement,
-                                                            int pageSize) {
+                                                            int pageSize,
+                                                            String sequencingProperty,
+                                                            SequencingOrder sequencingOrder) {
 
         String methodName = "callGetEntitiesByType";
         if (log.isDebugEnabled()) {
@@ -337,8 +339,8 @@ public class OMRSAPIHelper {
                                                                                                              null,
                                                                                                              null,
                                                                                                              asOfTime,
-                                                                                                             null,
-                                                                                                             null,
+                                                                                                             sequencingProperty,
+                                                                                                             sequencingOrder,
                                                                                                              pageSize
                                                                                                             );
             response = new EntityDetailsResponse(foundEntities);
@@ -1392,16 +1394,21 @@ public class OMRSAPIHelper {
                                                                String typeName,
                                                                Date asOfTime,
                                                                int offset,
-                                                               int pageSize
+                                                               int pageSize,
+                                                        String sequencingProperty,
+                                                        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder
     ) {
-        TypeDef typeDef = this.omrsRepositoryHelper.getTypeDefByName("getEntitiesByType",typeName);
-        String entityTypeGUID = typeDef.getGUID();
+            TypeDef typeDef = this.omrsRepositoryHelper.getTypeDefByName("getEntitiesByType", typeName);
+            SequencingOrder omrsSequencingOrder = SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
+            String entityTypeGUID = typeDef.getGUID();
         return oMRSAPIHelper.callGetEntitiesByType(
                 restAPIName,
                 userId,
                 entityTypeGUID,
                 asOfTime,
                 offset,
-                pageSize);
+                pageSize,
+                sequencingProperty,
+                omrsSequencingOrder);
     }
 }

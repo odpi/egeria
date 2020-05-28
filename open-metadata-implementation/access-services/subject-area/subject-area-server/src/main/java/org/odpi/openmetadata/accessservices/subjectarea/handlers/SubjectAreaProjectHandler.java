@@ -204,7 +204,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
          * If no search criteria is supplied then we return all projects, this should not be too many.
          */
         if (searchCriteria == null) {
-            response = oMRSAPIHelper.getEntitiesByType(oMRSAPIHelper, methodName, userId, "Project", asOfTime, offset, pageSize);
+            response = oMRSAPIHelper.getEntitiesByType(oMRSAPIHelper, methodName, userId, "Project", asOfTime, offset, pageSize, sequencingProperty, sequencingOrder);
         } else {
             response = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "Project", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
         }

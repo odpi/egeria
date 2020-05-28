@@ -117,13 +117,13 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/categories")
-    public SubjectAreaOMASAPIResponse findTerm(@PathVariable String serverName, @PathVariable String userId,
+    public SubjectAreaOMASAPIResponse findCategory(@PathVariable String serverName, @PathVariable String userId,
                                                @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
                                                @RequestParam(value = "asOfTime", required = false) Date asOfTime,
                                                @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
                                                @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
                                                @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                               @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
+                                               @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
         return restAPI.findCategory(serverName, userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
@@ -157,7 +157,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
                                                                @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
                                                                @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
                                                                @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                               @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
+                                                               @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
         return restAPI.getCategoryRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }

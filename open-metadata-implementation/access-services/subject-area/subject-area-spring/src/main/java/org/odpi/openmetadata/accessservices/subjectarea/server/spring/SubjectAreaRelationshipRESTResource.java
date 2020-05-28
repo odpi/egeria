@@ -1089,7 +1089,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/replacement-terms")
-    public SubjectAreaOMASAPIResponse createreplacementTerm(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse createReplacementTerm(@PathVariable String serverName,
                                                             @PathVariable String userId,
                                                             @RequestBody ReplacementTerm replacementTerm) {
         return restAPI.createReplacementTerm(serverName, userId, replacementTerm);
