@@ -49,10 +49,14 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         :host {
            display: block;
         };
+        iron-pages {
+            height: max-content;
+            height: -webkit-fill-available;
+        };
         app-drawer-layout:not([narrow]) [drawer-toggle] {
           display: none;
         };
-        app-header {
+        app-toolbar {
           color: #fff;
           background-color: var(--egeria-primary-color);
         };
@@ -158,9 +162,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 </app-drawer>
     
                 <!-- Main content-->
-                <app-header-layout>
-        
-                  <app-header slot="header" condenses="" reveals="" effects="waterfall">
+                <app-header-layout>    
+                  <app-header slot="header" condenses fixed effects="waterfall">
                     <app-toolbar>
                       <paper-icon-button on-tap="_toggleDrawer" id="toggle" icon="menu"></paper-icon-button>
                       <template is="dom-if" if="[[narrow]]" >
@@ -178,10 +181,10 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                       </div>
                       <div style="float: right"><user-options></user-options></div>
                     </app-toolbar>
+                    <div class="breadcrumb">
+                        <bread-crumb id="breadcrumb" items="[[crumbs]]"></bread-crumb>
+                    </div>
                   </app-header>
-                  <div class="breadcrumb">
-                     <bread-crumb id="breadcrumb" items="[[crumbs]]"></bread-crumb>
-                  </div>
                   
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-view language="[[language]]" name="asset-catalog" route="[[tail]]"></asset-view>
