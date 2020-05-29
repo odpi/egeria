@@ -33,8 +33,6 @@ const TypesContextProvider = (props) => {
    * which can then be accessed by getter functions below
    */
   const loadTypeInfo = () => {
-
-    //console.log("TypesContextProvider: Retrieve the types from the repository server...");      
     repositoryServerContext.repositoryPOST("types", null, _loadTypeInfo);
   };
 
@@ -43,7 +41,6 @@ const TypesContextProvider = (props) => {
     if (json !== null) {
       let typeExplorer = json.typeExplorer;
       if (typeExplorer !== null) {
-        console.log("loadTypeInfo: got back typeExplorer with enums..."+typeExplorer);
         setTex(typeExplorer);
         return;
       }
@@ -60,92 +57,88 @@ const TypesContextProvider = (props) => {
    * Helper function to retrieve entities from tex
    */
   const getEntityTypes = () => {
-    if (tex !== undefined && tex.entities !== undefined) {  
+    if (tex !== undefined && tex.entities !== undefined) {
       return tex.entities;
     }
     else {
-      //console.log("Could not retrieve entity types: Type information has not been loaded");
+      alert("Could not retrieve entity types: Type information has not been loaded");
       return null;
     }
-}
+  }
 
-/*
- * Helper function to retrieve relationships from tex
- */
-const getRelationshipTypes = () => {
-  if (tex !== undefined && tex.relationships !== undefined) {  
-    return tex.relationships;
+  /*
+   * Helper function to retrieve relationships from tex
+   */
+  const getRelationshipTypes = () => {
+    if (tex !== undefined && tex.relationships !== undefined) {
+      return tex.relationships;
+    }
+    else {
+      alert("Could not retrieve relationship types: Type information has not been loaded");
+      return null;
+    }
   }
-  else {
-    //console.log("Could not retrieve relationship types: Type information has not been loaded");
-    return null;
-  }
-}
 
-/*
- * Helper function to retrieve classifications from tex
- */
-const getClassificationTypes = () => {
-  if (tex !== undefined && tex.classifications !== undefined) {  
-    return tex.classifications;
+  /*
+   * Helper function to retrieve classifications from tex
+   */
+  const getClassificationTypes = () => {
+    if (tex !== undefined && tex.classifications !== undefined) {
+      return tex.classifications;
+    }
+    else {
+      alert("Could not retrieve classification types: Type information has not been loaded");
+      return null;
+    }
   }
-  else {
-    //console.log("Could not retrieve classification types: Type information has not been loaded");
-    return null;
-  }
-}
 
+  /*
+   * Helper functions to retrieve specific named types from tex
+   */
+  const getEntityType = (typeName) => {
+    if (tex !== undefined && tex.entities !== undefined) {
+      return tex.entities[typeName];
+    }
+    else {
+      alert("Could not retrieve entity type: Type information has not been loaded");
+      return null;
+    }
+  }
 
-/*
- * Helper functions to retrieve specific named types from tex
- */
-const getEntityType = (typeName) => {
-  if (tex !== undefined && tex.entities !== undefined) {  
-    return tex.entities[typeName];
+  const getRelationshipType = (typeName) => {
+    if (tex !== undefined && tex.relationships !== undefined) {
+      return tex.relationships[typeName];
+    }
+    else {
+      alert("Could not retrieve relationship type: Type information has not been loaded");
+      return null;
+    }
   }
-  else {
-    //console.log("Could not retrieve entity type: Type information has not been loaded");
-    return null;
-  }
-}
 
-const getRelationshipType = (typeName) => {
-  if (tex !== undefined && tex.relationships !== undefined) {  
-    return tex.relationships[typeName];
+  const getClassificationType = (typeName) => {
+    if (tex !== undefined && tex.classifications !== undefined) {
+      return tex.classifications[typeName];
+    }
+    else {
+      alert("Could not retrieve classification type: Type information has not been loaded");
+      return null;
+    }
   }
-  else {
-    //console.log("Could not retrieve relationship type: Type information has not been loaded");
-    return null;
-  }
-}
 
-const getClassificationType = (typeName) => {
-  if (tex !== undefined && tex.classifications !== undefined) {  
-    return tex.classifications[typeName];
+  const getEnumType = (typeName) => {
+    if (tex !== undefined && tex.enums !== undefined) {
+      return tex.enums[typeName];
+    }
+    else {
+      alert("Could not retrieve enum type: Type information has not been loaded");
+      return null;
+    }
   }
-  else {
-    //console.log("Could not retrieve classification type: Type information has not been loaded");
-    return null;
-  }
-}
 
-const getEnumType = (typeName) => {
-  if (tex !== undefined && tex.enums !== undefined) {  
-    return tex.enums[typeName];
-  }
-  else {
-    //console.log("Could not retrieve enum type: Type information has not been loaded");
-    return null;
-  }
-}
-
-
-
- 
   return (
     <TypesContext.Provider
       value={{
-        tex, 
+        tex,
         setTex,
         loadTypeInfo,
         _loadTypeInfo,
@@ -155,16 +148,16 @@ const getEnumType = (typeName) => {
         getEntityType,
         getRelationshipType,
         getClassificationType,
-        getEnumType         
+        getEnumType
       }}
-    >      
+    >
      {props.children}
     </TypesContext.Provider>
   );
 };
 
 TypesContextProvider.propTypes = {
-  children: PropTypes.node  
+  children: PropTypes.node
 };
 
 export default TypesContextProvider;
