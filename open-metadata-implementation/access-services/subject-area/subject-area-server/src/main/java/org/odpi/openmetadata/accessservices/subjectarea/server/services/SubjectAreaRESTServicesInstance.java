@@ -93,7 +93,6 @@ public class SubjectAreaRESTServicesInstance {
      * @return the relationships associated with the requested guid
      *
      */
-
     public SubjectAreaOMASAPIResponse getRelationshipsFromGuid(String serverName,
                                                                String restAPIName,
                                                                String userId,
@@ -481,5 +480,4 @@ public class SubjectAreaRESTServicesInstance {
         }
         return response;
     }
-
 }

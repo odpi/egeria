@@ -3,14 +3,13 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
@@ -18,14 +17,12 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.MessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -34,8 +31,8 @@ import java.util.stream.Collectors;
  *
  */
 public class CategoryMapper extends EntityDetailMapper implements INodeMapper {
-    private static final Logger log = LoggerFactory.getLogger( org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper.class);
-    private static final String className = org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper.class.getName();
+    private static final Logger log = LoggerFactory.getLogger(CategoryMapper.class);
+    private static final String className = CategoryMapper.class.getName();
     public static final String GLOSSARY_CATEGORY = "GlossaryCategory";
 
     public CategoryMapper(OMRSAPIHelper omrsapiHelper) {
@@ -48,7 +45,7 @@ public class CategoryMapper extends EntityDetailMapper implements INodeMapper {
      * @return Category the equivalent Category to the supplied entityDetail.
      * @throws InvalidParameterException a parameter is null or an invalid value.
      */
-    public Category mapEntityDetailToNode(EntityDetail entityDetail) throws InvalidParameterException{
+    public Category mapEntityDetailToNode(EntityDetail entityDetail) throws InvalidParameterException {
         String methodName = "mapEntityDetailToNode";
         String entityTypeName = entityDetail.getType().getTypeDefName();
         if (repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(), entityTypeName, GLOSSARY_CATEGORY)) {
@@ -85,7 +82,7 @@ public class CategoryMapper extends EntityDetailMapper implements INodeMapper {
     }
 
     @Override
-    protected boolean updateNodeWithClassification(Node node, org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification) {
+    protected boolean updateNodeWithClassification(Node node, Classification omasClassification) {
         Category category = (Category) node;
         boolean handled = false;
         final String classificationName = omasClassification.getClassificationName();
@@ -105,7 +102,7 @@ public class CategoryMapper extends EntityDetailMapper implements INodeMapper {
      */
     @Override
     protected List<Classification> getInlinedClassifications(Node node) {
-        List inlinedClassifications = new ArrayList<>();
+        List<Classification> inlinedClassifications = new ArrayList<>();
 
         if (node.getNodeType()== NodeType.SubjectAreaDefinition) {
             SubjectArea subjectArea = new SubjectArea();
