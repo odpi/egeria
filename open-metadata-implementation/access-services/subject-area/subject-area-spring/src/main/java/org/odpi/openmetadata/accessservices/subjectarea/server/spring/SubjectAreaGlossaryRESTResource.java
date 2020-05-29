@@ -187,7 +187,7 @@ public class SubjectAreaGlossaryRESTResource {
                                                      @PathVariable String userId,
                                                      @PathVariable String guid,
                                                      @RequestBody Glossary glossary,
-                                                     @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace) {
+                                                     @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
         return restAPI.updateGlossary(serverName, userId, guid, glossary, isReplace);
     }
 
@@ -224,7 +224,7 @@ public class SubjectAreaGlossaryRESTResource {
     public SubjectAreaOMASAPIResponse deleteGlossary(@PathVariable String serverName,
                                                      @PathVariable String userId,
                                                      @PathVariable String guid,
-                                                     @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge) {
+                                                     @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteGlossary(serverName, userId, guid, isPurge);
     }
 

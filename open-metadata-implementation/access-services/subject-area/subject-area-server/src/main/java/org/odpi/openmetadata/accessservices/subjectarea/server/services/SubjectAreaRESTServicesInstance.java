@@ -37,7 +37,6 @@ public class SubjectAreaRESTServicesInstance {
 
     public static final String PAGE_OFFSET_DEFAULT_VALUE = "0";
     public static final String PAGE_SIZE_DEFAULT_VALUE = "0";
-    public static final String FALSE_DEFAULT_VALUE = "false";
 
     // The OMRSAPIHelper allows the junits to mock out the omrs layer.
     protected OMRSAPIHelper oMRSAPIHelper = null;

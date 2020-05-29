@@ -185,7 +185,7 @@ public class SubjectAreaCategoryRESTResource {
                                                      @PathVariable String userId,
                                                      @PathVariable String guid,
                                                      @RequestBody Category suppliedCategory,
-                                                     @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace) {
+                                                     @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
         return restAPI.updateCategory(serverName, userId, guid, suppliedCategory, isReplace);
     }
 
@@ -220,7 +220,7 @@ public class SubjectAreaCategoryRESTResource {
     public SubjectAreaOMASAPIResponse deleteCategory(@PathVariable String serverName,
                                                      @PathVariable String userId,
                                                      @PathVariable String guid,
-                                                     @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge) {
+                                                     @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteCategory(serverName, userId, guid, isPurge);
     }
 

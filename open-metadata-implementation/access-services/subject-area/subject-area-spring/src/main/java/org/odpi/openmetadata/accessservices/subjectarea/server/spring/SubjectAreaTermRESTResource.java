@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaTermRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -182,7 +181,7 @@ public class SubjectAreaTermRESTResource {
                                                  @PathVariable String userId,
                                                  @PathVariable String guid,
                                                  @RequestBody Term suppliedTerm,
-                                                 @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+                                                 @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateTerm(serverName, userId, guid, suppliedTerm, isReplace);
     }
@@ -218,7 +217,7 @@ public class SubjectAreaTermRESTResource {
     public SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String serverName,
                                                  @PathVariable String userId,
                                                  @PathVariable String guid,
-                                                 @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                 @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteTerm(serverName, userId, guid, isPurge);
     }

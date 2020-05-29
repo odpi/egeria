@@ -216,7 +216,7 @@ public class SubjectAreaProjectRESTResource {
                                                     @PathVariable String userId,
                                                     @PathVariable String guid,
                                                     @RequestBody Project Project,
-                                                    @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+                                                    @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateProject(serverName, userId, guid, Project, isReplace);
     }
@@ -252,7 +252,7 @@ public class SubjectAreaProjectRESTResource {
     public SubjectAreaOMASAPIResponse deleteProject(@PathVariable String serverName,
                                                     @PathVariable String userId,
                                                     @PathVariable String guid,
-                                                    @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                    @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteProject(serverName, userId, guid, isPurge);
     }
