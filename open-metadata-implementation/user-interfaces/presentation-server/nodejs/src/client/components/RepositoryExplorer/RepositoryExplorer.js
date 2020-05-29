@@ -46,7 +46,7 @@ export default function RepositoryExplorer() {
   return (
     
     <div className="rex-container">
-    
+
     <InteractionContextProvider>
       <RepositoryServerContextProvider>
         <TypesContextProvider>
@@ -54,28 +54,29 @@ export default function RepositoryExplorer() {
             <div className="top">
               <h2>Repository Explorer</h2>
               <div className="top-left">
-                <ConnectionDetails />    
-              </div>       
-              <div className="top-middle">                               
-                <InstanceRetrieval />  
+                <ConnectionDetails />
               </div>
-              <div className="top-right">      
-                <InstanceSearch />  
+              <div className="top-middle">
+                <InstanceRetrieval />
+              </div>
+              <div className="top-right">
+                <InstanceSearch />
               </div>
             </div>
-            <div className="lhs">                                                        
+            <div className="lhs">
+              <hr />
               <GraphControls />
               <hr />
-              <DetailsPanel />            
+              <DetailsPanel />
             </div>
-            <div className="rhs">   
+            <div className="rhs">
               <DiagramManager />
             </div>
           </InstancesContextProvider>
         </TypesContextProvider>
-      </RepositoryServerContextProvider>      
+      </RepositoryServerContextProvider>
     </InteractionContextProvider>
-      
+
     </div>
   );
 }
