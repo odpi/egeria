@@ -104,19 +104,34 @@ export default function FilterManager(props) {
    * Handler for classification drop-down checkbox selector
    */
   const showCheckboxes = () => {
+
     var checkboxes = document.getElementById("selectlist");
+
+    const handler = (evt) => {
+      if (checkboxes.contains(evt.target)) {
+        /* click inside, allow it to propagate */
+      }
+      else {
+        checkboxes.style.display = "none";
+        setClassificationsExpanded(false);
+        document.removeEventListener("mousedown", handler);
+      }
+    };
+
     if (!classificationsExpanded && classificationTypes) {
       checkboxes.style.display = "block";
       setClassificationsExpanded(true);
-    } 
+      document.addEventListener("mousedown", handler);
+    }
     else {
       checkboxes.style.display = "none";
       setClassificationsExpanded(false);
+      document.removeEventListener("mousedown", handler);
     }
   };
-  
 
-  
+
+
  
   return (
     
