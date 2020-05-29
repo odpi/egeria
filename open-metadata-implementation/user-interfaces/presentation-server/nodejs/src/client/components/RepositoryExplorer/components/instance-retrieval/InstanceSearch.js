@@ -256,11 +256,17 @@ export default function InstanceSearch(props) {
       if (numInstancesFound === 1) {
         searchUnique = true;
         if (searchCategory === "Entity") {
+          /*
+           * Search was for entities
+           */
           searchUniqueCategory   = "Entity";
           searchUniqueInstance   = selectedInstances[0];
           searchUniqueGUID       = searchUniqueInstance.entityGUID;
         }
-        else {  // searchCategory is "Relationship"
+        else {
+          /*
+           * Search was for relationships
+           */
           searchUniqueCategory   = "Relationship";
           searchUniqueInstance   = selectedInstances[0];
           searchUniqueGUID       = searchUniqueInstance.relationshipGUID;
@@ -369,6 +375,9 @@ export default function InstanceSearch(props) {
   const selectCallback = (guid) => {
     let list = null;
     if (searchCategory === "Entity") {
+      /*
+       * Search was for entities
+       */
       list = searchResults.map((item) => {
         if (item.entityGUID === guid) {
           const prevChecked = item.checked;
@@ -379,7 +388,10 @@ export default function InstanceSearch(props) {
         }
       });   
     } 
-    else { // Relationships...
+    else {
+      /*
+       * Search was for relationships
+       */
       list = searchResults.map((item) => {
         if (item.relationshipGUID === guid) {
           const prevChecked = item.checked;

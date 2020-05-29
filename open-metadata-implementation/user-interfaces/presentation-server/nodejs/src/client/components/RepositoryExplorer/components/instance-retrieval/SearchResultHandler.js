@@ -134,6 +134,9 @@ export default function SearchResultHandler(props) {
 
         let resultsDisplay;
         if (searchCategory === "Entity") {
+          /*
+           * Search was for entities
+           */
           resultsDisplay = (  
             <div>
               <p  className="dialog-text">
@@ -153,7 +156,10 @@ export default function SearchResultHandler(props) {
             </div>
           );
         }
-        else { // Relationships...
+        else {
+          /*
+           * Search was for relationships
+           */
           resultsDisplay = (  
             <div>
               <p  className="dialog-text">
