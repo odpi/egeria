@@ -67,10 +67,10 @@ public class RelatedTerm extends Line {
             // Terminate the list
             null
     };
-    private static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES)));
-    private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
-    private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
-    private static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
+    private static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES));
+    private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
+    private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
+    private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
     private String relatedTerm1Guid;
     private String relatedTerm2Guid;
 
@@ -245,12 +245,12 @@ public class RelatedTerm extends Line {
         sb.append(" RelatedTerm=");
         sb.append(super.toString(sb));
         sb.append(" RelatedTerm Attributes{");
-        sb.append("description=" + this.description +",");
-        sb.append("expression=" + this.expression +",");
-        sb.append("steward=" + this.steward +",");
-        sb.append("source=" + this.source +",");
+        sb.append("description=").append(this.description).append(",");
+        sb.append("expression=").append(this.expression).append(",");
+        sb.append("steward=").append(this.steward).append(",");
+        sb.append("source=").append(this.source).append(",");
         if ( status!=null) {
-            sb.append("status=" + status.name());
+            sb.append("status=").append(status.name());
         }
         sb.append("}");
         return sb;
