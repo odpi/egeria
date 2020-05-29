@@ -58,6 +58,5 @@ export default function InstanceClassificationsDisplay(props) {
 }
 
 InstanceClassificationsDisplay.propTypes = {
-  //children: PropTypes.node ,
   classifications: PropTypes.array 
 };

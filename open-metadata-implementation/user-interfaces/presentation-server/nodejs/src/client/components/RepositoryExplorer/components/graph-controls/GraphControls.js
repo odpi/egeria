@@ -29,16 +29,21 @@ export default function GraphControls(props) {
    * read the **current** version of state, which may have changed since the callback 
    * was registered (i.e. on the POST call). In the event of a cancel, status should 
    * have changed to 'cancelled' and we need the callback to see the change.
+   *
+   * status : { "idle", "pending", "cancelled:", "complete" }
    */
-  const [status, setStatus] = useState("idle");  // { "idle", "pending", "cancelled:", "complete" }
-  const statusRef = useRef();
-  statusRef.current = status;
+  const [status, setStatus]            = useState("idle");
+  const statusRef                      = useRef();
+  statusRef.current                    = status;
 
-  const [histStatus, setHistStatus] = useState("idle");  // { "idle", "pending", "cancelled:", "complete" }
-  const histStatusRef = useRef();
-  histStatusRef.current = histStatus;
+  /*
+   * histStatus : { "idle", "pending", "cancelled:", "complete" }
+   */
+  const [histStatus, setHistStatus]    = useState("idle");
+  const histStatusRef                  = useRef();
+  histStatusRef.current                = histStatus;
 
-  const [history, setHistory]                  = useState([]); 
+  const [history, setHistory]          = useState([]); 
 
   const [traversalSpecification, setTraversalSpecification]                    = useState({}); 
   const [preTraversalEntityTypes, setPreTraversalEntityTypes]                  = useState([]); 
@@ -72,7 +77,9 @@ export default function GraphControls(props) {
 
     const entityLabel = instancesContext.getFocusEntity().entityDigest.label;
 
-    // Save the traversal parameters into the traversal spec....
+    /*
+     * Save the traversal parameters into the traversal spec....
+     */
     let traversalSpec = {};    
     traversalSpec.serverName = repositoryServerContext.repositoryServerName;
     traversalSpec.entityGUID = entityGUID;
@@ -80,7 +87,9 @@ export default function GraphControls(props) {
     traversalSpec.depth = 1;
     setTraversalSpecification(traversalSpec);
 
-    // No filtering is applied to the pre-traversal...
+    /*
+     * No filtering is applied to the pre-traversal...
+     */
     repositoryServerContext.repositoryPOST("instances/pre-traversal", 
       { entityGUID : entityGUID,
         depth      : 1            },  // depth is always limited to 1
@@ -109,10 +118,10 @@ export default function GraphControls(props) {
              * and push the result up to the InstancesContext.
              *
              * Unpack the RexPreTraversal fields
-             *    private String                    entityGUID;                    // must be non-null
-             *    private Map<String,RexTypeStats>  entityInstanceCounts;          // a list of type guids or null
-             *    private Map<String,RexTypeStats>  relationshipInstanceCounts;    // a list of type guids or null
-             *    private Map<String,RexTypeStats>  classificationInstanceCounts;  // a list of names or null
+             *    private String                    entityGUID;                    --  must be non-null
+             *    private Map<String,RexTypeStats>  entityInstanceCounts;          --  a list of type guids or null
+             *    private Map<String,RexTypeStats>  relationshipInstanceCounts;    --  a list of type guids or null
+             *    private Map<String,RexTypeStats>  classificationInstanceCounts;  --  a list of names or null
              *    private Integer                   depth;
              */
                    
@@ -129,7 +138,9 @@ export default function GraphControls(props) {
               typeNames.forEach(typeName => {
                 const count = entityInstanceCounts[typeName].count;
                 const typeGUID = entityInstanceCounts[typeName].typeGUID;
-                // Stash the typeName, typeGUID (and count) in this.preTraversal for later access
+                /*
+                 * Stash the typeName, typeGUID (and count) in this.preTraversal for later access
+                 */
                 localPreTraversalResults.entityTypes.push( { 'name' : typeName  , 'guid' : typeGUID , 'count' : count , 'checked' : false });
               });
               localPreTraversalResults.entityTypes.sort((a, b) => (a.name > b.name) ? 1 : -1);
@@ -145,7 +156,9 @@ export default function GraphControls(props) {
               typeNames.forEach(typeName => {
                 const count = relationshipInstanceCounts[typeName].count;
                 const typeGUID = relationshipInstanceCounts[typeName].typeGUID;
-                // Stash the typeName, typeGUID (and count) in this.preTraversal for later access
+                /*
+                 * Stash the typeName, typeGUID (and count) in this.preTraversal for later access
+                 */
                 localPreTraversalResults.relationshipTypes.push( { 'name' : typeName, 'guid' : typeGUID  , 'count' : count , 'checked' : false });
               });
               localPreTraversalResults.relationshipTypes.sort((a, b) => (a.name > b.name) ? 1 : -1);
@@ -160,8 +173,10 @@ export default function GraphControls(props) {
               const typeNames = Object.keys(classificationInstanceCounts);
               typeNames.forEach(typeName => {
                 const count = classificationInstanceCounts[typeName].count;               
-                // Stash the typeName (and count) in this.preTraversal for later access
-                // typeGUID is not used for classifications
+                /*
+                 * Stash the typeName (and count) in this.preTraversal for later access
+                 * typeGUID is not used for classifications
+                 */
                 localPreTraversalResults.classificationTypes.push( { 'name' : typeName, 'guid' : null  , 'count' : count , 'checked' : false });
               });
               localPreTraversalResults.classificationTypes.sort((a, b) => (a.name > b.name) ? 1 : -1);
@@ -225,12 +240,16 @@ export default function GraphControls(props) {
 
     instancesContext.explore(selectedEntityTypeGUIDs, selectedRelationshipTypeGUIDs, selectedClassificationTypeNames);
 
-    // Clear the traversal results   
+    /*
+     * Clear the traversal results
+     */
     setPreTraversalEntityTypes([]);
     setPreTraversalRelationshipTypes([]);
     setPreTraversalClassificationTypes([]);
 
-    // Hide the traversal dialog
+    /* 
+     * Hide the traversal dialog
+     */
     setStatus("idle");
   }
 
@@ -260,38 +279,47 @@ export default function GraphControls(props) {
   const selectCallback = (category, name) => {
 
     if (category === "Entity") {
-      let updates = [];      
+      let updates = [];
       preTraversalEntityTypes.forEach((type) => {
         let newtype = type;
         if (type.name === name) {
-          newtype.checked = !(type.checked);          
-        }          
-        updates.push( newtype );                
-      });   
-      setPreTraversalEntityTypes(updates);   // reflect the change in checked state in the pre-trav list
+          newtype.checked = !(type.checked);
+        }
+        updates.push( newtype );
+      });
+      /*
+       * Reflect the change in checked state in the pre-traversal list
+       */
+      setPreTraversalEntityTypes(updates);
     }
 
     if (category === "Relationship") {
-      let updates = [];      
+      let updates = [];
       preTraversalRelationshipTypes.forEach((type) => {
         let newtype = type;
         if (type.name === name) {
-          newtype.checked = !(type.checked);              
+          newtype.checked = !(type.checked);
         }   
         updates.push( newtype );       
-      });   
+      });
+      /*
+       * Reflect the change in checked state in the pre-traversal list
+       */
       setPreTraversalRelationshipTypes( updates );
     } 
 
     if (category === "Classification") {
-      let updates = [];      
+      let updates = [];
       preTraversalClassificationTypes.forEach((type) => {
         let newtype = type;
         if (type.name === name) {
-          newtype.checked = !(type.checked);              
-        }   
-        updates.push( newtype );  
-      });   
+          newtype.checked = !(type.checked);
+        }
+        updates.push( newtype );
+      });
+      /*
+       * Reflect the change in checked state in the pre-traversal list
+       */
       setPreTraversalClassificationTypes( updates );
     }
   }

@@ -24,7 +24,10 @@ const TypesContextProvider = (props) => {
 
   const repositoryServerContext    = useContext(RepositoryServerContext);
 
-  const [tex, setTex]              = useState({});    // tex object is initially empty
+  /*
+   * tex object is initially empty
+   */
+  const [tex, setTex]              = useState({});    
 
 
 
@@ -45,7 +48,9 @@ const TypesContextProvider = (props) => {
         return;
       }
     }   
-    // On failure of any of the above...     
+    /*
+     * On failure ...     
+     */
     alert("Could not get types from repository server");
   }
   
@@ -60,8 +65,7 @@ const TypesContextProvider = (props) => {
     if (tex !== undefined && tex.entities !== undefined) {
       return tex.entities;
     }
-    else {
-      alert("Could not retrieve entity types: Type information has not been loaded");
+    else {      
       return null;
     }
   }
@@ -74,7 +78,6 @@ const TypesContextProvider = (props) => {
       return tex.relationships;
     }
     else {
-      alert("Could not retrieve relationship types: Type information has not been loaded");
       return null;
     }
   }
@@ -87,7 +90,6 @@ const TypesContextProvider = (props) => {
       return tex.classifications;
     }
     else {
-      alert("Could not retrieve classification types: Type information has not been loaded");
       return null;
     }
   }
@@ -100,7 +102,6 @@ const TypesContextProvider = (props) => {
       return tex.entities[typeName];
     }
     else {
-      alert("Could not retrieve entity type: Type information has not been loaded");
       return null;
     }
   }
@@ -110,7 +111,6 @@ const TypesContextProvider = (props) => {
       return tex.relationships[typeName];
     }
     else {
-      alert("Could not retrieve relationship type: Type information has not been loaded");
       return null;
     }
   }
@@ -120,7 +120,6 @@ const TypesContextProvider = (props) => {
       return tex.classifications[typeName];
     }
     else {
-      alert("Could not retrieve classification type: Type information has not been loaded");
       return null;
     }
   }
@@ -130,7 +129,6 @@ const TypesContextProvider = (props) => {
       return tex.enums[typeName];
     }
     else {
-      alert("Could not retrieve enum type: Type information has not been loaded");
       return null;
     }
   }

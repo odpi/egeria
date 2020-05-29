@@ -72,7 +72,9 @@ const RepositoryServerContextProvider = (props) => {
     
     const url =  identificationContext.getRestURL("rex") + "/" + uri;
     
-    // Add any (optional) bodyParms to the baseBody
+    /* 
+     * Add any (optional) bodyParms to the baseBody
+     */
     const body = Object.assign(buildBaseBody(), bodyParms);
   
     fetch(url, {

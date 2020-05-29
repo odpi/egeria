@@ -15,10 +15,8 @@ import "./portal.scss";
 
 export default function Portal(props) {
 
-
   const [newElement, setNewElement] = useState(null);
   
-
   /*
    * Emulate componentDidMount - to append the wrapper
    */
@@ -29,7 +27,9 @@ export default function Portal(props) {
     setNewElement(locElement);
 
     return () => {
-      // componentWillUnmount... to remove the wrapper element
+      /*
+       * Emulate componentWillUnmount... to remove the wrapper
+       */
       portalRoot.removeChild(locElement);
       setNewElement(null);
     }
@@ -44,7 +44,9 @@ export default function Portal(props) {
     </div>
   );
 
-  // Render the Portal's children in the wrapper element...  
+  /*
+   * Render the Portal's children in the wrapper element...  
+   */
   if (props.show) {
     if (newElement) {
       return (

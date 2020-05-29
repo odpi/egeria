@@ -211,21 +211,27 @@ export default function TraversalResultHandler(props) {
       }
     }
  
-    interactionContext.showPortal(dialogDisplay); //, () => submitCallback, () => cancelCallback);
+    interactionContext.showPortal(dialogDisplay);
   };
 
 
-  // Emulate componentDidMount - to append the wrapper element
+  /*
+   * Emulate componentDidMount - to append the wrapper element
+   */
   const componentDidMount = () => {    
 
     if (props.status === "idle") {
-      // NO OP
+      /*
+       * NO OP
+       */
     }
     if (props.status === "pending") {      
       triggerPortal();
     }
     if (props.status === "cancelled") {
-      // NO OP
+      /*
+       * NO OP
+       */
     }
     if (props.status === "complete") {     
       triggerPortal();

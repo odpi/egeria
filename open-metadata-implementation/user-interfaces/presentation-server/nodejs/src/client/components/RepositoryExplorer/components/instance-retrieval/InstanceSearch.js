@@ -32,22 +32,26 @@ export default function InstanceSearch(props) {
    * read the **current** version of state, which may have changed since the callback 
    * was registered (i.e. on the POST call). In the event of a cancel, status should 
    * have changed to 'cancelled' and we need the callback to see the change.
+   * 
+   * status : { "idle", "pending", "cancelled:", "complete" }
    */
-  const [status, setStatus] = useState("idle");  // { "idle", "pending", "cancelled:", "complete" }
-  const statusRef = useRef();
-  statusRef.current = status;
+  const [status, setStatus]   = useState("idle");
+  const statusRef             = useRef();
+  statusRef.current           = status;
 
 
   
-  // Search settings may be updated by callbacks from the FilterManager - note that when the user selects a filter type
-  // this MAY alter the searchCategory to the category of the selected type. 
-  // If the user has selected an entity type - the searchCategory will be set to Entity.
-  // If the user has selected an relationship type - the searchCategory will be set to Relationship.
-  // If the user selects a classification type it is added to the map, no resets are performed.
+  /*
+   * Search settings may be updated by callbacks from the FilterManager - note that when the user selects a filter type
+   * this MAY alter the searchCategory to the category of the selected type. 
+   * If the user has selected an entity type - the searchCategory will be set to Entity.
+   * If the user has selected an relationship type - the searchCategory will be set to Relationship.
+   * If the user selects a classification type it is added to the map, no resets are performed.
+   */
   
   const [searchCategory,        setSearchCategory]          = useState("Entity");    
   const [searchText,            setSearchText]              = useState("");   
-  const [searchType,            setSearchType]              = useState("");    // name of selected type 
+  const [searchType,            setSearchType]              = useState("");
   const [searchClassifications, setSearchClassifications]   = useState({});    // map of selected class'ns
   const [searchResults,         setSearchResults]           = useState([]); 
 
@@ -65,7 +69,9 @@ export default function InstanceSearch(props) {
   const filterClassificationChanged = (typeName, checked) => {    
     let currentClassifications = Object.assign(searchClassifications);
     if (checked) {
-      // The value is irrelevant, it is presence of the key that is significant
+      /* 
+       * The value is irrelevant, it is presence of the key that is significant
+       */
       currentClassifications[typeName] = true; 
     }
     else {
@@ -106,7 +112,7 @@ export default function InstanceSearch(props) {
     if (searchCategory === "Entity") {
       findEntities();
     }
-    else { // Relationships...
+    else {
       findRelationships();
     }
     
@@ -142,7 +148,9 @@ export default function InstanceSearch(props) {
           instances.push(entityDigest);
         }     
 
-        // Store the results locally to I-R
+        /*
+         * Store the results
+         */
         setSearchResults(instances);
       }
       else {
@@ -190,7 +198,9 @@ export default function InstanceSearch(props) {
           instances.push(relationshipDigest);
         }
 
-       // Store the results
+       /*
+        * Store the results
+        */
        setSearchResults(instances);
       }
       else {
@@ -304,12 +314,15 @@ export default function InstanceSearch(props) {
       });
 
      
-      // Pass the traversal to the InstancesContext which will add a gen for it to extend the graph
+      /*
+       * Pass the traversal to the InstancesContext which will add a gen for it to extend the graph
+       */
       instancesContext.processRetrievedTraversal(rexTraversal);
 
-   
-      // If the search resulted in a single instance being selected, optimise
-      // the flow by proactively requesting that it is loaded and becomes the focus instance.
+      /*
+       * If the search resulted in a single instance being selected, optimise
+       * the flow by proactively requesting that it is loaded and becomes the focus instance.
+       */
       if (searchUnique) {
         if (searchUniqueCategory === "Entity") {
           instancesContext.loadEntity(searchUniqueGUID);
@@ -321,7 +334,9 @@ export default function InstanceSearch(props) {
  
     }
 
-    // Clear the search results
+    /*
+     *  Clear the search results
+     */
     setSearchResults( [] );    
     setStatus("idle");
     

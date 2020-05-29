@@ -13,11 +13,11 @@ import { InstancesContext }               from "../../contexts/InstancesContext"
 
 export default function DiagramManager(props) {
 
-  // Access instancesContext to get access to gens
+  /*
+   * Access instancesContext to get access to gens
+   */
   const instancesContext = useContext(InstancesContext);
- 
-  
-  
+
   /*
    * nodeArray is stateful contiguous array of nodes - which resemble entity digests.
    * linkArray is a stateful contiguous array of links - which resemble relationship digests.
@@ -29,14 +29,14 @@ export default function DiagramManager(props) {
    * gens (as a property) and do the gen parsing and update of nodeArray or linkArray itself it does not 
    * get re-rendered.
    */
-  const [nodeArray, setNodeArray] = useState( [] );  // initially empty
+  const [nodeArray, setNodeArray] = useState( [] );
   const [linkArray, setLinkArray] = useState( [] );
 
   /*
    * allNodes is a map from guid to node - it provides an index for fast retrieval of a node based on 
    * the id (guid) found in the links.
    */
-  const [allNodes, setAllNodes]   = useState( {} );  // initially empty
+  const [allNodes, setAllNodes]   = useState( {} );
 
   /*
    * lastGenProcessed allows DiagramManager to record the last gen it processed. This is used in the 
@@ -57,13 +57,19 @@ export default function DiagramManager(props) {
      * Parse Entities
      */
   
-    // Corral new nodes into local array variable for atomic update of nodeArray.
+    /*
+     * Corral new nodes into local array variable for atomic update of nodeArray.
+     */
     let newNodesArray = Object.assign([],nodeArray);  
 
-    // Corral new nodes into local map for atomic update of allNodes.
+    /*
+     * Corral new nodes into local map for atomic update of allNodes.
+     */
     let newNodesMap   = Object.assign({},allNodes);   
 
-    // Retrieve the entity digests from the gen 
+    /*
+     * Retrieve the entity digests from the gen 
+     */
     const entsMap = gen.entities;
 
     Object.keys(entsMap).forEach(k => {
@@ -101,30 +107,40 @@ export default function DiagramManager(props) {
     
 
 
-    // Corral new nodes into local array variable for atomic update of nodeArray.
+    /* 
+     * Corral new nodes into local array variable for atomic update of nodeArray.
+     */
     let newLinksArray = Object.assign([],linkArray);  
 
   
-    // Retrieve the relationship digests from the gen
+    /*
+     * Retrieve the relationship digests from the gen
+     */
     const relsMap = gen.relationships;
     Object.keys(relsMap).forEach(k => {
-      // gen.relationships is the map of digests - pull out the relationshipGUID from the digest.
+      /*
+       * gen.relationships is the map of digests - pull out the relationshipGUID from the digest.
+       */
       const relationshipDigest = gen.relationships[k];  
 
       var newLink = {};
       newLink.id                     = relationshipDigest.relationshipGUID;
       newLink.label                  = relationshipDigest.label;
-      // Need to get each node from its GUID...it must already be in the gens but you would need to 
-      // ask InstancesContext to map the guid to the gen and then again to look up the guid in that gen
-      // OR you perform parseEntities and parseRelationships together and look in newNodesMap.
-      // If the entity is in this latest gen (quite likely given exploration) the asynchronous state
-      // update to allNodes - performed in parseEntities - will not have happened yet.
+      /*
+       * Need to get each node from its GUID...it must already be in the gens but you would need to 
+       * ask InstancesContext to map the guid to the gen and then again to look up the guid in that gen
+       * OR you perform parseEntities and parseRelationships together and look in newNodesMap.
+       * If the entity is in this latest gen (quite likely given exploration) the asynchronous state
+       * update to allNodes - performed in parseEntities - will not have happened yet.
+       */
       newLink.source                 = newNodesMap[relationshipDigest.end1GUID];  
       newLink.target                 = newNodesMap[relationshipDigest.end2GUID];
       newLink.gen                    = relationshipDigest.gen;
       newLink.metadataCollectionName = relationshipDigest.metadataCollectionName;  
 
-      // Look through existing links (newlinksArray) to find multi-edges and set idx accordingly
+      /*
+       * Look through existing links (newlinksArray) to find multi-edges and set idx accordingly
+       */
       var count = 0;
       newLinksArray.forEach(link => {
         if (link.source === newLink.source && link.target === newLink.target) {
@@ -161,22 +177,32 @@ export default function DiagramManager(props) {
      * Remove Entities
      */
   
-    // Corral new nodes into local array variable for atomic update of nodeArray.
+    /*
+     * Corral new nodes into local array variable for atomic update of nodeArray.
+     */
     let newNodesArray = [];  
 
-    // Corral new nodes into local map for atomic update of allNodes.
+    /*
+     * Corral new nodes into local map for atomic update of allNodes.
+     */
     let newNodesMap   = Object.assign({},allNodes);   
 
-    // Strip out any node that is from the gen with id genId    
+    /*
+     * Strip out any node that is from the gen with id genId 
+     */   
     if (nodeArray !== null && nodeArray.length > 0) {    
       for (let i=0; i<nodeArray.length; i++) {
         if (nodeArray[i].gen === genId) {   
-          // Remove node from allNodes map and don't add it to the newNodesArray 
+          /*
+           * Remove node from allNodes map and don't add it to the newNodesArray
+           */
           let guid = nodeArray[i].id;  
           delete newNodesMap[guid];              
         }
         else {
-          // Add this node to the newNodesArray and leave it in the map      
+          /*
+           * Add this node to the newNodesArray and leave it in the map
+           */   
           newNodesArray.push(nodeArray[i]);   
         }
       }                   
@@ -192,14 +218,20 @@ export default function DiagramManager(props) {
      * Remove Relationships
      */
     
-    // Corral new nodes into local array variable for atomic update of nodeArray.
+    /*
+     * Corral new nodes into local array variable for atomic update of nodeArray.
+     */
     let newLinksArray = [];
     
-    // Strip out any link that is from the gen with id genId    
+    /*
+     * Strip out any link that is from the gen with id genId
+     */
     if (linkArray !== null && linkArray.length > 0) {    
       for (let i=0; i<linkArray.length; i++) {
         if (linkArray[i].gen !== genId) {             
-          // Add this link to the new array          
+          /* 
+           * Add this link to the new array
+           */         
           newLinksArray.push(linkArray[i]);
         }
       } 
@@ -222,14 +254,18 @@ export default function DiagramManager(props) {
 
     if (nodeArray.length > 0) {
   
-      // Prepare to empty nodeArray
+      /*
+       * Prepare to empty nodeArray
+       */
       let newNodesArray = [];
 
-      // Prepare to empty allNodes
+      /* 
+       * Prepare to empty allNodes
+       */
       let newNodesMap   = {}; 
 
       /*
-       *  Update the states of nodeArray and allNodes ...
+       * Update the states of nodeArray and allNodes ...
        */
       setNodeArray(newNodesArray);
       setAllNodes(newNodesMap);  
@@ -239,11 +275,13 @@ export default function DiagramManager(props) {
        */
   
       if (linkArray.length > 0) {
-        // Prepare to empty linkArray
+        /*
+         * Prepare to empty linkArray
+         */
         let newLinksArray = [];     
       
         /*
-         *  Update the state of linkArray ...   
+         * Update the state of linkArray ...   
          */
         setLinkArray(newLinksArray);
       }
@@ -295,8 +333,9 @@ export default function DiagramManager(props) {
     }
     else {
 
-      // Graph has been reduced - by an undo operation
-      /* Removed gen */
+      /*
+       * Graph has been reduced - by an undo operation that has remove the most recent gen
+       */     
       removeGen(latestActiveGenId+1);
       setLastGenProcessed(latestActiveGenId);    
     } 

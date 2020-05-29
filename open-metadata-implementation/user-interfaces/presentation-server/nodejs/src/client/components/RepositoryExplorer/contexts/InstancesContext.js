@@ -43,9 +43,6 @@ const InstancesContextProvider = (props) => {
    /*
     * focus is an object containing the instanceCategory, instanceGUID and the instance itself.
     */
-  //const [focusInstanceCategory, setFocusInstanceCategory] = useState(""); 
-  //const [focusInstanceGUID,     setFocusInstanceGUID]     = useState(""); 
-  //const [focusInstance,         setFocusInstance]         = useState(null); 
   const [focus, setFocus] = useState({ instanceCategory : "", 
                                        instanceGUID     : "",
                                        instance         : null });
@@ -101,13 +98,12 @@ const InstancesContextProvider = (props) => {
   const [gens,         setGens]           = useState([]); 
   const [guidToGenId , setGuidToGenId]    = useState({}); 
 
-  // The latestGenId is not just the length of the gens array - it indicates the id of the most recent
-  // active generation. When the array is growing it will always be the last gen in the array. But when 
-  // undo or clear is used, it will be either one less than the array length, or even zero (on clear).
+  /* 
+   * The latestGenId is not just the length of the gens array - it indicates the id of the most recent
+   * active generation. When the array is growing it will always be the last gen in the array. But when 
+   * undo or clear is used, it will be either one less than the array length, or even zero (on clear).
+   */
   const [latestActiveGenId,  setLatestActiveGenId]    = useState(0);
-
-
-
 
   /*
    * getLatestActiveGenId  - returns the most recent gen number that is active
@@ -116,43 +112,43 @@ const InstancesContextProvider = (props) => {
     return latestActiveGenId;
   }
 
-   /*
+  /*
    * getLatestGen  - returns the most recent gen - this may not be an active gen.
    */
   const getLatestGen = () => {   
     return gens[gens.length-1];
   }
   
-  /*
-   * getAllGens  - returns all the gens
-   */
-  //const getAllGens = () => {
-  //  return gens;
-  //}
 
   /*
    * addGen - updates the gens array and the guidToGenId map too.
    */
   const addGen = (traversal) => {
-    // The traversal contains new instances (entities and/or relationships) - that do 
-    // not already existing in previous gens.
+    /*
+     * The traversal contains new instances (entities and/or relationships) - that do 
+     * not already existing in previous gens.
+     */
 
-    // Do not mutate the current array - must replace for state update to register
+    /*
+     * Do not mutate the current array - must replace for state update to register
+     */
     const newList = gens.concat(traversal);
     setGens( newList );   
     setLatestActiveGenId(newList.length);
 
 
-    // Look for new instances in the traversal, and add them to the new gen.
-    // If it was an entity that was processed, this function will only have been called if the entity
-    // needs adding to the new gen - so no checking would be required. However, if it was a relationship
-    // that was processed it carries a pair of entity digests and they may or may not have been already
-    // known; the relationship processor will have already checked for pre-existence and set their genIds 
-    // accordingly.This function needs to check each entity's genId - and only add the ones for the new 
-    // gen.
-    // If an entity is from the new gen, record it in the guidToGenId map. Relationships will always be 
-    // from the new gen.
-    // Because the map is immutable, corral the changes in a cloned map and apply them in one replace operation
+    /*
+     * Look for new instances in the traversal, and add them to the new gen.
+     * If it was an entity that was processed, this function will only have been called if the entity
+     * needs adding to the new gen - so no checking would be required. However, if it was a relationship
+     * that was processed it carries a pair of entity digests and they may or may not have been already
+     * known; the relationship processor will have already checked for pre-existence and set their genIds 
+     * accordingly.This function needs to check each entity's genId - and only add the ones for the new 
+     * gen.
+     * If an entity is from the new gen, record it in the guidToGenId map. Relationships will always be 
+     * from the new gen.
+     * Because the map is immutable, corral the changes in a cloned map and apply them in one replace operation
+     */
     const newGen = newList.length; 
     let newEntries = Object.assign({},guidToGenId);
     const eKeys = Object.keys(traversal.entities);
@@ -163,7 +159,9 @@ const InstancesContextProvider = (props) => {
     rKeys.forEach(r => {
       newEntries[r] = newGen;
     });
-    // Now replace the map...
+    /*
+     * Now replace the map...
+     */
     setGuidToGenId(newEntries);
   
   }
@@ -187,15 +185,19 @@ const InstancesContextProvider = (props) => {
     
     let genId;
     if (guidToGenId[entityGUID] !== undefined) {
-      // Entity is already known
+      /*
+       * Entity is already known
+       */
       genId = guidToGenId[entityGUID];
       expEntity.entityDigest.gen = genId;
     }
     else {
-      // Entity is not already known
-
-      // Construct a traversal for the entity and add it to the gens.
-      // The genId is in the digest and will be one beyond the current latest gen     
+      /*
+       * Entity is not already known
+       *
+       * Construct a traversal for the entity and add it to the gens.
+       * The genId is in the digest and will be one beyond the current latest gen
+       */  
       genId = getLatestActiveGenId() + 1;
       expEntity.entityDigest.gen = genId;
 
@@ -208,7 +210,9 @@ const InstancesContextProvider = (props) => {
 
       guidToGenId[entityGUID] = genId;
       
-      // Add the traversal to the sequence of gens in the graph.
+      /*
+       * Add the traversal to the sequence of gens in the graph.
+       */
       addGen(rexTraversal);
     }
     
@@ -231,15 +235,19 @@ const InstancesContextProvider = (props) => {
     
     let genId;
     if (guidToGenId[relationshipGUID] !== undefined) {
-      // Relationship is already known
+      /*
+       * Relationship is already known
+       */
       genId = guidToGenId[relationshipGUID];
       expRelationship.relationshipDigest.gen = genId;
     }
     else {
-      // Relationship is not already known
-
-      // Construct a traversal for the relationship and add it to the gens.
-      // The genId is in the digest and will be one beyond the current latest gen     
+      /* 
+       * Relationship is not already known
+       *
+       * Construct a traversal for the relationship and add it to the gens.
+       * The genId is in the digest and will be one beyond the current latest gen
+       */
       genId = getLatestActiveGenId() + 1;
       expRelationship.relationshipDigest.gen = genId;
 
@@ -313,7 +321,9 @@ const InstancesContextProvider = (props) => {
         guidToGenId[entityTwoGUID]           = e2gen;
       }
       
-      // Add the traversal to the sequence of gens in the graph.
+      /*
+       * Add the traversal to the sequence of gens in the graph.
+       */
       addGen(rexTraversal);
     }
     
@@ -377,11 +387,15 @@ const InstancesContextProvider = (props) => {
               entityKnown = true;
           }
           if (entityKnown === true) {
-              // Remove the entity from the traversal
+              /*
+               * Remove the entity from the traversal
+               */
               delete rexTraversal.entities[entityGUID];
           }
           else {
-              // Update the new entity's gen
+              /*
+               * Update the new entity's gen
+               */
               rexTraversal.entities[entityGUID].gen = genId;
               guidToGenId[entityGUID] = genId;
           }
@@ -408,12 +422,16 @@ const InstancesContextProvider = (props) => {
               relationshipKnown = true;
           }
           if (relationshipKnown === true) {
-              // Remove the relationship from the traversal
+              /*
+               * Remove the relationship from the traversal
+               */
               delete rexTraversal.relationships[relationshipGUID];
           }
           else {
-              // Relationship is new.
-              // Update the new relationship's gen
+              /*
+               * Relationship is new.
+               * Update the new relationship's gen
+               */
               rexTraversal.relationships[relationshipGUID].gen = genId;
               guidToGenId[relationshipGUID] = genId;
           }
@@ -612,7 +630,9 @@ const InstancesContextProvider = (props) => {
         alert("Attempt to retrieve entity from repository server returned status code "+json.relatedHTTPCode+" exception "+json.exceptionErrorMessage);
       }
     }   
-    // On failure of any of the above...  
+    /*
+     * On failure ...  
+     */
     alert("Could not get entity from repository server");
   };
 
@@ -647,7 +667,9 @@ const InstancesContextProvider = (props) => {
         alert("Attempt to load a relationship from the repository  got back status code "+json.relatedHTTPCode+" exception "+json.exceptionErrorMessage);
       }
     }   
-    // On failure of any of the above...    
+    /*
+     * On failure ...
+     */
     alert("Attempt to load a relationship from the repository got back nothing");
   };
 
@@ -706,11 +728,11 @@ const InstancesContextProvider = (props) => {
     repositoryServerContext.repositoryPOST(
       "instances/traversal", 
       { entityGUID             :  getFocusGUID(),
-        depth                  :  1,
+        depth                  :  1,                             // depth is always limited to 1
         entityTypeGUIDs        :  selectedEntityTypes,
         relationshipTypeGUIDs  :  selectedRelationshipTypes,
         classificationNames    :  selectedClassificationTypes
-      },  // depth is always limited to 1
+      },  
       _explore); 
   }
 
@@ -734,7 +756,9 @@ const InstancesContextProvider = (props) => {
         alert("Traversal request to repository server returned status code "+json.relatedHTTPCode+" exception "+json.exceptionErrorMessage);
       }
     }   
-    // On failure of any of the above...   
+    /*
+     * On failure ...
+     */
     alert("Traversal request to repository server failed to get a response");  
   };
 
@@ -772,7 +796,9 @@ const InstancesContextProvider = (props) => {
     rKeys.forEach(r => {
       delete newGUIDMap[r];
     });
-    // Now replace the map...
+    /*
+     * Now replace the map...
+     */
     setGuidToGenId(newGUIDMap);
 
   }
@@ -787,15 +813,21 @@ const InstancesContextProvider = (props) => {
    */
   const clear = () => {   
 
-    // Reset the focusInstance
+    /*
+     * Reset the focusInstance
+     */
     clearFocusInstance();
     
-    // Empty the graph
+    /*
+     * Empty the graph
+     */
     const emptyArray = [];
     setGens(emptyArray);
     setLatestActiveGenId(0);
 
-    // Empty the map
+    /*
+     * Empty the map
+     */
     const emptymap = {};
     setGuidToGenId(emptymap);
     
@@ -807,19 +839,19 @@ const InstancesContextProvider = (props) => {
    */
   const getHistory = () => {
 
-    // Build a history as a list of gens with summaries...
+
     let historyList = [];
 
   
 
     /* Each gen consists of the following:
      *
-     *   private String               entityGUID;               // must be non-null
-     *   private List<String>         entityTypeGUIDs;          // a list of type guids or null
-     *   private List<String>         relationshipTypeGUIDs;    // a list of type guids or null
-     *   private List<String>         classificationNames;      // a list of names or null
-     *   private Integer              depth;                    // the depth used to create the subgraph
-     *   private Integer              gen;                      // which generation this subgraph pertains to
+     *   private String               entityGUID;               -- must be non-null
+     *   private List<String>         entityTypeGUIDs;          -- a list of type guids or null
+     *   private List<String>         relationshipTypeGUIDs;    -- a list of type guids or null
+     *   private List<String>         classificationNames;      -- a list of names or null
+     *   private Integer              depth;                    -- the depth used to create the subgraph
+     *   private Integer              gen;                      -- which generation this subgraph pertains to
      *
      *   There are also fields that contain maps of instance summaries.
      *   An instance summary is much smaller than the full instance.
@@ -883,7 +915,10 @@ const InstancesContextProvider = (props) => {
             const rootLabel     = rootDigest.label;
             querySummary        = querySummary.concat(" Traversal from entity "+rootLabel);
             querySummary        = querySummary.concat(" Depth: "+genContent.depth);
-            // Entity Type Filters - show type names rather than type GUIDs
+
+            /* 
+             * Entity Type Filters - show type names rather than type GUIDs
+             */
             querySummary        = querySummary.concat(" Entity Type Filters: ");
             var entityTypeNames = genContent.entityTypeNames;
             if (entityTypeNames != undefined && entityTypeNames != null) {
@@ -902,7 +937,9 @@ const InstancesContextProvider = (props) => {
               querySummary = querySummary.concat("none");
           }
 
-          // Relationship Type Filters - show type names rather than type GUIDs
+          /*
+           * Relationship Type Filters - show type names rather than type GUIDs
+           */
           querySummary = querySummary.concat(" Relationship Type Filters: ");
           var relationshipTypeNames = genContent.relationshipTypeNames;
           if (relationshipTypeNames != undefined && relationshipTypeNames != null) {
@@ -920,7 +957,9 @@ const InstancesContextProvider = (props) => {
           else
             querySummary = querySummary.concat("none"); 
 
-          // Classification Filters - shown as names
+          /* 
+           * Classification Filters - shown as names
+           */
           querySummary = querySummary.concat(" Classification Filters: ");
           var ClassificationNames = genContent.ClassificationNames;
           if (ClassificationNames != undefined && ClassificationNames != null) {
@@ -988,7 +1027,7 @@ const InstancesContextProvider = (props) => {
     <InstancesContext.Provider
       value={{      
         focus,
-        setFocus,       
+        setFocus,
         getFocusGUID,
         setFocusEntity,
         getFocusEntity,
@@ -998,22 +1037,20 @@ const InstancesContextProvider = (props) => {
         changeFocusRelationship,
         getFocusCategory,
         clearFocusInstance,
-        clear,    
-        getHistory, 
+        clear,
+        getHistory,
         loadEntity,
         _loadEntity,
         loadRelationship,
         _loadRelationship,
         processRetrievedTraversal,
         explore,
-        _explore,       
-        gens,
+        _explore,
         setGens,
         getLatestActiveGenId,
-        removeGen,       
-        getLatestGen,        
-        guidToGenId              // only added this for debug in i-r - should be encapsulated in InstancesContext
-      }}
+        removeGen,
+        getLatestGen
+     }}
     >      
      {props.children}
     </InstancesContext.Provider>

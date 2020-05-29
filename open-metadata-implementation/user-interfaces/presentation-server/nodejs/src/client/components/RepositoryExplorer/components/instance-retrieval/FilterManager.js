@@ -84,19 +84,25 @@ export default function FilterManager(props) {
 
   
 
-  // Reset the entity type selector
+  /*
+   * Reset the entity type selector
+   */
   const resetEntTypeSelector = () => {
     const selector = document.getElementById('entityTypeSelector');
     selector.value = "none";
   };
 
-  // Reset the relationship type selector
+  /*
+   * Reset the relationship type selector
+   */
   const resetRelTypeSelector = () => {
     const selector = document.getElementById('relationshipTypeSelector');
     selector.value = "none";
   };
   
-  // Handler for classification drop-down checkbox selector
+  /*
+   * Handler for classification drop-down checkbox selector
+   */
   const showCheckboxes = () => {
     var checkboxes = document.getElementById("selectlist");
     if (!classificationsExpanded && classificationTypes) {

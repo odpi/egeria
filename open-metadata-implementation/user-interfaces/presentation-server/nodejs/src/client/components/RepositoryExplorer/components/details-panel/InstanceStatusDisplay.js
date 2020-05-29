@@ -20,6 +20,5 @@ export default function InstanceStatusDisplay(props) {
 }
 
 InstanceStatusDisplay.propTypes = {
-  //children: PropTypes.node ,
   inst: PropTypes.object
 };

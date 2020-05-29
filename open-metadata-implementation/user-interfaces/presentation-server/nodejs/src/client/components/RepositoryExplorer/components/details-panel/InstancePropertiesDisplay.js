@@ -72,6 +72,5 @@ export default function InstancePropertiesDisplay(props) {
 }
 
 InstancePropertiesDisplay.propTypes = {
-  //children: PropTypes.node ,
   properties: PropTypes.object 
 };

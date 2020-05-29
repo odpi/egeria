@@ -34,7 +34,7 @@ import * as d3  from "d3";  // using d3.path, ...
      * For gens up to and including 5 use an additional sixth of the height; after that shrink the perGen gaps.
      * Vertical placement of a node in gen g is therefore:
      * If numGens <= 5, perGen = (ymax - ymin) / 4;
-     * If numGens > 5.  perGen = (ymax - ymin) / (numGens - 1)  // because 1 is the starting gen
+     * If numGens > 5.  perGen = (ymax - ymin) / (numGens - 1)     --  because 1 is the starting gen
      * In either case y = ymin + (g -1) * perGen
      */
     if (numberOfGens <= 5) {

@@ -17,7 +17,9 @@ import { InstancesContext }                                from "../../contexts/
 
 export default function Diagram(props) {
 
-  // Access instancesContext to get access to focus information
+  /*
+   * Access instancesContext to get access to focus information
+   */
   const instancesContext = useContext(InstancesContext);
   
   /*
@@ -60,7 +62,7 @@ export default function Diagram(props) {
   const width                       = 1070;
   const height                      = 1100;
   const node_radius                 = 10;
-  const node_margin                 = 20;  // note that this is only the basis for a computed margin
+  const node_margin                 = 20;    // basis for computed margin
   const link_distance               = 200;
   const egeria_primary_color_string = "#71ccdc";
   const possibleColors              = ['#EEE','#CCC','#AAA','#888','#666','#444','#222',
@@ -109,7 +111,7 @@ export default function Diagram(props) {
    * Databind the latest links and add/remove SVG elements accordingly
    */
   const updateLinks = () => {
-       
+  
     const svg = d3.select(d3Container.current);
     const links = svg.selectAll(".link")
       .data(props.links)
@@ -144,7 +146,7 @@ export default function Diagram(props) {
       .attr("stroke-linejoin",    "round")
       .attr("stroke-width",       3)
       .attr("stroke",             "white") ;
-  
+
     enter_set.append('path')
        .attr('class',             'line')
        .attr("cursor",            "pointer")
@@ -152,15 +154,13 @@ export default function Diagram(props) {
        .attr("fill",              "none")
        .attr('stroke',            egeria_primary_color_string)
        .attr('stroke-width',      '2px')
-       // Only place a marker if the link is not reflexive
-       .attr("marker-end",        function(d) { return (d.source===d.target)?"none":"url(#end)";})
-       .on("click",               d => { linkClicked(d.id); })  // The link's id is the relationshipGUID  
+       .attr("marker-end",        function(d) { return (d.source===d.target)?"none":"url(#end)";})  // No arrow if link reflexive
+       .on("click",               d => { linkClicked(d.id); })  // The link's id is the relationshipGUID
        .lower()
        ;
-  
+
     links.merge(enter_set);
-     
-  
+
   };
 
 
@@ -265,7 +265,9 @@ export default function Diagram(props) {
 
  
   const dragstarted = (d) => {
-    // NO OP
+    /*
+     * NO OP
+     */
   }
 
   const dragged = (d) => {
@@ -283,7 +285,9 @@ export default function Diagram(props) {
   
 
   const dragended = (d) => {
-    // NO OP
+    /*
+     * NO OP
+     */
   }
 
   const unpin = (d) => {
@@ -322,12 +326,16 @@ export default function Diagram(props) {
     }
     else {
 
-      // Assign first available color
+      /* 
+       * Assign first available color
+       */
       let assigned = false;
       for (let col in possibleColors) {
         colorString = possibleColors[col];
         if (colorToRepository[colorString] === undefined) {
-          // Color is available
+          /*
+           * Color is available
+           */
           repositoryToColor[d.metadataCollectionName] = colorString;
           colorToRepository[colorString] = d.metadataCollectionName;
           return colorString;
@@ -366,7 +374,9 @@ export default function Diagram(props) {
 
     const nodes = svg.selectAll(".node");
 
-    // Keep nodes in the viewbox, with a safety margin so that (curved) links are unlikely to stray...
+    /*
+     * Keep nodes in the viewbox, with a safety margin so that (curved) links are unlikely to stray...
+     */
     nodes.attr('cx',function(d) { return d.x = Math.max(node_margin, Math.min(width  - 8 * node_margin, d.x)); });
     nodes.attr('cy',function(d) { return d.y = Math.max(node_margin, Math.min(height -     node_margin, d.y)); });
     nodes.attr('transform', function(d) { return "translate(" + d.x + "," + d.y + ")";});
@@ -431,12 +441,14 @@ export default function Diagram(props) {
         loc_force.force('vert', d3.forceY(height/2).strength(0.001))
       }
 
-      loc_force.on('tick', tick);  // this does no good if you setForce(loc_force)      
+      loc_force.on('tick', tick);    
     }
   };
 
-  const createMarker = () => {
-    // Define arrowhead for links
+  /*
+   * Define arrowhead for links
+   */
+  const createMarker = () => { 
     const svg = d3.select(d3Container.current); 
     svg.append("svg:defs").selectAll("marker")
       .data(["end"])
