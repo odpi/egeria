@@ -36,7 +36,7 @@ public class SubjectAreaRESTServicesInstance {
     private static final String className = SubjectAreaRESTServicesInstance.class.getName();
 
     public static final String PAGE_OFFSET_DEFAULT_VALUE = "0";
-    public static final String PAGE_SIZE_DEFAULT_VALUE = "100";
+    public static final String PAGE_SIZE_DEFAULT_VALUE = "0";
     public static final String TRUE_DEFAULT_VALUE = "true";
     public static final String FALSE_DEFAULT_VALUE = "false";
     public static final int PAGE_SIZE_MAX_VALUE = 1000;
