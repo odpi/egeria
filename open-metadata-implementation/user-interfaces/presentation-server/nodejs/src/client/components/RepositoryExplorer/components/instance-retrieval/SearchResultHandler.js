@@ -102,14 +102,14 @@ export default function SearchResultHandler(props) {
       
         dialogDisplay = (
         <div  className="dialog-text">
-          <p>
+          <p  className="dialog-text">
           {searchCategory} search on server {serverName} using expression &quot;{searchText}&quot;
           </p>
-          <p>
+          <p className="dialog-text">
           Type filter : 
             {searchType !== "" ? " "+searchType : " none"}
           </p>
-          <p>
+          <p  className="dialog-text">
           Classification filters : 
             {searchClassifications !== null && searchClassifications.length>0 
               ? searchClassifications.map(c => <li className="details-sublist-item" key={c}> {c}  </li>)

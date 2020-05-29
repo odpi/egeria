@@ -93,7 +93,7 @@ export default function HistoryResultHandler(props) {
         <div className="dialog-text">
           
           <p  className="dialog-text">
-          The following operations have been performed, with the instances added at each stage:
+          The following operations have been performed, each adding the instances listed:
           </p>    
    
           <hr></hr>
