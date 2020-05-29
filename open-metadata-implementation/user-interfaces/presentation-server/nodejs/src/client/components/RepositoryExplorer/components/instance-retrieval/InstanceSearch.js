@@ -37,7 +37,6 @@ export default function InstanceSearch(props) {
   const statusRef = useRef();
   statusRef.current = status;
 
-  console.log("InstanceSearch: rendering, status is "+status);
 
   
   // Search settings may be updated by callbacks from the FilterManager - note that when the user selects a filter type
@@ -118,17 +117,9 @@ export default function InstanceSearch(props) {
    * Function to find entities in repository using searchText
    */
   const findEntities = () => {    
-    
-    //let searchSpec = {};
-    //searchSpec.searchText = searchText;
-    //searchSpec.serverName = repositoryServerContext.repositoryServerName;
-    //searchSpec.searchCategory = "Entity";
+
     let typeName = searchType || null;
-    //searchSpec.typeName = typeName;
     let classificationList = Object.keys(searchClassifications);
-    //searchSpec.classifications = classificationList;   
-    //setSearchSpecification(searchSpec);    
-    console.log("InstanceSearch: dispatch entity search");   
     repositoryServerContext.repositoryPOST("instances/entities/by-property-value", 
       { searchText           : searchText, 
         typeName             : typeName,
@@ -140,7 +131,6 @@ export default function InstanceSearch(props) {
    * Handle completion of entity search
    */
   const _findEntities = (json) => {    
-    console.log("_findEntities status is "+status+" and statusRef is "+statusRef.current);
 
     if (statusRef.current !== "cancelled" && statusRef.current !== "complete") {
       if (json !== null) {
@@ -151,31 +141,17 @@ export default function InstanceSearch(props) {
           entityDigest.checked = false;
           instances.push(entityDigest);
         }     
-      
-        console.log("I-R: searchCategory "+searchCategory);
-        console.log("I-R: searchText "+searchText);
-        console.log("I-R: searchType "+searchType);
-        console.log("I-R: searchClassifications: ");
-        let classificationList = Object.keys(searchClassifications);
-        classificationList.forEach(c => {
-          console.log("classification: "+c);        
-        });
-      
-        console.log("I-R: found instances, count "+instances.length);
-      
+
         // Store the results locally to I-R
         setSearchResults(instances);
       }
       else {
-        console.log("_findEntities error detected should display ");
+        alert("Search for entities did not get back a result from the server");
       }
-
-      console.log("_findEntities set status to complete");
       setStatus("complete");
     }
 
     else {
-      console.log("InstanceSearch: _findEntities called but search was already cancelled/complete ----> IDLE");
       setStatus("idle");
     }
    
@@ -187,14 +163,8 @@ export default function InstanceSearch(props) {
    * Function to find relationships in repository using searchText
    */
   const findRelationships = () => {   
-    
-    //let searchSpec = {};
-    //searchSpec.searchText = searchText;
-    //searchSpec.serverName = repositoryServerContext.repositoryServerName;
-    //searchSpec.searchCategory = "Relationship";
+
     let typeName = searchType || null;
-    //searchSpec.typeName = typeName;
-    //setSearchSpecification(searchSpec);
 
     /* 
      * Add the typeName and classifications list to the body here....
@@ -212,33 +182,28 @@ export default function InstanceSearch(props) {
    
     if (statusRef.current !== "cancelled" && statusRef.current !== "complete") {
       if (json !== null) {
-        let relationshipDigests = json.relationships;      
-        //console.log("_findRelationships: got back ..."+relationshipDigests);
+        let relationshipDigests = json.relationships;
         let instances = [];
         for (var guid in relationshipDigests) {
           var relationshipDigest = relationshipDigests[guid];
           relationshipDigest.checked = false;
           instances.push(relationshipDigest);
         }
-      
-        console.log("I-R: found instances, count "+instances.length);
 
-       // Store the results locally to I-R
+       // Store the results
        setSearchResults(instances);
       }
       else {
-        console.log("_findEntities error detected should display ");
+        alert("Search for relationships did not get a result from the server");
       }
 
-      console.log("_findEntities set status to complete");
       setStatus("complete");
     }
 
     else {
       setStatus("idle");
     }
- 
-  
+
   };
   
 
@@ -347,11 +312,9 @@ export default function InstanceSearch(props) {
       // the flow by proactively requesting that it is loaded and becomes the focus instance.
       if (searchUnique) {
         if (searchUniqueCategory === "Entity") {
-          //instancesContext.setFocusEntity(searchUniqueGUID);
           instancesContext.loadEntity(searchUniqueGUID);
         }
         else {
-          //instancesContext.setFocusRelationship(searchUniqueGUID);
           instancesContext.loadRelationship(searchUniqueGUID);
         }
       }
@@ -371,23 +334,17 @@ export default function InstanceSearch(props) {
    * of the previous search will still be available.
    */
   const cancelSearchModal = (evt) => {
-    console.log("InstanceSearch: cancel callback invoked status is "+status);
+
     if (status === "cancelled") {
-      console.log("InstanceSearch: cancel callback setting status to idle");
       setStatus("idle");
     }
     else if (status === "complete") {
-      console.log("InstanceSearch: cancel callback setting status to idle");
       setStatus("idle");
     }
     else {
-      console.log("InstanceSearch: cancel callback setting status to cancelled");
       setStatus("cancelled");
     }
-    
   };
-
-
 
 
   /*
@@ -437,27 +394,26 @@ export default function InstanceSearch(props) {
   
 
   return (
-    
-    <div className={props.className}>
-    
 
-      <div className="retrieval-controls">          
+    <div className={props.className}>
+
+      <div className="retrieval-controls">
         <p>
         Search for instances
-        </p>        
+        </p>
         <label htmlFor="category">Category: </label>
-        <input type="radio" 
-               id="searchCatEntity" 
-               name="searchCategory" 
-               value="Entity" 
+        <input type="radio"
+               id="searchCatEntity"
+               name="searchCategory"
+               value="Entity"
                checked={searchCategory === "Entity"}
                onChange={changeSearchCategory}/>
         <label htmlFor="searchCatEntity">Entity</label>
         
-        <input type="radio" 
-               id="searchCatRelationship" 
-               name="searchCategory" 
-               value="Relationship" 
+        <input type="radio"
+               id="searchCatRelationship"
+               name="searchCategory"
+               value="Relationship"
                checked={searchCategory === "Relationship"}
                onChange={changeSearchCategory} />
         <label htmlFor="searchCatRelationship">Relationship</label>
@@ -466,16 +422,13 @@ export default function InstanceSearch(props) {
 
         <label htmlFor="searchTextField">Search text : </label>
         <input name="searchTextField"
-               value = { searchText }      
+               value = { searchText }
                onChange = { updatedSearchText } >
-        </input>        
-       
-      
+        </input>
 
         <FilterManager searchCategory={searchCategory} typeSelected={filterTypeSelected} clsChanged={filterClassificationChanged} />
-       
+
         <br />
-    
 
         <button className="top-control-button" onClick = { searchForInstances } >
           Search for instances
@@ -483,20 +436,19 @@ export default function InstanceSearch(props) {
       </div>
 
         <SearchResultHandler status                = { status }
-                             searchCategory        = { searchCategory }  
-                             searchType            = { searchType }  
-                             searchText            = { searchText }  
-                             searchClassifications = { Object.keys(searchClassifications) }  
+                             searchCategory        = { searchCategory }
+                             searchType            = { searchType }
+                             searchText            = { searchText }
+                             searchClassifications = { Object.keys(searchClassifications) }
                              serverName            = { repositoryServerContext.repositoryServerName }
-                             results               = { searchResults } 
+                             results               = { searchResults }
                              selectCallback        = { selectCallback }
                              setAllCallback        = { setAllCallback }
                              onCancel              = { cancelSearchModal }
                              onSubmit              = { submitSearchModal } />
-        
+
     </div>      
-       
-  
+
   );
 
 }
