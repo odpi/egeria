@@ -265,29 +265,23 @@ export default function Diagram(props) {
 
  
   const dragstarted = (d) => {
-    /*
-     * NO OP
-     */
+    if (!d3.event.active)
+      loc_force.alphaTarget(0.3).restart();
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
   }
 
   const dragged = (d) => {
-    if (pinningRef.current) {      
-      d.fx = d3.event.x, d.fy = d3.event.y;
-    }
-    else {     
-      d.x = d3.event.x, d.y = d3.event.y;
-    }
-    /*
-     * Provide a gentle nudge
-     */
-    loc_force.alpha(0.2).restart();
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
   }
-  
 
   const dragended = (d) => {
-    /*
-     * NO OP
-     */
+    if (!d3.event.active)
+      loc_force.alphaTarget(0.0005);
+    if (!pinningRef.current) {
+      d.fx = null, d.fy = null;
+    }
   }
 
   const unpin = (d) => {
@@ -391,7 +385,7 @@ export default function Diagram(props) {
       .attr("fill", d => (d.id === focusGUID) ? egeria_primary_color_string : nodeColor(d) );     
 
       nodes.selectAll('line')      
-      .attr('stroke', d => (d.fx !== undefined && d.fx !== null) ? egeria_primary_color_string : "none");
+      .attr('stroke', d => (pinningRef.current && d.fx !== undefined && d.fx !== null) ? egeria_primary_color_string : "none");
 
     nodes.selectAll('text')
       .attr("fill", d => (d.id === focusGUID) ? egeria_text_color_string : "#444" );
