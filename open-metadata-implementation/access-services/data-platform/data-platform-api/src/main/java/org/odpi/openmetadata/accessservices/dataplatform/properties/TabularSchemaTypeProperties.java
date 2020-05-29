@@ -58,8 +58,6 @@ public class TabularSchemaTypeProperties extends ComplexSchemaTypeProperties
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", vendorProperties=" + getVendorProperties() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +

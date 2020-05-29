@@ -63,8 +63,6 @@ public class DataSetProperties extends AssetProperties
                 ", latestChange='" + getLatestChange() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';

@@ -2,13 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.outtopic;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.events.SubjectAreaEvent;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
+
 
 /**
  * SubjectAreaPublisher is responsible for publishing org.odpi.openmetadata.accessservices.subjectarea.common.events about glossary artifacts.  It is called
@@ -17,162 +22,188 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class SubjectAreaPublisher
 {
-   private static final String assetPropertyNameDescription   = "description";
-
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaPublisher.class);
 
-    private Connection              SubjectAreaOutTopic;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private OMRSRepositoryValidator repositoryValidator;
-    private String                  componentName;
+    private OpenMetadataTopicConnector connector = null;
 
 
     /**
      * The constructor is given the connection to the out topic for Subject Area OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param SubjectAreaOutTopic - connection to the out topic
-     * @param repositoryHelper - provides methods for working with metadata instances
-     * @param repositoryValidator - provides validation of metadata instance
-     * @param componentName - name of component
+     * @param subjectAreaOutTopic connection to the out topic
+     * @param auditLog log file for the connector.
+     * @throws OMAGConfigurationErrorException problems creating the connector for the outTopic
      */
-    public SubjectAreaPublisher(Connection               SubjectAreaOutTopic,
-                                OMRSRepositoryHelper    repositoryHelper,
-                                OMRSRepositoryValidator repositoryValidator,
-                                String                  componentName)
+    public SubjectAreaPublisher(Connection subjectAreaOutTopic,
+                               AuditLog auditLog) throws OMAGConfigurationErrorException
     {
-        this.SubjectAreaOutTopic = SubjectAreaOutTopic;
-        this.repositoryHelper = repositoryHelper;
-        this.repositoryValidator = repositoryValidator;
-        this.componentName = componentName;
+        if (subjectAreaOutTopic != null)
+        {
+            connector = this.getTopicConnector(subjectAreaOutTopic, auditLog);
+        }
     }
 
 
+//    /**
+//     * Determine whether a new entity is a type we are interested in.  If it is then publish a subject area Event relating to it.
+//     * We are interested in any entity that is connected to glossary, glossaryCategory or glossaryTerm (including via Referencable
+//     * relationships) via a relationship.
+//     *
+//     * If there is a new comment associated with a Node then have an event for
+//     * Node changes
+//     * One for associated entities passing through the glossary term identifier.
+//     *
+//     * @param entity - entity object that has just been created.
+//     */
+//    public void processNewEntity(EntityDetail entity)
+//    {
+//        // TODO
+//    }
+//
+//
+//    /**
+//     *
+//     * @param entity - entity object that has just been updated.
+//     */
+//    public void processUpdatedEntity(EntityDetail   entity)
+//    {
+//        // TODO
+//    }
+//
+//
+//    /**
+//     *
+//     * @param entity - entity object that has just been deleted.
+//     */
+//    public void processDeletedEntity(EntityDetail   entity)
+//    {
+//        // TODO
+//    }
+//
+//
+//    /**
+//     *
+//     * @param entity - entity object that has just been restored.
+//     */
+//    public void processRestoredEntity(EntityDetail   entity)
+//    {
+//        // TODO
+//    }
+//
+//
+//    /**
+//     *
+//     * @param relationship - relationship object that has just been created.
+//     */
+//    public void processNewRelationship(Relationship relationship)
+//    {
+//        // TODO
+//    }
+//
+//
+//    /**
+//     *
+//     * @param relationship - relationship object that has just been updated.
+//     */
+//    public void processUpdatedRelationship(Relationship   relationship)
+//    {
+//        // TODO
+//    }
+//
+//
+//    /**
+//     *
+//     * @param relationship - relationship object that has just been deleted.
+//     */
+//    public void processDeletedRelationship(Relationship   relationship)
+//    {
+//        // todo
+//    }
+//
+//
+//    /**
+//     *
+//     * @param relationship - relationship object that has just been restored.
+//     */
+//    public void processRestoredRelationship(Relationship   relationship)
+//    {
+//        // todo
+//    }
+//
+//
+
+
     /**
-     * Determine whether a new entity is a Glossary artifact or dependant entity.  If it is then publish an Subject Area Event about it.
+     * Create the topic connector.
      *
-     * @param entity - entity object that has just been created.
+     * @param topicConnection connection to create the connector
+     * @param auditLog audit log for the connector
+     * @return open metadata topic connector
+     * @throws OMAGConfigurationErrorException problems creating the connector for the outTopic
      */
-    public void processNewEntity(EntityDetail entity)
+    private OpenMetadataTopicConnector getTopicConnector(Connection  topicConnection,
+                                                         AuditLog    auditLog) throws OMAGConfigurationErrorException
     {
-        InstanceType type = entity.getType();
-        String typeDefName = type.getTypeDefName();
-        if (typeDefName.equals("Glossary")) {
-            // TODO create OMAS event.
+        try
+        {
+            ConnectorBroker connectorBroker = new ConnectorBroker();
+            Connector connector       = connectorBroker.getConnector(topicConnection);
+
+            OpenMetadataTopicConnector topicConnector  = (OpenMetadataTopicConnector)connector;
+
+            topicConnector.setAuditLog(auditLog);
+
+            topicConnector.start();
+
+            return topicConnector;
+        }
+        catch (Throwable   error)
+        {
+            String methodName = "getTopicConnector";
+
+            log.error("Unable to create topic connector: " + error.toString());
+
+            throw new OMAGConfigurationErrorException(SubjectAreaErrorCode.BAD_OUT_TOPIC_CONNECTION.getMessageDefinition(topicConnection.toString(),
+                                                                                                                         error.getClass().getName(),
+                                                                                                                         error.getMessage()),
+                                                      this.getClass().getName(),
+                                                      methodName,
+                                                      error);
         }
     }
 
 
     /**
-     * Determine whether an updated entity is a Glossary artifact or dependant entity .  If it is then publish an Subject Area Event about it.
+     * Return the event as a String where the field contents are encoded in JSON.   The event beans
+     * contain annotations that mean the whole event, down to the lowest subclass, is serialized.
      *
-     * @param entity - entity object that has just been updated.
+     * @param event event to serialize
+     * @return JSON payload (as String)
      */
-    public void processUpdatedEntity(EntityDetail   entity)
+    private String getJSONPayload(SubjectAreaEvent event)
     {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String       jsonString   = null;
 
+        /*
+         * This class
+         */
+        try
+        {
+            jsonString = objectMapper.writeValueAsString(event);
+        }
+        catch (Throwable  error)
+        {
+            log.error("Unable to create event payload: " + error.toString());
+        }
+
+        return jsonString;
     }
 
-
-    /**
-     * Determine whether an updated entity is a Glossary artifact or dependant entity.  If it is then publish an Subject Area Event about it.
-     *
-     * @param originalEntity - original values for entity object - available when basic property updates have
-     *                       occurred on the entity.
-     * @param newEntity - entity object that has just been updated.
-     */
-    public void processUpdatedEntity(EntityDetail   originalEntity,
-                                     EntityDetail   newEntity)
-    {
-
-    }
-
-
-    /**
-     * Determine whether a deleted entity is a Glossary artifact or dependant entity.  If it is then publish an Subject Area Event about it.
-     *
-     * @param entity - entity object that has just been deleted.
-     */
-    public void processDeletedEntity(EntityDetail   entity)
-    {
-
-    }
-
-
-    /**
-     * Determine whether a restored entity is a Glossary artifact or dependant entity.  If it is then publish an Subject Area Event about it.
-     *
-     * @param entity - entity object that has just been restored.
-     */
-    public void processRestoredEntity(EntityDetail   entity)
-    {
-
-
-    }
-
-
-    /**
-     * Determine whether a new relationship is related to an Asset.
-     * If it is then publish an Subject Area Event about it.
-     *
-     * @param relationship - relationship object that has just been created.
-     */
-    public void processNewRelationship(Relationship relationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Determine whether an updated relationship is related to an Asset.
-     * If it is then publish an Subject Area Event about it.
-     *
-     * @param relationship - relationship object that has just been updated.
-     */
-    public void processUpdatedRelationship(Relationship   relationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Determine whether an updated relationship is related to an Asset.
-     * If it is then publish an Subject Area Event about it.
-     *
-     * @param originalRelationship  - original values of relationship.
-     * @param newRelationship - relationship object that has just been updated.
-     */
-    public void processUpdatedRelationship(Relationship   originalRelationship,
-                                           Relationship   newRelationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Determine whether a deleted relationship is related to an Asset.
-     * If it is then publish an Subject Area Event about it.
-     *
-     * @param relationship - relationship object that has just been deleted.
-     */
-    public void processDeletedRelationship(Relationship   relationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Determine whether a restored relationship is related to an Asset.
-     * If it is then publish an Subject Area Event about it.
-     *
-     * @param relationship - relationship object that has just been restored.
-     */
-    public void processRestoredRelationship(Relationship   relationship)
-    {
-        // todo
-    }
 
 
 
 
 }
+

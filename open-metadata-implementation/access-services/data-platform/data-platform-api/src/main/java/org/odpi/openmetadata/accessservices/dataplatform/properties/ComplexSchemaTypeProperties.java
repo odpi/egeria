@@ -64,8 +64,6 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", vendorProperties=" + getVendorProperties() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +

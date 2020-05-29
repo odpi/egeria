@@ -18,10 +18,6 @@ public class OMASExceptionToResponse {
        return new UnrecognizedGUIDExceptionResponse(e);
     }
 
-    public static SubjectAreaOMASAPIResponse convertStatusNotSupportedException(StatusNotSupportedException e) {
-        return new StatusNotsupportedExceptionResponse(e);
-    }
-
     public static SubjectAreaOMASAPIResponse convertFunctionNotSupportedException(FunctionNotSupportedException e) {
        return new  FunctionNotSupportedExceptionResponse(e);
     }
@@ -34,30 +30,27 @@ public class OMASExceptionToResponse {
        return new ClassificationExceptionResponse(e);
     }
 
-    public static SubjectAreaOMASAPIResponse convertGUIDNotPurgedException(GUIDNotPurgedException e) {
-       return new GUIDNotPurgedExceptionResponse(e);
+    public static SubjectAreaOMASAPIResponse convertEntityNotPurgedException(EntityNotPurgedException e) {
+       return new EntityNotPurgedExceptionResponse(e);
     }
 
-    public static SubjectAreaOMASAPIResponse convertGUIDNotDeletedException(GUIDNotDeletedException e)
+    public static SubjectAreaOMASAPIResponse convertEntityNotDeletedException(EntityNotDeletedException e)
     {
-       return new GUIDNotDeletedExceptionResponse(e);
+       return new EntityNotDeletedExceptionResponse(e);
+    }
+    public static SubjectAreaOMASAPIResponse convertRelationshipNotPurgedException(RelationshipNotPurgedException e) {
+        return new RelationshipNotPurgedExceptionResponse(e);
     }
 
-    public static SubjectAreaOMASAPIResponse convertEntityNotDeletedException(EntityNotDeletedException e) {
-        return new EntityNotDeletedExceptionResponse(e);
+    public static SubjectAreaOMASAPIResponse convertRelationshipNotDeletedException(RelationshipNotDeletedException e)
+    {
+        return new RelationshipNotDeletedExceptionResponse(e);
     }
+
 
     public static SubjectAreaOMASAPIResponse convertMetadataServerUncontactableException(MetadataServerUncontactableException e) {
        return new MetadataServerUncontactableExceptionResponse(e);
     }
 
-    public static SubjectAreaOMASAPIResponse convertRelationshipNotDeletedException(RelationshipNotDeletedException e)
-    {
-      return new RelationshipNotDeletedExceptionResponse(e);
-    }
 
-    public static SubjectAreaOMASAPIResponse convertUnrecognizedNameException(UnrecognizedNameException e)
-    {
-       return new UnrecognizedNameExceptionResponse(e);
-    }
 }

@@ -78,12 +78,13 @@ public class TermHASARelationshipResponse extends SubjectAreaOMASAPIResponse
          */
         public UsedInContextResponse()
         {
+
             this.setResponseCategory(ResponseCategory.TermUsedInContextRelationship);
         }
         public UsedInContextResponse(UsedInContext termUsedInContextRelationship)
         {
+            this();
             this.termUsedInContextRelationship=termUsedInContextRelationship;
-            this.setResponseCategory(ResponseCategory.TermUsedInContextRelationship);
         }
 
 

@@ -57,11 +57,11 @@ public class SoftwareServerCapabilityBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     public SoftwareServerCapabilityBuilder(String               qualifiedName,
-                                  String               displayName,
-                                  String               description,
-                                  OMRSRepositoryHelper repositoryHelper,
-                                  String               serviceName,
-                                  String               serverName)
+                                           String               displayName,
+                                           String               description,
+                                           OMRSRepositoryHelper repositoryHelper,
+                                           String               serviceName,
+                                           String               serverName)
     {
         super(qualifiedName, repositoryHelper, serviceName, serverName);
 

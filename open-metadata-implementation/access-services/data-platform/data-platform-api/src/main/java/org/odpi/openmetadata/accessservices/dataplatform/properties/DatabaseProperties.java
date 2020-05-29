@@ -165,8 +165,6 @@ public class DatabaseProperties extends DataStoreProperties
                 ", latestChange='" + getLatestChange() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';

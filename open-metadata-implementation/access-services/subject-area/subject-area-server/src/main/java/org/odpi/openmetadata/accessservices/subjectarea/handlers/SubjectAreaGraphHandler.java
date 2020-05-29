@@ -14,9 +14,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.ResponseCatego
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.LineTypeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.NodeTypeMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGlossaryRESTServices;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGraphRESTServices;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -59,7 +57,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
                                    RepositoryHandler repositoryHandler,
                                    OMRSAPIHelper oMRSAPIHelper,
                                    RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper, errorHandler);
+        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper);
     }
 
     @Override
