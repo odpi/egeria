@@ -448,7 +448,7 @@ export default function InstanceSearch(props) {
         <br />
 
         <label htmlFor="searchTextField">Search text : </label>
-        <input name="searchTextField"
+        <input name="searchTextField" className="search-text"
                value = { searchText }
                onChange = { updatedSearchText } >
         </input>
