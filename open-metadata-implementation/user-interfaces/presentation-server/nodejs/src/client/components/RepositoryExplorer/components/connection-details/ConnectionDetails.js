@@ -25,7 +25,6 @@ export default function ConnectionDetails(props) {
    * Handler for change to instance GUID field
    */
   const updatedServerName = (evt) => {
-    //console.log("ConnectionDetails: serverName being updated to :"+evt.target.value);
     repositoryServerContext.setRepositoryServerName(evt.target.value);
   }
 
@@ -33,7 +32,6 @@ export default function ConnectionDetails(props) {
    * Handler for change to instance GUID field
    */
   const updatedServerURLRoot = (evt) => {
-    //console.log("ConnectionDetails: serverURLRoot updated, now :"+evt.target.value);
     repositoryServerContext.setRepositoryServerURLRoot(evt.target.value);
   }
 
@@ -41,7 +39,6 @@ export default function ConnectionDetails(props) {
    * Handler for change to instance GUID field
    */
   const updatedEnterpriseOption = (evt) => {
-    //console.log("ConnectionDetails: enterpriseOption toggled, current value is: "+repositoryServerContext.repositoryServerEnterpriseOption.toString());
     repositoryServerContext.setRepositoryServerEnterpriseOption(!repositoryServerContext.repositoryServerEnterpriseOption);
   }
 
