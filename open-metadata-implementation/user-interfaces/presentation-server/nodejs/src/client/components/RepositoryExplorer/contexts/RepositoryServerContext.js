@@ -26,8 +26,8 @@ const RepositoryServerContextProvider = (props) => {
   /*
    * It is possible to set up defaults for the context here .... although not actually wanted in production....
    */
-  const [repositoryServerName, setRepositoryServerName]                         = useState("Schema_Server");  
-  const [repositoryServerURLRoot, setRepositoryServerURLRoot]                   = useState("http://localhost:8082");  
+  const [repositoryServerName, setRepositoryServerName]                         = useState("");  
+  const [repositoryServerURLRoot, setRepositoryServerURLRoot]                   = useState("");  
   const [repositoryServerEnterpriseOption, setRepositoryServerEnterpriseOption] = useState(false);  
 
    
