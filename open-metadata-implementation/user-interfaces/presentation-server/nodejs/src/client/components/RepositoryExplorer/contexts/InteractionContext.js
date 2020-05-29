@@ -35,26 +35,20 @@ const InteractionContextProvider = (props) => {
   const portalAnchor = useRef(null);
 
   const getPortalAnchor = () => {
-    console.log("getPortalAnchor called, portalAnchor.current is "+portalAnchor.current);
     return portalAnchor;
   };
 
-
-
   const portalCancel = () => {
-    console.log("InteractionContext: portal cancelled");
     setPortalVisible(false);
     cancelCallback();
   };
 
   const portalSubmit = (evt) => {
-    console.log("InteractionContext: portal submitted");
     setPortalVisible(false);
     submitCallback(evt);
   };
 
   const showPortal = (content, submitCB, cancelCB) => {
-    console.log("InteractionContext: showPortal");
     setPortalContent(content);
     setSubmitCallback(submitCB);
     setCancelCallback(cancelCB);
@@ -62,20 +56,16 @@ const InteractionContextProvider = (props) => {
   };
 
   const hidePortal = () => {
-    setPortalVisible(false);    
+    setPortalVisible(false);
     setSubmitCallback(null);
     setCancelCallback(null);
     setPortalContent(null);
   };
 
-
-
-  
-  console.log("InteractionContextProvider : I am rendering ");
  
   return (
     <InteractionContext.Provider
-      value={{      
+      value={{
         showPortal,
         hidePortal,
         getPortalAnchor,
@@ -84,11 +74,10 @@ const InteractionContextProvider = (props) => {
       }}
     >      
 
-    <div id="rex-portal" ref={portalAnchor}></div>     
+    <div id="rex-portal" ref={portalAnchor}></div>
       <Portal show={portalVisible} anchorCB={getPortalAnchor} cancelCallback={portalCancel} submitCallback={portalSubmit}>
           {portalContent}
       </Portal>
-
      {props.children}
     </InteractionContext.Provider>
   );
