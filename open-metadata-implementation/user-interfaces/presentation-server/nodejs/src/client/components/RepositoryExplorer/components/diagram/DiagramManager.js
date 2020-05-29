@@ -251,38 +251,15 @@ export default function DiagramManager(props) {
   };
 
  
-  const getFocusGUID = () => {
-    console.log("DiagramManager: getFocusGUID - focus guid from callback "+instancesContext.getFocusGUID());
-
-    console.log("DiagramManager: getFocusGUID - focus guid direct access "+instancesContext.focus.instanceGUID);
-
-    const focus = instancesContext.focus;
-    console.log("DiagramManager: getFocusGUID - focus copied from i-c "+focus);
-    console.log("DiagramManager: getFocusGUID - focus copy GUID "+focus.instanceGUID);
-  };
 
   /*
    * Request that the InstancesContext loads the entity from the repository and makes it the focus.
    */
   const onNodeClick = (guid) => {    
 
-    //const repositoryServerName = repositoryServerContext.getRepositoryServerName();
-    //const enterpriseOption = repositoryServerContext.getRepositoryServerEnterpriseOption();
-    //console.log("DiagramManager: onNodeClick, severName: "+repositoryServerName);
-
     instancesContext.changeFocusEntity(guid);
-    
   };
 
-  //const simNodeClick = () => {   
-  //  const repositoryServerName = repositoryServerContext.getRepositoryServerName();
-  //  //const enterpriseOption = repositoryServerContext.getRepositoryServerEnterpriseOption(); 
-  //  console.log("DiagramManager: simNodeClick, severName: "+repositoryServerName);
-  //  console.log("DiagramManager: simNodeClick, calling onNodeClick...");
-  //  onNodeClick(nodeArray[0].entityGUID);
-  //  
-  //  //instancesContext.changeFocusEntity(guid);    
-  //};
 
   /*
    * Request that the InstancesContext loads the relationship from the repository and makes it the focus.
@@ -290,12 +267,8 @@ export default function DiagramManager(props) {
   const onLinkClick = (guid) => {
 
     instancesContext.changeFocusRelationship(guid);
-
   };
 
-
-  
-  
 
   /*
    * When gens has changed - update the nodeArray and linkArray
@@ -303,8 +276,6 @@ export default function DiagramManager(props) {
    * a new gen has been added since this component was last rendered. If so, request the latest gen
    * and parse it into the nodes and links arrays.
    */
-
-  
 
   const latestActiveGenId = instancesContext.getLatestActiveGenId();
  
@@ -317,48 +288,32 @@ export default function DiagramManager(props) {
   else if (latestActiveGenId < lastGenProcessed) {
 
     if (latestActiveGenId === 0) {
+
       /* Graph has been cleared */
       clearGraph();
       setLastGenProcessed(latestActiveGenId);  
     }
     else {
+
       // Graph has been reduced - by an undo operation
       /* Removed gen */
       removeGen(latestActiveGenId+1);
       setLastGenProcessed(latestActiveGenId);    
-
-  
     } 
   }
 
   
-  
-
-  
-
 
 
   return (
-    
     <div>
-
-      <h2>Diagram Manager</h2>
-
-     
-   
-      
       <Diagram nodes={nodeArray} 
                links={linkArray} 
                numGens={latestActiveGenId} 
                onNodeClick={onNodeClick} 
                onLinkClick={onLinkClick}               
-               />  
-
-       
-
-                        
+               />
     </div>     
-  
   );
 
 }
