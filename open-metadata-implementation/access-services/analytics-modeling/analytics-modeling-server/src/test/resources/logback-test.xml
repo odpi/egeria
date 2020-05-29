@@ -12,7 +12,7 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-    <logger name="org.odpi.openmetadata.accessservices.cognos" level="INFO" />
+    <logger name="org.odpi.openmetadata.accessservices.analyticsmodeling" level="INFO" />
 
 
     <root level="info">

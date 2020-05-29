@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 /**
- * CognosServicesInstance caches references to OMRS objects for a specific server.
+ * AnalyticsModelingServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
 public class AnalyticsModelingServicesInstance extends OCFOMASServiceInstance
