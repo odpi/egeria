@@ -3,56 +3,56 @@
 
 
 .filterControls {
-  text-align: right;
+  text-align        : right;
 }
 
 .multiselect {
-  width: 100%;  
-  text-align: right;
+  width             : 100%;
+  text-align        : right;
 }
 
 .filterSelectors {
-  display: inline-block;
+  display           : inline-block;
 }
 
 .selectBox {
-  position: relative;
-  width : 250px;
-  display: inline-block;
+  position          : relative;
+  width             : 250px;
+  display           : inline-block;
 }
 
 .typeSelector {
-  width : 250px;  
+  width             : 250px;
 }
 
 .overSelect {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  position          : absolute;
+  left              : 0;
+  right             : 0;
+  top               : 0;
+  bottom            : 0;
 }
 
 #selectlist {  
-  position: absolute;  
-  overflow: auto;
-  height: 300px;
-  z-index: 500;  
-  background-color: rgb(240,240,240);
-  opacity: 1.0;
-  display: none;
-  width : 250px;
+  position          : absolute;
+  overflow          : auto;
+  height            : 300px;
+  z-index           : 500;
+  background-color  : rgb(240,240,240);
+  opacity           : 1.0;
+  display           : none;
+  width             : 250px;
 }
 
 #checkboxes {  
-  border: 1px #dadada solid;
-  text-align: left;
+  border            : 1px #dadada solid;
+  text-align        : left;
 }
 
 #checkboxes label {
-  display: block;
+  display           : block;
 }
 
 #checkboxes label:hover {
-  background-color: #1e90ff;
+  background-color  : #1e90ff;
 }
