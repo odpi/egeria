@@ -203,6 +203,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>analytics-modeling-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
