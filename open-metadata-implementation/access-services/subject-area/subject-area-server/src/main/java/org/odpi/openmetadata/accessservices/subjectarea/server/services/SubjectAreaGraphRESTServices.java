@@ -134,7 +134,7 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
         List<Classification> classifications = entity.getClassifications();
         Set<String> classificationNames = null;
         if (classifications != null && !classifications.isEmpty()) {
-            classificationNames = classifications.stream().map(x -> x.getName()).collect(Collectors.toSet());
+            classificationNames = classifications.stream().map(Classification::getName).collect(Collectors.toSet());
         }
         /*
          * the nodeType variable needs to be changed for certain classifications.

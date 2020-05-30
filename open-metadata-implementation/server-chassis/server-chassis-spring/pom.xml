@@ -203,6 +203,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>analytics-modeling-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -252,6 +258,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>glossary-author-view-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>rex-view-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 

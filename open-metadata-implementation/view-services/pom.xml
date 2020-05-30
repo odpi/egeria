@@ -29,5 +29,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>glossary-author-view</module>
+        <module>rex-view</module>
     </modules>
 </project>
