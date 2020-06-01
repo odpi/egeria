@@ -24,7 +24,6 @@ import java.util.Date;
 
 public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaCategoryRESTServices.class);
-    private static final String className = SubjectAreaCategoryRESTServices.class.getName();
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**

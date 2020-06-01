@@ -19,7 +19,6 @@ import java.util.Date;
 
 public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGlossaryRESTServices.class);
-    private static final String className = SubjectAreaGlossaryRESTServices.class.getName();
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**

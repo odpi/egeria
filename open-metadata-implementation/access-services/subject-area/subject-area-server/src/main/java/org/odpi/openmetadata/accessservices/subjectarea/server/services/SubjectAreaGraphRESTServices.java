@@ -19,7 +19,6 @@ import java.util.Date;
 
 public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGraphRESTServices.class);
-    private static final String className = SubjectAreaGraphRESTServices.class.getName();
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**

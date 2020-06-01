@@ -5,8 +5,6 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -15,9 +13,6 @@ import org.slf4j.LoggerFactory;
  */
 
 public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServicesInstance {
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaRelationshipRESTServices.class);
-    private static final String className = SubjectAreaRelationshipRESTServices.class.getName();
-    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
      * Default constructor

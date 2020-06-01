@@ -4,17 +4,13 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlossaryHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTermHandler;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * The SubjectAreaTermRESTServices provides the server-side implementation of the SubjectArea Open Metadata
@@ -24,25 +20,7 @@ import java.util.Set;
 public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
 {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermRESTServices.class);
-    private static final String className = SubjectAreaTermRESTServices.class.getName();
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
-
-    public static final Set<String> SUBJECT_AREA_TERM_CLASSIFICATIONS= new HashSet<>(Arrays.asList(
-            // spine objects
-            SpineObject.class.getSimpleName(),
-            SpineAttribute.class.getSimpleName(),
-            ObjectIdentifier.class.getSimpleName(),
-            //governance actions
-            Confidentiality.class.getSimpleName(),
-            Confidence.class.getSimpleName(),
-            Criticality.class.getSimpleName(),
-            Retention.class.getSimpleName(),
-            // dictionary
-            AbstractConcept.class.getSimpleName(),
-            ActivityDescription.class.getSimpleName(),
-            DataValue.class.getSimpleName(),
-            // context
-            ContextDefinition.class.getSimpleName()));
 
     /**
      * Default constructor
