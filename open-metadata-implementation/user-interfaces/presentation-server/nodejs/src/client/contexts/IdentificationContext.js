@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 export const IdentificationContext = createContext();
 export const IdentificationContextConsumer = IdentificationContext.Consumer;
 
+
+
 const IdentificationContextProvider = props => {
   const [userId, setUserId] = useState("");
   // TODO this will change if the user changes the url - are there any implications to that?
@@ -23,6 +25,22 @@ const IdentificationContextProvider = props => {
  * @param {*} serviceName this is the viewservice name. 
  */
 const getRestURL = (serviceName) => {
+if (userId == null) {
+  alert("We have lost the session possibly due to a refresh of the web page. Please login again.");
+  const loginUrl =
+    window.location.protocol +
+    "//" +
+    window.location.hostname +
+    ":" +
+    window.location.port +
+    serverName +
+    "//login";
+  if (history.pushState) {
+    history.pushState({}, null, loginUrl);
+  } else {
+    alert("The Browser does not support history. Please re-login here: " + loginUrl);
+  }  
+} else {
   const url =
     window.location.protocol +
     "//" +
@@ -37,6 +55,7 @@ const getRestURL = (serviceName) => {
     userId;
     console.log("rest url is ", url);
   return url;
+}
 };
 
   return (
