@@ -22,7 +22,6 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
     private static final String className = SubjectAreaGlossaryRESTServices.class.getName();
     static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
-
     /**
      * Default constructor
      */
@@ -77,7 +76,6 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         }
         return response;
     }
-
 
     /**
      * Get a glossary by guid.
@@ -161,6 +159,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
 
         return response;
     }
+
     /**
      * Get Glossary relationships
      *
