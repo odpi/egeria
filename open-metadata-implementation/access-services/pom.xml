@@ -29,6 +29,7 @@
     <artifactId>access-services</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>analytics-modeling</module>
         <module>asset-catalog</module>
         <module>asset-consumer</module>
         <module>asset-lineage</module>

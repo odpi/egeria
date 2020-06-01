@@ -9,19 +9,14 @@ package org.odpi.openmetadata.accessservices.digitalservice.mappers;
 public class DigitalServiceMapper
 {
     /* Referenceable property names*/
-    public static final String DIGITAL_SERVICE_ENTITY_TYPE_GUID          = "be30a033-8b86-4d17-8986-e6166ba24177";
+    public static final String DIGITAL_SERVICE_ENTITY_TYPE_GUID          = "f671e1fc-b204-4ee6-a4e2-da1633ecf50e";
     public static final String DIGITAL_SERVICE_ENTITY_TYPE_NAME          = "DigitalService";
     public static final String ADDITIONAL_PROPERTIES_PROPERTY_NAME       = "additionalProperties";
 
     /* entity property names */
-    public static final String DISPLAY_NAME_PROPERTY_NAME                = "name";                                 /* from DigitalService entity */
+    public static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";                         /* from DigitalService entity */
     public static final String DESCRIPTION_PROPERTY_NAME                 = "description";                          /* from DigitalService entity */
-    public static final String TYPE_PROPERTY_NAME                        = "type";                                 /* from DigitalService entity */
-    public static final String URL_PROPERTY_NAME                         = "url";                                  /* from DigitalService entity */
-    public static final String GUID_PROPERTY_NAME                        = "guid";                                 /* from DigitalService entity */
-    public static final String TYPE_ID_PROPERTY_NAME                     = "typeId";                               /* from DigitalService entity */
-    public static final String TYPE_VERSION_PROPERTY_NAME                = "typeVersion";                          /* from DigitalService entity */
-    public static final String TYPE_DESCRIPTION_PROPERTY_NAME            = "typeDecription";                       /* from DigitalService entity */
+    public static final String DIGITAL_SERVICE_VERSION_NUMER             = "versionNumber";
     public static final String IMPLEMENTATION_STYLE_PROPERTY_NAME        = "implementationStyle";                  /* from DigitalService entity */
     public static final String STATUS_PROPERTY_NAME                      = "status";                               /* from DigitalService entity */
     public static final String VISIBILTY_PROPERTY_NAME                   = "visibility";                           /* from DigitalService entity */

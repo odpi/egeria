@@ -22,63 +22,15 @@
 
     <artifactId>subject-area-client-samples</artifactId>
 
-    <name>Subject Area OMAS Samples</name>
+    <packaging>pom</packaging>
+
+    <name>Subject Area OMAS Client Samples</name>
     <description>
-        Subject Area Open Metadata Access Service (OMAS) client samples.
+        Samples for the Subject Area Open Metadata Access Service (OMAS) client.
     </description>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>subject-area-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>subject-area-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-        </dependency>
-
-        <!-- Logback used as provider for slf4j logging -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>
-                                        org.odpi.openmetadata.accessservices.subjectarea.samples.SubjectAreaDefinitionSample
-                                    </mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <modules>
+        <module>subject-area-definition-sample</module>
+    </modules>
 
 </project>

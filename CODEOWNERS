@@ -14,15 +14,7 @@ open-metadata-distribution/ @mandy-chessell @planetf1
 
 # Implementation
 
-open-metadata-implementation/adapters/ @mandy-chessell
-open-metadata-implementation/governance-servers/data-engine-proxy-services/ @cmgrote
-open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-encrypted-file-store-connector/ @cmgrote
-open-metadata-implementation/adapters/governance-engines-plugins/ @planetf1
-open-metadata-implementation/adapters/authentication-plugins/gaian-impersonation/ @planetf1
-
-open-metadata-implementation/frameworks/ @mandy-chessell
-
-open-metadata-implementation/governance-servers/ @mandy-chessell
+open-metadata-implementation/ @mandy-chessell
 
 open-metadata-implementation/access-services/ @mandy-chessell
 open-metadata-implementation/access-services/asset-consumer/ @mandy-chessell
@@ -32,18 +24,41 @@ open-metadata-implementation/access-services/data-engine/ @popa-raluca
 open-metadata-implementation/access-services/digital-architecture/ @mandy-chessell
 open-metadata-implementation/access-services/enterprise-architecture/ @mandy-chessell
 open-metadata-implementation/access-services/glossary-view/ @lcpopa
-open-metadata-implementation/access-services/information-view/ @ruxandraRosu
 open-metadata-implementation/access-services/stewardship-action/ @mandy-chessell
 open-metadata-implementation/access-services/security-officer/ @danielaotelea
 open-metadata-implementation/access-services/governance-program/ @mandy-chessell
 open-metadata-implementation/access-services/governance-engine/ @danielaotelea
 open-metadata-implementation/access-services/subject-area/ @davidradl
 open-metadata-implementation/access-services/asset-lineage/ @DimitriosMaimaris
-open-metadata-implementation/governance-servers/open-lineage-services/ @DimitriosMaimaris @lcpopa
+
+open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-encrypted-file-store-connector/ @cmgrote
+open-metadata-implementation/adapters/governance-engines-plugins/ @planetf1
+open-metadata-implementation/adapters/authentication-plugins/gaian-impersonation/ @planetf1
 open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/ @DimitriosMaimaris
 open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/src/main/java/org/odpi/openmetadata/openconnectors/governancedaemonconnectors/openlineageconnectors/janusconnector/maingraph/ @GuyAckermans @lcpopa
 
-open-metadata-implementation/repository-services/ @mandy-chessell
+open-metadata-implementation/admin-services/ @mandy-chessell
+
+open-metadata-implementation/common-services/ @mandy-chessell
+
+open-metadata-implementation/frameworks/ @mandy-chessell
+
+open-metadata-implementation/governance-servers/ @mandy-chessell
+open-metadata-implementation/governance-servers/data-engine-proxy-services/ @cmgrote
+open-metadata-implementation/governance-servers/open-lineage-services/ @DimitriosMaimaris @lcpopa
+
+
+open-metadata-implementation/platform-services/ @mandy-chessell
+
+open-metadata-implementation/server-chassis/ @mandy-chessell
+open-metadata-implementation/server-chassis/server-chassis-spring @bogdan-sava
+
+open-metadata-implementation/user-interface/presentation-server @davidradl @grahamwallis
+open-metadata-implementation/user-interface/ui-chassis @bogdan-sava
+
+open-metadata-implementation/platform-services/ @mandy-chessell
+
+open-metadata-implementation/view-services/ @davidradl
 
 
 # Publication
@@ -84,6 +99,9 @@ pom.xml @planetf1 @mandy-chessell
 .sonarcloud* @planetf1
 Community-Guide.md @mandy-chessell @planetf1
 INFO.yaml @planetf1
-THIRD_PARTY.md @mandy-chessell @planetf1
 spotbugs* @planetf1
 CODEOWNERS @mandy-chessell @planetf1
+MAINTAINERS* @mandy-chessell
+CONTRIBUTORS* @mandy-chessell
+Egeria-Operations* @mandy-chessell
+THIRD_PARTY.md @mandy-chessell @planetf1

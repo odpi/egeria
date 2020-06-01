@@ -26,7 +26,7 @@ We believe in the **open metadata and governance manifesto**:
  * The maintenance of metadata must be automated to scale to the sheer volumes and variety of data involved in modern business.  Similarly the use of metadata should be used to drive the governance of data and create a business friendly logical interface to the data landscape.
  * The availability of metadata management must become ubiquitous in cloud platforms and large data platforms, such as Apache Hadoop so that the processing engines on these platforms can rely on its availability and build capability around it.
  * Metadata access must become open and remotely accessible so that tools from different vendors can work with metadata located on different platforms.  This implies unique identifiers for metadata elements, some level of standardization in the types and formats for metadata and standard interfaces for manipulating metadata.
- * Wherever possible, discovery and maintenance of metadata has to an integral part of all tools that access, change and move information.
+ * Wherever possible, discovery and maintenance of metadata has to be an integral part of all tools that access, change and move information.
 
 We also believe that code talks. 
 Egeria provides an Apache 2.0 licensed platform to support vendors that sign up to the open metadata and governance
@@ -59,6 +59,11 @@ Alternatively read on for more information.
 ## The Guides
 
 The guides provide step-by-step guidance on a specific aspect of working with Egeria.
+
+* [Community Guide](Community-Guide.md) - describes how to join the Egeria community to participate
+  in discussions and other activities.
+  
+* [Operations Guide](Egeria-Operations.md) - describes the governance processes used by the Egeria community.
 
 * [Building an Asset Catalog](open-metadata-publication/website/cataloging-assets) - provides
   guidance on the different approaches offered by Egeria to maintain a catalog service.

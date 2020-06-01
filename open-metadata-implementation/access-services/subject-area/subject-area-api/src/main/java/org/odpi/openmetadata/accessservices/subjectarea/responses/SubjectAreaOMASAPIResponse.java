@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.responses;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.LibraryTermReference;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -68,15 +69,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                  */
                 @JsonSubTypes.Type(value = ClassificationExceptionResponse.class, name = "ClassificationExceptionResponse"),
                 @JsonSubTypes.Type(value = EntityNotDeletedExceptionResponse.class, name = "EntityNotDeletedExceptionResponse") ,
+                @JsonSubTypes.Type(value = EntityNotPurgedExceptionResponse.class, name = "EntityNotPurgedExceptionResponse") ,
+                @JsonSubTypes.Type(value = RelationshipNotDeletedExceptionResponse.class, name = "RelationshipNotDeletedExceptionResponse") ,
+                @JsonSubTypes.Type(value = RelationshipNotPurgedExceptionResponse.class, name = "RelationshipNotPurgedExceptionResponse") ,
                 @JsonSubTypes.Type(value = FunctionNotSupportedExceptionResponse.class, name = "FunctionNotSupportedExceptionResponse") ,
-                @JsonSubTypes.Type(value = GUIDNotPurgedExceptionResponse.class, name = "GUIDNotPurgedExceptionResponse") ,
                 @JsonSubTypes.Type(value = InvalidParameterExceptionResponse.class, name = "InvalidParameterExceptionResponse") ,
                 @JsonSubTypes.Type(value = MetadataServerUncontactableExceptionResponse.class, name = "MetadataServerUncontactableExceptionResponse") ,
                 @JsonSubTypes.Type(value = RelationshipNotDeletedExceptionResponse.class, name = "RelationshipNotDeletedExceptionResponse") ,
                 @JsonSubTypes.Type(value = StatusNotsupportedExceptionResponse.class, name = "StatusNotsupportedExceptionResponse") ,
                 @JsonSubTypes.Type(value = UnrecognizedGUIDExceptionResponse.class, name = "UnrecognizedGUIDExceptionResponse") ,
-                @JsonSubTypes.Type(value = UnrecognizedNameExceptionResponse.class, name = "UnrecognizedNameExceptionResponse") ,
                 @JsonSubTypes.Type(value = UserNotAuthorizedExceptionResponse.class, name = "UserNotAuthorizedExceptionResponse"),
+                @JsonSubTypes.Type(value = PropertyServerExceptionResponse.class, name = "PropertyServerExceptionResponse"),
+
                 @JsonSubTypes.Type(value = GraphResponse.class, name = "GraphResponse")
 
         })
@@ -84,13 +88,32 @@ public abstract class SubjectAreaOMASAPIResponse
 {
     protected int       relatedHTTPCode = 200;
     protected ResponseCategory responseCategory;
+    protected String    messageId = null;
+    protected String    className = null;
+    protected String    actionDescription = null;
+    protected String    formattedMessage = null;
 
     /**
      * Default constructor
      */
-    public SubjectAreaOMASAPIResponse()
-    {
+    public SubjectAreaOMASAPIResponse() {
+
     }
+
+    /**
+     * Constructor taking an Exception
+     * @param e subject area exception
+     */
+    public SubjectAreaOMASAPIResponse(SubjectAreaCheckedException e)
+    {
+        this.actionDescription = e.getReportingActionDescription();
+        this.messageId =  e.getReportedErrorMessageId();
+        this.formattedMessage = e.getMessage();
+        this.className= e.getReportingClassName();
+        relatedHTTPCode = e.getReportedHTTPCode();
+    }
+
+
 
 
     /**
@@ -104,16 +127,6 @@ public abstract class SubjectAreaOMASAPIResponse
     }
 
 
-    /**
-     * Set up the HTTP Code to use if forwarding response to HTTP client.
-     *
-     * @param relatedHTTPCode - integer HTTP status code
-     */
-    public void setRelatedHTTPCode(int relatedHTTPCode)
-    {
-        this.relatedHTTPCode = relatedHTTPCode;
-    }
-
     public ResponseCategory getResponseCategory() {
         return responseCategory;
     }
@@ -126,7 +139,75 @@ public abstract class SubjectAreaOMASAPIResponse
     public String toString()
     {
         return "relatedHTTPCode=" + relatedHTTPCode +
-                ", ResponseCategory='" + responseCategory + '\'' ;
+                ", ResponseCategory='" + responseCategory + '\'' +
+                ", exceptionClassName=" + getExceptionClassName() + '\'' +
+                ", actionDescription='" + getActionDescription() + '\'' +
+                ", messageId='" + getMessageId();
 
+    }
+
+    /**
+     * Return the name of the Java class name to use to recreate the exception.
+     *
+     * @return String name of the fully-qualified java class name
+     */
+    public String getExceptionClassName()
+    {
+        return className;
+    }
+
+    /**
+     * Set up the name of the Java class name to use to recreate the exception.
+     *
+     * @param exceptionClassName - String name of the fully-qualified java class name
+     */
+    public void setExceptionClassName(String exceptionClassName)
+    {
+        this.className = exceptionClassName;
+    }
+
+    /**
+     * Return the description of the action that was being issued when the exception occurred.
+     *
+     * @return String action description
+     */
+    public String getActionDescription() {
+        return actionDescription;
+    }
+
+    /**
+     * Set up the description of the action that was being issued when the exception occurred.
+     *
+     * @param actionDescription String action description
+     */
+    public void setActionDescription(String actionDescription) {
+        this.actionDescription = actionDescription;
+    }
+
+    /**
+     * Return the message id; the unique identifier of the message
+     *
+     * @return String message id
+     */
+    public String getMessageId() {
+        return messageId;
+    }
+
+    /**
+     * These Exceptions are include in Exception rest responses. This is useful for callers of the Rest API
+     * that are not using Java; as this would be the only way for them to see the complete message.
+     * @return formatted Message
+     */
+    public String getMessage() {
+         return formattedMessage;
+    }
+
+    /**
+     * Set up the message id; the unique identifier of the message
+     *
+     * @param messageId String messageId
+     */
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 }

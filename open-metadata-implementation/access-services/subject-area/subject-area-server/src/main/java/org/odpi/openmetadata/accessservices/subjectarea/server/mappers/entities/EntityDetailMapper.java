@@ -56,10 +56,10 @@ abstract public class EntityDetailMapper {
         node.setEffectiveFromTime(omrsEntityDetailProperties.getEffectiveFromTime());
         node.setEffectiveToTime(omrsEntityDetailProperties.getEffectiveToTime());
         // copy over properties
-        Iterator omrsPropertyIterator = omrsEntityDetailProperties.getPropertyNames();
+        Iterator<String> omrsPropertyIterator = omrsEntityDetailProperties.getPropertyNames();
         NodeType nodeType = node.getNodeType();
         while (omrsPropertyIterator.hasNext()) {
-            String propertyName = (String) omrsPropertyIterator.next();
+            String propertyName = omrsPropertyIterator.next();
             //TODO check if this is a property we expect or whether the type has been added to.
             // this is a property we expect
             InstancePropertyValue value = omrsEntityDetailProperties.getPropertyValue(propertyName);
@@ -118,10 +118,10 @@ abstract public class EntityDetailMapper {
                     // All nodes as Referenceables at this time so they all have additionalProperties.
                     if (propertyName.equals("additionalProperties")) {
                         // Only support Map<String,String> at this time.
-                        Map<String, String> actualMap = new HashMap();
-                        Iterator iter = instancePropertyForMap.getPropertyNames();
+                        Map<String, String> actualMap = new HashMap<>();
+                        Iterator<String> iter = instancePropertyForMap.getPropertyNames();
                         while (iter.hasNext()) {
-                            String mapkey = (String) iter.next();
+                            String mapkey = iter.next();
                             PrimitivePropertyValue primitivePropertyMapValue = (PrimitivePropertyValue) instancePropertyForMap.getPropertyValue(mapkey);
                             String mapvalue =  primitivePropertyMapValue.getPrimitiveValue().toString();
                             actualMap.put(mapkey, mapvalue);
@@ -199,7 +199,7 @@ abstract public class EntityDetailMapper {
                         // need to add this classification to the classifications
                         List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> existingClassifications = node.getClassifications();
                         if ( existingClassifications==null) {
-                            existingClassifications = new ArrayList();
+                            existingClassifications = new ArrayList<>();
                         }
                         existingClassifications.add(omasClassification);
                         node.setClassifications(existingClassifications);

@@ -15,7 +15,16 @@ public enum ViewServiceDescription implements Serializable {
                     "View Service for glossary authoring.",
                     //TODO create appropriate wiki
                     "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/"),
-    TYPE_EXPLORER(1020,
+
+    REPOSITORY_EXPLORER(1020,
+                  "Repository Explorer",
+                  "Repository Explorer OMVS",
+                  "rex",
+                  "Explore open metadata instances.",
+                  //TODO create appropriate wiki
+                  "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/"),
+
+    TYPE_EXPLORER(1030,
                   "Type Explorer",
                   "Type Explorer OMVS",
                   "type-explorer",

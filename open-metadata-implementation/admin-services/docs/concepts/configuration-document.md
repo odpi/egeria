@@ -26,6 +26,17 @@ The sections are as follows:
   key capabilities for different types of OMAG Servers.
 * [Audit trail](#Audit-Trail) that documents the changes that have been made to the configuration document.
 
+It is possible to retrieve the configuration document for a server using the following command.
+```
+GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/configuration
+```
+
+When the server is running, the following command returns the configuration document that was used to start it
+(since it may have changed in the configuration document store since the server was started.)
+
+```
+GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance/configuration
+```
 
 ### Default Values
 
@@ -46,10 +57,20 @@ do not affect existing definitions in the configuration document.
 
 ### Basic Properties for any OMAG Server
 
+* [Configuring the Basic Properties](../user/configuring-omag-server-basic-properties.md)
+* [Configuring the Audit Log](../user/configuring-the-audit-log.md)
+* [Configuring the Server Security Connector](../user/configuring-the-server-security-connector.md)
 
 
 ### Services for specific types of OMAG Server
 
+* [Configuring Registration to a Cohort](../user/configuring-registration-to-a-cohort.md)
+* [Configuring Local Repository](../user/configuring-the-local-repository.md)
+* [Configuring Start up Archives](../user/configuring-the-startup-archives.md)
+* [Configuring Repository Proxy](../user/configuring-the-repository-proxy-connector.md)
+* [Configuring discovery engine properties](../user/configuring-the-discovery-engine-services.md)
+* [Configuring security sync services](../user/configuring-the-security-sync-services.md)
+* [Configuring stewardship engine services](../user/configuring-the-stewardship-engine-services.md)
 
 ### Audit Trail
 

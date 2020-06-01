@@ -59,9 +59,13 @@ public class SubjectAreaBaseImpl
             QueryUtils.encodeQueryParam(propertyName,propertyValue, queryStringSB);
         } catch (UnsupportedEncodingException e) {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.ERROR_ENCODING_QUERY_PARAMETER;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName,propertyName+"=");
-            log.error(errorMessage);
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
+
+            throw new InvalidParameterException(
+                    errorCode.getMessageDefinition(),
+                    className,
+                    methodName,
+                    propertyName,
+                    propertyValue);
         }
     }
     protected List<Line> getRelationships(String base_url, String userId, String guid, Date asOfTime, int offset, int pageSize, SequencingOrder sequencingOrder, String sequencingProperty) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, FunctionNotSupportedException, UnexpectedResponseException {
@@ -100,10 +104,10 @@ public class SubjectAreaBaseImpl
             url = url + queryStringSB.toString();
         }
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        List<Line> relationships = DetectUtils.detectAndReturnLines(methodName,restResponse);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        List<Line> relationships = DetectUtils.detectAndReturnLines(className, methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }

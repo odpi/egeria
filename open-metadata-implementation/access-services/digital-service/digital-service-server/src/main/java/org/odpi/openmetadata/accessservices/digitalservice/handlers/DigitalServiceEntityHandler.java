@@ -59,6 +59,7 @@ public class DigitalServiceEntityHandler {
 
         DigitalServiceBuilder digitalServiceBuilder = new DigitalServiceBuilder(digitalService.getDisplayName(),
                                                                                 digitalService.getDescription(),
+                                                                                digitalService.getVersion(),
                                                                                 repositoryHelper,
                                                                                 DigitalServiceMapper.SERVICE_NAME,
                                                                                 serverName);

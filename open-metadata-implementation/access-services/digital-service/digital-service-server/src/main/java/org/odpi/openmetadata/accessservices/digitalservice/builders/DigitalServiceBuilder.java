@@ -20,6 +20,7 @@ public class DigitalServiceBuilder extends ReferenceableBuilder
 {
     private String displayName = null;
     private String description = null;
+    private String versionNumber = null;
 
     /**
      * Minimal constructor used for searching
@@ -49,6 +50,7 @@ public class DigitalServiceBuilder extends ReferenceableBuilder
      */
     public DigitalServiceBuilder(String                                 displayName,
                                  String                                 description,
+                                 String                                 versionNumer,
                                  OMRSRepositoryHelper                   repositoryHelper,
                                  String                                 serviceName,
                                  String                                 serverName)
@@ -57,6 +59,7 @@ public class DigitalServiceBuilder extends ReferenceableBuilder
 
         this.displayName = displayName;
         this.description = description;
+        this.versionNumber = versionNumber;
     }
 
 
@@ -88,6 +91,15 @@ public class DigitalServiceBuilder extends ReferenceableBuilder
                                                                       description,
                                                                       methodName);
 
+        }
+
+        if (versionNumber != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                        properties,
+                                                                        DigitalServiceMapper.DIGITAL_SERVICE_VERSION_NUMER,
+                                                                        versionNumber,
+                                                                        methodName);
         }
 
 

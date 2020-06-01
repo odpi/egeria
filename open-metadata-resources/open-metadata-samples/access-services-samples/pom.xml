@@ -28,6 +28,7 @@
     <artifactId>access-services-samples</artifactId>
 
     <packaging>pom</packaging>
+
     <modules>
         <module>asset-management-samples</module>
         <module>governance-program-client-samples</module>

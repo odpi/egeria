@@ -32,8 +32,6 @@ stages:
               POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/apache-atlas/pom.xml'
             egeria-gaian:
               POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/gaian/pom.xml'
-            egeria-omrs-monitor:
-              POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/omrs-monitor/pom.xml'
             egeria-ranger:
               POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/apache-ranger-admin/pom.xml'
         steps:

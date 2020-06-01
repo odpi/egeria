@@ -33,8 +33,8 @@ public class DigitalServiceResource
 
     @PostMapping(path = "/digital-service")
     public GUIDResponse createDigitalService(@PathVariable("serverName") String serverName,
-                                                     @PathVariable("userId") String userId,
-                                                     @RequestBody DigitalServiceRequestBody requestBody) {
+                                             @PathVariable("userId") String userId,
+                                             @RequestBody DigitalServiceRequestBody requestBody) {
         return restAPI.createDigitalService(userId, serverName, requestBody);
     }
 

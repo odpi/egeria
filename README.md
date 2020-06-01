@@ -36,7 +36,7 @@ To understand how to join and contribute see the
 
 All participants are bound the ODPi's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
 The governance of the project is described in more detail in the
-[Egeria Operations](./Egeria-Operations.md).
+[Egeria Operations Guide](./Egeria-Operations.md).
 
 ## Call schedule
 
@@ -61,9 +61,22 @@ The Egeria team run two calls every Thursday and all are welcome
 
 ## Monthly maintainers face-to-face meetings
 
-The Egeria maintainers have a face-to-face meeting every month.  Details of these meetings are on the
-[Egeria wiki](https://github.com/odpi/egeria/wiki).
+**Covid-19 update on Face-to-Face meetings**
 
+The Egeria face-to-face meetings are currently suspended
+to protect the health and welfare of the Egeria community.
+
+Minutes of past meetings can be found on the
+[Egeria GitHub wiki](https://github.com/odpi/egeria/wiki).
+
+## Monthly community webinars
+
+The Egeria community are running a monthly webinar series
+covering a variety of topics.
+
+Follow [this link](https://github.com/odpi/data-governance/tree/master/webinars)
+for details of the webinar schedule, and links to download
+the presentations from past webinars.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

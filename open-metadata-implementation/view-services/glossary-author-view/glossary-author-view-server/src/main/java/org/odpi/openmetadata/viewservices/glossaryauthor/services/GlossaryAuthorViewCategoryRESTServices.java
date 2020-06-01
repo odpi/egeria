@@ -65,7 +65,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
                     suppliedCategory);
             response = new CategoryResponse(createdCategory);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -104,7 +104,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
                     guid);
             response = new CategoryResponse(obtainedCategory);
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -168,7 +168,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             categoriesResponse.setCategories(categories);
             response = categoriesResponse;
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -221,7 +221,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             linesResponse.setLines(lines);
             response = linesResponse;
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -278,7 +278,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             categoryResponse.setCategory(updatedCategory);
             response = categoryResponse;
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -345,7 +345,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
                 response = categoryResponse;
             }
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -388,7 +388,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             categoryResponse.setCategory(category);
             response = categoryResponse;
         }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, methodName);
+            response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
