@@ -6,9 +6,9 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRelationshipRESTServices;
 import org.springframework.web.bind.annotation.*;
+
 
 
 /**
@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
-
 @Tag(name = "Subject Area OMAS", description = "The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs = @ExternalDocumentation(description = "Subject Area Open Metadata Access Service (OMAS)", url = "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
-
-public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServicesInstance {
+public class SubjectAreaRelationshipRESTResource {
     private SubjectAreaRelationshipRESTServices restAPI = new SubjectAreaRelationshipRESTServices();
 
     /**
@@ -103,7 +101,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateTermHASARelationship(@PathVariable String serverName,
                                                                  @PathVariable String userId,
                                                                  @RequestBody Hasa termHASARelationship,
-                                                                 @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+                                                                 @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateTermHASARelationship(serverName, userId, termHASARelationship, isReplace);
     }
@@ -131,7 +129,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteTermHASARelationship(@PathVariable String serverName,
                                                                  @PathVariable String userId,
                                                                  @PathVariable String guid,
-                                                                 @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                                 @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteTermHASARelationship(serverName, userId, guid, isPurge);
     }
@@ -232,7 +230,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateRelatedTerm(@PathVariable String serverName,
                                                         @PathVariable String userId,
                                                         @RequestBody RelatedTerm relatedTermRelationship,
-                                                        @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+                                                        @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateRelatedTerm(serverName, userId, relatedTermRelationship, isReplace);
     }
@@ -260,7 +258,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteRelatedTerm(@PathVariable String serverName,
                                                         @PathVariable String userId,
                                                         @PathVariable String guid,
-                                                        @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                        @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteRelatedTerm(serverName, userId, guid, isPurge);
     }
@@ -363,7 +361,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateSynonymRelationship(@PathVariable String serverName,
                                                                 @PathVariable String userId,
                                                                 @RequestBody Synonym synonym,
-                                                                @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+                                                                @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateSynonymRelationship(serverName, userId, synonym, isReplace);
     }
@@ -391,7 +389,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteSynonymRelationship(@PathVariable String serverName,
                                                                 @PathVariable String userId,
                                                                 @PathVariable String guid,
-                                                                @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                                @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteSynonymRelationship(serverName, userId, guid, isPurge);
     }
@@ -492,7 +490,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateAntonymRelationship(@PathVariable String serverName,
                                                                 @PathVariable String userId,
                                                                 @RequestBody Antonym antonym,
-                                                                @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+                                                                @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateAntonymRelationship(serverName, userId, antonym, isReplace);
     }
@@ -520,7 +518,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteAntonymRelationship(@PathVariable String serverName,
                                                                 @PathVariable String userId,
                                                                 @PathVariable String guid,
-                                                                @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                                @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteAntonymRelationship(serverName, userId, guid, isPurge);
     }
@@ -621,7 +619,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateTranslationRelationship(@PathVariable String serverName,
                                                                     @PathVariable String userId,
                                                                     @RequestBody Translation translation,
-                                                                    @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+                                                                    @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateTranslationRelationship(serverName, userId, translation, isReplace);
     }
@@ -649,7 +647,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteTranslationRelationship(@PathVariable String serverName,
                                                                     @PathVariable String userId,
                                                                     @PathVariable String guid,
-                                                                    @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                                    @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteTranslationRelationship(serverName, userId, guid, isPurge);
     }
@@ -750,7 +748,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateUsedInContextRelationship(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @RequestBody UsedInContext usedInContext,
-                                                                      @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+                                                                      @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateUsedInContextRelationship(serverName, userId, usedInContext, isReplace);
     }
@@ -778,7 +776,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteUsedInContextRelationship(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String guid,
-                                                                      @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                                      @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteUsedInContextRelationship(serverName, userId, guid, isPurge);
     }
@@ -880,7 +878,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updatePreferredTermRelationship(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @RequestBody PreferredTerm preferredTerm,
-                                                                      @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+                                                                      @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updatePreferredTermRelationship(serverName, userId, preferredTerm, isReplace);
     }
@@ -908,7 +906,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deletePreferredTermRelationship(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String guid,
-                                                                      @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                                      @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deletePreferredTermRelationship(serverName, userId, guid, isPurge);
     }
@@ -1010,7 +1008,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateValidValueRelationship(@PathVariable String serverName,
                                                                    @PathVariable String userId,
                                                                    @RequestBody ValidValue validValue,
-                                                                   @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+                                                                   @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateValidValueRelationship(serverName, userId, validValue, isReplace);
     }
@@ -1039,7 +1037,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteValidValueRelationship(@PathVariable String serverName,
                                                                    @PathVariable String userId,
                                                                    @PathVariable String guid,
-                                                                   @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                                   @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteValidValueRelationship(serverName, userId, guid, isPurge);
     }
@@ -1140,7 +1138,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateReplacementTermRelationship(@PathVariable String serverName,
                                                                         @PathVariable String userId,
                                                                         @RequestBody ReplacementTerm replacementTerm,
-                                                                        @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+                                                                        @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateReplacementTerm(serverName, userId, replacementTerm, isReplace);
     }
@@ -1168,7 +1166,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteReplacementTermRelationship(@PathVariable String serverName,
                                                                         @PathVariable String userId,
                                                                         @PathVariable String guid,
-                                                                        @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                                        @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteReplacementTerm(serverName, userId, guid, isPurge);
     }
@@ -1269,7 +1267,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(@PathVariable String serverName,
                                                                     @PathVariable String userId,
                                                                     @RequestBody TypedBy termTYPEDBYRelationship,
-                                                                    @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace
+                                                                    @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateTermTYPEDBYRelationship(serverName, userId, termTYPEDBYRelationship, isReplace);
     }
@@ -1297,7 +1295,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteTypedByRelationship(@PathVariable String serverName,
                                                                 @PathVariable String userId,
                                                                 @PathVariable String guid,
-                                                                @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                                @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteTermTYPEDBYRelationship(serverName, userId, guid, isPurge);
     }
@@ -1398,7 +1396,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName,
                                                             @PathVariable String userId,
                                                             @RequestBody Isa isa,
-                                                            @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace) {
+                                                            @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
         return restAPI.updateISARelationship(serverName, userId, isa, isReplace);
     }
 
@@ -1425,7 +1423,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteTermISARelationship(@PathVariable String serverName,
                                                                 @PathVariable String userId,
                                                                 @PathVariable String guid,
-                                                                @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge) {
+                                                                @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteISARelationship(serverName, userId, guid, isPurge);
     }
 
@@ -1526,7 +1524,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName,
                                                             @PathVariable String userId,
                                                             @RequestBody IsaTypeOf isatypeof,
-                                                            @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace) {
+                                                            @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
         return restAPI.updateTermISATypeOFRelationship(serverName, userId, isatypeof, isReplace);
     }
 
@@ -1554,7 +1552,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteTermIsaTypeOfRelationship(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String guid,
-                                                                      @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge) {
+                                                                      @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteIsATypeOfRelationship(serverName, userId, guid, isPurge);
     }
 
@@ -1657,7 +1655,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(@PathVariable String serverName,
                                                                            @PathVariable String userId,
                                                                            @RequestBody Categorization isatypeof,
-                                                                           @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace) {
+                                                                           @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
         return restAPI.updateTermCategorizationRelationship(serverName, userId, isatypeof, isReplace);
     }
 
@@ -1685,7 +1683,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteTermCategorizationRelationship(@PathVariable String serverName,
                                                                            @PathVariable String userId,
                                                                            @PathVariable String guid,
-                                                                           @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge) {
+                                                                           @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteTermCategorizationRelationship(serverName, userId, guid, isPurge);
     }
 
@@ -1790,7 +1788,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteTermAnchorRelationship(@PathVariable String serverName,
                                                                    @PathVariable String userId,
                                                                    @PathVariable String guid,
-                                                                   @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge) {
+                                                                   @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteTermAnchorRelationship(serverName, userId, guid, isPurge);
     }
 
@@ -1893,7 +1891,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteCategoryAnchorRelationship(@PathVariable String serverName,
                                                                        @PathVariable String userId,
                                                                        @PathVariable String guid,
-                                                                       @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge
+                                                                       @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteCategoryAnchorRelationship(serverName, userId, guid, isPurge);
     }
@@ -1994,7 +1992,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse updateProjectScopeRelationship(@PathVariable String serverName,
                                                                      @PathVariable String userId,
                                                                      @RequestBody ProjectScope projectScope,
-                                                                     @RequestParam(value = "isReplace", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isReplace) {
+                                                                     @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
         return restAPI.updateProjectScopeRelationship(serverName, userId, projectScope, isReplace);
     }
 
@@ -2021,7 +2019,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse deleteProjectScopeRelationship(@PathVariable String serverName,
                                                                      @PathVariable String userId,
                                                                      @PathVariable String guid,
-                                                                     @RequestParam(value = "isPurge", required = false, defaultValue = FALSE_DEFAULT_VALUE) Boolean isPurge) {
+                                                                     @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteProjectScopeRelationship(serverName, userId, guid, isPurge);
     }
 
