@@ -1261,7 +1261,41 @@
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>analytics-modeling-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>analytics-modeling-api</artifactId>
+				<type>test-jar</type>
+				<scope>test</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
 
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>analytics-modeling-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>analytics-modeling-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            
+             <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>analytics-modeling-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>information-view-api</artifactId>
@@ -1868,6 +1902,27 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>glossary-author-view-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>rex-view-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>rex-view-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>rex-view-spring</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2578,6 +2633,7 @@
                         <exclude>**/*.csv</exclude>
                         <exclude>**/*.ipynb</exclude>
                         <exclude>**/*.png</exclude>
+                        <exclude>**/*.svg</exclude>
                         <exclude>**/*.iml</exclude>
                         <exclude>**/*.registrystore</exclude>
                         <exclude>**/*.results</exclude>
@@ -2605,6 +2661,7 @@
                         <exclude>**/**.code-workspace</exclude>
                         <exclude>config</exclude>
                         <exclude>**/LICENSE*.txt</exclude>
+                        <exclude>**/presentation-server/**</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">

@@ -323,7 +323,7 @@
         </fileSet>
 
         <fileSet>
-            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-samples/governance-leadership-sample/target</directory>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-client-samples/governance-leadership-sample/target</directory>
             <outputDirectory>./samples</outputDirectory>
             <includes>
                 <include>*${open-metadata.version}*</include>
@@ -337,7 +337,7 @@
         </fileSet>
 
         <fileSet>
-            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-samples/governance-zone-create-sample/target</directory>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-client-samples/governance-zone-create-sample/target</directory>
             <outputDirectory>./samples</outputDirectory>
             <includes>
                 <include>*${open-metadata.version}*</include>

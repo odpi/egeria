@@ -23,7 +23,9 @@ the Egeria community is able to award [Acclaim badges](../../../developer-resour
 Using the material from the Egeria operations guide
 answer the following questions.
 
-* ??
+* How many contributors are listed for the Egeria project?
+* What is the DCO?
+* How often do the maintainers create a release of Egeria?
 
 ## End of Day 2
 

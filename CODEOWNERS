@@ -53,7 +53,7 @@ open-metadata-implementation/platform-services/ @mandy-chessell
 open-metadata-implementation/server-chassis/ @mandy-chessell
 open-metadata-implementation/server-chassis/server-chassis-spring @bogdan-sava
 
-open-metadata-implementation/user-interface/ @davidradl
+open-metadata-implementation/user-interface/presentation-server @davidradl @grahamwallis
 open-metadata-implementation/user-interface/ui-chassis @bogdan-sava
 
 open-metadata-implementation/platform-services/ @mandy-chessell
