@@ -10,7 +10,7 @@ The command that is most commonly available is **curl**.
 It uses commands such as:
 
 ```bash
-$ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform/origin
+$ curl --insecure -X GET https://localhost:9443/open-metadata/platform-services/users/test/server-platform/origin
 ODPi Egeria OMAG Server Platform (version 1.8-SNAPSHOT)
 ```
 

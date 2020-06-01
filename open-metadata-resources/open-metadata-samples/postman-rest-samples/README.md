@@ -79,7 +79,7 @@ one to be able to quickly change between different environments you have running
 Note that many of the variables are optional, depending on your particular configuration. The mandatory variables are
 the following:
 
-- `baseURL`: the base URL of your Egeria OMAG Server Platform, including the 'http://' prefix
+- `baseURL`: the base URL of your Egeria OMAG Server Platform, including the 'https://' prefix
 - `user`: the user name of the user carrying out operations within the Egeria OMAG Server Platform
 - `server`: the name of the server within the Platform in which to carry out operations
 - `cohort`: the name of the cohort with which the server should interact

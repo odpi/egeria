@@ -32,7 +32,7 @@ Each time you add a configuration value,
 [retrieve the server's configuration](../../../open-metadata-implementation/admin-services/docs/concepts/configuration-document.md)
 to see how the effect of your requests are changing the server's configuration.
 
-* **local server URL root** to `http://localhost:18080`
+* **local server URL root** to `https://localhost:19443`
 
 * **localServerType** to `Egeria Dojo Metadata Server` (update the value in the request)
  

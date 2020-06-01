@@ -89,7 +89,7 @@ Events:                   <none>
 - `Endpoints` is the cluster IP for the service. This remains stable and will automatically redirect to the correct pod(s).
 - `NodePort` gives the external port now exposed - in this case `30080`. The interpretation of this varies depending
     on provider (the example here is for Docker on MacOS).
-- Hence, `http://localhost:30080` would be the baseURL of the Egeria service.
+- Hence, `https://localhost:30080` would be the baseURL of the Egeria service.
 
 The `kubectl` command allows you to extensively explore the kubernetes resources, but is best explored
 through [its own reference material](https://kubernetes.io/docs/reference/kubectl/overview/).
