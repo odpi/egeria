@@ -29,9 +29,7 @@ public class SubjectAreaProjectRESTResource {
     /**
      * Default constructor
      */
-    public SubjectAreaProjectRESTResource() {
-
-    }
+    public SubjectAreaProjectRESTResource() { }
 
     /**
      * Create a Project.
