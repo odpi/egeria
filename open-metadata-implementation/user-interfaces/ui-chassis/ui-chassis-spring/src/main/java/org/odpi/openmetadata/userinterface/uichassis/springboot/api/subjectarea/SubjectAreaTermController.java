@@ -5,7 +5,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.subjectarea
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -76,7 +76,7 @@ public class SubjectAreaTermController  extends SecureController
             TermResponse termResponse = new TermResponse();
             termResponse.setTerm(term);
             response = termResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -107,7 +107,7 @@ public class SubjectAreaTermController  extends SecureController
             TermResponse termResponse = new TermResponse();
             termResponse.setTerm(term);
             response = termResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -156,7 +156,7 @@ public class SubjectAreaTermController  extends SecureController
             TermsResponse termsResponse = new TermsResponse();
             termsResponse.setTerms(terms);
             response = termsResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -206,7 +206,7 @@ public class SubjectAreaTermController  extends SecureController
             LinesResponse linesResponse = new LinesResponse();
             linesResponse.setLines(lines);
             response = linesResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -257,7 +257,7 @@ public class SubjectAreaTermController  extends SecureController
             TermResponse termResponse = new TermResponse();
             termResponse.setTerm(updatedTerm);
             response = termResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -310,7 +310,7 @@ public class SubjectAreaTermController  extends SecureController
                 response = termResponse;
             }
 
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;
@@ -341,7 +341,7 @@ public class SubjectAreaTermController  extends SecureController
             TermResponse termResponse = new TermResponse();
             termResponse.setTerm(term);
             response = termResponse;
-        } catch (SubjectAreaCheckedExceptionBase e) {
+        } catch (SubjectAreaCheckedException e) {
             response = DetectUtils.getResponseFromException(e);
         }
         return  response;

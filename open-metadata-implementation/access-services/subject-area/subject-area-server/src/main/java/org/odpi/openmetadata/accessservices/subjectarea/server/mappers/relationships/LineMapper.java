@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.MessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -56,10 +57,9 @@ public abstract class LineMapper implements ILineMapper
         InstanceProperties relationshipProperties = relationship.getProperties();
         if (relationshipProperties!=null) {
             mapLineEffectivityToInstanceProperties(line, relationshipProperties);
-            //mapInstancePropertiesToLine(line, relationshipProperties);
-            Iterator omrsPropertyIterator =relationshipProperties.getPropertyNames();
+            Iterator<String> omrsPropertyIterator =relationshipProperties.getPropertyNames();
             while (omrsPropertyIterator.hasNext()) {
-                String propertyName = (String) omrsPropertyIterator.next();
+                String propertyName = omrsPropertyIterator.next();
                 // this is a property we expect
                 InstancePropertyValue value =relationshipProperties.getPropertyValue(propertyName);
 
@@ -262,17 +262,4 @@ public abstract class LineMapper implements ILineMapper
 
     }
 
-    /**
-     * relationship is not of the right type. Throw an Exception
-     * @param relationship relationship of wrong type
-     * @param methodName method name for dignostics
-     * @param type expected type
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     */
-    protected void throwWrongTypeException(Relationship relationship, String methodName,String type) throws InvalidParameterException {
-        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.MAPPER_RELATIONSHIP_GUID_TYPE_ERROR;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName,relationship.getGUID(),type);
-        log.error(errorMessage);
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
-    }
 }

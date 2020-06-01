@@ -41,6 +41,16 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
         </dependency>
@@ -199,6 +209,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>analytics-modeling-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -248,6 +264,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>glossary-author-view-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>rex-view-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 

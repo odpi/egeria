@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @RestController
 public class SettingsController {
@@ -25,7 +27,12 @@ public class SettingsController {
      */
     @GetMapping( path = "/css/theme")
     public RedirectView getThemeCss(){
-        return new RedirectView("/themes/" + theme + "/css/style.css");
+        return new RedirectView("/themes/" + theme + "/css/style.css", true);
+    }
+
+    @GetMapping( path = "/js/global")
+    public String getRootPath(HttpServletRequest request){
+        return "window.MyAppGlobals = { rootPath: '"+request.getContextPath()+"/' };";
     }
 
     /**

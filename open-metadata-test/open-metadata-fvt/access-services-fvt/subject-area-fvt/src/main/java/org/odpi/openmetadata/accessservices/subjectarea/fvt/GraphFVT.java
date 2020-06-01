@@ -48,13 +48,15 @@ public class GraphFVT
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
-        } catch (SubjectAreaCheckedExceptionBase e)
+        } catch (SubjectAreaCheckedException e)
         {
             System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+        } catch (SubjectAreaFVTCheckedException e) {
+            System.out.println("ERROR: " + e.getMessage() );
         }
 
     }
-    public GraphFVT(String url, String serverName,String userId) throws SubjectAreaCheckedExceptionBase
+    public GraphFVT(String url, String serverName,String userId) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         subjectAreaGraph = new SubjectAreaImpl(serverName,url).getSubjectAreaGraph();
         System.out.println("Create a glossary");
@@ -66,7 +68,7 @@ public class GraphFVT
         this.serverName=serverName;
         this.userId=userId;
     }
-    public static void runWith2Servers(String url) throws SubjectAreaCheckedExceptionBase
+    public static void runWith2Servers(String url) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         GraphFVT fvt =new GraphFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
@@ -78,7 +80,7 @@ public class GraphFVT
 
     }
 
-    public void run() throws SubjectAreaCheckedExceptionBase
+    public void run() throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
     {
         Glossary glossary= glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
 
@@ -226,21 +228,21 @@ public class GraphFVT
             }
         }
         if (!found) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected to find "+nodeTypeToCheck.name() + "but it did not exist", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected to find "+nodeTypeToCheck.name() + "but it did not exist");
         }
     }
 
     private void checkGraphContent(Graph graph,int expectedNodesSize,int expectedLinesSize) throws SubjectAreaFVTCheckedException {
         System.err.println("CheckGraphContent expected " +expectedNodesSize + " Nodes and "+expectedLinesSize + " Lines" );
         if (graph.getNodes().size() !=expectedNodesSize ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected " + expectedNodesSize +  " nodes, got " +graph.getNodes().size(), "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + expectedNodesSize +  " nodes, got " +graph.getNodes().size());
         }
         if (expectedLinesSize ==0 && (graph.getLines() != null) ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 0 and graph.getLines() to be null ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 and graph.getLines() to be null ");
         } else  if (expectedLinesSize !=0 && (graph.getLines() == null) ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected " + expectedLinesSize + " and graph.getLines() is null ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + expectedLinesSize + " and graph.getLines() is null ");
         } else if (graph.getLines()!=null && graph.getLines().size() !=expectedLinesSize ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected " + expectedLinesSize + " Lines, got " +graph.getLines().size(), "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + expectedLinesSize + " Lines, got " +graph.getLines().size());
         }
     }
 

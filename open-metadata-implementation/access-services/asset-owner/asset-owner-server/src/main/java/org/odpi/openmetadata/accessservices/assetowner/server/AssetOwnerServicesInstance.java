@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetowner.server;
 
 
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerErrorCode;
-import org.odpi.openmetadata.accessservices.assetowner.handlers.FileSystemHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -20,8 +19,6 @@ import java.util.List;
 public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_OWNER_OMAS;
-
-    private FileSystemHandler     fileSystemHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -52,18 +49,7 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
               localServerUserId,
               maxPageSize);
 
-        if (repositoryHandler != null)
-        {
-            this.fileSystemHandler = new FileSystemHandler(serviceName,
-                                                           serverName,
-                                                           supportedZones,
-                                                           assetHandler,
-                                                           schemaTypeHandler,
-                                                           invalidParameterHandler,
-                                                           repositoryHandler,
-                                                           repositoryHelper);
-        }
-        else
+        if (repositoryHandler == null)
         {
             final String methodName = "new ServiceInstance";
 
@@ -72,16 +58,5 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
                                            methodName);
 
         }
-    }
-
-
-    /**
-     * Return the handler for file system requests.
-     *
-     * @return handler object
-     */
-    FileSystemHandler getFileSystemHandler()
-    {
-        return fileSystemHandler;
     }
 }

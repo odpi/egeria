@@ -64,6 +64,26 @@
             <artifactId>metadata-security-server</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>csv-file-connector</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>basic-file-connector</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>avro-file-connector</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-folder-connector</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
