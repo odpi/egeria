@@ -40,7 +40,7 @@ import java.util.List;
  * OMAS and retrieves entities and relationships through the OMRSRepositoryConnector.
  */
 public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
-    private static final Class clazz = SubjectAreaGlossaryHandler.class;
+    private static final Class<?> clazz = SubjectAreaGlossaryHandler.class;
     private static final String className = clazz.getName();
     private static final Logger log = LoggerFactory.getLogger(clazz);
 
@@ -332,8 +332,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
 
             response = getGlossaryByGuid(userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.Glossary)) {
-                org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary originalGlossary = ((GlossaryResponse) response).getGlossary();
-                Glossary updateGlossary = originalGlossary;
+                Glossary updateGlossary = ((GlossaryResponse) response).getGlossary();
                 if (isReplace) {
                     // copy over attributes
                     updateGlossary.setName(suppliedGlossary.getName());

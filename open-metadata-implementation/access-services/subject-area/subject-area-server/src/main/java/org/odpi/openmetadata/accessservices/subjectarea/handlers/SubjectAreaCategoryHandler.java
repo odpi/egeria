@@ -164,7 +164,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             }
             GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
             SubjectAreaOMASAPIResponse glossaryResponse = validateGlossarySummaryDuringCreation(glossaryHandler, userId, methodName, suppliedGlossary);
-            if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Glossary)) {
+            if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Glossary)) {
                 // the glossary that was supplied is valid.
                 EntityDetail entityDetail = new CategoryMapper(oMRSAPIHelper).mapNodeToEntityDetail(suppliedCategory);
 
@@ -200,7 +200,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         } catch (InvalidParameterException e) {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
         }
-
 
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
