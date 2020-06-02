@@ -58,12 +58,7 @@ public class ServerPlatformOriginResource
             description="Retrieve a string that details the provider and version of this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="server platform origin description",
-                            content = @Content(
-                                    mediaType ="application/json",
-                                    schema = @Schema(implementation=String.class)
-                            )
-
-                    )
+                            content = @Content(mediaType ="text/plain"))
             })
 
     public String getServerOrigin(@Parameter(description="calling user") @PathVariable String   userId)

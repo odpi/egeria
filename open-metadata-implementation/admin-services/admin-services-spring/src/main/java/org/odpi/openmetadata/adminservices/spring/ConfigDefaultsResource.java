@@ -128,4 +128,22 @@ public class ConfigDefaultsResource
     {
         return adminAPI.getEventBus(userId, serverName);
     }
+
+
+    /**
+     * Delete the current configuration for the event bus.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @DeleteMapping(path = "/event-bus")
+    public VoidResponse deleteEventBus(@PathVariable String userId,
+                                                 @PathVariable String serverName)
+    {
+        return adminAPI.deleteEventBus(userId, serverName);
+    }
 }

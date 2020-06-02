@@ -96,8 +96,8 @@ extracting additional information that is known about the Asset and providing fe
 to classify and manage the asset, and understand how it is being used by the organization.
 * **[Discovery Engine OMAS](../../../discovery-engine/README.md)** provides a service for adding annotations to an
 asset's information that has been determined by specific analysis of the Asset's contents by a discovery service.
-* **[Data Platform OMAS](../../../data-platform/README.md)** enables
-a data platform (such as a database or file system) to maintain information about the assets stored on the platform.
+* **[Data Manager OMAS](../../../data-manager/README.md)** enables
+a data manager (such as a database or file system) to maintain information about the assets it stores.
 * **[IT Infrastructure OMAS](../../../it-infrastructure/README.md)** provides
 a service for maintaining information about the IT infrastructure owned or used by an organization.
 * **[Data Science OMAS](../../../data-science/README.md)** provides a service for maintaining information

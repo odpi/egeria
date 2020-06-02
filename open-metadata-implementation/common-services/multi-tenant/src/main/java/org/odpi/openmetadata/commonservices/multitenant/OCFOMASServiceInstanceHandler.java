@@ -440,11 +440,11 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    public FileSystemHandler getFileSystemHandler(String userId,
-                                                  String serverName,
-                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public FilesAndFoldersHandler getFilesAndFoldersHandler(String userId,
+                                                            String serverName,
+                                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
 
         OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
@@ -453,7 +453,7 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
 
         if (instance != null)
         {
-            return instance.getFileSystemHandler();
+            return instance.getFilesAndFoldersHandler();
         }
 
         return null;

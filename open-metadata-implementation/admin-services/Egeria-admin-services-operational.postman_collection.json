@@ -100,7 +100,7 @@
 			"response": []
 		},
 		{
-			"name": "Load open metadata archive",
+			"name": "Load open metadata archive file",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -117,6 +117,48 @@
 					"options": {
 						"raw": {
 							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance/open-metadata-archives/file",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"instance",
+						"open-metadata-archives",
+						"file"
+					]
+				},
+				"description": "Load a file that contains open metadata types and instances."
+			},
+			"response": []
+		},
+		{
+			"name": "Load open metadata archive connection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "text/plain"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\": \"Connection\",\n    \"connectorType\": {\n        \"class\": \"ConnectorType\",\n        \"connectorProviderClassName\": \"class name of connector provider here\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
 					}
 				},

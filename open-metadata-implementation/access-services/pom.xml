@@ -35,6 +35,7 @@
         <module>asset-lineage</module>
         <module>asset-owner</module>
         <module>community-profile</module>
+        <module>data-manager</module>
         <module>data-platform</module>
         <module>design-model</module>
         <module>data-science</module>
