@@ -396,7 +396,7 @@ public class ErrorHandler {
      * @param serviceName name of this access service
      * @return MetadataServerUncontactableException response -the metadata server cannot be reached
      */
-    public SubjectAreaOMASAPIResponse handleMetadataServerUnContactable(MetadataServerUncontactableException e, String methodName, String serverName, String serviceName) {
+    public static SubjectAreaOMASAPIResponse handleMetadataServerUnContactable(MetadataServerUncontactableException e, String methodName, String serverName, String serviceName) {
         ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.METADATA_SERVER_UNCONTACTABLE_ERROR.getMessageDefinition();
 
         MetadataServerUncontactableException oe = new MetadataServerUncontactableException(
@@ -407,7 +407,7 @@ public class ErrorHandler {
         return OMASExceptionToResponse.convertMetadataServerUncontactableException(oe);
     }
 
-    public SubjectAreaOMASAPIResponse handleEntityNotPurgedException(String obsoleteGuid, String methodName, String serverName, String serviceName) {
+    public static SubjectAreaOMASAPIResponse handleEntityNotPurgedException(String obsoleteGuid, String methodName, String serverName, String serviceName) {
         ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR.getMessageDefinition();
 
         EntityNotPurgedException oe = new EntityNotPurgedException(
@@ -419,7 +419,7 @@ public class ErrorHandler {
         return OMASExceptionToResponse.convertEntityNotPurgedException(oe);
     }
 
-    public SubjectAreaOMASAPIResponse handleRelationshipNotPurgedException(String obsoleteGuid, String methodName, String serverName, String serviceName) {
+    public static SubjectAreaOMASAPIResponse handleRelationshipNotPurgedException(String obsoleteGuid, String methodName, String serverName, String serviceName) {
         ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR.getMessageDefinition();
 
         RelationshipNotPurgedException oe = new RelationshipNotPurgedException(

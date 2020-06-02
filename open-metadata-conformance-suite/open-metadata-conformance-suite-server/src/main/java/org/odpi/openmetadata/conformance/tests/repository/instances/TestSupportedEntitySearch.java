@@ -2077,7 +2077,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                             case Exact:
                                 /* EXACT MATCH */
-                                if (stringValue.equals(knownStringValue)) {
+                                if (stringValue.matches(knownStringValue)) {
                                     for (String matchGUID : propValues.get(knownStringValue)) {
                                         if (!expectedGUIDs.contains(matchGUID)) {
                                             expectedGUIDs.add(matchGUID);
@@ -2087,7 +2087,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                 break;
                             case Prefix:
                                 /* PREFIX MATCH */
-                                if (knownStringValue.startsWith(truncatedStringValue)) {
+                                if (knownStringValue.matches(truncatedStringValue+".*")) {
                                     for (String matchGUID : propValues.get(knownStringValue)) {
                                         if (!expectedGUIDs.contains(matchGUID)) {
                                             expectedGUIDs.add(matchGUID);
@@ -2097,7 +2097,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                 break;
                             case Suffix:
                                 /* SUFFIX MATCH */
-                                if (knownStringValue.endsWith(truncatedStringValue)) {
+                                if (knownStringValue.matches(".*"+truncatedStringValue)) {
                                     for (String matchGUID : propValues.get(knownStringValue)) {
                                         if (!expectedGUIDs.contains(matchGUID)) {
                                             expectedGUIDs.add(matchGUID);
@@ -2107,7 +2107,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                 break;
                             case Contains:
                                 /* CONTAINS MATCH */
-                                if (knownStringValue.contains(truncatedStringValue)) {
+                                if (knownStringValue.matches(".*"+truncatedStringValue+".*")) {
                                     for (String matchGUID : propValues.get(knownStringValue)) {
                                         if (!expectedGUIDs.contains(matchGUID)) {
                                             expectedGUIDs.add(matchGUID);
@@ -2250,25 +2250,25 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                 switch (matchType) {
                                                     case Exact:
                                                         /* EXACT MATCH */
-                                                        if (propertyValueAsString.equals(stringValue)) {
+                                                        if (propertyValueAsString.matches(stringValue)) {
                                                             validEntity = true;
                                                         }
                                                         break;
                                                     case Prefix:
                                                         /* PREFIX MATCH */
-                                                        if (propertyValueAsString.startsWith(truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(truncatedStringValue+".*")) {
                                                             validEntity = true;
                                                         }
                                                         break;
                                                     case Suffix:
                                                         /* SUFFIX MATCH */
-                                                        if (propertyValueAsString.endsWith(truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(".*"+truncatedStringValue)) {
                                                             validEntity = true;
                                                         }
                                                         break;
                                                     case Contains:
                                                         /* CONTAINS MATCH */
-                                                        if (propertyValueAsString.contains(truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(".*"+truncatedStringValue+".*")) {
                                                             validEntity = true;
                                                         }
                                                         break;
@@ -2430,25 +2430,25 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                 switch (matchType) {
                                                     case Exact:
                                                         /* EXACT MATCH */
-                                                        if (propertyValueAsString.equals(stringValue)) {
+                                                        if (propertyValueAsString.matches(stringValue)) {
                                                             validEntity = true;
                                                         }
                                                         break;
                                                     case Prefix:
                                                         /* PREFIX MATCH */
-                                                        if (propertyValueAsString.startsWith(truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(truncatedStringValue+".*")) {
                                                             validEntity = true;
                                                         }
                                                         break;
                                                     case Suffix:
                                                         /* SUFFIX MATCH */
-                                                        if (propertyValueAsString.endsWith(truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(".*"+truncatedStringValue)) {
                                                             validEntity = true;
                                                         }
                                                         break;
                                                     case Contains:
                                                         /* CONTAINS MATCH */
-                                                        if (propertyValueAsString.contains(truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(".*"+truncatedStringValue+".*")) {
                                                             validEntity = true;
                                                         }
                                                         break;
