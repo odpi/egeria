@@ -11,7 +11,7 @@ It uses commands such as:
 
 ```bash
 $ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform/origin
-ODPi Egeria OMAG Server Platform (version 1.8-SNAPSHOT)
+ODPi Egeria OMAG Server Platform (version 2.0-SNAPSHOT)
 ```
 
 As an alternative you might like to try [HTTPie](https://httpie.org/) which has more advanced functions
