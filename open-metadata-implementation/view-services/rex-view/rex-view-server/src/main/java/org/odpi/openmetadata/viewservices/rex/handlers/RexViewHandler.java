@@ -56,7 +56,7 @@ import java.util.Map;
 
 
 /**
- * The RexHandler is initialised with the server the call should be sent to.
+ * The RexViewHandler is initialised with the server the call should be sent to.
  * The handler exposes methods for functionality for the repository explorer view
  */
 public class RexViewHandler
@@ -70,7 +70,7 @@ public class RexViewHandler
 
 
     /**
-     * Constructor for the RexHandler
+     * Constructor for the RexViewHandler
      */
     public RexViewHandler() {
 
