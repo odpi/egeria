@@ -70,7 +70,7 @@ public class TexViewAdmin extends ViewServiceAdmin {
             // TODO validate the configuration and when invalid, throw OMAGConfigurationErrorException
 
             /*
-             * The name and URLRoot of the repository server are not passed at this stage - they are not known at this stage as in Rex
+             * The name and URLRoot of the repository server are not passed at this stage - they are not known at this stage as in Tex
              * they are runtime variables set by the user and potentially changed between operations.
              */
             this.instance = new TexViewServicesInstance(serverName,     // this is the name of the server running the view-service
