@@ -31,6 +31,14 @@ of the graph of instances connected to those entities. This enables the user to 
 (as a diagram) to visualize the details and connectivity of a group of instances of interest to the 
 user.
 
+* **[tex-view](tex-view)** - explorer interface to inspect types across a cohort of repositories.
+
+  The Type Explorer (Tex) OMVS is for user interfaces that support enterprise architects
+who need to inspect, navigate or explore the open metadata types supported by a repository or a cohort of 
+repositories. It enables the retrieval of type data (relating to entities, relationships and classifications)
+and exploration of the graphs of entity type inheritance and the supported combinations of entity and
+relationship types.
+
 
 ## Inside an OMVS
 
