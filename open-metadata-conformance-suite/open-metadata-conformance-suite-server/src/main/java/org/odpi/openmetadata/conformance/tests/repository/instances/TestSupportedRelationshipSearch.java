@@ -2319,7 +2319,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                             case Exact:
                                 /* EXACT MATCH */
-                                if (stringValue.equals(knownStringValue)) {
+                                if (stringValue.matches(knownStringValue)) {
                                     for (String matchGUID : propValues.get(knownStringValue)) {
                                         if (!expectedGUIDs.contains(matchGUID)) {
                                             expectedGUIDs.add(matchGUID);
@@ -2329,7 +2329,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                 break;
                             case Prefix:
                                 /* PREFIX MATCH */
-                                if (knownStringValue.startsWith(truncatedStringValue)) {
+                                if (knownStringValue.matches(truncatedStringValue+".*")) {
                                     for (String matchGUID : propValues.get(knownStringValue)) {
                                         if (!expectedGUIDs.contains(matchGUID)) {
                                             expectedGUIDs.add(matchGUID);
@@ -2339,7 +2339,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                 break;
                             case Suffix:
                                 /* SUFFIX MATCH */
-                                if (knownStringValue.endsWith(truncatedStringValue)) {
+                                if (knownStringValue.matches(".*"+truncatedStringValue)) {
                                     for (String matchGUID : propValues.get(knownStringValue)) {
                                         if (!expectedGUIDs.contains(matchGUID)) {
                                             expectedGUIDs.add(matchGUID);
@@ -2349,7 +2349,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                 break;
                             case Contains:
                                 /* CONTAINS MATCH */
-                                if (knownStringValue.contains(truncatedStringValue)) {
+                                if (knownStringValue.matches(".*"+truncatedStringValue+".*")) {
                                     for (String matchGUID : propValues.get(knownStringValue)) {
                                         if (!expectedGUIDs.contains(matchGUID)) {
                                             expectedGUIDs.add(matchGUID);
@@ -2495,25 +2495,25 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                 switch (matchType) {
                                                     case Exact:
                                                         /* EXACT MATCH */
-                                                        if (propertyValueAsString.equals(stringValue)) {
+                                                        if (propertyValueAsString.matches(stringValue)) {
                                                             validRelationship = true;
                                                         }
                                                         break;
                                                     case Prefix:
                                                         /* PREFIX MATCH */
-                                                        if (propertyValueAsString.startsWith(truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(truncatedStringValue+".*")) {
                                                             validRelationship = true;
                                                         }
                                                         break;
                                                     case Suffix:
                                                         /* SUFFIX MATCH */
-                                                        if (propertyValueAsString.endsWith(truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(".*"+truncatedStringValue)) {
                                                             validRelationship = true;
                                                         }
                                                         break;
                                                     case Contains:
                                                         /* CONTAINS MATCH */
-                                                        if (propertyValueAsString.contains(truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(".*"+truncatedStringValue+".*")) {
                                                             validRelationship = true;
                                                         }
                                                         break;
@@ -2683,25 +2683,25 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                 switch (matchType) {
                                                     case Exact:
                                                         /* EXACT MATCH */
-                                                        if (propertyValueAsString.equals(stringValue)) {
+                                                        if (propertyValueAsString.matches(stringValue)) {
                                                             validRelationship = true;
                                                         }
                                                         break;
                                                     case Prefix:
                                                         /* PREFIX MATCH */
-                                                        if (propertyValueAsString.startsWith(truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(truncatedStringValue+".*")) {
                                                             validRelationship = true;
                                                         }
                                                         break;
                                                     case Suffix:
                                                         /* SUFFIX MATCH */
-                                                        if (propertyValueAsString.endsWith(truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(".*"+truncatedStringValue)) {
                                                             validRelationship = true;
                                                         }
                                                         break;
                                                     case Contains:
                                                         /* CONTAINS MATCH */
-                                                        if (propertyValueAsString.contains(truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(".*"+truncatedStringValue+".*")) {
                                                             validRelationship = true;
                                                         }
                                                         break;
