@@ -34,10 +34,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>data-platform-api</module>
-        <module>data-platform-topic-connectors</module>
         <module>data-platform-client</module>
         <module>data-platform-server</module>
-        <module>data-platform-spring</module>
     </modules>
 
 

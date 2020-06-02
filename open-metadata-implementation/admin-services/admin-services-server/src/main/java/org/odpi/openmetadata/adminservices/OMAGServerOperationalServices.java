@@ -654,10 +654,11 @@ public class OMAGServerOperationalServices
             for (AccessServiceConfig  accessServiceConfig : accessServiceConfigList)
             {
                 /*
-                 * Connected Asset OMAS has been removed but may be present in some older configuration documents.  It is skipped over if
-                 * present.
+                 * Connected Asset OMAS and Data Platform OMAS have been removed but may be present in some older configuration documents.
+                 * The are skipped over if present.
                  */
-                if ((accessServiceConfig != null) && (accessServiceConfig.getAccessServiceId() != AccessServiceDescription.CONNECTED_ASSET_OMAS.getAccessServiceCode()))
+                if ((accessServiceConfig != null) && (accessServiceConfig.getAccessServiceId() != AccessServiceDescription.CONNECTED_ASSET_OMAS.getAccessServiceCode())
+                                                  && (accessServiceConfig.getAccessServiceId() != AccessServiceDescription.DATA_PLATFORM_OMAS.getAccessServiceCode()))
                 {
                     configuredAccessServiceCount ++;
 

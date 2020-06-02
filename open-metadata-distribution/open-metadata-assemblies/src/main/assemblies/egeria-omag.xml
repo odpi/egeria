@@ -467,7 +467,7 @@
         </fileSet>
 
         <fileSet>
-            <directory>../../open-metadata-implementation/access-services/data-platform/data-platform-client/target/</directory>
+            <directory>../../open-metadata-implementation/access-services/data-manager/data-manager-client/target/</directory>
             <outputDirectory>./clients</outputDirectory>
             <includes>
                 <include>*.jar</include>

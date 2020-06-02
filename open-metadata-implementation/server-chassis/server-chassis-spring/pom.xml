@@ -239,7 +239,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-platform-spring</artifactId>
+            <artifactId>data-manager-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
