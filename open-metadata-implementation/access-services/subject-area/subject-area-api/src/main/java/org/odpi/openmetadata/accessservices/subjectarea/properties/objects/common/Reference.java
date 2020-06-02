@@ -40,7 +40,7 @@ public class  Reference implements Serializable {
     */
 
     // relationship information
-    static protected String relationship_Type = null;
+    protected String relationship_Type = null;
     protected String relationshipGuid;
     protected Map<String, Object> uniqueAttributes;
 
@@ -143,7 +143,7 @@ public class  Reference implements Serializable {
         }
     }
 
-    public Reference(Map objIdMap) {
+    public Reference(Map<String, Object> objIdMap) {
         if (objIdMap != null) {
             Object reg = objIdMap.get(KEY_RELATED_END_GUID);
             Object rg = objIdMap.get(KEY_RELATIONSHIP_GUID);
@@ -162,7 +162,7 @@ public class  Reference implements Serializable {
                 setRelatedEndType(t.toString());
             }
 
-            if (u != null && u instanceof Map) {
+            if (u instanceof Map) {
                 setUniqueAttributes((Map) u);
             }
         }

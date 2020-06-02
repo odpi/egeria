@@ -202,14 +202,13 @@ public class Node implements Serializable {
 
         Node node = (Node) o;
 
-        if (name != null ? !name.equals(node.name) : node.name != null) return false;
-        if (qualifiedName != null ? !qualifiedName.equals(node.qualifiedName) : node.qualifiedName != null)
-            return false;
-        if (description != null ? !description.equals(node.description) : node.description != null) return false;
-        if (effectiveFromTime != null ?!effectiveFromTime.equals(node.effectiveFromTime) : node.effectiveFromTime !=null) return false;
-        if (effectiveToTime != null ?!effectiveToTime.equals(node.effectiveToTime) : node.effectiveToTime !=null) return false;
+        if (!Objects.equals(name, node.name)) return false;
+        if (!Objects.equals(qualifiedName, node.qualifiedName)) return false;
+        if (!Objects.equals(description, node.description)) return false;
+        if (!Objects.equals(effectiveFromTime, node.effectiveFromTime)) return false;
+        if (!Objects.equals(effectiveToTime, node.effectiveToTime)) return false;
         //TODO deal with icon set properly
-        return  (icons != null ? !icons.equals(node.icons) : node.icons != null)== false;
+        return Objects.equals(icons, node.icons);
 
     }
 
