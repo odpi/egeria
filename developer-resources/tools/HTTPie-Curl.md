@@ -10,12 +10,18 @@ The command that is most commonly available is **curl**.
 It uses commands such as:
 
 ```bash
-$ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform/origin
+$ curl --insecure -X GET https://localhost:9443/open-metadata/platform-services/users/test/server-platform/origin
 ODPi Egeria OMAG Server Platform (version 2.0-SNAPSHOT)
 ```
 
+Note that Egeria is using https, so if you have not replaced the provided self-signed certificate, ensure to add '--insecure' to any requests 
+to skip certificate validation
+
+
 As an alternative you might like to try [HTTPie](https://httpie.org/) which has more advanced functions
 
+Note that Egeria is using https, so if you have not replaced the provided self-signed certificate, ensure to add '--verify no' to any requests 
+to skip certificate validation
 ----
 * Return to [Developer Tools](.)
 

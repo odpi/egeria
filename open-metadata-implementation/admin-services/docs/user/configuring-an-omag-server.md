@@ -59,7 +59,7 @@ In the descriptions of the configuration commands, there are placeholders
 for the specific configuration values.  They are names of the value in double curly braces.
 For example:
 
-* {serverURLRoot} - The network address that the OMAG server platform is registered at - such as **http://localhost:8080**.
+* {serverURLRoot} - The network address that the OMAG server platform is registered at - such as **https://localhost:9443**.
 * {adminUserId} - The user id of the administrator, for example **garygeeke**.
 * {serverName} - The name of the OMAG server, for example **cocoMDS1**.
 

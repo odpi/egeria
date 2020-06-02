@@ -22,8 +22,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - name: proxy
-      port: 8080
-      targetPort: 8080
+      port: 9443
+      targetPort: 9443
       nodePort: {{ .Values.service.nodeport.igcproxy }}
 {{ if .Values.ibmigc.internal.enabled }}
 # Only expose web and kafka ports if we are using a cluster-internal IGC
@@ -160,10 +160,10 @@ spec:
             - name: "LOADER_PATH"
               value: "/opt/egeria/connectors"
           ports:
-            - containerPort: 8080
+            - containerPort: 9443
           readinessProbe:
             tcpSocket:
-              port: 8080
+              port: 9443
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6

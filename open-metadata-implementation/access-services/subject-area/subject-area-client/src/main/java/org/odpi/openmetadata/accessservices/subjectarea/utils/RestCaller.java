@@ -11,7 +11,12 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMA
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.*;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
+
 import static com.google.json.JsonSanitizer.sanitize;
 
 /**
@@ -157,6 +162,9 @@ public class RestCaller {
         RestTemplate restTemplate = new RestTemplate();
         String resultBody =null;
         ResponseEntity<String> result =null;
+
+        skipSSL();
+
         try {
 
             result = restTemplate.exchange(url, httpMethod, entity, String.class);
@@ -196,5 +204,65 @@ public class RestCaller {
                 methodName,
                 "json",
                 "invalid");
+    }
+
+    /**
+     * Dummy TrustManager that is happy with any cert
+     *
+     * @param hostname hostname
+     * @param sslSession ssl ession
+     * @return boolean result
+     */
+    private static final TrustManager[] INSECURE_MANAGER = new TrustManager[]{new X509TrustManager() {
+        public X509Certificate[] getAcceptedIssuers() {
+            return null;
+        }
+
+        /**
+         * check client is trusted - it ALWAYS is in this dummy implementation
+         * (an exception would be caused if not)
+         *
+         * @param certs X509 certificates
+         * @param authType authtype
+         */
+        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+        }
+
+        /**
+         * check server is trusted - it ALWAYS is in this dummy implementation
+         * (an exception would be caused if not)
+         *
+         * @param certs X509 certificates
+         * @param authType authtype
+         */
+        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+        }
+    }
+    };
+
+    /**
+     * Dummy HostnameVerifier that is happy with any host (for the SSL host checking)
+     *
+     * @param hostname hostname
+     * @param sslSession ssl ession
+     * @return boolean result
+     */
+    private static final HostnameVerifier bypassVerifier = new HostnameVerifier() {
+        public boolean verify(String hostname, SSLSession sslSession) {
+            return true;
+        }
+    };
+
+    /* TODO: Temporary fix -- a) SHould use spring rest template connector b) needs to support certs */
+    private static void skipSSL() {
+        /* TODO: Disable SSL cert verification -- for now */
+        try {
+            HttpsURLConnection.setDefaultHostnameVerifier(bypassVerifier);
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, INSECURE_MANAGER, null);
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (NoSuchAlgorithmException e) {
+        } catch (KeyManagementException e) {
+        }
     }
 }

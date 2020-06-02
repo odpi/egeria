@@ -25,7 +25,7 @@ Start the OMAG server platform as follows - the `-Dserver.port` option is needed
 on different ports, as required by the tutorials.
 
 ```bash
-$ java -Dserver.port=8080 -jar server-chassis-spring-2.0-SNAPSHOT.jar
+$ java -Dserver.port=9443 -jar server-chassis-spring-2.0-SNAPSHOT.jar
 ```
 
 The OMAG server platform first displays this banner and then initializes itself.
@@ -49,19 +49,19 @@ Thu Jan 31 13:15:26 GMT 2019 OMAG server platform ready for configuration
 
 This means your OMAG server platform is running. 
 
-If you get an error that the port is in use, check for any applications using the same port. Note that in current versions of zookeeper, an AdminServer uses port 8080 by default - see [zookeeper docs](https://zookeeper.apache.org/doc/r3.5.7/zookeeperAdmin.html)
+If you get an error that the port is in use, check for any applications using the same port. 
 
- Try the following command (replace 8080 accordingly if using a non standard port):
+ Try the following command (replace 9443 accordingly if using a non standard port):
 
 ```bash
-$ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform/origin
+$ curl --insecure -X GET https://localhost:9443/open-metadata/platform-services/users/test/server-platform/origin
 ODPi Egeria OMAG Server Platform
 ```
 
 This calls the OMAG server platform using a REST API call.  The response **ODPi Egeria OMAG Server Platform**
 means the curl command communicated with a running OMAG server platform instance.
 
-The OMAG server platform has many REST APIs.  Enter **localhost:8080/swagger-ui.html** into your browser to see the list of
+The OMAG server platform has many REST APIs.  Enter **https://localhost:9443/swagger-ui.html** into your browser to see the list of
 available REST APIs.
 
 Broadly speaking, the OMAG server platform supports

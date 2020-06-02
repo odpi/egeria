@@ -31,8 +31,8 @@ listed then you need to load the environment ([Postman tutorial](../postman-tuto
 ![Postman server origin - no environment](../../../developer-resources/tools/postman-platform-origin-no-environment.png#pagewidth)
 
 If the baseURL variable is set to a different value to the server platform then Postman can not connect.
-In the screen capture below, you can see the baseURL is set to the default of `http://localhost:8080` when it should be
-`http://localhost:8080` because the platform is running in docker.
+In the screen capture below, you can see the baseURL is set to the default of `https://localhost:9443` when it should be
+`https://localhost:9443` because the platform is running in docker.
 
 ![Postman server origin - wrong base url](../../../developer-resources/tools/postman-platform-origin-wrong-base-url.png#pagewidth)
 

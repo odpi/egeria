@@ -13,6 +13,8 @@ service:
     ui: 30443
 
 egeria:
+  #logging: OFF
+  development: true
   version: 2.0-SNAPSHOT
 
 # Defaults for the images (can be overridden here or individually, see comment below)

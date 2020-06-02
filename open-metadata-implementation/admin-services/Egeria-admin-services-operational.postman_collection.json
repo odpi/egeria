@@ -41,7 +41,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"class\": \"OMAGServerConfigResponse\",\n    \"relatedHTTPCode\": 200,\n    \"omagserverConfig\": {\n        \"class\": \"OMAGServerConfig\",\n        \"versionId\": \"V2.0\",\n        \"localServerId\": \"863ae16f-46eb-4f9a-a619-76917e8fa950\",\n        \"localServerName\": \"myserver\",\n        \"localServerType\": \"Open Metadata and Governance Server\",\n        \"localServerURL\": \"http://localhost:8080\",\n        \"localServerUserId\": \"OMAGServer\",\n        \"maxPageSize\": 1000\n    }\n}",
+					"raw": "{\n    \"class\": \"OMAGServerConfigResponse\",\n    \"relatedHTTPCode\": 200,\n    \"omagserverConfig\": {\n        \"class\": \"OMAGServerConfig\",\n        \"versionId\": \"V2.0\",\n        \"localServerId\": \"863ae16f-46eb-4f9a-a619-76917e8fa950\",\n        \"localServerName\": \"myserver\",\n        \"localServerType\": \"Open Metadata and Governance Server\",\n        \"localServerURL\": \"https://localhost:9443\",\n        \"localServerUserId\": \"OMAGServer\",\n        \"maxPageSize\": 1000\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"

@@ -23,10 +23,10 @@ network endpoint and `{userId}` is the userId of an authorized administrator.
 The response is a single string describing the implementation and version of the server platform.
 
 For example, this is the response from the ODPi Egeria implementation of the OMAG Server Platform
-which has an endpoint of `http://localhost:8080`.  Gary Geeke (`garygeeke`) is the administrator.
+which has an endpoint of `https://localhost:9443`.  Gary Geeke (`garygeeke`) is the administrator.
 
 ```bash
-$ curl -X GET http://localhost:8080/open-metadata/platform-services/users/garygeeke/server-platform-origin
+$ curl --insecure -X GET https://localhost:9443/open-metadata/platform-services/users/garygeeke/server-platform-origin
 ODPi Egeria OMAG Server Platform (version 2.0-SNAPSHOT)
 ```
 

@@ -15,12 +15,16 @@ import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenAuthSe
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+
+import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 @ComponentScan({"org.odpi.openmetadata.*"})
@@ -28,6 +32,8 @@ import org.springframework.context.annotation.Configuration;
 public class EgeriaUIPlatform {
 
     private static final Logger LOG = LoggerFactory.getLogger(EgeriaUIPlatform.class);
+    @Autowired
+    private Environment env;
 
     @Value("${strict.ssl}")
     Boolean strictSSL;
@@ -78,6 +84,18 @@ public class EgeriaUIPlatform {
             return new TokenAuthService();
         }
         return new SessionAuthService();
+    }
+
+    @PostConstruct
+    private void configureTrustStore() {
+
+        //making sure was not set using JVM options
+        if(System.getProperty("javax.net.ssl.trustStore")==null) {
+            //load the 'javax.net.ssl.trustStore' and
+            //'javax.net.ssl.trustStorePassword' from application.properties
+            System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
+            System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
+        }
     }
 }
 
