@@ -22,6 +22,15 @@ and used by Asset Owner's to improve the findability and understandability
 of their assets by linking their asset's structure to relevant parts of
 the subject area definition.
 
+* **[rex-view](rex-view)** - explorer interface to inspect instances across a cohort of repositories.
+
+  The Repository Explorer (Rex) OMVS is for user interfaces that support enterprise architects
+who need to inspect, navigate or explore the instance data stored in a repository or a cohort of 
+repositories. It enables the retrieval of instance data (entities and relationships) and exploration 
+of the graph of instances connected to those entities. This enables the user to construct a graph 
+(as a diagram) to visualize the details and connectivity of a group of instances of interest to the 
+user.
+
 
 ## Inside an OMVS
 

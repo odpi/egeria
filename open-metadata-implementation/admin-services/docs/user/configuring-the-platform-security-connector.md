@@ -21,15 +21,19 @@ using the following command.
 ```
 POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/platform/security/connection
 ```
-This passes in a connection used to create the platform security connector
-in the request body.  For example, this is the connection that would
+This passes in a connection  used to create the platform security connector and the `serverURLRoot` of the platform
+in the request body.  For example, this is the request body that would
 set up the [sample platform security connector](../../../../open-metadata-resources/open-metadata-samples/open-metadata-security-samples) provided for the Coco Pharmaceuticals case study:
 ```json
 {
-    "class": "Connection",
-    "connectorType": {
-        "class": "ConnectorType",
-        "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider"
+    "class": "PlatformSecurityRequestBody",
+    "urlRoot": "{{serverURLRoot}}",
+    "platformSecurityConnection" : {
+	    "class": "Connection",
+	    "connectorType": {
+	        "class": "ConnectorType",
+	        "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider"
+	    }
     }
 }
 ```

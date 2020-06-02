@@ -14,7 +14,7 @@ For example if the platform is running at `https://localhost:9443`, the URL for 
 The top of the page gives a general description of the OMAG Server platform plus
 a link to more documentation.
 
-![Swagger UI Heading](swagger-ui-top.png)
+![Swagger UI Heading](swagger-ui-top.png#pagewidth)
 
 
 The content for this header is located in the [OMAGServerPlatform.java](https://github.com/odpi/egeria/blob/master/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/java/org/odpi/openmetadata/serverchassis/springboot/OMAGServerPlatform.java)
@@ -22,7 +22,7 @@ file that provides the `main()` method for the OMAG Server Platform.
 
 It is using Open API annotations that look like this:
 
-![Swagger UI Heading Annotation](swagger-ui-top-annotations.png)
+![Swagger UI Heading Annotation](swagger-ui-top-annotations.png#pagewidth)
 
 Beneath the header is a list of the platform's REST APIs.  This is the definition for the
 Operational Services that are part of the Administration Services:
@@ -37,25 +37,25 @@ resource beans are all part of the same service.
 
 These are the annotations from [OperationalServicesResource.java](https://github.com/odpi/egeria/blob/master/open-metadata-implementation/admin-services/admin-services-spring/src/main/java/org/odpi/openmetadata/adminservices/spring/OperationalServicesResource.java).
 
-![Swagger UI Service Annotation](swagger-ui-service-annotations.png)
+![Swagger UI Service Annotation](swagger-ui-service-annotations.png#pagewidth)
 
 Further information can be provided for each operation.  This is one of the
 Operational Services operations.
 
-![Swagger UI Operation](swagger-ui-operation.png)
+![Swagger UI Operation](swagger-ui-operation.png#pagewidth)
 
 
 This is added to the spring resource bean
 using the `@Operation` annotation.
 
-![Swagger UI Operation](swagger-ui-operation-annotations.png)
+![Swagger UI Operation](swagger-ui-operation-annotations.png#pagewidth)
 
 ----
+* Return to [Developer Tools](.)
 
-* Return to [Tools](.)
-* Return to [Developer Resources](..)
-* Return to the [Egeria Dojo](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
 
+* Link to [Egeria's Community Guide](../../Community-Guide.md)
+* Link to the [Egeria Dojo Education](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -18,7 +18,10 @@ is the `pom.xml` file in the
 When the maven command is run, it passes through the
 hierarchy of modules multiple times.  Each pass processes a particular lifecycle phase of
 the build (this is so, for example, java source files are compiled before the resulting
-object files are packaged into a jar file).
+object files are packaged into a jar file).  This processing
+includes locating and downloading
+external libraries and dependencies.
+The directory where these external dependencies is stored is called `.m2`.
 
 The command to perform a complete rebuild of the project
 is
@@ -29,11 +32,30 @@ $ mvn clean install
 ```
 More details on Maven itself is on the [Apache Maven site](https://maven.apache.org/).
 More details on Egeria's use of Maven is located in [Dependency Management](../Dependency-Management.md).
+The [Building Egeria](../../open-metadata-resources/open-metadata-tutorials/building-egeria-tutorial) tutorial
+covers more details on the build process.
+
+## Installing Maven
+
+You can check if Maven installed on your machine by running the command `mvn --version` from the command-line.
+
+Maven can be installed:
+
+- On Windows, by downloading the [binary zip archive](https://maven.apache.org/download.cgi) and
+[following Maven's installation instructions for Windows](https://maven.apache.org/guides/getting-started/windows-prerequisites.html).
+- On MacOS, by first installing the [HomeBrew](https://brew.sh) package manager and then running
+`brew install maven` from the command-line.
+- On Linux operating systems, by using your distribution's package manager (`yum install maven`, `apt-get install maven`, etc).
+
+Ensure you are using version 3.5.0 or higher in order to build Egeria.
 
 ----
-* Return to [Tools](.)
-* Return to [Developer Resources](..)
-* Return to the [Egeria Dojo](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
+* Return to [Developer Tools](.)
+
+
+* Link to [Egeria's Community Guide](../../Community-Guide.md)
+* Link to the [Egeria Dojo Education](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

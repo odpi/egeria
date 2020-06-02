@@ -16,7 +16,7 @@ then the Egeria community is more likely to be able to help.
 
 ## Session Content
 
-Follow the links to learn about the tools used to :
+Follow the links to learn about the tools used to contribute to Egeria:
 
 * [Markdown](../../../developer-resources/tools/Markdown.md) - for web pages and documentation
 * [Git and GitHub](../../../developer-resources/tools/Git-GitHub.md) - for managing Egeria's content
