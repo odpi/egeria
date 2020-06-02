@@ -39,10 +39,9 @@ public class OMAGServerOperationalInstanceHandler extends OMAGServerServiceInsta
      */
     public OMAGOperationalServicesInstance getServerServiceInstance(String userId,
                                                                     String serverName,
-                                                                    String serviceOperationName)
-            throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException
+                                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
     {
         return (OMAGOperationalServicesInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
     }

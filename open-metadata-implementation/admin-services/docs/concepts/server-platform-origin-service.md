@@ -27,7 +27,7 @@ which has an endpoint of `https://localhost:9443`.  Gary Geeke (`garygeeke`) is 
 
 ```bash
 $ curl --insecure -X GET https://localhost:9443/open-metadata/platform-services/users/garygeeke/server-platform-origin
-ODPi Egeria OMAG Server Platform (version 1.8-SNAPSHOT)
+ODPi Egeria OMAG Server Platform (version 2.0-SNAPSHOT)
 ```
 
 

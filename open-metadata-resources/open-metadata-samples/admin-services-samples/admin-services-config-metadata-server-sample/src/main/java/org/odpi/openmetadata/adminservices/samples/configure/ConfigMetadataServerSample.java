@@ -150,7 +150,7 @@ public class ConfigMetadataServerSample
         configurationClient.configureAccessService("discovery-engine", accessServiceOptions);
         configurationClient.configureAccessService("stewardship-action", accessServiceOptions);
         configurationClient.configureAccessService("data-engine", accessServiceOptions);
-        configurationClient.configureAccessService("data-platform", accessServiceOptions);
+        configurationClient.configureAccessService("data-manager", accessServiceOptions);
         configurationClient.configureAccessService("information-view", accessServiceOptions);
 
         accessServiceOptions = new HashMap<>();

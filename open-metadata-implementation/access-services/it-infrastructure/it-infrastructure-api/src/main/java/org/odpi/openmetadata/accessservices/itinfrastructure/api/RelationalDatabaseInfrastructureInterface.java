@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.api;
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DatabasePlatformProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DatabaseManagerProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DatabaseServerProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -33,18 +33,18 @@ public interface RelationalDatabaseInfrastructureInterface
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException;
 
-    String addDatabasePlatform(String userId,
-                               String integrationDaemonGUID,
-                               DatabasePlatformProperties databasePlatformProperties) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException;
+    String addDatabaseManager(String userId,
+                              String integrationDaemonGUID,
+                              DatabaseManagerProperties databaseManagerProperties) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException;
 
-    void linkDatabasePlatformToServer(String userId,
-                                      String integrationDaemonGUID,
-                                      String databasePlatformGUID,
-                                      String databaseServerGUID) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
+    void linkDatabaseManagerToServer(String userId,
+                                     String integrationDaemonGUID,
+                                     String databasePlatformGUID,
+                                     String databaseServerGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 
 
     String  addDatabaseEndpoint(String             userId,

@@ -11,7 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.FileSystemHandler;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.FilesAndFoldersHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SoftwareServerCapabilityHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SoftwareServerCapabilityMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -152,7 +152,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.createFolderStructureInCatalog(userId,
                                                                          anchorGUID,
@@ -214,7 +214,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.createFolderStructureInCatalog(userId,
                                                                          requestBody.getFullPath(),
@@ -276,7 +276,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             handler.attachFolderToFileSystem(userId,
                                              fileSystemGUID,
@@ -338,7 +338,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             handler.detachFolderFromFileSystem(userId,
                                                fileSystemGUID,
@@ -401,7 +401,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.addDataFileAssetToCatalog(userId,
                                                                     requestBody.getDisplayName(),
@@ -469,7 +469,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.addDataFolderAssetToCatalog(userId,
                                                                       requestBody.getDisplayName(),
@@ -535,7 +535,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             handler.attachDataFileAssetToFolder(userId,
                                                 folderGUID,
@@ -599,7 +599,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             handler.detachDataFileAssetFromFolder(userId,
                                                   folderGUID,
@@ -662,7 +662,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             handler.moveDataFileInCatalog(userId,
                                           folderGUID,
@@ -725,7 +725,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             handler.moveDataFolderInCatalog(userId,
                                             folderGUID,
@@ -955,7 +955,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             response.setFolder(new Folder(handler.getFolderByGUID(userId,
                                                                   folderGUID,
@@ -1013,7 +1013,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 response.setFolder(new Folder(handler.getFolderByPathName(userId,
                                                                           requestBody.getFullPath(),
@@ -1074,7 +1074,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             response.setGUIDs(handler.getNestedFolders(userId,
                                                        anchorGUID,
@@ -1136,7 +1136,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             response.setGUIDs(handler.getFolderFiles(userId,
                                                      folderGUID,
@@ -1202,7 +1202,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.addAvroFileToCatalog(userId,
                                                                requestBody.getDisplayName(),
@@ -1269,7 +1269,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.addCSVFileToCatalog(userId,
                                                               requestBody.getDisplayName(),
