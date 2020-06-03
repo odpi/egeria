@@ -8,6 +8,7 @@ import com.google.crypto.tink.aead.AeadConfig;
 import com.google.crypto.tink.aead.AeadKeyTemplates;
 import com.google.crypto.tink.proto.KeyTemplate;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
@@ -24,12 +25,17 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Objects;
 
+/**
+ * EncryptedFileBasedServerConfigStoreConnector is the OCF connector for the encrypted file based server
+ * configuration store.
+ */
 public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConfigStoreConnectorBase {
 
-    private static final String KEYSTORE_FOLDER_PREFIX = "keystore";
+    private static final String KEYSTORE_FOLDER_PREFIX = "keystore_";
     private static final String KEY_FILE_EXTENSION = ".key";
     private static final int    RANDOM_NAME_LENGTH = 32;
 
+    private static final String      KEY_ENV_VAR               = "EGERIA_CONFIG_KEYS";
     private static final String      DEFAULT_FILENAME_TEMPLATE = "omag.server.{0}.config";
     private static final KeyTemplate KEY_TEMPLATE              = AeadKeyTemplates.CHACHA20_POLY1305;
 
@@ -68,7 +74,6 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         try {
             AeadConfig.register();
         } catch (GeneralSecurityException e) {
-
             throw new ConnectorCheckedException(DocStoreErrorCode.INIT_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName, e);
@@ -83,33 +88,35 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
      */
     public void saveServerConfig(OMAGServerConfig omagServerConfig) {
 
-        File configStoreFile = new File(configStoreName);
-        File keystore = getKeystore();
+        final String methodName = "saveServerConfig";
+        File configStoreFile = getConfigStoreFile();
 
         try {
 
             if (omagServerConfig == null) {
+                // If no server config was provided, treat this as a delete
                 removeServerConfig();
             } else {
 
-                log.debug("Generating new encryption key for secure storage.");
-                KeysetHandle keysetHandle = KeysetHandle.generateNew(KEY_TEMPLATE);
-                CleartextKeysetHandle.write(keysetHandle, JsonKeysetWriter.withFile(
-                        keystore));
-
-                log.debug("Writing encrypted server config store properties: {}", omagServerConfig);
-                ObjectMapper objectMapper = new ObjectMapper();
-                String configStoreFileContents = objectMapper.writeValueAsString(omagServerConfig);
-                Aead aead = keysetHandle.getPrimitive(Aead.class);
-                byte[] ciphertext = aead.encrypt(configStoreFileContents.getBytes(StandardCharsets.UTF_8), null);
-                FileUtils.writeByteArrayToFile(configStoreFile, ciphertext, false);
+                log.debug("Writing encrypted server configuration.");
+                Aead aead = getAead(true);
+                if (aead != null) {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String configStoreFileContents = objectMapper.writeValueAsString(omagServerConfig);
+                    byte[] ciphertext = aead.encrypt(configStoreFileContents.getBytes(StandardCharsets.UTF_8), null);
+                    FileUtils.writeByteArrayToFile(configStoreFile, ciphertext, false);
+                } else {
+                    throw new OCFRuntimeException(DocStoreErrorCode.AEAD_UNAVAILABLE.getMessageDefinition(),
+                            this.getClass().getName(),
+                            methodName);
+                }
 
             }
 
-        } catch (GeneralSecurityException e) {
-            throw new IllegalStateException("Unable to generate new encryption key.", e);
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to write new encryption key or config file.", e);
+        } catch (GeneralSecurityException | IOException e) {
+            throw new OCFRuntimeException(DocStoreErrorCode.WRITE_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+                    this.getClass().getName(),
+                    methodName, e);
         }
 
     }
@@ -122,27 +129,44 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
      */
     public OMAGServerConfig  retrieveServerConfig() {
 
-        File configStoreFile = new File(configStoreName);
-        File keystore = getKeystore();
+        final String methodName = "retrieveServerConfig";
         OMAGServerConfig newConfigProperties = null;
 
-        try {
+        boolean isEnvVar  = isEnvBasedKeystore();
+        boolean isKeyFile = isFileBasedKeystore();
 
-            log.debug("Retrieving encryption key");
-            KeysetHandle keysetHandle = CleartextKeysetHandle.read(JsonKeysetReader.withFile(keystore));
-            Aead aead = keysetHandle.getPrimitive(Aead.class);
+        File configStoreFile = getConfigStoreFile();
+        if (configStoreFile.exists()) {
+            if (!(isEnvVar || isKeyFile)) {
+                // If we have a configuration file, but no key anywhere to use to decrypt it, throw an error immediately
+                throw new OCFRuntimeException(DocStoreErrorCode.NO_KEYSTORE.getMessageDefinition(),
+                        this.getClass().getName(),
+                        methodName);
+            }
 
-            log.debug("Retrieving server configuration properties");
-            byte[] ciphertext = FileUtils.readFileToByteArray(configStoreFile);
-            byte[] decrypted = aead.decrypt(ciphertext, null);
-            String configStoreFileContents = new String(decrypted, StandardCharsets.UTF_8);
-            ObjectMapper objectMapper = new ObjectMapper();
-            newConfigProperties = objectMapper.readValue(configStoreFileContents, OMAGServerConfig.class);
+            try {
 
-        } catch (GeneralSecurityException e) {
-            throw new IllegalStateException("Unable to read encryption key.", e);
-        } catch (IOException e) {
-            log.debug("New server config store", e);
+                log.debug("Retrieving server configuration properties");
+                Aead aead = getAead(false);
+                if (aead != null) {
+                    byte[] ciphertext = FileUtils.readFileToByteArray(configStoreFile);
+                    byte[] decrypted = aead.decrypt(ciphertext, null);
+                    String configStoreFileContents = new String(decrypted, StandardCharsets.UTF_8);
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    newConfigProperties = objectMapper.readValue(configStoreFileContents, OMAGServerConfig.class);
+                } else {
+                    // If we have a configuration file, but no key anywhere to use to decrypt it, throw an error immediately
+                    throw new OCFRuntimeException(DocStoreErrorCode.NO_KEYSTORE.getMessageDefinition(),
+                            this.getClass().getName(),
+                            methodName);
+                }
+
+            } catch (GeneralSecurityException | IOException e) {
+                throw new OCFRuntimeException(DocStoreErrorCode.READ_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+                        this.getClass().getName(),
+                        methodName, e);
+            }
+
         }
 
         return newConfigProperties;
@@ -153,17 +177,26 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
      * Remove the server configuration.
      */
     public void removeServerConfig() {
-        File keystore = getKeystore();
-        try {
-            Files.delete(keystore.toPath());
-        } catch (IOException e) {
-            log.error("Unable to delete keystore.", e);
+        final String methodName = "removeServerConfig";
+        File keystore = getFileBasedKeystore(false);
+        if (keystore.exists()) {
+            try {
+                Files.delete(keystore.toPath());
+            } catch (IOException e) {
+                throw new OCFRuntimeException(DocStoreErrorCode.KEYSTORE_DELETE_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+                        this.getClass().getName(),
+                        methodName, e);
+            }
         }
-        File configStoreFile = new File(configStoreName);
-        try {
-            Files.delete(configStoreFile.toPath());
-        } catch (IOException e) {
-            log.error("Unable to delete server config file: {}", configStoreFile.getName(), e);
+        File configStoreFile = getConfigStoreFile();
+        if (configStoreFile.exists()) {
+            try {
+                Files.delete(configStoreFile.toPath());
+            } catch (IOException e) {
+                throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_DELETE_ERROR.getMessageDefinition(configStoreFile.getName(), e.getClass().getName(), e.getMessage()),
+                        this.getClass().getName(),
+                        methodName, e);
+            }
         }
     }
 
@@ -184,7 +217,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         if (!(obj instanceof EncryptedFileBasedServerConfigStoreConnector)) return false;
         EncryptedFileBasedServerConfigStoreConnector that = (EncryptedFileBasedServerConfigStoreConnector) obj;
         return Objects.equals(getConfigStoreName(), that.getConfigStoreName())
-                && Objects.equals(getKeystore(), that.getKeystore())
+                && Objects.equals(getFileBasedKeystore(false), that.getFileBasedKeystore(false))
                 && Objects.equals(retrieveServerConfig(), that.retrieveServerConfig());
     }
 
@@ -193,62 +226,202 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
      */
     @Override
     public int hashCode() {
-        return Objects.hash(getConfigStoreName(), getKeystore(), retrieveServerConfig());
+        return Objects.hash(getConfigStoreName(), getFileBasedKeystore(false), retrieveServerConfig());
     }
 
     private String getConfigStoreName() { return configStoreName; }
 
-    private File getKeystore() {
+    private File getConfigStoreFile() {
+        return new File(getConfigStoreName());
+    }
 
-        // Start by trying to identify any pre-existing keystore directory
-        File pwd = new File(".");
-        File[] keystoreDirs = pwd.listFiles((dir, name) -> name.startsWith(KEYSTORE_FOLDER_PREFIX));
-        File secureFile;
+    /**
+     * Retrieve the Authenticated Encryption with Associated Data handler.
+     * @param generateIfNotExists indicates whether to generate a handler if it does not exist (true) or not (false)
+     * @return Aead
+     * @throws GeneralSecurityException on any error
+     */
+    private Aead getAead(boolean generateIfNotExists) throws GeneralSecurityException {
+        KeysetHandle keysetHandle = getKeysetHandleFromEnv();
+        if (keysetHandle == null) {
+            keysetHandle = getKeysetHandleFromFile(generateIfNotExists);
+        }
+        if (keysetHandle != null) {
+            return keysetHandle.getPrimitive(Aead.class);
+        } else {
+            return null;
+        }
+    }
 
-        if (keystoreDirs == null || keystoreDirs.length == 0) {
+    /**
+     * Indicates whether there is any environment variable-based key store defined.
+     * @return boolean true if the environment variable EGERIA_CONFIG_KEYS is defined, otherwise false
+     */
+    private boolean isEnvBasedKeystore() {
+        return getEnvKeystore() != null;
+    }
 
-            // If no directory was found with the prefix, we need to create one and the key file within it
-            secureFile = createKeyStore();
+    /**
+     * Retrieves the value of the environment variable defining a key store.
+     * @return String of JSON in Google Tink form
+     */
+    private String getEnvKeystore() {
+        return System.getenv(KEY_ENV_VAR);
+    }
 
-        } else if (keystoreDirs.length == 1) {
+    /**
+     * Retrieves the keyset handle for the environment variable-based key store.
+     * @return KeysetHandle
+     */
+    private KeysetHandle getKeysetHandleFromEnv() {
 
-            if (!keystoreDirs[0].isDirectory()) {
-                throw new IllegalStateException("Expecting the file '" + keystoreDirs[0].getAbsolutePath() + "' to be a directory.");
+        final String methodName = "getEncryptionKeyFromEnv";
+        KeysetHandle keysetHandle = null;
+
+        log.debug("Attempting to retrieve encryption key from {} environment variable.", KEY_ENV_VAR);
+        String encryptionKey = getEnvKeystore();
+        if (encryptionKey == null) {
+            log.debug("Environment variable {} not set -- skipping.", KEY_ENV_VAR);
+        } else {
+            try {
+                keysetHandle = CleartextKeysetHandle.read(JsonKeysetReader.withString(encryptionKey));
+            } catch (GeneralSecurityException | IOException e) {
+                throw new OCFRuntimeException(DocStoreErrorCode.INVALID_KEYSTORE.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+                        this.getClass().getName(),
+                        methodName, e);
             }
+        }
 
-            // If we found a single directory, then we need to search for a key file within it
-            File secureDir = keystoreDirs[0];
+        return keysetHandle;
+
+    }
+
+    /**
+     * Indicates whether there is a file-based key store defined.
+     * @return boolean true if there is a single directory starting with 'keystore_' and containing a single file with
+     *          a '.key' extension within it, otherwise false
+     */
+    private boolean isFileBasedKeystore() {
+        File file = getSecureFile();
+        return file != null;
+    }
+
+    /**
+     * Retrieves the file in which a file-based key store is stored.
+     * @return File
+     */
+    private File getSecureFile() {
+
+        final String methodName = "getFileKeystore";
+
+        File secureFile = null;
+        File secureDir = getSecureDirectory();
+        if (secureDir != null) {
             File[] keyFiles = secureDir.listFiles((dir, name) -> name.endsWith(KEY_FILE_EXTENSION));
-
             if (keyFiles == null || keyFiles.length == 0) {
-                // If for some reason we have a directory but no keys, remove the directory and start over
+                // If there are no files in the directory, try removing the directory so we can generate a new one
                 try {
                     Files.delete(secureDir.toPath());
                 } catch (IOException e) {
-                    log.error("Unable to remove empty secure directory.", e);
+                    throw new OCFRuntimeException(DocStoreErrorCode.KEYSTORE_EMPTY.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+                            this.getClass().getName(),
+                            methodName, e);
                 }
-                return getKeystore();
             } else if (keyFiles.length == 1) {
                 // If we have precisely one key file, use it
                 secureFile = keyFiles[0];
             } else {
-                log.error("Multiple key files found -- unable to determine which to use for decryption: {}", keyFiles);
-                throw new IllegalStateException("Multiple key files found -- unable to determine which to use for decryption.");
+                // Otherwise throw an error that there are multiple
+                throw new OCFRuntimeException(DocStoreErrorCode.MULTIPLE_FILES.getMessageDefinition(),
+                        this.getClass().getName(),
+                        methodName);
             }
-
-        } else {
-            log.error("Multiple keystore directories found -- unable to determine which to use for decryption: {}", keystoreDirs);
-            throw new IllegalStateException("Multiple keystore directories found -- unable to determine which to use for decryption.");
         }
 
         return secureFile;
 
     }
 
+    /**
+     * Retrieves the secure directory in which keys can be stored.
+     * @return File
+     */
+    private File getSecureDirectory() {
+
+        final String methodName = "getSecureDirectory";
+
+        // Start by trying to identify any pre-existing keystore directory
+        File pwd = new File(".");
+        File[] keystoreDirs = pwd.listFiles((dir, name) -> name.startsWith(KEYSTORE_FOLDER_PREFIX));
+        File secureDir;
+        if (keystoreDirs == null || keystoreDirs.length == 0) {
+            // If there are no directories found, just return null immediately
+            return null;
+        } else if (keystoreDirs.length == 1) {
+            if (!keystoreDirs[0].isDirectory()) {
+                throw new OCFRuntimeException(DocStoreErrorCode.KEYSTORE_NOT_DIRECTORY.getMessageDefinition(keystoreDirs[0].getAbsolutePath()),
+                        this.getClass().getName(),
+                        methodName);
+            }
+            // If we find a single directory, and it is not a file, then use that
+            secureDir = keystoreDirs[0];
+        } else {
+            // Otherwise throw an error that multiple directories exist
+            throw new OCFRuntimeException(DocStoreErrorCode.MULTIPLE_DIRECTORIES.getMessageDefinition(),
+                    this.getClass().getName(),
+                    methodName);
+        }
+
+        return secureDir;
+
+    }
+
+    /**
+     * Retrieves the keyset handle for a file-based key store.
+     * @param generateIfNotExists indicates whether to generate a new handle if none already exists (true) or not (false).
+     * @return KeysetHandle
+     */
+    private KeysetHandle getKeysetHandleFromFile(boolean generateIfNotExists) {
+
+        final String methodName = "getEncryptionKeyFromFile";
+        KeysetHandle keysetHandle;
+        File secureFile = getFileBasedKeystore(generateIfNotExists);
+
+        log.debug("Attempting to retrieve encryption key from secure local file.");
+        try {
+            keysetHandle = CleartextKeysetHandle.read(JsonKeysetReader.withFile(secureFile));
+        } catch (GeneralSecurityException | IOException e) {
+            throw new OCFRuntimeException(DocStoreErrorCode.INVALID_KEYSTORE.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+                    this.getClass().getName(),
+                    methodName, e);
+        }
+
+        return keysetHandle;
+
+    }
+
+    /**
+     * Retrieves the file containing the secure key store.
+     * @param generateIfNotExists indicates whether the file should be generated if it does not exist (true) or not (false).
+     * @return File
+     */
+    private File getFileBasedKeystore(boolean generateIfNotExists) {
+        File secureFile = getSecureFile();
+        if (secureFile == null && generateIfNotExists) {
+            secureFile = createKeyStore();
+        }
+        return secureFile;
+    }
+
+    /**
+     * Generate a new, secure key store file within a generated, secure directory.
+     * @return File
+     */
     private File createKeyStore() {
 
+        final String methodName = "createKeyStore";
         // If no directory was found with the prefix, we need to create one
-        String secureDirectory = KEYSTORE_FOLDER_PREFIX + "_" + getRandomString();
+        String secureDirectory = KEYSTORE_FOLDER_PREFIX + getRandomString();
         File secureDir = new File(secureDirectory);
         // ... and we need to create a key file within it
         String keysetStoreName = getRandomString() + KEY_FILE_EXTENSION;
@@ -289,13 +462,29 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                 log.warn("Unable to mark secure directory as readable only by owner.");
             }
         } catch (IOException e) {
-            throw new IllegalStateException("Unable to create secure location for storing encryption key.", e);
+            throw new OCFRuntimeException(DocStoreErrorCode.INVALID_DIRECTORY.getMessageDefinition(),
+                    this.getClass().getName(),
+                    methodName, e);
+        }
+
+        log.info("Generating and storing new encryption key for secure file-based configuration.");
+        try {
+            KeysetHandle keysetHandle = KeysetHandle.generateNew(KEY_TEMPLATE);
+            CleartextKeysetHandle.write(keysetHandle, JsonKeysetWriter.withFile(secureFile));
+        } catch (GeneralSecurityException | IOException e) {
+            throw new OCFRuntimeException(DocStoreErrorCode.INVALID_FILE.getMessageDefinition(),
+                    this.getClass().getName(),
+                    methodName, e);
         }
 
         return secureFile;
 
     }
 
+    /**
+     * Securely generate a new random string.
+     * @return String
+     */
     private static String getRandomString() {
         if (rng == null) {
             rng = new SecureRandom();
