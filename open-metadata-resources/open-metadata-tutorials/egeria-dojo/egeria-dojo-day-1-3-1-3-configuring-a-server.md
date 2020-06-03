@@ -32,7 +32,7 @@ Each time you add a configuration value,
 [retrieve the server's configuration](../../../open-metadata-implementation/admin-services/docs/concepts/configuration-document.md)
 to see how the effect of your requests are changing the server's configuration.
 
-* **local server URL root** to `http://localhost:18080`
+* **local server URL root** to `https://localhost:19443`
 
   This call is located in the Postman collection `Egeria-admin-services-server-configuration` in folder
   `Configuring OMAG Servers/Confguration for Cohort Members/Set local server URL root`.

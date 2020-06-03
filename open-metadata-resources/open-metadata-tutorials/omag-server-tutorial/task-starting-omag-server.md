@@ -9,7 +9,7 @@ it is started in the
 using the following command (this is request **11.** in Postman).
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
+POST https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
 ```
 
 The response from the command lists the subsystems that have been activated in the OMAG server:
@@ -26,7 +26,7 @@ The window where your OMAG server platform is running will show the start up
 messages, something like this:
 
 ```text
-/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/bin/java -Dserver.port=8080 ...
+/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/bin/java -Dserver.port=9443 ...
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
    / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _
   / / / // /|_/ // /| | / / __    \__ \ / _ \ / __/| | / // _ \ / __/  / /_/ // //   |  / _\ / /_ /  | /  _// || |

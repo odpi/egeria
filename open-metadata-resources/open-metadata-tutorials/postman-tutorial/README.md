@@ -56,7 +56,7 @@ and set the values for your platform in the `CURRENT VALUE` column.
 For example, if you are running the OMAG Server Platform
 in either a docker container or kubernetes,
 the `baseURL` variable will probably need to be changed to
-`http://localhost:18080`.
+`https://localhost:18080`.
 
 ![Egeria environment variable values](../../../developer-resources/tools/postman-egeria-environment-values.png#pagewidth)
 
