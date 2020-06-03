@@ -18,7 +18,12 @@ with a software project.  Many open source projects use GitHub and egeria is no 
 
 All of the content for the Egeria project is stored in git repositories.
 For example, these web pages you are reading as part of the dojo are
-managed in Egeria's main git repository.
+managed in Egeria's main git repository
+[here](https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-tutorials/egeria-dojo).
+
+Each directory in the repository has a README.md file written in [the Markdown standard](../../../developer-resources/tools/Markdown.md).
+You can either click through on GitHub or link to the [Content Organization](../../../Content-Organization.md)
+that lists the directories with descriptions.
 
 ## Other resources
 
@@ -43,13 +48,16 @@ to find out more.
 ## Downloads for next session
 
 It is time for a break now. However, if you want to save time,
-the next session makes use of Docker containers to run Egeria.
+the next session makes use of Docker containers to run Egeria and Postman to issue REST API calls.
+The links below provide information on how to download these tools during the break.
 
-If you do not have the docker desktop on your machine,
-you can link to [docker.com](https://www.docker.com/why-docker) and download and install
-the **Docker Desktop**.
+* [Docker Desktop](../../../developer-resources/tools/Docker.md)
+* [Postman](../../../developer-resources/tools/Postman.md)
 
-Once these are downloading you can take a break.
+These download instructions will be presented again in the appropriate
+session so it is not a problem if you do not download them now.
+
+Now it is time to take a break before moving on to the next session.
 
 ----
 * Progress to [Running Egeria on your machine Step-by-Step](egeria-dojo-day-1-3-running-egeria.md)

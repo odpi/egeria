@@ -10,6 +10,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -178,7 +179,7 @@ public class OperationalServicesResource
     @PostMapping(path = "/instance/open-metadata-archives/file")
 
     @Operation(summary="Load open metadata archive",
-            description="An open metadata archive contains metadata instances.  This operation loads an open metadata " +
+            description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
                     "archive into an OMAG server.  It will only be successful if the server has a local repository defined.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
                     url="https://egeria.odpi.org/open-metadata-resources/open-metadata-archives/index.html"))
@@ -188,5 +189,31 @@ public class OperationalServicesResource
                                                    @RequestBody  String fileName)
     {
         return operationalServices.addOpenMetadataArchiveFile(userId, serverName, fileName);
+    }
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param connection connection for the open metadata archive.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or connection parameter.
+     */
+    @PostMapping(path = "/instance/open-metadata-archives/connection")
+
+    @Operation(summary="Load open metadata archive",
+            description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
+                    "archive into an OMAG server.  It will only be successful if the server has a local repository defined.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
+                    url="https://egeria.odpi.org/open-metadata-resources/open-metadata-archives/index.html"))
+
+    public VoidResponse addOpenMetadataArchiveFile(@PathVariable String     userId,
+                                                   @PathVariable String     serverName,
+                                                   @RequestBody  Connection connection)
+    {
+        return operationalServices.addOpenMetadataArchiveFile(userId, serverName, connection);
     }
 }

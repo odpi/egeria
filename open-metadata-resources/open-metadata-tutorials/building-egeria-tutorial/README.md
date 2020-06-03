@@ -8,7 +8,12 @@ ODPi Egeria is an open source project that is delivered both as source code as w
 
 This tutorial will guide you through the process of downloading the ODPi Egeria source
 code from [GitHub](https://github.com/) and building it so that you can run it
-on your local machine.  If you want to 
+on your local machine.  
+
+Once you have [downloaded Egeria](task-downloading-egeria-source.md), you can also use
+[docker-compose](../lab-infrastructure-guide/running-docker-compose.md) to 
+start the lab infrastructure for the [Hands-on Labs](../../open-metadata-labs).
+This does not require you to build Egeria.
 
 Already lost, or are the instructions below not detailed enough? Check out the [Egeria Dojo](../egeria-dojo),
 or consider jumping straight to the [Hands-on Labs](../../open-metadata-labs), which provide a pre-built environment

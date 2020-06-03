@@ -100,6 +100,14 @@ rather than a description of what each line of code is doing.
 The output from a build should be checked to ensure there are no javadoc warnings - 
 for example about undocumented parameters or exceptions.
 
+## Diagnostics
+
+Egeria will typically be embedded in complex deployment environments.
+This means that we can not rely on standard developer logging provided by components
+such as SLF4J.  We try to practice First Failure Data Capture (FFDC).
+This is describes by the [FFDC Services](../open-metadata-implementation/common-services/ffdc-services) and the 
+[Audit Log Framework (ALF)](../open-metadata-implementation/frameworks/audit-log-framework).
+
 ## Dependent libraries
 
 New dependencies **must** only be introduced with the agreement of the broader
@@ -162,7 +170,8 @@ Our preferred Java test frameworks are [TestNG](http://testng.org) and [Mockito]
 
 ## Using an IDE
 
-IDEs can make navigating the Egeria code easier. Each IDE can vary a lot. Many of our team use JetBrains IntelliJ.
+IDEs can make navigating the Egeria code easier. Each IDE can vary a lot. 
+Many of our team use [JetBrains IntelliJ](tools/IntelliJ.md).
 
 In the case of problems the first problem determination step is to check you can build Egeria normally at the command line ie `mvn clean install` from the source 
 root. That will prove at least java, maven are correct . 

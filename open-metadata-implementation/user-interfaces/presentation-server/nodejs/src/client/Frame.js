@@ -11,6 +11,7 @@ import Egeriawhite110 from "./images/Egeria_logo_white_110";
 import EgeriaGlossAuth32 from "./images/Egeria_glossary_author_32";
 import Home from "./components/Home";
 import GlossaryAuthor from "./components/GlossaryAuthor/GlossaryAuthor";
+import RepositoryExplorer from "./components/RepositoryExplorer/RepositoryExplorer";
 import TypeExplorer from "./components/TypeExplorer/TypeExplorer";
 import { IdentificationContext } from "./contexts/IdentificationContext";
 
@@ -32,6 +33,7 @@ export default function Frame(props) {
   const rootUrl = identificationContext.getBrowserURL("");
   const homeUrl = identificationContext.getBrowserURL("home");
   const glossaryUrl = identificationContext.getBrowserURL("glossary-author");
+  const rexUrl = identificationContext.getBrowserURL("repository-explorer");
   const typeUrl = identificationContext.getBrowserURL("type-explorer");
 
   return (
@@ -82,6 +84,9 @@ export default function Frame(props) {
                   >
                     Glossary Author
                   </SideNavLink>
+                  <SideNavLink element={Link} to={rexUrl}>
+                    Repository Explorer
+                  </SideNavLink>
                   <SideNavLink element={Link} to={typeUrl}>
                     Type Explorer
                   </SideNavLink>
@@ -100,6 +105,9 @@ export default function Frame(props) {
                   </Route>
                   <Route path={glossaryUrl}>
                     <GlossaryAuthor />
+                  </Route>
+                  <Route path={rexUrl}>
+                    <RepositoryExplorer />
                   </Route>
                   <Route path={typeUrl}>
                     <TypeExplorer />

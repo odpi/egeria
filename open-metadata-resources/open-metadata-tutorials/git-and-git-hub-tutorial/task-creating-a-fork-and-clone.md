@@ -27,7 +27,7 @@ and logging into the github UI with a
 You will then see a 'Fork' button at the top right, and should click this to 
 create your own fork to work with Egeria. 
 
-![Fork Button](../../../developer-resources/tools/git-hub-fork-button.png)
+![Fork Button](../../../developer-resources/tools/git-hub-fork-button.png#pagewidth)
 
 This only needs to be done once.
 

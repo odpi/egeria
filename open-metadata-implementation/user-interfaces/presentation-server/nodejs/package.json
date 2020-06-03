@@ -4,8 +4,10 @@
   "description": "Egeria multitentant presentation server.",
   "main": "src/server/index.js",
   "scripts": {
+    "build:dev": "webpack --mode development --devtool inline-source-map",
     "build": "webpack --mode production",
     "start": "npm run build && node src/server/index.js",
+    "start:dev": "npm run build:dev && node src/server/index.js",
     "debug": "npm run build && node --nolazy --inspect-brk=9229 src/server/index.js",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.js",
@@ -26,6 +28,7 @@
     "carbon-components-react": "^7.10.1",
     "carbon-icons": "^7.0.7",
     "connect-flash": "^0.1.1",
+    "d3": "^5.16.0",
     "express": "^4.16.3",
     "express-session": "^1.17.0",
     "flash": "^1.1.0",

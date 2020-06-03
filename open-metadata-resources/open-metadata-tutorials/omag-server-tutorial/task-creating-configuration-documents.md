@@ -59,14 +59,14 @@ GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{se
 ```
 
 where:
-* `{serverURLRoot}` is the host name and port number of the OMAG server platform (eg http://localhost:8080).
+* `{serverURLRoot}` is the host name and port number of the OMAG server platform (eg https://localhost:9443).
 * `{adminUserId}` is the user id of the administrator making the calls.
 * `{serverName}` is the name of the OMAG server that is being configured.
 
 Try the following command (this is request **2.** in Postman): 
 
 ```
-GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration
+GET https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration
 ```
 
 The response is in JSON format and contains the following information:
@@ -81,7 +81,7 @@ The response is in JSON format and contains the following information:
        "localServerId":"28aeb916-5029-4d6a-aa96-392196859916",
        "localServerName":"cocoMDS1",
        "localServerType":"Open Metadata and Governance Server",
-       "localServerURL":"http://localhost:8080",
+       "localServerURL":"https://localhost:9443",
        "localServerUserId":"OMAGServer",
        "maxPageSize":1000
     }
@@ -99,7 +99,7 @@ are set to their default values and can be changed.
 For example, try the following command (this is request **3.** in Postman):
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName="Standalone Metadata Repository"
+POST https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName="Standalone Metadata Repository"
 ```
 
 Then query the configuration again (this is request **4.** in Postman):
@@ -113,7 +113,7 @@ Then query the configuration again (this is request **4.** in Postman):
         "localServerId": "2a73902e-e691-43cc-b422-23b6b42992e2",
         "localServerName": "cocoMDS1",
         "localServerType": "Standalone Metadata Repository",
-        "localServerURL": "http://localhost:8080",
+        "localServerURL": "https://localhost:9443",
         "localServerUserId": "OMAGServer",
         "maxPageSize": 1000,
         "auditTrail": [
@@ -130,7 +130,7 @@ The next command configures in type of metadata repository (this is request **5.
 which is useful for testing.
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/in-memory-repository
+POST https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/in-memory-repository
 ```
 
 This has added the configuration for the local repository using default values.
@@ -145,7 +145,7 @@ If you query the configuration again (this is request **6.** in Postman) you see
         "localServerId": "2a73902e-e691-43cc-b422-23b6b42992e2",
         "localServerName": "cocoMDS1",
         "localServerType": "Standalone Metadata Repository",
-        "localServerURL": "http://localhost:8080",
+        "localServerURL": "https://localhost:9443",
         "localServerUserId": "OMAGServer",
         "maxPageSize": 1000,
         "repositoryServicesConfig": {
@@ -277,7 +277,7 @@ If you query the configuration again (this is request **6.** in Postman) you see
                         "qualifiedName": "DefaultRepositoryRESTAPI.Endpoint.cocoMDS1",
                         "displayName": "DefaultRepositoryRESTAPI.Endpoint.cocoMDS1",
                         "description": "OMRS default repository REST API endpoint.",
-                        "address": "http://localhost:8080/servers/cocoMDS1"
+                        "address": "https://localhost:9443/servers/cocoMDS1"
                     }
                 },
                 "eventsToSaveRule": "ALL",
@@ -302,7 +302,7 @@ The command below (this is request **7.** in Postman) sets up configuration prop
 embedded in the configuration for each access service.
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/event-bus?topicURLRoot=egeriaTopics
+POST https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/event-bus?topicURLRoot=egeriaTopics
 ```
 
 When the configuration is next queried (this is request **8.** in Postman), the event bus details are stored in the configuration document.
@@ -316,7 +316,7 @@ When the configuration is next queried (this is request **8.** in Postman), the 
         "localServerId": "2a73902e-e691-43cc-b422-23b6b42992e2",
         "localServerName": "cocoMDS1",
         "localServerType": "Standalone Metadata Repository",
-        "localServerURL": "http://localhost:8080",
+        "localServerURL": "https://localhost:9443",
         "localServerUserId": "OMAGServer",
         "maxPageSize": 1000,
         "eventBusConfig": {
@@ -452,7 +452,7 @@ When the configuration is next queried (this is request **8.** in Postman), the 
                         "qualifiedName": "DefaultRepositoryRESTAPI.Endpoint.cocoMDS1",
                         "displayName": "DefaultRepositoryRESTAPI.Endpoint.cocoMDS1",
                         "description": "OMRS default repository REST API endpoint.",
-                        "address": "http://localhost:8080/servers/cocoMDS1"
+                        "address": "https://localhost:9443/servers/cocoMDS1"
                     }
                 },
                 "eventsToSaveRule": "ALL",
@@ -471,7 +471,7 @@ When the configuration is next queried (this is request **8.** in Postman), the 
 The last command creates the configuration for the access services (this is request **9.** in Postman):
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services
+POST https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services
 ```
 
 which results in the final configuration (this is request **10.** in Postman).
@@ -485,7 +485,7 @@ which results in the final configuration (this is request **10.** in Postman).
         "localServerId": "2a73902e-e691-43cc-b422-23b6b42992e2",
         "localServerName": "cocoMDS1",
         "localServerType": "Standalone Metadata Repository",
-        "localServerURL": "http://localhost:8080",
+        "localServerURL": "https://localhost:9443",
         "localServerUserId": "OMAGServer",
         "maxPageSize": 1000,
         "eventBusConfig": {
@@ -1575,7 +1575,7 @@ which results in the final configuration (this is request **10.** in Postman).
                         "qualifiedName": "DefaultRepositoryRESTAPI.Endpoint.cocoMDS1",
                         "displayName": "DefaultRepositoryRESTAPI.Endpoint.cocoMDS1",
                         "description": "OMRS default repository REST API endpoint.",
-                        "address": "http://localhost:8080/servers/cocoMDS1"
+                        "address": "https://localhost:9443/servers/cocoMDS1"
                     }
                 },
                 "eventsToSaveRule": "ALL",

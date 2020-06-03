@@ -35,6 +35,9 @@ public class SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaRESTServicesInstance.class);
     private static final String className = SubjectAreaRESTServicesInstance.class.getName();
 
+    public static final String PAGE_OFFSET_DEFAULT_VALUE = "0";
+    public static final String PAGE_SIZE_DEFAULT_VALUE = "0";
+
     // The OMRSAPIHelper allows the junits to mock out the omrs layer.
     protected OMRSAPIHelper oMRSAPIHelper = null;
     protected static SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
@@ -93,7 +96,6 @@ public class SubjectAreaRESTServicesInstance {
      * @return the relationships associated with the requested guid
      *
      */
-
     public SubjectAreaOMASAPIResponse getRelationshipsFromGuid(String serverName,
                                                                String restAPIName,
                                                                String userId,
@@ -481,5 +483,4 @@ public class SubjectAreaRESTServicesInstance {
         }
         return response;
     }
-
 }

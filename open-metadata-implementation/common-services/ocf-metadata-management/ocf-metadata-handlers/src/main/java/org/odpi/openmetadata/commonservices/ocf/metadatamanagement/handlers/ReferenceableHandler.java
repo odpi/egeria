@@ -149,6 +149,8 @@ public class ReferenceableHandler
      * @param qualifiedName qualified name of the metadata element
      * @param methodName calling method
      *
+     * @return map of properties
+     *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem

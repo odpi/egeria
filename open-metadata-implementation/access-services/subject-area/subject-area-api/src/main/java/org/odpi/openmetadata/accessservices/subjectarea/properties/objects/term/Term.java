@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -167,12 +168,12 @@ public class Term extends GovernedNode implements Serializable {
         sb.append("term=");
         sb.append(super.toString(sb));
         sb.append("Term Attributes{");
-        sb.append("Summary=" +this.summary);
+        sb.append("Summary=").append(this.summary);
 
-        sb.append("Examples=" +this.examples);
-        sb.append("Abbreviation=" +this.abbreviation);
-        sb.append("Usage=" +this.usage);
-        sb.append("Glossary" +this.glossary);
+        sb.append("Examples=").append(this.examples);
+        sb.append("Abbreviation=").append(this.abbreviation);
+        sb.append("Usage=").append(this.usage);
+        sb.append("Glossary").append(this.glossary);
         sb.append(", SpineInformation=[");
 
         if (isSpineObject) {
@@ -187,40 +188,29 @@ public class Term extends GovernedNode implements Serializable {
         sb.append("]");
 
         if (glossary!=null ){
-            sb.append(", glossary:" + glossary.toString());
+            sb.append(", glossary:").append(glossary.toString());
 
         }
         sb.append('}');
         return sb;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
+        if (!super.equals(o)) return false;
         Term term = (Term) o;
-        if (!(this.equals((Node)o))) return false;
-        if (glossary != null ? !glossary.equals(term.glossary) : term.glossary != null) return false;
-        if (summary != null ? !summary.equals(term.summary) : term.summary != null) return false;
-        return  true;
+        return isSpineObject == term.isSpineObject &&
+                isSpineAttribute == term.isSpineAttribute &&
+                isObjectIdentifier == term.isObjectIdentifier &&
+                Objects.equals(summary, term.summary) &&
+                Objects.equals(glossary, term.glossary);
     }
 
     @Override
     public int hashCode() {
-        int  result = super.hashCode();
-        result = 31 * result + (summary != null ? summary.hashCode() : 0);
-        result = 31 * result + (glossary!= null ? glossary.hashCode() : 0);
-        // not including assets, terms and categories in hashcode as they are relationships
-        if (this.isSpineAttribute) {
-            result = 31 * result + "isSpineAttribute".hashCode();
-        }
-        if (this.isSpineObject) {
-            result = 31 * result + "isSpineObject".hashCode();
-        }
-        if (this.isObjectIdentifier) {
-            result = 31 * result + "isObjectIdentifier".hashCode();
-        }
-        return result;
+        return Objects.hash(super.hashCode(), summary, glossary, isSpineObject, isSpineAttribute, isObjectIdentifier);
     }
 
     protected void processClassification(Classification classification) {

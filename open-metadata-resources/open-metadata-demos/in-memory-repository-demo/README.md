@@ -25,17 +25,17 @@ The demo uses [Apache Kafka](http://kafka.apache.org/) in a Docker container. Se
 Start an OMAG server platform either from the
 [Egeria install](../../open-metadata-tutorials/omag-server-tutorial/task-starting-omag-server.md) or from IntelliJ.
 
-Here is the IntelliJ configuration for an OMAG server platform using port 8080. 
+Here is the IntelliJ configuration for an OMAG server platform using port 8080. Note you should change to 9443 which is now the default for Egeria since switching to https by default
 
 ![Figure 2:](IntelliJ-OMAGServerPlatform-run-configuration.png)
 > Figure 2: OMAG Server Platform run configuration for port 8080
 
-In a similar way start a second OMAG server platform on port 8081 using `-Dserver.port=8081`.
+In a similar way start a second OMAG server platform on port 9444 using `-Dserver.port=9444`.
 
 Issue the following REST calls
 
 ```
-POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/event-bus
+POST https://localhost:9443/open-metadata/admin-services/users/david/servers/myservera/event-bus
 ```
 
 ```json
@@ -68,10 +68,10 @@ POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/e
 ```
 
 ```
-POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/access-services
-POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/cohorts/cocoCohort
-POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/local-repository/mode/in-memory-repository
-POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/instance
+POST https://localhost:9443/open-metadata/admin-services/users/david/servers/myservera/access-services
+POST https://localhost:9443/open-metadata/admin-services/users/david/servers/myservera/cohorts/cocoCohort
+POST https://localhost:9443/open-metadata/admin-services/users/david/servers/myservera/local-repository/mode/in-memory-repository
+POST https://localhost:9443/open-metadata/admin-services/users/david/servers/myservera/instance
 ```
 
 Wait for the last REST call to complete. If you have info logging om Kafka issues logging to the console for each publish of a type.
@@ -79,14 +79,14 @@ Wait for the last REST call to complete. If you have info logging om Kafka issue
 Repeat the above commands for OMAG server platform running `serverb`. 
 
 ```
-POST localhost:8081/open-metadata/admin-services/users/david/servers/myserverb/...
+POST https://localhost:9444/open-metadata/admin-services/users/david/servers/myserverb/...
 ```
 
 
 ## Using the Subject Area OMAS to test the synchronization
  
 ```
-POST localhost:8080/servers/myservera/open-metadata/access-services/subject-area/users/david/glossaries
+POST https://localhost:9443/servers/myservera/open-metadata/access-services/subject-area/users/david/glossaries
 ```
 ```json
 {
@@ -131,10 +131,10 @@ The response should be something like:
 }
 ```
 
-Note the guid and issue a get to other server (8081). 
+Note the guid and issue a get to other server (9444). 
 
 ```
-GET localhost:8081/servers/myserverb/open-metadata/access-services/subject-area/users/david/glossaries/9b08873e-5317-4199-9c5e-a7213947f271
+GET https://localhost:9444/servers/myserverb/open-metadata/access-services/subject-area/users/david/glossaries/9b08873e-5317-4199-9c5e-a7213947f271
 ```          
 
 You should get the glossary back. 

@@ -6,11 +6,17 @@
 Every contribution begins with a `git issue`.
 Go to [GitHub](https://github.com/odpi/egeria) and click on the second tab marked `Issues`.
 
+----
+
 ![GitHub Issues Tab](../../../developer-resources/tools/git-hub-issues-tab.png#pagewidth)
+----
 
 Click in the new issue green button on the top right hand side and a form for a new
 issue is displayed.
+
+
 ![GitHub New Issue Button](../../../developer-resources/tools/git-hub-new-issue-button.png#pagewidth)
+----
 
 Enter a meaningful title and description.  This will help the maintainers understand your contribution
 and speed up the process to include it.
