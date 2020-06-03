@@ -45,9 +45,11 @@ involved in reviewing and crowd-sourcing knowledge about the data assets and the
 engine to record the changes it is making the the data landscape. 
 This information forms a key part of asset lineage.
 
-* **[data-platform](data-platform)** - exchange metadata with a data platform.
+* **[data-manager](data-manager)** - exchange metadata with a data manager.
 
-  The Data Platform OMAS provides an integration point to enable data platforms to publish metadata to the metadata
+  The Data Manager OMAS provides an integration point to enable technologies that manage collections of data
+such as database servers,
+file systems, file managers and content managers to publish metadata to the metadata
 repositories about the changing structures and content stored in the data platform.
 
 * **[data-privacy](data-privacy)** - support a data privacy officer.

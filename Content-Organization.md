@@ -17,7 +17,7 @@ The Egeria content is organized into the following modules:
     * **[asset-owner](open-metadata-implementation/access-services/asset-owner)** - manage metadata and feedback for owned assets.
     * **[community-profile](open-metadata-implementation/access-services/community-profile)** - manage personal profiles and communities.
     * **[data-engine](open-metadata-implementation/access-services/data-engine)** - exchange metadata with a data processing engine.
-    * **[data-platform](open-metadata-implementation/access-services/data-platform)** - exchange metadata with a data platform.
+    * **[data-manager](open-metadata-implementation/access-services/data-manager)** - exchange metadata with a technology that manages collections of data.
     * **[data-privacy](open-metadata-implementation/access-services/data-privacy)** - support a data privacy officer.
     * **[data-science](open-metadata-implementation/access-services/data-science)** - manage metadata for analytics.
     * **[design-model](open-metadata-implementation/access-services/design-model)** - manage content from design models.

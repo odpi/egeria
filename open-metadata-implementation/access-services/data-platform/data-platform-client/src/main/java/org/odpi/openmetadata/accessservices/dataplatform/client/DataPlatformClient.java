@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.client;
 
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatform;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatformProperties;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -70,7 +70,7 @@ public class DataPlatformClient extends OCFRESTClient {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public GUIDResponse createExternalDataPlatform(String userId, DataPlatformProperties dataPlatformProperties) throws
+    public GUIDResponse createExternalDataPlatform(String userId, DataPlatform dataPlatformProperties) throws
             InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         final String methodName = "createExternalDataPlatform";

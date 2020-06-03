@@ -131,7 +131,7 @@ The response should be something like:
 }
 ```
 
-Note the guid and issue a get to other server (8081). 
+Note the guid and issue a get to other server (9444). 
 
 ```
 GET https://localhost:9444/servers/myserverb/open-metadata/access-services/subject-area/users/david/glossaries/9b08873e-5317-4199-9c5e-a7213947f271

@@ -49,9 +49,9 @@ public class SubjectAreaDefinitionSample
 
     private static final String GLOSSARY_NAME        = "Coco Pharmaceuticals Subject Area Definitions";
     private static final String GLOSSARY_DESCRIPTION = "Coco Pharmaceuticals Core Subject Areas for Personalized Medicine.";
-    private static final String DEFAULT_SERVER_NAME  = "cocoMDS1";
+    private static final String DEFAULT_SERVER_NAME  = "cocoMDS4";
     private static final String DEFAULT_USERID       = "erinoverview";
-    private static final String DEFAULT_URL          = "https://localhost:9443";
+    private static final String DEFAULT_URL          = "https://localhost:9444";
 
     private String              serverURLRoot;
     private String              clientUserId;

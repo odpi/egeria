@@ -21,6 +21,10 @@ For example, these web pages you are reading as part of the dojo are
 managed in Egeria's main git repository
 [here](https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-tutorials/egeria-dojo).
 
+Each directory in the repository has a README.md file written in [the Markdown standard](../../../developer-resources/tools/Markdown.md).
+You can either click through on GitHub or link to the [Content Organization](../../../Content-Organization.md)
+that lists the directories with descriptions.
+
 ## Other resources
 
 The Egeria community love to collaborate on the work they do.  Git and GitHub is

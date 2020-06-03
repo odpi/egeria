@@ -60,6 +60,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
         DefaultUriBuilderFactory builderFactory = new DefaultUriBuilderFactory();
         builderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
 
+
         /* TODO: Disable SSL cert verification -- for now */
         HttpsURLConnection.setDefaultHostnameVerifier(bypassVerifier);
         SSLContext sc = SSLContext.getInstance("SSL");

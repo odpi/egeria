@@ -16,7 +16,7 @@ and a **resources** directory.
 
 ```bash
 $ ls
-resources				server-chassis-spring-1.8-SNAPSHOT.jar
+resources				server-chassis-spring-2.0-SNAPSHOT.jar
 ```
 
 Change to the resources directory and you will see the **banner.txt**

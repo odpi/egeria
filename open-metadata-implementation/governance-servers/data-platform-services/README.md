@@ -1,12 +1,14 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![Deprecated](../../../open-metadata-publication/website/images/egeria-content-status-deprecated.png#pagewidth)
 
 # Data Platform Services
 
+> Note: this server has been deprecated along with the Data Platform OMAS.  A new governance server for integrating data platforms is in progress.
+
 The Data Platform Services support intercommunication from a Data Platform and
-the Data Platform OMAS. Where a Data Platform is unable communicate with Data Platform 
+the [Data Platform OMAS](../../access-services/data-platform). Where a Data Platform is unable communicate with Data Platform 
 OMAS directly, a Data Platform Service for the Data Platform can run on server-side in
 OMAG Server Platform and broker calls to the Data Platform itself into calls back
 to the Data Platform OMAS. 
