@@ -16,8 +16,8 @@ class AboutView extends PolymerElement {
         :host {
           display: block;
           margin: 0 24px;
+          min-height: 100ch;
           background-color: var(--egeria-background-color);
-          min-height: calc(100vh - 85px);
         }
       </style>
     
