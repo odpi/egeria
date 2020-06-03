@@ -71,27 +71,25 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             </a>
           </vaadin-tab>
         </vaadin-tabs>
-    
-    <div>
-        <vaadin-select id="processMenu" value="true" >
-          <template>
-            <vaadin-list-box>
-              <vaadin-item value="true" selected>With ETL Jobs</vaadin-item>
-              <vaadin-item value="false">Without ETL Jobs</vaadin-item>
-            </vaadin-list-box>
-            </template>
-        </vaadin-select>
-
-    </div>
-    <div hidden = "[[_hideIncludeGlossaryTerms(routeData.usecase)]]">
-     <vaadin-select id="glossaryTermMenu" value="true">
-            <template>
+        <div> 
+            <vaadin-select id="processMenu" value="true" >
+              <template>
                 <vaadin-list-box>
-                  <vaadin-item value="true" selected>Include Glossary Term</vaadin-item>
-                  <vaadin-item value="false">Exclude Glossary Term</vaadin-item>
+                  <vaadin-item value="true" selected>With ETL Jobs</vaadin-item>
+                  <vaadin-item value="false">Without ETL Jobs</vaadin-item>
+                </vaadin-list-box>
+                </template>
+            </vaadin-select>
+            <vaadin-select id="glossaryTermMenu" value="true" 
+                hidden = "[[_hideIncludeGlossaryTerms(routeData.usecase)]]" >
+              <template>
+                <vaadin-list-box>
+                  <vaadin-item value="true" selected>With Glossary Term</vaadin-item>
+                  <vaadin-item value="false">Without Glossary Term</vaadin-item>
                 </vaadin-list-box>  
-            </template>
-        </vaadin-select>
+              </template>
+            </vaadin-select>
+        </div>
     </div>
 
     <div class="container" id="container">
