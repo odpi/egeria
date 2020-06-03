@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatformProperties;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatform;
 
 import java.util.Objects;
 
@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataPlatformRegistrationRequestBody extends DataPlatformOMASAPIRequestBody {
 
     @JsonProperty("dataPlatform")
-    private DataPlatformProperties dataPlatformProperties;
+    private DataPlatform dataPlatformProperties;
 
     /**
      * Instantiates a new Registration request body.
@@ -37,7 +37,7 @@ public class DataPlatformRegistrationRequestBody extends DataPlatformOMASAPIRequ
      *
      * @return the software server capability
      */
-    public DataPlatformProperties getDataPlatformProperties() {
+    public DataPlatform getDataPlatformProperties() {
         return dataPlatformProperties;
     }
 
@@ -46,7 +46,7 @@ public class DataPlatformRegistrationRequestBody extends DataPlatformOMASAPIRequ
      *
      * @param dataPlatformProperties the software server capability
      */
-    public void setDataPlatformProperties(DataPlatformProperties dataPlatformProperties) {
+    public void setDataPlatformProperties(DataPlatform dataPlatformProperties) {
         this.dataPlatformProperties = dataPlatformProperties;
     }
 

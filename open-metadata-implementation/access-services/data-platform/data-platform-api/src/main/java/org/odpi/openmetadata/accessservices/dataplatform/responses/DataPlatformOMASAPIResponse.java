@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.responses;
 
-import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatformProperties;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatform;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import java.util.Objects;
@@ -15,14 +15,14 @@ public class DataPlatformOMASAPIResponse extends FFDCResponseBase {
 
     private static final long serialVersionUID = 1L;
 
-    private DataPlatformProperties dataPlatformProperties;
+    private DataPlatform dataPlatformProperties;
 
     /**
      * Gets software server capability.
      *
      * @return the software server capability
      */
-    public DataPlatformProperties getDataPlatformProperties() {
+    public DataPlatform getDataPlatformProperties() {
         return dataPlatformProperties;
     }
 
@@ -31,7 +31,7 @@ public class DataPlatformOMASAPIResponse extends FFDCResponseBase {
      *
      * @param dataPlatformProperties the software server capability
      */
-    public void setDataPlatformProperties(DataPlatformProperties dataPlatformProperties) {
+    public void setDataPlatformProperties(DataPlatform dataPlatformProperties) {
         this.dataPlatformProperties = dataPlatformProperties;
     }
 

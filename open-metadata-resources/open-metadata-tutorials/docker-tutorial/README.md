@@ -10,7 +10,7 @@ Egeria's docker image includes the Egeria install image.  When the image is star
 using docker, a new egeria docker container is created.  As it starts up, an instance of
 the Egeria runtime - that is the
 [OMAG Server Platform](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.md) -
-is started at port http 8080.
+is started at port https 9443.
 
 This container can be incorporated into larger container orchestration environments or used standalone.
 This tutorial describes how to use it standalone.  The [Open Metadata Labs](../../open-metadata-labs)
@@ -66,13 +66,13 @@ Status: Downloaded newer image for odpi/egeria:latest
 docker.io/odpi/egeria:latest
 $
 ```
-To check it will run, try the `docker run --publish 18080:8080 odpi/egeria`.
+To check it will run, try the `docker run --publish 19443:9443 odpi/egeria`.
 This will start the image as a new docker container.  As the container initializes it starts a single copy of the
 [OMAG Server Platform](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.md).
 The OMAG Server Platform is the Egeria runtime platform where the Egeria REST services run.
 
-The `--publish 18080:8080` parameter maps the 8080 port inside the docker that the OMAG Server Platform
-has registered with to port 18080
+The `--publish 19443:9443` parameter maps the 9443 port inside the docker that the OMAG Server Platform
+has registered with to port 19443
 
 ![Docker container structure](../../../developer-resources/tools/docker-container-overview.png)
 
@@ -82,7 +82,7 @@ You should see the server logo come up and finally a message
 Once you can see that it has started, use `Control-C` to stop it.
 
 ```bash
-$ docker run --publish 18080:8080 odpi/egeria
+$ docker run --publish 19443:9443 odpi/egeria
 Picked up JAVA_TOOL_OPTIONS: 
  ODPi Egeria
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
@@ -197,7 +197,7 @@ when you have finished because it is needed for the rest of the session.
 ![Docker Desktop running view](../../../developer-resources/tools/docker-desktop-running-options.png#pagewidth)
 
 The final button is "DELETE".  As described above, it deletes the container and uoi need to start again with
-`docker run --publish 18080:8080 odpi/egeria`.
+`docker run --publish 19443:9443 odpi/egeria`.
 
 If you now click on the whitespace of the container's entry, a new section opens up with 3 tabs.
 

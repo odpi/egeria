@@ -216,7 +216,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
 
                             // if there a property that already exists but is not in the update properties then make sure that value is not overwritten by including it in this update request.
                             for (String orgPropertyName : orgInstanceProperties.keySet()) {
-                                if (!updateInstanceProperties.keySet().contains(orgPropertyName)) {
+                                if (!updateInstanceProperties.containsKey(orgPropertyName)) {
                                     // make sure the original value is not lost.
                                     updateInstanceProperties.put(orgPropertyName, orgInstanceProperties.get(orgPropertyName));
                                 }
