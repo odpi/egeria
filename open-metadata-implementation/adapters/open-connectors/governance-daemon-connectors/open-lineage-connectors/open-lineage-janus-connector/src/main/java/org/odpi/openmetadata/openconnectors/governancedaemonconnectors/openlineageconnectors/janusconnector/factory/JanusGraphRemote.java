@@ -45,18 +45,20 @@ public class JanusGraphRemote extends JanusGraphEmbedded {
     @Override
     public GraphTraversalSource openGraph(){
         Cluster cluster = cluster();
-        createSchema();
+//        createSchema();
         return traversal().withRemote(DriverRemoteConnection.using(cluster,"g"));
     }
 
     @Override
     public void createSchema(){
-        String s = sendRemoteRequest();
+        String s = compositeIndex("vertexIndexCompositevertex--guid",PROPERTY_KEY_ENTITY_GUID,true,Vertex.class);
         // submit the request to the server
         ResultSet resultSet = client.submit(s);
         // drain the results completely
         Stream<Result> futureList = resultSet.stream();
 //        futureList.map(Result::toString).forEach(log::debug);
+
+
     }
 
     public Cluster cluster() {
@@ -81,59 +83,19 @@ public class JanusGraphRemote extends JanusGraphEmbedded {
     }
 
     private String sendRemoteRequest() {
-        Set<String> vertexLabels = schemaBasedOnGraphType(VertexLabelsLineageGraph.class);
-        Set<String> relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsLineageGraph.class);
+
 
         final StringBuilder s = new StringBuilder();
 
         log.info("creating schema");
         s.append("JanusGraphManagement management = graph.openManagement();");
-        s.append("boolean created = false;");
-
-        // naive check if the schema was previously created
-//        s.append(
-//                "if (management.getRelationTypes(RelationType.class).iterator().hasNext()) { management.rollback(); created = false; } else { ");
-////        s = addLabel(s,vertexLabels);
-//        // vertex labels
-//        s.append("management.makeVertexLabel(\"GlossaryTerm\").make();");
-//        s.append("management.makeVertexLabel(\"RelationalColumn\").make(); ");
-//        s.append("management.makeVertexLabel(\"RelationalTableType\").make(); ");
-//        s.append("management.makeVertexLabel(\"RelationalTable\").make(); ");
-//        s.append("management.makeVertexLabel(\"RelationalDbSchemaType\").make(); ");
-//        s.append("management.makeVertexLabel(\"DeployedDbSchemaType\").make(); ");
-//        s.append("management.makeVertexLabel(\"Database\").make(); ");
-//        s.append("management.makeVertexLabel(\"Connection\").make(); ");
-//        s.append("management.makeVertexLabel(\"Endpoint\").make(); ");
-//        s.append("management.makeVertexLabel(\"Process\").make(); ");
-//        s.append("management.makeVertexLabel(\"PortAlias\").make(); ");
-//        s.append("management.makeVertexLabel(\"PortImplementation\").make(); ");
-//        s.append("management.makeVertexLabel(\"TabularSchemaType\").make(); ");
-//        s.append("management.makeVertexLabel(\"TabularColumn\").make(); ");
-//        s.append("management.makeVertexLabel(\"TabularColumnType\").make(); ");
-//        s.append("management.makeVertexLabel(\"FileFolder\").make(); ");
-//        s.append("management.makeVertexLabel(\"SubProcess\").make(); ");
-//
-//        // edge labels
-        s.append("management.makeEdgeLabel(\"SemanticAssignment\").make();");
-        s.append("management.makeEdgeLabel(\"ProcessPort\").make(); ");
-        s.append("management.makeEdgeLabel(\"PortDelegation\").make(); ");
-        s.append("management.makeEdgeLabel(\"PortSchema\").make(); ");
-        s.append("management.makeEdgeLabel(\"AttributeForSchema\").make(); ");
-        s.append("management.makeEdgeLabel(\"SchemaType\").make(); ");
-        s.append("management.makeEdgeLabel(\"SchemaAttributeType\").make(); ");
-        s.append("management.makeEdgeLabel(\"LineageMapping\").make(); ");
-        s.append("management.makeEdgeLabel(\"NestedFile\").make(); ");
-        s.append("management.makeEdgeLabel(\"FolderHierarchy\").make(); ");
-        s.append("management.makeEdgeLabel(\"AssetToConnection\").make(); ");
-        s.append("management.makeEdgeLabel(\"AssetSchemaType\").make(); ");
-        s.append("management.makeEdgeLabel(\"DataContentForDataset\").make(); ");
-        s.append("management.makeEdgeLabel(\"IncludedIn\").make(); ");
-        s.append("management.makeEdgeLabel(\"DataFlowWithProcess\").make(); ");
 
 //        // composite indexes
 //        s.append(compositeIndex(s,"vertexIndexCompositevertex--guid",PROPERTY_KEY_ENTITY_GUID,true,Vertex.class));
 
         s.append("management.commit(); ");
+
+
 //                "created = true; }");
 
         log.debug(s.toString());
@@ -141,51 +103,55 @@ public class JanusGraphRemote extends JanusGraphEmbedded {
 
     }
 
-    private StringBuilder compositeIndex(StringBuilder s,String indexName,String propertyKeyName,boolean unique,Class classType)
+
+    private String compositeIndex(String indexName,String propertyKeyName,boolean unique,Class classType)
     {
-        s.append("existingIndex").append("\"").append(indexName).append("\"").append(" = management.getGraphIndex(").append(indexName).append(");");
-        s.append("if (existingIndex)").append(indexName).append("\"").append("{ created = true; } else { ");
-        s.append("existingPropertyKey").append(propertyKeyName).append(" = management.getPropertyKey(").append(propertyKeyName).append(");");
-        s.append("if (existingPropertyKey").append(propertyKeyName).append(" != null){").append("propertyKey")
-                .append(propertyKeyName).append("= existingPropertyKey").append(propertyKeyName).append(";").append("oldKey = true;")
+        final StringBuilder s = new StringBuilder();
+
+        s.append("JanusGraphManagement management = graph.openManagement();");
+
+        s.append("existingIndex = management.getGraphIndex(\""+indexName+"\");");
+        s.append("if (existingIndex != null ){   management.rollback(); } else { ");
+        s.append("existingPropertyKey = management.getPropertyKey(\""+propertyKeyName+"\");");
+        s.append("if (existingPropertyKey != null){").append("propertyKey = existingPropertyKey;")
+                .append("oldKey = true;")
                 .append("} else {")
         //TODO make dyanmic the class of the proeprty
                 .append("propertyKey")
-                .append(propertyKeyName).append("= existingPropertyKey").append(propertyKeyName)
-                .append(" = management.makePropertyKey(").append(propertyKeyName).append(").dataType(String.class).make();")
-                .append("oldKey = false;}");
+                .append(" = management.makePropertyKey(\""+propertyKeyName+"\").dataType(String.class).make();")
+                .append("oldKey = false;};");
 
         if(Vertex.class.equals(classType)){
-            s.append("indexBuilder").append(propertyKeyName).append(" = management.buildIndex(").append(indexName).append(",").append(classType).append(").addKey(")
-                    .append("propertyKey").append(propertyKeyName).append(");");
+            s.append("indexBuilder = management.buildIndex(\""+indexName+"\",Vertex.class).addKey(propertyKey);");
 
             if (unique){
-                s.append("indexBuilder").append(propertyKeyName).append(".unique()");
+                s.append("indexBuilder.unique();");
             }
 
-            s.append("index").append(indexName).append(" = ").append("indexBuilder").append(propertyKeyName).append(".buildCompositeIndex();");
+            s.append("index = indexBuilder.buildCompositeIndex();");
             if (unique){
-                s.append("management.setConsistency(").append("indexBuilder").append(propertyKeyName).append(",").append("ConsistencyModifier.LOCK);");
+                s.append("management.setConsistency(indexBuilder,ConsistencyModifier.LOCK);");
             }
         }
         else if (Edge.class.equals(classType)){
 
-            s.append("indexBuilder").append(propertyKeyName).append(" = management.buildIndex(").append(indexName).append(",").append(classType).append(").addKey(")
-                    .append("propertyKey").append(propertyKeyName).append(");");
-            s.append("index").append(indexName).append(" = ").append("indexBuilder").append(propertyKeyName).append(".buildCompositeIndex();");
-
+            s.append("indexBuilder = management.buildIndex(").append(indexName).append(",Edge.class).addKey(propertyKey);");
+            s.append("index = indexBuilder.buildCompositeIndex();");
         }
 
         s.append("if (oldKey){")
-                .append(" ManagementSystem.awaitGraphIndexStatus(graph,").append(indexName).append(").status(SchemaStatus.REGISTERED).call();");
-        s.append("management.getGraphIndex(").append(indexName).append(");");
-        s.append("management.updateIndex(").append(indexName).append(",SchemaAction.REINDEX);");
-        s.append("}");
+                .append(" ManagementSystem.awaitGraphIndexStatus(graph,\""+indexName+"\").status(SchemaStatus.REGISTERED).call();");
+        s.append("management.getGraphIndex(\""+indexName+"\");");
+        s.append("management.updateIndex(\""+indexName+"\",SchemaAction.REINDEX);");
+        s.append("};");
 
-        s.append("ManagementSystem.awaitGraphIndexStatus(graph,").append(indexName).append(").status(SchemaStatus.ENABLED).timeout(10,ChronoUnit.SECONDS).call();");
+        s.append("ManagementSystem.awaitGraphIndexStatus(graph,\""+indexName+"\").status(SchemaStatus.ENABLED).timeout(10,ChronoUnit.SECONDS).call();");
 
-        s.append("}");
-        return  s;
+        s.append("};");
+        s.append("management.commit(); ");
+        log.debug(s.toString());
+
+        return  s.toString();
     }
 
     private <T extends Enum<T>> Set<String> schemaBasedOnGraphType(Class<T> aEnum) {
