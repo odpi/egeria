@@ -152,7 +152,6 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The system is unable to process the request for the relationship, because it is not known.",
             "Retry the request with a known relationship."),
 
-
     // The following Exceptions are not descriptive enough - they need more information from the OMRS Exception
     INVALID_PARAMETER(400, "OMAS-SUBJECT-AREA-400-035",
             "Invalid parameter processing request {0}.",
@@ -174,6 +173,11 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "Paging error occurred processing request {0}.",
             "The system is unable to process the request due to a paging error.",
             "Please retry the request with different paging options."),
+    SUBJECT_AREA_FAILED_TO_INITIALISE(400, "OMAS-SUBJECT-AREA-400-040",
+            "An error occurred when initializing the subject area client .",
+            "The system is unable to initialize the subject area client, because it failed to connect to the omas server.",
+            "Retry the request with a known available server name and url."),
+
     // End of The following Exception
 
 

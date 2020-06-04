@@ -10,8 +10,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
-import org.odpi.openmetadata.accessservices.subjectarea.utils.RestCaller;
-import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,8 +18,8 @@ import java.util.Set;
 
 
 /**
- * SubjectAreaImpl is the OMAS client library implementation of the SubjectAreaImpl OMAS.
- * This interface provides term term authoring interface for subject area experts.
+ * SubjectAreaImpl is the OMAS client library implementation of the Subject Area OMAS.
+ * This interface provides graph interface for subject area experts.
  */
 public class SubjectAreaGraphImpl extends SubjectAreaBaseImpl implements org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGraph {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGraphImpl.class);
@@ -31,43 +29,19 @@ public class SubjectAreaGraphImpl extends SubjectAreaBaseImpl implements org.odp
 
 
     /**
-     * Default Constructor used once a connector is created.
+     * Constructor for no authentication.
      *
-     * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param omasServerURL unique id for the connector instance
+     * @param serverName            name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                                                                    REST API calls.
      */
-    public SubjectAreaGraphImpl(String omasServerURL, String serverName) {
-        super(omasServerURL, serverName);
+    public SubjectAreaGraphImpl(String serverName, String serverPlatformURLRoot) throws
+                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+        super(serverName, serverPlatformURLRoot);
     }
 
-
-    /**
-     * Get the graph of nodes and Lines radiating out from a node.
-     * <p>
-     * The results are scoped by types of Lines, types of nodes and classifications as well as level.
-     *
-     * @param userId       userId under which the request is performed
-     * @param guid         the starting point of the query.
-     * @param nodeFilter   Set of the names of the nodes to include in the query results.  Null means include
-     *                     all nodes found, irrespective of their type.
-     * @param lineFilter   Set of names of Lines to include in the query results.  Null means include
-     *                     all Lines found, irrespective of their type.
-     * @param asOfTime     Requests a historical query of the Lines for the node.  Null means return the
-     *                     present values.
-     * @param statusFilter By default only active instances are returned. Specify ALL to see all instance in any status.
-     * @param level        the number of the Lines (relationships) out from the starting node that the query will traverse to
-     *                     gather results. If not specified then it defaults to 3.
-     * @return A graph of nodes.
-     * <p>
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
-     */
+    @Override
     public Graph getGraph(
             String userId,
             String guid,
@@ -80,15 +54,12 @@ public class SubjectAreaGraphImpl extends SubjectAreaBaseImpl implements org.odp
                            InvalidParameterException,
                            FunctionNotSupportedException,
                            MetadataServerUncontactableException,
-                           UnexpectedResponseException {
+                           UnexpectedResponseException, PropertyServerException {
         final String methodName = "getGraph";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s";
-        String url = String.format(urlTemplate, serverName, userId, guid);
+        String urlTemplate = BASE_URL + "/%s";
 
         StringBuffer nodeFilterSB = new StringBuffer();
         if (nodeFilter != null && !nodeFilter.isEmpty()) {
@@ -131,13 +102,10 @@ public class SubjectAreaGraphImpl extends SubjectAreaBaseImpl implements org.odp
             queryStringSB.append("level=" + level);
         }
         if (queryStringSB.length() > 1) {
-            url = url + queryStringSB.toString();
+            urlTemplate = urlTemplate + queryStringSB.toString();
         }
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        Graph graph = DetectUtils.detectAndReturnGraph(className, methodName, restResponse);
+        SubjectAreaOMASAPIResponse response = getRESTCall(userId, methodName, urlTemplate);
+        Graph graph = DetectUtils.detectAndReturnGraph(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
