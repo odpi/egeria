@@ -265,9 +265,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
          * If no search criteria is supplied then we return all terms, this should not be too many.
          */
         if (searchCriteria == null) {
-            response = oMRSAPIHelper.getEntitiesByType(oMRSAPIHelper, methodName, userId, "GlossaryTerm", asOfTime, offset, pageSize, sequencingProperty, sequencingOrder);
+            response = this.oMRSAPIHelper.getEntitiesByType(methodName, userId, "GlossaryTerm", asOfTime, offset, pageSize, sequencingProperty, sequencingOrder);
         } else {
-            response = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "GlossaryTerm", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+            response = this.oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "GlossaryTerm", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         }
         if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetails)) {
             EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;

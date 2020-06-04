@@ -292,9 +292,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         // initialise omrs API helper with the right instance based on the server name
         SubjectAreaOMASAPIResponse response = null;
         if (searchCriteria == null) {
-            response = oMRSAPIHelper.getEntitiesByType(oMRSAPIHelper, methodName, userId, "GlossaryCategory", asOfTime, offset, pageSize, sequencingProperty, sequencingOrder);
+            response = this.oMRSAPIHelper.getEntitiesByType(methodName, userId, "GlossaryCategory", asOfTime, offset, pageSize, sequencingProperty, sequencingOrder);
         } else {
-            response = this.oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "GlossaryCategory", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+            response = this.oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "GlossaryCategory", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         }
 
         if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetails) {

@@ -1335,7 +1335,7 @@ public class OMRSAPIHelper {
     }
 
 
-    public SubjectAreaOMASAPIResponse findEntitiesByPropertyValue(String restAPIName, String userId, String typeName, String searchCriteria, Date asOfTime, int offset, int pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) {
+    public SubjectAreaOMASAPIResponse findEntitiesByPropertyValue(String restAPIName, String userId, String typeName, String searchCriteria, Date asOfTime, int offset, int pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty) {
         // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
         SubjectAreaOMASAPIResponse response = null;
         if (sequencingProperty !=null) {
@@ -1347,7 +1347,7 @@ public class OMRSAPIHelper {
                         new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(
                                 errorCode.getMessageDefinition(),
                                 className,
-                                methodName,
+                                restAPIName,
                                 "sequencingProperty",
                                 sequencingProperty)
                 );
@@ -1362,7 +1362,7 @@ public class OMRSAPIHelper {
                         new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(
                                 errorCode.getMessageDefinition(),
                                 className,
-                                methodName,
+                                restAPIName,
                                 "searchCriteria",
                                 searchCriteria)
                 );
@@ -1388,8 +1388,7 @@ public class OMRSAPIHelper {
         return response;
     }
 
-    public SubjectAreaOMASAPIResponse getEntitiesByType(OMRSAPIHelper oMRSAPIHelper,
-                                                               String restAPIName,
+    public SubjectAreaOMASAPIResponse getEntitiesByType(String restAPIName,
                                                                String userId,
                                                                String typeName,
                                                                Date asOfTime,
@@ -1401,7 +1400,7 @@ public class OMRSAPIHelper {
             TypeDef typeDef = this.omrsRepositoryHelper.getTypeDefByName("getEntitiesByType", typeName);
             SequencingOrder omrsSequencingOrder = SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
             String entityTypeGUID = typeDef.getGUID();
-        return oMRSAPIHelper.callGetEntitiesByType(
+        return this.callGetEntitiesByType(
                 restAPIName,
                 userId,
                 entityTypeGUID,
