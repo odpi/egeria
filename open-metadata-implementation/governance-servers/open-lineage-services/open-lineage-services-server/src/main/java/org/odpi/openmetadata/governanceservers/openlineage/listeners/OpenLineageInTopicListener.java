@@ -29,21 +29,20 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
 
     /**
      * Receives kafka events that are publish out from Asset Lineage OMAS
+     *
      * @param assetLineageEvent contains all the information needed to build asset lineage like connection details, database
      *                          name, schema name, table name, derived columns details
      */
     @Override
     public void processEvent(String assetLineageEvent) {
         try {
-            log.info("Started processing OpenLineageEvent {}",assetLineageEvent);
+            log.info("Started processing OpenLineageEvent {}", assetLineageEvent);
             if (!assetLineageEvent.isEmpty()) {
                 processEventBasedOnType(assetLineageEvent);
             }
-        }
-        catch (JsonProcessingException e) {
-            logException(assetLineageEvent,e);
-        }
-        catch (Throwable e) {
+        } catch (JsonProcessingException e) {
+            logException(assetLineageEvent, e);
+        } catch (Throwable e) {
             log.error("Exception processing the in topic event", e);
             OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.PROCESS_EVENT_EXCEPTION;
 
@@ -62,7 +61,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
     private void processEventBasedOnType(String assetLineageEvent) throws JsonProcessingException {
         AssetLineageEventHeader assetLineageEventHeader = OBJECT_MAPPER.readValue(assetLineageEvent, AssetLineageEventHeader.class);
 
-        if(assetLineageEventHeader != null){
+        if (assetLineageEventHeader != null) {
             LineageEvent lineageEvent;
             LineageRelationshipEvent lineageRelationshipEvent;
             switch (assetLineageEventHeader.getAssetLineageEventType()) {
@@ -72,12 +71,16 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                     lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
                     storingServices.addEntity(lineageEvent);
                     break;
+                case NEW_RELATIONSHIP_EVENT:
+                    lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
+                    storingServices.upsertRelationship(lineageRelationshipEvent);
+                    break;
                 case UPDATE_ENTITY_EVENT:
                     lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
                     storingServices.updateEntity(lineageEvent);
                     break;
                 case UPDATE_RELATIONSHIP_EVENT:
-                    lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent,LineageRelationshipEvent.class);
+                    lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
                     storingServices.updateRelationship(lineageRelationshipEvent);
                     break;
                 case DELETE_ENTITY_EVENT:

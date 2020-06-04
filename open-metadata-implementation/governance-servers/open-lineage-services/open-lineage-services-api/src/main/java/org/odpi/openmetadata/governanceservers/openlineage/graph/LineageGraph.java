@@ -26,6 +26,13 @@ public interface LineageGraph extends OpenLineageGraphConnector {
     void updateEntity(LineageEntity lineageEntity);
 
     /**
+     * Create or update the relationship between two edges
+     * In case the vertexes are not created, they are firstly created
+     *
+     * @param lineageRelationship relationship to be updated or created
+     * */
+    void upsertRelationship(LineageRelationship lineageRelationship);
+    /**
      * Updates a vertex in the Graph
      *
      * @param lineageRelationship relationship to be updated
