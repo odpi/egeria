@@ -16,23 +16,23 @@ import java.util.List;
  */
 public class OCFOMASServiceInstance extends OMASServiceInstance
 {
-    protected AssetHandler                    assetHandler;
-    protected CertificationHandler            certificationHandler;
-    protected CommentHandler                  commentHandler;
-    protected ConnectionHandler               connectionHandler;
-    protected ConnectorTypeHandler            connectorTypeHandler;
-    protected EndpointHandler                 endpointHandler;
-    protected ExternalIdentifierHandler       externalIdentifierHandler;
-    protected ExternalReferenceHandler        externalReferenceHandler;
-    protected FileSystemHandler               fileSystemHandler;
-    protected GlossaryTermHandler             glossaryTermHandler;
-    protected InformalTagHandler              informalTagHandler;
-    protected LicenseHandler                  licenseHandler;
-    protected LikeHandler                     likeHandler;
-    protected LocationHandler                 locationHandler;
-    protected MeaningHandler                  meaningHandler;
-    protected NoteHandler                     noteHandler;
-    protected NoteLogHandler                  noteLogHandler;
+    protected AssetHandler              assetHandler;
+    protected CertificationHandler      certificationHandler;
+    protected CommentHandler            commentHandler;
+    protected ConnectionHandler         connectionHandler;
+    protected ConnectorTypeHandler      connectorTypeHandler;
+    protected EndpointHandler           endpointHandler;
+    protected ExternalIdentifierHandler externalIdentifierHandler;
+    protected ExternalReferenceHandler  externalReferenceHandler;
+    protected FilesAndFoldersHandler    filesAndFoldersHandler;
+    protected GlossaryTermHandler       glossaryTermHandler;
+    protected InformalTagHandler        informalTagHandler;
+    protected LicenseHandler            licenseHandler;
+    protected LikeHandler               likeHandler;
+    protected LocationHandler           locationHandler;
+    protected MeaningHandler            meaningHandler;
+    protected NoteHandler               noteHandler;
+    protected NoteLogHandler            noteLogHandler;
     protected RatingHandler                   ratingHandler;
     protected ReferenceableHandler            referenceableHandler;
     protected RelatedMediaHandler             relatedMediaHandler;
@@ -225,15 +225,15 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                                           softwareServerCapabilityHandler,
                                                           glossaryTermHandler);
 
-        fileSystemHandler = new FileSystemHandler(serviceName,
-                                                  serverName,
-                                                  invalidParameterHandler,
-                                                  repositoryHandler,
-                                                  repositoryHelper,
-                                                  supportedZones,
-                                                  assetHandler,
-                                                  schemaTypeHandler,
-                                                  softwareServerCapabilityHandler);
+        filesAndFoldersHandler = new FilesAndFoldersHandler(serviceName,
+                                                            serverName,
+                                                            invalidParameterHandler,
+                                                            repositoryHandler,
+                                                            repositoryHelper,
+                                                            supportedZones,
+                                                            assetHandler,
+                                                            schemaTypeHandler,
+                                                            softwareServerCapabilityHandler);
 
         if (securityVerifier != null)
         {
@@ -377,13 +377,13 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
      * @return file system handler
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    FileSystemHandler getFileSystemHandler() throws PropertyServerException
+    FilesAndFoldersHandler getFilesAndFoldersHandler() throws PropertyServerException
     {
-        final String methodName = "getFileSystemHandler";
+        final String methodName = "getFilesAndFoldersHandler";
 
         validateActiveRepository(methodName);
 
-        return fileSystemHandler;
+        return filesAndFoldersHandler;
     }
 
 

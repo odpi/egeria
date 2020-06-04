@@ -25,8 +25,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 
@@ -36,7 +38,7 @@ import java.util.*;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
-                version = "1.8-SNAPSHOT",
+                version = "2.0-SNAPSHOT",
                 description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
                         "\n" +
                         "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +
@@ -75,6 +77,9 @@ public class OMAGServerPlatform
 
     @Value("${startup.server.list}")
     String startupServers;
+
+    @Autowired
+    private Environment env;
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
@@ -202,6 +207,18 @@ public class OMAGServerPlatform
             temporaryDeactivateServers();
         }
 
+    }
+
+    @PostConstruct
+    private void configureTrustStore() {
+
+        //making sure truststore was not set using JVM options
+        if(System.getProperty("javax.net.ssl.trustStore")==null) {
+            //load the 'javax.net.ssl.trustStore' and
+            //'javax.net.ssl.trustStorePassword' from application.properties
+            System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
+            System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
+        }
     }
 
 }

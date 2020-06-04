@@ -43,7 +43,7 @@ recorded.
             ],
             "conformanceException": {
                 "exceptionClassName": "org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException",
-                "errorMessage": "OMRS-REST-API-503-004 A client-side exception was received from API call getTypeDefByGUID to repository REST-connected Repository http://localhost:8080/servers/cocoMDS1.  The error message was 500 null"
+                "errorMessage": "OMRS-REST-API-503-004 A client-side exception was received from API call getTypeDefByGUID to repository REST-connected Repository https://localhost:9443/servers/cocoMDS1.  The error message was 500 null"
             },
             "notSupportAssertions": []
         
