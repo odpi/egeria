@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>user-interfaces</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
+    <name>Egeria Presentation Server</name>
+    <description>
+        Provides the Egeria Presentation Server.
+    </description>
+
+    <artifactId>presentation-server</artifactId>
+    <packaging>jar</packaging>
+
+    <!-- TODO: Move to top level -->
+    <properties>
+        <node.version>v12.16.0</node.version>
+        <npm.version>6.14.5</npm.version>
+        <node.downloadRoot>https://nodejs.org/dist/</node.downloadRoot>
+        <npm.downloadRoot>https://registry.npmjs.org/npm/-/</npm.downloadRoot>
+    </properties>
+
+    <dependencies>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>${node.version}</nodeVersion>
+                            <npmVersion>${npm.version}</npmVersion>
+                            <workingDirectory>nodejs</workingDirectory>
+                            <nodeDownloadRoot>${node.downloadRoot}</nodeDownloadRoot>
+                            <npmDownloadRoot>${npm.downloadRoot}</npmDownloadRoot>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm-install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install --prefix .</arguments>
+                            <workingDirectory>nodejs</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>webpack-build</id>
+                        <goals>
+                            <goal>webpack</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>--mode development</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <workingDirectory>nodejs</workingDirectory>
+                </configuration>
+            </plugin>
+
+            <!-- TODO: copy everything we want to keep into target -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources-from-node</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <overwrite>true</overwrite>
+                            <outputDirectory>${project.build.outputDirectory}/www</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/nodejs/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <!-- TODO: Ensure anything not cleaned up by node is cleaned out here -->
+            <!--
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/tools</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/src/main/resources/public</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/src/main/static/build</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/src/main/static/node_modules</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin -->
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <excludes>
+                        <exclude>**/tools/**</exclude>
+                        <exclude>**/resources/public/**</exclude>
+                        <exclude>**/resources/**</exclude>
+                        <exclude>**/static/**</exclude>
+                        <exclude>**/docs/**</exclude>
+                        <exclude>**/build/**</exclude>
+
+                        <exclude>**/banner.txt</exclude>
+                        <exclude>tools/polymer*</exclude>
+                        <exclude>**/.vscode*/**</exclude>
+                        <exclude>**/.factorypath/**</exclude>
+                        <exclude>**/**.code-workspace</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
