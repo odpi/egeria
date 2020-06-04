@@ -53,6 +53,9 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() throws ConnectorCheckedException
     {
@@ -82,10 +85,9 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
     }
 
     /**
-     * Save the server configuration.
-     *
-     * @param omagServerConfig - configuration properties to save
+     * {@inheritDoc}
      */
+    @Override
     public void saveServerConfig(OMAGServerConfig omagServerConfig) {
 
         final String methodName = "saveServerConfig";
@@ -123,10 +125,9 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
 
 
     /**
-     * Retrieve the configuration saved from a previous run of the server.
-     *
-     * @return server configuration
+     * {@inheritDoc}
      */
+    @Override
     public OMAGServerConfig  retrieveServerConfig() {
 
         final String methodName = "retrieveServerConfig";
@@ -137,34 +138,52 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
 
         File configStoreFile = getConfigStoreFile();
         if (configStoreFile.exists()) {
-            if (!(isEnvVar || isKeyFile)) {
-                // If we have a configuration file, but no key anywhere to use to decrypt it, throw an error immediately
-                throw new OCFRuntimeException(DocStoreErrorCode.NO_KEYSTORE.getMessageDefinition(),
-                        this.getClass().getName(),
-                        methodName);
-            }
 
+            // If we have a configuration file, first try to read it as clear-text (unencrypted)...
             try {
-
-                log.debug("Retrieving server configuration properties");
-                Aead aead = getAead(false);
-                if (aead != null) {
-                    byte[] ciphertext = FileUtils.readFileToByteArray(configStoreFile);
-                    byte[] decrypted = aead.decrypt(ciphertext, null);
-                    String configStoreFileContents = new String(decrypted, StandardCharsets.UTF_8);
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    newConfigProperties = objectMapper.readValue(configStoreFileContents, OMAGServerConfig.class);
-                } else {
-                    // If we have a configuration file, but no key anywhere to use to decrypt it, throw an error immediately
+                log.debug("Attempting to retrieve clear-text server configuration properties");
+                String configStoreFileContents = FileUtils.readFileToString(configStoreFile, "UTF-8");
+                ObjectMapper objectMapper = new ObjectMapper();
+                newConfigProperties = objectMapper.readValue(configStoreFileContents, OMAGServerConfig.class);
+                // Assuming we are able to read it (unencrypted), immediately auto-encrypt it
+                log.info("Found unencrypted configuration document -- automatically encrypting it.");
+                saveServerConfig(newConfigProperties);
+            } catch (IOException e) {
+                // If reading it as clear-text fails, and we have no keyset defined, then the configuration document
+                // is probably encrypted and we have no way of decrypting it
+                if (!(isEnvVar || isKeyFile)) {
                     throw new OCFRuntimeException(DocStoreErrorCode.NO_KEYSTORE.getMessageDefinition(),
                             this.getClass().getName(),
-                            methodName);
+                            methodName, e);
+                } else {
+                    // Ensure that nothing has been set to the config properties
+                    newConfigProperties = null;
                 }
+            }
 
-            } catch (GeneralSecurityException | IOException e) {
-                throw new OCFRuntimeException(DocStoreErrorCode.READ_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
-                        this.getClass().getName(),
-                        methodName, e);
+            // If we are here, without a newConfigProperties set, we have an existing configuration file AND
+            // a keyset, so attempt to decrypt the configuration file using that keyset
+            if (newConfigProperties == null) {
+                try {
+                    log.debug("Retrieving encrypted server configuration properties");
+                    Aead aead = getAead(false);
+                    if (aead != null) {
+                        byte[] ciphertext = FileUtils.readFileToByteArray(configStoreFile);
+                        byte[] decrypted = aead.decrypt(ciphertext, null);
+                        String configStoreFileContents = new String(decrypted, StandardCharsets.UTF_8);
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        newConfigProperties = objectMapper.readValue(configStoreFileContents, OMAGServerConfig.class);
+                    } else {
+                        // If we have a configuration file, but no key anywhere to use to decrypt it, throw an error immediately
+                        throw new OCFRuntimeException(DocStoreErrorCode.NO_KEYSTORE.getMessageDefinition(),
+                                this.getClass().getName(),
+                                methodName);
+                    }
+                } catch (GeneralSecurityException | IOException e) {
+                    throw new OCFRuntimeException(DocStoreErrorCode.READ_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+                            this.getClass().getName(),
+                            methodName, e);
+                }
             }
 
         }
@@ -174,8 +193,9 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
     }
 
     /**
-     * Remove the server configuration.
+     * {@inheritDoc}
      */
+    @Override
     public void removeServerConfig() {
         final String methodName = "removeServerConfig";
         File keystore = getFileBasedKeystore(false);
@@ -201,7 +221,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
     }
 
     /**
-     * Close the config file
+     * {@inheritDoc}
      */
     @Override
     public void disconnect() {
