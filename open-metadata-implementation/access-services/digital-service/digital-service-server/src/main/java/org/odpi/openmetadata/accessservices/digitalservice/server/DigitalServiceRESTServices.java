@@ -69,6 +69,9 @@ public class DigitalServiceRESTServices
         } catch (UserNotAuthorizedException error) {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
+        catch (Throwable error) {
+            restExceptionHandler.captureThrowable(response, error, methodName);
+        }
 
         log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
 

@@ -84,7 +84,7 @@ that support the business.
 models for an organization.  It is designed for architecture tools.  It is able to support the
 definition and management of a digital service through concept to deployment.
 
-* **[digital-service](dev-ops)** - manage metadata for a the Egeria Digital Services lifecycle.
+* **[digital-service](digital-service)** - manage metadata for a the Egeria Digital Services lifecycle.
   
   The Digital Service OMAS provides services for a managing the lifecycle of an Egeria Digital Service.
 
