@@ -89,8 +89,9 @@ public class EgeriaUIPlatform {
     @PostConstruct
     private void configureTrustStore() {
 
-        //making sure was not set using JVM options
-        if(System.getProperty("javax.net.ssl.trustStore")==null) {
+        //making sure truststore was not set using JVM options
+        // and strict.ssl is true ( if false, truststore will ignored anyway )
+        if(strictSSL && System.getProperty("javax.net.ssl.trustStore")==null) {
             //load the 'javax.net.ssl.trustStore' and
             //'javax.net.ssl.trustStorePassword' from application.properties
             System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
