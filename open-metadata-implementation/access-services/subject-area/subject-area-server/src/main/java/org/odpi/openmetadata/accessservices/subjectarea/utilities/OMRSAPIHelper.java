@@ -11,7 +11,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.handlers.ErrorHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
@@ -1437,11 +1439,11 @@ public class OMRSAPIHelper {
     }
 
     /**
-     * Get a Categories icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
+     * Get glossary summary
      * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
-     * @param line glossary relationship
-     * @return Glossary summary for Category
+     * @param line glossary relationship {@link TermAnchor} or {@link CategoryAnchor}
+     * @return Glossary summary
      */
     public SubjectAreaOMASAPIResponse getGlossarySummary(String restAPIName, String userId, Line line) {
         String glossaryGuid = SubjectAreaUtils.getGlossaryGuidFromAnchor(line);
