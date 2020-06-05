@@ -19,7 +19,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermAnchorMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.TypeGuids;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
@@ -205,7 +204,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                     if (glossaryRelationships.iterator().hasNext()) {
                         Relationship glossaryRelationship = glossaryRelationships.iterator().next();
                         TermAnchor termAnchor = (TermAnchor) new TermAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
-                        response = SubjectAreaUtils.getGlossarySummaryForTerm(methodName, userId, oMRSAPIHelper, termAnchor, gotTerm);
+                        response = this.oMRSAPIHelper.getGlossarySummary(methodName, userId, termAnchor);
                         if (response.getResponseCategory().equals(ResponseCategory.GlossarySummary)) {
                             GlossarySummaryResponse glossarySummaryResponse = (GlossarySummaryResponse) response;
                             GlossarySummary glossarySummary = glossarySummaryResponse.getGlossarySummary();

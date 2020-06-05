@@ -212,7 +212,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
                 EntityDetail gotEntityDetail = entityDetailResponse.getEntityDetail();
                 CategoryMapper categoryMapper = new CategoryMapper(oMRSAPIHelper);
-                Category gotCategory = (Category) categoryMapper.mapEntityDetailToNode(gotEntityDetail);
+                Category gotCategory = categoryMapper.mapEntityDetailToNode(gotEntityDetail);
                 String anchorTypeGuid = TypeGuids.getCategoryAnchorTypeGuid();
                 response = oMRSAPIHelper.callGetRelationshipsForEntity(methodName, userId, guid, anchorTypeGuid, 0, null, null, null, 0);
                 if (response.getResponseCategory().equals(ResponseCategory.OmrsRelationships)) {
@@ -221,7 +221,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                     if (glossaryRelationships.iterator().hasNext()) {
                         Relationship glossaryRelationship = glossaryRelationships.iterator().next();
                         CategoryAnchor categoryAnchor = (CategoryAnchor) new CategoryAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
-                        response = SubjectAreaUtils.getGlossarySummaryForCategory(methodName, userId, oMRSAPIHelper, categoryAnchor);
+                        response = this.oMRSAPIHelper.getGlossarySummary(methodName, userId, categoryAnchor);
                         if (response.getResponseCategory().equals(ResponseCategory.GlossarySummary)) {
                             GlossarySummaryResponse glossarySummaryResponse = (GlossarySummaryResponse) response;
                             GlossarySummary glossarySummary = glossarySummaryResponse.getGlossarySummary();

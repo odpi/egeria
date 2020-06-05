@@ -115,7 +115,7 @@ public abstract class SubjectAreaHandler {
             if (response.getResponseCategory() == ResponseCategory.OmrsRelationships) {
                 RelationshipsResponse relationshipsResponse = (RelationshipsResponse) response;
                 omrsRelationships = relationshipsResponse.getRelationships();
-                response = SubjectAreaUtils.convertOMRSRelationshipsToOMASLines(oMRSAPIHelper, omrsRelationships);
+                response = this.oMRSAPIHelper.convertOMRSRelationshipsToOMASLines(omrsRelationships);
 
                 if (response.getResponseCategory() == ResponseCategory.Lines) {
                     LinesResponse linesResponse = (LinesResponse) response;
@@ -154,7 +154,7 @@ public abstract class SubjectAreaHandler {
                                 List<Relationship> moreOmrsRelationships = relationshipsResponse.getRelationships();
                                 if (moreOmrsRelationships != null && moreOmrsRelationships.size() > 0) {
 
-                                    response = SubjectAreaUtils.convertOMRSRelationshipsToOMASLines(oMRSAPIHelper, omrsRelationships);
+                                    response = this.oMRSAPIHelper.convertOMRSRelationshipsToOMASLines(omrsRelationships);
                                     if (response.getResponseCategory() == ResponseCategory.Lines) {
                                         linesResponse = (LinesResponse) response;
                                         List<Line> moreLines = linesResponse.getLines();
@@ -247,7 +247,7 @@ public abstract class SubjectAreaHandler {
                 List<Relationship> omrsRelationships = relationshipsResponse.getRelationships();
                 if (omrsRelationships != null) {
                     Set<Relationship> relationshipSet = new HashSet<>(omrsRelationships);
-                    response = SubjectAreaUtils.convertOMRSRelationshipsToOMASLines(oMRSAPIHelper, omrsRelationships);
+                    response = this.oMRSAPIHelper.convertOMRSRelationshipsToOMASLines(omrsRelationships);
                     // the response if successful will be LinesResponse
                 }
             }
