@@ -30,6 +30,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         
         .container {
           background-color: white;
+          display: flex;
           flex-grow: 1;
         }
         #useCases {
@@ -122,26 +123,28 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 type: Object,
                 value: {
                     GlossaryTerm: {
-                        shape: 'diamond',
-                        color: '#FCF68E'
+                        color: '#f0e442',
+                        shape: 'circle'
                     },
                     Column: {
-                        color: '#99E17E'
+                        color: '#009e73'
                     },
                     RelationalColumn: {
-                        color: '#99E17E'
+                        color: '#0072b2'
                     },
                     TabularColumn: {
-                        color: '#99E17E'
+                        color: '#cc79a7'
                     },
                     RelationalTable: {
                         shape: 'box',
+                        color: '#007836'
                     },
                     Process: {
-                        shape: 'parallelogram'
+                        shape: 'parallelogram',
+                        color: '#b276b2'
                     },
                     condensedNode: {
-                        color: '#71ccdc'
+                        color: '#faa43a'
                     }
                 }
             }
@@ -176,11 +179,17 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             }
         }
         for (var i = 0; i < data.nodes.length; i++) {
+            const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
             data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "", '<br>');
             if (data.nodes[i].properties == null) {
                 continue;
             }
             let displayName;
+            if (data.nodes[i].id === this.routeData.guid){
+                data.nodes[i].group='';
+                data.nodes[i].color=egeriaColor;
+                data.nodes[i].font= {color:'white'};
+            }
             if (data.nodes[i].properties['tableDisplayName'] != null) {
                 displayName = data.nodes[i].properties['tableDisplayName']
             } else if (data.nodes[i].properties['vertex--tableDisplayName'] != null) {
