@@ -9,6 +9,8 @@ In this session, you will learn how to set up the OMAG Server Platform.
 
 ![Configuring the OMAG Platform Content](egeria-dojo-day-1-3-1-2-configuring-the-platform.png)
 
+Watch this video to get an overview of this session: [https://youtu.be/-YScFx0fQk0](https://youtu.be/-YScFx0fQk0).
+
 In the previous session you downloaded an application called Postman and loaded collections of
 pre-defined requests.
 This tool makes it easy to issue REST API requests to the OMAG Server Platform.

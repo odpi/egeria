@@ -93,9 +93,11 @@ Picked up JAVA_TOOL_OPTIONS:
 
  :: Powered by Spring Boot (v2.3.0.RELEASE) ::
 
+10:12:28.047 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9443 (https)
+10:12:41.688 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 9443 (https) with context path ''
 
-Thu May 21 15:47:20 GMT 2020 No OMAG servers listed in startup configuration
-Thu May 21 15:47:27 GMT 2020 OMAG server platform ready for more configuration
+Thu Jun 04 10:12:32 BST 2020 No OMAG servers listed in startup configuration
+Thu Jun 04 10:12:41 BST 2020 OMAG server platform ready for more configuration
 ^C
 $
 ```
