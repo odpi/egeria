@@ -24,7 +24,13 @@ and bad.  We would love to hear from you.
 Below are the release notes for the latest ODPi Egeria release:
 
 * [Release 1.8](release-notes-1-8.md) - May 2020
+    * Additional tutorial content in the form of the Egeria Dojo
+    * Repository explorer usability and functionality improvements
+    * Improved packaging for samples and utilities
+    * reliability improvement for Kafka connector
+    * metrics and monitoring using spring boot actuator and adding prometheus support
     * Bug fixes
+    * Dependency updates
     
 ## Older Releases
 
