@@ -121,7 +121,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>${docker.registry}/${docker.repo}/egeria</repository>
+                    <repository>${docker.registry}/${docker.repo}/egeria-presentation-server</repository>
                     <buildArgs>
                         <VCS_REF>${git.commit.id.describe}</VCS_REF>
                         <VCS_DATE>${git.commit.time}</VCS_DATE>

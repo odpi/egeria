@@ -3,26 +3,39 @@
 
 FROM node:12-alpine
 
-LABEL org.label-schema.schema-version = "1.0"
-LABEL org.label-schema.vendor = "ODPi"
-LABEL org.label-schema.name = "presentation-server"
-LABEL org.label-schema.description = "Egeria presentation server"
-LABEL org.label-schema.url = "https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/"
-LABEL org.label-schema.vcs-url = "https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/presentation-server"
-LABEL org.label-schema.docker.cmd = "docker run -d -p 58080:58080 odpi/presentation-server"
-LABEL org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh"
+ARG version=2.0-SNAPSHOT
+ARG VCS_REF=unknown
+ARG VCS_ORIGIN=unknown
+ARG BUILD_TIME=unknown
+ARG VCS_DATE=unknown
 
-RUN mkdir -p /home/node/presentation-server/node_modules && chown -R node:node /home/node/presentation-server
+ENV version ${version}
 
+# Labels from https://github.com/opencontainers/image-spec/blob/master/annotations.md#pre-defined-annotation-keys (with additions prefixed    ext)
+LABEL org.opencontainers.image.vendor = "ODPi" \
+      org.opencontainers.image.title = "Egeria" \
+      org.opencontainers.image.description = "Egeria Presentation Server" \
+      org.opencontainers.image.url = "https://egeria.odpi.org/" \
+      org.opencontainers.image.source = "$VCS_ORIGIN" \
+      org.opencontainers.image.authors = "ODPi Egeria" \
+      org.opencontainers.image.revision = "$VCS_REF" \
+      org.opencontainers.image.licenses = "Apache-2.0" \
+      org.opencontainers.image.created = "$BUILD_TIME" \
+      org.opencontainers.image.version = "$version" \
+      org.opencontainers.image.documentation = "https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/docker/presentation-server/" \
+      org.opencontainers.image.ext.vcs-date = "$VCS_DATE" \
+      org.opencontainers.image.ext.docker.cmd = "docker run -d -p 8091:8091 odpi/egeria-presentation-server" \
+      org.opencontainers.image.ext.docker.debug = "docker exec -it $CONTAINER /bin/sh" \
+
+
+RUN mkdir -p /home/node/presentation-server
 WORKDIR /home/node/presentation-server
+COPY --chown=node:node target/assembly .
+RUN chown -R node:node /home/node/presentation-server
+USER 1000
 
-COPY target/assembly/* ./
+EXPOSE 8091
 
-COPY --chown=node:node . .
-
-USER node
-
-EXPOSE 58080
-
+RUN npm install
 
 CMD [ "node", "src/server/index.js" ]
