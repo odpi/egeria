@@ -11,11 +11,12 @@ import '@vaadin/vaadin-icons/vaadin-icons.js';
 class AssetTools extends PolymerElement {
     static get template() {
         return html`
-      
+  
       <style include="shared-styles">
         :host {
           display: block;
           padding: 10px 24px;
+          --asset-tools-li-padding: 10px; 
         }
         ul#menu {
             margin: 0;
@@ -23,19 +24,14 @@ class AssetTools extends PolymerElement {
         }
         ul#menu li {
           display:inline-block;
-          padding: 10px;
+          padding: var( --asset-tools-li-padding , 10px);
         }
         ul#menu li:hover {
             background-color: var(--app-background-color);
         }
-        .container {
-            border: solid 1px var(--egeria-primary-color); 
-            padding: 5pt;
-        }
+       
       </style>
     <token-ajax id="tokenAjaxSettings" last-response="{{omas}}" url="/api/omas/settings" auto></token-ajax>
-    
-    <div class="container"> 
         <ul id="menu"> 
             <li> 
                 <a href="#/asset-lineage/ultimateSource/[[guid]]" title="Ultimate Source Lineage"><iron-icon icon="vaadin:connect-o" style="transform: rotate(180deg)"></iron-icon></a>
@@ -56,7 +52,6 @@ class AssetTools extends PolymerElement {
                 <a href="#/repository-explorer/[[omas.serverName]]/[[ _encode(omas.baseUrl) ]]/[[guid]]" title="Repository explorer"><iron-icon icon="vaadin:cogs"></iron-icon></a>
             </li>
         </ul>
-    </div>
     `;
     }
 
