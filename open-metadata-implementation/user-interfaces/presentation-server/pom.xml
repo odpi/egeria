@@ -3,6 +3,8 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+<!-- TODO: This is a first pass definition for a new component in development -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -29,7 +31,7 @@
     <artifactId>presentation-server</artifactId>
     <packaging>jar</packaging>
 
-    <!-- TODO: Move to top level -->
+    <!-- TODO: Move to top level if we can have consistency node/npm with other node components-->
     <properties>
         <node.version>v12.16.0</node.version>
         <npm.version>6.14.5</npm.version>
@@ -76,7 +78,8 @@
                             <goal>webpack</goal>
                         </goals>
                         <configuration>
-                            <arguments>--mode development</arguments>
+                            <!-- TODO: This is dev mode with debugging - so not what we want for production -->
+                            <arguments>--mode development --devtool inline-source-map</arguments>
                         </configuration>
                     </execution>
                 </executions>
@@ -86,7 +89,10 @@
             </plugin>
 
             <!-- TODO: copy everything we want to keep into target -->
-            <plugin>
+            <!-- Combined with webpack it's probably useful the p.s. built composes most of the -->
+            <!-- required runtime tree - rather than lots of complex copies/moves in the assembly -->
+            <!-- for now we'll do this in assembly descriptor only -->
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
@@ -104,11 +110,17 @@
                                     <directory>${basedir}/nodejs/dist</directory>
                                     <filtering>false</filtering>
                                 </resource>
+                                <resource>
+                                    <directory>${basedir}/nodejs</directory>
+                                    <includes>
+                                        <include>package.json</include>
+                                    </includes>
+                                </resource>
                             </resources>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
 
 
             <!-- TODO: Ensure anything not cleaned up by node is cleaned out here -->
@@ -132,6 +144,8 @@
                     </filesets>
                 </configuration>
             </plugin -->
+            <!-- TODO: ensure we ratcheck just what is needed. may be covered by global definitions -->
+            <!-- for now, skipping -->
             <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
