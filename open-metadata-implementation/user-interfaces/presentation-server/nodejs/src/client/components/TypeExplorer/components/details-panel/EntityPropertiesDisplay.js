@@ -10,7 +10,7 @@ import PropTypes              from "prop-types";
 import "./details-panel.scss";
 
 
-export default function TypePropertiesDisplay(props) {
+export default function EntityPropertiesDisplay(props) {
 
   const explorer           = props.expl;
 
@@ -98,6 +98,6 @@ export default function TypePropertiesDisplay(props) {
   return properties;
 }
 
-TypePropertiesDisplay.propTypes = {
+EntityPropertiesDisplay.propTypes = {
   expl: PropTypes.object 
 };

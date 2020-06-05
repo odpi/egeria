@@ -11,7 +11,7 @@ import PropTypes                 from "prop-types";
 
 import EntityTypeDisplay         from "./EntityTypeDisplay";
 
-//import RelationshipTypeDisplay   from "./RelationshipTypeDisplay";
+import RelationshipTypeDisplay   from "./RelationshipTypeDisplay";
 
 //import ClassificationTypeDisplay from "./ClassificationTypeDisplay";
 
@@ -44,8 +44,12 @@ export default function TypeDisplay() {
 
       case "Entity":
         return <EntityTypeDisplay typeName={focusContext.view.typeName} />  
+        break;
 
-      
+      case "Relationship":
+        return <RelationshipTypeDisplay typeName={focusContext.view.typeName} />  
+        break;
+
     }
     
   }

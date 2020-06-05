@@ -56,6 +56,7 @@ export default function FocusControls(props) {
    */
   const entitySelectorHandler = (e) => {    
     const typeName = e.target.value;    
+    console.log("Entity selector with typeName "+typeName);
     resetRelTypeSelector();    
     resetClsTypeSelector();
     focusContext.typeSelected("Entity",typeName);
@@ -66,12 +67,14 @@ export default function FocusControls(props) {
    */
   const relationshipSelectorHandler = (e) => {        
     const typeName = e.target.value;   
+    console.log("Relationship selector with typeName "+typeName);
     resetClsTypeSelector();
     focusContext.typeSelected("Relationship",typeName);
   };
 
   const classificationSelectorHandler = (e) => {    
     const typeName = e.target.value;   
+    console.log("Classification selector with typeName "+typeName);
     resetRelTypeSelector();     
     focusContext.typeSelected("Classification",typeName);
   };
