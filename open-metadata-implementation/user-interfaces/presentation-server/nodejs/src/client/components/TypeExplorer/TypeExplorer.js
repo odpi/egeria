@@ -22,11 +22,15 @@ import RepositoryServerContextProvider from "./contexts/RepositoryServerContext"
  */
 import TypesContextProvider            from "./contexts/TypesContext";
 
-
+/* 
+ * Import the DEFAULT export from the FocusContext module - which is actually the FocusContextProvider
+ * Naming it explicitly for clarity that this is the provider not the context.
+ */
+import FocusContextProvider            from "./contexts/FocusContext";
 
 
 import ConnectionDetails               from "./components/connection-details/ConnectionDetails";
-//import FocusControls                   from "./components/focus-controls/FocusControls";
+import FocusControls                   from "./components/focus-controls/FocusControls";
 import DetailsPanel                    from "./components/details-panel/DetailsPanel";
 import DiagramManager                  from "./components/diagram/DiagramManager";
 
@@ -44,14 +48,14 @@ export default function TypeExplorer() {
     <InteractionContextProvider>
       <RepositoryServerContextProvider>
         <TypesContextProvider>
-
+          <FocusContextProvider>
             <div className="top">
               <h2>Type Explorer</h2>
               <div className="top-left">
                 <ConnectionDetails />
               </div>
               <div className="top-middle">
-                Focus Controls should go here...
+              <FocusControls />
               </div>
             </div>
             <div className="lhs">
@@ -61,7 +65,7 @@ export default function TypeExplorer() {
             <div className="rhs">
               <DiagramManager />
             </div>
-
+          </FocusContextProvider>
         </TypesContextProvider>
       </RepositoryServerContextProvider>
     </InteractionContextProvider>

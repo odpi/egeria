@@ -1,0 +1,82 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+
+.instance-details-container {
+  text-align        : left;
+  padding           : 5px;
+  background-color  : rgb(240, 240, 240);
+  font-size         : 12px;
+}
+
+.instance-details-item {
+  padding           : inherit;
+}
+
+.details-sublist {
+  margin-left       : 5px; 
+  padding           : inherit;
+}
+
+.details-sublist-item {
+  margin-top        : 3px;
+  padding           : inherit;
+}
+
+.details-sub-container {
+  padding            : 5px;
+}
+
+.details-sub-group {
+  padding            : 0px;
+}
+.details-sub-item {
+  margin-top        : 3px;
+  padding           : inherit;
+}
+
+.italic {
+  font-style        : italic;
+}
+
+.linkable {
+  background-color : #CCCCCC;
+  color            : black;
+  cursor           : pointer;
+  padding          : 0px;
+  width            : 200px;
+  border           : none;
+  text-align       : left;
+  outline          : none;
+  font-size        : 12px;
+}
+
+.collapsible {
+  background-color : #CCCCCC;
+  color            : black;
+  cursor           : pointer;
+  padding          : 5px;
+  width            : 300px;
+  border           : none;
+  text-align       : left;
+  outline          : none;
+  font-size        : 12px;
+}
+
+.content {
+  padding          : 10px 0px 10px 10px;
+  display          : none;
+  overflow         : hidden;
+  background-color : #CCCCCC;
+}
+
+.highlight {
+  background-color : #EEEEEE;
+  color            : black;
+  padding          : 5px;
+  width            : 300px;
+  border           : 2px;
+  text-align       : left;
+  outline          : none;
+  font-size        : 12px;
+}
