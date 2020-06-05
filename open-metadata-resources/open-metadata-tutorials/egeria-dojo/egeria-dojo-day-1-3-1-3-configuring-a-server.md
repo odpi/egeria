@@ -12,6 +12,8 @@ In this session you are going to learn how to set up particular type of OMAG ser
 
 ![Configuring a metadata server Content](egeria-dojo-day-1-3-1-3-configuring-a-server.png)
 
+Watch the overview of this session: [https://youtu.be/c1g2vY_0mYs](https://youtu.be/c1g2vY_0mYs).
+
 Begin by understanding about the different types of OMAG Servers and what they are used for by
 following the link below:
 * [Egeria's OMAG Servers](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md)
