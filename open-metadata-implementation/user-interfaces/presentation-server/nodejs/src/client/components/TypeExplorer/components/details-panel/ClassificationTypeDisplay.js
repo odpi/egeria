@@ -7,39 +7,38 @@ import PropTypes                       from "prop-types";
 
 import { TypesContext }                from "../../contexts/TypesContext";
 
-import RelationshipPropertiesDisplay   from "./RelationshipPropertiesDisplay";
+import ClassificationPropertiesDisplay   from "./ClassificationPropertiesDisplay";
 
-import RelationshipEntitiesDisplay     from "./RelationshipEntitiesDisplay";
+import ClassificationEntitiesDisplay     from "./ClassificationEntitiesDisplay";
 
 
 import "./details-panel.scss";
 
 
 
-export default function RelationshipTypeDisplay(props) {
+export default function ClassificationTypeDisplay(props) {
 
     const typesContext = useContext(TypesContext);
 
     const typeName    = props.typeName;
 
-    const relationshipExpl  = typesContext.getRelationshipType(typeName);
+    const classificationExpl  = typesContext.getClassificationType(typeName);
 
 
     return (
       <div className="instance-details-container">
-        <div className="instance-details-item">Relationship Type : {typeName}</div>
-        <div className="instance-details-item">{relationshipExpl.relationshipDef.description}</div>        
-        <div className="instance-details-item">Attributes : { !relationshipExpl.inheritedAttributes && !relationshipExpl.relationshipDef.propertiesDefinition ? "none" :
-          <RelationshipPropertiesDisplay expl={relationshipExpl} />}</div>     
-        <div className="instance-details-item">Entities : { !relationshipExpl.relationshipDef.endDef1 && !relationshipExpl.relationshipDef.endDef2 ? "none" :
-          <RelationshipEntitiesDisplay expl={relationshipExpl} />}</div>     
+        <div className="instance-details-item">Classification Type : {typeName}</div>
+        <div className="instance-details-item">{classificationExpl.classificationDef.description}</div>        
+        <div className="instance-details-item">Attributes : { !classificationExpl.classificationDef.propertiesDefinition ? "none" :
+          <ClassificationPropertiesDisplay expl={classificationExpl} />}</div>     
+        <div className="instance-details-item">Valid entity types : { !classificationExpl.classificationDef.validEntityDefs && !classificationExpl.classificationDef.validEntityDefs.length > 0 ? "none" :
+          <ClassificationEntitiesDisplay expl={classificationExpl} />}</div>     
       
-       
       </div>
     );
   }
 
-  RelationshipTypeDisplay.propTypes = {
+  ClassificationTypeDisplay.propTypes = {
     typeName: PropTypes.string
   };
   

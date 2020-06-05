@@ -13,7 +13,7 @@ import EntityTypeDisplay         from "./EntityTypeDisplay";
 
 import RelationshipTypeDisplay   from "./RelationshipTypeDisplay";
 
-//import ClassificationTypeDisplay from "./ClassificationTypeDisplay";
+import ClassificationTypeDisplay from "./ClassificationTypeDisplay";
 
 
 
@@ -48,6 +48,10 @@ export default function TypeDisplay() {
 
       case "Relationship":
         return <RelationshipTypeDisplay typeName={focusContext.view.typeName} />  
+        break;
+
+      case "Classification":
+        return <ClassificationTypeDisplay typeName={focusContext.view.typeName} />  
         break;
 
     }
