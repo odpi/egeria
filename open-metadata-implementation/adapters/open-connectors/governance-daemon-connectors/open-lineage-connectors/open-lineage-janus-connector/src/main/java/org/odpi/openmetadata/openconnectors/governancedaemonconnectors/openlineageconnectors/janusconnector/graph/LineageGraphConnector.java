@@ -127,7 +127,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 //        GraphTraversalSource g = lineageGraph.traversal();
         try {
             List<Vertex> vertices = g.V().has(PROPERTY_KEY_LABEL, PROCESS).toList();
-            List<String> guidList = vertices.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
+            List<String> guidList = vertices.stream().map(v ->  g.V(v.id()).elementMap(PROPERTY_KEY_ENTITY_GUID)
+                                                                   .toList().get(0)
+                                                                   .get(PROPERTY_KEY_ENTITY_GUID).toString()).collect(Collectors.toList());
 
             guidList.forEach(process -> findInputColumns(g,process));
             if(supportingTransactions) {
@@ -165,7 +167,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      */
     private void findOutputColumn(GraphTraversalSource g,Vertex columnIn,Vertex process){
         List<Vertex> schemaElementVertex = g.V()
-                .has(PROPERTY_KEY_ENTITY_GUID, columnIn.property(PROPERTY_KEY_ENTITY_GUID).value())
+                .has(PROPERTY_KEY_ENTITY_GUID, g.V(columnIn.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID))
                 .in(LINEAGE_MAPPING)
                 .toList();
 
@@ -195,7 +197,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                     .otherV().inE(PORT_SCHEMA).otherV()
                     .inE(PORT_DELEGATION).otherV()
                     .inE(PROCESS_PORT).otherV()
-                    .has(PROPERTY_KEY_ENTITY_GUID, process.property(PROPERTY_KEY_ENTITY_GUID).value()).toList();
+                    .has(PROPERTY_KEY_ENTITY_GUID, g.V(process.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID)).toList();
 
             if (!initialProcess.isEmpty()) {
                 vertexToStart = v;
@@ -213,8 +215,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      */
     private void moveColumnProcessColumn(Vertex columnIn,Vertex columnOut,Vertex process){
         if (columnOut != null) {
-            String columnOutGuid = columnOut.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
-            String columnInGuid = columnIn.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
+            String columnOutGuid = g.V(columnOut.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID).toString();
+            String columnInGuid = g.V(columnIn.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID).toString();
             if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
                 addNodesAndEdgesForQuerying(columnIn,columnOut,process);
             }
@@ -231,8 +233,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
 //        GraphTraversalSource g = lineageGraph.traversal();
 
-        final String processGuid = process.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
-        final String processName = process.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString();
+        final String processGuid = g.V(process.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID).toString();
+        final String processName =  g.V(process.id()).elementMap(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toList().get(0).get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toString();
 
         Iterator<Vertex> t = g.V(columnIn.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).inV().has("processGuid",processGuid);
 
@@ -243,9 +245,13 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                                  .property(PROPERTY_KEY_DISPLAY_NAME, processName)
                                  .next();
 
-            columnIn.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, subProcess);
-            subProcess.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, columnOut);
-            subProcess.addEdge(EDGE_LABEL_INCLUDED_IN, process);
+            g.V(columnIn.id()).addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).to(g.V(subProcess.id())).next();
+            g.V(subProcess.id()).addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).to(g.V(columnOut.id())).next();
+            g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(process.id())).next();
+
+//            columnIn.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, subProcess);
+//            subProcess.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS, columnOut);
+//            subProcess.addEdge(EDGE_LABEL_INCLUDED_IN, process);
 
             addTableToProcessEdge(g,columnIn, process);
             addTableToProcessEdge(g,columnOut, process);
@@ -262,12 +268,14 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
         Iterator<Vertex> tableVertex = g.V(table.id()).outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).otherV();
         if(!tableVertex.hasNext()){
-            table.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS,process);
+            g.V(table.id()).addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).to(g.V(process.id())).next();
+
+//            table.addEdge(EDGE_LABEL_DATAFLOW_WITH_PROCESS,process);
         }
     }
 
     private Vertex getTable(Vertex asset){
-        Iterator<Vertex> table = g.V().has(PROPERTY_KEY_ENTITY_GUID,asset.property(PROPERTY_KEY_ENTITY_GUID).value())
+        Iterator<Vertex> table = g.V().has(PROPERTY_KEY_ENTITY_GUID,g.V(asset.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID))
                 .emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(RELATIONAL_TABLE),hasLabel(DATA_FILE));
 
         if (!table.hasNext()){
@@ -322,6 +330,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
 
          addPropertiesToVertex(from,fromEntity);
+         //TODO add properties to relationship
     }
 
     private void addPropertiesToVertex(Vertex vertex,LineageEntity lineageEntity){
