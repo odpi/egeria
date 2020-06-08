@@ -1,20 +1,40 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import React                  from "react";
+import React, { useContext }        from "react";
 
-import PropTypes              from "prop-types";
+import PropTypes                    from "prop-types";
 
-
+import { FocusContext }             from "../../contexts/FocusContext";
 
 import "./details-panel.scss";
+
+
 
 
 export default function ClassificationEntitiesDisplay(props) {
 
   const explorer           = props.expl;
 
+  const focusContext = useContext(FocusContext);
+
   
+  const formattedEntityName = (name) => {
+
+    let formattedEntity = (
+      <div>
+        <button className="linkable" id={name} onClick={entityLinkHandler}> {name} </button>
+      </div>
+    );
+    return formattedEntity;
+  }
+
+
+  const entityLinkHandler = (evt) => {
+    const typeName = evt.target.id;
+    focusContext.typeSelected("Entity",typeName);
+  };
+
 
   const expandEntities = (clsDef) => {
 
@@ -30,9 +50,7 @@ export default function ClassificationEntitiesDisplay(props) {
     const validEntityNamesSorted = validEntityNames.sort();
    
     let entityList =  validEntityNamesSorted.map( (vename) => 
-    <li className="details-sublist-item" key={vename}> 
-       {vename}                 
-    </li>
+      <li className="details-sublist-item" key={vename}>  {formattedEntityName(vename)}  </li>
     );
 
     return entityList;
