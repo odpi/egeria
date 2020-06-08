@@ -54,7 +54,7 @@ export default function FocusControls(props) {
   /* 
    * When the focus is changed - this resets the view selectors
    */
-  const entitySelectorHandler = (e) => {    
+  const entityChangeHandler = (e) => {
     const typeName = e.target.value;    
     console.log("Entity selector with typeName "+typeName);
     resetRelTypeSelector();    
@@ -184,7 +184,7 @@ export default function FocusControls(props) {
     <div className="filterControls">  
                 
       <label htmlFor="entityTypeSelector">Entity Types:  </label>                                                                                                  
-      <select className="typeSelector" id="entityTypeSelector" name="entityTypeSelector" onChange={entitySelectorHandler}>
+      <select className="typeSelector" id="entityTypeSelector" name="entityTypeSelector" onChange={entityChangeHandler}>
         {
         entityTypesSorted === null && 
           ( <option value="dummy" disabled defaultValue>No types to display</option> )
