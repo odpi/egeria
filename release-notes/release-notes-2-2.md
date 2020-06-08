@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.11 (Planned August 2020)
+# Release 2.2 (Planned August 2020)
 
-Release 1.11 focuses on providing the secured self-service data access point
+Release 2.2 focuses on providing the secured self-service data access point
 for a data lake.  There are two main features:
 
   * **Metadata Controlled Security** where security tags based on the metadata attachments to the assets

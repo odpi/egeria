@@ -591,7 +591,7 @@ public class GovernanceLeadershipSample
         try
         {
             System.out.println("Sleeping ... to allow deletes to propagate");
-            Thread.sleep(100);
+            Thread.sleep(5000);
         }
         catch (InterruptedException exc)
         {

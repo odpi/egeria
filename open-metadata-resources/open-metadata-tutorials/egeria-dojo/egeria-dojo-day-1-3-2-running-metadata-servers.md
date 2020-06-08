@@ -10,6 +10,11 @@ In this session, you will learn how to work with a metadata server on the OMAG S
 ![Running Metadata Servers Content](egeria-dojo-day-1-3-2-running-metadata-servers.png)
 
 There are four parts to this section.  The links below take you to the content:
+However, before embarking on the session, you can watch this video
+showing docker compose and the open metadata labs: [https://youtu.be/nuRKPfRDKEc](https://youtu.be/nuRKPfRDKEc).
+This will give you an overview of process.
+
+Then follow along with the exercises below to try this out for yourself.
 
 * [Starting a server](egeria-dojo-day-1-3-2-1-starting-the-server.md)
 * [Calling the server API](egeria-dojo-day-1-3-2-2-calling-server-api.md)
