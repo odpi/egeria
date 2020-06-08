@@ -601,19 +601,18 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
         LineageVerticesAndEdges lineageVerticesAndEdges = null;
 
-        String[] edgeLabelsArray = new String[]{EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_DATAFLOW_WITH_PROCESS};
         switch (scope) {
             case SOURCE_AND_DESTINATION:
-                lineageVerticesAndEdges = helper.sourceAndDestination(guid, includeProcesses, edgeLabelsArray);
+                lineageVerticesAndEdges = helper.sourceAndDestination(guid, includeProcesses);
                 break;
             case END_TO_END:
-                lineageVerticesAndEdges = helper.endToEnd(guid, includeProcesses, edgeLabelsArray);
+                lineageVerticesAndEdges = helper.endToEnd(guid, includeProcesses, EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_DATAFLOW_WITH_PROCESS);
                 break;
             case ULTIMATE_SOURCE:
-                lineageVerticesAndEdges = helper.ultimateSource(guid, includeProcesses, edgeLabelsArray);
+                lineageVerticesAndEdges = helper.ultimateSource(guid, includeProcesses);
                 break;
             case ULTIMATE_DESTINATION:
-                lineageVerticesAndEdges = helper.ultimateDestination(guid, includeProcesses, edgeLabelsArray);
+                lineageVerticesAndEdges = helper.ultimateDestination(guid, includeProcesses);
                 break;
             case GLOSSARY:
                 lineageVerticesAndEdges = helper.glossary(guid, includeProcesses);
