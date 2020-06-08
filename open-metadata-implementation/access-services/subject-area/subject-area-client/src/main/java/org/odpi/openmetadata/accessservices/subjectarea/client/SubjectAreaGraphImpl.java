@@ -104,7 +104,7 @@ public class SubjectAreaGraphImpl extends SubjectAreaBaseImpl implements org.odp
         if (queryStringSB.length() > 1) {
             urlTemplate = urlTemplate + queryStringSB.toString();
         }
-        SubjectAreaOMASAPIResponse response = getRESTCall(userId, methodName, urlTemplate);
+        SubjectAreaOMASAPIResponse response = getByIdRESTCall(userId, guid,  methodName, urlTemplate);
         Graph graph = DetectUtils.detectAndReturnGraph(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);

@@ -24,6 +24,7 @@ public class UnrecognizedGUIDException extends GuidOrientatedException {
                                      String actionDescription,
                                      String guid) {
         super(messageDefinition, className, actionDescription, guid);
+        messageDefinition.setMessageParameters(guid);
     }
 
 
@@ -43,6 +44,7 @@ public class UnrecognizedGUIDException extends GuidOrientatedException {
                                      Throwable caughtError,
                                      String guid) {
         super(messageDefinition, className, actionDescription, caughtError, guid);
+        messageDefinition.setMessageParameters(guid);
     }
 
 }

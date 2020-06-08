@@ -313,7 +313,7 @@ public class FFDCRESTClientBase
     {
         try
         {
-            clientConnector.callDeleteRESTCall(methodName, returnClass, urlTemplate, null, params);
+           return clientConnector.callDeleteRESTCall(methodName, returnClass, urlTemplate, null, params);
         }
         catch (Throwable error)
         {

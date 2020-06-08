@@ -49,7 +49,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        final String urlTemplate = BASE_URL + "/%s";
+        final String urlTemplate = BASE_URL;
         SubjectAreaOMASAPIResponse response = postRESTCall(userId, methodName, urlTemplate, suppliedTerm);
         Term term = DetectUtils.detectAndReturnTerm(className, methodName, response);
         if (log.isDebugEnabled()) {
@@ -247,7 +247,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         final String urlTemplate = BASE_URL + "/%s";
-        SubjectAreaOMASAPIResponse response = restoreRESTCall(userId, methodName, urlTemplate, null);
+        SubjectAreaOMASAPIResponse response = restoreRESTCall(userId, guid, methodName, urlTemplate);
         Term term = DetectUtils.detectAndReturnTerm(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);

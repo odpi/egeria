@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.proje
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,19 +49,22 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        final String urlTemplate = BASE_URL + "/%s";
+        final String urlTemplate = BASE_URL;
         SubjectAreaOMASAPIResponse response = postRESTCall(userId, methodName, urlTemplate, suppliedProject);
         Project project = DetectUtils.detectAndReturnProject(className, methodName, response);
         // that the returned nodeType matches the requested one
         if (suppliedProject.getNodeType() != null && !suppliedProject.getNodeType().equals(project.getNodeType())) {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.UNEXPECTED_NODETYPE;
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition();
+            String propertyName = "NodeType";
+            String propertyValue = suppliedProject.getNodeType().name();
+            messageDefinition.setMessageParameters(propertyName,propertyValue);
             throw new InvalidParameterException(
-                    errorCode.getMessageDefinition(),
+                    messageDefinition,
                     className,
                     methodName,
-                    "Node type",
-                    project.getNodeType().name()
-            );
+                    propertyName,
+                    propertyValue);
         }
 
         if (log.isDebugEnabled()) {
@@ -315,7 +319,7 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         final String urlTemplate = BASE_URL + "/%s";
-        SubjectAreaOMASAPIResponse response = restoreRESTCall(userId, methodName, urlTemplate,null);
+        SubjectAreaOMASAPIResponse response = restoreRESTCall(userId, guid, methodName, urlTemplate);
 
         Project project = DetectUtils.detectAndReturnProject(className, methodName, response);
         if (log.isDebugEnabled()) {

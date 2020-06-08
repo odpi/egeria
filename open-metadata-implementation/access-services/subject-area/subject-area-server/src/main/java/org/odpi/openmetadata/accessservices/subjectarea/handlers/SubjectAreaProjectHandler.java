@@ -448,6 +448,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
                             }
                         } else {
                             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition();
+                            messageDefinition.setMessageParameters(guid);
                             response = new EntityNotDeletedExceptionResponse(
                                     new EntityNotDeletedException(messageDefinition,
                                                                   className,

@@ -222,7 +222,6 @@ public class GlossaryFVT {
         Glossary glossary = subjectAreaGlossary.getGlossaryByGuid(this.userId, guid);
         FVTUtils.validateNode(glossary);
         System.out.println("Got Glossary " + glossary.getName() + " with userId " + glossary.getSystemAttributes().getGUID() + " and status " + glossary.getSystemAttributes().getStatus());
-
         return glossary;
     }
 

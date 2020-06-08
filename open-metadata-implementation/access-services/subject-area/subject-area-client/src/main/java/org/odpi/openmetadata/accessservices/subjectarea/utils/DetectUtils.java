@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.proje
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 import java.util.List;
 
@@ -33,13 +34,18 @@ public class DetectUtils {
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.InvalidParameterException)) {
 
             InvalidParameterExceptionResponse response = (InvalidParameterExceptionResponse) restResponse;
-            SubjectAreaErrorCode subjectAreaErrorCode = SubjectAreaErrorCode.valueOf(response.getMessageId());
+            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.valueOf(response.getMessageId());
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition();
+            String propertyName =  response.getInvalidPropertyName();
+            String propertyValue = response.getInvalidPropertyValue();
+            messageDefinition.setMessageParameters(propertyName,propertyValue);
 
-            throw new InvalidParameterException(subjectAreaErrorCode.getMessageDefinition(),
+            throw new InvalidParameterException(errorCode.getMessageDefinition(),
                                                 response.getExceptionClassName(),
                                                 response.getActionDescription(),
-                                                response.getInvalidPropertyName(),
-                                                response.getInvalidPropertyValue());
+                                                propertyName,
+                                                propertyValue
+                                                );
         }
     }
 
@@ -96,8 +102,9 @@ public class DetectUtils {
             EntityNotDeletedExceptionResponse response = (EntityNotDeletedExceptionResponse) restResponse;
 
             SubjectAreaErrorCode subjectAreaErrorCode = SubjectAreaErrorCode.valueOf(response.getMessageId());
-
-            throw new EntityNotDeletedException(subjectAreaErrorCode.getMessageDefinition(),
+            ExceptionMessageDefinition messageDefinition = subjectAreaErrorCode.getMessageDefinition();
+            messageDefinition.setMessageParameters(response.getGuid());
+            throw new EntityNotDeletedException(messageDefinition,
                                                 response.getExceptionClassName(),
                                                 response.getActionDescription(),
                                                 response.getGuid());
@@ -134,8 +141,8 @@ public class DetectUtils {
 
             EntityNotPurgedExceptionResponse response = (EntityNotPurgedExceptionResponse) restResponse;
             SubjectAreaErrorCode subjectAreaErrorCode = SubjectAreaErrorCode.valueOf(response.getMessageId());
-
-            throw new EntityNotPurgedException(subjectAreaErrorCode.getMessageDefinition(),
+            ExceptionMessageDefinition messageDefinition =subjectAreaErrorCode.getMessageDefinition(response.getGuid());
+            throw new EntityNotPurgedException(messageDefinition,
                                                response.getExceptionClassName(),
                                                response.getActionDescription(),
                                                response.getGuid());
@@ -154,8 +161,8 @@ public class DetectUtils {
 
             RelationshipNotDeletedExceptionResponse response = (RelationshipNotDeletedExceptionResponse) restResponse;
             SubjectAreaErrorCode subjectAreaErrorCode = SubjectAreaErrorCode.valueOf(response.getMessageId());
-
-            throw new RelationshipNotDeletedException(subjectAreaErrorCode.getMessageDefinition(),
+            ExceptionMessageDefinition messageDefinition = subjectAreaErrorCode.getMessageDefinition(response.getGuid());
+            throw new RelationshipNotDeletedException(messageDefinition,
                                                       response.getExceptionClassName(),
                                                       response.getActionDescription(),
                                                       response.getGuid());
@@ -174,7 +181,7 @@ public class DetectUtils {
             RelationshipNotPurgedExceptionResponse response = (RelationshipNotPurgedExceptionResponse) restResponse;
             SubjectAreaErrorCode subjectAreaErrorCode = SubjectAreaErrorCode.valueOf(response.getMessageId());
 
-            throw new RelationshipNotPurgedException(subjectAreaErrorCode.getMessageDefinition(),
+            throw new RelationshipNotPurgedException(subjectAreaErrorCode.getMessageDefinition(response.getGuid()),
                                                response.getExceptionClassName(),
                                                response.getActionDescription(),
                                                response.getGuid());
@@ -209,9 +216,10 @@ public class DetectUtils {
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.UserNotAuthorizedException)) {
 
             UserNotAuthorizedExceptionResponse response = (UserNotAuthorizedExceptionResponse) restResponse;
-
             SubjectAreaErrorCode subjectAreaErrorCode = SubjectAreaErrorCode.valueOf(response.getMessageId());
-            throw new UserNotAuthorizedException(subjectAreaErrorCode.getMessageDefinition(),
+            ExceptionMessageDefinition messageDefinition = subjectAreaErrorCode.getMessageDefinition();
+
+            throw new UserNotAuthorizedException(messageDefinition,
                                                  response.getExceptionClassName(),
                                                  response.getActionDescription(),
                                                  response.getUserId());
@@ -438,8 +446,8 @@ public class DetectUtils {
         if (restResponse != null) {
             unexpectedResponseCategory = restResponse.getResponseCategory().name();
         }
-
-        throw new UnexpectedResponseException(errorCode.getMessageDefinition(),
+        ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition(unexpectedResponseCategory);
+        throw new UnexpectedResponseException(messageDefinition,
                                               className,
                                               actionDescription,
                                               unexpectedResponseCategory);

@@ -63,7 +63,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        final String urlTemplate = BASE_URL + "/%s";
+        final String urlTemplate = BASE_URL;
         SubjectAreaOMASAPIResponse response = postRESTCall(userId, methodName, urlTemplate, suppliedCategory);
         Category category = DetectUtils.detectAndReturnCategory(className, methodName, response);
         if (log.isDebugEnabled()) {
@@ -386,7 +386,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
         }
 
         final String urlTemplate = BASE_URL + "/%s";
-        SubjectAreaOMASAPIResponse response = restoreRESTCall(userId, methodName, urlTemplate, null);
+        SubjectAreaOMASAPIResponse response = restoreRESTCall(userId, guid, methodName, urlTemplate);
 
         Category category = DetectUtils.detectAndReturnCategory(className, methodName, response);
         if (log.isDebugEnabled()) {
@@ -420,7 +420,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        final String urlTemplate = BASE_URL + "/%s";
+        final String urlTemplate = BASE_URL;
         SubjectAreaOMASAPIResponse response = postRESTCall(userId, methodName, urlTemplate, suppliedSubjectAreaDefinition);
         SubjectAreaDefinition subjectAreaDefinition = DetectUtils.detectAndReturnSubjectAreaDefinition(className, methodName, response);
         if (log.isDebugEnabled()) {
@@ -635,7 +635,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         final String urlTemplate = BASE_URL + "/%s";
-        SubjectAreaOMASAPIResponse response = postRESTCall(userId, methodName, urlTemplate, null);
+        SubjectAreaOMASAPIResponse response = restoreRESTCall(userId, guid, methodName, urlTemplate);
         SubjectAreaDefinition subjectArea = DetectUtils.detectAndReturnSubjectAreaDefinition(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);

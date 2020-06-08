@@ -42,12 +42,12 @@ public class SubjectAreaImpl implements SubjectArea {
         InputValidator.validateRemoteServerNameNotNull(className, methodName, serverName);
         InputValidator.validateRemoteServerURLNotNull(className, methodName, omasServerURL);
         try {
-            this.glossaryAPI = new SubjectAreaGlossaryImpl(omasServerURL, serverName);
-            this.termAPI = new SubjectAreaTermImpl(omasServerURL, serverName);
-            this.categoryAPI = new SubjectAreaCategoryImpl(omasServerURL, serverName);
-            this.relationshipAPI = new SubjectAreaRelationshipImpl(omasServerURL, serverName);
-            this.graphAPI = new SubjectAreaGraphImpl(omasServerURL, serverName);
-            this.projectAPI = new SubjectAreaProjectImpl(omasServerURL, serverName);
+            this.glossaryAPI = new SubjectAreaGlossaryImpl( serverName, omasServerURL);
+            this.termAPI = new SubjectAreaTermImpl( serverName, omasServerURL);
+            this.categoryAPI = new SubjectAreaCategoryImpl( serverName, omasServerURL);
+            this.relationshipAPI = new SubjectAreaRelationshipImpl( serverName, omasServerURL);
+            this.graphAPI = new SubjectAreaGraphImpl( serverName, omasServerURL);
+            this.projectAPI = new SubjectAreaProjectImpl( serverName, omasServerURL);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             String parameterName = "serverName or omasServerURL";
             String parameterValue = "unknown";

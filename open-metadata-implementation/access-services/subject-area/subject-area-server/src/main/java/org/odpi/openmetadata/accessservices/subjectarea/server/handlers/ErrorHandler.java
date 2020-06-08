@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.handlers;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
@@ -28,7 +29,7 @@ public class ErrorHandler {
                                                                     String methodName,
                                                                     String serverName,
                                                                     String serviceName) {
-        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.USER_NOT_AUTHORIZED.getMessageDefinition();
+        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.USER_NOT_AUTHORIZED.getMessageDefinition(userId);
 
         UserNotAuthorizedException oe = new UserNotAuthorizedException(
                 messageDefinition,
@@ -100,14 +101,16 @@ public class ErrorHandler {
      * @return Invalid parameter response
      */
     public static SubjectAreaOMASAPIResponse handleInvalidParameterException(org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e, String methodName, String serverName, String serviceName) {
-        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.INVALID_PARAMETER.getMessageDefinition();
+        String propertyName = e.getParameterName();
+        String propertyValue = "unknown";
+        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.INVALID_PARAMETER.getMessageDefinition(propertyName, propertyValue);
 
         InvalidParameterException oe = new InvalidParameterException(
                 messageDefinition,
                 className,
                 methodName,
-                "",
-                null);
+                propertyName,
+                propertyValue);
         oe.setRelatedProperties(e.getRelatedProperties());
         return OMASExceptionToResponse.convertInvalidParameterException(oe);
     }
@@ -122,15 +125,19 @@ public class ErrorHandler {
      * @return InvalidParameterException response a parameter is not valid or missing.
      */
     public static SubjectAreaOMASAPIResponse handleTypeDefNotKnownException(String typeName, String methodName, String serverName, String serviceName) {
-        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.TYPEDEF_NOT_KNOWN.getMessageDefinition();
+        String propertyName = "typeName";
+        String propertyValue = typeName;
+
+
+        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.TYPEDEF_NOT_KNOWN.getMessageDefinition(propertyName, propertyValue);
         // specifying a typedef name that is not correct is a parameter error.
 
         InvalidParameterException oe = new InvalidParameterException(
                 messageDefinition,
                 className,
                 methodName,
-                "",
-                null);
+                propertyName,
+                propertyValue);
 
         return OMASExceptionToResponse.convertInvalidParameterException(oe);
     }
@@ -145,15 +152,21 @@ public class ErrorHandler {
      * @return InvalidParameterException response a parameter is not valid or missing.
      */
     public static SubjectAreaOMASAPIResponse handlePropertyErrorException(org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e, String methodName, String serverName, String serviceName) {
-        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.INVALID_PARAMETER.getMessageDefinition();
 
-        // property error
+        String propertyName = "unknown";
+        String propertyValue ="unknown";
+
+
+        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.INVALID_PARAMETER.getMessageDefinition(propertyName, propertyValue);
+        // specifying a typedef name that is not correct is a parameter error.
+
         InvalidParameterException oe = new InvalidParameterException(
                 messageDefinition,
                 className,
                 methodName,
-                "",
-                null);
+                propertyName,
+                propertyValue);
+
         oe.setRelatedProperties(e.getRelatedProperties());
         return OMASExceptionToResponse.convertInvalidParameterException(oe);
     }
@@ -246,14 +259,18 @@ public class ErrorHandler {
      * @return InvalidParameterException a parameter is not valid or missing response
      */
     public static SubjectAreaOMASAPIResponse handleTypeErrorException(org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException e, String methodName, String serverName, String serviceName) {
-        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.TYPEDEF_ERROR.getMessageDefinition();
+
+        String propertyName = "typeName";
+        String propertyValue = "unknown";
+        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.TYPEDEF_ERROR.getMessageDefinition(propertyName, propertyValue);
+        // specifying a typedef name that is not correct is a parameter error.
 
         InvalidParameterException oe = new InvalidParameterException(
                 messageDefinition,
                 className,
                 methodName,
-                "",
-                null);
+                propertyName,
+                propertyValue);
         return OMASExceptionToResponse.convertInvalidParameterException(oe);
     }
 
@@ -289,13 +306,11 @@ public class ErrorHandler {
         ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.PAGING_ERROR.getMessageDefinition();
 
 
-        InvalidParameterException oe = new InvalidParameterException(
+        PropertyServerException pse = new PropertyServerException(
                 messageDefinition,
                 className,
-                methodName,
-                "",
-                null);
-        return OMASExceptionToResponse.convertInvalidParameterException(oe);
+                methodName);
+        return OMASExceptionToResponse.convertPropertyServerException(pse);
     }
 
     /**
@@ -308,7 +323,9 @@ public class ErrorHandler {
      * @return UnrecognizedGUIDException response - GUID not recognized
      */
     public static SubjectAreaOMASAPIResponse handleRelationshipNotKnownException(String guid, String methodName, String serverName, String serviceName) {
-        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GUID_DOES_NOT_EXIST.getMessageDefinition();
+        String propertyName = "guid";
+        String propertyValue = guid;
+        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GUID_DOES_NOT_EXIST.getMessageDefinition(propertyName, propertyValue);
 
         UnrecognizedGUIDException oe = new UnrecognizedGUIDException(
                 messageDefinition,
@@ -377,7 +394,7 @@ public class ErrorHandler {
                                                                                    String serverName,
                                                                                    String serviceName
                                                                                   ) {
-        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GUID_NOT_DELETED_ERROR.getMessageDefinition();
+        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GUID_NOT_DELETED_ERROR.getMessageDefinition(guid);
 
         RelationshipNotDeletedException oe = new RelationshipNotDeletedException(
                 messageDefinition,
@@ -409,7 +426,7 @@ public class ErrorHandler {
 
     public static SubjectAreaOMASAPIResponse handleEntityNotPurgedException(String obsoleteGuid, String methodName, String serverName, String serviceName) {
         ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR.getMessageDefinition();
-
+        messageDefinition.setMessageParameters(obsoleteGuid);
         EntityNotPurgedException oe = new EntityNotPurgedException(
                 messageDefinition,
                 className,
@@ -420,7 +437,7 @@ public class ErrorHandler {
     }
 
     public static SubjectAreaOMASAPIResponse handleRelationshipNotPurgedException(String obsoleteGuid, String methodName, String serverName, String serviceName) {
-        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR.getMessageDefinition();
+        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR.getMessageDefinition(obsoleteGuid);
 
         RelationshipNotPurgedException oe = new RelationshipNotPurgedException(
                 messageDefinition,

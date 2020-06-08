@@ -172,6 +172,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      *
      * @param restAPIName rest API name
      * @param userId      userId under which the request is performed
+     * @param guid        unique identifier of the Line
      * @param className   class name
      * @param line        the relationship to update
      * @param isReplace   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -187,7 +188,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateLine(String restAPIName, String userId, String className, Line line, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateLine(String restAPIName, String userId, String guid, String className, Line line, boolean isReplace) {
         String methodName = "updateLine";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",className=" + className, ",isReplace=" + isReplace);
@@ -199,9 +200,8 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         ILineMapper mapper = bundle.getMapper();
 
         try {
-            String relationshipGuid = line.getGuid();
-            InputValidator.validateGUIDNotNull(className, methodName, relationshipGuid, "termGuid");
-            response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, relationshipGuid);
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "termGuid");
+            response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, guid);
             if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
                 Relationship originalRelationship = ((RelationshipResponse) response).getRelationship();
                 Relationship relationshipToUpdate = mapper.mapLineToRelationship(line);
@@ -233,11 +233,18 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                 if (relationshipToUpdate.getProperties() == null || relationshipToUpdate.getProperties().getPropertyCount() == 0) {
                     // nothing to update.
                     // TODO may need to change this logic if effectivity updates can be made through this call.
-                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.LINE_UPDATE_ATTEMPTED_WITH_NO_PROPERTIES.getMessageDefinition();
 
-                    response = new InvalidParameterExceptionResponse(
-                            new InvalidParameterException(messageDefinition, className, methodName, "properties", null)
-                    );
+                    String propertyName = "properties";
+                    String propertyValue = null;
+                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.LINE_UPDATE_ATTEMPTED_WITH_NO_PROPERTIES.getMessageDefinition(propertyName, propertyValue);
+                    InvalidParameterException invalidParameterException = new InvalidParameterException(
+                            messageDefinition,
+                            className,
+                            methodName,
+                            propertyName,
+                            propertyValue);
+
+                    response = new InvalidParameterExceptionResponse(invalidParameterException);
                 } else {
                     response = oMRSAPIHelper.callOMRSUpdateRelationship(restAPIName, userId, relationshipToUpdate);
                     if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {

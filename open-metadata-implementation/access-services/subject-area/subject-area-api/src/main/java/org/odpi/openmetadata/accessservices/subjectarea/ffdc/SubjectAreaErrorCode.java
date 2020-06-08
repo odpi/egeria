@@ -92,7 +92,7 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The system is unable to proceed with the create request, as it has unexpectly found a relationship to a glossary already exists.",
             "Raise a Git issue indicating that OMAS-SUBJECT-AREA-400-017 has been issued."),
     CREATE_WITH_NON_EXISTANT_GLOSSARY_GUID(400, "OMAS-SUBJECT-AREA-400-018",
-            "Glossary with userId {0} does not exist. Cannot create without a glossary",
+            "Glossary with guid {0} does not exist. Cannot create without a glossary",
             "The system is unable to process create request as the supplied glossary userId does not exist.",
             "Correct the code in the caller to create with a valid glossary userId."),
     GLOSSARY_TERM_CREATE_WITH_PROJECTS(400, "OMAS-SUBJECT-AREA-400-019",
@@ -249,6 +249,7 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The Subject Area Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
             "The access service has not been passed valid configuration for its out topic connection.",
             "Correct the topic configuration and restart the service."),
+
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECT-AREA-404-001",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to the open metadata property server.",

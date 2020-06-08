@@ -25,6 +25,7 @@ public class GuidOrientatedException extends SubjectAreaCheckedException {
                                    String guid) {
         super(messageDefinition, className, actionDescription);
         this.guid = guid;
+        messageDefinition.setMessageParameters(guid);
     }
 
 

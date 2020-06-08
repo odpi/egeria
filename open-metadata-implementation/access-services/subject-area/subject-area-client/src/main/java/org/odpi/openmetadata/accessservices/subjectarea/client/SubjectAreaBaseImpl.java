@@ -64,9 +64,10 @@ public class SubjectAreaBaseImpl extends FFDCRESTClient {
             QueryUtils.encodeQueryParam(propertyName, propertyValue, queryStringSB);
         } catch (UnsupportedEncodingException e) {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.ERROR_ENCODING_QUERY_PARAMETER;
-
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition();
+            messageDefinition.setMessageParameters(propertyName,propertyValue);
             throw new InvalidParameterException(
-                    errorCode.getMessageDefinition(),
+                    messageDefinition,
                     className,
                     methodName,
                     propertyName,
@@ -113,7 +114,7 @@ public class SubjectAreaBaseImpl extends FFDCRESTClient {
             // encode the string
             encodeQueryProperty("sequencingProperty", sequencingProperty, methodName, queryStringSB);
         }
-        String urlTemplate = serverPlatformURLRoot + base_url + "/%s/relationships";
+        String urlTemplate = base_url + "/%s/relationships";
 
         if (queryStringSB.length() > 0) {
             urlTemplate = urlTemplate + queryStringSB.toString();
@@ -131,12 +132,11 @@ public class SubjectAreaBaseImpl extends FFDCRESTClient {
         SubjectAreaOMASAPIResponse response;
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         try {
+            String expandedURL = String.format(serverPlatformURLRoot + urlTemplate, serverName, userId);
             response = callPostRESTCall(methodName,
                                         SubjectAreaOMASAPIResponse.class,
-                                        serverName + urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId);
+                                        expandedURL,
+                                        requestBody);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(e.getReportedHTTPCode(),
                                                                                           e.getReportedErrorMessageId(),
@@ -157,14 +157,11 @@ public class SubjectAreaBaseImpl extends FFDCRESTClient {
         SubjectAreaOMASAPIResponse response;
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         try {
+            String expandedURL = String.format(serverPlatformURLRoot + urlTemplate, serverName, userId, guid, isReplace);
             response = callPutRESTCall(methodName,
                                        SubjectAreaOMASAPIResponse.class,
-                                       serverName + urlTemplate,
-                                       requestBody,
-                                       serverName,
-                                       userId,
-                                       guid,
-                                       isReplace);
+                                       expandedURL,
+                                       requestBody);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(e.getReportedHTTPCode(),
                                                                                           e.getReportedErrorMessageId(),
@@ -187,37 +184,10 @@ public class SubjectAreaBaseImpl extends FFDCRESTClient {
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
         try {
+            String expandedURL = String.format(serverPlatformURLRoot + urlTemplate, serverName, userId, guid);
             response = callGetRESTCall(methodName,
                                        SubjectAreaOMASAPIResponse.class,
-                                       serverName + urlTemplate,
-                                       serverName,
-                                       userId,
-                                       guid);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
-            ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(e.getReportedHTTPCode(),
-                                                                                          e.getReportedErrorMessageId(),
-                                                                                          e.getMessage(),
-                                                                                          e.getReportedSystemAction(),
-                                                                                          e.getReportedUserAction()
-            );
-            throw new PropertyServerException(messageDefinition, className, methodName);
-
-        }
-        DetectUtils.detectAndThrowUserNotAuthorizedException(response);
-        DetectUtils.detectAndThrowInvalidParameterException(response);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(response);
-        return response;
-    }
-
-    protected SubjectAreaOMASAPIResponse getRESTCall(String userId, String methodName, String urlTemplate) throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException {
-        SubjectAreaOMASAPIResponse response;
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        try {
-            response = callGetRESTCall(methodName,
-                                       SubjectAreaOMASAPIResponse.class,
-                                       serverName + urlTemplate,
-                                       serverName,
-                                       userId);
+                                       expandedURL);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(e.getReportedHTTPCode(),
                                                                                           e.getReportedErrorMessageId(),
@@ -276,11 +246,10 @@ public class SubjectAreaBaseImpl extends FFDCRESTClient {
             urlTemplate = urlTemplate + queryStringSB.toString();
         }
         try {
+            String expandedURL = String.format(serverPlatformURLRoot + urlTemplate, serverName, userId);
             response = callGetRESTCall(methodName,
                                        SubjectAreaOMASAPIResponse.class,
-                                       serverName + urlTemplate,
-                                       serverName,
-                                       userId);
+                                       expandedURL);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(e.getReportedHTTPCode(),
                                                                                           e.getReportedErrorMessageId(),
@@ -306,8 +275,7 @@ public class SubjectAreaBaseImpl extends FFDCRESTClient {
 
 
     protected SubjectAreaOMASAPIResponse purgeEntityRESTCall(String userId, String guid, String methodName, String urlTemplate) throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, EntityNotPurgedException {
-        SubjectAreaOMASAPIResponse response;
-        response = deleteRESTCall(userId, guid, methodName, urlTemplate);
+        SubjectAreaOMASAPIResponse response = deleteRESTCall(userId, guid, methodName, urlTemplate);
         DetectUtils.detectAndThrowEntityNotPurgedException(response);
         return response;
     }
@@ -317,12 +285,10 @@ public class SubjectAreaBaseImpl extends FFDCRESTClient {
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
         try {
+            String expandedURL = String.format(serverPlatformURLRoot + urlTemplate, serverName, userId, guid);
             response = callDeleteRESTCall(methodName,
                                           SubjectAreaOMASAPIResponse.class,
-                                          serverName + urlTemplate,
-                                          serverName,
-                                          userId,
-                                          guid);
+                                          expandedURL);
 
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(e.getReportedHTTPCode(),
@@ -360,13 +326,11 @@ public class SubjectAreaBaseImpl extends FFDCRESTClient {
         InputValidator.validateUserIdNotNull(className, methodName, userId);
         InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
         try {
+            String expandedURL = String.format(serverPlatformURLRoot + urlTemplate, serverName, userId, guid);
             response = callPostRESTCall(methodName,
                                         SubjectAreaOMASAPIResponse.class,
-                                        serverName + urlTemplate,
-                                        null,
-                                        serverName,
-                                        userId,
-                                        guid);
+                                        expandedURL,
+                                       null);
 
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(e.getReportedHTTPCode(),

@@ -1492,7 +1492,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
         final String urlTemplate = base_url + "/%s";
-        return restoreRESTCall(userId, methodName, urlTemplate, null);
+        return restoreRESTCall(userId, guid, methodName, urlTemplate);
 
     }
 

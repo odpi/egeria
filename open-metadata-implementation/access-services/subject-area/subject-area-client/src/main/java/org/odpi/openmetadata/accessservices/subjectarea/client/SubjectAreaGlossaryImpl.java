@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,21 +47,24 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        final String urlTemplate = BASE_URL + "/%s";
+        final String urlTemplate = BASE_URL;
         SubjectAreaOMASAPIResponse response = postRESTCall(userId, methodName, urlTemplate, suppliedGlossary);
         Glossary glossary = DetectUtils.detectAndReturnGlossary(className, methodName, response);
         // that the returned nodeType matches the requested one
         if (suppliedGlossary.getNodeType() != null && !suppliedGlossary.getNodeType().equals(glossary.getNodeType())) {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.UNEXPECTED_NODETYPE;
 
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition();
+            String propertyName = "NodeType";
+            String propertyValue = suppliedGlossary.getNodeType().name();
+            messageDefinition.setMessageParameters(propertyName,propertyValue);
             throw new InvalidParameterException(
-                    errorCode.getMessageDefinition(),
+                    messageDefinition,
                     className,
                     methodName,
-                    "NodeType",
-                    suppliedGlossary.getNodeType().name()
+                    propertyName,
+                    propertyValue);
 
-            );
         }
 
         if (log.isDebugEnabled()) {
@@ -273,7 +277,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         final String urlTemplate = BASE_URL + "/%s";
-        SubjectAreaOMASAPIResponse response = restoreRESTCall(userId, methodName, urlTemplate, null);
+        SubjectAreaOMASAPIResponse response = restoreRESTCall(userId, guid, methodName, urlTemplate);
 
         Glossary glossary = DetectUtils.detectAndReturnGlossary(className, methodName, response);
         if (log.isDebugEnabled()) {

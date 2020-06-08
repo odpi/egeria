@@ -514,30 +514,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
         {
             log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and parameters " + Arrays.toString(params) + ".");
 
-            T  responseObject;
+            HttpEntity<?> request = new HttpEntity<>(requestBody);
 
-            if (basicAuthorizationHeader == null)
+            if (requestBody == null)
             {
-                responseObject = restTemplate.postForObject(urlTemplate, requestBody, returnClass, params);
+                // continue with a null body, we may want to fail this request here in the future.
+                log.warn("Poorly formed PUT call made by " + methodName);
             }
-            else
+            if (basicAuthorizationHeader != null)
             {
-                HttpEntity<?> request;
-
-                if (requestBody != null)
-                {
                     request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
-                }
-                else
-                {
-                    log.warn("Poorly formed PUT call made by " + methodName);
-                    request = new HttpEntity<>(basicAuthorizationHeader);
-                }
-
-                ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, returnClass, params);
-
-                responseObject = responseEntity.getBody();
             }
+
+            ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, returnClass, params);
+            T responseObject = responseEntity.getBody();
 
             if (responseObject != null)
             {
@@ -676,30 +666,13 @@ public class SpringRESTClientConnector extends RESTClientConnector
         {
             log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and parameters " + Arrays.toString(params) + ".");
 
-            T  responseObject = null;
-
-            if (basicAuthorizationHeader == null)
-            {
-                restTemplate.delete(urlTemplate, params);
+            // requestBody may be null
+            HttpEntity<?> request = new HttpEntity<>(requestBody) ;
+            if (basicAuthorizationHeader != null) {
+                request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
             }
-            else
-            {
-                HttpEntity<?> request;
-
-                if (requestBody != null)
-                {
-                    request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
-                }
-                else
-                {
-                    request = new HttpEntity<>(basicAuthorizationHeader);
-                }
-
-                ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.DELETE, request, returnClass, params);
-
-                responseObject = responseEntity.getBody();
-            }
-
+            ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.DELETE, request, returnClass, params);
+            T  responseObject = responseEntity.getBody();
             if (responseObject != null)
             {
                 log.debug("Returning from " + methodName + " with response object " + responseObject.toString() + ".");
