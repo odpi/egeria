@@ -27,7 +27,8 @@ export default function TypeDisplay() {
    * Once there is a focus type, display the type selected for the current view category (not simply the focus)
    */
 
-  if (focusContext.focus === "") {
+  //if (focusContext.focus === "") {
+  if (focusContext.view.typeName === "") {
 
     /* 
      * No entity type has been selected as the focus - display an 'empty' message
