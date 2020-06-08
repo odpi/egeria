@@ -21,6 +21,8 @@ focused on supporting all aspects of an organization's metadata integration and 
 Since these capabilities are still in development, this session will be a demonstration of the two UIs we have.
 At a later date, the dojo will be updated to include exercises where you can run them yourselves.
 
+Watch the presentation and demo: [https://youtu.be/gVNbqKjwH94](https://youtu.be/gVNbqKjwH94)
+
 ----
 * Progress to [Running governance servers](egeria-dojo-day-1-3-3-2-running-governance-servers.md)
 

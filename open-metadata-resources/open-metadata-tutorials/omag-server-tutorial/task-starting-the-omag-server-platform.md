@@ -44,14 +44,14 @@ The OMAG server platform first displays this banner and then initializes itself.
 When the initialization is complete, you will see this message:
 
 ```text
-Thu Jan 31 13:15:26 GMT 2019 OMAG server platform ready for configuration
+timestamp OMAG server platform ready for more configuration
 ```
 
 This means your OMAG server platform is running. 
 
 If you get an error that the port is in use, check for any applications using the same port. 
 
- Try the following command (replace 9443 accordingly if using a non standard port):
+Try the following command (replace 9443 accordingly if using a non standard port):
 
 ```bash
 $ curl --insecure -X GET https://localhost:9443/open-metadata/platform-services/users/test/server-platform/origin
