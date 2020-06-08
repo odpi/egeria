@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.10 (Planned July 2020)
+# Release 2.1 (Planned July 2020)
 
-Release 1.10 adds support for Governance Programs and Data Privacy initiatives.
+Release 2.1 adds support for Governance Programs and Data Privacy initiatives.
 This includes licenses, certification, terms and conditions governance
 
 Below are the highlights:

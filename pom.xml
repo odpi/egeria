@@ -136,7 +136,7 @@
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>2.5.0</kafka.version>
         <janus.version>0.5.2</janus.version>
-        <gremlin.version>3.4.6</gremlin.version>
+        <gremlin.version>3.4.7</gremlin.version>
         <netty.version>4.1.50.Final</netty.version>
         <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
         <spring.version>5.2.6.RELEASE</spring.version>
@@ -178,7 +178,7 @@
         <snappy.version>1.1.7.5</snappy.version>
         <snakeyaml.version>1.26</snakeyaml.version>
         <springdoc.version>1.4.0</springdoc.version>
-        <classgraph.version>4.8.81</classgraph.version>
+        <classgraph.version>4.8.83</classgraph.version>
         <swagger.version>2.1.2</swagger.version>
         <groovy.version>3.0.4</groovy.version>
         <micrometer-registry-prometheus.version>1.5.1</micrometer-registry-prometheus.version>
