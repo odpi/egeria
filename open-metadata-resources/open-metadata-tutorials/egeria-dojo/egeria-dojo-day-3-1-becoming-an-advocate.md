@@ -9,7 +9,9 @@ In this session, you will learn about how to become an advocate for the Egeria t
 
 ![Becoming an advocate](egeria-dojo-day-3-1-becoming-an-advocate.png)
 
+Watch the video to hear about being an Egeria advocates from the experts:
 
+* [https://youtu.be/zmr7H6Tk5BM](https://youtu.be/zmr7H6Tk5BM)
 
 ----
 * Progress to [Becoming a maintainer](egeria-dojo-day-3-2-becoming-a-maintainer.md)
