@@ -167,7 +167,7 @@
         <jsonld.version>0.13.0</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.14</commons-codec.version>
-        <json-sanitizer.version>1.2.0</json-sanitizer.version>
+        <json-sanitizer.version>1.2.1</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.6.1</oss.version>
         <spotbugs-annotations.version>4.0.3</spotbugs-annotations.version>
