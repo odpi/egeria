@@ -19,7 +19,7 @@ import java.util.List;
  * Services (OMVSs).
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/view-services")
+@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 
 @Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
         " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
@@ -39,7 +39,7 @@ public class ConfigViewServicesResource
      * @param serverName name of server
      * @return list of view service descriptions
      */
-    @GetMapping(path = "/configuration")
+    @GetMapping(path = "/view-services/configuration")
     public RegisteredOMAGServicesResponse getConfiguredViewServices(@PathVariable String userId,
                                                                     @PathVariable String serverName)
     {
@@ -53,7 +53,7 @@ public class ConfigViewServicesResource
      * @param serverName name of server
      * @return response containing the list of enabled view services
      */
-    @GetMapping()
+    @GetMapping("/view-services")
     public ViewServicesResponse getViewServices(@PathVariable String userId,
                                                 @PathVariable String serverName)
     {
@@ -73,7 +73,7 @@ public class ConfigViewServicesResource
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @PostMapping(path = "/{serviceURLMarker}")
+    @PostMapping(path = "/view-services/{serviceURLMarker}")
     public VoidResponse configureViewService(@PathVariable  String                 userId,
                                              @PathVariable  String                 serverName,
                                              @PathVariable  String                 serviceURLMarker,
@@ -95,7 +95,7 @@ public class ConfigViewServicesResource
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @PostMapping()
+    @PostMapping("/view-services")
     public VoidResponse configureAllViewServices(@PathVariable                  String              userId,
                                                  @PathVariable                  String              serverName,
                                                  @RequestBody                   OMAGServerClientConfig clientConfig)
@@ -113,7 +113,7 @@ public class ConfigViewServicesResource
      * OMAGInvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unusual state in the admin server.
      */
-    @DeleteMapping()
+    @DeleteMapping("/view-services")
     public VoidResponse clearAllViewServices(@PathVariable String          userId,
                                              @PathVariable String          serverName)
     {
@@ -132,7 +132,7 @@ public class ConfigViewServicesResource
      * OMAGInvalidParameterException invalid serverName or viewServicesConfig parameter or
      * OMAGConfigurationErrorException unusual state in the admin server.
      */
-    @PostMapping(path = "/configuration")
+    @PostMapping(path = "/view-services/configuration")
     public VoidResponse setViewServicesConfig(@PathVariable String                    userId,
                                               @PathVariable String                    serverName,
                                               @RequestBody  List<ViewServiceConfig> viewServicesConfig)
