@@ -78,10 +78,7 @@ public class GraphConstants {
     public static final String EDGE_LABEL_DATAFLOW_WITH_PROCESS = "DataFlowWithProcess";
 
     // CLASSIFICATION RELATED EDGE LABELS
-    public static final String EDGE_LABEL_ASSET_OWNERSHIP = "AssetOwnership";
-    public static final String EDGE_LABEL_ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
-    public static final String EDGE_LABEL_CONFIDENTIALITY = "Confidentiality";
-    public static final String EDGE_LABEL_SUBJECT_AREA = "SubjectArea";
+    public static final String EDGE_LABEL_CLASSIFICATION = "Classification";
 
     public static final String PROPERTY_KEY_ENTITY_NODE_ID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_NODE_ID;
     public static final String PROPERTY_KEY_ENTITY_GUID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_GUID;
