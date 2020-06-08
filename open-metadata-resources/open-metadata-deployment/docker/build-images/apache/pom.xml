@@ -9,7 +9,7 @@
     <parent>
         <artifactId>open-metadata-docker-build</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.8-SNAPSHOT</version>
+        <version>2.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -28,10 +28,6 @@
     <artifactId>open-metadata-docker-apache-build</artifactId>
 
     <packaging>pom</packaging>
-
-    <properties>
-        <apache.solr.version>7.7.2</apache.solr.version>
-    </properties>
 
     <modules>
         <module>atlas</module>

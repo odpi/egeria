@@ -14,7 +14,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.categ
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchorRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
@@ -29,6 +29,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidato
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -71,7 +72,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                       RepositoryHandler repositoryHandler,
                                       OMRSAPIHelper oMRSAPIHelper,
                                       RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper, errorHandler);
+        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper);
     }
 
     /**
@@ -154,14 +155,16 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             // need to check we have a name
             final String suppliedCategoryName = suppliedCategory.getName();
             if (suppliedCategoryName == null || suppliedCategoryName.equals("")) {
-                SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_WITHOUT_NAME;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
-                log.error(errorMessage);
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
+                ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_WITHOUT_NAME.getMessageDefinition();
+                throw new InvalidParameterException(messageDefinition,
+                                                    className,
+                                                    methodName,
+                                                    "Name",
+                                                    null);
             }
             GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
             SubjectAreaOMASAPIResponse glossaryResponse = validateGlossarySummaryDuringCreation(glossaryHandler, userId, methodName, suppliedGlossary);
-            if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Glossary)) {
+            if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Glossary)) {
                 // the glossary that was supplied is valid.
                 EntityDetail entityDetail = new CategoryMapper(oMRSAPIHelper).mapNodeToEntityDetail(suppliedCategory);
 
@@ -174,7 +177,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                     // get the associated glossary
                     Glossary associatedGlossary = ((GlossaryResponse) glossaryResponse).getGlossary();
                     String glossaryGuid = associatedGlossary.getSystemAttributes().getGUID();
-                    CategoryAnchorRelationship categoryAnchor = new CategoryAnchorRelationship();
+                    CategoryAnchor categoryAnchor = new CategoryAnchor();
                     categoryAnchor.setGlossaryGuid(glossaryGuid);
                     categoryAnchor.setCategoryGuid(categoryGuid);
                     Relationship categoryAnchorRelationship = new CategoryAnchorMapper(oMRSAPIHelper).mapLineToRelationship(categoryAnchor);
@@ -198,7 +201,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
         }
 
-
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
         }
@@ -210,12 +212,12 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
     
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the category to get. This could be a guid for a SubjectAreaDefintion, which is type of category
+     * @param guid       guid of the category to get. This could be a guid for a SubjectAreaDefinition, which is a type of category
      * @return response which when successful contains the category with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.
      * <li> InvalidParameterException            one of the parameters is null or invalid.
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised
      * </ul>
@@ -242,7 +244,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                     List<Relationship> glossaryRelationships = relationshipsResponse.getRelationships();
                     if (glossaryRelationships.iterator().hasNext()) {
                         Relationship glossaryRelationship = glossaryRelationships.iterator().next();
-                        CategoryAnchorRelationship categoryAnchor = (CategoryAnchorRelationship) new CategoryAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
+                        CategoryAnchor categoryAnchor = (CategoryAnchor) new CategoryAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
                         response = SubjectAreaUtils.getGlossarySummaryForCategory(methodName, userId, oMRSAPIHelper, categoryAnchor);
                         if (response.getResponseCategory().equals(ResponseCategory.GlossarySummary)) {
                             GlossarySummaryResponse glossarySummaryResponse = (GlossarySummaryResponse) response;
@@ -350,9 +352,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
     /**
      * Get Category relationships
      *
-    
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
+     * @param guid   guid of the category to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -494,7 +495,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the category was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteCategory(String userId, String guid, Boolean isPurge) {

@@ -113,7 +113,7 @@ public class TranslationMapper extends LineMapper
 
     /**
      * Get the relationship type def guid.
-     * @param relationship the relationship associated with the typedef whose guid is returned.
+     * @param relationship the relationship associated with the typedef whose userId is returned.
      * @return guid of the typedef
      */
     @Override
@@ -122,7 +122,7 @@ public class TranslationMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), TRANSLATION).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  TRANSLATION;
     }
     @Override

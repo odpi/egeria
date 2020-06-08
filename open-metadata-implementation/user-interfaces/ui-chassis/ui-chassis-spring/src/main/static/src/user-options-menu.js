@@ -29,6 +29,9 @@ class UserOptions extends PolymerElement {
             text-decoration: none;
             color: var(--egeria-secondary-color);
         }
+        paper-button {
+          text-transform: none;
+        }
       </style>
         <token-ajax id="userAjax" last-response="{{user}}" url="/api/users/current" auto></token-ajax>
         <div style="float: right">
@@ -42,7 +45,7 @@ class UserOptions extends PolymerElement {
                 <div class="avatar" slot="item-icon"></div>
             </paper-icon-item>
             <paper-listbox slot="dropdown-content" style="min-width: 200px">
-                <paper-item>Sign-in as:<br> [[user.username]]</paper-item>
+                <paper-item>Signed in as:<br> [[user.username]]</paper-item>
                 <hr>
                 <paper-item>Roles: [[user.roles]]</paper-item>
                 <hr>

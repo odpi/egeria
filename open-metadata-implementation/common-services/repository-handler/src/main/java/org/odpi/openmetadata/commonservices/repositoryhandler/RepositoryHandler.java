@@ -314,7 +314,7 @@ public class RepositoryHandler
                                         String                  externalSourceName,
                                         InstanceProperties      properties,
                                         String                  methodName) throws UserNotAuthorizedException,
-            PropertyServerException
+                                                                                   PropertyServerException
     {
         return this.createExternalEntity(userId,
                                          entityTypeGUID,
@@ -352,7 +352,7 @@ public class RepositoryHandler
                                         InstanceProperties      properties,
                                         List<Classification>    initialClassifications,
                                         String                  methodName) throws UserNotAuthorizedException,
-            PropertyServerException
+                                                                                   PropertyServerException
     {
         return this.createExternalEntity(userId,
                                          entityTypeGUID,
@@ -390,7 +390,7 @@ public class RepositoryHandler
                                         InstanceProperties      properties,
                                         InstanceStatus          instanceStatus,
                                         String                  methodName) throws UserNotAuthorizedException,
-            PropertyServerException
+                                                                                   PropertyServerException
     {
         return this.createExternalEntity(userId,
                                          entityTypeGUID,
@@ -402,6 +402,7 @@ public class RepositoryHandler
                                          instanceStatus,
                                          methodName);
     }
+
 
     /**
      * Create a new entity from an external source in the open metadata repository with the specified instance status.
@@ -429,7 +430,7 @@ public class RepositoryHandler
                                         List<Classification>    initialClassifications,
                                         InstanceStatus          instanceStatus,
                                         String                  methodName) throws UserNotAuthorizedException,
-            PropertyServerException
+                                                                                   PropertyServerException
     {
         try
         {
@@ -462,6 +463,7 @@ public class RepositoryHandler
 
         return null;
     }
+
 
     /**
      * Remove an entity attached to an anchor. There should be only one instance
@@ -1209,8 +1211,8 @@ public class RepositoryHandler
     public List<EntityDetail> getEntitiesForClassificationType(String userId,
                                                                String entityEntityTypeGUID,
                                                                String classificationName,
-                                                               int startingFrom,
-                                                               int pageSize,
+                                                               int    startingFrom,
+                                                               int    pageSize,
                                                                String methodName) throws    UserNotAuthorizedException,
                                                                                             PropertyServerException
     {

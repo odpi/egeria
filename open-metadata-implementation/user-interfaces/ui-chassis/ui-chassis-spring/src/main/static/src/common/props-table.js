@@ -4,10 +4,7 @@ import { PolymerElement, html } from '@polymer/polymer';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import { ItemViewBehavior} from '../common/item';
 import '@polymer/paper-listbox/paper-listbox.js';
-import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-item/paper-item-body';
-import '@polymer/paper-styles/paper-styles';
-import '@polymer/app-layout/app-grid/app-grid-style';
+import '@polymer/app-layout/app-grid/app-grid-style.js';
 
 import '../shared-styles.js';
 
@@ -51,12 +48,14 @@ class PropsTable extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
         .rTableRowGroup {
            display: table-row-group;
         }
-        
         .label {
             font-weight: bold;
-            width: 200px;
+            width: 250px;
+            padding-left: 15px;
         }
-        
+        h3 {
+            font-weight: normal;
+        }        
       </style>
       
         <h3>[[title]]</h3>
@@ -73,7 +72,8 @@ class PropsTable extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
                 <template>
                     <div class$="rTableRow [[_rowStripeClass(index)]]">
                         <div class="rTableCell label">[[item.key]]</div>
-                        <div class="rTableCell">[[item.value]]</div>
+                        <div class="rTableCell">
+                        [[item.value]]</div>
                     </div>
                 </template>
             </dom-repeat>

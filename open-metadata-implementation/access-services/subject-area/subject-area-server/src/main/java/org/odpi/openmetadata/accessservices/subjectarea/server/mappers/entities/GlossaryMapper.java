@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.CanonicalVocabulary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Taxonomy;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.CanonicalGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.CanonicalTaxonomy;
@@ -14,6 +15,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
@@ -73,16 +75,18 @@ public class GlossaryMapper extends EntityDetailMapper implements INodeMapper {
             mapEntityDetailToNode(glossary,entityDetail);
             return glossary;
         } else {
-            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.MAPPER_ENTITY_GUID_TYPE_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityDetail.getGUID(), entityTypeName, "Glossary");
-            log.error(errorMessage);
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
-
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.MAPPER_ENTITY_GUID_TYPE_ERROR.getMessageDefinition();
+            messageDefinition.setMessageParameters(entityDetail.getGUID(), entityTypeName, GLOSSARY);
+            throw new InvalidParameterException(messageDefinition,
+                                                className,
+                                                methodName,
+                                                "Node Type",
+                                                null);
         }
     }
     @Override
-    protected List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> getInlinedClassifications(Node node) {
-        List inlinedClassifications = new ArrayList<>();
+    protected List<Classification> getInlinedClassifications(Node node) {
+        List<Classification> inlinedClassifications = new ArrayList<>();
         if (node.getNodeType() == NodeType.TaxonomyAndCanonicalGlossary) {
             CanonicalTaxonomy canonicalTaxonomy = (CanonicalTaxonomy)node;
 
@@ -94,7 +98,7 @@ public class GlossaryMapper extends EntityDetailMapper implements INodeMapper {
             inlinedClassifications.add(canonicalVocabulary);
             // add to inlined classifications
         } else if (node.getNodeType() == NodeType.Taxonomy) {
-            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy taxonomy = ( org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy)node;
+            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy taxonomy = (org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy)node;
 
             Taxonomy taxonomyClassification = new Taxonomy();
             taxonomyClassification.setOrganizingPrinciple(taxonomy.getOrganizingPrinciple());

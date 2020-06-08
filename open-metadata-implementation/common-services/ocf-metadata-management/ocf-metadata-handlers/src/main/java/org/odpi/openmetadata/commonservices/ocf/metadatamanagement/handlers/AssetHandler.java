@@ -165,8 +165,8 @@ public class AssetHandler
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException problem from the verifier
      */
-    private List<String> getSupportedZones(String      userId,
-                                           String      serviceName) throws InvalidParameterException,
+    List<String> getSupportedZones(String userId,
+                                   String serviceName) throws InvalidParameterException,
                                                                            PropertyServerException
     {
         return securityVerifier.setSupportedZonesForUser(supportedZones, serviceName, userId);
@@ -297,6 +297,77 @@ public class AssetHandler
      * @param userId calling user
      * @param assetGUID unique
      * @param guidParameterName parameter that passed the guid
+     * @param expectedTypeName type name for the entity
+     * @param methodName calling method
+     *
+     * @return AssetConverter
+     * @throws InvalidParameterException the asset is not found
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    AssetConverter  retrieveAssetConverterFromRepositoryByGUID(String       userId,
+                                                               String       assetGUID,
+                                                               String       guidParameterName,
+                                                               String       expectedTypeName,
+                                                               String       methodName) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        EntityDetail assetEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                     assetGUID,
+                                                                     guidParameterName,
+                                                                     expectedTypeName,
+                                                                     methodName);
+
+        return new AssetConverter(assetEntity,
+                                  null,
+                                  repositoryHelper,
+                                  methodName);
+    }
+
+
+    /**
+     * Basic retrieval of an asset.  The connection relationship is passed to set up assetSummary.
+     * If it is null, assetSummary is null.
+     *
+     * @param userId calling user
+     * @param assetGUID unique
+     * @param guidParameterName parameter that passed the guid
+     * @param methodName calling method
+     *
+     * @return AssetConverter
+     * @throws InvalidParameterException the asset is not found
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    AssetConverter  retrieveAssetConverterFromRepositoryByGUID(String       userId,
+                                                               String       assetGUID,
+                                                               String       guidParameterName,
+                                                               String       methodName) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        EntityDetail assetEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                     assetGUID,
+                                                                     guidParameterName,
+                                                                     AssetMapper.ASSET_TYPE_NAME,
+                                                                     methodName);
+
+
+        return new AssetConverter(assetEntity,
+                                  null,
+                                  repositoryHelper,
+                                  methodName);
+    }
+
+
+    /**
+     * Basic retrieval of an asset.  The connection relationship is passed to set up assetSummary.
+     * If it is null, assetSummary is null.
+     *
+     * @param userId calling user
+     * @param assetGUID unique
+     * @param guidParameterName parameter that passed the guid
      * @param connectionRelationship optional link to connection in order to retrieve assetSummary
      * @param methodName calling method
      *
@@ -305,13 +376,13 @@ public class AssetHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private AssetConverter  retrieveAssetConverterFromRepositoryByGUID(String       userId,
-                                                                       String       assetGUID,
-                                                                       String       guidParameterName,
-                                                                       Relationship connectionRelationship,
-                                                                       String       methodName) throws InvalidParameterException,
-                                                                                                       PropertyServerException,
-                                                                                                       UserNotAuthorizedException
+    AssetConverter  retrieveAssetConverterFromRepositoryByGUID(String       userId,
+                                                               String       assetGUID,
+                                                               String       guidParameterName,
+                                                               Relationship connectionRelationship,
+                                                               String       methodName) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
     {
         EntityDetail assetEntity = repositoryHandler.getEntityByGUID(userId,
                                                                      assetGUID,
@@ -572,20 +643,23 @@ public class AssetHandler
      * @param schemaAttributes list of nested schema attribute objects or null
      * @param methodName calling method
      *
+     * @return unique identifier of the resulting schema type (or null if no asset supplied)
+     *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private  void saveAssociatedSchemaType(String                  userId,
-                                          Asset                    asset,
-                                          SchemaType               schemaType,
-                                          List<SchemaAttribute>    schemaAttributes,
-                                          String                   methodName) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+    String saveAssociatedSchemaType(String                  userId,
+                                  Asset                    asset,
+                                  SchemaType               schemaType,
+                                  List<SchemaAttribute>    schemaAttributes,
+                                  String                   methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
-        final String  assetGUIDParameter = "assetGUID";
+        final String  assetGUIDParameter = "asset.getGUID()";
 
+        String schemaTypeGUID = null;
         if (asset != null)
         {
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
@@ -599,10 +673,10 @@ public class AssetHandler
 
             if (schemaType != null)
             {
-                String schemaTypeGUID = schemaTypeHandler.saveSchemaType(userId,
-                                                                         schemaType,
-                                                                         schemaAttributes,
-                                                                         methodName);
+                schemaTypeGUID = schemaTypeHandler.saveSchemaType(userId,
+                                                                  schemaType,
+                                                                  schemaAttributes,
+                                                                  methodName);
 
                 if (schemaTypeGUID != null)
                 {
@@ -615,6 +689,8 @@ public class AssetHandler
                 }
             }
         }
+
+        return schemaTypeGUID;
     }
 
 
@@ -667,8 +743,39 @@ public class AssetHandler
 
 
     /**
-     * Create a simple relationship between a glossary term and an element in an Asset description (typically
-     * an attribute in the schema).
+     * Create relationships between the identified glossary terms and an Asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that is being described
+     * @param glossaryTermGUIDs list of unique identifiers of the glossary terms
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the guid properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public void  saveSemanticAssignments(String         userId,
+                                        String          assetGUID,
+                                        List<String>    glossaryTermGUIDs,
+                                        String          methodName)  throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        if (glossaryTermGUIDs != null)
+        {
+            for (String glossaryTermGUID : glossaryTermGUIDs)
+            {
+                if (glossaryTermGUID != null)
+                {
+                    this.saveSemanticAssignment(userId, assetGUID, glossaryTermGUID, methodName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Create a simple relationship between a glossary term and an Asset.
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that is being described
@@ -874,7 +981,6 @@ public class AssetHandler
     {
         final String  assetGUIDParameter = "assetGUID";
         final String  glossaryTermGUIDParameter = "glossaryTermGUID";
-        final String  assetElementGUIDParameter = "assetElementGUID";
 
         Asset  asset = this.retrieveAssetFromRepositoryByGUID(userId,
                                                               assetGUID,
@@ -938,6 +1044,49 @@ public class AssetHandler
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
+        return this.addAsset(userId,
+                             requestedTypeName,
+                             qualifiedName,
+                             displayName,
+                             description,
+                             additionalProperties,
+                             extendedProperties,
+                             null,
+                             methodName);
+    }
+
+
+    /**
+     * Add a simple asset description with connection to the metadata repository.
+     *
+     * @param userId calling user (assumed to be the owner)
+     * @param requestedTypeName specific type of the asset - this must match a defined subtype
+     * @param qualifiedName unique name for the asset in the catalog
+     * @param displayName display name for the asset in the catalog
+     * @param description description of the asset in the catalog
+     * @param additionalProperties user chosen additional properties
+     * @param extendedProperties properties for a subtype of asset
+     * @param connection connection for the asset
+     * @param methodName calling method
+     *
+     * @return unique identifier (guid) of the asset
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String  addAsset(String               userId,
+                            String               requestedTypeName,
+                            String               qualifiedName,
+                            String               displayName,
+                            String               description,
+                            Map<String, String>  additionalProperties,
+                            Map<String, Object>  extendedProperties,
+                            Connection           connection,
+                            String               methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
         Asset asset = createEmptyAsset(requestedTypeName, methodName);
 
         asset.setQualifiedName(qualifiedName);
@@ -946,9 +1095,69 @@ public class AssetHandler
         asset.setAdditionalProperties(additionalProperties);
         asset.setExtendedProperties(extendedProperties);
 
-        return this.addAsset(userId, asset, null, null, null, methodName);
+        return this.createAssetInRepository(userId,
+                                            asset,
+                                            null,
+                                            null,
+                                            connection,
+                                            null,
+                                            null,
+                                            methodName);
     }
 
+
+    /**
+     * Add a simple asset description with connection to the metadata repository.
+     *
+     * @param userId calling user (assumed to be the owner)
+     * @param requestedTypeName specific type of the asset - this must match a defined subtype
+     * @param qualifiedName unique name for the asset in the catalog
+     * @param displayName display name for the asset in the catalog
+     * @param description description of the asset in the catalog
+     * @param additionalProperties user chosen additional properties
+     * @param extendedProperties properties for a subtype of asset
+     * @param connection connection for the asset
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param methodName calling method
+     *
+     * @return unique identifier (guid) of the asset
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String  addExternalAsset(String               userId,
+                                    String               requestedTypeName,
+                                    String               qualifiedName,
+                                    String               displayName,
+                                    String               description,
+                                    Map<String, String>  additionalProperties,
+                                    Map<String, Object>  extendedProperties,
+                                    Connection           connection,
+                                    String               externalSourceGUID,
+                                    String               externalSourceName,
+                                    String               methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        Asset asset = createEmptyAsset(requestedTypeName, methodName);
+
+        asset.setQualifiedName(qualifiedName);
+        asset.setDisplayName(displayName);
+        asset.setDescription(description);
+        asset.setAdditionalProperties(additionalProperties);
+        asset.setExtendedProperties(extendedProperties);
+
+        return this.createAssetInRepository(userId,
+                                            asset,
+                                            null,
+                                            null,
+                                            connection,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+    }
 
 
     /**
@@ -972,12 +1181,14 @@ public class AssetHandler
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
     {
-        return this.addAsset(userId,
-                             asset,
-                             null,
-                             null,
-                             connection,
-                             methodName);
+        return this.createAssetInRepository(userId,
+                                            asset,
+                                            null,
+                                            null,
+                                            connection,
+                                            null,
+                                            null,
+                                            methodName);
     }
 
 
@@ -1009,6 +1220,254 @@ public class AssetHandler
                             String                  methodName) throws InvalidParameterException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
+    {
+        return this.createAssetInRepository(userId,
+                                            asset,
+                                            schemaType,
+                                            schemaAttributes,
+                                            connection,
+                                            null,
+                                            null,
+                                            methodName);
+    }
+
+
+    /**
+     * Add an external asset description to the metadata repository.  Null values for requested typename, ownership,
+     * zone membership and latest change are filled in with default values.
+     *
+     * @param userId calling userId
+     * @param asset object to add
+     * @param schemaType optional object to add
+     * @param schemaAttributes optional object to add
+     * @param connection optional object to add
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param methodName calling method
+     *
+     * @return unique identifier of the asset in the repository.  If a connection or schema object is provided,
+     *         it is stored linked to the asset.
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String  addExternalAsset(String                  userId,
+                                    Asset                   asset,
+                                    SchemaType              schemaType,
+                                    List<SchemaAttribute>   schemaAttributes,
+                                    Connection              connection,
+                                    String                  externalSourceGUID,
+                                    String                  externalSourceName,
+                                    String                  methodName) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        return this.createAssetInRepository(userId,
+                                            asset,
+                                            schemaType,
+                                            schemaAttributes,
+                                            connection,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+    }
+
+
+    /**
+     * Add a simple asset description to the metadata repository based on the values from the asset identified by the
+     * templateGUID.
+     *
+     * @param userId calling userId
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param expectedTypeName type (or super type of asset identified by templateGUID
+     * @param qualifiedName unique name for this database - must not be null
+     * @param displayName the stored display name property for the asset - if null, the value from the template is used
+     * @param description the stored description property associated with the asset - if null, the value from the template is used.
+     * @param methodName calling method
+     *
+     * @return unique identifier of the asset in the repository.  If a connection or schema object is provided,
+     *         it is stored linked to the asset.
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String  addAssetFromTemplate(String userId,
+                                        String templateGUID,
+                                        String expectedTypeName,
+                                        String qualifiedName,
+                                        String displayName,
+                                        String description,
+                                        String methodName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        final String assetGUIDParameterName = "templateGUID";
+
+        String assetGUID = null;
+
+        AssetConverter converter = this.retrieveAssetConverterFromRepositoryByGUID(userId,
+                                                                                   templateGUID,
+                                                                                   assetGUIDParameterName,
+                                                                                   expectedTypeName,
+                                                                                   methodName);
+
+        if (converter != null)
+        {
+            Asset templateAsset = converter.getAssetBean();
+
+            invalidParameterHandler.validateAssetInSupportedZone(templateGUID,
+                                                                 assetGUIDParameterName,
+                                                                 templateAsset.getZoneMembership(),
+                                                                 this.getSupportedZones(userId, serviceName),
+                                                                 serviceName,
+                                                                 methodName);
+
+            Asset newAsset = new Asset(templateAsset);
+
+            newAsset.setQualifiedName(qualifiedName);
+            if (displayName != null)
+            {
+                newAsset.setDisplayName(displayName);
+            }
+
+            if (description != null)
+            {
+                newAsset.setDescription(description);
+            }
+
+            assetGUID = this.createAssetInRepository(userId,
+                                                     newAsset,
+                                                     null,
+                                                     null,
+                                                     null,
+                                                     null,
+                                                     null,
+                                                     methodName);
+
+            this.addAttachmentsFromTemplate(userId, assetGUID, templateGUID);
+        }
+
+        return assetGUID;
+    }
+
+
+    /**
+     * Add a simple asset description to the metadata repository.  Null values for requested typename, ownership,
+     * zone membership and latest change are filled in with default values.
+     *
+     * @param userId calling userId
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param expectedTypeName type (or super type of asset identified by templateGUID
+     * @param qualifiedName unique name for this database - must not be null
+     * @param displayName the stored display name property for the database - if null, the value from the template is used
+     * @param description the stored description property associated with the database - if null, the value from the template is used.
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param methodName calling method
+     *
+     * @return unique identifier of the asset in the repository.  If a connection or schema object is provided,
+     *         it is stored linked to the asset.
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String  addExternalAssetFromTemplate(String userId,
+                                                String templateGUID,
+                                                String expectedTypeName,
+                                                String qualifiedName,
+                                                String displayName,
+                                                String description,
+                                                String externalSourceGUID,
+                                                String externalSourceName,
+                                                String methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String assetGUIDParameterName = "templateGUID";
+
+        String assetGUID = null;
+
+        AssetConverter converter = this.retrieveAssetConverterFromRepositoryByGUID(userId,
+                                                                                   templateGUID,
+                                                                                   assetGUIDParameterName,
+                                                                                   expectedTypeName,
+                                                                                   methodName);
+
+        if (converter != null)
+        {
+            Asset templateAsset = converter.getAssetBean();
+
+            invalidParameterHandler.validateAssetInSupportedZone(templateGUID,
+                                                                 assetGUIDParameterName,
+                                                                 templateAsset.getZoneMembership(),
+                                                                 this.getSupportedZones(userId, serviceName),
+                                                                 serviceName,
+                                                                 methodName);
+
+            Asset newAsset = new Asset(templateAsset);
+
+            newAsset.setQualifiedName(qualifiedName);
+            if (displayName != null)
+            {
+                newAsset.setDisplayName(displayName);
+            }
+
+            if (description != null)
+            {
+                newAsset.setDescription(description);
+            }
+
+            assetGUID = this.createAssetInRepository(userId,
+                                                     newAsset,
+                                                     null,
+                                                     null,
+                                                     null,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     methodName);
+
+            this.addAttachmentsFromTemplate(userId, assetGUID, templateGUID);
+        }
+
+        return assetGUID;
+    }
+
+
+    /**
+     * Add a simple asset description to the metadata repository.  Null values for requested typename, ownership,
+     * zone membership and latest change are filled in with default values.
+     *
+     * @param userId calling userId
+     * @param asset object to add
+     * @param schemaType optional object to add
+     * @param schemaAttributes optional object to add
+     * @param connection optional object to add
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - ignored
+     *                                  if externalSourceGUID is null
+     * @param externalSourceName name of the software server capability entity that represented the external source - ignored
+     *                           if externalSourceGUID is null
+     * @param methodName calling method
+     *
+     * @return unique identifier of the asset in the repository.  If a connection or schema object is provided,
+     *         it is stored linked to the asset.
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    private String  createAssetInRepository(String                  userId,
+                                            Asset                   asset,
+                                            SchemaType              schemaType,
+                                            List<SchemaAttribute>   schemaAttributes,
+                                            Connection              connection,
+                                            String                  externalSourceGUID,
+                                            String                  externalSourceName,
+                                            String                  methodName) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
     {
         final String  qualifiedNameParameter = "asset.qualifiedName";
 
@@ -1044,6 +1503,7 @@ public class AssetHandler
             asset.setZoneMembership(securityVerifier.initializeAssetZones(defaultZones, asset));
 
             // todo validate the zone to ensure it is a defined zone and in the supported zones list.
+            // todo this validation should also be done once at start up on the zone lists in the OMAS options.
 
             securityVerifier.validateUserForAssetCreate(userId, asset);
 
@@ -1072,11 +1532,27 @@ public class AssetHandler
                                                          serviceName,
                                                          serverName);
 
-            String assetGUID = repositoryHandler.createEntity(userId,
-                                                              assetTypeGUID,
-                                                              assetTypeName,
-                                                              assetBuilder.getInstanceProperties(methodName),
-                                                              methodName);
+            String assetGUID;
+            if (externalSourceGUID == null)
+            {
+                assetGUID = repositoryHandler.createEntity(userId,
+                                                           assetTypeGUID,
+                                                           assetTypeName,
+                                                           assetBuilder.getInstanceProperties(methodName),
+                                                           assetBuilder.getEntityClassifications(methodName),
+                                                           methodName);
+            }
+            else
+            {
+                assetGUID = repositoryHandler.createExternalEntity(userId,
+                                                                   assetTypeGUID,
+                                                                   assetTypeName,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   assetBuilder.getInstanceProperties(methodName),
+                                                                   assetBuilder.getEntityClassifications(methodName),
+                                                                   methodName);
+            }
 
             asset.setGUID(assetGUID);
 
@@ -1088,23 +1564,52 @@ public class AssetHandler
                                  assetBuilder.getOriginProperties(methodName),
                                  methodName);
 
-            this.saveAssociatedConnection(userId,
-                                          assetGUID,
-                                          asset.getShortDescription(),
-                                          connection,
-                                          methodName);
+            if (connection != null)
+            {
+                this.saveAssociatedConnection(userId,
+                                              asset,
+                                              asset.getShortDescription(),
+                                              connection,
+                                              methodName);
+            }
 
-            this.saveAssociatedSchemaType(userId,
-                                          assetGUID,
-                                          schemaType,
-                                          schemaAttributes,
-                                          methodName);
+            if (schemaType != null)
+            {
+                this.saveAssociatedSchemaType(userId,
+                                              asset,
+                                              schemaType,
+                                              schemaAttributes,
+                                              methodName);
+            }
 
             return assetGUID;
         }
 
         return null;
     }
+
+
+    /**
+     * Create equivalent relationships to attachments for a new asset that has been created from a template.
+     * The asset and template have already been checked as in the correct zone.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the newly created asset
+     * @param templateGUID unique identifier of the template asset
+     *
+     * @throws InvalidParameterException the guids or something related are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    private void addAttachmentsFromTemplate(String userId,
+                                            String assetGUID,
+                                            String templateGUID) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        // todo
+    }
+
 
 
     /**
@@ -1462,7 +1967,6 @@ public class AssetHandler
         AssetConverter converter = this.retrieveAssetConverterFromRepositoryByGUID(userId,
                                                                                    assetGUID,
                                                                                    assetGUIDParameterName,
-                                                                                   null,
                                                                                    methodName);
 
         if (converter != null)
@@ -1586,7 +2090,7 @@ public class AssetHandler
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
      * @param assetZones list of zones for the asset - these values override the current values - null means belongs
-     *                   to no zones.
+     *                   to all zones.
      * @param methodName calling method
      *
      * @throws InvalidParameterException guid or userId is null
@@ -1602,10 +2106,50 @@ public class AssetHandler
     {
         final String assetGUIDParameterName = "assetGUID";
 
+        this.updateAssetZones(userId,
+                              assetGUID,
+                              assetGUIDParameterName,
+                              ElementOrigin.LOCAL_COHORT,
+                              null,
+                              null,
+                              assetZones,
+                              methodName);
+    }
+
+
+    /**
+     * Update the zones for a specific asset. The method needs to build a before an after image of the
+     * asset to perform a security check before the update is pushed to the repository.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier for the asset to update
+     * @param parameterName name of the original guid parameter
+     * @param expectedElementOrigin type of origin
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param assetZones list of zones for the asset - these values override the current values - null means belongs
+     *                   to all zones.
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException guid or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateAssetZones(String        userId,
+                                 String        assetGUID,
+                                 String        parameterName,
+                                 ElementOrigin expectedElementOrigin,
+                                 String        externalSourceGUID,
+                                 String        externalSourceName,
+                                 List<String>  assetZones,
+                                 String        methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+
         AssetConverter converter = this.retrieveAssetConverterFromRepositoryByGUID(userId,
                                                                                    assetGUID,
-                                                                                   assetGUIDParameterName,
-                                                                                   null,
+                                                                                   parameterName,
                                                                                    methodName);
 
         if (converter != null)
@@ -1613,11 +2157,20 @@ public class AssetHandler
             Asset originalAsset = converter.getAssetBean();
 
             invalidParameterHandler.validateAssetInSupportedZone(assetGUID,
-                                                                 assetGUIDParameterName,
+                                                                 parameterName,
                                                                  originalAsset.getZoneMembership(),
                                                                  this.getSupportedZones(userId, serviceName),
                                                                  serviceName,
                                                                  methodName);
+
+            invalidParameterHandler.validateInstanceProvenanceForUpdate(assetGUID,
+                                                                        parameterName,
+                                                                        originalAsset,
+                                                                        expectedElementOrigin,
+                                                                        externalSourceGUID,
+                                                                        externalSourceName,
+                                                                        serviceName,
+                                                                        methodName);
 
             Asset updatedAsset = new Asset(originalAsset);
 
@@ -1660,6 +2213,30 @@ public class AssetHandler
     }
 
 
+    /**
+     * Add or replace the security tags for an asset or one of its elements.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
+     * @param securityLabels list of security labels defining the security characteristics of the element
+     * @param securityProperties Descriptive labels describing origin of the asset
+     * @param methodName calling method
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addSecurityTags(String                userId,
+                                 String                assetGUID,
+                                 String                assetElementGUID,
+                                 List<String>          securityLabels,
+                                 Map<String, Object>   securityProperties,
+                                 String                methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -1685,32 +2262,6 @@ public class AssetHandler
                                            ReferenceableMapper.SECURITY_TAG_TYPE_GUID,
                                            ReferenceableMapper.SECURITY_TAG_TYPE_NAME,
                                            methodName);
-    }
-
-
-    /**
-     * Add or replace the security tags for an asset or one of its elements.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier of asset
-     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
-     * @param securityLabels list of security labels defining the security characteristics of the element
-     * @param securityProperties Descriptive labels describing origin of the asset
-     * @param methodName calling method
-     * @throws InvalidParameterException entity not known, null userId or guid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public void  addSecurityTags(String                userId,
-                                 String                assetGUID,
-                                 String                assetElementGUID,
-                                 List<String>          securityLabels,
-                                 Map<String, Object>   securityProperties,
-                                 String                methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
-    {
-        // todo
     }
 
 
@@ -1768,7 +2319,6 @@ public class AssetHandler
         AssetConverter converter = this.retrieveAssetConverterFromRepositoryByGUID(userId,
                                                                                    assetGUID,
                                                                                    assetGUIDParameterName,
-                                                                                   null,
                                                                                    methodName);
 
         if (converter != null)
@@ -1870,9 +2420,49 @@ public class AssetHandler
                                                         PropertyServerException,
                                                         UserNotAuthorizedException
     {
-        final String assetGUIDParameterName  = "assetGUID";
-        final String validatingParameterName = "qualifiedName";
+        final String assetGUIDParameterName = "assetGUID";
 
+        this.removeAsset(userId,
+                         assetGUID,
+                         null,
+                         assetGUIDParameterName,
+                         ElementOrigin.LOCAL_COHORT,
+                         null,
+                         null,
+                         methodName);
+    }
+
+
+
+    /**
+     * Remove the requested Asset.  This also removes any connected Connection objects if they are not connected
+     * to any other asset definition.  This in turn may ripple down to deleting the endpoints, connector types and
+     * any embedded connections that would be left isolated.
+     *
+     * @param userId calling user
+     * @param assetGUID object to delete
+     * @param qualifiedName unique name to validate correct object is being deleted
+     * @param parameterName name of the original guid parameter
+     * @param expectedElementOrigin type of origin
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the entity guid is not known
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public void removeAsset(String        userId,
+                            String        assetGUID,
+                            String        qualifiedName,
+                            String        parameterName,
+                            ElementOrigin expectedElementOrigin,
+                            String        externalSourceGUID,
+                            String        externalSourceName,
+                            String        methodName) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException
+    {
         Asset asset = this.getValidatedVisibleAsset(userId,
                                                     this.getSupportedZones(userId, serviceName),
                                                     assetGUID,
@@ -1881,14 +2471,24 @@ public class AssetHandler
 
         if (asset != null)
         {
-            invalidParameterHandler.validateAssetInSupportedZone(assetGUID,
-                                                                 assetGUIDParameterName,
-                                                                 asset.getZoneMembership(),
-                                                                 this.getSupportedZones(userId, serviceName),
-                                                                 serviceName,
-                                                                 methodName);
-
             securityVerifier.validateUserForAssetDelete(userId, asset);
+
+            invalidParameterHandler.validateInstanceProvenanceForUpdate(assetGUID,
+                                                                        parameterName,
+                                                                        asset,
+                                                                        expectedElementOrigin,
+                                                                        externalSourceGUID,
+                                                                        externalSourceName,
+                                                                        serviceName,
+                                                                        methodName);
+
+            final String validatingParameterName = "qualifiedName";
+            String validatingParameter = asset.getQualifiedName();
+
+            if (qualifiedName != null)
+            {
+                validatingParameter = qualifiedName;
+            }
 
             // todo needs to delete much more than connection
             // todo discovery engine needs to delete discovery reports (listen for relationships)
@@ -1911,7 +2511,7 @@ public class AssetHandler
                                            AssetMapper.ASSET_TYPE_GUID,
                                            AssetMapper.ASSET_TYPE_NAME,
                                            validatingParameterName,
-                                           asset.getQualifiedName(),
+                                           validatingParameter,
                                            methodName);
 
             if (relationships != null)
@@ -2030,14 +2630,14 @@ public class AssetHandler
      * @throws UserNotAuthorizedException user is not authorized to access the asset.
      * @throws PropertyServerException problem managing the supported zones.
      */
-    protected  Referenceable  validatedVisibleReferenceable(String        userId,
-                                                            List<String>  supportedZones,
-                                                            String        guidParameterName,
-                                                            EntityDetail  retrievedEntity,
-                                                            String        serviceName,
-                                                            String        methodName) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    Referenceable  validatedVisibleReferenceable(String        userId,
+                                                 List<String>  supportedZones,
+                                                 String        guidParameterName,
+                                                 EntityDetail  retrievedEntity,
+                                                 String        serviceName,
+                                                 String        methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         Referenceable result = null;
 
@@ -2862,8 +3462,38 @@ public class AssetHandler
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
+        return this.getAssetsByName(userId, AssetMapper.ASSET_TYPE_GUID, name, startFrom, pageSize, methodName);
+    }
+
+
+    /**
+     * Return a list of assets with the requested name.
+     *
+     * @param userId calling user
+     * @param typeGUID unique identifier of the supertype to search for
+     * @param name name to search for
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param methodName calling method
+     *
+     * @return list of Asset summaries
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<Asset> getAssetsByName(String   userId,
+                                       String   typeGUID,
+                                       String   name,
+                                       int      startFrom,
+                                       int      pageSize,
+                                       String   methodName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
         final String nameParameterName = "name";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
@@ -2881,7 +3511,7 @@ public class AssetHandler
         {
             List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
                                                                                        builder.getQualifiedNameInstanceProperties(methodName),
-                                                                                       AssetMapper.ASSET_TYPE_GUID,
+                                                                                       typeGUID,
                                                                                        startFrom,
                                                                                        queryPageSize,
                                                                                        methodName);
@@ -2889,7 +3519,7 @@ public class AssetHandler
             {
                 retrievedEntities = repositoryHandler.getEntitiesByName(userId,
                                                                         builder.getNameInstanceProperties(methodName),
-                                                                        AssetMapper.ASSET_TYPE_GUID,
+                                                                        typeGUID,
                                                                         startFrom,
                                                                         queryPageSize,
                                                                         methodName);
@@ -3119,8 +3749,39 @@ public class AssetHandler
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
     {
+        return this.findAssets(userId, AssetMapper.ASSET_TYPE_GUID, searchString, startFrom, pageSize, methodName);
+    }
+
+
+    /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.
+     *
+     * @param userId calling user
+     * @param typeGUID unique identifier of the supertype to search for
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param methodName calling method
+     *
+     * @return list of assets that match the search string.
+     *
+     * @throws InvalidParameterException the searchString is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    public List<Asset>  findAssets(String userId,
+                                   String typeGUID,
+                                   String searchString,
+                                   int    startFrom,
+                                   int    pageSize,
+                                   String methodName) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException
+    {
         final String   searchParameter = "searchString";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchParameter, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
@@ -3139,7 +3800,7 @@ public class AssetHandler
         {
             List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
                                                                                        builder.getSearchInstanceProperties(methodName),
-                                                                                       AssetMapper.ASSET_TYPE_GUID,
+                                                                                       typeGUID,
                                                                                        startNextQueryFrom,
                                                                                        queryPageSize,
                                                                                        methodName);

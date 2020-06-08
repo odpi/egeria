@@ -222,7 +222,7 @@ public interface SubjectAreaGlossary
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws GUIDNotPurgedException a hard delete was issued but the glossary was not purged
+     * @throws EntityNotPurgedException a hard delete was issued but the glossary was not purged
      * @throws FunctionNotSupportedException Function not supported
      *
      * Client library Exceptions
@@ -234,7 +234,7 @@ public interface SubjectAreaGlossary
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
                                                                                     UnrecognizedGUIDException,
-                                                                                    GUIDNotPurgedException,
+                                                                                    EntityNotPurgedException,
                                                                                     UnexpectedResponseException,
                                                                                     FunctionNotSupportedException ;
     /**

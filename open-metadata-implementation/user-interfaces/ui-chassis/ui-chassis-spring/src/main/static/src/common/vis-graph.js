@@ -9,13 +9,14 @@ class VisGraph extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
-        <style>
           :host {
             display: block;
             box-sizing: border-box;
+            width: 100%;
           }
           
           #vis_container {
+            display: flex;
             width: 100%;
             height: 100%;
           }
@@ -99,7 +100,7 @@ class VisGraph extends PolymerElement {
             hierarchical: {
               enabled: true,
               levelSeparation: 300,
-              direction: 'RL'
+              direction: 'LR'
             }
           },
           physics: false,
@@ -137,16 +138,16 @@ class VisGraph extends PolymerElement {
   }
 
   setData(data) {
-    console.log('data: ' + data);
-    if(this.data === null || this.data === undefined )
-       this.data = {
-          nodes: {
-            type: vis.DataSet
-          },
-          edges: {
-            type: vis.DataSet
-          }
-        };
+    if(this.data === null || this.data === undefined ) {
+      this.data = {
+        nodes: {
+          type: vis.DataSet
+        },
+        edges: {
+          type: vis.DataSet
+        }
+      };
+    }
 
     this.data.nodes = data.nodes;
     this.data.edges = data.edges;
@@ -158,8 +159,21 @@ class VisGraph extends PolymerElement {
     this.network.on('click', function(params) {
       thisElement.handleSelectNode(params);
     });
+    this.network.on('stabilizationProgress', function(params) {
+      console.debug('graph stabilization in progress');
+    });
+
+    this.network.on('stabilizationIterationsDone', function(params) {
+      console.debug('graph stabilization is done');
+
+    });
+    this.network.on('stabilized', function(params) {
+      console.debug('stabilized!');
+
+    });
     this.network.fit();
-    //this.network.stabilize();
+    this.network.stabilize();
+    this.network.options.physics=false;
   }
 
   networkChanged(newNetwork) {

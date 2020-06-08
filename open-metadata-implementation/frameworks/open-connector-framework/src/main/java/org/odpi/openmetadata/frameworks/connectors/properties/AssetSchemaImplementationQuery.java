@@ -131,9 +131,9 @@ public class AssetSchemaImplementationQuery extends AssetPropertyBase
      * Return the query id - this is used to identify where the results of this query should be plugged into
      * the other queries or the formula for the parent derived schema element.
      *
-     * @return int query identifier
+     * @return string query identifier
      */
-    public int getQueryId() { return schemaImplementationQueryBean.getQueryId(); }
+    public String getQueryId() { return schemaImplementationQueryBean.getQueryId(); }
 
 
     /**

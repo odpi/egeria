@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-distribution</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.8-SNAPSHOT</version>
+        <version>2.0-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Assemblies</name>
@@ -43,7 +43,6 @@
                         <configuration>
                             <skipAssembly>false</skipAssembly>
                             <descriptors>
-                                <descriptor>src/main/assemblies/src-package.xml</descriptor>
                                 <descriptor>src/main/assemblies/egeria-omag.xml</descriptor>
                                 <descriptor>src/main/assemblies/egeria-deploy.xml</descriptor>
                             </descriptors>

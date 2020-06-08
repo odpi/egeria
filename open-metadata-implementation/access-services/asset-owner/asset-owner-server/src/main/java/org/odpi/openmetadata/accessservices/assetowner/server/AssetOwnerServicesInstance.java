@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetowner.server;
 
 
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerErrorCode;
-import org.odpi.openmetadata.accessservices.assetowner.handlers.FileSystemHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -21,14 +20,13 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_OWNER_OMAS;
 
-    private FileSystemHandler     fileSystemHandler;
-
     /**
      * Set up the local repository connector that will service the REST Calls.
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that AssetOwner is allowed to serve Assets from.
      * @param defaultZones list of zones that AssetOwner sets up in new Asset instances.
+     * @param publishZones list of zones that AssetOwner sets up in published Asset instances.
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize max number of results to return on single request.
@@ -37,6 +35,7 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
     public AssetOwnerServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                       List<String>            supportedZones,
                                       List<String>            defaultZones,
+                                      List<String>            publishZones,
                                       AuditLog                auditLog,
                                       String                  localServerUserId,
                                       int                     maxPageSize) throws NewInstanceException
@@ -45,22 +44,12 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
               repositoryConnector,
               supportedZones,
               defaultZones,
+              publishZones,
               auditLog,
               localServerUserId,
               maxPageSize);
 
-        if (repositoryHandler != null)
-        {
-            this.fileSystemHandler = new FileSystemHandler(serviceName,
-                                                           serverName,
-                                                           supportedZones,
-                                                           assetHandler,
-                                                           schemaTypeHandler,
-                                                           invalidParameterHandler,
-                                                           repositoryHandler,
-                                                           repositoryHelper);
-        }
-        else
+        if (repositoryHandler == null)
         {
             final String methodName = "new ServiceInstance";
 
@@ -69,16 +58,5 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
                                            methodName);
 
         }
-    }
-
-
-    /**
-     * Return the handler for file system requests.
-     *
-     * @return handler object
-     */
-    FileSystemHandler getFileSystemHandler()
-    {
-        return fileSystemHandler;
     }
 }
