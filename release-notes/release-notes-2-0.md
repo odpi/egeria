@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.9 (Planned June 2020)
+# Release 2.0 (Planned June 2020)
 
-Release 1.9 adds support for:
+Release 2.0 adds support for:
     * Data Science and AI model governance
     * Ethics governance
     * https/ssl

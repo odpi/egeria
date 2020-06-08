@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.13 (Planned October 2020)
+# Release 2.4 (Planned October 2020)
 
-Release 1.13 adds support for:
+Release 2.4 adds support for:
    * Project management of IT change
    * IoT and large scale cohorts
 
