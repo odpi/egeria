@@ -181,7 +181,9 @@ export default function FocusControls(props) {
 
   return (
 
-    <div className="filterControls">  
+    <div className="filterControls">
+
+      <p>Select Type to display</p>
                 
       <label htmlFor="entityTypeSelector">Entity Types:  </label>                                                                                                  
       <select className="typeSelector" id="entityTypeSelector" name="entityTypeSelector" onChange={entityChangeHandler}>
@@ -246,22 +248,6 @@ export default function FocusControls(props) {
           )                                         
         }      
       </select>
-
-
-      <p>Test buttons...</p>
-      <button  onClick = { showFocusViewState } >
-          Show Focus and View
-      </button>
-
-     
-      <button   onClick = { testFocusSwitch } >
-          Set focus to Asset
-      </button>
-
-   
-      <button   onClick = { testViewSwitch } >
-          Change view type
-      </button>
 
     </div>
 
