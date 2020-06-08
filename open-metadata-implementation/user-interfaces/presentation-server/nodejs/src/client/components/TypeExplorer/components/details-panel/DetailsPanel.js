@@ -43,11 +43,11 @@ import TypeDisplay         from "./TypeDisplay"
 * panel will be blank.
 *
 */
-export default function DetailsPanel(props) {
+export default function DetailsPanel() {
 
   return (
     
-    <div className={props.className}>       
+    <div className="details-panel">       
        <h2> Details Panel </h2>             
         <TypeDisplay />        
     </div>
@@ -56,6 +56,6 @@ export default function DetailsPanel(props) {
 }
 
 DetailsPanel.propTypes = {  
-  className  : PropTypes.string
+  //className  : PropTypes.string
 }
 

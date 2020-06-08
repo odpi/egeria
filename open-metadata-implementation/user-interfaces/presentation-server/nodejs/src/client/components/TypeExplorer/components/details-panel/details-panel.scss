@@ -1,6 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
+.details-panel {
+  width             : 430px;
+  height            : 1150px;
+  overflow          : auto;
+}
 
 .instance-details-container {
   text-align        : left;
@@ -45,7 +50,7 @@
 }
 
 .linkable {
-  background-color : #CCCCCC;
+  background-color : rgb(240,240,240);   
   color            : black;
   cursor           : pointer;
   padding          : 0px;
@@ -57,7 +62,7 @@
 }
 
 .collapsible {
-  background-color : #CCCCCC;
+  background-color :  rgb(240,240,240);   
   color            : black;
   cursor           : pointer;
   padding          : 5px;
@@ -72,7 +77,7 @@
   padding          : 10px 0px 10px 10px;
   display          : none;
   overflow         : hidden;
-  background-color : #CCCCCC;
+  background-color : rgb(240,240,240);   
 }
 
 .highlight {

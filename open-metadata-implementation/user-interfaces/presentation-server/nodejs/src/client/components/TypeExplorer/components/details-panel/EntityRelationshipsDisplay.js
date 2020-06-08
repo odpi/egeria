@@ -1,16 +1,25 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import React                  from "react";
+import React, { useContext }              from "react";
 
-import PropTypes              from "prop-types";
+import PropTypes                           from "prop-types";
 
+import { TypesContext }                    from "../../contexts/TypesContext";
 
+import { FocusContext }                    from "../../contexts/FocusContext";
+
+import RelationshipPropertiesDisplay       from "./RelationshipPropertiesDisplay";
 
 import "./details-panel.scss";
 
 
+
 export default function EntityRelationshipsDisplay(props) {
+
+  const typesContext = useContext(TypesContext);
+
+  const focusContext = useContext(FocusContext);
 
   const explorer           = props.expl;
 
@@ -44,18 +53,61 @@ export default function EntityRelationshipsDisplay(props) {
 
 
   
+  
+  
   const formatRelationship = (relationshipName, relationship) => {
     let formattedRelationship;
-    if (relationship.inherited) {
-      formattedRelationship = <div> <span className="italic">{relationshipName}</span> </div>;      
+    
+    if (relationship.inherited) {      
+      
+      formattedRelationship = (
+        <div>
+          <button className="collapsible" onClick={flipSection}> <span className="italic">{relationshipName}</span> </button>
+          <div className="content">
+            Attributes: 
+            <RelationshipPropertiesDisplay expl={typesContext.getRelationshipType(relationshipName)} />
+            <button className="linkable" id={relationshipName} onClick={relationshipLinkHandler}> More Details </button>
+          </div>
+        </div>
+      );   
     }
     else {
-      formattedRelationship = <div>{relationshipName} </div>;   
+      
+      formattedRelationship = (
+        <div>
+          <button className="collapsible" onClick={flipSection}> {relationshipName} </button>
+          <div className="content">
+            Attributes: 
+            <RelationshipPropertiesDisplay expl={typesContext.getRelationshipType(relationshipName)} />
+            <button className="linkable" id={relationshipName} onClick={relationshipLinkHandler}> More Details </button>
+          </div>
+        </div>
+        
+      );   
     }
+    
     return formattedRelationship
   };
 
-  
+
+  const flipSection = (evt) => {
+    // Important to use currentTarget (not target) - because we need to operate relative to the button,
+    // which is where the handler is defined, in order for the content section to be the sibling.
+    const element = evt.currentTarget;
+    element.classList.toggle("active");
+    const content = element.nextElementSibling;
+    if (content.style.display === "block") {
+        content.style.display = "none";
+    } else {
+        content.style.display = "block";
+    }
+  };
+
+  const relationshipLinkHandler = (evt) => {
+    const typeName = evt.target.id;
+    focusContext.typeSelected("Relationship",typeName);
+  };
+
 
 
   let relationships;
