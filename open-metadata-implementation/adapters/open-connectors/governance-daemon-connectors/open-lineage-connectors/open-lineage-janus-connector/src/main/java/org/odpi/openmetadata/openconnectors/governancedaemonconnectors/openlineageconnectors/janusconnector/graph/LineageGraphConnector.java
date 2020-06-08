@@ -599,11 +599,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                     errorCode.getUserAction());
         }
 
-        List<String> edgeLabels = Arrays.asList(EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_DATAFLOW_WITH_PROCESS);
-
         LineageVerticesAndEdges lineageVerticesAndEdges = null;
 
-        String[] edgeLabelsArray = edgeLabels.toArray(new String[0]);
+        String[] edgeLabelsArray = new String[]{EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_DATAFLOW_WITH_PROCESS};
         switch (scope) {
             case SOURCE_AND_DESTINATION:
                 lineageVerticesAndEdges = helper.sourceAndDestination(guid, includeProcesses, edgeLabelsArray);

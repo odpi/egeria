@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,6 +50,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.DESTINATION_CONDENSATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_ANTONYM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CONDENSED;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_DATAFLOW_WITH_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_IS_A_RELATIONSHIP;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_RELATED_TERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_REPLACEMENT_TERM;
@@ -56,6 +58,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SYNONYM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TRANSLATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_CONDENSED;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_GLOSSARYTERM;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_CONNECTION_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DATABASE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
@@ -72,7 +76,6 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.SOURCE_CONDENSATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.immutableReturnedPropertiesWhiteList;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 
 public class LineageGraphConnectorHelper {
 
@@ -98,8 +101,8 @@ public class LineageGraphConnectorHelper {
                 .repeat(inE(edgeLabels).subgraph("subGraph").outV().simplePath()).cap("subGraph").next();
 
         List<Vertex> sourcesList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                until(inE(edgeLabels).count().is(0)).
-                repeat(inE(edgeLabels).outV().simplePath()).
+                until(inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).count().is(0)).
+                repeat(inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).outV().simplePath()).
                 dedup().toList();
 
         return getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList), SOURCE_CONDENSATION, includeProcesses);
@@ -120,10 +123,9 @@ public class LineageGraphConnectorHelper {
         Graph destinationGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).until(outE(edgeLabels).count().is(0))
                 .repeat(outE(edgeLabels).subgraph("subGraph").inV().simplePath()).cap("subGraph").next();
 
-        List<Vertex> destinationsList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                until(outE(edgeLabels).count().is(0)).
-                repeat(outE(edgeLabels).inV().simplePath()).
-                dedup().toList();
+
+        List<Vertex> destinationsList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).until(outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).count().is(0)).
+                repeat(outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).inV().simplePath()).dedup().toList();
 
         return getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList), DESTINATION_CONDENSATION, includeProcesses);
     }
@@ -243,7 +245,7 @@ public class LineageGraphConnectorHelper {
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
 
         if (CollectionUtils.isEmpty(lineageVertices)) {
-            lineageVertices = Collections.singleton(queriedVertex);
+            lineageVertices = ultimateVertices;
         }
 
         addCondensation(lineageVertices, lineageEdges, ultimateVertices, queriedVertex, condensationType);
@@ -352,29 +354,22 @@ public class LineageGraphConnectorHelper {
 
         // only condense vertices if there is more than one process in the response graph
         if (subProcessVerticesNo > 1) {
+            Set<LineageVertex> verticesToRemove = getLineageVerticesToRemove(lineageVertices, lineageEdges, ultimateVertices, queriedVertex);
+            lineageVertices.removeAll(verticesToRemove);
+
+            Set<LineageEdge> edgesToRemove = getLineageEdgesToRemove(lineageEdges, verticesToRemove);
+            lineageEdges.removeAll(edgesToRemove);
+
             LineageVertex condensedVertex = new LineageVertex(getCondensedNodeId(condensationType), NODE_LABEL_CONDENSED);
             condensedVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
-
-            Set<LineageVertex> verticesToRemove = new HashSet<>();
-            lineageVertices.stream().filter(lineageVertex -> isVertexToBeCondensed(lineageVertex, queriedVertex, ultimateVertices)).forEach(lineageVertex -> {
-                LineageEdge newEdge = new LineageEdge(EDGE_LABEL_CONDENSED, condensedVertex.getNodeID(), lineageVertex.getNodeID());
-                verticesToRemove.add(lineageVertex);
-                lineageEdges.add(newEdge);
-            });
-
             lineageVertices.add(condensedVertex);
+
             LineageEdge sourceEdge = new LineageEdge(EDGE_LABEL_CONDENSED, queriedVertex.getNodeID(), condensedVertex.getNodeID());
             lineageEdges.add(sourceEdge);
 
             ultimateVertices.forEach(ultimateVertex -> lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED, condensedVertex.getNodeID(),
                     ultimateVertex.getNodeID())));
-
-            Set<LineageEdge> edgesToRemove = getLineageEdgesToRemove(lineageEdges, verticesToRemove);
-
-            lineageVertices.removeAll(verticesToRemove);
-            lineageEdges.removeAll(edgesToRemove);
         }
-
     }
 
     /**
@@ -395,8 +390,35 @@ public class LineageGraphConnectorHelper {
         return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
     }
 
-    private boolean isVertexToBeCondensed(LineageVertex lineageVertex, LineageVertex queriedVertex, Set<LineageVertex> ultimateVertices) {
-        return !queriedVertex.getGuid().equalsIgnoreCase(lineageVertex.getGuid()) && !ultimateVertices.contains(lineageVertex);
+    private Set<LineageVertex> getLineageVerticesToRemove(Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges,
+                                                          Set<LineageVertex> ultimateVertices,
+                                                          LineageVertex queriedVertex) {
+        Set<LineageVertex> verticesToRemove = new HashSet<>();
+        lineageVertices.stream().filter(lineageVertex -> isVertexToBeCondensed(lineageVertex, queriedVertex, ultimateVertices, lineageEdges))
+                .forEach(verticesToRemove::add);
+        return verticesToRemove;
+    }
+
+    private boolean isVertexToBeCondensed(LineageVertex lineageVertex, LineageVertex queriedVertex, Set<LineageVertex> ultimateVertices,
+                                          Set<LineageEdge> lineageEdges) {
+        if (queriedVertex.getGuid().equalsIgnoreCase(lineageVertex.getGuid()) || ultimateVertices.contains(lineageVertex)) {
+            return false;
+        }
+
+        return !isUltimateGlossary(lineageVertex, queriedVertex, lineageEdges, ultimateVertices);
+    }
+
+    private boolean isUltimateGlossary(LineageVertex lineageVertex, LineageVertex queriedVertex, Set<LineageEdge> lineageEdges,
+                                       Set<LineageVertex> ultimateVertices) {
+        if (!lineageVertex.getNodeType().equalsIgnoreCase(NODE_LABEL_GLOSSARYTERM)) {
+            return false;
+        }
+
+        Predicate<LineageVertex> isUltimateGlossary = ultimateVertex -> lineageEdges.contains(new LineageEdge(EDGE_LABEL_SEMANTIC_ASSIGNMENT,
+                lineageVertex.getNodeID(), ultimateVertex.getNodeID()));
+
+        return ultimateVertices.stream().anyMatch(isUltimateGlossary) || lineageEdges.contains(new LineageEdge(EDGE_LABEL_SEMANTIC_ASSIGNMENT,
+                lineageVertex.getNodeID(), queriedVertex.getNodeID()));
     }
 
     private Set<LineageEdge> getLineageEdgesToRemove(Set<LineageEdge> lineageEdges, Set<LineageVertex> verticesToRemove) {
