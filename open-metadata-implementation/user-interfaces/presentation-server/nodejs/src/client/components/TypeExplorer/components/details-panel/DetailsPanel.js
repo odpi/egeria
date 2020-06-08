@@ -47,8 +47,7 @@ export default function DetailsPanel() {
 
   return (
     
-    <div className="details-panel">       
-       <h2> Details Panel </h2>             
+    <div className="details-panel">
         <TypeDisplay />        
     </div>
   
