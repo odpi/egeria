@@ -19,7 +19,7 @@ export default function RelationshipEntitiesDisplay(props) {
   const formatEnd = (endDef) => {
     const endEntry = (
       <ul className="details-sublist">
-        <li className="details-sublist-item"> {endDef.entityType.name} </li>
+        <li className="details-sublist-item"> Entity Type : {endDef.entityType.name} </li>
         <li className="details-sublist-item"> Cardinality : {endDef.attributeCardinality} </li>
         <li className="details-sublist-item"> Attribute Name : {endDef.attributeName} </li>
       </ul>

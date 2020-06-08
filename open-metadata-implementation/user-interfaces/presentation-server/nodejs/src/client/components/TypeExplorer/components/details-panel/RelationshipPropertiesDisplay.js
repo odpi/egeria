@@ -80,9 +80,9 @@ export default function RelationshipPropertiesDisplay(props) {
 
   if (attributeEntries === undefined || attributeEntries === null || Object.keys(attributeEntries).length == 0) {
     properties = (
-      <div>
-        list is empty
-      </div>
+      <ul className="details-sublist">
+        <li className="details-sublist-item"> none </li>
+      </ul>
     )
   }
   else {
