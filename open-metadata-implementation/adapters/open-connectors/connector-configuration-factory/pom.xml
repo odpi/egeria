@@ -113,7 +113,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>configuration-file-store-connector</artifactId>
+            <artifactId>configuration-encrypted-file-store-connector</artifactId>
         </dependency>
 
         <dependency>
