@@ -92,21 +92,10 @@ class VisGraph extends PolymerElement {
             },
             arrows:'to'
           },
-          interaction: {
-            tooltipDelay: 200,
-            hideEdgesOnDrag: true
-          },
-          layout: {
-            hierarchical: {
-              enabled: true,
-              levelSeparation: 300,
-              direction: 'LR'
-            }
-          },
+          interaction: { type : Object },
+          layout: { type : Object },
           physics: false,
-          groups: {
-
-          }
+          groups: { type : Object }
         }
       },
 
