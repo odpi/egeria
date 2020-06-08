@@ -25,12 +25,17 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
     static get template() {
         return html`
       <style include="shared-styles">
+        :host {
+          display: flex;
+          flex-flow: column;
+          min-height: var(--egeria-view-min-height);
+        }
         #search { 
-             --iron-icon-fill-color: white;
+          --iron-icon-fill-color: white;
         }
         
         vaadin-grid {
-          height: calc(100vh - 160px);
+          flex-grow: 1;
         }
             
         .level0{ color: inherit;}
@@ -63,8 +68,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 </multiselect-combo-box>
            </div>
         </form>
-       </iron-form>
-       
+      </iron-form>
       <vaadin-grid id="grid" items="[[searchResp]]" theme="row-stripes"
                      column-reordering-allowed multi-sort>
             <vaadin-grid-column width="10em" resizable>
@@ -115,6 +119,8 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 <template>[[item.properties.qualifiedName]]</template>
             </vaadin-grid-column>
         </vaadin-grid>
+      
+     
                
     `;
     }

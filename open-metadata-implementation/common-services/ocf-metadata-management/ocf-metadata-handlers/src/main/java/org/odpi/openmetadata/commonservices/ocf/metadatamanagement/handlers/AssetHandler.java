@@ -643,20 +643,23 @@ public class AssetHandler
      * @param schemaAttributes list of nested schema attribute objects or null
      * @param methodName calling method
      *
+     * @return unique identifier of the resulting schema type (or null if no asset supplied)
+     *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private  void saveAssociatedSchemaType(String                  userId,
-                                          Asset                    asset,
-                                          SchemaType               schemaType,
-                                          List<SchemaAttribute>    schemaAttributes,
-                                          String                   methodName) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+    String saveAssociatedSchemaType(String                  userId,
+                                  Asset                    asset,
+                                  SchemaType               schemaType,
+                                  List<SchemaAttribute>    schemaAttributes,
+                                  String                   methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
-        final String  assetGUIDParameter = "assetGUID";
+        final String  assetGUIDParameter = "asset.getGUID()";
 
+        String schemaTypeGUID = null;
         if (asset != null)
         {
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
@@ -670,10 +673,10 @@ public class AssetHandler
 
             if (schemaType != null)
             {
-                String schemaTypeGUID = schemaTypeHandler.saveSchemaType(userId,
-                                                                         schemaType,
-                                                                         schemaAttributes,
-                                                                         methodName);
+                schemaTypeGUID = schemaTypeHandler.saveSchemaType(userId,
+                                                                  schemaType,
+                                                                  schemaAttributes,
+                                                                  methodName);
 
                 if (schemaTypeGUID != null)
                 {
@@ -686,6 +689,8 @@ public class AssetHandler
                 }
             }
         }
+
+        return schemaTypeGUID;
     }
 
 
@@ -1039,6 +1044,49 @@ public class AssetHandler
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
+        return this.addAsset(userId,
+                             requestedTypeName,
+                             qualifiedName,
+                             displayName,
+                             description,
+                             additionalProperties,
+                             extendedProperties,
+                             null,
+                             methodName);
+    }
+
+
+    /**
+     * Add a simple asset description with connection to the metadata repository.
+     *
+     * @param userId calling user (assumed to be the owner)
+     * @param requestedTypeName specific type of the asset - this must match a defined subtype
+     * @param qualifiedName unique name for the asset in the catalog
+     * @param displayName display name for the asset in the catalog
+     * @param description description of the asset in the catalog
+     * @param additionalProperties user chosen additional properties
+     * @param extendedProperties properties for a subtype of asset
+     * @param connection connection for the asset
+     * @param methodName calling method
+     *
+     * @return unique identifier (guid) of the asset
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String  addAsset(String               userId,
+                            String               requestedTypeName,
+                            String               qualifiedName,
+                            String               displayName,
+                            String               description,
+                            Map<String, String>  additionalProperties,
+                            Map<String, Object>  extendedProperties,
+                            Connection           connection,
+                            String               methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
         Asset asset = createEmptyAsset(requestedTypeName, methodName);
 
         asset.setQualifiedName(qualifiedName);
@@ -1051,12 +1099,65 @@ public class AssetHandler
                                             asset,
                                             null,
                                             null,
-                                            null,
+                                            connection,
                                             null,
                                             null,
                                             methodName);
     }
 
+
+    /**
+     * Add a simple asset description with connection to the metadata repository.
+     *
+     * @param userId calling user (assumed to be the owner)
+     * @param requestedTypeName specific type of the asset - this must match a defined subtype
+     * @param qualifiedName unique name for the asset in the catalog
+     * @param displayName display name for the asset in the catalog
+     * @param description description of the asset in the catalog
+     * @param additionalProperties user chosen additional properties
+     * @param extendedProperties properties for a subtype of asset
+     * @param connection connection for the asset
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param methodName calling method
+     *
+     * @return unique identifier (guid) of the asset
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String  addExternalAsset(String               userId,
+                                    String               requestedTypeName,
+                                    String               qualifiedName,
+                                    String               displayName,
+                                    String               description,
+                                    Map<String, String>  additionalProperties,
+                                    Map<String, Object>  extendedProperties,
+                                    Connection           connection,
+                                    String               externalSourceGUID,
+                                    String               externalSourceName,
+                                    String               methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        Asset asset = createEmptyAsset(requestedTypeName, methodName);
+
+        asset.setQualifiedName(qualifiedName);
+        asset.setDisplayName(displayName);
+        asset.setDescription(description);
+        asset.setAdditionalProperties(additionalProperties);
+        asset.setExtendedProperties(extendedProperties);
+
+        return this.createAssetInRepository(userId,
+                                            asset,
+                                            null,
+                                            null,
+                                            connection,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+    }
 
 
     /**
@@ -1402,7 +1503,7 @@ public class AssetHandler
             asset.setZoneMembership(securityVerifier.initializeAssetZones(defaultZones, asset));
 
             // todo validate the zone to ensure it is a defined zone and in the supported zones list.
-            // todo this validation should be done once at start up on the zone lists in the OMAS options.
+            // todo this validation should also be done once at start up on the zone lists in the OMAS options.
 
             securityVerifier.validateUserForAssetCreate(userId, asset);
 
@@ -1466,7 +1567,7 @@ public class AssetHandler
             if (connection != null)
             {
                 this.saveAssociatedConnection(userId,
-                                              assetGUID,
+                                              asset,
                                               asset.getShortDescription(),
                                               connection,
                                               methodName);
@@ -1475,7 +1576,7 @@ public class AssetHandler
             if (schemaType != null)
             {
                 this.saveAssociatedSchemaType(userId,
-                                              assetGUID,
+                                              asset,
                                               schemaType,
                                               schemaAttributes,
                                               methodName);

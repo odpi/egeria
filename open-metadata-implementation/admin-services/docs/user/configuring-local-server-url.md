@@ -23,7 +23,7 @@ in their URLs:
 ```
 
 The local server URL root is the content of the URL prior to `/servers/`.
-The default value is **"http://localhost:8080"**.
+The default value is **"https://localhost:9443"**.
 
 
 

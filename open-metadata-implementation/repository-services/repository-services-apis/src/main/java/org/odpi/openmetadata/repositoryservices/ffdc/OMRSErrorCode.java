@@ -185,8 +185,9 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The system declines to process the request lest it gives away its secret powers.",
             "The asOfTime is supplied by the caller to the API. This call needs to be corrected before the server will operate correctly."),
     BAD_TYPEDEF_IDS_FOR_DELETE(400, "OMRS-REPOSITORY-400-039",
-            "Incompatible TypeDef unique identifiers (name={0}, guid{1}) have been passed on a {2} request for instance {3} to open metadata repository {2}",
-            "The system is unable to perform the request because the unique identifier is needed.",
+            "Incompatible TypeDef unique identifiers (name={0}, guid{1}) have been passed on a {2} request for instance {3} to open metadata " +
+                    "repository {4}",
+            "The system is unable to perform the request because the unique identifiers are needed.",
             "Correct the caller's code and retry the request."),
     BAD_PROPERTY_FOR_INSTANCE(400, "OMRS-REPOSITORY-400-040",
             "An invalid property has been found in a metadata instance stored in repository {0} during the {1} operation",

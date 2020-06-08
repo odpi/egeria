@@ -75,8 +75,8 @@ public class CreateAvroFileAssetSample
 
         String  fileName = args[0];
         String  serverName = "cocoMDS1";
-        String  serverURLRoot = "http://localhost:8080";
-        String  clientUserId = "garygeeke";
+        String  serverURLRoot = "https://localhost:9444";
+        String  clientUserId = "peterprofile";
 
 
         if (args.length > 1)
