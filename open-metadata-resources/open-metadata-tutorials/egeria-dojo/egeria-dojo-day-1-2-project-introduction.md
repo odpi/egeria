@@ -11,6 +11,10 @@ the next session.
 
 ![Project Introduction Content](egeria-dojo-day-1-2-project-introduction.png)
 
+## Project Resources
+
+Watch the project overview video: [https://youtu.be/CN81aeSlWlU](https://youtu.be/CN81aeSlWlU)
+
 ## GitHub repositories
 
 [GitHub](https://github.com) is a public service for managing files - particularly files associated
