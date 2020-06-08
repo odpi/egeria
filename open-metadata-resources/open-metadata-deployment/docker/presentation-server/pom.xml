@@ -25,7 +25,7 @@
         Samples, Helm charts to deploy Egeria and associated components such as docker image build scripts
     </description>
 
-    <artifactId>open-metadata-docker-egeria</artifactId>
+    <artifactId>open-metadata-docker-presentation-server</artifactId>
 
     <packaging>pom</packaging>
 
