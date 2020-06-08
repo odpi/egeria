@@ -438,7 +438,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     /**
      * Deletes a classification of a vertex
      *
-     * @#param entityGuid entity guid
+     * @param entityGuid entity guid
      * @param classificationContext - any remaining classifications, empty map if none
      */
     @Override
