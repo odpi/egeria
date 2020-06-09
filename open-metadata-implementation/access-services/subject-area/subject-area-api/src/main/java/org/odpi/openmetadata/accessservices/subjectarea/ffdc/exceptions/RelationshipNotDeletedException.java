@@ -45,7 +45,6 @@ public class RelationshipNotDeletedException extends GuidOrientatedException {
                                            Throwable caughtError,
                                            String guid) {
         super(messageDefinition, className, actionDescription, caughtError, guid);
-        messageDefinition.setMessageParameters(guid);
     }
 
 }

@@ -447,8 +447,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
                                 response = getResponse(response);
                             }
                         } else {
-                            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition();
-                            messageDefinition.setMessageParameters(guid);
+                            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid);
                             response = new EntityNotDeletedExceptionResponse(
                                     new EntityNotDeletedException(messageDefinition,
                                                                   className,
