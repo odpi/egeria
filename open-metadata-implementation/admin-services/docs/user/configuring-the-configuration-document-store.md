@@ -54,9 +54,11 @@ using the following command.
 ```
 POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/stores/connection
 ```
+
 This passes in a connection used to create the connector to the configuration document storage
 in the request body.  For example, this is the connection that would
 set up the (unencrypted) file store connector:
+
 ```json
 {
     "class": "Connection",
@@ -70,6 +72,11 @@ set up the (unencrypted) file store connector:
     }
 }
 ```
+
+**Note:** in order to use any connector other than the default, you need to also ensure that
+the Connector and its ConnectorProvider class are available to the server platform (ie. the
+jar file containing them is available in the `LOADER_PATH` location of the server platform).
+
 Alternatively, this connection uses the default encrypted JSON file store, but the files
 are stored in a different location (`/my-config/omag.server.{0}.config`).
 
