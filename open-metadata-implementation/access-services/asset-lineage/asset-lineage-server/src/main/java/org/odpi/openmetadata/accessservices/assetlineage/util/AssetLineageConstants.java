@@ -56,6 +56,7 @@ public final class AssetLineageConstants {
     public static final String NESTED_FILE = "NestedFile";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";
     public static final String PROCESS_HIERARCHY = "ProcessHierarchy";
+    public static final String CLASSIFICATION = "Classification";
 
     public static final String CLASSIFICATION_NAME_CONFIDENTIALITY = "Confidentiality";
     public static final String CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";

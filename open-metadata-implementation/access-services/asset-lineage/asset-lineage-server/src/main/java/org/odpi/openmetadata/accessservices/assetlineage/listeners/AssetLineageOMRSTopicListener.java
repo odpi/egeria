@@ -17,11 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
-import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
+import org.odpi.openmetadata.repositoryservices.events.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +25,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_HIERARCHY;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.VALUE_FOR_ACTIVE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableValidLineageEntityEvents;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableValidLineageRelationshipTypes;
 
 /**
  * AssetLineageOMRSTopicListener received details of each OMRS event from the cohorts that the local server
@@ -111,10 +112,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                     processNewEntity(entityDetail);
                     break;
                 case UPDATED_ENTITY_EVENT:
-                    if (entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().getName().equals(VALUE_FOR_ACTIVE))
-                        processNewEntity(entityDetail);
-                    else
-                        processUpdatedEntity(entityDetail);
+                    EntityDetail originalEntity = instanceEvent.getOriginalEntity();
+                    processUpdatedEntity(entityDetail, originalEntity);
                     break;
                 case DELETED_ENTITY_EVENT:
                     processDeletedEntity(entityDetail);
@@ -150,19 +149,37 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private void processNewEntity(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
+
         log.debug(PROCESSING_ENTITYDETAIL_DEBUG_MESSAGE, "newEntity", entityDetail.getGUID());
-        if (entityDetail.getType().getTypeDefName().equals(PROCESS))
+
+        if (entityDetail.getType().getTypeDefName().equals(PROCESS)) {
             publisher.publishProcessContext(entityDetail);
-        else
+        } else {
             publisher.publishAssetContext(entityDetail);
+        }
     }
 
-    private void processUpdatedEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException {
+    private void processUpdatedEntity(EntityDetail entityDetail, EntityDetail originalEntity) throws OCFCheckedExceptionBase, JsonProcessingException {
+        if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName())) {
+            return;
+        }
+
         log.debug(PROCESSING_ENTITYDETAIL_DEBUG_MESSAGE, "updatedEntity", entityDetail.getGUID());
-        LineageEvent event = new LineageEvent();
-        event.setLineageEntity(converter.createLineageEntity(entityDetail));
-        event.setAssetLineageEventType(AssetLineageEventType.UPDATE_ENTITY_EVENT);
-        publisher.publishEvent(event);
+
+        if (isProcessStatusChangedToActive(entityDetail, originalEntity)) {
+            publisher.publishProcessContext(entityDetail);
+        } else {
+            LineageEvent event = new LineageEvent();
+            event.setLineageEntity(converter.createLineageEntity(entityDetail));
+            event.setAssetLineageEventType(AssetLineageEventType.UPDATE_ENTITY_EVENT);
+            publisher.publishEvent(event);
+        }
+    }
+
+    private boolean isProcessStatusChangedToActive(EntityDetail entityDetail, EntityDetail originalEntity) {
+        return entityDetail.getType().getTypeDefName().equals(PROCESS) &&
+                !originalEntity.getStatus().getName().equals(entityDetail.getStatus().getName())
+                && entityDetail.getStatus().getName().equals(VALUE_FOR_ACTIVE);
     }
 
     private void processDeletedEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException {
@@ -181,7 +198,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             return;
 
         log.debug(PROCESSING_ENTITYDETAIL_DEBUG_MESSAGE, "classifiedEntity", entityDetail.getGUID());
-        publisher.publishClassificationContext(entityDetail);
+        publisher.publishClassificationContext(entityDetail, AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT);
     }
 
     private void processReclassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
@@ -192,7 +209,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             return;
 
         log.debug(PROCESSING_ENTITYDETAIL_DEBUG_MESSAGE, "reclassifiedEntity", entityDetail.getGUID());
-        publisher.publishClassificationContext(entityDetail);
+        publisher.publishClassificationContext(entityDetail, AssetLineageEventType.RECLASSIFIED_ENTITY_EVENT);
     }
 
     private void processDeclassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
@@ -200,7 +217,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             return;
         log.debug(PROCESSING_ENTITYDETAIL_DEBUG_MESSAGE, "declassifiedEntity", entityDetail.getGUID());
         if (anyLineageClassificationsLeft(entityDetail)) {
-            publisher.publishClassificationContext(entityDetail);
+            publisher.publishClassificationContext(entityDetail, AssetLineageEventType.DECLASSIFIED_ENTITY_EVENT);
             return;
         }
         //The last relevant lineage classification has been removed from the entity

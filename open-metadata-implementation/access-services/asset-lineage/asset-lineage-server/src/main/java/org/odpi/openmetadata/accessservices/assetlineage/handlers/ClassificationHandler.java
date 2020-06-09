@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
 
 /**
@@ -73,8 +74,8 @@ public class ClassificationHandler {
         for (Classification classification : classifications) {
             LineageEntity classificationVertex = getClassificationVertex(classification, entityGUID);
             assetContext.addVertex(classificationVertex);
-            GraphContext graphContext = new GraphContext(classificationVertex.getTypeDefName(),
-                    classificationVertex.getGuid(), originalEntityVertex, classificationVertex);
+            GraphContext graphContext = new GraphContext(CLASSIFICATION, classificationVertex.getGuid(),
+                    originalEntityVertex, classificationVertex);
             assetContext.addGraphContext(graphContext);
         }
 

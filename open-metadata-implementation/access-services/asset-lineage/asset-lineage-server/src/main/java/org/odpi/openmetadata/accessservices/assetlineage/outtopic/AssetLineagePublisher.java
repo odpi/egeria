@@ -94,7 +94,8 @@ public class AssetLineagePublisher {
         publishEvent(event);
     }
 
-    public void publishClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+    public void publishClassificationContext(EntityDetail entityDetail, AssetLineageEventType assetLineageEventType)
+            throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> classificationContext = this.classificationHandler.buildClassificationContext(entityDetail);
         if (MapUtils.isEmpty(classificationContext)) {
             log.debug("No lineage classifications were found for the entity {} ", entityDetail.getGUID());
@@ -102,7 +103,7 @@ public class AssetLineagePublisher {
         }
         LineageEvent event = new LineageEvent();
         event.setAssetContext(classificationContext);
-        event.setAssetLineageEventType(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT);
+        event.setAssetLineageEventType(assetLineageEventType);
         publishEvent(event);
     }
 
