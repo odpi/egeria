@@ -114,7 +114,7 @@ If you would like to browse to see what is available then these pages may be of 
 The following articles may answer additional questions that you have.
 
 * [Where is the code?](https://github.com/odpi/egeria) - link to GitHub.
-* [Who is contributing?](https://lfanalytics.io/projects/5b554807-b041-4f98-a6ba-3306f688e05e/dashboard) - see the project activity by logging
+* [Who is contributing?](https://lfanalytics.io/projects/odpi%2Fegeria/dashboard) - see the project activity by logging
   in with your GitHub Account.
 * [How do I join the mailing list?](https://lists.odpi.org/g/odpi-project-egeria) - go to the sign up page.
 * [What is the ODPi?](https://www.odpi.org/) - visit their website.
