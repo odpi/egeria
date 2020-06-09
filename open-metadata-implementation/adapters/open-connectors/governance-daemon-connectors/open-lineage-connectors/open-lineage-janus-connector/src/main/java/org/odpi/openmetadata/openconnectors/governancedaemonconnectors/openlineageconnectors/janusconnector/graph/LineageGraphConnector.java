@@ -6,6 +6,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Column;
 import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
@@ -47,6 +48,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS_PORT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CLASSIFICATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_DATAFLOW_WITH_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_INCLUDED_IN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC_ASSIGNMENT;
@@ -399,6 +401,73 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         addOrUpdatePropertiesEdge(g,lineageRelationship);
     }
 
+    /**
+     * Updates the classification of a vertex
+     * @param classificationContext - LineageEntity object that has the updated values
+     */
+    @Override
+    public void updateClassification(Map<String, Set<GraphContext>> classificationContext){
+        if(classificationContext.entrySet().size() != 1){
+            log.debug("Unable to update classifications for no or multiple entities.");
+            return;
+        }
+
+        GraphTraversalSource g = lineageGraph.traversal();
+        Set<GraphContext> graphContexts = classificationContext.entrySet().iterator().next().getValue();
+        for (GraphContext graphContext : graphContexts) {
+            String classificationGuid = graphContext.getToVertex().getGuid();
+            Iterator<Vertex> vertexIterator = g.V().has(PROPERTY_KEY_ENTITY_GUID, classificationGuid);
+            if (!vertexIterator.hasNext()) {
+                log.debug("Classification with guid {} not found", classificationGuid);
+                g.tx().rollback();
+                continue;
+            }
+
+            Vertex storedClassification = vertexIterator.next();
+            long storedClassificationVersion = (long) storedClassification.property(PROPERTY_KEY_ENTITY_VERSION).value();
+            if (storedClassificationVersion < graphContext.getToVertex().getVersion()) {
+                addOrUpdatePropertiesVertex(g, storedClassification, graphContext.getToVertex());
+                break;
+            }
+        }
+    }
+
+    /**
+     * Deletes a classification of a vertex
+     *
+     * @param entityGuid entity guid
+     * @param classificationContext - any remaining classifications, empty map if none
+     */
+    @Override
+    public void deleteClassification(String entityGuid, Map<String, Set<GraphContext>> classificationContext){
+        if(classificationContext.entrySet().size() > 1){
+            log.debug("Unable to delete classifications for multiple entities.");
+            return;
+        }
+
+        Set<GraphContext> remainingClassifications = classificationContext.entrySet().iterator().next().getValue();
+
+        GraphTraversalSource g = lineageGraph.traversal();
+        Graph entityAndClassificationsGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, entityGuid).bothE(EDGE_LABEL_CLASSIFICATION)
+                .subgraph("s").cap("s").next();
+
+        Iterator<Edge> edges = entityAndClassificationsGraph.edges();
+
+        while(edges.hasNext()){
+            Edge edge = edges.next();
+            String storedClassificationGuid = (String)edge.inVertex().property(PROPERTY_KEY_ENTITY_GUID).value();
+            boolean classificationExists =  remainingClassifications.stream()
+                    .anyMatch(gc -> gc.getToVertex().getGuid().equals(storedClassificationGuid));
+            if(!classificationExists){
+                g.V().has(PROPERTY_KEY_ENTITY_GUID,storedClassificationGuid).drop();
+                g.E(edge.id()).drop();
+                g.tx().commit();
+
+                break;
+            }
+        }
+    }
+
     @Override
     public void deleteEntity(String guid,Object version){
         GraphTraversalSource g = lineageGraph.traversal();
@@ -599,7 +668,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                     errorCode.getUserAction());
         }
 
-        List<String> edgeLabels = Arrays.asList(EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_DATAFLOW_WITH_PROCESS);
+        List<String> edgeLabels = Arrays.asList(EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_DATAFLOW_WITH_PROCESS,
+                EDGE_LABEL_CLASSIFICATION);
 
         LineageVerticesAndEdges lineageVerticesAndEdges = null;
 

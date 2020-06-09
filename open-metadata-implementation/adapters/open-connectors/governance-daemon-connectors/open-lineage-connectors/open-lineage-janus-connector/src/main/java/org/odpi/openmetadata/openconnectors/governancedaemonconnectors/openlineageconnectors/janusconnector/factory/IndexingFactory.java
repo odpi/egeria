@@ -30,6 +30,7 @@ public class IndexingFactory {
      * @param propertyKeyName - the property name that is stored in the graph
      * @param unique - if the propery name is unique or not
      * @param graph - graph instance to create the indexes
+     * @param type - type
      */
     protected void createCompositeIndexForProperty(String propertyName,
                                                    String propertyKeyName,

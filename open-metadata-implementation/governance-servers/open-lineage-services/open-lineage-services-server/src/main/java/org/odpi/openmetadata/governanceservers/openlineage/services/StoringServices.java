@@ -10,7 +10,9 @@ import org.odpi.openmetadata.governanceservers.openlineage.scheduler.JobConfigur
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class StoringServices {
@@ -62,6 +64,14 @@ public class StoringServices {
     }
 
     /**
+     * Delegates the call for the update of a classification to the connector
+     */
+    public void updateClassification(LineageEvent lineageEvent){
+        log.debug("Open Lineage Services is processing an UpdateClassificationEvent event");
+        lineageGraph.updateClassification(lineageEvent.getAssetContext());
+    }
+
+    /**
      * Delegates the call for the deletion of an entity to the connector
      *
      */
@@ -72,5 +82,16 @@ public class StoringServices {
 
     public void deleteRelationship(LineageRelationshipEvent lineageRelationshipEvent) {
         lineageGraph.deleteRelationship(lineageRelationshipEvent.getLineageRelationship().getGuid());
+    }
+
+    /**
+     * Delegates the call to delete a classification to the connector
+     */
+    public void deleteClassification(LineageEvent lineageEvent){
+        log.debug("Open Lineage Services is processing an UpdateClassificationEvent event");
+        Map<String, Set<GraphContext>> empty = new HashMap<>();
+
+        lineageGraph.deleteClassification(lineageEvent.getLineageEntity().getGuid(),
+                lineageEvent.getAssetContext() == null ? empty : lineageEvent.getAssetContext() );
     }
 }
