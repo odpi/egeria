@@ -25,7 +25,6 @@ public class EntityNotPurgedException extends GuidOrientatedException {
                                     String actionDescription,
                                     String guid) {
         super(messageDefinition, className, actionDescription, guid);
-        messageDefinition.setMessageParameters(guid);
     }
 
 
