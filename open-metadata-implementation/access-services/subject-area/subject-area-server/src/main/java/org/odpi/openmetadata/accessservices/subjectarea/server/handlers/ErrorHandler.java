@@ -370,7 +370,7 @@ public class ErrorHandler {
                                                                              String serverName,
                                                                              String serviceName
                                                                             ) {
-        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GUID_NOT_DELETED_ERROR.getMessageDefinition();
+        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GUID_NOT_DELETED_ERROR.getMessageDefinition(guid);
 
         EntityNotDeletedException oe = new EntityNotDeletedException(
                 messageDefinition,
