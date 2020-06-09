@@ -37,7 +37,7 @@
         <dockerfile.build.noCache>true</dockerfile.build.noCache>
         <apache.atlas.version>2.0.0</apache.atlas.version>
         <apache.ranger.version>1.2.0</apache.ranger.version>
-        <apache.solr.version>7.7.2</apache.solr.version>
+        <apache.solr.version>8.5.1</apache.solr.version>
     </properties>
     <build>
         <plugins>
@@ -88,7 +88,6 @@
                 <module>apache-atlas</module>
                 <module>apache-ranger-admin</module>
                 <module>gaian</module>
-                <module>omrs-monitor</module>
             </modules>
         </profile>
         <profile>

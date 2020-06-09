@@ -372,7 +372,7 @@ public enum SubjectAreaErrorCode {
      * The constructor for SubjectAreaErrorCode expects to be passed one of the enumeration rows defined in
      * SubjectAreaErrorCode above.   For example:
      * <p>
-     * SubjectAreaErrorCode   errorCode = SubjectAreaErrorCode.ASSET_NOT_FOUND;
+     * SubjectAreaErrorCode   errorCode = SubjectAreaErrorCode.INVALID_PROJECT_DELETION;
      * <p>
      * This will expand out to the 5 parameters shown below.
      *

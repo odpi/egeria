@@ -2,17 +2,24 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareServerCapability;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 
 /**
  * FileSystem describes the root node of a file system.
  */
-public class FileSystem extends Asset
+public class FileSystem extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
+
+    private static String FILE_SYSTEM_CLASSIFICATION_NAME = "FileSystem";
+    private static String FORMAT_PROPERTY_NAME            = "format";
+    private static String ENCRYPTION_PROPERTY_NAME        = "encryption";
 
     private String              fileSystemType = null;
     private String              version = null;
@@ -48,6 +55,47 @@ public class FileSystem extends Asset
             source = template.getSource();
             format = template.getFormat();
             encryption = template.getEncryption();
+        }
+    }
+
+
+    /**
+     * Copy/clone constructor from OCF bean.
+     *
+     * @param template object to copy
+     */
+    public FileSystem(SoftwareServerCapability template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            fileSystemType = template.getTypeDescription();
+            version = template.getVersion();
+            patchLevel = template.getPatchLevel();
+            source = template.getSource();
+
+            List<Classification>  classifications = template.getClassifications();
+
+            if (classifications != null)
+            {
+                for (Classification classification : classifications)
+                {
+                    if (classification != null)
+                    {
+                        if (FILE_SYSTEM_CLASSIFICATION_NAME.equals(classification.getClassificationName()))
+                        {
+                            Map<String, Object>   properties = classification.getClassificationProperties();
+
+                            if (properties != null)
+                            {
+                                format     = properties.get(FORMAT_PROPERTY_NAME).toString();
+                                encryption = properties.get(ENCRYPTION_PROPERTY_NAME).toString();
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -193,28 +241,19 @@ public class FileSystem extends Asset
     public String toString()
     {
         return "FileSystem{" +
-                       "fileSystemType='" + fileSystemType + '\'' +
-                       ", version='" + version + '\'' +
-                       ", patchLevel='" + patchLevel + '\'' +
-                       ", source='" + source + '\'' +
-                       ", format='" + format + '\'' +
-                       ", encryption='" + encryption + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", shortDescription='" + getShortDescription() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", owner='" + getOwner() + '\'' +
-                       ", ownerType=" + getOwnerType() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", latestChange='" + getLatestChange() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", meanings=" + getMeanings() +
-                       ", type=" + getType() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", URL='" + getURL() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "fileSystemType='" + fileSystemType + '\'' +
+                ", version='" + version + '\'' +
+                ", patchLevel='" + patchLevel + '\'' +
+                ", source='" + source + '\'' +
+                ", format='" + format + '\'' +
+                ", encryption='" + encryption + '\'' +
+                ", typeName='" + getTypeName() + '\'' +
+                ", classifications=" + getClassifications() +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", meanings=" + getMeanings() +
+                ", extendedProperties=" + getExtendedProperties() +
+                '}';
     }
 
 

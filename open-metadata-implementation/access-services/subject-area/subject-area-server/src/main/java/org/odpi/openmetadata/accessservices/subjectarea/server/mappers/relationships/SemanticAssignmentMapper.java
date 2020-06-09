@@ -149,7 +149,7 @@ public class SemanticAssignmentMapper extends LineMapper
         return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), SEMANTIC_ASSIGNMENT).getGUID();
     }
     @Override
-    protected String getTypeName() {
+    public String getTypeName() {
         return  SEMANTIC_ASSIGNMENT;
     }
     @Override

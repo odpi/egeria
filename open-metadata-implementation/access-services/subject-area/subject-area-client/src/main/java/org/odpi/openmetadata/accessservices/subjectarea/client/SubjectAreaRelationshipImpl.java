@@ -91,11 +91,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermHASARelationship createTermHASARelationship(String userId, TermHASARelationship termHASARelationship) throws InvalidParameterException,
-                                                                                                                                               UserNotAuthorizedException,
-                                                                                                                                               MetadataServerUncontactableException,
-                                                                                                                                               UnexpectedResponseException,
-                                                                                                                                               UnrecognizedGUIDException
+    public Hasa createTermHASARelationship(String userId, Hasa termHASARelationship) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            MetadataServerUncontactableException,
+                                                                                            UnexpectedResponseException,
+                                                                                            UnrecognizedGUIDException
     {
         final String methodName = "createTermHASARelationship";
         if (log.isDebugEnabled()) {
@@ -116,7 +116,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
         DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
 
-        TermHASARelationship createdTermHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName,restResponse);
+        Hasa createdTermHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -128,8 +128,8 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermHASARelationship relationship to get
-     * @return TermHASARelationship
+     * @param guid   guid of the Hasa relationship to get
+     * @return Hasa
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
@@ -140,16 +140,16 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    public TermHASARelationship getTermHASARelationship(String userId,String guid) throws InvalidParameterException,
-                                                                                           MetadataServerUncontactableException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           UnexpectedResponseException,
-                                                                                           UnrecognizedGUIDException
+    public Hasa getTermHASARelationship(String userId, String guid) throws InvalidParameterException,
+                                                                           MetadataServerUncontactableException,
+                                                                           UserNotAuthorizedException,
+                                                                           UnexpectedResponseException,
+                                                                           UnrecognizedGUIDException
     {
         final String methodName = "getTermHASARelationship";
         final String urlTemplate = this.omasServerURL +BASE_RELATIONSHIPS_HASA_URL;
         SubjectAreaOMASAPIResponse restResponse = getRelationship(userId, guid, methodName,urlTemplate);
-        TermHASARelationship gotTermHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName,restResponse);
+        Hasa gotTermHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -172,7 +172,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermHASARelationship updateTermHASARelationship(String userId, TermHASARelationship termHASARelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    public Hasa updateTermHASARelationship(String userId, Hasa termHASARelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     {
         final String methodName = "updateTermHASARelationship";
         String requestBody = null;
@@ -183,7 +183,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_HASA_URL,requestBody,false);
-        TermHASARelationship updatedTermHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName,restResponse);
+        Hasa updatedTermHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -206,11 +206,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermHASARelationship replaceTermHASARelationship(String userId, TermHASARelationship termHASARelationship) throws InvalidParameterException,
-                                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                                MetadataServerUncontactableException,
-                                                                                                                                                UnexpectedResponseException,
-                                                                                                                                                UnrecognizedGUIDException
+    public Hasa replaceTermHASARelationship(String userId, Hasa termHASARelationship) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             MetadataServerUncontactableException,
+                                                                                             UnexpectedResponseException,
+                                                                                             UnrecognizedGUIDException
     {
         final String methodName = "replaceTermHASARelationship";
         String requestBody = null;
@@ -221,7 +221,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_HASA_URL,requestBody,true);
-        TermHASARelationship updatedTermHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName,restResponse);
+        Hasa updatedTermHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -234,8 +234,8 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermHASARelationship relationship to delete
-     * @return Deleted TermHASARelationship
+     * @param guid   guid of the Hasa relationship to delete
+     * @return Deleted Hasa
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -248,7 +248,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermHASARelationship deleteTermHASARelationship(String userId,String guid) throws
+    public Hasa deleteTermHASARelationship(String userId, String guid) throws
                                                                                        InvalidParameterException,
                                                                                        MetadataServerUncontactableException,
                                                                                        UserNotAuthorizedException,
@@ -260,7 +260,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         final String methodName = "deleteTermHASARelationship";
         final String urlTemplate = this.omasServerURL +BASE_RELATIONSHIPS_HASA_URL;
         SubjectAreaOMASAPIResponse restResponse = deleteRelationship(userId, guid, methodName,urlTemplate);
-        TermHASARelationship termHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName,restResponse);
+        Hasa termHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -274,7 +274,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermHASARelationship relationship to delete
+     * @param guid   guid of the Hasa relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -315,16 +315,16 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public TermHASARelationship restoreTermHASARelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    public Hasa restoreTermHASARelationship(String userId, String guid) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               MetadataServerUncontactableException,
+                                                                               UnexpectedResponseException,
+                                                                               UnrecognizedGUIDException
     {
         final String methodName = "restoreTermHASARelationship";
         final String urlTemplate = this.omasServerURL +BASE_RELATIONSHIPS_HASA_URL;
         SubjectAreaOMASAPIResponse restResponse = restoreRelationship(userId, guid, methodName,urlTemplate);
-        TermHASARelationship termHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName,restResponse);
+        Hasa termHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -2452,13 +2452,13 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
     }
 
     /**
-     *  Create a TermTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
+     *  Create a TypedBy relationship, which is defines the relationship between a spine attribute and its type.
      *
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
-     * @param termTYPEDBYRelationship the TermTYPEDBYRelationship relationship
+     * @param termTYPEDBYRelationship the TypedBy relationship
      * @return the created termTYPEDBYRelationship relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -2469,7 +2469,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermTYPEDBYRelationship createTermTYPEDBYRelationship(String userId, TermTYPEDBYRelationship termTYPEDBYRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    public TypedBy createTermTYPEDBYRelationship(String userId, TypedBy termTYPEDBYRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     {
         final String methodName = "createTermTYPEDBYRelationship";
         if (log.isDebugEnabled()) {
@@ -2491,7 +2491,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
         DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
 
-        TermTYPEDBYRelationship createdTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
+        TypedBy createdTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -2503,7 +2503,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the termTYPEDBY relationship to get
-     * @return TermTYPEDBYRelationship
+     * @return TypedBy
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
@@ -2514,29 +2514,29 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    public TermTYPEDBYRelationship getTermTYPEDBYRelationship(String userId,String guid) throws InvalidParameterException,
-                                                                                                             MetadataServerUncontactableException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             UnexpectedResponseException,
-                                                                                                             UnrecognizedGUIDException
+    public TypedBy getTermTYPEDBYRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                 MetadataServerUncontactableException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 UnexpectedResponseException,
+                                                                                 UnrecognizedGUIDException
     {
         final String methodName = "getTermTYPEDBYRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_TYPED_BY_URL;
         SubjectAreaOMASAPIResponse restResponse = getRelationship(userId, guid, methodName,url);
-        TermTYPEDBYRelationship gotTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
+        TypedBy gotTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
         return gotTermTYPEDBYRelationship;
     }
     /**
-     * Update a TermTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
+     * Update a TypedBy relationship, which is defines the relationship between a spine attribute and its type.
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
-     * @param termTYPEDBYRelationship the TermTYPEDBYRelationship relationship
-     * @return  TermTYPEDBYRelationship updated termTYPEDBYRelationship
+     * @param termTYPEDBYRelationship the TypedBy relationship
+     * @return  TypedBy updated termTYPEDBYRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -2547,11 +2547,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    public TermTYPEDBYRelationship updateTermTYPEDBYRelationship(String userId, TermTYPEDBYRelationship termTYPEDBYRelationship)  throws InvalidParameterException,
-                                                                                                                                                                                    MetadataServerUncontactableException,
-                                                                                                                                                                                    UserNotAuthorizedException,
-                                                                                                                                                                                    UnexpectedResponseException,
-                                                                                                                                                                                    UnrecognizedGUIDException {
+    public TypedBy updateTermTYPEDBYRelationship(String userId, TypedBy termTYPEDBYRelationship) throws InvalidParameterException,
+                                                                                                        MetadataServerUncontactableException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        UnexpectedResponseException,
+                                                                                                        UnrecognizedGUIDException {
         final String methodName = "updateTermTYPEDBYRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
@@ -2561,20 +2561,20 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_TYPED_BY_URL,requestBody,false);
-        TermTYPEDBYRelationship updatedTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
+        TypedBy updatedTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
         return updatedTermTYPEDBYRelationship;
     }
     /**
-     * Replace an TermTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
+     * Replace an TypedBy relationship, which is defines the relationship between a spine attribute and its type.
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
      * @param termTYPEDBYRelationship the termTYPEDBYRelationship relationship
-     * @return  TermTYPEDBYRelationship replaced termTYPEDBYRelationship
+     * @return  TypedBy replaced termTYPEDBYRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -2584,11 +2584,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermTYPEDBYRelationship replaceTermTYPEDBYRelationship(String userId, TermTYPEDBYRelationship termTYPEDBYRelationship)  throws InvalidParameterException,
-                                                                                                                                                                                     MetadataServerUncontactableException,
-                                                                                                                                                                                     UserNotAuthorizedException,
-                                                                                                                                                                                     UnexpectedResponseException,
-                                                                                                                                                                                     UnrecognizedGUIDException{
+    public TypedBy replaceTermTYPEDBYRelationship(String userId, TypedBy termTYPEDBYRelationship) throws InvalidParameterException,
+                                                                                                         MetadataServerUncontactableException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         UnexpectedResponseException,
+                                                                                                         UnrecognizedGUIDException{
         final String methodName = "updateTermTYPEDBYRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
@@ -2598,7 +2598,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_TYPED_BY_URL,requestBody,true);
-        TermTYPEDBYRelationship updatedTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
+        TypedBy updatedTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -2613,7 +2613,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the is a type of relationship to delete
-     * @return deleted TermTYPEDBYRelationship
+     * @return deleted TypedBy
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -2626,7 +2626,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermTYPEDBYRelationship deleteTermTYPEDBYRelationship(String userId,String guid) throws
+    public TypedBy deleteTermTYPEDBYRelationship(String userId, String guid) throws
                                                                                                          InvalidParameterException,
                                                                                                          MetadataServerUncontactableException,
                                                                                                          UserNotAuthorizedException,
@@ -2638,7 +2638,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         final String methodName = "deleteTermTYPEDBYRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_TYPED_BY_URL;
         SubjectAreaOMASAPIResponse restResponse = deleteRelationship(userId, guid, methodName,url);
-        TermTYPEDBYRelationship gotTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
+        TypedBy gotTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -2651,7 +2651,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermTYPEDBYRelationship relationship to delete
+     * @param guid   guid of the TypedBy relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -2696,16 +2696,16 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public TermTYPEDBYRelationship restoreTypedByRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    public TypedBy restoreTypedByRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 MetadataServerUncontactableException,
+                                                                                 UnexpectedResponseException,
+                                                                                 UnrecognizedGUIDException
     {
         final String methodName = "restoreeTermTYPEDBYRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_TYPED_BY_URL;
         SubjectAreaOMASAPIResponse restResponse = restoreRelationship(userId, guid, methodName,url);
-        TermTYPEDBYRelationship gotTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
+        TypedBy gotTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -2729,7 +2729,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public ISARelationship createIsaRelationship(String userId, ISARelationship isa) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    public Isa createIsaRelationship(String userId, Isa isa) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     {
         final String methodName = "createIsaRelationship";
         if (log.isDebugEnabled()) {
@@ -2751,7 +2751,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
         DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
 
-        ISARelationship createdIsa = DetectUtils.detectAndReturnISARelationship(methodName,restResponse);
+        Isa createdIsa = DetectUtils.detectAndReturnISARelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -2774,16 +2774,16 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    public ISARelationship getIsaRelationship(String userId,String guid) throws InvalidParameterException,
-                                                                                 MetadataServerUncontactableException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 UnexpectedResponseException,
-                                                                                 UnrecognizedGUIDException
+    public Isa getIsaRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                     MetadataServerUncontactableException,
+                                                                     UserNotAuthorizedException,
+                                                                     UnexpectedResponseException,
+                                                                     UnrecognizedGUIDException
     {
         final String methodName = "getIsaRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_IS_A_URL;
         SubjectAreaOMASAPIResponse restResponse = getRelationship(userId, guid, methodName,url);
-        ISARelationship gotIsa = DetectUtils.detectAndReturnISARelationship(methodName,restResponse);
+        Isa gotIsa = DetectUtils.detectAndReturnISARelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -2807,11 +2807,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    public ISARelationship updateIsaRelationship(String userId, ISARelationship isaRelationship)  throws InvalidParameterException,
-                                                                                                                            MetadataServerUncontactableException,
-                                                                                                                            UserNotAuthorizedException,
-                                                                                                                            UnexpectedResponseException,
-                                                                                                                            UnrecognizedGUIDException {
+    public Isa updateIsaRelationship(String userId, Isa isaRelationship) throws InvalidParameterException,
+                                                                                MetadataServerUncontactableException,
+                                                                                UserNotAuthorizedException,
+                                                                                UnexpectedResponseException,
+                                                                                UnrecognizedGUIDException {
         final String methodName = "updateIsaRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
@@ -2821,7 +2821,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_IS_A_URL,requestBody,false);
-        ISARelationship updatedIsaRelationship = DetectUtils.detectAndReturnISARelationship(methodName,restResponse);
+        Isa updatedIsaRelationship = DetectUtils.detectAndReturnISARelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -2844,11 +2844,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public ISARelationship replaceIsaRelationship(String userId, ISARelationship isaRelationship)  throws InvalidParameterException,
-                                                                                                                             MetadataServerUncontactableException,
-                                                                                                                             UserNotAuthorizedException,
-                                                                                                                             UnexpectedResponseException,
-                                                                                                                             UnrecognizedGUIDException{
+    public Isa replaceIsaRelationship(String userId, Isa isaRelationship) throws InvalidParameterException,
+                                                                                 MetadataServerUncontactableException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 UnexpectedResponseException,
+                                                                                 UnrecognizedGUIDException{
         final String methodName = "updateIsaRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
@@ -2858,7 +2858,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_IS_A_URL,requestBody,true);
-        ISARelationship updatedIsaRelationship = DetectUtils.detectAndReturnISARelationship(methodName,restResponse);
+        Isa updatedIsaRelationship = DetectUtils.detectAndReturnISARelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -2886,7 +2886,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public ISARelationship deleteIsaRelationship(String userId,String guid) throws
+    public Isa deleteIsaRelationship(String userId, String guid) throws
                                                                              InvalidParameterException,
                                                                              MetadataServerUncontactableException,
                                                                              UserNotAuthorizedException,
@@ -2898,7 +2898,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         final String methodName = "deleteIsaRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_IS_A_URL;
         SubjectAreaOMASAPIResponse restResponse = deleteRelationship(userId, guid, methodName,url);
-        ISARelationship gotIsa = DetectUtils.detectAndReturnISARelationship(methodName,restResponse);
+        Isa gotIsa = DetectUtils.detectAndReturnISARelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -2957,30 +2957,30 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public ISARelationship restoreIsaRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    public Isa restoreIsaRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         MetadataServerUncontactableException,
+                                                                         UnexpectedResponseException,
+                                                                         UnrecognizedGUIDException
     {
         final String methodName = "restoreIsaRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_IS_A_URL;
         SubjectAreaOMASAPIResponse restResponse = restoreRelationship(userId, guid, methodName,url);
-        ISARelationship gotIsa = DetectUtils.detectAndReturnISARelationship(methodName,restResponse);
+        Isa gotIsa = DetectUtils.detectAndReturnISARelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
         return gotIsa;
     }
     /**
-     *  Create a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
+     *  Create a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
      *
      * <p>
      *
      *
      * @param userId               userId under which the request is performed
-     * @param TermISATypeOFRelationship the TermISATypeOFRelationship relationship
-     * @return the created TermISATypeOFRelationship relationship
+     * @param TermISATypeOFRelationship the IsaTypeOf relationship
+     * @return the created IsaTypeOf relationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -2990,7 +2990,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermISATypeOFRelationship createTermISATypeOFRelationship(String userId, TermISATypeOFRelationship TermISATypeOFRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    public IsaTypeOf createTermISATypeOFRelationship(String userId, IsaTypeOf TermISATypeOFRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     {
         final String methodName = "createTermISATypeOFRelationship";
         if (log.isDebugEnabled()) {
@@ -3012,19 +3012,19 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
         DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
 
-        TermISATypeOFRelationship createdTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
+        IsaTypeOf createdTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
         return createdTermISATypeOFRelationship;
     }
     /**
-     *  Get a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
+     *  Get a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermISATypeOFRelationship relationship to get
-     * @return TermISATypeOFRelationship
+     * @param guid   guid of the IsaTypeOf relationship to get
+     * @return IsaTypeOf
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
@@ -3035,12 +3035,12 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    public TermISATypeOFRelationship getTermISATypeOFRelationship(String userId,String guid) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, UnexpectedResponseException, UnrecognizedGUIDException
+    public IsaTypeOf getTermISATypeOFRelationship(String userId, String guid) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, UnexpectedResponseException, UnrecognizedGUIDException
     {
         final String methodName = "getTermISATypeOFRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL;
         SubjectAreaOMASAPIResponse restResponse = getRelationship(userId, guid, methodName,url);
-        TermISATypeOFRelationship gotTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
+        IsaTypeOf gotTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -3064,11 +3064,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    public TermISATypeOFRelationship updateTermISATypeOFRelationship(String userId, TermISATypeOFRelationship isATypeOf)  throws InvalidParameterException,
-                                                                                                                                                                                            MetadataServerUncontactableException,
-                                                                                                                                                                                            UserNotAuthorizedException,
-                                                                                                                                                                                            UnexpectedResponseException,
-                                                                                                                                                                                            UnrecognizedGUIDException {
+    public IsaTypeOf updateTermISATypeOFRelationship(String userId, IsaTypeOf isATypeOf) throws InvalidParameterException,
+                                                                                                MetadataServerUncontactableException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                UnexpectedResponseException,
+                                                                                                UnrecognizedGUIDException {
         final String methodName = "updateTermISATypeOFRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
@@ -3078,7 +3078,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL,requestBody,false);
-        TermISATypeOFRelationship updatedTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
+        IsaTypeOf updatedTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -3101,11 +3101,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermISATypeOFRelationship replaceTermISATypeOFRelationship(String userId, TermISATypeOFRelationship isATypeOf)  throws InvalidParameterException,
-                                                                                                                                                                                             MetadataServerUncontactableException,
-                                                                                                                                                                                             UserNotAuthorizedException,
-                                                                                                                                                                                             UnexpectedResponseException,
-                                                                                                                                                                                             UnrecognizedGUIDException{
+    public IsaTypeOf replaceTermISATypeOFRelationship(String userId, IsaTypeOf isATypeOf) throws InvalidParameterException,
+                                                                                                 MetadataServerUncontactableException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 UnexpectedResponseException,
+                                                                                                 UnrecognizedGUIDException{
         final String methodName = "updateTermISATypeOFRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
@@ -3115,7 +3115,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL,requestBody,true);
-        TermISATypeOFRelationship updatedTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
+        IsaTypeOf updatedTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -3123,14 +3123,14 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
     }
 
     /**
-     *  Delete a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
+     *  Delete a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the is a type of relationship to delete
-     * @return deleted TermISATypeOFRelationship
+     * @return deleted IsaTypeOf
      *
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -3143,7 +3143,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermISATypeOFRelationship deleteTermISATypeOFRelationship(String userId,String guid) throws
+    public IsaTypeOf deleteTermISATypeOFRelationship(String userId, String guid) throws
                                                                                                              InvalidParameterException,
                                                                                                              MetadataServerUncontactableException,
                                                                                                              UserNotAuthorizedException,
@@ -3155,19 +3155,19 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         final String methodName = "deleteTermISATypeOFRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL;
         SubjectAreaOMASAPIResponse restResponse = deleteRelationship(userId, guid, methodName,url);
-        TermISATypeOFRelationship gotTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
+        IsaTypeOf gotTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
         return gotTermISATypeOFRelationship;
     }
     /**
-     *  Purge a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
+     *  Purge a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
      * A purge means that the relationship will not exist after the operation.
      *
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermISATypeOFRelationship relationship to delete
+     * @param guid   guid of the IsaTypeOf relationship to delete
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -3212,16 +3212,16 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public TermISATypeOFRelationship restoreIsaTypeOfRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    public IsaTypeOf restoreIsaTypeOfRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     MetadataServerUncontactableException,
+                                                                                     UnexpectedResponseException,
+                                                                                     UnrecognizedGUIDException
     {
         final String methodName = "restoreTermISATypeOFRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL;
         SubjectAreaOMASAPIResponse restResponse = restoreRelationship(userId, guid, methodName,url);
-        TermISATypeOFRelationship gotTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
+        IsaTypeOf gotTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -3319,11 +3319,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermCategorizationRelationship createTermCategorizationRelationship(String userId, TermCategorizationRelationship termCategorizationRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException {
+    public Categorization createTermCategorizationRelationship(String userId, Categorization termCategorizationRelationship) throws InvalidParameterException,
+                                                                                                                                    UserNotAuthorizedException,
+                                                                                                                                    MetadataServerUncontactableException,
+                                                                                                                                    UnexpectedResponseException,
+                                                                                                                                    UnrecognizedGUIDException {
 
         final String methodName = "createTermCategorizationRelationship";
         if (log.isDebugEnabled()) {
@@ -3345,7 +3345,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         DetectUtils.detectAndThrowInvalidParameterException(methodName, restResponse);
         DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName, restResponse);
 
-        TermCategorizationRelationship createdTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName, restResponse);
+        Categorization createdTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -3369,16 +3369,16 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    public TermCategorizationRelationship getTermCategorizationRelationship(String userId,String guid) throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    public Categorization getTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                               MetadataServerUncontactableException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               UnexpectedResponseException,
+                                                                                               UnrecognizedGUIDException
             {
                 final String methodName = "getTermCategorizationRelationship";
                 final String url = this.omasServerURL +BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL;
                 SubjectAreaOMASAPIResponse restResponse = getRelationship(userId, guid, methodName,url);
-                TermCategorizationRelationship gotTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName,restResponse);
+                Categorization gotTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName, restResponse);
                 if (log.isDebugEnabled()) {
                     log.debug("<== successful method : " + methodName + ",userId="+userId );
                 }
@@ -3401,7 +3401,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermCategorizationRelationship updateTermCategorizationRelationship(String userId, TermCategorizationRelationship termCategorizationRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    public Categorization updateTermCategorizationRelationship(String userId, Categorization termCategorizationRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     {
         final String methodName = "updateTermCategorizationRelationship";
         if (log.isDebugEnabled()) {
@@ -3419,7 +3419,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className, methodName, error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL,requestBody,false);
-        TermCategorizationRelationship updatedTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName,restResponse);
+        Categorization updatedTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -3442,11 +3442,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermCategorizationRelationship replaceTermCategorizationRelationship(String userId, TermCategorizationRelationship termCategorizationRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    public Categorization replaceTermCategorizationRelationship(String userId, Categorization termCategorizationRelationship) throws InvalidParameterException,
+                                                                                                                                     UserNotAuthorizedException,
+                                                                                                                                     MetadataServerUncontactableException,
+                                                                                                                                     UnexpectedResponseException,
+                                                                                                                                     UnrecognizedGUIDException
     {
         final String methodName = "replaceTermCategorizationRelationship";
         if (log.isDebugEnabled()) {
@@ -3463,7 +3463,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className, methodName, error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL,requestBody,true);
-        TermCategorizationRelationship updatedTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName,restResponse);
+        Categorization updatedTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -3490,7 +3490,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermCategorizationRelationship deleteTermCategorizationRelationship(String userId,String guid) throws
+    public Categorization deleteTermCategorizationRelationship(String userId, String guid) throws
             InvalidParameterException,
             MetadataServerUncontactableException,
             UserNotAuthorizedException,
@@ -3504,7 +3504,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         }
         final String url = this.omasServerURL + BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL;
         SubjectAreaOMASAPIResponse restResponse = deleteRelationship(userId, guid, methodName, url);
-        TermCategorizationRelationship gotTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName, restResponse);
+        Categorization gotTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -3564,18 +3564,18 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public TermCategorizationRelationship restoreTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException {
+    public Categorization restoreTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   MetadataServerUncontactableException,
+                                                                                                   UnexpectedResponseException,
+                                                                                                   UnrecognizedGUIDException {
         final String methodName = "restoreTermCategorizationRelationship";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL;
         SubjectAreaOMASAPIResponse restResponse = restoreRelationship(userId, guid, methodName,url);
-        TermCategorizationRelationship gotTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName,restResponse);
+        Categorization gotTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -3601,11 +3601,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermAnchorRelationship createTermAnchorRelationship(String userId, TermAnchorRelationship termCategorizationRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException {
+    public TermAnchor createTermAnchorRelationship(String userId, TermAnchor termCategorizationRelationship) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    MetadataServerUncontactableException,
+                                                                                                                    UnexpectedResponseException,
+                                                                                                                    UnrecognizedGUIDException {
 
         final String methodName = "createTermAnchorRelationship";
         if (log.isDebugEnabled()) {
@@ -3627,7 +3627,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         DetectUtils.detectAndThrowInvalidParameterException(methodName, restResponse);
         DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName, restResponse);
 
-        TermAnchorRelationship createdTermAnchorRelationship = DetectUtils.detectAndReturnTermAnchorRelationship(methodName, restResponse);
+        TermAnchor createdTermAnchorRelationship = DetectUtils.detectAndReturnTermAnchorRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -3651,16 +3651,16 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    public TermAnchorRelationship getTermAnchorRelationship(String userId,String guid) throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    public TermAnchor getTermAnchorRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                   MetadataServerUncontactableException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   UnexpectedResponseException,
+                                                                                   UnrecognizedGUIDException
     {
         final String methodName = "getTermAnchorRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_TERM_ANCHOR_URL;
         SubjectAreaOMASAPIResponse restResponse = getRelationship(userId, guid, methodName,url);
-        TermAnchorRelationship gotTermAnchorRelationship = DetectUtils.detectAndReturnTermAnchorRelationship(methodName,restResponse);
+        TermAnchor gotTermAnchorRelationship = DetectUtils.detectAndReturnTermAnchorRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -3683,11 +3683,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermAnchorRelationship replaceTermAnchorRelationship(String userId, TermAnchorRelationship termCategorizationRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    public TermAnchor replaceTermAnchorRelationship(String userId, TermAnchor termCategorizationRelationship) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     MetadataServerUncontactableException,
+                                                                                                                     UnexpectedResponseException,
+                                                                                                                     UnrecognizedGUIDException
     {
         final String methodName = "replaceTermAnchorRelationship";
         if (log.isDebugEnabled()) {
@@ -3704,7 +3704,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className, methodName, error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_TERM_ANCHOR_URL,requestBody,true);
-        TermAnchorRelationship updatedTermAnchorRelationship = DetectUtils.detectAndReturnTermAnchorRelationship(methodName,restResponse);
+        TermAnchor updatedTermAnchorRelationship = DetectUtils.detectAndReturnTermAnchorRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -3731,7 +3731,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermAnchorRelationship deleteTermAnchorRelationship(String userId,String guid) throws
+    public TermAnchor deleteTermAnchorRelationship(String userId, String guid) throws
             InvalidParameterException,
             MetadataServerUncontactableException,
             UserNotAuthorizedException,
@@ -3745,7 +3745,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         }
         final String url = this.omasServerURL + BASE_RELATIONSHIPS_TERM_ANCHOR_URL;
         SubjectAreaOMASAPIResponse restResponse = deleteRelationship(userId, guid, methodName, url);
-        TermAnchorRelationship gotTermAnchorRelationship = DetectUtils.detectAndReturnTermAnchorRelationship(methodName, restResponse);
+        TermAnchor gotTermAnchorRelationship = DetectUtils.detectAndReturnTermAnchorRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -3805,18 +3805,18 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public TermAnchorRelationship restoreTermAnchorRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException {
+    public TermAnchor restoreTermAnchorRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       MetadataServerUncontactableException,
+                                                                                       UnexpectedResponseException,
+                                                                                       UnrecognizedGUIDException {
         final String methodName = "restoreTermAnchorRelationship";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_TERM_ANCHOR_URL;
         SubjectAreaOMASAPIResponse restResponse = restoreRelationship(userId, guid, methodName,url);
-        TermAnchorRelationship gotTermAnchorRelationship = DetectUtils.detectAndReturnTermAnchorRelationship(methodName,restResponse);
+        TermAnchor gotTermAnchorRelationship = DetectUtils.detectAndReturnTermAnchorRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -3841,11 +3841,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public CategoryAnchorRelationship createCategoryAnchorRelationship(String userId, CategoryAnchorRelationship termCategorizationRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException {
+    public CategoryAnchor createCategoryAnchorRelationship(String userId, CategoryAnchor termCategorizationRelationship) throws InvalidParameterException,
+                                                                                                                                UserNotAuthorizedException,
+                                                                                                                                MetadataServerUncontactableException,
+                                                                                                                                UnexpectedResponseException,
+                                                                                                                                UnrecognizedGUIDException {
 
         final String methodName = "createCategoryAnchorRelationship";
         if (log.isDebugEnabled()) {
@@ -3867,7 +3867,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         DetectUtils.detectAndThrowInvalidParameterException(methodName, restResponse);
         DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName, restResponse);
 
-        CategoryAnchorRelationship createdCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName, restResponse);
+        CategoryAnchor createdCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -3891,16 +3891,16 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    public CategoryAnchorRelationship getCategoryAnchorRelationship(String userId,String guid) throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    public CategoryAnchor getCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                           MetadataServerUncontactableException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           UnexpectedResponseException,
+                                                                                           UnrecognizedGUIDException
     {
         final String methodName = "getCategoryAnchorRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_CATEGORY_ANCHOR_URL;
         SubjectAreaOMASAPIResponse restResponse = getRelationship(userId, guid, methodName,url);
-        CategoryAnchorRelationship gotCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName,restResponse);
+        CategoryAnchor gotCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -3923,11 +3923,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public CategoryAnchorRelationship updateCategoryAnchorRelationship(String userId, CategoryAnchorRelationship termCategorizationRelationship) throws InvalidParameterException,
-                                                                                                                                                         UserNotAuthorizedException,
-                                                                                                                                                         MetadataServerUncontactableException,
-                                                                                                                                                         UnexpectedResponseException,
-                                                                                                                                                         UnrecognizedGUIDException
+    public CategoryAnchor updateCategoryAnchorRelationship(String userId, CategoryAnchor termCategorizationRelationship) throws InvalidParameterException,
+                                                                                                                                UserNotAuthorizedException,
+                                                                                                                                MetadataServerUncontactableException,
+                                                                                                                                UnexpectedResponseException,
+                                                                                                                                UnrecognizedGUIDException
     {
         final String methodName = "updateCategoryAnchorRelationship";
         if (log.isDebugEnabled()) {
@@ -3944,7 +3944,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className, methodName, error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_CATEGORY_ANCHOR_URL,requestBody,false);
-        CategoryAnchorRelationship updatedCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName,restResponse);
+        CategoryAnchor updatedCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -3968,11 +3968,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public CategoryAnchorRelationship replaceCategoryAnchorRelationship(String userId, CategoryAnchorRelationship termCategorizationRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    public CategoryAnchor replaceCategoryAnchorRelationship(String userId, CategoryAnchor termCategorizationRelationship) throws InvalidParameterException,
+                                                                                                                                 UserNotAuthorizedException,
+                                                                                                                                 MetadataServerUncontactableException,
+                                                                                                                                 UnexpectedResponseException,
+                                                                                                                                 UnrecognizedGUIDException
     {
         final String methodName = "replaceCategoryAnchorRelationship";
         if (log.isDebugEnabled()) {
@@ -3989,7 +3989,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className, methodName, error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_CATEGORY_ANCHOR_URL,requestBody,true);
-        CategoryAnchorRelationship updatedCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName,restResponse);
+        CategoryAnchor updatedCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -4016,7 +4016,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public CategoryAnchorRelationship deleteCategoryAnchorRelationship(String userId,String guid) throws
+    public CategoryAnchor deleteCategoryAnchorRelationship(String userId, String guid) throws
             InvalidParameterException,
             MetadataServerUncontactableException,
             UserNotAuthorizedException,
@@ -4030,7 +4030,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         }
         final String url = this.omasServerURL + BASE_RELATIONSHIPS_CATEGORY_ANCHOR_URL;
         SubjectAreaOMASAPIResponse restResponse = deleteRelationship(userId, guid, methodName, url);
-        CategoryAnchorRelationship gotCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName, restResponse);
+        CategoryAnchor gotCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -4089,18 +4089,18 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public CategoryAnchorRelationship restoreCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException {
+    public CategoryAnchor restoreCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               MetadataServerUncontactableException,
+                                                                                               UnexpectedResponseException,
+                                                                                               UnrecognizedGUIDException {
         final String methodName = "restoreCategoryAnchorRelationship";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_CATEGORY_ANCHOR_URL;
         SubjectAreaOMASAPIResponse restResponse = restoreRelationship(userId, guid, methodName,url);
-        CategoryAnchorRelationship gotCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName,restResponse);
+        CategoryAnchor gotCategoryAnchorRelationship = DetectUtils.detectAndReturnCategoryAnchorRelationship(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -4123,7 +4123,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public ProjectScopeRelationship createProjectScopeRelationship(String userId, ProjectScopeRelationship projectScope) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    public ProjectScope createProjectScopeRelationship(String userId, ProjectScope projectScope) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     {
         final String methodName = "createProjectScopeRelationship";
         if (log.isDebugEnabled()) {
@@ -4145,7 +4145,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
         DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
 
-        ProjectScopeRelationship createdProjectScope = DetectUtils.detectAndReturnProjectScope(methodName,restResponse);
+        ProjectScope createdProjectScope = DetectUtils.detectAndReturnProjectScope(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -4168,16 +4168,16 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    public ProjectScopeRelationship getProjectScopeRelationship(String userId,String guid) throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    public ProjectScope getProjectScopeRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                       MetadataServerUncontactableException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       UnexpectedResponseException,
+                                                                                       UnrecognizedGUIDException
     {
         final String methodName = "getProjectScopeRelationship";
         String url = this.omasServerURL + BASE_RELATIONSHIPS_PROJECT_SCOPE_URL;
         SubjectAreaOMASAPIResponse restResponse = getRelationship(userId, guid, methodName,url);
-        ProjectScopeRelationship gotProjectScope = DetectUtils.detectAndReturnProjectScope(methodName,restResponse);
+        ProjectScope gotProjectScope = DetectUtils.detectAndReturnProjectScope(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -4200,11 +4200,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public ProjectScopeRelationship updateProjectScopeRelationship(String userId, ProjectScopeRelationship projectScopeRelationship)  throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException {
+    public ProjectScope updateProjectScopeRelationship(String userId, ProjectScope projectScopeRelationship) throws InvalidParameterException,
+                                                                                                                    MetadataServerUncontactableException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    UnexpectedResponseException,
+                                                                                                                    UnrecognizedGUIDException {
         final String methodName = "updateProjectScopeRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
@@ -4214,7 +4214,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_PROJECT_SCOPE_URL,requestBody,false);
-        ProjectScopeRelationship updatedProjectScopeRelationship = DetectUtils.detectAndReturnProjectScope(methodName,restResponse);
+        ProjectScope updatedProjectScopeRelationship = DetectUtils.detectAndReturnProjectScope(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -4237,11 +4237,11 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public ProjectScopeRelationship replaceProjectScopeRelationship(String userId, ProjectScopeRelationship projectScopeRelationship) throws InvalidParameterException,
-                                                                                                                                             MetadataServerUncontactableException,
-                                                                                                                                             UserNotAuthorizedException,
-                                                                                                                                             UnexpectedResponseException,
-                                                                                                                                             UnrecognizedGUIDException {
+    public ProjectScope replaceProjectScopeRelationship(String userId, ProjectScope projectScopeRelationship) throws InvalidParameterException,
+                                                                                                                     MetadataServerUncontactableException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     UnexpectedResponseException,
+                                                                                                                     UnrecognizedGUIDException {
         final String methodName = "updateProjectScopeRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
@@ -4251,7 +4251,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(userId,this.omasServerURL +BASE_RELATIONSHIPS_PROJECT_SCOPE_URL,requestBody,true);
-        ProjectScopeRelationship updatedProjectScopeRelationship = DetectUtils.detectAndReturnProjectScope(methodName,restResponse);
+        ProjectScope updatedProjectScopeRelationship = DetectUtils.detectAndReturnProjectScope(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -4279,7 +4279,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public ProjectScopeRelationship deleteProjectScopeRelationship(String userId,String guid) throws
+    public ProjectScope deleteProjectScopeRelationship(String userId, String guid) throws
             InvalidParameterException,
             MetadataServerUncontactableException,
             UnrecognizedGUIDException,
@@ -4291,7 +4291,7 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
         final String methodName = "deleteProjectScopeRelationship";
         String url = this.omasServerURL + BASE_RELATIONSHIPS_PROJECT_SCOPE_URL;
         SubjectAreaOMASAPIResponse restResponse = deleteRelationship(userId, guid, methodName,url);
-        ProjectScopeRelationship gotProjectScope = DetectUtils.detectAndReturnProjectScope(methodName,restResponse);
+        ProjectScope gotProjectScope = DetectUtils.detectAndReturnProjectScope(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -4348,16 +4348,16 @@ public class SubjectAreaRelationshipImpl extends SubjectAreaBaseImpl implements 
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public ProjectScopeRelationship restoreProjectScopeRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    public ProjectScope restoreProjectScopeRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           MetadataServerUncontactableException,
+                                                                                           UnexpectedResponseException,
+                                                                                           UnrecognizedGUIDException
     {
         final String methodName = "restoreProjectScopeRelationship";
         String url = this.omasServerURL + BASE_RELATIONSHIPS_PROJECT_SCOPE_URL;
         SubjectAreaOMASAPIResponse restResponse = restoreRelationship(userId, guid, methodName,url);
-        ProjectScopeRelationship gotProjectScope = DetectUtils.detectAndReturnProjectScope(methodName,restResponse);
+        ProjectScope gotProjectScope = DetectUtils.detectAndReturnProjectScope(methodName, restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }

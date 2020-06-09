@@ -63,7 +63,7 @@ app_default_java_options:
   '-Xms': "{{ app_java_heap_size }}"
   '-Djava.security.egd': 'file:///dev/urandom'
   '-Djava.io.tmpdir': '/tmp'
-  '-Dlogging.file': "{{ app_logs_dir }}/{{ app_name }}.log"
+  '-Dlogging.file.name': "{{ app_logs_dir }}/{{ app_name }}.log"
   '-Dloader.path': "{{ app_libs_dir }}"
   # '-Dserver.address': '{{ app_host }}'
   '-Dserver.port': "{{ app_port }}"

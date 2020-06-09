@@ -4,7 +4,6 @@ package org.odpi.openmetadata.conformance.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTConfigurationException;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
 import org.odpi.openmetadata.conformance.beans.OpenMetadataConformanceTestLabResults;
@@ -123,8 +122,6 @@ public class OpenMetadataConformanceTestReport
     {
         final String  resultsFileName = "openmetadata.conformance.testlab.results";
         final String  defaultUserId = "ConformanceSuiteUser";
-
-        org.apache.log4j.BasicConfigurator.configure(new NullAppender());
 
         if ((args == null) || (args.length < 2))
         {

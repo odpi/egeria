@@ -33,7 +33,7 @@ to allow routing to different destinations for review and processing.
 
 ## Use of the Audit Log Framework
 
-The [Open Metadata Repository Services (OMRS)](../../repository-services)
+The [Open Metadata Repository Services (OMRS)](../../repository-services/docs/component-descriptions/audit-log.md)
 provides an extension to the audit log destination that supports
 audit log store connectors.
 This means that an OMAG Server can be configured to route 

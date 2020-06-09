@@ -21,7 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/repository-services")
 
-@Tag(name="Open Metadata Repository Services (OMRS)", description="The Open Metadata Repository Services (OMRS) enable metadata repositories to exchange metadata irrespective of the technology, or technology supplier.", externalDocs=@ExternalDocumentation(description="Open Metadata Repository Services (OMRS)",url="https://egeria.odpi.org/open-metadata-implementation/repository-services/"))
+@Tag(name="Repository Services - Anonymous",
+        description="The Open Metadata Repository Services (OMRS) enable metadata repositories to " +
+        "exchange metadata irrespective of the technology, or technology supplier.  The anonymous " +
+                "services do not take a user id in the URL.  These may be disabled if server " +
+                "security is turned on.",
+        externalDocs=@ExternalDocumentation(description="Further information",
+                url="https://egeria.odpi.org/open-metadata-implementation/repository-services/"))
 
 public class AnonRepositoryServicesResource
 {

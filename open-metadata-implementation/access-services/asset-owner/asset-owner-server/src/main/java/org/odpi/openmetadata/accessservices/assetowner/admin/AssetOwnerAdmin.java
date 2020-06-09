@@ -56,17 +56,22 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
         this.auditLog = auditLog;
         try
         {
-            List<String>           supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
-                                                                               accessServiceConfig.getAccessServiceName(),
-                                                                               auditLog);
+            List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                     accessServiceConfig.getAccessServiceName(),
+                                                                     auditLog);
 
-            List<String>           defaultZones = this.extractDefaultZones(accessServiceConfig.getAccessServiceOptions(),
-                                                                           accessServiceConfig.getAccessServiceName(),
-                                                                           auditLog);
+            List<String> defaultZones = this.extractDefaultZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                 accessServiceConfig.getAccessServiceName(),
+                                                                 auditLog);
+
+            List<String> publishZones = this.extractPublishZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                 accessServiceConfig.getAccessServiceName(),
+                                                                 auditLog);
 
             this.instance = new AssetOwnerServicesInstance(repositoryConnector,
                                                            supportedZones,
                                                            defaultZones,
+                                                           publishZones,
                                                            auditLog,
                                                            serverUserName,
                                                            repositoryConnector.getMaxPageSize());
