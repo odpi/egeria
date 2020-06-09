@@ -13,6 +13,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ConfigViewServicesResource provides the configuration for setting up the Open Metadata View
@@ -66,7 +67,7 @@ public class ConfigViewServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName       local server name.
-     * @param clientConfig     URL root and server name that are used to access the downstream OMAG Server.
+     * @param viewServiceOptions view service options
      * @param serviceURLMarker string indicating which view service it is configuring
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -77,9 +78,9 @@ public class ConfigViewServicesResource
     public VoidResponse configureViewService(@PathVariable  String                 userId,
                                              @PathVariable  String                 serverName,
                                              @PathVariable  String                 serviceURLMarker,
-                                             @RequestBody   OMAGServerClientConfig clientConfig)
+                                             @RequestBody(required = false) Map<String, Object> viewServiceOptions)
     {
-        return adminAPI.configureViewService(userId, serverName, serviceURLMarker, clientConfig);
+        return adminAPI.configureViewService(userId, serverName, serviceURLMarker, viewServiceOptions);
     }
 
 
@@ -89,7 +90,7 @@ public class ConfigViewServicesResource
      *
      * @param userId      user that is issuing the request.
      * @param serverName  local server name.
-     * @param clientConfig URL root and server name that are used to access the downstream OMAG Server.
+     * @param viewServiceOptions view service options
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
@@ -98,9 +99,9 @@ public class ConfigViewServicesResource
     @PostMapping("/view-services")
     public VoidResponse configureAllViewServices(@PathVariable                  String              userId,
                                                  @PathVariable                  String              serverName,
-                                                 @RequestBody                   OMAGServerClientConfig clientConfig)
+                                                 @RequestBody(required = false) Map<String, Object> viewServiceOptions)
     {
-        return adminAPI.configureAllViewServices(userId, serverName, clientConfig);
+        return adminAPI.configureAllViewServices(userId, serverName, viewServiceOptions);
     }
 
     /**
