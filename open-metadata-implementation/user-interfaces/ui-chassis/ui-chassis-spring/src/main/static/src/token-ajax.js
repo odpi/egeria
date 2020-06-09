@@ -109,7 +109,6 @@ class TokenAjax extends PolymerElement {
     }
 
     _tokenUpdated(){
-        console.debug(this.id + ' -- token updated with:'+this.token)
         this.$.ajax.headers['x-auth-token'] = this.token;
     }
 
