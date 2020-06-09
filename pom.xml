@@ -139,7 +139,7 @@
         <gremlin.version>3.4.7</gremlin.version>
         <netty.version>4.1.50.Final</netty.version>
         <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
-        <spring.version>5.2.6.RELEASE</spring.version>
+        <spring.version>5.2.7.RELEASE</spring.version>
         <spring-security.version>5.3.3.RELEASE</spring-security.version>
         <spring-data.version>2.3.0.RELEASE</spring-data.version>
         <tomcat.version>9.0.35</tomcat.version>
