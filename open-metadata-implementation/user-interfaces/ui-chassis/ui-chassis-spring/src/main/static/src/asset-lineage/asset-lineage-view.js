@@ -120,17 +120,22 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 observer: '_graphDataChanged'
             },
             graphInteraction: {
-                tooltipDelay: 200,
-                hideEdgesOnDrag: true
-            },
-            graphLayout: {
-                hierarchical: {
-                    enabled: true,
-                    levelSeparation: 300,
-                    direction: 'RL'
+                type: Object,
+                value: {
+                    tooltipDelay: 200,
+                    hideEdgesOnDrag: true
                 }
             },
-            graphPhysics: false,
+            graphLayout: {
+                type: Object,
+                value: {
+                    hierarchical: {
+                        enabled: true,
+                        levelSeparation: 300,
+                        direction: 'RL'
+                    }
+                }
+            },
             groups : {
                 type: Object,
                 value: {
@@ -166,7 +171,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     connectedCallback() {
         super.connectedCallback();
         this.$.visgraph.options.groups = this.groups;
-        this.$.visgraph.options.physics = false;
         this.$.visgraph.options.interaction = this.graphInteraction;
         this.$.visgraph.options.layout = this.graphLayout;
     }
