@@ -123,8 +123,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     @Override
-    public void schedulerTask(){
+    public void schedulerTask() {
 //        GraphTraversalSource g = lineageGraph.traversal();
+        log.debug("g.V().count()="+ g.V().count().next());
         try {
             List<Vertex> vertices = g.V().has(PROPERTY_KEY_LABEL, PROCESS).toList();
             List<String> guidList = vertices.stream().map(v ->  g.V(v.id()).elementMap(PROPERTY_KEY_ENTITY_GUID)
@@ -295,8 +296,11 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 //        GraphTraversalSource g =  lineageGraph.traversal();
         graphContext.forEach(entry -> {
             try {
+                long start=System.currentTimeMillis();
                 addVerticesAndRelationship(g, entry);
-            } catch (JanusConnectorException e) {
+                log.debug(String.format("addVerticesAndRelationship executed in: %d", System.currentTimeMillis() - start));
+                log.debug("graphContext.size: "+graphContext.size());
+            } catch (Exception e) {
                 log.error("An exception happened when trying to create vertices and relationships in LineageGraph. The error is", e);
             }
         });
@@ -307,19 +311,17 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         LineageEntity toEntity = graphContext.getToVertex();
 
         Vertex from =   g.V().has(PROPERTY_KEY_ENTITY_GUID, fromEntity.getGuid())
-                             .has(PROPERTY_KEY_ENTITY_VERSION, fromEntity.getVersion())
                              .fold()
-                             .coalesce(unfold(),addV(fromEntity.getTypeDefName())
-                                                .property(PROPERTY_KEY_ENTITY_GUID,fromEntity.getGuid())
-                                                .property(PROPERTY_KEY_ENTITY_VERSION,fromEntity.getVersion()))
+                             .coalesce(unfold(),
+                                     addV(fromEntity.getTypeDefName())
+                                                .property(PROPERTY_KEY_ENTITY_GUID,fromEntity.getGuid()))
                              .next();
 
         Vertex to =  g.V().has(PROPERTY_KEY_ENTITY_GUID,toEntity.getGuid())
-                          .has(PROPERTY_KEY_ENTITY_VERSION,toEntity.getVersion())
                           .fold()
-                          .coalesce(unfold(),addV(toEntity.getTypeDefName())
-                                             .property(PROPERTY_KEY_ENTITY_GUID,toEntity.getGuid())
-                                             .property(PROPERTY_KEY_ENTITY_VERSION,toEntity.getVersion()))
+                          .coalesce(unfold(),
+                                  addV(toEntity.getTypeDefName())
+                                             .property(PROPERTY_KEY_ENTITY_GUID,toEntity.getGuid()))
                           .next();
 
 
@@ -330,6 +332,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
 
          addPropertiesToVertex(from,fromEntity);
+         addPropertiesToVertex(to,toEntity);
          //TODO add properties to relationship
     }
 
@@ -344,6 +347,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATE_TIME,val -> lineageEntity.getUpdateTime());
         properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATED_BY,val -> lineageEntity.getUpdatedBy());
         properties.computeIfAbsent(PROPERTY_KEY_LABEL,val -> lineageEntity.getTypeDefName());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_VERSION,val -> lineageEntity.getVersion());
         properties.put(PROPERTY_KEY_METADATA_ID,lineageEntity.getMetadataCollectionId());
 
         g.inject(properties)
