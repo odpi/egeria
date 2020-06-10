@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
 
 
 /**
@@ -35,6 +38,7 @@ public class HandlerHelper {
     private static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     private static final String ZONE_MEMBERSHIP = "zoneMembership";
 
+    private List<String> lineageClassificationTypes;
     private RepositoryHandler repositoryHandler;
     private OMRSRepositoryHelper repositoryHelper;
     private InvalidParameterHandler invalidParameterHandler;
@@ -46,10 +50,12 @@ public class HandlerHelper {
      */
     public HandlerHelper(InvalidParameterHandler invalidParameterHandler,
                          OMRSRepositoryHelper repositoryHelper,
-                         RepositoryHandler repositoryHandler) {
+                         RepositoryHandler repositoryHandler,
+                         List<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
+        this.lineageClassificationTypes = lineageClassificationTypes;
     }
 
 
@@ -222,5 +228,59 @@ public class HandlerHelper {
         }
 
         return Collections.emptyList();
+    }
+
+    public void addLineageClassificationToContext(EntityDetail startEntity, AssetContext graph) {
+        List<Classification> classifications = filterLineageClassifications(startEntity.getClassifications());
+        if(CollectionUtils.isNotEmpty(classifications)){
+            addClassificationsToGraphContext(classifications, graph, startEntity);
+        }
+    }
+
+    public List<Classification> filterLineageClassifications(List<Classification> classifications) {
+        if(CollectionUtils.isEmpty(classifications)){
+            return Collections.emptyList();
+        }
+
+        return classifications.stream().filter(classification
+                -> lineageClassificationTypes.contains(classification.getType().getTypeDefName())).collect(Collectors.toList());
+    }
+
+    private void addClassificationsToGraphContext(List<Classification> classifications, AssetContext assetContext, EntityDetail entityDetail) {
+        Converter converter = new Converter(repositoryHelper);
+        LineageEntity originalEntityVertex = converter.createLineageEntity(entityDetail);
+        assetContext.addVertex(originalEntityVertex);
+
+        String entityGUID = entityDetail.getGUID();
+        for (Classification classification : classifications) {
+            LineageEntity classificationVertex = getClassificationVertex(classification, entityGUID);
+            assetContext.addVertex(classificationVertex);
+            GraphContext graphContext = new GraphContext(CLASSIFICATION, classificationVertex.getGuid(),
+                    originalEntityVertex, classificationVertex);
+            assetContext.addGraphContext(graphContext);
+        }
+
+    }
+
+    private LineageEntity getClassificationVertex(Classification classification, String entityGUID) {
+        LineageEntity classificationVertex = new LineageEntity();
+
+        String classificationGUID = classification.getName() + entityGUID;
+        classificationVertex.setGuid(classificationGUID);
+        copyClassificationProperties(classificationVertex, classification);
+
+        return classificationVertex;
+    }
+
+    private void copyClassificationProperties(LineageEntity lineageEntity, Classification classification) {
+        lineageEntity.setVersion(classification.getVersion());
+        lineageEntity.setTypeDefName(classification.getType().getTypeDefName());
+        lineageEntity.setCreatedBy(classification.getCreatedBy());
+        lineageEntity.setUpdatedBy(classification.getUpdatedBy());
+        lineageEntity.setCreateTime(classification.getCreateTime());
+        lineageEntity.setUpdateTime(classification.getUpdateTime());
+
+        Converter converter = new Converter(repositoryHelper);
+        lineageEntity.setProperties(converter.instancePropertiesToMap(classification.getProperties()));
     }
 }

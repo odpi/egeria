@@ -4,10 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -22,6 +19,7 @@ import java.util.List;
  */
 public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
+    private HandlerHelper handlerHelper;
     private GlossaryHandler glossaryHandler;
     private AssetContextHandler assetContextHandler;
     private ProcessContextHandler processContextHandler;
@@ -32,7 +30,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @param repositoryConnector        link to the repository responsible for servicing the REST calls.
      * @param supportedZones             list of zones that AssetLineage is allowed to serve Assets from.
-     * @param lineageClassificationTypes
+     * @param lineageClassificationTypes list of lineage classification supported
      * @param localServerUserId          userId used for server initiated actions
      * @param auditLog                   destination for audit log events.
      * @throws NewInstanceException a problem occurred during initialization
@@ -55,25 +53,27 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
             glossaryHandler = new GlossaryHandler(
                     invalidParameterHandler,
                     repositoryHelper,
-                    repositoryHandler);
+                    repositoryHandler,
+                    lineageClassificationTypes);
 
             assetContextHandler = new AssetContextHandler(
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler,
-                    supportedZones);
+                    supportedZones,
+                    lineageClassificationTypes);
 
             processContextHandler = new ProcessContextHandler(
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler,
-                    supportedZones);
+                    supportedZones,
+                    lineageClassificationTypes);
 
             classificationHandler = new ClassificationHandler(
                     invalidParameterHandler,
                     lineageClassificationTypes,
-                    repositoryHelper
-            );
+                    repositoryHelper);
 
         } else {
             AssetLineageErrorCode errorCode = AssetLineageErrorCode.OMRS_NOT_INITIALIZED;

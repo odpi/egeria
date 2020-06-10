@@ -14,24 +14,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_ALIAS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_PORT;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableProcessRelationshipsTypes;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
 
 /**
  * The process context handler provides methods to build lineage context from processes.
@@ -59,10 +45,11 @@ public class ProcessContextHandler {
     public ProcessContextHandler(InvalidParameterHandler invalidParameterHandler,
                                  OMRSRepositoryHelper repositoryHelper,
                                  RepositoryHandler repositoryHandler,
-                                 List<String> supportedZones) {
+                                 List<String> supportedZones,
+                                 List<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
-        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler);
+        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
         this.supportedZones = supportedZones;
     }
 
@@ -70,35 +57,23 @@ public class ProcessContextHandler {
      * Retrieves the full context for a Process
      *
      * @param userId      String - userId of user making request.
-     * @param processGuid guid of the asset that has been created
+     * @param process     the asset that has been created
      * @return Map of the relationships between the Entities that are relevant to a Process
      */
-    public Map<String, Set<GraphContext>> getProcessContext(String userId, String processGuid) throws OCFCheckedExceptionBase {
+    public Map<String, Set<GraphContext>> getProcessContext(String userId, EntityDetail process) throws OCFCheckedExceptionBase {
 
         final String methodName = "getProcessContext";
 
         graph = new AssetContext();
 
-        Optional<EntityDetail> entityDetail = handlerHelper.getEntityDetails(userId, processGuid, PROCESS);
-        if (!entityDetail.isPresent()) {
-            log.error("Entity with guid {} was not found in any metadata repository", processGuid);
-
-            throw new AssetLineageException(ENTITY_NOT_FOUND.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    "Retrieving Entity",
-                    ENTITY_NOT_FOUND.getErrorMessage(),
-                    ENTITY_NOT_FOUND.getSystemAction(),
-                    ENTITY_NOT_FOUND.getUserAction());
-        }
-
-        invalidParameterHandler.validateAssetInSupportedZone(processGuid,
+        invalidParameterHandler.validateAssetInSupportedZone(process.getGUID(),
                 GUID_PARAMETER,
-                handlerHelper.getAssetZoneMembership(entityDetail.get().getClassifications()),
+                handlerHelper.getAssetZoneMembership(process.getClassifications()),
                 supportedZones,
                 ASSET_LINEAGE_OMAS,
                 methodName);
 
-        return checkIfAllRelationshipsExist(userId, entityDetail.get());
+        return checkIfAllRelationshipsExist(userId, process);
     }
 
     private Map<String, Set<GraphContext>> checkIfAllRelationshipsExist(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
@@ -148,6 +123,7 @@ public class ProcessContextHandler {
      */
     private List<EntityDetail> getRelationshipsBetweenEntities(String userId, EntityDetail startEntity, String relationshipType) throws OCFCheckedExceptionBase {
         if (startEntity == null) return Collections.emptyList();
+        handlerHelper.addLineageClassificationToContext(startEntity, graph);
         String startEntityType = startEntity.getType().getTypeDefName();
 
         List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipType, startEntityType);

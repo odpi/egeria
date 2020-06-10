@@ -74,7 +74,7 @@ public class AssetLineagePublisher {
      * @param entityDetail entity to get context
      */
     public void publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
-        Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail.getGUID());
+        Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail);
         LineageEvent event = new LineageEvent();
         event.setAssetContext(processContext);
         event.setAssetLineageEventType(AssetLineageEventType.PROCESS_CONTEXT_EVENT);

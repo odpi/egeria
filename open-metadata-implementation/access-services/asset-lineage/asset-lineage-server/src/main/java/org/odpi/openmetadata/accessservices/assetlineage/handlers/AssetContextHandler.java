@@ -23,22 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_SCHEMA_TYPE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COMPLEX_SCHEMA_TYPE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_ENDPOINT;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_TO_ASSET;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATABASE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_CONTENT_FOR_DATA_SET;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FILE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FOLDER_HIERARCHY;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
 
 /**
  * The Asset Context handler provides methods to build graph context for assets that has been created.
@@ -63,10 +48,11 @@ public class AssetContextHandler {
     public AssetContextHandler(InvalidParameterHandler invalidParameterHandler,
                                OMRSRepositoryHelper repositoryHelper,
                                RepositoryHandler repositoryHandler,
-                               List<String> supportedZones) {
+                               List<String> supportedZones,
+                               List<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
-        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler);
+        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
         this.supportedZones = supportedZones;
     }
 
@@ -112,7 +98,7 @@ public class AssetContextHandler {
 
     }
 
-    private Optional<EntityDetail> getEntityDetails(String userId, String guid, String type) throws OCFCheckedExceptionBase {
+    public Optional<EntityDetail> getEntityDetails(String userId, String guid, String type) throws OCFCheckedExceptionBase {
         final String methodName = "getEntityDetails";
         return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER, type, methodName));
     }
@@ -134,13 +120,18 @@ public class AssetContextHandler {
             if (isComplexSchemaType(userId, schemaTypeEntity.getType().getTypeDefName())) {
                 setAssetDetails(userId, schemaTypeEntity);
             } else {
-                buildAssetContext(userId, tableTypeEntities.stream().findFirst().get());
+                Optional<EntityDetail> first = tableTypeEntities.stream().findFirst();
+                if(first.isPresent()) {
+                    buildAssetContext(userId, first.get());
+                }
             }
         }
     }
 
     private List<EntityDetail> buildGraphByRelationshipType(String userId, EntityDetail startEntity,
                                                             String relationshipType, String typeDefName, boolean changeDirection) throws OCFCheckedExceptionBase {
+        handlerHelper.addLineageClassificationToContext(startEntity, graph);
+
         List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipType, typeDefName);
 
         if (startEntity.getType().getTypeDefName().equals(FILE_FOLDER)) {
