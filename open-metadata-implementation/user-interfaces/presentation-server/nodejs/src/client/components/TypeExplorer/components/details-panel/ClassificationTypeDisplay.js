@@ -27,7 +27,7 @@ export default function ClassificationTypeDisplay(props) {
 
     return (
       <div className="instance-details-container">
-        <div className="instance-details-item">Classification Type : {typeName}</div>
+        <div className="instance-details-item-bold">Classification Type : {typeName}</div>
         <div className="instance-details-item">{classificationExpl.classificationDef.description}</div>        
         <div className="instance-details-item">Attributes : { !classificationExpl.classificationDef.propertiesDefinition ? "none" :
           <ClassificationPropertiesDisplay expl={classificationExpl} />}</div>     

@@ -28,7 +28,7 @@ export default function EntityTypeDisplay(props) {
 
   return (
     <div className="instance-details-container">
-      <div className="instance-details-item">Entity Type : {typeName}</div>
+      <div className="instance-details-item-bold">Entity Type : {typeName}</div>
       <div className="instance-details-item">{entityExpl.entityDef.description}</div>        
       <div className="instance-details-item">Attributes : { !entityExpl.inheritedAttributes && !entityExpl.entityDef.propertiesDefinition ? "none" :
         <EntityPropertiesDisplay expl={entityExpl} />}</div>     
