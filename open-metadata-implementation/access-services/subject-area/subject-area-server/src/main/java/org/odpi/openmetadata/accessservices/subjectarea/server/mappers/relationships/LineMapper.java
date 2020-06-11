@@ -57,9 +57,9 @@ public abstract class LineMapper implements ILineMapper
         InstanceProperties relationshipProperties = relationship.getProperties();
         if (relationshipProperties!=null) {
             mapLineEffectivityToInstanceProperties(line, relationshipProperties);
-            Iterator omrsPropertyIterator =relationshipProperties.getPropertyNames();
+            Iterator<String> omrsPropertyIterator =relationshipProperties.getPropertyNames();
             while (omrsPropertyIterator.hasNext()) {
-                String propertyName = (String) omrsPropertyIterator.next();
+                String propertyName = omrsPropertyIterator.next();
                 // this is a property we expect
                 InstancePropertyValue value =relationshipProperties.getPropertyValue(propertyName);
 

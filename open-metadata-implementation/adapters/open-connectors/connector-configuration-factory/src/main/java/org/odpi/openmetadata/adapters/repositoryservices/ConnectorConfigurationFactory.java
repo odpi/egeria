@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
-import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
+import org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile.EncryptedFileBasedServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
@@ -73,7 +73,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(FileBasedServerConfigStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(EncryptedFileBasedServerConfigStoreProvider.class.getName()));
         connection.setQualifiedName(endpoint.getAddress());
 
         return connection;
@@ -297,8 +297,8 @@ public class ConnectorConfigurationFactory
 
     /**
      * Return the Connection for this server's OMRS Repository REST API.  If the localServerURL is
-     * something like localhost:8080/west-domain then the REST API URL would be
-     * localhost:8080/west-domain/servers/{localServerName}/open-metadata/repository-services/...
+     * something like https://localhost:9443/west-domain then the REST API URL would be
+     * https://localhost:9443/west-domain/servers/{localServerName}/open-metadata/repository-services/...
      *
      * @param localServerName   name of the local server
      * @param localServerURL   root of the local server's URL

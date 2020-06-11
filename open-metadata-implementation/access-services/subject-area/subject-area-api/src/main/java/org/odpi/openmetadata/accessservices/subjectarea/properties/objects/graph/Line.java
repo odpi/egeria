@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
@@ -21,9 +22,9 @@ import java.util.Map;
 /**
  * A relationship between 2 subject area OMAS entities. It is called types as it has named fields for the attributes and references.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
@@ -48,7 +49,7 @@ import java.util.Map;
                 @JsonSubTypes.Type(value = Categorization.class, name = "Categorization"),
 
         })
-            
+
 public class Line implements Serializable {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
@@ -66,31 +67,34 @@ public class Line implements Serializable {
     /**
      * Default constructor
      */
-    public Line() {}
-    public Line(Line template) {
-            this.setAdditionalProperties(template.getAdditionalProperties());
-            this.setSystemAttributes(template.getSystemAttributes());
-            this.setGuid(template.getGuid());
-            this.setLineType(template.getLineType());
-            this.setAdditionalProperties(template.getAdditionalProperties());
-    }
-    public Line(String name) {
-        this.name=name;
-        this.lineType=LineType.Unknown;
+    public Line() {
     }
 
-    public Line(String name,LineType lineType) {
-        this.name=name;
-        this.lineType=lineType;
+    public Line(Line template) {
+        this.setAdditionalProperties(template.getAdditionalProperties());
+        this.setSystemAttributes(template.getSystemAttributes());
+        this.setGuid(template.getGuid());
+        this.setLineType(template.getLineType());
+        this.setAdditionalProperties(template.getAdditionalProperties());
     }
+
+    public Line(String name) {
+        this.name = name;
+        this.lineType = LineType.Unknown;
+    }
+
+    public Line(String name, LineType lineType) {
+        this.name = name;
+        this.lineType = lineType;
+    }
+
     /**
      * Create a typedRelationship from an omrs relationship
+     *
      * @param omrsRelationship omrs relationship
      */
     public Line(Relationship omrsRelationship) {
-        if (this.systemAttributes ==null) {
-            this.systemAttributes = new SystemAttributes();
-        }
+        this.systemAttributes = new SystemAttributes();
         this.systemAttributes.setUpdateTime(omrsRelationship.getUpdateTime());
         this.systemAttributes.setCreateTime(omrsRelationship.getCreateTime());
         this.systemAttributes.setCreatedBy(omrsRelationship.getCreatedBy());
@@ -122,30 +126,31 @@ public class Line implements Serializable {
     public void setSystemAttributes(SystemAttributes systemAttributes) {
         this.systemAttributes = systemAttributes;
     }
+
     /**
      * Return the date/time that this line should start to be used (null means it can be used from creationTime).
+     *
      * @return Date the line becomes effective.
      */
-    public Date getEffectiveFromTime()
-    {
+    public Date getEffectiveFromTime() {
         return effectiveFromTime;
     }
 
-    public void setEffectiveFromTime(Date effectiveFromTime)
-    {
+    public void setEffectiveFromTime(Date effectiveFromTime) {
         this.effectiveFromTime = effectiveFromTime;
     }
+
     /**
      * Return the date/time that this line should no longer be used.
      *
      * @return Date the line stops being effective.
      */
-    public Date getEffectiveToTime()
-    {
+    public Date getEffectiveToTime() {
         return effectiveToTime;
     }
+
     public String getGuid() {
-        if (this.systemAttributes==null) {
+        if (this.systemAttributes == null) {
             return null;
         } else {
             return systemAttributes.getGUID();
@@ -153,7 +158,7 @@ public class Line implements Serializable {
     }
 
     public void setGuid(String guid) {
-        if (this.systemAttributes==null) {
+        if (this.systemAttributes == null) {
             this.systemAttributes = new SystemAttributes();
         }
         this.systemAttributes.setGUID(guid);
@@ -169,17 +174,20 @@ public class Line implements Serializable {
 
     /**
      * Get the extra attributes - ones that are in addition to the standard types.
+     *
      * @return extra attributes
      */
     public Map<String, String> getAdditionalProperties() {
         return additionalProperties;
     }
-    public void setAdditionalProperties(Map<String,String> additionalProperties) {
+
+    public void setAdditionalProperties(Map<String, String> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 
     /**
      * Create an omrs relationship with the basic fields filled in.
+     *
      * @param line this is a line to create the relationship from
      * @return Relationship the created omrs relationship
      */
@@ -190,14 +198,14 @@ public class Line implements Serializable {
         typeOfRelationship.setTypeDefGUID(line.getTypeDefGuid());
         omrsRelationship.setType(typeOfRelationship);
         SystemAttributes systemAttributes = line.getSystemAttributes();
-        if (systemAttributes ==null) {
+        if (systemAttributes == null) {
             systemAttributes = new SystemAttributes();
         }
         omrsRelationship.setCreatedBy(systemAttributes.getCreatedBy());
         omrsRelationship.setUpdatedBy(systemAttributes.getUpdatedBy());
         omrsRelationship.setCreateTime(systemAttributes.getCreateTime());
         omrsRelationship.setUpdateTime(systemAttributes.getUpdateTime());
-        if (systemAttributes.getVersion()==null) {
+        if (systemAttributes.getVersion() == null) {
             omrsRelationship.setVersion(0L);
         } else {
             omrsRelationship.setVersion(systemAttributes.getVersion());
@@ -212,16 +220,20 @@ public class Line implements Serializable {
         }
 
         sb.append("Line{");
-        sb.append("typeDefGuid="+typeDefGuid+",");
-        sb.append("lineType=" + lineType.name()+",");
-        sb.append("name=" + name);
-        if (this.systemAttributes!=null)
-        {
+        sb.append("typeDefGuid=").append(typeDefGuid).append(",");
+        sb.append("lineType=").append(lineType.name()).append(",");
+        sb.append("name=").append(name);
+        if (this.systemAttributes != null) {
             sb.append("systemAttributes { ");
             sb = this.systemAttributes.toString(sb);
             sb.append("}");
         }
         sb.append('}');
         return sb;
+    }
+
+    @Override
+    public String toString() {
+        return this.toString(null).toString();
     }
 }

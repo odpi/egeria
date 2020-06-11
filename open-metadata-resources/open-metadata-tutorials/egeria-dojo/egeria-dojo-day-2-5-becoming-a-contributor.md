@@ -9,6 +9,9 @@ In this session, you will learn about how to be recognized as an Egeria Contribu
 
 ![Becoming a Contributor](egeria-dojo-day-2-5-becoming-a-contributor.png)
 
+Watch the video to find out more: [https://youtu.be/e3pEXZ6iatE](https://youtu.be/e3pEXZ6iatE)
+
+## What does it mean to be recognized as an Egeria contributor?
 
 An **Egeria Contributor** is someone who has made multiple quality contributions to the Egeria community.
 This role is described in the [Operations Guide](../../../Egeria-Operations.md).
@@ -36,7 +39,7 @@ Day 3 covers additional information for advocates
 and those wishing to become **Egeria Maintainers**.
 
 ----
-* Progress to [Dojo Overview](.) to see the content for day 2.
+* Progress to [Dojo Overview](.) to see the content for day 3.
 
 * Return to [Running Egeria on your machine Step-by-Step](egeria-dojo-day-1-3-running-egeria.md)
 

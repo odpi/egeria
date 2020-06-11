@@ -13,8 +13,10 @@ same color scheme as the dojo sessions to give you a view on how hard each one i
 
 ![Types of Contribution](egeria-dojo-day-2-4-types-of-contribution.png)
 
-The descriptions below describe each type of contribution with links to the design information you need
+The video describe each type of contribution with pointers to the design information you need
 to make a contribution of that type.
+
+* [https://youtu.be/_nnoQGk84bk](https://youtu.be/_nnoQGk84bk)
 
 
 

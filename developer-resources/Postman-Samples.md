@@ -7,6 +7,9 @@ We tend to use [Postman](https://www.getpostman.com) to test the various API end
 Egeria. As such, there are a number of samples we make available for anyone to use for testing or otherwise
 becoming familiar with the Egeria APIs.
 
+Egeria by default uses https:// requests with a self-signed certificate. Any PostMan users therefore will need to
+go into settings->general and turn off 'SSL certificate verification' or requests will fail.
+
 When developing a new API in Egeria, you may want to make similar samples available to both provide examples
 of using the API as well as for basic testing purposes. These should be developed as follows:
 

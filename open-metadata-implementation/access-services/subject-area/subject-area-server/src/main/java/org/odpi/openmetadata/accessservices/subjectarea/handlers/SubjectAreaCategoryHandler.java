@@ -156,15 +156,19 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             final String suppliedCategoryName = suppliedCategory.getName();
             if (suppliedCategoryName == null || suppliedCategoryName.equals("")) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_WITHOUT_NAME.getMessageDefinition();
-                throw new InvalidParameterException(messageDefinition,
-                                                    className,
-                                                    methodName,
-                                                    "Name",
-                                                    null);
+                String propertyName = "Name";
+                String propertyValue = null;
+                messageDefinition.setMessageParameters(propertyName,propertyValue);
+                throw new InvalidParameterException(
+                        messageDefinition,
+                        className,
+                        methodName,
+                        propertyName,
+                        propertyValue);
             }
             GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
             SubjectAreaOMASAPIResponse glossaryResponse = validateGlossarySummaryDuringCreation(glossaryHandler, userId, methodName, suppliedGlossary);
-            if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Glossary)) {
+            if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Glossary)) {
                 // the glossary that was supplied is valid.
                 EntityDetail entityDetail = new CategoryMapper(oMRSAPIHelper).mapNodeToEntityDetail(suppliedCategory);
 
@@ -200,7 +204,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         } catch (InvalidParameterException e) {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
         }
-
 
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);

@@ -16,6 +16,7 @@ but is no help when you want to connect it to other servers.
 For this next exercise, we are going to use `docker-compose` to run a set of docker containers with different
 technologies.
 
+Watch video showing docker compose and the open metadata labs: [https://youtu.be/nuRKPfRDKEc](https://youtu.be/nuRKPfRDKEc)
 
 Before you move forward, shut down your egeria docker container using the docker desktop to save cycles on your machine.
 You can delete it if you do not want it any more.

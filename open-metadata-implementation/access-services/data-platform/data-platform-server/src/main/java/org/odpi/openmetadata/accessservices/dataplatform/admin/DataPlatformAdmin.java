@@ -2,12 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.admin;
 
-import org.odpi.openmetadata.accessservices.dataplatform.connectors.outtopic.DataPlatformOutTopicClientProvider;
-import org.odpi.openmetadata.accessservices.dataplatform.connectors.outtopic.DataPlatformOutTopicServerConnector;
-import org.odpi.openmetadata.accessservices.dataplatform.connectors.outtopic.DataPlatformOutTopicServerProvider;
+
 import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformAuditCode;
-import org.odpi.openmetadata.accessservices.dataplatform.listener.DataPlatformOMRSTopicListener;
-import org.odpi.openmetadata.accessservices.dataplatform.outtopic.DataPlatformOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
@@ -15,9 +11,6 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -35,7 +28,6 @@ public class DataPlatformAdmin extends AccessServiceAdmin
     private DataPlatformServicesInstance  instance         = null;
     private OpenMetadataTopicConnector    inTopicConnector = null;
     private String                        serverName       = null;
-    private DataPlatformOutTopicPublisher eventPublisher   = null;
 
 
     /**
@@ -91,56 +83,8 @@ public class DataPlatformAdmin extends AccessServiceAdmin
                                                                auditLog,
                                                                serverUserName,
                                                                repositoryConnector.getMaxPageSize(),
-                                                               this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                          AccessServiceDescription.DATA_PLATFORM_OMAS.getAccessServiceFullName(),
-                                                                                          DataPlatformOutTopicClientProvider.class.getName(),
-                                                                                          auditLog));
+                                                               null);
             this.serverName = instance.getServerName();
-
-
-            /*
-             * Only set up the listening and event publishing if requested in the config.
-             */
-            if (accessServiceConfig.getAccessServiceOutTopic() != null)
-            {
-                Connection outTopicEventBusConnection = accessServiceConfig.getAccessServiceOutTopic();
-
-                Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
-
-                AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
-                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                     AccessServiceDescription.DATA_PLATFORM_OMAS.getAccessServiceFullName(),
-                                                                                     DataPlatformOutTopicServerProvider.class.getName(),
-                                                                                     auditLog);
-                DataPlatformOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
-                                                                                                      DataPlatformOutTopicServerConnector.class,
-                                                                                                      outTopicAuditLog,
-                                                                                                      AccessServiceDescription.DATA_PLATFORM_OMAS.getAccessServiceFullName(),
-                                                                                                      actionDescription);
-                eventPublisher = new DataPlatformOutTopicPublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
-
-                this.registerWithEnterpriseTopic(AccessServiceDescription.DATA_PLATFORM_OMAS.getAccessServiceFullName(),
-                                                 serverName,
-                                                 omrsTopicConnector,
-                                                 new DataPlatformOMRSTopicListener(AccessServiceDescription.DATA_PLATFORM_OMAS.getAccessServiceFullName(),
-                                                                                   eventPublisher,
-                                                                                   supportedZones,
-                                                                                   repositoryConnector.getRepositoryHelper(),
-                                                                                   outTopicAuditLog),
-                                                 auditLog);
-            }
-
-
-            /*
-             * Only set up the listening and event publishing if requested in the config.
-             */
-            if (accessServiceConfig.getAccessServiceInTopic() != null)
-            {
-                // todo
-                inTopicConnector = super.getInTopicEventBusConnector(accessServiceConfig.getAccessServiceInTopic(),
-                                                                     AccessServiceDescription.DATA_PLATFORM_OMAS.getAccessServiceFullName(),
-                                                                     auditLog);
-            }
 
             auditLog.logMessage(actionDescription,
                                 DataPlatformAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
@@ -184,11 +128,6 @@ public class DataPlatformAdmin extends AccessServiceAdmin
             auditLog.logException(actionDescription,
                                   DataPlatformAuditCode.SERVICE_INSTANCE_TERMINATION_FAILURE.getMessageDefinition(serverName),
                                   error);
-        }
-
-        if (this.eventPublisher != null)
-        {
-            this.eventPublisher.disconnect();
         }
 
         if (instance != null)

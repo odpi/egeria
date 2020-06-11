@@ -34,6 +34,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +77,7 @@ public class SubjectAreaUtils {
         template.setTypeDefDescriptionGUID(typeDef.getDescriptionGUID());
         template.setTypeDefGUID(typeDef.getGUID());
 
-        List supertypes = new ArrayList();
+        List<TypeDefLink> supertypes = new ArrayList<>();
         supertypes.add(typeDef.getSuperType());
         template.setTypeDefSuperTypes(supertypes);
         template.setTypeDefVersion(typeDef.getVersion());
@@ -86,25 +87,13 @@ public class SubjectAreaUtils {
         return template;
     }
     public static boolean isTerm(String typeName) {
-        if (typeName.equals("GlossaryTerm")) {
-            return true;
-        } else {
-            return false;
-        }
+        return typeName.equals("GlossaryTerm");
     }
     public static boolean isCategory(String typeName) {
-        if (typeName.equals("GlossaryCategory")) {
-            return true;
-        } else {
-            return false;
-        }
+        return typeName.equals("GlossaryCategory");
     }
     public static boolean isGlossary(String typeName) {
-        if (typeName.equals("Glossary")) {
-            return true;
-        } else {
-            return false;
-        }
+        return typeName.equals("Glossary");
     }
     public static void addStringToInstanceProperty(String key, String value, InstanceProperties instanceProperties) {
         PrimitivePropertyValue primitivePropertyValue;
@@ -288,19 +277,19 @@ public class SubjectAreaUtils {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName );
         }
-        SubjectAreaOMASAPIResponse response = null;
         if (status.equals(Status.DELETED)) {
-            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition();
+            String propertyName =   "Status";
+            String propertyValue =  Status.DELETED.name();
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition(propertyName,propertyValue);
             throw new InvalidParameterException(messageDefinition,
                     className,
                     methodName,
-                    "Status",
-                    Status.DELETED.name());
+                    propertyName,
+                    propertyValue);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName );
         }
-
     }
 
     public static Status convertInstanceStatusToStatus(InstanceStatus instanceStatus) {
@@ -379,7 +368,7 @@ public class SubjectAreaUtils {
      */
     public static  SubjectAreaOMASAPIResponse convertOMRSRelationshipsToOMASLines(OMRSAPIHelper omrsapiHelper, List<Relationship> omrsRelationships)
     {
-        List omasLines = new ArrayList();
+        List<Line> omasLines = new ArrayList<>();
         for (Relationship omrsRelationship : omrsRelationships) {
             String omrsName = omrsRelationship.getType().getTypeDefName();
             Line omasLine = null;

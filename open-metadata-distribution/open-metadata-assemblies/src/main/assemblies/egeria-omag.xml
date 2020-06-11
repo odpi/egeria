@@ -61,10 +61,178 @@
         <!-- Standard Open Connectors -->
 
         <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/rest-client-connectors/spring-rest-client-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-encrypted-file-store-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-file-store-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors/audit-log-slf4j-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors/audit-log-file-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors/audit-log-console-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors/audit-log-event-topic-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/cohort-registry-store-connectors/cohort-registry-file-store-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/readonly-repository-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/inmemory-repository-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
             <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/cassandra-data-store-connector/target</directory>
             <outputDirectory>./server/lib</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}.jar</include>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
             </includes>
             <excludes>
                 <exclude>*javadoc*</exclude>
@@ -78,7 +246,7 @@
             <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/avro-file-connector/target</directory>
             <outputDirectory>./server/lib</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}.jar</include>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
             </includes>
             <excludes>
                 <exclude>*javadoc*</exclude>
@@ -92,7 +260,7 @@
             <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/basic-file-connector/target</directory>
             <outputDirectory>./server/lib</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}.jar</include>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
             </includes>
             <excludes>
                 <exclude>*javadoc*</exclude>
@@ -106,7 +274,7 @@
             <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/csv-file-connector/target</directory>
             <outputDirectory>./server/lib</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}.jar</include>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
             </includes>
             <excludes>
                 <exclude>*javadoc*</exclude>
@@ -120,7 +288,7 @@
             <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/data-folder-connector/target</directory>
             <outputDirectory>./server/lib</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}.jar</include>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
             </includes>
             <excludes>
                 <exclude>*javadoc*</exclude>
@@ -134,7 +302,7 @@
             <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/gaian-connector/target</directory>
             <outputDirectory>./server/lib</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}.jar</include>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
             </includes>
             <excludes>
                 <exclude>*javadoc*</exclude>
@@ -145,10 +313,52 @@
         </fileSet>
 
         <fileSet>
-            <directory>../../open-metadata-implementation/adapters/open-connectors/event-bus-topic-connectors/open-metadata-topic-connectors/kafka-open-metadata-topic-connector/target</directory>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/data-platform-connectors/cassandra-metadata-extractor-connector/target</directory>
             <outputDirectory>./server/lib</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}.jar</include>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/kafka-open-metadata-topic-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors/open-metadata-archive-file-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/inmemory-open-metadata-topic-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
             </includes>
             <excludes>
                 <exclude>*javadoc*</exclude>
@@ -164,7 +374,7 @@
             <directory>../../open-metadata-resources/open-metadata-samples/open-metadata-security-samples/target</directory>
             <outputDirectory>./server/lib</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}.jar</include>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
             </includes>
             <excludes>
                 <exclude>*javadoc*</exclude>
@@ -179,7 +389,7 @@
             <directory>../../open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/target</directory>
             <outputDirectory>./server/lib</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}.jar</include>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
             </includes>
             <excludes>
                 <exclude>*javadoc*</exclude>
@@ -194,7 +404,50 @@
             <directory>../../open-metadata-implementation/adapters/open-connectors/discovery-service-connectors/target</directory>
             <outputDirectory>./server/lib</outputDirectory>
             <includes>
-                <include>*${open-metadata.version}*jar</include>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Discovery Connector -->
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/security-officer-connectors/security-officer-tag-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/view-generator-connectors/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/security-sync-connectors/ranger-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
             </includes>
             <excludes>
                 <exclude>*javadoc*</exclude>
@@ -467,7 +720,7 @@
         </fileSet>
 
         <fileSet>
-            <directory>../../open-metadata-implementation/access-services/data-platform/data-platform-client/target/</directory>
+            <directory>../../open-metadata-implementation/access-services/data-manager/data-manager-client/target/</directory>
             <outputDirectory>./clients</outputDirectory>
             <includes>
                 <include>*.jar</include>
@@ -780,6 +1033,17 @@
             <includes>
                 <include>NOTICE</include>
                 <include>LICENSE</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- include the key store -->
+        <fileSet>
+            <directory>../..</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>truststore.p12</include>
             </includes>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>

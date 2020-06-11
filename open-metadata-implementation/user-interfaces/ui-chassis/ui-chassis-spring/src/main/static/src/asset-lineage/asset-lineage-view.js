@@ -22,14 +22,16 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     return html`
     <style include="shared-styles">
         :host {
-          display: block;
-          margin: 0 24px;
+          display: flex;
+          flex-flow: column;
+          margin:var(--egeria-view-margin);
+          min-height: var(--egeria-view-min-height);
         }
         
         .container {
-          margin: auto; 
-          height: calc(100vh - 130px);
           background-color: white;
+          display: flex;
+          flex-grow: 1;
         }
         #useCases {
             color: var(--egeria-primary-color);
@@ -41,56 +43,54 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     <app-route route="{{route}}" pattern="/:usecase/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
      
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
-    <token-ajax id="tokenAjaxDetails" last-response="{{items}}" ></token-ajax>
-    
-    <vaadin-tabs id ="useCases" selected="[[_getUseCase(routeData.usecase)]]" >
-      <vaadin-tab value="ultimateSource">
-        <a href="[[rootPath]]#/asset-lineage/ultimateSource/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
-            Ultimate Source
-        </a>
-      </vaadin-tab>
-      <vaadin-tab value="endToEnd">
-        <a href="[[rootPath]]#/asset-lineage/endToEnd/[[routeData.guid]]" tabindex="-1"  rel="noopener"> 
-            End to End Lineage
-        </a>
-      </vaadin-tab>
-      <vaadin-tab value="ultimateDestination">
-        <a href="[[rootPath]]#/asset-lineage/ultimateDestination/[[routeData.guid]]" tabindex="-1"  rel="noopener"> 
-            Ultimate Destination
-        </a>
-      </vaadin-tab>
-      <vaadin-tab value="glossaryLineage">
-        <a href="[[rootPath]]#/asset-lineage/glossaryLineage/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
-            Glossary Lineage
-        </a>
-      </vaadin-tab>
-      <vaadin-tab value="sourceAndDestination">
-        <a href="[[rootPath]]#/asset-lineage/sourceAndDestination/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
-            Source and Destination
-        </a>
-      </vaadin-tab>
-    </vaadin-tabs>
-    
+    <token-ajax id="tokenAjaxDetails" last-response="{{item}}" ></token-ajax>
     <div>
-        <vaadin-select id="processMenu" value="true" >
-          <template>
-            <vaadin-list-box>
-              <vaadin-item value="true" selected>Include ETL Jobs</vaadin-item>
-              <vaadin-item value="false">Exclude ETL Jobs</vaadin-item>
-            </vaadin-list-box>
-            </template>
-        </vaadin-select>
-
-    </div>
-    <div hidden = "[[_hideIncludeGlossaryTerms(routeData.usecase)]]">
-     <vaadin-select id="glossaryTermMenu" value="true">
-            <template>
+        <vaadin-tabs id ="useCases" selected="[[_getUseCase(routeData.usecase)]]" >
+          <vaadin-tab value="ultimateSource">
+            <a href="[[rootPath]]#/asset-lineage/ultimateSource/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
+                Ultimate Source
+            </a>
+          </vaadin-tab>
+          <vaadin-tab value="endToEnd">
+            <a href="[[rootPath]]#/asset-lineage/endToEnd/[[routeData.guid]]" tabindex="-1"  rel="noopener"> 
+                End to End Lineage
+            </a>
+          </vaadin-tab>
+          <vaadin-tab value="ultimateDestination">
+            <a href="[[rootPath]]#/asset-lineage/ultimateDestination/[[routeData.guid]]" tabindex="-1"  rel="noopener"> 
+                Ultimate Destination
+            </a>
+          </vaadin-tab>
+          <vaadin-tab value="glossaryLineage">
+            <a href="[[rootPath]]#/asset-lineage/glossaryLineage/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
+                Glossary Lineage
+            </a>
+          </vaadin-tab>
+          <vaadin-tab value="sourceAndDestination">
+            <a href="[[rootPath]]#/asset-lineage/sourceAndDestination/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
+                Source and Destination
+            </a>
+          </vaadin-tab>
+        </vaadin-tabs>
+        <div> 
+            <vaadin-select id="processMenu" value="true" >
+              <template>
                 <vaadin-list-box>
-                  <vaadin-item value="true" selected>Include Glossary Term</vaadin-item>
-                  <vaadin-item value="false">Exclude Glossary Term</vaadin-item>
+                  <vaadin-item value="true" selected>With ETL Jobs</vaadin-item>
+                  <vaadin-item value="false">Without ETL Jobs</vaadin-item>
+                </vaadin-list-box>
+                </template>
+            </vaadin-select>
+            <vaadin-select id="glossaryTermMenu" value="true" 
+                hidden = "[[_hideIncludeGlossaryTerms(routeData.usecase)]]" >
+              <template>
+                <vaadin-list-box>
+                  <vaadin-item value="true" selected>With Glossary Term</vaadin-item>
+                  <vaadin-item value="false">Without Glossary Term</vaadin-item>
                 </vaadin-list-box>  
-            </template>
-        </vaadin-select>
+              </template>
+            </vaadin-select>
+        </div>
     </div>
 
     <div class="container" id="container">
@@ -123,26 +123,28 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 type: Object,
                 value: {
                     GlossaryTerm: {
-                        shape: 'diamond',
-                        color: '#FCF68E'
+                        color: '#f0e442',
+                        shape: 'circle'
                     },
                     Column: {
-                        color: '#99E17E'
+                        color: '#009e73'
                     },
                     RelationalColumn: {
-                        color: '#99E17E'
+                        color: '#0072b2'
                     },
                     TabularColumn: {
-                        color: '#99E17E'
+                        color: '#cc79a7'
                     },
                     RelationalTable: {
                         shape: 'box',
+                        color: '#007836'
                     },
                     Process: {
-                        shape: 'parallelogram'
+                        shape: 'parallelogram',
+                        color: '#b276b2'
                     },
                     condensedNode: {
-                        color: '#71ccdc'
+                        color: '#faa43a'
                     }
                 }
             }
@@ -151,12 +153,16 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
 
     static get observers() {
         return [
-            '_routeChanged(routeData)'
+            '_routeChanged(route)'
         ];
     }
 
-    _routeChanged(routeData){
-        this._reload(this.routeData.usecase, this.$.processMenu.value);
+    _routeChanged(route){
+        if (this.route.prefix === '/asset-lineage') {
+            this.$.tokenAjaxDetails.url = '/api/assets/' + this.routeData.guid;
+            this.$.tokenAjaxDetails._go();
+            this._reload(this.routeData.usecase, this.$.processMenu.value);
+        }
     }
 
     _graphDataChanged(data, newData) {
@@ -173,11 +179,17 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             }
         }
         for (var i = 0; i < data.nodes.length; i++) {
+            const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
             data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "", '<br>');
             if (data.nodes[i].properties == null) {
                 continue;
             }
             let displayName;
+            if (data.nodes[i].id === this.routeData.guid){
+                data.nodes[i].group='';
+                data.nodes[i].color=egeriaColor;
+                data.nodes[i].font= {color:'white'};
+            }
             if (data.nodes[i].properties['tableDisplayName'] != null) {
                 displayName = data.nodes[i].properties['tableDisplayName']
             } else if (data.nodes[i].properties['vertex--tableDisplayName'] != null) {

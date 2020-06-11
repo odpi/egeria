@@ -40,7 +40,7 @@ import java.util.List;
  * OMAS and retrieves entities and relationships through the OMRSRepositoryConnector.
  */
 public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
-    private static final Class clazz = SubjectAreaGlossaryHandler.class;
+    private static final Class<?> clazz = SubjectAreaGlossaryHandler.class;
     private static final String className = clazz.getName();
     private static final Logger log = LoggerFactory.getLogger(clazz);
 
@@ -141,11 +141,15 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
             // need to check we have a name
             if (suppliedGlossaryName == null || suppliedGlossaryName.equals("")) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CREATE_WITHOUT_NAME.getMessageDefinition();
-                throw new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(messageDefinition,
-                                                                                                                     className,
-                                                                                                                     methodName,
-                                                                                                                     "name",
-                                                                                                                     null);
+                String propertyName = "Name";
+                String propertyValue = null;
+                messageDefinition.setMessageParameters(propertyName,propertyValue);
+                throw new InvalidParameterException(
+                        messageDefinition,
+                        className,
+                        methodName,
+                        propertyName,
+                        propertyValue);
             } else {
                 GlossaryMapper glossaryMapper = new GlossaryMapper(oMRSAPIHelper);
                 EntityDetail glossaryEntityDetail = glossaryMapper.mapNodeToEntityDetail(suppliedGlossary);
@@ -332,8 +336,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
 
             response = getGlossaryByGuid(userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.Glossary)) {
-                org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary originalGlossary = ((GlossaryResponse) response).getGlossary();
-                Glossary updateGlossary = originalGlossary;
+                Glossary updateGlossary = ((GlossaryResponse) response).getGlossary();
                 if (isReplace) {
                     // copy over attributes
                     updateGlossary.setName(suppliedGlossary.getName());
@@ -449,7 +452,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                 response = getResponse(response);
                             }
                         } else {
-                            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition();
+                            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid);
                             response = new EntityNotDeletedExceptionResponse(
                                     new EntityNotDeletedException(messageDefinition,
                                                                   className,
