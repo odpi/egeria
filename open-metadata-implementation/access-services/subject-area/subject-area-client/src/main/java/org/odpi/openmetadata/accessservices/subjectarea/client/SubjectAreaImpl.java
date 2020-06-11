@@ -3,8 +3,10 @@
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
 import org.odpi.openmetadata.accessservices.subjectarea.*;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,12 +41,29 @@ public class SubjectAreaImpl implements SubjectArea {
         String methodName = "SubjectAreaImpl";
         InputValidator.validateRemoteServerNameNotNull(className, methodName, serverName);
         InputValidator.validateRemoteServerURLNotNull(className, methodName, omasServerURL);
-        this.glossaryAPI = new SubjectAreaGlossaryImpl(omasServerURL, serverName);
-        this.termAPI = new SubjectAreaTermImpl(omasServerURL, serverName);
-        this.categoryAPI = new SubjectAreaCategoryImpl(omasServerURL, serverName);
-        this.relationshipAPI = new SubjectAreaRelationshipImpl(omasServerURL, serverName);
-        this.graphAPI = new SubjectAreaGraphImpl(omasServerURL, serverName);
-        this.projectAPI = new SubjectAreaProjectImpl(omasServerURL, serverName);
+        try {
+            this.glossaryAPI = new SubjectAreaGlossaryImpl( serverName, omasServerURL);
+            this.termAPI = new SubjectAreaTermImpl( serverName, omasServerURL);
+            this.categoryAPI = new SubjectAreaCategoryImpl( serverName, omasServerURL);
+            this.relationshipAPI = new SubjectAreaRelationshipImpl( serverName, omasServerURL);
+            this.graphAPI = new SubjectAreaGraphImpl( serverName, omasServerURL);
+            this.projectAPI = new SubjectAreaProjectImpl( serverName, omasServerURL);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+            String parameterName = "serverName or omasServerURL";
+            String parameterValue = "unknown";
+            if (serverName == null || serverName == "") {
+                parameterName = "serverName";
+                parameterValue = serverName;
+            }
+            if (omasServerURL == null || omasServerURL == "") {
+                parameterName = "omasServerURL";
+                parameterValue = omasServerURL;
+            }
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.SUBJECT_AREA_FAILED_TO_INITIALISE.getMessageDefinition();
+            messageDefinition.setMessageParameters(parameterName, parameterValue);
+            throw new InvalidParameterException(messageDefinition, className, methodName, e, parameterName, parameterValue);
+        }
+
         this.serverName = serverName;
         this.omasServerUrl = omasServerURL;
     }

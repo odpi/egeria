@@ -45,7 +45,6 @@ public class RelationshipNotPurgedException extends GuidOrientatedException {
                                           String guid) {
         super(messageDefinition, className, actionDescription, caughtError, guid);
     }
-
 }
 
 

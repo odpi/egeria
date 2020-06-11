@@ -336,6 +336,7 @@ public class RexViewHandler
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param searchText the search expression that entities must match
      * @param entityTypeName the name of a type used to filter the entity search
+     * @param classificationNames classification names to limit find by
      * @param methodName The name of the method being invoked
      * @return a map of entity digests for the entities that matched the search
      *

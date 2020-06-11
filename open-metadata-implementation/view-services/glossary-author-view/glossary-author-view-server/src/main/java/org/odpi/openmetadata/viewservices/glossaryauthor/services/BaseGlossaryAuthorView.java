@@ -74,32 +74,36 @@ abstract public class BaseGlossaryAuthorView {
 
         if (ocfCheckedExceptionBase instanceof org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException) {
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.INVALID_PARAMETER.getMessageDefinition();
-
+            String invalidPropertyName = ((org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException) ocfCheckedExceptionBase).getParameterName();
+            messageDefinition.setMessageParameters(invalidPropertyName, null);
             InvalidParameterException e = new InvalidParameterException(
                     messageDefinition,
                     className,
                     methodName,
-                    ((org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException) ocfCheckedExceptionBase).getParameterName(),
+                    invalidPropertyName,
                     null);
 
             response = new InvalidParameterExceptionResponse(e);
         } else if (ocfCheckedExceptionBase instanceof org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException) {
-            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.USER_NOT_AUTHORIZED.getMessageDefinition();
+            String userId =                   ((org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException) ocfCheckedExceptionBase).getUserId();
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.USER_NOT_AUTHORIZED.getMessageDefinition(userId);
 
             UserNotAuthorizedException e = new UserNotAuthorizedException(
                     messageDefinition,
                     className,
                     methodName,
-                    ((org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException) ocfCheckedExceptionBase).getUserId());
+                    userId);
             response = new UserNotAuthorizedExceptionResponse(e);
         } else if (ocfCheckedExceptionBase instanceof org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException) {
             // TODO should we have a separate message for property server errors?
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.INVALID_PARAMETER.getMessageDefinition();
+            String invalidPropertyName = ((org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException) ocfCheckedExceptionBase).getParameterName();
+            messageDefinition.setMessageParameters(invalidPropertyName, null);
             InvalidParameterException e = new InvalidParameterException(
                     messageDefinition,
                     className,
                     methodName,
-                    ((org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException) ocfCheckedExceptionBase).getParameterName(),
+                    invalidPropertyName,
                     null);
 
             response = new InvalidParameterExceptionResponse(e);
