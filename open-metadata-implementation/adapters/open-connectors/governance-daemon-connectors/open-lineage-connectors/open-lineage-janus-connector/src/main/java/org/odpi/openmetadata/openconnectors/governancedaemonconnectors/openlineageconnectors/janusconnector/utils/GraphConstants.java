@@ -51,6 +51,13 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_GLOSSARY = "glossary";
     public static final String PROPERTY_NAME_METADATA_ID = "metadataCollectionId";
     private static final String PROPERTY_NAME_PATH = "path";
+    private static final String PROPERTY_NAME_LEVEL = "level";
+    public static final String PROPERTY_NAME_INSTANCEPROP_LEVEL = PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY + PROPERTY_NAME_LEVEL;
+    private static final String PROPERTY_NAME_CONFIDENCE = "confidence";
+    public static final String PROPERTY_NAME_INSTANCEPROP_CONFIDENCE = PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY + PROPERTY_NAME_CONFIDENCE;
+    private static final String PROPERTY_NAME_STATUS = "status";
+    public static final String PROPERTY_NAME_INSTANCEPROP_STATUS = PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY + PROPERTY_NAME_STATUS;
+
 
     public static final String CONDENSED_NODE_DISPLAY_NAME = "...";
     public static final String SOURCE_CONDENSATION = "source";
@@ -88,6 +95,9 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_GLOSSARY_TERM = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_GLOSSARY_TERM;
     public static final String PROPERTY_KEY_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_DISPLAY_NAME;
     public static final String PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_INSTANCEPROP_DISPLAY_NAME;
+    public static final String PROPERTY_KEY_INSTANCEPROP_LEVEL = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_INSTANCEPROP_LEVEL;
+    public static final String PROPERTY_KEY_INSTANCEPROP_CONFIDENCE = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_INSTANCEPROP_CONFIDENCE;
+    public static final String PROPERTY_KEY_INSTANCEPROP_STATUS = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_INSTANCEPROP_STATUS;
     public static final String PROPERTY_KEY_METADATA_ID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_METADATA_ID;
 
     public static final String PROPERTY_KEY_ENTITY_VERSION = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_VERSION;
@@ -125,6 +135,9 @@ public class GraphConstants {
         returnedPropertiesWhiteList.add(PROPERTY_KEY_ENTITY_CREATE_TIME);
         returnedPropertiesWhiteList.add(PROPERTY_KEY_ENTITY_UPDATED_BY);
         returnedPropertiesWhiteList.add(PROPERTY_KEY_ENTITY_UPDATE_TIME);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_INSTANCEPROP_LEVEL);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_INSTANCEPROP_CONFIDENCE);
+        returnedPropertiesWhiteList.add(PROPERTY_KEY_INSTANCEPROP_STATUS);
     }
 
     public static final ImmutableSet<String> immutableReturnedPropertiesWhiteList = ImmutableSet.copyOf(returnedPropertiesWhiteList);
