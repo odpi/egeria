@@ -34,7 +34,7 @@ export default function RelationshipEntitiesDisplay(props) {
 
   const expandEnds = (relDef) => {
     let endsList = (
-    <div>
+    <div className="details-sub-container">
       <li className="end-sublist" key="end1"> 
         Entity @ end1: {formatEnd(relDef.endDef1)}                  
       </li>
