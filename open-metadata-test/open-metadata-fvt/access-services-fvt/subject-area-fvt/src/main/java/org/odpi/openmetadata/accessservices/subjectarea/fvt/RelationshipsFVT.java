@@ -36,7 +36,7 @@ public class RelationshipsFVT {
     private String serverName = null;
     private String userId = null;
 
-    public RelationshipsFVT(String url, String serverName, String userId) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException {
+    public RelationshipsFVT(String url, String serverName, String userId) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException, PropertyServerException {
         this.url = url;
         subjectAreaRelationship = new SubjectAreaImpl(serverName, url).getSubjectAreaRelationship();
         termFVT = new TermFVT(url, serverName, userId);
@@ -56,24 +56,24 @@ public class RelationshipsFVT {
         } catch (SubjectAreaCheckedException e) {
             System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         } catch (SubjectAreaFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            System.out.println("ERROR: " + e.getMessage());
         }
 
     }
 
-    public static void runWith2Servers(String url) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException {
+    public static void runWith2Servers(String url) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException, PropertyServerException {
         RelationshipsFVT fvt = new RelationshipsFVT(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
         fvt.run();
         RelationshipsFVT fvt2 = new RelationshipsFVT(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
         fvt2.run();
     }
 
-    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException {
+    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException, PropertyServerException {
         RelationshipsFVT fvt = new RelationshipsFVT(url, serverName, userId);
         fvt.run();
     }
 
-    public void run() throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException, SubjectAreaFVTCheckedException {
+    public void run() throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException, SubjectAreaFVTCheckedException, PropertyServerException {
         System.out.println("Create a glossary");
 
         int term1relationshipcount = 0;
@@ -180,28 +180,28 @@ public class RelationshipsFVT {
 
     }
 
-    private void checkRelationshipNumberforTerm(int expectedrelationshipcount, Term term) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, SubjectAreaFVTCheckedException {
+    private void checkRelationshipNumberforTerm(int expectedrelationshipcount, Term term) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, SubjectAreaFVTCheckedException, PropertyServerException {
         int actualCount = termFVT.getTermRelationships(term).size();
         if (expectedrelationshipcount != actualCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: expected " + expectedrelationshipcount + " for " + term.getName() + " got " + actualCount);
         }
     }
 
-    private void checkRelationshipNumberforGlossary(int expectedrelationshipcount, Glossary glossary) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, SubjectAreaFVTCheckedException {
+    private void checkRelationshipNumberforGlossary(int expectedrelationshipcount, Glossary glossary) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, SubjectAreaFVTCheckedException, PropertyServerException {
         int actualCount = glossaryFVT.getGlossaryRelationships(glossary).size();
         if (expectedrelationshipcount != actualCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: expected " + expectedrelationshipcount + " for " + glossary.getName() + " got " + actualCount);
         }
     }
 
-    private void checkRelationshipNumberforCategory(int expectedrelationshipcount, Category category) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, SubjectAreaFVTCheckedException {
+    private void checkRelationshipNumberforCategory(int expectedrelationshipcount, Category category) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, SubjectAreaFVTCheckedException, PropertyServerException {
         int actualCount = catFVT.getCategoryRelationships(category).size();
         if (expectedrelationshipcount != actualCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: expected " + expectedrelationshipcount + " for " + category.getName() + " got " + actualCount);
         }
     }
 
-    private void createSomeTermRelationships(Term term1, Term term2, Term term3) throws SubjectAreaFVTCheckedException, InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException {
+    private void createSomeTermRelationships(Term term1, Term term2, Term term3) throws SubjectAreaFVTCheckedException, InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, PropertyServerException {
         FVTUtils.validateLine(createValidValue(term1, term2));
         FVTUtils.validateLine(createAntonym(term1, term2));
         FVTUtils.validateLine(createIsaRelationship(term1, term2));
@@ -216,7 +216,7 @@ public class RelationshipsFVT {
         FVTUtils.validateLine(createTermISATypeOFRelationship(term1, term2));
     }
 
-    private void isatypeofFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void isatypeofFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         IsaTypeOf createdTermISATypeOFRelationship = createTermISATypeOFRelationship(term1, term2);
         String guid = createdTermISATypeOFRelationship.getGuid();
 
@@ -279,7 +279,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted IsaTypeOf with userId=" + guid);
     }
 
-    private void isaFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void isaFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         Isa createdIsa = createIsaRelationship(term1, term2);
         FVTUtils.validateLine(createdIsa);
         System.out.println("Created Isa " + createdIsa);
@@ -349,7 +349,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted Isa with userId=" + guid);
     }
 
-    private Isa createIsaRelationship(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    private Isa createIsaRelationship(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         Isa isa = new Isa();
         isa.setDescription("ddd");
         isa.setExpression("Ex");
@@ -365,7 +365,7 @@ public class RelationshipsFVT {
         return createdIsa;
     }
 
-    private void typedByFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void typedByFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         TypedBy createdTermTYPEDBYRelationship = createTermTYPEDBYRelationship(term1, term2);
         FVTUtils.validateLine(createdTermTYPEDBYRelationship);
         System.out.println("Created TypedBy " + createdTermTYPEDBYRelationship);
@@ -430,7 +430,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted TypedBy with userId=" + guid);
     }
 
-    private TypedBy createTermTYPEDBYRelationship(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    private TypedBy createTermTYPEDBYRelationship(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         TypedBy termTYPEDBYRelationship = new TypedBy();
         termTYPEDBYRelationship.setDescription("ddd");
         termTYPEDBYRelationship.setSource("source");
@@ -444,7 +444,7 @@ public class RelationshipsFVT {
         return createdTermTYPEDBYRelationship;
     }
 
-    private void replacementTermFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void replacementTermFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         ReplacementTerm createdReplacementTerm = createReplacementTerm(term1, term2);
         FVTUtils.validateLine(createdReplacementTerm);
         System.out.println("Created ReplacementTerm " + createdReplacementTerm);
@@ -515,7 +515,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted ReplacementTerm with userId=" + guid);
     }
 
-    private ReplacementTerm createReplacementTerm(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    private ReplacementTerm createReplacementTerm(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         ReplacementTerm replacementTerm = new ReplacementTerm();
         replacementTerm.setDescription("ddd");
         replacementTerm.setExpression("Ex");
@@ -531,7 +531,7 @@ public class RelationshipsFVT {
         return createdReplacementTerm;
     }
 
-    private void validvalueFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void validvalueFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         ValidValue createdValidValue = createValidValue(term1, term2);
         FVTUtils.validateLine(createdValidValue);
         System.out.println("Created ValidValue " + createdValidValue);
@@ -600,7 +600,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted ValidValue with userId=" + guid);
     }
 
-    private ValidValue createValidValue(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    private ValidValue createValidValue(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         ValidValue validValue = new ValidValue();
         validValue.setDescription("ddd");
         validValue.setExpression("Ex");
@@ -616,7 +616,7 @@ public class RelationshipsFVT {
         return createdValidValue;
     }
 
-    private void preferredtermFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void preferredtermFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         PreferredTerm createdPreferredTerm = createPreferredTerm(term1, term2);
         FVTUtils.validateLine(createdPreferredTerm);
         System.out.println("Created PreferredTerm " + createdPreferredTerm);
@@ -687,7 +687,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted PreferredTerm with userId=" + guid);
     }
 
-    private PreferredTerm createPreferredTerm(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    private PreferredTerm createPreferredTerm(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         PreferredTerm preferredTerm = new PreferredTerm();
         preferredTerm.setDescription("ddd");
         preferredTerm.setExpression("Ex");
@@ -703,7 +703,7 @@ public class RelationshipsFVT {
         return createdPreferredTerm;
     }
 
-    private void usedincontextFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void usedincontextFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         UsedInContext createdUsedInContext = createUsedInContext(term1, term2);
         FVTUtils.validateLine(createdUsedInContext);
         System.out.println("Created UsedInContext " + createdUsedInContext);
@@ -774,7 +774,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted UsedInContext with userId=" + guid);
     }
 
-    private UsedInContext createUsedInContext(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    private UsedInContext createUsedInContext(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         UsedInContext usedInContext = new UsedInContext();
         usedInContext.setDescription("ddd");
         usedInContext.setExpression("Ex");
@@ -790,7 +790,7 @@ public class RelationshipsFVT {
         return createdUsedInContext;
     }
 
-    private void translationFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void translationFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         Translation createdTranslation = createTranslation(term1, term2);
         FVTUtils.validateLine(createdTranslation);
         System.out.println("Created Translation " + createdTranslation);
@@ -861,7 +861,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted Translation with userId=" + guid);
     }
 
-    private Translation createTranslation(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    private Translation createTranslation(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         Translation translation = new Translation();
         translation.setDescription("ddd");
         translation.setExpression("Ex");
@@ -877,7 +877,7 @@ public class RelationshipsFVT {
         return createdTranslation;
     }
 
-    private void hasaFVT(Term term1, Term term3) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void hasaFVT(Term term1, Term term3) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         Hasa createdHASATerm = createTermHASARelationship(term1, term3);
         FVTUtils.validateLine(createdHASATerm);
         System.out.println("Created Hasa " + createdHASATerm);
@@ -942,7 +942,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted Hasa with userId=" + guid);
     }
 
-    private Hasa createTermHASARelationship(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    private Hasa createTermHASARelationship(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         Hasa hasaRelationshipASARelationship = new Hasa();
         hasaRelationshipASARelationship.setDescription("ddd");
         hasaRelationshipASARelationship.setSource("source");
@@ -957,7 +957,7 @@ public class RelationshipsFVT {
         return createdTermHASARelationship;
     }
 
-    private void relatedtermFVT(Term term1, Term term3) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void relatedtermFVT(Term term1, Term term3) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException, PropertyServerException {
         RelatedTerm createdRelatedTerm = createRelatedTerm(term1, term3);
         FVTUtils.validateLine(createdRelatedTerm);
         System.out.println("Created RelatedTerm " + createdRelatedTerm);
@@ -1018,7 +1018,7 @@ public class RelationshipsFVT {
         gotRelatedTerm = subjectAreaRelationship.deleteRelatedTerm(this.userId, guid);
         FVTUtils.validateLine(gotRelatedTerm);
         System.out.println("Soft deleted RelatedTerm with userId=" + guid);
-        gotRelatedTerm = subjectAreaRelationship.restoreRelatedTermRelationship(this.userId, guid);
+        gotRelatedTerm = subjectAreaRelationship.restoreRelatedTerm(this.userId, guid);
         FVTUtils.validateLine(gotRelatedTerm);
         System.out.println("Restored RelatedTerm with userId=" + guid);
         gotRelatedTerm = subjectAreaRelationship.deleteRelatedTerm(this.userId, guid);
@@ -1028,7 +1028,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted RelatedTerm with userId=" + guid);
     }
 
-    private RelatedTerm createRelatedTerm(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    private RelatedTerm createRelatedTerm(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         RelatedTerm relatedterm = new RelatedTerm();
         relatedterm.setDescription("ddd");
         relatedterm.setExpression("Ex");
@@ -1045,7 +1045,7 @@ public class RelationshipsFVT {
 
     }
 
-    private void antonymFVT(Term term1, Term term3) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void antonymFVT(Term term1, Term term3) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         Antonym createdAntonym = createAntonym(term1, term3);
         FVTUtils.validateLine(createdAntonym);
         System.out.println("Created Antonym " + createdAntonym);
@@ -1117,7 +1117,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted Antonym with userId=" + guid);
     }
 
-    private Antonym createAntonym(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    private Antonym createAntonym(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         Antonym antonym = new Antonym();
         antonym.setDescription("ddd");
         antonym.setExpression("Ex");
@@ -1133,7 +1133,7 @@ public class RelationshipsFVT {
         return createdAntonym;
     }
 
-    private void synonymFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void synonymFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         Synonym createdSynonym = createSynonym(term1, term2);
         FVTUtils.validateLine(createdSynonym);
         System.out.println("Created Synonym " + createdSynonym);
@@ -1205,7 +1205,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted Synonym with userId=" + guid);
     }
 
-    public Synonym createSynonym(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    public Synonym createSynonym(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         Synonym synonym = new Synonym();
         synonym.setDescription("ddd");
         synonym.setExpression("Ex");
@@ -1222,7 +1222,7 @@ public class RelationshipsFVT {
     }
 
 
-    public IsaTypeOf createTermISATypeOFRelationship(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    public IsaTypeOf createTermISATypeOFRelationship(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         IsaTypeOf termISATypeOFRelationship = new IsaTypeOf();
         termISATypeOFRelationship.setDescription("ddd");
         termISATypeOFRelationship.setSource("source");
@@ -1237,7 +1237,7 @@ public class RelationshipsFVT {
         return createdTermISATypeOFRelationship;
     }
 
-    private void termCategorizationFVT(Term term, Category category) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void termCategorizationFVT(Term term, Category category) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         Categorization createdTermCategorizationRelationship = createTermCategorization(term, category);
         FVTUtils.validateLine(createdTermCategorizationRelationship);
         System.out.println("Created TermCategorizationRelationship " + createdTermCategorizationRelationship);
@@ -1291,7 +1291,7 @@ public class RelationshipsFVT {
     }
 
 
-    private void termAnchorFVT(Term term) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException, ClassificationException {
+    private void termAnchorFVT(Term term) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException, ClassificationException {
         // No create for TermAnchor - because this OMAS cannot create a Term without a glossary
         String termGuid = term.getSystemAttributes().getGUID();
         String glossaryGuid = term.getGlossary().getGuid();
@@ -1321,7 +1321,7 @@ public class RelationshipsFVT {
         FVTUtils.validateLine(subjectAreaRelationship.createTermAnchorRelationship(userId, newTermAnchorRelationship));
     }
 
-    private void categoryAnchorFVT(Category category) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException, ClassificationException {
+    private void categoryAnchorFVT(Category category) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException, ClassificationException {
         // No create for CategoryAnchor - because this OMAS cannot create a Category without a glossary
         String categoryGuid = category.getSystemAttributes().getGUID();
         String glossaryGuid = category.getGlossary().getGuid();
@@ -1350,7 +1350,7 @@ public class RelationshipsFVT {
 
     }
 
-    public Categorization createTermCategorization(Term term, Category category) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+    public Categorization createTermCategorization(Term term, Category category) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, PropertyServerException, FunctionNotSupportedException {
         Categorization termCategorization = new Categorization();
         termCategorization.setTermGuid(term.getSystemAttributes().getGUID());
         termCategorization.setCategoryGuid(category.getSystemAttributes().getGUID());
@@ -1363,7 +1363,7 @@ public class RelationshipsFVT {
         return createdTermCategorization;
     }
 
-    private void projectScopeFVT(Project project, Term term) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, RelationshipNotPurgedException {
+    private void projectScopeFVT(Project project, Term term) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, PropertyServerException, RelationshipNotDeletedException, RelationshipNotPurgedException {
         ProjectScope createdProjectScope = createProjectScope(project, term);
         FVTUtils.validateLine(createdProjectScope);
         System.out.println("Created ProjectScopeRelationship " + createdProjectScope);
@@ -1419,7 +1419,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted ProjectScopeRelationship with userId=" + guid);
     }
 
-    private ProjectScope createProjectScope(Project project, Term term) throws SubjectAreaFVTCheckedException, UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, UnrecognizedGUIDException, MetadataServerUncontactableException {
+    private ProjectScope createProjectScope(Project project, Term term) throws SubjectAreaFVTCheckedException, UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, UnrecognizedGUIDException, MetadataServerUncontactableException, PropertyServerException, FunctionNotSupportedException {
         ProjectScope projectScope = new ProjectScope();
         projectScope.setNodeGuid(term.getSystemAttributes().getGUID());
         projectScope.setProjectGuid(project.getSystemAttributes().getGUID());

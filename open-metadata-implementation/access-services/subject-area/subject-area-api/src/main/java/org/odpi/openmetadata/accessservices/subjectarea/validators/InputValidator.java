@@ -7,8 +7,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
-import java.util.Date;
-
 /**
  * Methods used for rest API input validation
  */
@@ -28,11 +26,12 @@ public class InputValidator {
              */
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.SERVER_URL_NOT_SPECIFIED.getMessageDefinition();
 
-
+            String invalidPropertyName = "omasServerURL";
+            messageDefinition.setMessageParameters(invalidPropertyName, null);
             throw new InvalidParameterException(messageDefinition,
                                                 className,
                                                 actionDescription,
-                                                "omasServerURL",
+                                                invalidPropertyName,
                                                 null);
         }
     }
@@ -51,12 +50,12 @@ public class InputValidator {
              * It is not possible to retrieve a connection without knowledge of where the OMAS Server is located.
              */
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.SERVER_NAME_NOT_SPECIFIED.getMessageDefinition();
-
-
+            String invalidPropertyName = "omasServerName";
+            messageDefinition.setMessageParameters(invalidPropertyName, null);
             throw new InvalidParameterException(messageDefinition,
                                                 className,
                                                 actionDescription,
-                                                "omasServerName",
+                                                invalidPropertyName,
                                                 null);
         }
     }
@@ -76,10 +75,12 @@ public class InputValidator {
             String userId) throws InvalidParameterException {
         if (userId == null) {
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.NULL_USER_ID.getMessageDefinition();
+            String invalidPropertyName = "userId";
+            messageDefinition.setMessageParameters(invalidPropertyName, null);
             throw new InvalidParameterException(messageDefinition,
                                                 className,
                                                 actionDescription,
-                                                "omasServerName",
+                                                invalidPropertyName,
                                                 null);
         }
     }
@@ -102,21 +103,26 @@ public class InputValidator {
             newStatus = Status.valueOf(statusName);
         } catch (Exception e) {
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.INVALID_STATUS_VALUE_SUPPLIED.getMessageDefinition();
+            String invalidPropertyName = "status";
+            messageDefinition.setMessageParameters(invalidPropertyName, null);
             throw new InvalidParameterException(messageDefinition,
                                                 className,
                                                 actionDescription,
-                                                "status",
+                                                invalidPropertyName,
                                                 statusName);
 
         }
         if (Status.DELETED == newStatus) {
 
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.STATUS_UPDATE_TO_DELETED_NOT_ALLOWED.getMessageDefinition();
+            String invalidPropertyName = "status";
+            messageDefinition.setMessageParameters(invalidPropertyName, null);
             throw new InvalidParameterException(messageDefinition,
                                                 className,
                                                 actionDescription,
-                                                "status",
+                                                invalidPropertyName,
                                                 statusName);
+
         }
 
         return newStatus;
@@ -139,10 +145,12 @@ public class InputValidator {
             String guidParameter) throws InvalidParameterException {
         if (guid == null) {
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.NULL_GUID.getMessageDefinition();
+            String invalidPropertyName = "guid";
+            messageDefinition.setMessageParameters(invalidPropertyName, null);
             throw new InvalidParameterException(messageDefinition,
                                                 className,
                                                 actionDescription,
-                                                "userId",
+                                                invalidPropertyName,
                                                 null);
         }
     }
@@ -165,6 +173,8 @@ public class InputValidator {
         if (name == null) {
 
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.NULL_NAME.getMessageDefinition();
+
+            messageDefinition.setMessageParameters(nameParameter, null);
             throw new InvalidParameterException(messageDefinition,
                                                 className,
                                                 actionDescription,
@@ -188,14 +198,14 @@ public class InputValidator {
             }
             if (!isValid) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.INVALID_NODETYPE.getMessageDefinition();
+                String invalidPropertyName = "nodeType";
+                messageDefinition.setMessageParameters(invalidPropertyName, null);
                 throw new InvalidParameterException(messageDefinition,
                                                     className,
                                                     actionDescription,
-                                                    "NodeType",
-                                                    nodeTypeToCheck.toString()
-                );
+                                                    invalidPropertyName,
+                                                    nodeTypeToCheck.name());
             }
-
         }
     }
 }

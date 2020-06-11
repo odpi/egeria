@@ -23,7 +23,7 @@ data:
   EGERIA_ARTIFACTORY_RELEASE: https://odpi.jfrog.io/odpi/egeria-release-local
   EGERIA_ARTIFACTORY_STAGING: https://odpi.jfrog.io/odpi/egeria-staging-local
   EGERIA_ARTIFACTORY_SNAPSHOT: https://odpi.jfrog.io/odpi/egeria-snapshot-local
-  EGERIA_VERSION: {{ .Values.egeria.version }}
+  EGERIA_VERSION: "{{ .Values.egeria.version }}"
 
   {{ if .Values.kafka.internal.enabled }}
   KAFKA_ENDPOINT: {{ .Release.Name }}-egeriakafka:9092

@@ -2,20 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
-import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
-import org.odpi.openmetadata.accessservices.subjectarea.utils.RestCaller;
-import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +19,7 @@ import java.util.List;
 
 
 /**
- * SubjectAreaImpl is the OMAS client library implementation of the SubjectAreaImpl OMAS.
+ * SubjectAreaImpl is the OMAS client library implementation of the Subject Area OMAS.
  * This interface provides project authoring interface for subject area experts.
  */
 public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaProject {
@@ -36,76 +31,40 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
 
 
     /**
-     * Default Constructor used once a connector is created.
+     * Constructor for no authentication.
      *
-     * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param omasServerURL unique id for the connector instance
+     * @param serverName            name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                                                                    REST API calls.
      */
-    public SubjectAreaProjectImpl(String omasServerURL, String serverName) {
-        super(omasServerURL, serverName);
+    public SubjectAreaProjectImpl(String serverName, String serverPlatformURLRoot) throws
+                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+        super(serverName, serverPlatformURLRoot);
     }
 
-
-    /**
-     * Create a Project.
-     * <p>
-     * Projects with the same name can be confusing. Best practise is to create projects that have unique names.
-     * This Create call does not police that Project names are unique. So it is possible to create projects with the same name as each other.
-     * <p>
-     * Projects that are created using this call will be GlossaryProjects.
-     * <p>
-     *
-     * @param userId          unique identifier for requesting user, under which the request is performed
-     * @param suppliedProject Project to create
-     * @return the created project.
-     * <p>
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws ClassificationException              Error processing a classification
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
-     */
-
-    public Project createProject(String userId, Project suppliedProject) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
+    @Override
+    public Project createProject(String userId, Project suppliedProject) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, PropertyServerException {
         final String methodName = "createProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        final String url = this.omasServerURL + String.format(BASE_URL, serverName, userId);
-        InputValidator.validateNodeType(className, methodName, suppliedProject.getNodeType(), NodeType.Project, NodeType.GlossaryProject);
-        suppliedProject.setNodeType(NodeType.GlossaryProject);
-        ObjectMapper mapper = new ObjectMapper();
-        String requestBody = null;
-        try {
-            requestBody = mapper.writeValueAsString(suppliedProject);
-        } catch (JsonProcessingException error) {
-            RestCaller.throwJsonParseError(className, methodName, error);
-        }
-
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePost(className, methodName, requestBody, url);
-
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
-        DetectUtils.detectAndThrowClassificationException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        Project project = DetectUtils.detectAndReturnProject(className, methodName, restResponse);
+        final String urlTemplate = BASE_URL;
+        SubjectAreaOMASAPIResponse response = postRESTCall(userId, methodName, urlTemplate, suppliedProject);
+        Project project = DetectUtils.detectAndReturnProject(className, methodName, response);
         // that the returned nodeType matches the requested one
         if (suppliedProject.getNodeType() != null && !suppliedProject.getNodeType().equals(project.getNodeType())) {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.UNEXPECTED_NODETYPE;
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition();
+            String propertyName = "NodeType";
+            String propertyValue = suppliedProject.getNodeType().name();
+            messageDefinition.setMessageParameters(propertyName,propertyValue);
             throw new InvalidParameterException(
-                    errorCode.getMessageDefinition(),
+                    messageDefinition,
                     className,
                     methodName,
-                    "Node type",
-                    project.getNodeType().name()
-            );
+                    propertyName,
+                    propertyValue);
         }
 
         if (log.isDebugEnabled()) {
@@ -113,69 +72,22 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
         }
         return project;
     }
-
-    /**
-     * Get a project by guid.
-     *
-     * @param userId userId under which the request is performed
-     * @param guid   guid of the project to get
-     * @return the requested project.
-     * <p>
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
-     */
-
-    public Project getProjectByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
-        final String methodName = "getProjectByGuid";
+    @Override
+    public Project getProjectByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException, PropertyServerException {
+        final String methodName = "getCategoryByGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s";
-        String url = String.format(urlTemplate, serverName, userId, guid);
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        Project project = DetectUtils.detectAndReturnProject(className, methodName, restResponse);
+        final String urlTemplate = BASE_URL + "/%s";
+        SubjectAreaOMASAPIResponse response = getByIdRESTCall(userId, guid, methodName, urlTemplate);
+        Project project = DetectUtils.detectAndReturnProject(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
         return project;
     }
 
-    /**
-     * Get Project relationships
-     *
-     * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param guid               guid of the project to get
-     * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Project guid
-     * <p>
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
-     */
+    @Override
     public List<Line> getProjectRelationships(String userId, String guid,
                                               Date asOfTime,
                                               int offset,
@@ -186,7 +98,8 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                          InvalidParameterException,
                                                                          FunctionNotSupportedException,
                                                                          UnexpectedResponseException,
-                                                                         MetadataServerUncontactableException {
+                                                                         MetadataServerUncontactableException,
+                                                                         PropertyServerException {
         final String methodName = "getProjectRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -198,72 +111,31 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
         return relationships;
     }
 
-    /**
-     * Get the terms in this project.
-     *
-     * @param userId   unique identifier for requesting user, under which the request is performed
-     * @param guid     guid of the Project to get
-     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @return the terms that are in the requested Project
-     * <p>
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
-     */
-
+    @Override
     public List<Term> getProjectTerms(
             String userId,
             String guid,
             Date asOfTime
-                                     ) throws InvalidParameterException, UserNotAuthorizedException, FunctionNotSupportedException, UnexpectedResponseException, MetadataServerUncontactableException {
+                                     ) throws InvalidParameterException,
+                                              UserNotAuthorizedException,
+                                              FunctionNotSupportedException,
+                                              UnexpectedResponseException,
+                                              MetadataServerUncontactableException,
+                                              PropertyServerException {
         final String methodName = "getProjectTerms";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s/terms";
-        String url = String.format(urlTemplate, serverName, userId, guid);
-
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        List<Term> terms = DetectUtils.detectAndReturnTerms(className, methodName, restResponse);
+        final String urlTemplate = BASE_URL + "/%s/terms";
+        SubjectAreaOMASAPIResponse response = getByIdRESTCall(userId, guid, methodName, urlTemplate);
+        List<Term> terms = DetectUtils.detectAndReturnTerms(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
         return terms;
     }
 
-    /**
-     * Find Project
-     *
-     * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria     String expression matching Project properties. If not specified then all projects are returned.
-     * @param asOfTime           the projects returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return A list of Projects meeting the search Criteria
-     * <p>
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
-     */
+    @Override
     public List<Project> findProject(String userId,
                                      String searchCriteria,
                                      Date asOfTime,
@@ -275,82 +147,37 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                 UserNotAuthorizedException,
                                                                 InvalidParameterException,
                                                                 FunctionNotSupportedException,
-                                                                UnexpectedResponseException {
+                                                                UnexpectedResponseException,
+                                                                PropertyServerException {
 
         final String methodName = "findProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        final String urlTemplate = this.omasServerURL + BASE_URL;
-        String url = String.format(urlTemplate, serverName, userId);
-
-        if (sequencingOrder == null) {
-            sequencingOrder = SequencingOrder.ANY;
-        }
-        StringBuffer queryStringSB = new StringBuffer();
-        QueryUtils.addCharacterToQuery(queryStringSB);
-        queryStringSB.append("sequencingOrder=" + sequencingOrder);
-        if (asOfTime != null) {
-            QueryUtils.addCharacterToQuery(queryStringSB);
-            queryStringSB.append("asOfTime=" + asOfTime);
-        }
-        if (searchCriteria != null) {
-            // encode the string
-
-            encodeQueryProperty("searchCriteria", searchCriteria, methodName, queryStringSB);
-        }
-        if (offset != 0) {
-            QueryUtils.addCharacterToQuery(queryStringSB);
-            queryStringSB.append("offset=" + offset);
-        }
-        if (pageSize != 0) {
-            QueryUtils.addCharacterToQuery(queryStringSB);
-            queryStringSB.append("pageSize=" + pageSize);
-        }
-        if (sequencingProperty != null) {
-            // encode the string
-            encodeQueryProperty("sequencingProperty", sequencingProperty, methodName, queryStringSB);
-        }
-        if (queryStringSB.length() > 0) {
-            url = url + queryStringSB.toString();
-        }
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        List<Project> projects = DetectUtils.detectAndReturnProjects(className, methodName, restResponse);
+        SubjectAreaOMASAPIResponse response = findRESTCall(userId,
+                                                           methodName,
+                                                           BASE_URL,
+                                                           searchCriteria,
+                                                           asOfTime,
+                                                           offset,
+                                                           pageSize,
+                                                           sequencingOrder,
+                                                           sequencingProperty);
+        List<Project> projects = DetectUtils.detectAndReturnProjects(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
         return projects;
     }
 
-    /**
-     * Replace a Project. This means to override all the existing attributes with the supplied attributes.
-     * <p>
-     * If the caller has chosen to incorporate the project name in their Project Terms or Categories qualified name, renaming the project will cause those
-     * qualified names to mismatch the Project name.
-     * If the caller has chosen to incorporate the project qualifiedName in their Project Terms or Categories qualified name, changing the qualified name of the project will cause those
-     * qualified names to mismatch the Project name.
-     * Status is not updated using this call.
-     *
-     * @param userId          userId under which the request is performed
-     * @param guid            guid if the project to update
-     * @param suppliedProject project to be updated
-     * @return replaced project
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
-     */
+    @Override
     public Project replaceProject(String userId, String guid, Project suppliedProject) throws
                                                                                        UnexpectedResponseException,
                                                                                        UserNotAuthorizedException,
                                                                                        InvalidParameterException,
-                                                                                       MetadataServerUncontactableException {
+                                                                                       MetadataServerUncontactableException,
+                                                                                       PropertyServerException,
+                                                                                       FunctionNotSupportedException {
         final String methodName = "replaceProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -362,31 +189,13 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
         return project;
     }
 
-    /**
-     * Update a Project. This means to update the project with any non-null attributes from the supplied project.
-     * <p>
-     * If the caller has chosen to incorporate the project name in their Project Terms or Categories qualified name, renaming the project will cause those
-     * qualified names to mismatch the Project name.
-     * If the caller has chosen to incorporate the project qualifiedName in their Project Terms or Categories qualified name, changing the qualified name of the project will cause those
-     * qualified names to mismatch the Project name.
-     * Status is not updated using this call.
-     *
-     * @param userId          userId under which the request is performed
-     * @param guid            guid if the project to update
-     * @param suppliedProject project to be updated
-     * @return a response which when successful contains the updated project
-     * when not successful the following Exceptions can occur
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
-     */
+    @Override
     public Project updateProject(String userId, String guid, Project suppliedProject) throws UnexpectedResponseException,
                                                                                              UserNotAuthorizedException,
                                                                                              InvalidParameterException,
-                                                                                             MetadataServerUncontactableException {
+                                                                                             MetadataServerUncontactableException,
+                                                                                             PropertyServerException,
+                                                                                             FunctionNotSupportedException {
         final String methodName = "updateProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -399,101 +208,45 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
 
     }
 
-    /**
-     * Delete a Project instance
-     * <p>
-     * The deletion of a project is only allowed if there is no project content (i.e. no terms or categories).
-     * <p>
-     * A delete (also known as a soft delete) means that the project instance will exist in a deleted state in the repository after the delete operation. This means
-     * that it is possible to undo the delete.
-     *
-     * @param userId userId under which the request is performed
-     * @param guid   guid of the project to be deleted.
-     * @return the deleted project
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws EntityNotDeletedException            a delete was issued but the project was not deleted.
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
-     */
-
+    @Override
     public Project deleteProject(String userId, String guid) throws InvalidParameterException,
                                                                     MetadataServerUncontactableException,
                                                                     UserNotAuthorizedException,
                                                                     UnrecognizedGUIDException,
                                                                     FunctionNotSupportedException,
                                                                     UnexpectedResponseException,
-                                                                    EntityNotDeletedException {
+                                                                    EntityNotDeletedException,
+                                                                    PropertyServerException {
         final String methodName = "deleteProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+         final String urlTemplate = BASE_URL + "/%s?isPurge=false";
+        SubjectAreaOMASAPIResponse response = deleteEntityRESTCall(userId, guid, methodName, urlTemplate);
 
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isPurge=false";
-        String url = String.format(urlTemplate, serverName, userId, guid);
-
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        DetectUtils.detectAndThrowEntityNotDeletedException(restResponse);
-
-        Project project = DetectUtils.detectAndReturnProject(className, methodName, restResponse);
+        Project project = DetectUtils.detectAndReturnProject(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
         return project;
     }
 
-    /**
-     * Purge a Project instance
-     * <p>
-     * The purge of a project is only allowed if there is no project content (i.e. no terms or categories).
-     * <p>
-     * A purge means that the project will not exist after the operation.
-     *
-     * @param userId userId under which the request is performed
-     * @param guid   guid of the project to be deleted.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws EntityNotPurgedException             a hard delete was issued but the project was not purged
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
-     */
-
+    @Override
     public void purgeProject(String userId, String guid) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 MetadataServerUncontactableException,
                                                                 UnrecognizedGUIDException,
                                                                 EntityNotPurgedException,
                                                                 UnexpectedResponseException,
-                                                                FunctionNotSupportedException {
+                                                                FunctionNotSupportedException, PropertyServerException {
         final String methodName = "purgeProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isPurge=true";
-        String url = String.format(urlTemplate, serverName, userId, guid);
 
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
-        DetectUtils.detectAndThrowEntityNotPurgedException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        final String urlTemplate =  BASE_URL + "/%s?isPurge=true";
+        purgeEntityRESTCall(userId, guid, methodName, urlTemplate);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -523,28 +276,16 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                                                           UserNotAuthorizedException,
                                                                                                           InvalidParameterException,
                                                                                                           MetadataServerUncontactableException,
-                                                                                                          UnexpectedResponseException {
+                                                                                                          UnexpectedResponseException,
+                                                                                                          PropertyServerException, FunctionNotSupportedException {
         final String methodName = "updateProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+        final String urlTemplate = BASE_URL + "/%s?isReplace=%b";
+        SubjectAreaOMASAPIResponse response = putRESTCall(userId, guid, isReplace, methodName, urlTemplate, suppliedProject);
 
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isReplace=%b";
-        String url = String.format(urlTemplate, serverName, userId, guid, isReplace);
-        ObjectMapper mapper = new ObjectMapper();
-        String requestBody = null;
-        try {
-            requestBody = mapper.writeValueAsString(suppliedProject);
-        } catch (JsonProcessingException error) {
-            RestCaller.throwJsonParseError(className, methodName, error);
-        }
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePut(className, methodName, requestBody, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-
-        Project project = DetectUtils.detectAndReturnProject(className, methodName, restResponse);
+        Project project = DetectUtils.detectAndReturnProject(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -572,24 +313,15 @@ public class SubjectAreaProjectImpl extends SubjectAreaBaseImpl implements org.o
                                                                      MetadataServerUncontactableException,
                                                                      UnrecognizedGUIDException,
                                                                      FunctionNotSupportedException,
-                                                                     UnexpectedResponseException {
+                                                                     UnexpectedResponseException, PropertyServerException {
         final String methodName = "restoreProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+        final String urlTemplate = BASE_URL + "/%s";
+        SubjectAreaOMASAPIResponse response = restoreRESTCall(userId, guid, methodName, urlTemplate);
 
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s";
-        String url = String.format(urlTemplate, serverName, userId, guid);
-
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePostNoBody(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-
-        Project project = DetectUtils.detectAndReturnProject(className, methodName, restResponse);
+        Project project = DetectUtils.detectAndReturnProject(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
