@@ -1,10 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.12 (Planned September 2020)
+# Release 2.3 (Planned September 2020)
 
 
-Release 1.12 adds support for:
+Release 2.3 adds support for:
     * Digital architecture
     * Digital service lifecycle management
     

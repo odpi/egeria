@@ -9,6 +9,8 @@ In this session, you will learn how to set up the OMAG Server Platform.
 
 ![Configuring the OMAG Platform Content](egeria-dojo-day-1-3-1-2-configuring-the-platform.png)
 
+Watch this video to get an overview of this session: [https://youtu.be/-YScFx0fQk0](https://youtu.be/-YScFx0fQk0).
+
 In the previous session you downloaded an application called Postman and loaded collections of
 pre-defined requests.
 This tool makes it easy to issue REST API requests to the OMAG Server Platform.
@@ -48,14 +50,12 @@ Review the description of the OMAG Server Platform configuration:
 
 * [Configuring the OMAG Server Platform](../../../open-metadata-implementation/admin-services/docs/user/configuring-the-omag-server-platform.md)
 
-Each of the links below take you to a task description in the Egeria Administration User Guide.
+The link below takes you to a task description in the Egeria Administration User Guide.
 The user guide describes the REST API call(s) needed to complete the task.
 You can choose to type the request into postman, or use the requests already defined in the
 `Egeria-admin-services-platform-configuration` Postman collection.
 
-* Begin by [updating the configuration document store to an encrypted file store](../../../open-metadata-implementation/admin-services/docs/user/configuring-the-configuration-document-store.md)
-
-* Now [add the Coco Pharmaceuticals platform security connector to the platform](../../../open-metadata-implementation/admin-services/docs/user/configuring-the-platform-security-connector.md)
+* [Add the Coco Pharmaceuticals platform security connector to the platform](../../../open-metadata-implementation/admin-services/docs/user/configuring-the-platform-security-connector.md)
   Try running the platform origin command again - it should fail with a security error.  Change the `user` variable
   in the Egeria environment from `me` to `garygeeke` and rerun the request.  It will work again because
   `garygeeke` is the user id of the Coco Pharmaceuticals IT infrastructure lead and has permission to run the platform

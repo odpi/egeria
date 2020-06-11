@@ -12,9 +12,13 @@ and link to it in the `README.md` file of the same directory.
 
 ![Making a contribution to Egeria](egeria-dojo-day-2-3-contribution-to-egeria.png)
 
+There are two videos for this session:
+
+* How to make a contribution: [https://youtu.be/vdHRtuIYwoE](https://youtu.be/vdHRtuIYwoE)
+* Pull Requests and testing: [https://youtu.be/pMODYyPJ1b4](https://youtu.be/pMODYyPJ1b4)
 ## The Steps
 
-Click on each step and complete the tasks described:
+To create your own contribution, click on each step and complete the tasks described:
 
 * [Review the developer guidelines](../../../developer-resources/Developer-Guidelines.md) to understand the requirements
   for an Egeria contribution.
@@ -22,7 +26,9 @@ Click on each step and complete the tasks described:
 * [Log on to GitHub](../git-and-git-hub-tutorial/task-getting-git-hub-id.md).
 
 * [Create a Git Issue](../git-and-git-hub-tutorial/task-creating-an-issue-on-git-hub.md). 
-  Every contribution begins with a `git issue`. This explains what changes you plan to make.
+  Every contribution begins with a `git issue`. This describes the changes that you plan to make.
+  The more detail that you provide, the better the maintainers will understand your contribution and
+  be able to process it faster.
   
 * [Create a fork and clone of the git repository](../git-and-git-hub-tutorial/task-creating-a-fork-and-clone.md)
   to bring the Egeria code onto your machine.

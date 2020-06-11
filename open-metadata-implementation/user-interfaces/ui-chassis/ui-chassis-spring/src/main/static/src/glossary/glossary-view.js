@@ -13,9 +13,10 @@ class GlossaryView extends PolymerElement {
       <style include="shared-styles">
         :host {
           display: block;
-          margin: 0 24px;
-          background-color:  var(--egeria-background-color);
-          min-height: calc(100vh - 100px);
+          margin:var(--egeria-view-margin);
+          min-height: var(--egeria-view-min-height);
+          --iron-icon-width:16px;
+          --iron-icon-height:16px;
         }
         .grid-container{
             display: flex;
@@ -24,14 +25,21 @@ class GlossaryView extends PolymerElement {
             height: auto;
         }
         
+        asset-tools{
+            margin: 0;
+            padding: 0;
+            --asset-tools-li-padding: 2px;
+        }
+        .right{
+            float: right;
+        }
       </style>
       <app-route route="{{route}}" data="{{routeData}}" tail="{{tail}}"></app-route>
       <token-ajax id="tokenAjax" last-response="{{glossaries}}" url="/api/glossaries" auto></token-ajax>
       <token-ajax id="tokenAjaxCategories" last-response="{{categories}}"></token-ajax>
       <token-ajax id="tokenAjaxTerms" last-response="{{terms}}"></token-ajax>
-
-      <vaadin-split-layout orientation="vertical" style=" min-height: calc(100vh - 100px);">
-            <vaadin-split-layout style=" min-height: 100px;">
+      <vaadin-split-layout orientation="vertical" style="min-height: inherit">
+            <vaadin-split-layout>
                 <div class="grid-container"> 
                   <vaadin-grid id="glossaries" items="[[glossaries]]" theme="row-stripes" 
                                    on-active-item-changed="_activeItemChanged"  
@@ -55,8 +63,10 @@ class GlossaryView extends PolymerElement {
                       <vaadin-grid-column width="10em" resizable>
                           <template class="header">
                           </template>
-                          <template> 
-                            <a href="#/asset-catalog/view/[[item.guid]]" title="view details"><iron-icon icon="vaadin:eye"></iron-icon></a>
+                          <template>
+                            <div class="right"> 
+                                <a href="#/asset-catalog/view/[[item.guid]]" title="view details"><iron-icon icon="vaadin:eye"></iron-icon></a>
+                            </div>
                           </template>
                       </vaadin-grid-column>
                         
@@ -85,7 +95,9 @@ class GlossaryView extends PolymerElement {
                       <template class="header">
                       </template>
                       <template> 
+                      <div class="right"> 
                         <a href="#/asset-catalog/view/[[item.guid]]" title="view details"><iron-icon icon="vaadin:eye"></iron-icon></a>
+                      </div>
                       </template>
                   </vaadin-grid-column>
                 </vaadin-grid>
@@ -115,7 +127,7 @@ class GlossaryView extends PolymerElement {
                           <template class="header">
                              
                           </template>
-                          <template><asset-tools guid="[[item.guid]]"></asset-tools></template>
+                          <template><asset-tools class="right" guid="[[item.guid]]"></asset-tools></template>
                       </vaadin-grid-column>
                 </vaadin-grid>
             </div>

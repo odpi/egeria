@@ -69,7 +69,7 @@ public enum AccessServiceDescription implements Serializable
                                       "data-platform",
                                       "Capture changes to the data stores and data set managed by a data platform (deprecated and replaced by Data Manager OMAS)",
                                       "https://egeria.odpi.org/open-metadata-implementation/access-services/data-platform/"),
-    DATA_MANAGER_OMAS                (1024,
+    DATA_MANAGER_OMAS                (1025,
                                       "Data Manager",
                                       "Data Manager OMAS",
                                       "data-manager",

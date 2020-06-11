@@ -22,17 +22,19 @@
     "@carbon/icons-react": "^10.9.3",
     "@carbon/layout": "^10.8.1",
     "@carbon/themes": "^10.10.1",
+    "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.19.0",
-    "carbon-components": "^10.10.1",
+    "carbon-components": "^10.13.0",
     "carbon-components-react": "^7.10.1",
     "carbon-icons": "^7.0.7",
     "connect-flash": "^0.1.1",
     "d3": "^5.16.0",
+    "dotenv": "^8.2.0",
     "express": "^4.16.3",
     "express-session": "^1.17.0",
     "flash": "^1.1.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "prop-types": "^15.7.2",
@@ -66,6 +68,6 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.0.8",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.11.0"
   }
 }

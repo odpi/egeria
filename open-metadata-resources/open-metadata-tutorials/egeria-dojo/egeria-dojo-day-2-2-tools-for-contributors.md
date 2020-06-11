@@ -14,6 +14,10 @@ then the Egeria community is more likely to be able to help.
 
 ![Tools for Contributors](egeria-dojo-day-2-2-tools-for-contributors.png)
 
+Watch the video for a quick tour of the tools: [https://youtu.be/k0cszugBiQg](https://youtu.be/k0cszugBiQg).
+
+Then browse the material below ...
+
 ## Session Content
 
 Follow the links to learn about the tools used to contribute to Egeria:
