@@ -501,7 +501,7 @@ export default function Diagram(props) {
         startSim();
       }
       if ( instancesContext.focus ) {   
-        setDiagramFocus();     
+        updateRoot();     
       }
     },
   
