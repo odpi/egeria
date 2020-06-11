@@ -141,11 +141,15 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
             // need to check we have a name
             if (suppliedGlossaryName == null || suppliedGlossaryName.equals("")) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CREATE_WITHOUT_NAME.getMessageDefinition();
-                throw new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(messageDefinition,
-                                                                                                                     className,
-                                                                                                                     methodName,
-                                                                                                                     "name",
-                                                                                                                     null);
+                String propertyName = "Name";
+                String propertyValue = null;
+                messageDefinition.setMessageParameters(propertyName,propertyValue);
+                throw new InvalidParameterException(
+                        messageDefinition,
+                        className,
+                        methodName,
+                        propertyName,
+                        propertyValue);
             } else {
                 GlossaryMapper glossaryMapper = new GlossaryMapper(oMRSAPIHelper);
                 EntityDetail glossaryEntityDetail = glossaryMapper.mapNodeToEntityDetail(suppliedGlossary);
@@ -448,7 +452,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                 response = getResponse(response);
                             }
                         } else {
-                            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition();
+                            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid);
                             response = new EntityNotDeletedExceptionResponse(
                                     new EntityNotDeletedException(messageDefinition,
                                                                   className,

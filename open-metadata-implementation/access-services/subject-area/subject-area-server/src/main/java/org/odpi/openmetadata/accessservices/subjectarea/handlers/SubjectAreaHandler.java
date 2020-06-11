@@ -212,14 +212,16 @@ public abstract class SubjectAreaHandler {
                 response = OMASExceptionToResponse.convertInvalidParameterException(e);
             } catch (UnsupportedEncodingException e) {
                 SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.ERROR_ENCODING_QUERY_PARAMETER;
-                response = new InvalidParameterExceptionResponse(
-                        new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(
-                                errorCode.getMessageDefinition(),
-                                className,
-                                methodName,
-                                "sequencingProperty",
-                                sequencingProperty)
-                );
+                String propertyName = "sequencingProperty";
+                String propertyValue = sequencingProperty;
+                ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition(propertyName,propertyValue);
+                InvalidParameterException invalidParameterException = new InvalidParameterException(
+                        messageDefinition,
+                        className,
+                        methodName,
+                        propertyName,
+                        propertyValue);
+                response = new InvalidParameterExceptionResponse(invalidParameterException);
             }
 
         if (log.isDebugEnabled()) {
@@ -322,55 +324,65 @@ public abstract class SubjectAreaHandler {
 
         if (suppliedGlossary == null) {
             // error - glossary is mandatory
-            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY.getMessageDefinition();
-            InvalidParameterException e = new InvalidParameterException(
+
+            String propertyName = "glossary";
+            String propertyValue = null;
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY.getMessageDefinition(propertyName, propertyValue);
+            InvalidParameterException invalidParameterException = new InvalidParameterException(
                     messageDefinition,
                     className,
                     methodName,
-                    "glossary",
-                    null);
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+                    propertyName,
+                    propertyValue);
+            response = OMASExceptionToResponse.convertInvalidParameterException(invalidParameterException);
         } else {
             guid = suppliedGlossary.getGuid();
             relationshipGuid = suppliedGlossary.getRelationshipguid();
             if (relationshipGuid != null) {
                 // glossary relationship cannot exist before the Term exists.
-                ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITH_GLOSSARY_RELATIONSHIP.getMessageDefinition();
-                InvalidParameterException e = new InvalidParameterException(
+                String propertyName = "glossaryRelationshipGuid";
+                String propertyValue = null;
+                ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITH_GLOSSARY_RELATIONSHIP.getMessageDefinition(propertyName, propertyValue);
+                InvalidParameterException invalidParameterException = new InvalidParameterException(
                         messageDefinition,
                         className,
                         methodName,
-                        "glossary",
-                        null);
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+                        propertyName,
+                        propertyValue);
+                response = OMASExceptionToResponse.convertInvalidParameterException(invalidParameterException);
             }
             if (response == null) {
                 if (guid == null) {
                     // error -  glossary userId is mandatory
-                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY.getMessageDefinition();
-                    InvalidParameterException e = new InvalidParameterException(
+                    String propertyName = "glossary guid";
+                    String propertyValue = null;
+                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY.getMessageDefinition(propertyName, propertyValue);
+                    InvalidParameterException invalidParameterException = new InvalidParameterException(
                             messageDefinition,
                             className,
                             methodName,
-                            "glossary",
-                            null);
-                    response = OMASExceptionToResponse.convertInvalidParameterException(e);
+                            propertyName,
+                            propertyValue);
+                    response = OMASExceptionToResponse.convertInvalidParameterException(invalidParameterException);
                 } else {
                     // find by guid
                     response = glossaryHandler.getGlossaryByGuid(userId, guid);
                     // set error code in case we failed
-                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITH_NON_EXISTANT_GLOSSARY_GUID.getMessageDefinition();
-                    if (response.getResponseCategory() != ResponseCategory.Glossary) {
-                        // glossary relationship cannot exist before the Term exists.
 
-                        InvalidParameterException e = new InvalidParameterException(
+                    if (response.getResponseCategory() != ResponseCategory.Glossary) {
+                        // glossary
+
+                        String propertyName = "glossary Guid";
+                        String propertyValue = guid;
+                        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITH_NON_EXISTANT_GLOSSARY_GUID.getMessageDefinition(propertyName, propertyValue);
+                        InvalidParameterException invalidParameterException = new InvalidParameterException(
                                 messageDefinition,
                                 className,
                                 methodName,
-                                "glossary guid",
-                                guid);
+                                propertyName,
+                                propertyValue);
 
-                        response = OMASExceptionToResponse.convertInvalidParameterException(e);
+                        response = OMASExceptionToResponse.convertInvalidParameterException(invalidParameterException);
                     }
                 }
             }
