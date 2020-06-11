@@ -41,6 +41,8 @@ public class GraphFactory extends IndexingFactory {
      *
      * @param connectionProperties - POJO for the configuration used to create the connector.
      * @return JanusGraph instance with schema and indexes
+     *
+     * @throws JanusConnectorException if init fails
      */
     public JanusGraph openGraph(ConnectionProperties connectionProperties) throws JanusConnectorException {
         final String methodName = "openGraph";

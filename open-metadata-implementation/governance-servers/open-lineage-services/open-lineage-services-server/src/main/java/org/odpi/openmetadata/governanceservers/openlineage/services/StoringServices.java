@@ -10,7 +10,9 @@ import org.odpi.openmetadata.governanceservers.openlineage.scheduler.JobConfigur
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class StoringServices {
@@ -44,6 +46,7 @@ public class StoringServices {
 
     /**
      * Delegates the call for the update of an entity to the connector
+     *
      */
     public void updateEntity(LineageEvent lineageEvent) {
         log.debug("Open Lineage Services is processing a UpdateEntity event which contains the following entity with guid : {}", lineageEvent.getLineageEntity().getGuid());
@@ -52,10 +55,19 @@ public class StoringServices {
 
     /**
      * Delegates the call for the update of a relationship to the connector
+     *
      */
     public void updateRelationship(LineageRelationshipEvent lineageRelationshipEvent) {
         log.debug("Open Lineage Services is processing a UpdateRelationshipEvent event which contains the following relantionhsip with guid: {}", lineageRelationshipEvent.getLineageRelationship().getGuid());
         lineageGraph.updateRelationship(lineageRelationshipEvent.getLineageRelationship());
+    }
+
+    /**
+     * Delegates the call for the update of a classification to the connector
+     */
+    public void updateClassification(LineageEvent lineageEvent){
+        log.debug("Open Lineage Services is processing an UpdateClassificationEvent event");
+        lineageGraph.updateClassification(lineageEvent.getAssetContext());
     }
 
     /**
@@ -77,5 +89,16 @@ public class StoringServices {
      */
     public void upsertRelationship(LineageRelationshipEvent lineageRelationshipEvent) {
         lineageGraph.upsertRelationship(lineageRelationshipEvent.getLineageRelationship());
+    }
+
+    /**
+     * Delegates the call to delete a classification to the connector
+     */
+    public void deleteClassification(LineageEvent lineageEvent){
+        log.debug("Open Lineage Services is processing an UpdateClassificationEvent event");
+        Map<String, Set<GraphContext>> empty = new HashMap<>();
+
+        lineageGraph.deleteClassification(lineageEvent.getLineageEntity().getGuid(),
+                lineageEvent.getAssetContext() == null ? empty : lineageEvent.getAssetContext() );
     }
 }
