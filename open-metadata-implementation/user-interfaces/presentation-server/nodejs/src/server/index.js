@@ -144,12 +144,6 @@ app.post("/login", function (req, res, next) {
   })(req, res, next);
 });
 
-// app.use(function(req, res, next) {
-//   console.log("check whether logged in req.user is " + req.user );
-//   if (!req.user) {
-//     res.redirect("/" + req.query.serverName + "/loggedOut");
-//   }
-// });
 function loggedIn(req, res, next) {
   if (req.user) {
     next();
@@ -171,12 +165,7 @@ app.get("/logout", function (req, res) {
 
 const staticJoinedPath = path.join(__dirname, "../../dist");
 app.use(express.static(staticJoinedPath, { index: false }));
-// app.use("bundle.js", (req, res) => {
-//   res.sendFile(staticJoinedPath);
-// });
-
 const joinedPath = path.join(__dirname, "../../dist", "index.html");
-//app.use(express.static(joinedPath));
 
 app.get("/login", (req, res) => {
   console.log("/login called " + joinedPath);
@@ -184,42 +173,67 @@ app.get("/login", (req, res) => {
 });
 app.use(bodyParser.json());
 
+const validateURL = (url) => {
+  const urlArray = url.split("/");
+  let isValid = true;
+  // we are expecting /servers/<serverName>/<view-service-name>/users/<userId>/<optional additional endpoint information>
+  
+  if (url.length < 5) {
+    console.log("Supplied url not long enough " + url);
+    isValid = false;
+  } else {
+    if (urlArray[2].length == 0) {
+      console.log("No supplied serverName ");
+      isValid = false;
+    } else if (urlArray[4] !="users") {
+      console.log("Users expected in url " + url);
+      isValid = false;
+    } else if (urlArray[5].length == 0) {
+      console.log("No user supplied");
+      isValid = false;
+    }
+  }
+  return isValid;
+}
+
+const getAxiosInstance = (url) => {
+  const urlArray = url.split("/");
+
+  const suppliedServerName = urlArray[2];
+  const remainingURL = urlArray.slice(3).join("/");
+
+  // TODO get from configuration
+  const urlRoot = "https://localhost:9443";
+  // TODO get from configuration
+  const viewServerName = "cocoMDSV1";
+
+  const downStreamURL =
+    urlRoot +
+    "/servers/" +
+    viewServerName +
+    "/open-metadata/view-services/" +
+    remainingURL;
+  console.log("downstream url " + downStreamURL);
+  const instance = axios.create({
+    baseURL: downStreamURL,
+    httpsAgent: new https.Agent({
+      // ca: - at some stage add the certificate authority
+      cert: cert,
+      key: key,
+      rejectUnauthorized: false,
+    }),
+  });
+  return instance;
+};
+
 app.post("/servers/*", (req, res) => {
-  console.log("/servers/* post called " + req.url);
+  const incomingUrl = req.url;
+  console.log("/servers/* post called " + incomingUrl);
   const body = req.body;
   console.log("Got body:", body);
-  const urlArray = req.url.split("/");
-  console.log(" segment 2 - this is the supplied serverName:" + urlArray[2]);
-  // TODO get from configuration
-  const viewServerName = "cocoMDSV1";
-  // TODO get from configuration
-  const remoteServerName = "localhost";
-  // TODO get from configuration
-  const remoteServerPort = "9443";
-
-  const downStreamURL =
-    "https://" +
-    remoteServerName +
-    ":" +
-    remoteServerPort +
-    "/servers/" +
-    viewServerName +
-    "/open-metadata/view-services/" +
-    urlArray.slice(3).join("/");
-  console.log("downstream url " + downStreamURL);
-
-  const instance = axios.create({
-    baseURL: downStreamURL,
-    httpsAgent: new https.Agent({
-      // ca: - at some stage add the certificate authority
-      cert: cert,
-      key: key,
-      rejectUnauthorized: false,
-    }),
-  });
-
-  instance
-    .post(downStreamURL, body)
+  if (validateURL(incomingUrl)) {
+  const instance = getAxiosInstance(incomingUrl);
+  instance.post("", body)
     .then(function (response) {
       console.log("response.data");
       console.log(response.data);
@@ -234,41 +248,18 @@ app.post("/servers/*", (req, res) => {
     .then(function () {
       // always executed
     });
+  } else {
+    res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
+  }
 });
 
+
 app.get("/servers/*", (req, res) => {
-  console.log("/servers/* get called " + req.url);
-  const urlArray = req.url.split("/");
-  console.log(" segment 2" + urlArray[2]);
-  // TODO get from configuration
-  const viewServerName = "cocoMDSV1";
-  // TODO get from configuration
-  const remoteServerName = "localhost";
-  // TODO get from configuration
-  const remoteServerPort = "9443";
-
-  const downStreamURL =
-    "https://" +
-    remoteServerName +
-    ":" +
-    remoteServerPort +
-    "/servers/" +
-    viewServerName +
-    "/open-metadata/view-services/" +
-    urlArray.slice(3).join("/");
-  console.log("downstream url " + downStreamURL);
-  const instance = axios.create({
-    baseURL: downStreamURL,
-    httpsAgent: new https.Agent({
-      // ca: - at some stage add the certificate authority
-      cert: cert,
-      key: key,
-      rejectUnauthorized: false,
-    }),
-  });
-
-  instance
-    .get()
+  const url = req.url;
+  console.log("/servers/* get called " + url);
+  if (validateURL(url)) {
+  const instance = getAxiosInstance(url);
+  instance.get()
     .then(function (response) {
       console.log("response.data");
       console.log(response.data);
@@ -283,6 +274,9 @@ app.get("/servers/*", (req, res) => {
     .then(function () {
       // always executed
     });
+  } else {
+    res.status(400).send("Error, invalid supplied URL: " + url);
+  }
 });
 
 app.use("*", loggedIn, (req, res) => {
