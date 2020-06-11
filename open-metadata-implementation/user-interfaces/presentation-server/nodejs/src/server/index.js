@@ -10,6 +10,8 @@ const axios = require("axios");
 const LocalStrategy = require("passport-local").Strategy;
 const db = require("./db");
 const path = require("path");
+// note we may want to switch this off for production. 
+require('dotenv').config();
 // Create the Express app
 const app = express();
 
@@ -22,11 +24,49 @@ const options = {
   key: key,
   cert: cert,
 };
+const servers = getServerInfoFromEnv();
 
-/*
+function getServerInfoFromEnv() {
+  console.log(" getServerInfoFromEnv() 1");
+  let modifiableServers = {};
+  //capitals as Windows can be case sensitive.
+  const env_prefix = "EGERIA_PRESENTATIONSERVER_SERVER_";
+  console.log(process.env);
+
+  const env = process.env;
+  for (const envVariable in env) {
+    if (envVariable.startsWith(env_prefix)) {
+      // Found an environment variable with out prefix
+      console.log(" getServerInfoFromEnv() 2");
+      if ((envVariable.length == env_prefix.length - 1)) {
+        console.log(
+          "there is no server name specified in the environment Variable envVariable.length="+envVariable.length+",env_prefix.length - 1="+env_prefix.length - 1 
+        );
+      } else {
+        const serverName = envVariable.substr(env_prefix.length);
+        console.log("Found server name " + serverName);
+        const serverDetailsStr = env[envVariable];
+        const serverDetails = JSON.parse(serverDetailsStr);
+        if (serverDetails.remoteURL!= undefined && serverDetails.remoteServerName!=undefined) {
+          modifiableServers[serverName] = serverDetails;
+        } else {
+          console.log(
+            "Found server environment variable for server " +
+              serverName +
+              ", but the value was not as expected :" + serverDetailsStr 
+             
+          );
+        }
+      }
+    }
+  }
+  return modifiableServers;
+}
+
+/**
  * This middleware method takes off the first segment which is the serverName an puts it into a query parameter
  * I did consider using Regex match and replace along these lines 'const matchCriteria = /^\/([A-Za-z_][A-Za-z_0-9]+)\//;'
- * but decided not to in case the characters I ws tolerating whas not enough. Note the split slice join is not not very performant
+ * but decided not to in case the characters I was tolerating was not enough. Note the split slice join is not not very performant
  * due to the creation of array elements.
  *
  * For urls that start with servers - these are rest calls that need to be passed through to the back end.
@@ -72,11 +112,8 @@ app.use(function (req, res, next) {
   next();
 });
 
-// app.use(express.static("dist"));
 // Initialize Passport and restore authentication state, if any, from the
 // session.
-
-// app.use(express.static("public"));
 app.use(session({ secret: "cats" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
@@ -172,45 +209,68 @@ app.get("/login", (req, res) => {
   res.sendFile(joinedPath);
 });
 app.use(bodyParser.json());
-
+/**
+ * Validate the URL structure isofthe form /servers/<serverName>/<view-service-name>/users/<userId>/<optional additional endpoint information>
+ * @param {*} url url to validate
+ */
 const validateURL = (url) => {
   const urlArray = url.split("/");
   let isValid = true;
-  // we are expecting /servers/<serverName>/<view-service-name>/users/<userId>/<optional additional endpoint information>
-  
   if (url.length < 5) {
     console.log("Supplied url not long enough " + url);
     isValid = false;
+  } else if (urlArray[4] != "users") {
+    console.log("Users expected in url " + url);
+    isValid = false;
+  } else if (urlArray[5].length == 0) {
+    console.log("No user supplied");
+    isValid = false;
   } else {
-    if (urlArray[2].length == 0) {
+    const suppliedserverName = urlArray[2];
+    if (suppliedserverName.length == 0) {
       console.log("No supplied serverName ");
       isValid = false;
-    } else if (urlArray[4] !="users") {
-      console.log("Users expected in url " + url);
-      isValid = false;
-    } else if (urlArray[5].length == 0) {
-      console.log("No user supplied");
-      isValid = false;
+    } else {
+      // check against environment -which have ben parsed into the servers variable
+      const serverDetails = servers[suppliedserverName];
+      if (serverDetails == null) {
+        console.log("ServerName not configured");
+        isValid = false;
+      } else if (serverDetails.remoteURL == undefined) {
+        console.log(
+          "ServerName " +
+            suppliedserverName +
+            " found but there was no associated remoteURL"
+        );
+        isValid = false;
+      } else if (serverDetails.remoteServerName == undefined) {
+        console.log(
+          "ServerName " +
+            suppliedserverName +
+            " found but there was no associated remoteServerName"
+        );
+        isValid = false;
+      }
     }
   }
   return isValid;
-}
-
+};
+/**
+ * get the axios instancewe will use to make secure rest calls.
+ * @param {*} url url used to construct the instance
+ */
 const getAxiosInstance = (url) => {
   const urlArray = url.split("/");
 
   const suppliedServerName = urlArray[2];
   const remainingURL = urlArray.slice(3).join("/");
-
-  // TODO get from configuration
-  const urlRoot = "https://localhost:9443";
-  // TODO get from configuration
-  const viewServerName = "cocoMDSV1";
-
+  // servers[suppliedServerName] has already been validated
+  const urlRoot = servers[suppliedServerName].remoteURL;
+  const remoteServerName = servers[suppliedServerName].remoteServerName;
   const downStreamURL =
     urlRoot +
     "/servers/" +
-    viewServerName +
+    remoteServerName +
     "/open-metadata/view-services/" +
     remainingURL;
   console.log("downstream url " + downStreamURL);
@@ -232,48 +292,49 @@ app.post("/servers/*", (req, res) => {
   const body = req.body;
   console.log("Got body:", body);
   if (validateURL(incomingUrl)) {
-  const instance = getAxiosInstance(incomingUrl);
-  instance.post("", body)
-    .then(function (response) {
-      console.log("response.data");
-      console.log(response.data);
-      const resBody = response.data;
-      res.setHeader("Content-Type", "application/json");
-      res.json(resBody);
-    })
-    .catch(function (error) {
-      console.log(error);
-      res.status(400).send(error);
-    })
-    .then(function () {
-      // always executed
-    });
+    const instance = getAxiosInstance(incomingUrl);
+    instance
+      .post("", body)
+      .then(function (response) {
+        console.log("response.data");
+        console.log(response.data);
+        const resBody = response.data;
+        res.setHeader("Content-Type", "application/json");
+        res.json(resBody);
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.status(400).send(error);
+      })
+      .then(function () {
+        // always executed
+      });
   } else {
     res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
   }
 });
 
-
 app.get("/servers/*", (req, res) => {
   const url = req.url;
   console.log("/servers/* get called " + url);
   if (validateURL(url)) {
-  const instance = getAxiosInstance(url);
-  instance.get()
-    .then(function (response) {
-      console.log("response.data");
-      console.log(response.data);
-      const resBody = response.data;
-      res.setHeader("Content-Type", "application/json");
-      res.json(resBody);
-    })
-    .catch(function (error) {
-      console.log(error);
-      res.status(400).send(error);
-    })
-    .then(function () {
-      // always executed
-    });
+    const instance = getAxiosInstance(url);
+    instance
+      .get()
+      .then(function (response) {
+        console.log("response.data");
+        console.log(response.data);
+        const resBody = response.data;
+        res.setHeader("Content-Type", "application/json");
+        res.json(resBody);
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.status(400).send(error);
+      })
+      .then(function () {
+        // always executed
+      });
   } else {
     res.status(400).send("Error, invalid supplied URL: " + url);
   }
