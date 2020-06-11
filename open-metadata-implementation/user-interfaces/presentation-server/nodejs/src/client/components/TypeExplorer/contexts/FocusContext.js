@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 
-import React, { createContext, useContext, useState }   from "react";
+import React, { createContext, useState }   from "react";
 
 import PropTypes                                        from "prop-types";
 
@@ -26,7 +26,7 @@ const FocusContextProvider = (props) => {
   /*
    * The focus state tracks the user's focus on an entity type. The type name is stored. It is initially empty... 
    */
-  const [focus, setFocus]              = useState("");    
+  const [focus, setFocus]              = useState("");
 
   /*
    * view object is initially empty and tracks the user's attention - which may be a relationship or classification
@@ -42,29 +42,29 @@ const FocusContextProvider = (props) => {
   const [view, setView]                = useState({ typeName : "" , catgeory : ""});
 
 
-  /* TODO : When type information is loaded (into the TypesContext) the focus and view settings should be cleared.
+  /* 
+   * TODO : When type information is loaded (into the TypesContext) the focus and view settings should be cleared.
    */
 
 
   /*
-  
-  * When the view is changed - it does not alter the focus. However, it does reset
-  * the other view selector. Therfore, the relationship and classification type 
-  * selectors are cross-coupled - selection of one clears the other.
-  */
+   * When the view is changed - it does not alter the focus. However, it does reset
+   * the other view selector. Therfore, the relationship and classification type 
+   * selectors are cross-coupled - selection of one clears the other.
+   */
  const typeSelected = (category, typeName) => {
-   
+
    switch (category) {
-     case "Entity":       
-       setFocus(typeName);        
-       setView({ typeName : typeName , category : category });             
+     case "Entity":
+       setFocus(typeName);
+       setView({ typeName : typeName , category : category });
        break;
-     case "Relationship":     
-       setView({ typeName : typeName , category : category });               
-       break;        
-     case "Classification":         
-       setView({ typeName : typeName , category : category });                       
-       break;     
+     case "Relationship":
+       setView({ typeName : typeName , category : category });
+       break;
+     case "Classification":
+       setView({ typeName : typeName , category : category });
+       break;
    }
  };
 
