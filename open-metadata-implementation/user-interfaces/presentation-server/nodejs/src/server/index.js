@@ -10,6 +10,8 @@ const axios = require("axios");
 const LocalStrategy = require("passport-local").Strategy;
 const db = require("./db");
 const path = require("path");
+// note we may want to switch this off for production. 
+require('dotenv').config();
 // Create the Express app
 const app = express();
 
@@ -22,11 +24,49 @@ const options = {
   key: key,
   cert: cert,
 };
+const servers = getServerInfoFromEnv();
 
-/*
+function getServerInfoFromEnv() {
+  console.log(" getServerInfoFromEnv() 1");
+  let modifiableServers = {};
+  //capitals as Windows can be case sensitive.
+  const env_prefix = "EGERIA_PRESENTATIONSERVER_SERVER_";
+  console.log(process.env);
+
+  const env = process.env;
+  for (const envVariable in env) {
+    if (envVariable.startsWith(env_prefix)) {
+      // Found an environment variable with out prefix
+      console.log(" getServerInfoFromEnv() 2");
+      if ((envVariable.length == env_prefix.length - 1)) {
+        console.log(
+          "there is no server name specified in the environment Variable envVariable.length="+envVariable.length+",env_prefix.length - 1="+env_prefix.length - 1 
+        );
+      } else {
+        const serverName = envVariable.substr(env_prefix.length);
+        console.log("Found server name " + serverName);
+        const serverDetailsStr = env[envVariable];
+        const serverDetails = JSON.parse(serverDetailsStr);
+        if (serverDetails.remoteURL!= undefined && serverDetails.remoteServerName!=undefined) {
+          modifiableServers[serverName] = serverDetails;
+        } else {
+          console.log(
+            "Found server environment variable for server " +
+              serverName +
+              ", but the value was not as expected :" + serverDetailsStr 
+             
+          );
+        }
+      }
+    }
+  }
+  return modifiableServers;
+}
+
+/**
  * This middleware method takes off the first segment which is the serverName an puts it into a query parameter
  * I did consider using Regex match and replace along these lines 'const matchCriteria = /^\/([A-Za-z_][A-Za-z_0-9]+)\//;'
- * but decided not to in case the characters I ws tolerating whas not enough. Note the split slice join is not not very performant
+ * but decided not to in case the characters I was tolerating was not enough. Note the split slice join is not not very performant
  * due to the creation of array elements.
  *
  * For urls that start with servers - these are rest calls that need to be passed through to the back end.
@@ -72,11 +112,8 @@ app.use(function (req, res, next) {
   next();
 });
 
-// app.use(express.static("dist"));
 // Initialize Passport and restore authentication state, if any, from the
 // session.
-
-// app.use(express.static("public"));
 app.use(session({ secret: "cats" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
@@ -144,12 +181,6 @@ app.post("/login", function (req, res, next) {
   })(req, res, next);
 });
 
-// app.use(function(req, res, next) {
-//   console.log("check whether logged in req.user is " + req.user );
-//   if (!req.user) {
-//     res.redirect("/" + req.query.serverName + "/loggedOut");
-//   }
-// });
 function loggedIn(req, res, next) {
   if (req.user) {
     next();
@@ -171,43 +202,78 @@ app.get("/logout", function (req, res) {
 
 const staticJoinedPath = path.join(__dirname, "../../dist");
 app.use(express.static(staticJoinedPath, { index: false }));
-// app.use("bundle.js", (req, res) => {
-//   res.sendFile(staticJoinedPath);
-// });
-
 const joinedPath = path.join(__dirname, "../../dist", "index.html");
-//app.use(express.static(joinedPath));
 
 app.get("/login", (req, res) => {
   console.log("/login called " + joinedPath);
   res.sendFile(joinedPath);
 });
 app.use(bodyParser.json());
+/**
+ * Validate the URL structure isofthe form /servers/<serverName>/<view-service-name>/users/<userId>/<optional additional endpoint information>
+ * @param {*} url url to validate
+ */
+const validateURL = (url) => {
+  const urlArray = url.split("/");
+  let isValid = true;
+  if (url.length < 5) {
+    console.log("Supplied url not long enough " + url);
+    isValid = false;
+  } else if (urlArray[4] != "users") {
+    console.log("Users expected in url " + url);
+    isValid = false;
+  } else if (urlArray[5].length == 0) {
+    console.log("No user supplied");
+    isValid = false;
+  } else {
+    const suppliedserverName = urlArray[2];
+    if (suppliedserverName.length == 0) {
+      console.log("No supplied serverName ");
+      isValid = false;
+    } else {
+      // check against environment -which have ben parsed into the servers variable
+      const serverDetails = servers[suppliedserverName];
+      if (serverDetails == null) {
+        console.log("ServerName not configured");
+        isValid = false;
+      } else if (serverDetails.remoteURL == undefined) {
+        console.log(
+          "ServerName " +
+            suppliedserverName +
+            " found but there was no associated remoteURL"
+        );
+        isValid = false;
+      } else if (serverDetails.remoteServerName == undefined) {
+        console.log(
+          "ServerName " +
+            suppliedserverName +
+            " found but there was no associated remoteServerName"
+        );
+        isValid = false;
+      }
+    }
+  }
+  return isValid;
+};
+/**
+ * get the axios instancewe will use to make secure rest calls.
+ * @param {*} url url used to construct the instance
+ */
+const getAxiosInstance = (url) => {
+  const urlArray = url.split("/");
 
-app.post("/servers/*", (req, res) => {
-  console.log("/servers/* post called " + req.url);
-  const body = req.body;
-  console.log("Got body:", body);
-  const urlArray = req.url.split("/");
-  console.log(" segment 2 - this is the supplied serverName:" + urlArray[2]);
-  // TODO get from configuration
-  const viewServerName = "cocoMDSV1";
-  // TODO get from configuration
-  const remoteServerName = "localhost";
-  // TODO get from configuration
-  const remoteServerPort = "9443";
-
+  const suppliedServerName = urlArray[2];
+  const remainingURL = urlArray.slice(3).join("/");
+  // servers[suppliedServerName] has already been validated
+  const urlRoot = servers[suppliedServerName].remoteURL;
+  const remoteServerName = servers[suppliedServerName].remoteServerName;
   const downStreamURL =
-    "https://" +
-    remoteServerName +
-    ":" +
-    remoteServerPort +
+    urlRoot +
     "/servers/" +
-    viewServerName +
+    remoteServerName +
     "/open-metadata/view-services/" +
-    urlArray.slice(3).join("/");
+    remainingURL;
   console.log("downstream url " + downStreamURL);
-
   const instance = axios.create({
     baseURL: downStreamURL,
     httpsAgent: new https.Agent({
@@ -217,72 +283,61 @@ app.post("/servers/*", (req, res) => {
       rejectUnauthorized: false,
     }),
   });
+  return instance;
+};
 
-  instance
-    .post(downStreamURL, body)
-    .then(function (response) {
-      console.log("response.data");
-      console.log(response.data);
-      const resBody = response.data;
-      res.setHeader("Content-Type", "application/json");
-      res.json(resBody);
-    })
-    .catch(function (error) {
-      console.log(error);
-      res.status(400).send(error);
-    })
-    .then(function () {
-      // always executed
-    });
+app.post("/servers/*", (req, res) => {
+  const incomingUrl = req.url;
+  console.log("/servers/* post called " + incomingUrl);
+  const body = req.body;
+  console.log("Got body:", body);
+  if (validateURL(incomingUrl)) {
+    const instance = getAxiosInstance(incomingUrl);
+    instance
+      .post("", body)
+      .then(function (response) {
+        console.log("response.data");
+        console.log(response.data);
+        const resBody = response.data;
+        res.setHeader("Content-Type", "application/json");
+        res.json(resBody);
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.status(400).send(error);
+      })
+      .then(function () {
+        // always executed
+      });
+  } else {
+    res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
+  }
 });
 
 app.get("/servers/*", (req, res) => {
-  console.log("/servers/* get called " + req.url);
-  const urlArray = req.url.split("/");
-  console.log(" segment 2" + urlArray[2]);
-  // TODO get from configuration
-  const viewServerName = "cocoMDSV1";
-  // TODO get from configuration
-  const remoteServerName = "localhost";
-  // TODO get from configuration
-  const remoteServerPort = "9443";
-
-  const downStreamURL =
-    "https://" +
-    remoteServerName +
-    ":" +
-    remoteServerPort +
-    "/servers/" +
-    viewServerName +
-    "/open-metadata/view-services/" +
-    urlArray.slice(3).join("/");
-  console.log("downstream url " + downStreamURL);
-  const instance = axios.create({
-    baseURL: downStreamURL,
-    httpsAgent: new https.Agent({
-      // ca: - at some stage add the certificate authority
-      cert: cert,
-      key: key,
-      rejectUnauthorized: false,
-    }),
-  });
-
-  instance
-    .get()
-    .then(function (response) {
-      console.log("response.data");
-      console.log(response.data);
-      const resBody = response.data;
-      res.setHeader("Content-Type", "application/json");
-      res.json(resBody);
-    })
-    .catch(function (error) {
-      console.log(error);
-      res.status(400).send(error);
-    })
-    .then(function () {
-      // always executed
-    });
+  const url = req.url;
+  console.log("/servers/* get called " + url);
+  if (validateURL(url)) {
+    const instance = getAxiosInstance(url);
+    instance
+      .get()
+      .then(function (response) {
+        console.log("response.data");
+        console.log(response.data);
+        const resBody = response.data;
+        res.setHeader("Content-Type", "application/json");
+        res.json(resBody);
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.status(400).send(error);
+      })
+      .then(function () {
+        // always executed
+      });
+  } else {
+    res.status(400).send("Error, invalid supplied URL: " + url);
+  }
 });
 
 app.use("*", loggedIn, (req, res) => {
