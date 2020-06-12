@@ -15,6 +15,9 @@ import RelationshipTypeDisplay   from "./RelationshipTypeDisplay";
 
 import ClassificationTypeDisplay from "./ClassificationTypeDisplay";
 
+import EnumTypeDisplay           from "./EnumTypeDisplay";
+
+
 
 
 export default function TypeDisplay() {
@@ -53,6 +56,10 @@ export default function TypeDisplay() {
 
       case "Classification":
         return <ClassificationTypeDisplay typeName={focusContext.view.typeName} />  
+        break;
+
+      case "Enum":
+        return <EnumTypeDisplay typeName={focusContext.view.typeName} />
         break;
 
     }

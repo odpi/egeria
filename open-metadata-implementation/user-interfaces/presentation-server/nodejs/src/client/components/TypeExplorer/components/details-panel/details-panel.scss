@@ -15,7 +15,7 @@
 }
 
 .instance-details-item {
-  padding           : inherit;
+  padding           : 10px 5px;
 }
 
 .instance-details-item-bold {
@@ -52,6 +52,18 @@
 
 .italic {
   font-style        : italic;
+}
+
+.backlink {
+  background-color : rgb(240,240,240);
+  color            : black;
+  cursor           : pointer;
+  padding          : 0px;
+  width            : 100%;
+  border           : none;
+  text-align       : left;
+  outline          : none;
+  font-size        : 12px;
 }
 
 .linkable {
