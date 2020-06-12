@@ -23,14 +23,17 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     <style include="shared-styles">
         :host {
           display: flex;
-          flex-flow: column;
+          flex-direction: column;
           margin:var(--egeria-view-margin);
           min-height: var(--egeria-view-min-height);
+          max-height: var(--egeria-view-min-height);
         }
         
-        .container {
-          background-color: white;
+        #container {
+          /*background-color: var( --egeria-background-color );*/
           display: flex;
+          flex-direction: column;
+          background-color: yellowgreen;
           flex-grow: 1;
         }
         #useCases {
@@ -45,8 +48,8 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
     <token-ajax id="tokenAjaxDetails" last-response="{{item}}" ></token-ajax>
     <div>
-        <vaadin-tabs id ="useCases" selected="[[_getUseCase(routeData.usecase)]]" >
-          <vaadin-tab value="ultimateSource">
+        <vaadin-tabs id ="useCases"  selected="[[ _getUseCase(routeData.usecase) ]]" >
+          <vaadin-tab value="ultimateSource" >
             <a href="[[rootPath]]#/asset-lineage/ultimateSource/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
                 Ultimate Source
             </a>
@@ -93,7 +96,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         </div>
     </div>
 
-    <div class="container" id="container">
+    <div id="container">
         <vis-graph id="visgraph" data=[[graphData]]></vis-graph>
     </div>
     `;
@@ -132,7 +135,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                     hierarchical: {
                         enabled: true,
                         levelSeparation: 300,
-                        direction: 'RL'
+                        direction: 'LR'
                     }
                 }
             },
@@ -173,6 +176,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         this.$.visgraph.options.groups = this.groups;
         this.$.visgraph.options.interaction = this.graphInteraction;
         this.$.visgraph.options.layout = this.graphLayout;
+        this.$.visgraph.options.physics = false;
     }
 
     static get observers() {
@@ -326,7 +330,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     }
 
     _getUseCase(usecase){
-    return this.usecases.indexOf(usecase);
+        return this.usecases.indexOf(usecase);
     }
 
     _hideIncludeGlossaryTerms(usecase) {
