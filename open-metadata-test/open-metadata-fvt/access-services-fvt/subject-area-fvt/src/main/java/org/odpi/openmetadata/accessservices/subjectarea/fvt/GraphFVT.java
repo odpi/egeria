@@ -252,11 +252,11 @@ public class GraphFVT
                            Set<LineType> lineFilter,
                            StatusFilter statusFilter,   // may need to extend this for controlled terms
                            Integer level) throws
-            UserNotAuthorizedException,
-            InvalidParameterException,
-            FunctionNotSupportedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException {
+                                          UserNotAuthorizedException,
+                                          InvalidParameterException,
+                                          FunctionNotSupportedException,
+                                          MetadataServerUncontactableException,
+                                          UnexpectedResponseException, PropertyServerException {
         return subjectAreaGraph.getGraph(
                 userId,
                 guid,

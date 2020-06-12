@@ -331,7 +331,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     }
 
     _onLogout(event) {
-        console.log('removing token:');
         //TODO invalidate token from server
         console.log('LOGOUT: removing token...');
         this.token = null;

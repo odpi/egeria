@@ -113,6 +113,7 @@ open-metadata-implementation/user-interfaces/presentation-server/nodejs/.vscode
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/*.log
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/yarn.lock
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/node/**
+open-metadata-implementation/user-interfaces/presentation-server/nodejs/.env
 
 # Ignore Deployment / Samples Generated content
 open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/cache/**
