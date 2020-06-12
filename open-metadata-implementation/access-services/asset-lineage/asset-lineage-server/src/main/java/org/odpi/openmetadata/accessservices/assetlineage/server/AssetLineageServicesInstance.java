@@ -67,6 +67,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler,
+                    assetContextHandler,
                     supportedZones,
                     lineageClassificationTypes);
 

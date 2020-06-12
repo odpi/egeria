@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -22,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
 
 /**
@@ -61,41 +59,23 @@ public class AssetContextHandler {
      * Gets asset context.
      *
      * @param userId the user id
-     * @param guid   the guid
-     * @param type   the type
+     * @param entityDetail   the entity for which the context is build
      * @return the asset context
      */
-    public AssetContext getAssetContext(String userId, String guid, String type) throws OCFCheckedExceptionBase {
+    public AssetContext getAssetContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         final String methodName = "getAssetContext";
-
         graph = new AssetContext();
 
-        invalidParameterHandler.validateGUID(guid, GUID_PARAMETER, methodName);
-
-        Optional<EntityDetail> entityDetail = getEntityDetails(userId, guid, type);
-        if (!entityDetail.isPresent()) {
-            log.error("Something is wrong in the OMRS Connector when a specific operation is performed in the metadata collection." +
-                    " Entity not found with guid {}", guid);
-
-            throw new AssetLineageException(ENTITY_NOT_FOUND.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    "Retrieving Entity",
-                    ENTITY_NOT_FOUND.getErrorMessage(),
-                    ENTITY_NOT_FOUND.getSystemAction(),
-                    ENTITY_NOT_FOUND.getUserAction());
-        }
-
-        invalidParameterHandler.validateAssetInSupportedZone(guid,
+        invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(),
                 GUID_PARAMETER,
-                handlerHelper.getAssetZoneMembership(entityDetail.get().getClassifications()),
+                handlerHelper.getAssetZoneMembership(entityDetail.getClassifications()),
                 supportedZones,
                 ASSET_LINEAGE_OMAS,
                 methodName);
 
-        buildAssetContext(userId, entityDetail.get());
+        buildAssetContext(userId, entityDetail);
         return graph;
-
-
     }
 
     public Optional<EntityDetail> getEntityDetails(String userId, String guid, String type) throws OCFCheckedExceptionBase {

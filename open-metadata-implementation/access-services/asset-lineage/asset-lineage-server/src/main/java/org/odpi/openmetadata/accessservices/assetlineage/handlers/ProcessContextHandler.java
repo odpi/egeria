@@ -27,6 +27,7 @@ public class ProcessContextHandler {
     private static final Logger log = LoggerFactory.getLogger(ProcessContextHandler.class);
 
     private final RepositoryHandler repositoryHandler;
+    private final AssetContextHandler assetContextHandler;
     private final InvalidParameterHandler invalidParameterHandler;
     private final List<String> supportedZones;
     private final HandlerHelper handlerHelper;
@@ -45,11 +46,13 @@ public class ProcessContextHandler {
     public ProcessContextHandler(InvalidParameterHandler invalidParameterHandler,
                                  OMRSRepositoryHelper repositoryHelper,
                                  RepositoryHandler repositoryHandler,
+                                 AssetContextHandler assetContextHandler,
                                  List<String> supportedZones,
                                  List<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
+        this.assetContextHandler= assetContextHandler;
         this.supportedZones = supportedZones;
     }
 
@@ -109,7 +112,6 @@ public class ProcessContextHandler {
         }
 
         return hasRelationshipBasedOnType(entityDetails, userId);
-
     }
 
 
@@ -123,25 +125,27 @@ public class ProcessContextHandler {
      */
     private List<EntityDetail> getRelationshipsBetweenEntities(String userId, EntityDetail startEntity, String relationshipType) throws OCFCheckedExceptionBase {
         if (startEntity == null) return Collections.emptyList();
+
         handlerHelper.addLineageClassificationToContext(startEntity, graph);
         String startEntityType = startEntity.getType().getTypeDefName();
 
         List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipType, startEntityType);
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
-
-            if (relationship.getType().getTypeDefName().equals(ATTRIBUTE_FOR_SCHEMA) &&
-                    startEntityType.equals(TABULAR_COLUMN)) {
-                continue;
-            }
             EntityDetail endEntity = handlerHelper.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph, false);
             if (endEntity == null) return Collections.emptyList();
+
+            if (endEntity.getType().getTypeDefName().equals(RELATIONAL_COLUMN)) {
+                AssetContext assetContext = assetContextHandler.getAssetContext(userId, endEntity);
+                Map<String, Set<GraphContext>> neighbors = assetContext.getNeighbors();
+                graph.getGraphContexts().addAll(assetContext.getGraphContexts());
+                graph.getNeighbors().putAll(assetContext.getNeighbors());
+            }
 
             entityDetails.add(endEntity);
         }
 
         return entityDetails;
-
     }
 
     /**

@@ -83,7 +83,7 @@ public class AssetLineagePublisher {
 
     public void publishAssetContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         String technicalGuid = entityDetail.getGUID();
-        AssetContext assetContext = this.assetContextHandler.getAssetContext(serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
+        AssetContext assetContext = this.assetContextHandler.getAssetContext(serverUserName, entityDetail);
         Map<String, Set<GraphContext>> context = this.glossaryHandler.getGlossaryTerm(technicalGuid, serverUserName, assetContext, this.superTypesRetriever);
         LineageEvent event = new LineageEvent();
         if (!context.isEmpty())
