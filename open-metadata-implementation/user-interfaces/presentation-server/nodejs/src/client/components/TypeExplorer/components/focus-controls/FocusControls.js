@@ -193,13 +193,13 @@ export default function FocusControls(props) {
         }
         {
           entityTypesSorted !== null &&
-          ( <option value="none" defaultValue>Restrict search to a selected type...</option> )
+          ( <option value="none" defaultValue>Focus on entity type...</option> )
         }
         {
           entityTypesSorted !== null && 
           (
             entityTypesSorted.map(typeName => 
-              ( <option key={typeName} value={typeName}> {typeName} </option> )
+              ( <option key={typeName} value={typeName} > {typeName} </option> )
             )      
           )                                         
         }      
@@ -215,7 +215,7 @@ export default function FocusControls(props) {
         }
         {
           relationshipTypesSorted !== null &&
-          ( <option value="none" defaultValue>Restrict search to a selected type...</option> )
+          ( <option value="none" defaultValue>View relationship type...</option> )
         }
         {
           relationshipTypesSorted !== null && 
@@ -237,7 +237,7 @@ export default function FocusControls(props) {
         }
         {
           classificationTypesSorted !== null &&
-          ( <option value="none" defaultValue>Restrict search to a selected type...</option> )
+          ( <option value="none" defaultValue>View classification type...</option> )
         }
         {
           classificationTypesSorted !== null && 
