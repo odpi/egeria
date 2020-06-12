@@ -7,6 +7,7 @@ export const ItemViewBehavior = {
 
     observers:[ '_itemChanged(item)' ],
 
+
     _itemChanged(item) {
         console.debug('details items changed');
         if (item) {
