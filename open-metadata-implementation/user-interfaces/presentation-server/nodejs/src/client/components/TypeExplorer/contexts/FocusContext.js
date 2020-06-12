@@ -42,6 +42,9 @@ const FocusContextProvider = (props) => {
   const [view, setView]                = useState({ typeName : "" , catgeory : ""});
 
 
+  const [prevView, setPrevView]        = useState({ typeName : "" , catgeory : ""});
+
+
   /* 
    * TODO : When type information is loaded (into the TypesContext) the focus and view settings should be cleared.
    */
@@ -52,19 +55,23 @@ const FocusContextProvider = (props) => {
    * the other view selector. Therfore, the relationship and classification type 
    * selectors are cross-coupled - selection of one clears the other.
    */
- const typeSelected = (category, typeName) => {
+  const typeSelected = (category, typeName) => {
 
-   switch (category) {
-     case "Entity":
-       setFocus(typeName);
-       setView({ typeName : typeName , category : category });
-       break;
-     case "Relationship":
-       setView({ typeName : typeName , category : category });
-       break;
-     case "Classification":
-       setView({ typeName : typeName , category : category });
-       break;
+    switch (category) {
+      case "Entity":
+        setFocus(typeName);
+        setView({ typeName : typeName , category : category });
+        break;
+      case "Relationship":
+        setView({ typeName : typeName , category : category });
+        break;
+      case "Classification":
+        setView({ typeName : typeName , category : category });
+        break;
+      case "Enum":
+        setPrevView(view);  // Only required on Enum Type display.
+        setView({ typeName : typeName , category : category });
+        break;
    }
  };
 
@@ -75,6 +82,8 @@ const FocusContextProvider = (props) => {
         setFocus,
         view,
         setView,
+        prevView,
+        setPrevView,
         typeSelected
       }}
     >
