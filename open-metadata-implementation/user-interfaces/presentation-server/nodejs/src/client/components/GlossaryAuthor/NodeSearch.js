@@ -51,6 +51,12 @@ const NodeSearch = props => {
       header.header = attribute.label;
       headerData.push(header);
     });
+    glossaryAuthorContext.currentNodeType.summaryResponseAttributes.map(function(attribute, index ) {
+      let header = {};
+      header.key=attribute.key;
+      header.header = attribute.label;
+      headerData.push(header);
+    });
     return headerData;
   }
 
@@ -91,7 +97,7 @@ const NodeSearch = props => {
                 // row.qualifiedName = node.qualifiedName;
                 for (const property in node) {
                   console.log("result property is ", property);
-                  if (property.key == 'glossary') {
+                  if (property == 'glossary') {
                       const glossary = node[property];
                       row.glossaryName = glossary.name;
                       row.glossaryGuid = glossary.guid;
