@@ -173,6 +173,18 @@ public class GlossaryViewClientTest {
     }
 
     @Test
+    public void getAllTerms() throws Exception{
+        response.addEntityDetails(terms);
+
+        when(connector.callGetRESTCall(eq("getAllGlossaryTerms"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
+                eq(USER_ID), anyInt(), anyInt())).thenReturn(response);
+
+        List<GlossaryTerm> terms = underTest.getAllGlossaryTerms(USER_ID,0, 10);
+
+        assertEquals(7, terms.size());
+    }
+
+    @Test
     public void getCategoryHomeGlossary() throws Exception{
         response.addEntityDetail(glossaries.get(0));
 
