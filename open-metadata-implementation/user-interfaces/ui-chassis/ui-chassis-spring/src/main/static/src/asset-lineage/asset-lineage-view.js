@@ -33,7 +33,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
           /*background-color: var( --egeria-background-color );*/
           display: flex;
           flex-direction: column;
-          background-color: yellowgreen;
           flex-grow: 1;
         }
         #useCases {
