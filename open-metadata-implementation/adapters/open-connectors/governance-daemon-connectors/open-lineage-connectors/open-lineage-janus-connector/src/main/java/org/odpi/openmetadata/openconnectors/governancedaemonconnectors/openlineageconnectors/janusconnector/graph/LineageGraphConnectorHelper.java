@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
@@ -350,11 +351,12 @@ public class LineageGraphConnectorHelper {
      * @return the filtered properties of the vertex
      */
     private Map<String, String> retrieveProperties(Vertex vertex) {
+        boolean isClassificationVertex = vertex.edges(Direction.IN, EDGE_LABEL_CLASSIFICATION).hasNext();
         Map<String, String> newNodeProperties = new HashMap<>();
         Iterator<VertexProperty<Object>> originalProperties = vertex.properties();
         while (originalProperties.hasNext()) {
             Property<Object> originalProperty = originalProperties.next();
-            if (immutableReturnedPropertiesWhiteList.contains(originalProperty.key())) {
+            if (immutableReturnedPropertiesWhiteList.contains(originalProperty.key()) || isClassificationVertex) {
                 String newPropertyKey = originalProperty.key().
                         replace(PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY, "").
                         replace(PROPERTY_KEY_PREFIX_ELEMENT, "");
