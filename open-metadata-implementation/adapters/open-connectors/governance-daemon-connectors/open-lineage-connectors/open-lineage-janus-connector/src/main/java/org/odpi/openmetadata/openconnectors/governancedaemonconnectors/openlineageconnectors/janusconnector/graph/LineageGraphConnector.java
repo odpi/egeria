@@ -357,7 +357,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                         .unfold()
                         .as("kv")
                         .select("v")
-                        .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))).iterate() ;
+                        .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))).iterate();
     }
 
     /**
@@ -474,7 +474,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                             .unfold()
                             .as("kv")
                             .select("edge")
-                            .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))) ;
+                            .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))).iterate();
             if(supportingTransactions) {
                 g.tx().commit();
             }
