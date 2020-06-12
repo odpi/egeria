@@ -52,7 +52,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         app-drawer-layout:not([narrow]) [drawer-toggle] {
           display: none;
         };
-        app-header {
+        app-toolbar {
           color: #fff;
           background-color: var(--egeria-primary-color);
         };
@@ -131,7 +131,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path query-params="{{queryParams}}"></app-location>
 
-      <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{tail}}"></app-route>
+      <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{tail}}"></app-route>
        
       <toast-feedback duration="0"></toast-feedback> 
        
@@ -158,13 +158,12 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 </app-drawer>
     
                 <!-- Main content-->
-                <app-header-layout>
-        
-                  <app-header slot="header" condenses="" reveals="" effects="waterfall">
+                <app-header-layout>    
+                  <app-header slot="header" condenses fixed effects="waterfall">
                     <app-toolbar>
                       <paper-icon-button on-tap="_toggleDrawer" id="toggle" icon="menu"></paper-icon-button>
                       <template is="dom-if" if="[[narrow]]" >
-                        <img src="../images/logo-white.png" style="vertical-align: middle; max-height: 80%; margin-left: 15pt; margin-right: 15pt; display: inline-block; "/>
+                        <img src="./images/logo-white.png" style="vertical-align: middle; max-height: 80%; margin-left: 15pt; margin-right: 15pt; display: inline-block; "/>
                       </template>
                       <div>
                         <template is="dom-if" if="[[!narrow]]" >
@@ -178,10 +177,10 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                       </div>
                       <div style="float: right"><user-options></user-options></div>
                     </app-toolbar>
+                    <div class="breadcrumb">
+                        <bread-crumb id="breadcrumb" items="[[crumbs]]"></bread-crumb>
+                    </div>
                   </app-header>
-                  <div class="breadcrumb">
-                     <bread-crumb id="breadcrumb" items="[[crumbs]]"></bread-crumb>
-                  </div>
                   
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-view language="[[language]]" name="asset-catalog" route="[[tail]]"></asset-view>
@@ -211,8 +210,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             },
             token: {
                 type: Object,
-                notify: true,
-                observer: '_tokenChanged'
+                notify: true
             },
             routeData: Object,
             pages: {
@@ -333,7 +331,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     }
 
     _onLogout(event) {
-        console.log('removing token:');
         //TODO invalidate token from server
         console.log('LOGOUT: removing token...');
         this.token = null;
@@ -341,10 +338,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
     _hasToken(){
         return typeof this.token !== "undefined" && this.token != null;
-    }
-
-    _tokenChanged(newValue, oldValue) {
-        console.debug('token changed from: '+ oldValue +' \nto new value: ' + newValue)
     }
 
     _pageChanged(page) {

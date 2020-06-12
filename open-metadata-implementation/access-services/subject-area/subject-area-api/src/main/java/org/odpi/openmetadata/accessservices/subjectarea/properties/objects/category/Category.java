@@ -8,6 +8,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -23,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = SubjectAreaDefinition.class, name = "SubjectAreaDefinition")
         })
-public class Category extends Node{
+public class Category extends Node {
     private GlossarySummary glossary =null;
     private CategorySummary parentCategory;
 
@@ -77,6 +79,7 @@ public class Category extends Node{
         sb.append('}');
         return sb;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,8 +88,7 @@ public class Category extends Node{
         Category category = (Category) o;
         Node node = (Node) o;
         if (!node.equals(this)) return false;
-        if (glossary != null ? !glossary.equals(category.glossary) : category.glossary != null) return false;
-        return  true;
+        return Objects.equals(glossary, category.glossary);
     }
 
     @Override

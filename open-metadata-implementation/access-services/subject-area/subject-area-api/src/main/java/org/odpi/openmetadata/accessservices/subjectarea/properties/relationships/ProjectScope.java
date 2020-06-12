@@ -23,54 +23,52 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * The Project Scope relationship links documentation, assets and definitions to the project.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProjectScope extends Line {
     private static final Logger log = LoggerFactory.getLogger(ProjectScope.class);
     private static final String className = ProjectScope.class.getName();
 
-      private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
-          "scopeDescription",
-      // Terminate the list
-          null
-      };
-      private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
-          "scopeDescription",
-       // Terminate the list
-          null
-      };
-      private static final String[] ENUM_NAMES_SET_VALUES = new String[] {
-
-           // Terminate the list
+    private static final String[] PROPERTY_NAMES_SET_VALUES = new String[]{
+            "description",
+            // Terminate the list
             null
-      };
-      private static final String[] MAP_NAMES_SET_VALUES = new String[] {
+    };
+    private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[]{
+            "description",
+            // Terminate the list
+            null
+    };
+    private static final String[] ENUM_NAMES_SET_VALUES = new String[]{
 
-           // Terminate the list
-           null
-      };
-      private static final Set<String> PROPERTY_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES)));
-      private static final Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
-      private static final Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
-      private static final Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
-      private String projectGuid;
-      private String nodeGuid;
+            // Terminate the list
+            null
+    };
+    private static final String[] MAP_NAMES_SET_VALUES = new String[]{
+
+            // Terminate the list
+            null
+    };
+    private static final Set<String> PROPERTY_NAMES_SET = new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES));
+    private static final Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
+    private static final Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
+    private static final Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
+    private String projectGuid;
+    private String nodeGuid;
 
 
     public ProjectScope() {
         initialise();
     }
 
-    private void initialise()
-    {
-       name = "ProjectScope";
-       // set the LineType if this is a LineType enum value.
-       try {
-           lineType = LineType.valueOf(name);
-        }
-        catch (IllegalArgumentException e) {
-           lineType = LineType.Unknown;
+    private void initialise() {
+        name = "ProjectScope";
+        // set the LineType if this is a LineType enum value.
+        try {
+            lineType = LineType.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            lineType = LineType.Unknown;
         }
 
         entity1Name = "impactingProjects";
@@ -88,12 +86,11 @@ public class ProjectScope extends Line {
     public ProjectScope(Relationship omrsRelationship) {
         super(omrsRelationship);
         name = "ProjectScope";
-       // set the LineType if this is a LineType enum value.
-       try {
-           lineType = LineType.valueOf(name);
-        }
-        catch (IllegalArgumentException e) {
-           lineType = LineType.Unknown;
+        // set the LineType if this is a LineType enum value.
+        try {
+            lineType = LineType.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            lineType = LineType.Unknown;
         }
     }
 
@@ -113,33 +110,35 @@ public class ProjectScope extends Line {
         this.nodeGuid = nodeGuid;
     }
 
-      @Override
-         public StringBuilder toString(StringBuilder sb)
-         {
-             if (sb == null)
-             {
-                 sb = new StringBuilder();
-             }
-             sb.append(" ProjectScopeRelationship=");
-             sb.append(super.toString(sb));
-             sb.append(" ProjectScopeRelationship Attributes{");
-             sb.append("}");
-             return sb;
-         }
-         @Override
-         public String toString() {
-             return toString(new StringBuilder()).toString();
-         }
-    private String scopeDescription;
-    /**
-     * {@literal Description of the scope of the project. }
-     * @return {@code String }
-     */
-    public String getScopeDescription() {
-        return this.scopeDescription;
-    }
-    public void  setScopeDescription(String description)  {
-        this.scopeDescription = description;
+    @Override
+    public StringBuilder toString(StringBuilder sb) {
+        if (sb == null) {
+            sb = new StringBuilder();
+        }
+        sb.append(" ProjectScopeRelationship=");
+        sb.append(super.toString(sb));
+        sb.append(" ProjectScopeRelationship Attributes{");
+        sb.append("}");
+        return sb;
     }
 
+    @Override
+    public String toString() {
+        return toString(new StringBuilder()).toString();
+    }
+
+    private String description;
+
+    /**
+     * {@literal Description of the scope of the project. }
+     *
+     * @return {@code String }
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

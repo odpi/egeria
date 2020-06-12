@@ -26,7 +26,7 @@ There are access services for
 [data catalogs](../../../open-metadata-implementation/access-services/asset-consumer) and
 [curation](../../../open-metadata-implementation/access-services/asset-owner) tools;
 [glossary tools](../../../open-metadata-implementation/access-services/subject-area);
-[data platforms](../../../open-metadata-implementation/access-services/data-platform) and
+[data managers](../../../open-metadata-implementation/access-services/data-manager) and
 [engines](../../../open-metadata-implementation/access-services/data-engine);
 [data science/AI workbenches](../../../open-metadata-implementation/access-services/data-science),
 [Business Intelligence (BI) and reporting platforms](../../../open-metadata-implementation/access-services/information-view);

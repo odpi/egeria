@@ -8,11 +8,11 @@ contains a Java Archive (Jar) file for the server platform itself along with a d
 
 ```bash
 $ ls
-resources				server-chassis-spring-1.8-SNAPSHOT.jar
+resources				server-chassis-spring-2.0-SNAPSHOT.jar
 ```
 
 The name of the Java Archive (Jar) file will
-depend on the release of ODPi Egeria that you have installed.  In this example, the release is **1.8-SNAPSHOT**.
+depend on the release of ODPi Egeria that you have installed.  In this example, the release is **2.0-SNAPSHOT**.
 
 The [OMAG Server Platform](../../../open-metadata-publication/website/omag-server) is started with the **java** command.
 Ensure you have a Java runtime at Version 8 (Update 151) or above installed on your machine.
@@ -25,7 +25,7 @@ Start the OMAG server platform as follows - the `-Dserver.port` option is needed
 on different ports, as required by the tutorials.
 
 ```bash
-$ java -Dserver.port=8080 -jar server-chassis-spring-1.8-SNAPSHOT.jar
+$ java -Dserver.port=9443 -jar server-chassis-spring-2.0-SNAPSHOT.jar
 ```
 
 The OMAG server platform first displays this banner and then initializes itself.
@@ -44,24 +44,24 @@ The OMAG server platform first displays this banner and then initializes itself.
 When the initialization is complete, you will see this message:
 
 ```text
-Thu Jan 31 13:15:26 GMT 2019 OMAG server platform ready for configuration
+timestamp OMAG server platform ready for more configuration
 ```
 
 This means your OMAG server platform is running. 
 
-If you get an error that the port is in use, check for any applications using the same port. Note that in current versions of zookeeper, an AdminServer uses port 8080 by default - see [zookeeper docs](https://zookeeper.apache.org/doc/r3.5.7/zookeeperAdmin.html)
+If you get an error that the port is in use, check for any applications using the same port. 
 
- Try the following command (replace 8080 accordingly if using a non standard port):
+Try the following command (replace 9443 accordingly if using a non standard port):
 
 ```bash
-$ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform/origin
+$ curl --insecure -X GET https://localhost:9443/open-metadata/platform-services/users/test/server-platform/origin
 ODPi Egeria OMAG Server Platform
 ```
 
 This calls the OMAG server platform using a REST API call.  The response **ODPi Egeria OMAG Server Platform**
 means the curl command communicated with a running OMAG server platform instance.
 
-The OMAG server platform has many REST APIs.  Enter **localhost:8080/swagger-ui.html** into your browser to see the list of
+The OMAG server platform has many REST APIs.  Enter **https://localhost:9443/swagger-ui.html** into your browser to see the list of
 available REST APIs.
 
 Broadly speaking, the OMAG server platform supports

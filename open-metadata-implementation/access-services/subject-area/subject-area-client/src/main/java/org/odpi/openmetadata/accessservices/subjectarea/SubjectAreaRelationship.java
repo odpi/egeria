@@ -22,7 +22,9 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -32,7 +34,9 @@ public interface SubjectAreaRelationship
                                                                                      UserNotAuthorizedException,
                                                                                      MetadataServerUncontactableException,
                                                                                      UnexpectedResponseException,
-                                                                                     UnrecognizedGUIDException
+                                                                                     UnrecognizedGUIDException,
+                                                                                     PropertyServerException,
+                                                                                     FunctionNotSupportedException
     ;
     /**
      * Get a Term HASA Relationship. A relationship between a spine object and a spine attribute.
@@ -46,6 +50,9 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException              property server exception
+     * @throws FunctionNotSupportedException       function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -55,7 +62,9 @@ public interface SubjectAreaRelationship
                                                                     MetadataServerUncontactableException,
                                                                     UserNotAuthorizedException,
                                                                     UnexpectedResponseException,
-                                                                    UnrecognizedGUIDException
+                                                                    UnrecognizedGUIDException,
+                                                                    PropertyServerException,
+                                                                    FunctionNotSupportedException
     ;
     /**
      * Update a Term HASA Relationship.
@@ -69,12 +78,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    Hasa updateTermHASARelationship(String userId, Hasa termHASARelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    Hasa updateTermHASARelationship(String userId, Hasa termHASARelationship) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     MetadataServerUncontactableException,
+                                                                                     UnexpectedResponseException,
+                                                                                     UnrecognizedGUIDException,
+                                                                                     PropertyServerException,
+                                                                                     FunctionNotSupportedException
     ;
     /**
      * Replace a Term HASA Relationship.
@@ -88,6 +105,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -97,7 +116,9 @@ public interface SubjectAreaRelationship
                                                                                       UserNotAuthorizedException,
                                                                                       MetadataServerUncontactableException,
                                                                                       UnexpectedResponseException,
-                                                                                      UnrecognizedGUIDException
+                                                                                      UnrecognizedGUIDException,
+                                                                                      PropertyServerException,
+                                                                                      FunctionNotSupportedException
     ;
     /**
      * Delete a Term HASA Relationship. A relationship between a spine object and a spine attribute.     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -115,18 +136,20 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException              property server exception
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     Hasa deleteTermHASARelationship(String userId, String guid) throws
-                                                                                                         InvalidParameterException,
-                                                                                                         MetadataServerUncontactableException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         UnrecognizedGUIDException,
-                                                                                                         FunctionNotSupportedException,
-                                                                                                         RelationshipNotDeletedException,
-                                                                                                         UnexpectedResponseException
+                                                                InvalidParameterException,
+                                                                MetadataServerUncontactableException,
+                                                                UserNotAuthorizedException,
+                                                                UnrecognizedGUIDException,
+                                                                FunctionNotSupportedException,
+                                                                RelationshipNotDeletedException,
+                                                                UnexpectedResponseException, PropertyServerException
     ;
     /**
      * Purge a Term HASA Relationship. A relationship between a spine object and a spine attribute.
@@ -140,18 +163,23 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException       a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException              property server exception
+     * @throws FunctionNotSupportedException        function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeTermHASARelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               GUIDNotPurgedException,
-                                                                                               UnrecognizedGUIDException,
-                                                                                               MetadataServerUncontactableException,
-                                                                                               UnexpectedResponseException
+                                                                      UserNotAuthorizedException,
+                                                                      UnrecognizedGUIDException,
+                                                                      MetadataServerUncontactableException,
+                                                                      UnexpectedResponseException,
+                                                                      RelationshipNotPurgedException,
+                                                                      FunctionNotSupportedException,
+                                                                      PropertyServerException
     ;
     /**
      * Restore a has a relationship
@@ -165,17 +193,22 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
+
     Hasa restoreTermHASARelationship(String userId, String guid) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         MetadataServerUncontactableException,
                                                                         UnexpectedResponseException,
-                                                                        UnrecognizedGUIDException
+                                                                        UnrecognizedGUIDException,
+                                                                        PropertyServerException,
+                                                                        FunctionNotSupportedException
     ;
     /**
      * Create a RelatedTerm. A Related Term is a link between two similar Terms.
@@ -190,17 +223,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     *
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
     RelatedTerm createRelatedTerm(String userId, RelatedTerm relatedTermRelationship) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+                                                                                             UserNotAuthorizedException,
+                                                                                             MetadataServerUncontactableException,
+                                                                                             UnexpectedResponseException,
+                                                                                             UnrecognizedGUIDException,
+                                                                                             PropertyServerException,
+                                                                                             FunctionNotSupportedException
     ;
     /**
      * Get a RelatedTerm. A Related Term is a link between two similar Terms.
@@ -214,16 +250,20 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * Client library Exceptions
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *  Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
     RelatedTerm getRelatedTerm(String userId, String guid) throws InvalidParameterException,
-                                                                                            MetadataServerUncontactableException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            UnexpectedResponseException,
-                                                                                            UnrecognizedGUIDException
+                                                                  MetadataServerUncontactableException,
+                                                                  UserNotAuthorizedException,
+                                                                  UnexpectedResponseException,
+                                                                  UnrecognizedGUIDException,
+                                                                  PropertyServerException,
+                                                                  FunctionNotSupportedException
     ;
     /**
      * Update a RelatedTerm Relationship.
@@ -236,13 +276,15 @@ public interface SubjectAreaRelationship
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    RelatedTerm updateRelatedTerm(String userId, RelatedTerm termRelatedTerm) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    RelatedTerm updateRelatedTerm(String userId, RelatedTerm termRelatedTerm) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, PropertyServerException, FunctionNotSupportedException
     ;
     /**
      * Replace an ReplacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
@@ -256,21 +298,24 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     *
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     RelatedTerm replaceRelatedTerm(String userId, RelatedTerm termRelatedTerm) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException;
+                                                                                      UserNotAuthorizedException,
+                                                                                      MetadataServerUncontactableException,
+                                                                                      UnexpectedResponseException,
+                                                                                      UnrecognizedGUIDException,
+                                                                                      PropertyServerException,
+                                                                                      FunctionNotSupportedException;
 
     /**
      * Restore a Related Term relationship
      *
-     * Restore allows the deleted Synonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * Restore allows the deleted Related Term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the related term relationship to restore
      * @return response which when successful contains the restored related term relationship
@@ -279,18 +324,21 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     *
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
     RelatedTerm restoreRelatedTerm(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
-        ;
+                                                                      UserNotAuthorizedException,
+                                                                      MetadataServerUncontactableException,
+                                                                      UnexpectedResponseException,
+                                                                      UnrecognizedGUIDException,
+                                                                      PropertyServerException,
+                                                                      FunctionNotSupportedException
+    ;
     /**
      * Delete a RelatedTerm. A Related Term is a link between two similar Terms.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -308,18 +356,20 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     RelatedTerm deleteRelatedTerm(String userId, String guid) throws
-                                                                                        InvalidParameterException,
-                                                                                        MetadataServerUncontactableException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        UnrecognizedGUIDException,
-                                                                                        FunctionNotSupportedException,
-                                                                                        RelationshipNotDeletedException,
-                                                                                        UnexpectedResponseException
+                                                              InvalidParameterException,
+                                                              MetadataServerUncontactableException,
+                                                              UserNotAuthorizedException,
+                                                              UnrecognizedGUIDException,
+                                                              FunctionNotSupportedException,
+                                                              RelationshipNotDeletedException,
+                                                              UnexpectedResponseException, PropertyServerException
     ;
     /**
      * Purge a RelatedTerm. A Related Term is a link between two similar Terms.
@@ -333,45 +383,23 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException              property server exception
+     * @throws FunctionNotSupportedException        function not supported
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeRelatedTerm(String userId, String guid) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      GUIDNotPurgedException,
-                                                                                      UnrecognizedGUIDException,
-                                                                                      MetadataServerUncontactableException,
-                                                                                      UnexpectedResponseException
+                                                             UserNotAuthorizedException,
+                                                             UnrecognizedGUIDException,
+                                                             MetadataServerUncontactableException,
+                                                             UnexpectedResponseException,
+                                                             RelationshipNotPurgedException,
+                                                             PropertyServerException,
+                                                             FunctionNotSupportedException
     ;
-    /**
-     * Restore a related term relationship
-     *
-     * Restore allows the deleted related term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     *
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the related term relationship to delete
-     * @return response which when successful contains the restored related term relationship
-     * when not successful the following Exception responses can occur
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
-     */
-
-    RelatedTerm restoreRelatedTermRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
-    ;
-
 
     /**
      *  Create a synonym relationship. A link between glossary terms that have the same meaning.
@@ -385,12 +413,19 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     *
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    Synonym createSynonymRelationship(String userId, Synonym synonym) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    Synonym createSynonymRelationship(String userId, Synonym synonym) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             MetadataServerUncontactableException,
+                                                                             UnexpectedResponseException,
+                                                                             UnrecognizedGUIDException,
+                                                                             PropertyServerException,
+                                                                             FunctionNotSupportedException
     ;
     /**
      *  Get a synonym relationship. A link between glossary terms that have the same meaning.
@@ -404,16 +439,20 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * Client library Exceptions
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *  Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
     Synonym getSynonymRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                               MetadataServerUncontactableException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               UnexpectedResponseException,
-                                                                                               UnrecognizedGUIDException
+                                                                      MetadataServerUncontactableException,
+                                                                      UserNotAuthorizedException,
+                                                                      UnexpectedResponseException,
+                                                                      UnrecognizedGUIDException,
+                                                                      PropertyServerException,
+                                                                      FunctionNotSupportedException
     ;
     /**
      * Update a Synonym relationship which is a link between glossary terms that have the same meaning
@@ -427,16 +466,19 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     *
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    Synonym updateSynonymRelationship(String userId, Synonym synonymRelationship)  throws InvalidParameterException,
-                                                                                                                    MetadataServerUncontactableException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    UnexpectedResponseException,
-                                                                                                                    UnrecognizedGUIDException ;
+    Synonym updateSynonymRelationship(String userId, Synonym synonymRelationship) throws InvalidParameterException,
+                                                                                         MetadataServerUncontactableException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         UnexpectedResponseException,
+                                                                                         UnrecognizedGUIDException,
+                                                                                         PropertyServerException,
+                                                                                         FunctionNotSupportedException;
     /**
      * Replace a Synonym relationship which is a link between glossary terms that have the same meaning
      * <p>
@@ -449,16 +491,19 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     *
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    Synonym replaceSynonymRelationship(String userId, Synonym synonymRelationship)  throws InvalidParameterException,
-                                                                                                                     MetadataServerUncontactableException,
-                                                                                                                     UserNotAuthorizedException,
-                                                                                                                     UnexpectedResponseException,
-                                                                                                                     UnrecognizedGUIDException ;
+    Synonym replaceSynonymRelationship(String userId, Synonym synonymRelationship) throws InvalidParameterException,
+                                                                                          MetadataServerUncontactableException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          UnexpectedResponseException,
+                                                                                          UnrecognizedGUIDException,
+                                                                                          PropertyServerException,
+                                                                                          FunctionNotSupportedException;
     /**
      *  Delete a synonym relationship. A link between glossary terms that have the same meaning.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -476,18 +521,19 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException              property server exception
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     Synonym deleteSynonymRelationship(String userId, String guid) throws
-                                                                                           InvalidParameterException,
-                                                                                           MetadataServerUncontactableException,
-                                                                                           UnrecognizedGUIDException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           FunctionNotSupportedException,
-                                                                                           RelationshipNotDeletedException,
-                                                                                           UnexpectedResponseException
+                                                                  InvalidParameterException,
+                                                                  MetadataServerUncontactableException,
+                                                                  UnrecognizedGUIDException,
+                                                                  UserNotAuthorizedException,
+                                                                  FunctionNotSupportedException,
+                                                                  RelationshipNotDeletedException,
+                                                                  UnexpectedResponseException, PropertyServerException
     ;
     /**
      *  Purge a synonym relationship. A link between glossary terms that have the same meaning.
@@ -501,18 +547,22 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * Client library Exceptions
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *  Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeSynonymRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              GUIDNotPurgedException,
-                                                                                              UnrecognizedGUIDException,
-                                                                                              MetadataServerUncontactableException,
-                                                                                              UnexpectedResponseException
+                                                                     UserNotAuthorizedException,
+                                                                     UnrecognizedGUIDException,
+                                                                     MetadataServerUncontactableException,
+                                                                     UnexpectedResponseException,
+                                                                     RelationshipNotPurgedException,
+                                                                     PropertyServerException,
+                                                                     FunctionNotSupportedException
     ;
     /**
      * Restore a Synonym relationship
@@ -527,6 +577,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -534,11 +586,14 @@ public interface SubjectAreaRelationship
      */
 
     Synonym restoreSynonymRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+                                                                          UserNotAuthorizedException,
+                                                                          MetadataServerUncontactableException,
+                                                                          UnexpectedResponseException,
+                                                                          UnrecognizedGUIDException,
+                                                                          PropertyServerException,
+                                                                          FunctionNotSupportedException
     ;
+
     /**
      *  Create a antonym relationship. A link between glossary terms that have the opposite meaning.
      *
@@ -552,12 +607,19 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     *
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    Antonym createAntonymRelationship(String userId, Antonym antonym) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    Antonym createAntonymRelationship(String userId, Antonym antonym) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             MetadataServerUncontactableException,
+                                                                             UnexpectedResponseException,
+                                                                             UnrecognizedGUIDException,
+                                                                             PropertyServerException,
+                                                                             FunctionNotSupportedException
     ;
     /**
      *  Get a antonym relationship. A link between glossary terms that have the opposite meaning.
@@ -571,15 +633,20 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
     Antonym getAntonymRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                               MetadataServerUncontactableException, UserNotAuthorizedException,
-                                                                                               UnexpectedResponseException,
-                                                                                               UnrecognizedGUIDException
+                                                                      MetadataServerUncontactableException, UserNotAuthorizedException,
+                                                                      UnexpectedResponseException,
+                                                                      UnrecognizedGUIDException,
+                                                                      PropertyServerException,
+                                                                      FunctionNotSupportedException
     ;
     /**
      * Update a Antonym relationship which is a link between glossary terms that have the opposite meaning
@@ -593,17 +660,19 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    Antonym updateAntonymRelationship(String userId, Antonym antonymRelationship)  throws InvalidParameterException,
-                                                                                                                    MetadataServerUncontactableException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    UnexpectedResponseException,
-                                                                                                                    UnrecognizedGUIDException ;
+    Antonym updateAntonymRelationship(String userId, Antonym antonymRelationship) throws InvalidParameterException,
+                                                                                         MetadataServerUncontactableException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         UnexpectedResponseException,
+                                                                                         UnrecognizedGUIDException, PropertyServerException, FunctionNotSupportedException;
     /**
      * Replace an Antonym relationship which is a link between glossary terms that have the opposite meaning
      * <p>
@@ -616,18 +685,22 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    Antonym replaceAntonymRelationship(String userId, Antonym antonymRelationship)  throws InvalidParameterException,
-                                                                                                                     MetadataServerUncontactableException,
-                                                                                                                     UserNotAuthorizedException,
-                                                                                                                     UnexpectedResponseException,
-                                                                                                                     UnrecognizedGUIDException;
+    Antonym replaceAntonymRelationship(String userId, Antonym antonymRelationship) throws InvalidParameterException,
+                                                                                          MetadataServerUncontactableException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          UnexpectedResponseException,
+                                                                                          UnrecognizedGUIDException,
+                                                                                          PropertyServerException,
+                                                                                          FunctionNotSupportedException;
     /**
-     *  Delete a antonym relationship. A link between glossary terms that have the opposite meaning.
+     * Delete a antonym relationship. A link between glossary terms that have the opposite meaning.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
@@ -643,18 +716,20 @@ public interface SubjectAreaRelationship
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
+     * @throws PropertyServerException property server exception
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     Antonym deleteAntonymRelationship(String userId, String guid) throws
-                                                                                           InvalidParameterException,
-                                                                                           MetadataServerUncontactableException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           UnrecognizedGUIDException,
-                                                                                           FunctionNotSupportedException,
-                                                                                           RelationshipNotDeletedException,
-                                                                                           UnexpectedResponseException
+                                                                  InvalidParameterException,
+                                                                  MetadataServerUncontactableException,
+                                                                  UserNotAuthorizedException,
+                                                                  UnrecognizedGUIDException,
+                                                                  FunctionNotSupportedException,
+                                                                  RelationshipNotDeletedException,
+                                                                  UnexpectedResponseException, PropertyServerException
     ;
     /**
      *  Purge a antonym relationship. A link between glossary terms that have the opposite meaning.
@@ -668,18 +743,23 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * Client library Exceptions
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
+     *  Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeAntonymRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              GUIDNotPurgedException,
-                                                                                              UnrecognizedGUIDException,
-                                                                                              MetadataServerUncontactableException,
-                                                                                              UnexpectedResponseException
+                                                                     UserNotAuthorizedException,
+                                                                     UnrecognizedGUIDException,
+                                                                     MetadataServerUncontactableException,
+                                                                     UnexpectedResponseException,
+                                                                     RelationshipNotPurgedException,
+                                                                     PropertyServerException,
+                                                                     FunctionNotSupportedException
     ;
     /**
      * Restore a Antonym relationship
@@ -694,6 +774,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -701,10 +783,12 @@ public interface SubjectAreaRelationship
      */
 
     Antonym restoreAntonymRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+                                                                          UserNotAuthorizedException,
+                                                                          MetadataServerUncontactableException,
+                                                                          UnexpectedResponseException,
+                                                                          UnrecognizedGUIDException,
+                                                                          PropertyServerException,
+                                                                          FunctionNotSupportedException
     ;
     /**
      *  Create a Translation relationship, which is link between glossary terms that provide different natural language translation of the same concept.
@@ -719,16 +803,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     Translation createTranslationRelationship(String userId, Translation translation) throws InvalidParameterException,
-                                                                                                                       UserNotAuthorizedException,
-                                                                                                                       MetadataServerUncontactableException,
-                                                                                                                       UnexpectedResponseException,
-                                                                                                                       UnrecognizedGUIDException
+                                                                                             UserNotAuthorizedException,
+                                                                                             MetadataServerUncontactableException,
+                                                                                             UnexpectedResponseException,
+                                                                                             UnrecognizedGUIDException,
+                                                                                             PropertyServerException,
+                                                                                             FunctionNotSupportedException
     ;
     /**
      *  Get a translation relationship, which is link between glossary terms that provide different natural language translation of the same concept.
@@ -742,16 +830,21 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * Client library Exceptions
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
+     *  Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
     Translation getTranslationRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                       MetadataServerUncontactableException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       UnexpectedResponseException,
-                                                                                                       UnrecognizedGUIDException
+                                                                              MetadataServerUncontactableException,
+                                                                              UserNotAuthorizedException,
+                                                                              UnexpectedResponseException,
+                                                                              UnrecognizedGUIDException,
+                                                                              PropertyServerException,
+                                                                              FunctionNotSupportedException
     ;
     /**
      * Update a Translation relationship, which is link between glossary terms that provide different natural language translation of the same concept.
@@ -764,18 +857,20 @@ public interface SubjectAreaRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws FunctionNotSupportedException function not supported
+     * @throws PropertyServerException property server exception
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    Translation updateTranslationRelationship(String userId, Translation translationRelationship)  throws InvalidParameterException,
-                                                                                                                                    MetadataServerUncontactableException,
-                                                                                                                                    UserNotAuthorizedException,
-                                                                                                                                    UnexpectedResponseException,
-                                                                                                                                    UnrecognizedGUIDException ;
+    Translation updateTranslationRelationship(String userId, Translation translationRelationship) throws InvalidParameterException,
+                                                                                                         MetadataServerUncontactableException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         UnexpectedResponseException,
+                                                                                                         UnrecognizedGUIDException, PropertyServerException, FunctionNotSupportedException;
     /**
      * Replace an Translation relationship, which is link between glossary terms that provide different natural language translation of the same concept.
      * <p>
@@ -788,16 +883,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    Translation replaceTranslationRelationship(String userId, Translation translationRelationship)  throws InvalidParameterException,
-                                                                                                                                     MetadataServerUncontactableException,
-                                                                                                                                     UserNotAuthorizedException,
-                                                                                                                                     UnexpectedResponseException,
-                                                                                                                                     UnrecognizedGUIDException;
+    Translation replaceTranslationRelationship(String userId, Translation translationRelationship) throws InvalidParameterException,
+                                                                                                          MetadataServerUncontactableException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          UnexpectedResponseException,
+                                                                                                          UnrecognizedGUIDException,
+                                                                                                          PropertyServerException,
+                                                                                                          FunctionNotSupportedException;
     /**
      *  Delete a translation relationship, which is link between glossary terms that provide different natural language translation of the same concept.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -815,18 +914,22 @@ public interface SubjectAreaRelationship
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * Client library Exceptions
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
+     *  Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     Translation deleteTranslationRelationship(String userId, String guid) throws
-                                                                                                   InvalidParameterException,
-                                                                                                   MetadataServerUncontactableException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   UnrecognizedGUIDException,
-                                                                                                   FunctionNotSupportedException,
-                                                                                                   RelationshipNotDeletedException,
-                                                                                                   UnexpectedResponseException
+                                                                          InvalidParameterException,
+                                                                          MetadataServerUncontactableException,
+                                                                          UserNotAuthorizedException,
+                                                                          UnrecognizedGUIDException,
+                                                                          FunctionNotSupportedException,
+                                                                          RelationshipNotDeletedException,
+                                                                          UnexpectedResponseException,
+                                                                          PropertyServerException
     ;
     /**
      *  Purge a translation relationship, which is link between glossary terms that provide different natural language translation of the same concept.
@@ -840,18 +943,23 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * Client library Exceptions
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
+     *  Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeTranslationRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  GUIDNotPurgedException,
-                                                                                                  UnrecognizedGUIDException,
-                                                                                                  MetadataServerUncontactableException,
-                                                                                                  UnexpectedResponseException
+                                                                         UserNotAuthorizedException,
+                                                                         UnrecognizedGUIDException,
+                                                                         MetadataServerUncontactableException,
+                                                                         UnexpectedResponseException,
+                                                                         RelationshipNotPurgedException,
+                                                                         PropertyServerException,
+                                                                         FunctionNotSupportedException
     ;
     /**
      * Restore a Translation relationship
@@ -866,6 +974,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -873,10 +983,12 @@ public interface SubjectAreaRelationship
      */
 
     Translation restoreTranslationRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+                                                                                  UserNotAuthorizedException,
+                                                                                  MetadataServerUncontactableException,
+                                                                                  UnexpectedResponseException,
+                                                                                  UnrecognizedGUIDException,
+                                                                                  PropertyServerException,
+                                                                                  FunctionNotSupportedException
     ;
     /**
      *  Create a UsedInContext relationship, which is link between glossary terms where on describes the context where the other one is valid to use.
@@ -891,16 +1003,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     UsedInContext createUsedInContextRelationship(String userId, UsedInContext usedInContext) throws InvalidParameterException,
-                                                                                                                               UserNotAuthorizedException,
-                                                                                                                               MetadataServerUncontactableException,
-                                                                                                                               UnexpectedResponseException,
-                                                                                                                               UnrecognizedGUIDException
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     MetadataServerUncontactableException,
+                                                                                                     UnexpectedResponseException,
+                                                                                                     UnrecognizedGUIDException,
+                                                                                                     PropertyServerException,
+                                                                                                     FunctionNotSupportedException
     ;
     /**
      *  Get a usedInContext relationship, which is link between glossary terms where on describes the context where the other one is valid to use.
@@ -914,16 +1030,21 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
     UsedInContext getUsedInContextRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                           MetadataServerUncontactableException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           UnexpectedResponseException,
-                                                                                                           UnrecognizedGUIDException
+                                                                                  MetadataServerUncontactableException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  UnexpectedResponseException,
+                                                                                  UnrecognizedGUIDException,
+                                                                                  PropertyServerException,
+                                                                                  FunctionNotSupportedException
     ;
     /**
      * Update a UsedInContext relationship, which is link between glossary terms where on describes the context where the other one is valid to use.
@@ -937,17 +1058,21 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    UsedInContext updateUsedInContextRelationship(String userId, UsedInContext usedInContextRelationship)  throws InvalidParameterException,
-                                                                                                                                            MetadataServerUncontactableException,
-                                                                                                                                            UserNotAuthorizedException,
-                                                                                                                                            UnexpectedResponseException,
-                                                                                                                                            UnrecognizedGUIDException ;
+    UsedInContext updateUsedInContextRelationship(String userId, UsedInContext usedInContextRelationship) throws InvalidParameterException,
+                                                                                                                 MetadataServerUncontactableException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 UnexpectedResponseException,
+                                                                                                                 UnrecognizedGUIDException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 FunctionNotSupportedException;
     /**
      * Replace an UsedInContext relationship, which is link between glossary terms where on describes the context where the other one is valid to use.
      * <p>
@@ -960,16 +1085,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    UsedInContext replaceUsedInContextRelationship(String userId, UsedInContext usedInContextRelationship)  throws InvalidParameterException,
-                                                                                                                                             MetadataServerUncontactableException,
-                                                                                                                                             UserNotAuthorizedException,
-                                                                                                                                             UnexpectedResponseException,
-                                                                                                                                             UnrecognizedGUIDException;
+    UsedInContext replaceUsedInContextRelationship(String userId, UsedInContext usedInContextRelationship) throws InvalidParameterException,
+                                                                                                                  MetadataServerUncontactableException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  UnexpectedResponseException,
+                                                                                                                  UnrecognizedGUIDException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  FunctionNotSupportedException;
     /**
      *  Delete a usedInContext relationship, which is link between glossary terms where on describes the context where the other one is valid to use.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -987,18 +1116,20 @@ public interface SubjectAreaRelationship
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
+     * @throws PropertyServerException              property server exception
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     UsedInContext deleteUsedInContextRelationship(String userId, String guid) throws
-                                                                                                       InvalidParameterException,
-                                                                                                       MetadataServerUncontactableException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       UnrecognizedGUIDException,
-                                                                                                       FunctionNotSupportedException,
-                                                                                                       RelationshipNotDeletedException,
-                                                                                                       UnexpectedResponseException
+                                                                              InvalidParameterException,
+                                                                              MetadataServerUncontactableException,
+                                                                              UserNotAuthorizedException,
+                                                                              UnrecognizedGUIDException,
+                                                                              FunctionNotSupportedException,
+                                                                              RelationshipNotDeletedException,
+                                                                              UnexpectedResponseException, PropertyServerException
     ;
     /**
      *  Purge a usedInContext relationship, which is link between glossary terms where on describes the context where the other one is valid to use.
@@ -1012,23 +1143,28 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * Client library Exceptions
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
+     *  Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeUsedInContextRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    GUIDNotPurgedException,
-                                                                                                    UnrecognizedGUIDException,
-                                                                                                    MetadataServerUncontactableException,
-                                                                                                    UnexpectedResponseException
+                                                                           UserNotAuthorizedException,
+                                                                           RelationshipNotPurgedException,
+                                                                           UnrecognizedGUIDException,
+                                                                           MetadataServerUncontactableException,
+                                                                           UnexpectedResponseException,
+                                                                           PropertyServerException,
+                                                                           FunctionNotSupportedException
     ;
     /**
      * Restore a Used in context relationship
      *
-     * Restore allows the deletedUsed in context relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * Restore allows the deleted Used in context relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Used in context relationship to delete
@@ -1038,6 +1174,10 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1045,10 +1185,12 @@ public interface SubjectAreaRelationship
      */
 
     UsedInContext restoreUsedInContextRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+                                                                                      UserNotAuthorizedException,
+                                                                                      MetadataServerUncontactableException,
+                                                                                      UnexpectedResponseException,
+                                                                                      UnrecognizedGUIDException,
+                                                                                      PropertyServerException,
+                                                                                      FunctionNotSupportedException
     ;
     /**
      *  Create a PreferredTerm relationship, which is link to an alternative term that the organization prefer is used.
@@ -1063,12 +1205,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    PreferredTerm createPreferredTermRelationship(String userId, PreferredTerm preferredTerm) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    PreferredTerm createPreferredTermRelationship(String userId, PreferredTerm preferredTerm) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     MetadataServerUncontactableException,
+                                                                                                     UnexpectedResponseException,
+                                                                                                     UnrecognizedGUIDException,
+                                                                                                     PropertyServerException,
+                                                                                                     FunctionNotSupportedException
     ;
     /**
      *  Get a preferredTerm relationship, which is link to an alternative term that the organization prefer is used.
@@ -1082,12 +1232,21 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    PreferredTerm getPreferredTermRelationship(String userId, String guid) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, UnexpectedResponseException, UnrecognizedGUIDException
+    PreferredTerm getPreferredTermRelationship(String userId, String guid) throws InvalidParameterException,
+                                                                                  MetadataServerUncontactableException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  UnexpectedResponseException,
+                                                                                  UnrecognizedGUIDException,
+                                                                                  PropertyServerException,
+                                                                                  FunctionNotSupportedException
     ;
     /**
      * Update a PreferredTerm relationship, which is link to an alternative term that the organization prefer is used.
@@ -1101,17 +1260,21 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    PreferredTerm updatePreferredTermRelationship(String userId, PreferredTerm preferredTermRelationship)  throws InvalidParameterException,
-                                                                                                                                            MetadataServerUncontactableException,
-                                                                                                                                            UserNotAuthorizedException,
-                                                                                                                                            UnexpectedResponseException,
-                                                                                                                                            UnrecognizedGUIDException ;
+    PreferredTerm updatePreferredTermRelationship(String userId, PreferredTerm preferredTermRelationship) throws InvalidParameterException,
+                                                                                                                 MetadataServerUncontactableException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 UnexpectedResponseException,
+                                                                                                                 UnrecognizedGUIDException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 FunctionNotSupportedException;
     /**
      * Replace an PreferredTerm relationship, which is link to an alternative term that the organization prefer is used.
      * <p>
@@ -1124,16 +1287,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    PreferredTerm replacePreferredTermRelationship(String userId, PreferredTerm preferredTermRelationship)  throws InvalidParameterException,
-                                                                                                                                             MetadataServerUncontactableException,
-                                                                                                                                             UserNotAuthorizedException,
-                                                                                                                                             UnexpectedResponseException,
-                                                                                                                                             UnrecognizedGUIDException;
+    PreferredTerm replacePreferredTermRelationship(String userId, PreferredTerm preferredTermRelationship) throws InvalidParameterException,
+                                                                                                                  MetadataServerUncontactableException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  UnexpectedResponseException,
+                                                                                                                  UnrecognizedGUIDException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  FunctionNotSupportedException;
     /**
      *  Delete a preferredTerm relationship, which is link to an alternative term that the organization prefer is used.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -1151,18 +1318,22 @@ public interface SubjectAreaRelationship
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * Client library Exceptions
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
+     *  Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     PreferredTerm deletePreferredTermRelationship(String userId, String guid) throws
-                                                                                                       InvalidParameterException,
-                                                                                                       MetadataServerUncontactableException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       UnrecognizedGUIDException,
-                                                                                                       FunctionNotSupportedException,
-                                                                                                       RelationshipNotDeletedException,
-                                                                                                       UnexpectedResponseException
+                                                                              InvalidParameterException,
+                                                                              MetadataServerUncontactableException,
+                                                                              UserNotAuthorizedException,
+                                                                              UnrecognizedGUIDException,
+                                                                              FunctionNotSupportedException,
+                                                                              RelationshipNotDeletedException,
+                                                                              UnexpectedResponseException,
+                                                                              PropertyServerException
     ;
     /**
      *  Purge a preferredTerm relationship, which is link to an alternative term that the organization prefer is used.
@@ -1176,23 +1347,28 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * Client library Exceptions
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
+     *  Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgePreferredTermRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    GUIDNotPurgedException,
-                                                                                                    UnrecognizedGUIDException,
-                                                                                                    MetadataServerUncontactableException,
-                                                                                                    UnexpectedResponseException
+                                                                           UserNotAuthorizedException,
+                                                                           RelationshipNotPurgedException,
+                                                                           UnrecognizedGUIDException,
+                                                                           MetadataServerUncontactableException,
+                                                                           UnexpectedResponseException,
+                                                                           PropertyServerException,
+                                                                           FunctionNotSupportedException
     ;
     /**
      * Restore a preferred term relationship
      *
-     * Restore allows the deletedpreferred term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * Restore allows the deleted preferred term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the preferred term relationship to delete
@@ -1202,6 +1378,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1209,10 +1387,12 @@ public interface SubjectAreaRelationship
      */
 
     PreferredTerm restorePreferredTermRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+                                                                                      UserNotAuthorizedException,
+                                                                                      MetadataServerUncontactableException,
+                                                                                      UnexpectedResponseException,
+                                                                                      UnrecognizedGUIDException,
+                                                                                      PropertyServerException,
+                                                                                      FunctionNotSupportedException
     ;
     /**
      *  Create a ValidValue relationship, which is link between glossary terms where one defines one of the data values for the another.
@@ -1227,16 +1407,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     ValidValue createValidValueRelationship(String userId, ValidValue validValue) throws InvalidParameterException,
-                                                                                                                   UserNotAuthorizedException,
-                                                                                                                   MetadataServerUncontactableException,
-                                                                                                                   UnexpectedResponseException,
-                                                                                                                   UnrecognizedGUIDException
+                                                                                         UserNotAuthorizedException,
+                                                                                         MetadataServerUncontactableException,
+                                                                                         UnexpectedResponseException,
+                                                                                         UnrecognizedGUIDException,
+                                                                                         PropertyServerException,
+                                                                                         FunctionNotSupportedException
     ;
     /**
      *  Get a validValue relationship, which is link between glossary terms where one defines one of the data values for the another.
@@ -1250,16 +1434,21 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
     ValidValue getValidValueRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                     MetadataServerUncontactableException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     UnexpectedResponseException,
-                                                                                                     UnrecognizedGUIDException
+                                                                            MetadataServerUncontactableException,
+                                                                            UserNotAuthorizedException,
+                                                                            UnexpectedResponseException,
+                                                                            UnrecognizedGUIDException,
+                                                                            PropertyServerException,
+                                                                            FunctionNotSupportedException
     ;
     /**
      * Update a ValidValue relationship, which is link between glossary terms where one defines one of the data values for the another.
@@ -1273,17 +1462,21 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    ValidValue updateValidValueRelationship(String userId, ValidValue validValueRelationship)  throws InvalidParameterException,
-                                                                                                                                MetadataServerUncontactableException,
-                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                UnexpectedResponseException,
-                                                                                                                                UnrecognizedGUIDException ;
+    ValidValue updateValidValueRelationship(String userId, ValidValue validValueRelationship) throws InvalidParameterException,
+                                                                                                     MetadataServerUncontactableException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     UnexpectedResponseException,
+                                                                                                     UnrecognizedGUIDException,
+                                                                                                     PropertyServerException,
+                                                                                                     FunctionNotSupportedException;
     /**
      * Replace an ValidValue relationship, which is link between glossary terms where one defines one of the data values for the another.
      * <p>
@@ -1296,16 +1489,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    ValidValue replaceValidValueRelationship(String userId, ValidValue validValueRelationship)  throws InvalidParameterException,
-                                                                                                                                 MetadataServerUncontactableException,
-                                                                                                                                 UserNotAuthorizedException,
-                                                                                                                                 UnexpectedResponseException,
-                                                                                                                                 UnrecognizedGUIDException;
+    ValidValue replaceValidValueRelationship(String userId, ValidValue validValueRelationship) throws InvalidParameterException,
+                                                                                                      MetadataServerUncontactableException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      UnexpectedResponseException,
+                                                                                                      UnrecognizedGUIDException,
+                                                                                                      PropertyServerException,
+                                                                                                      FunctionNotSupportedException;
     /**
      *  Delete a validValue relationship, which is link between glossary terms where one defines one of the data values for the another.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -1323,18 +1520,19 @@ public interface SubjectAreaRelationship
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
+     * @throws PropertyServerException              property server exception
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     ValidValue deleteValidValueRelationship(String userId, String guid) throws
-                                                                                                 InvalidParameterException,
-                                                                                                 MetadataServerUncontactableException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 UnrecognizedGUIDException,
-                                                                                                 FunctionNotSupportedException,
-                                                                                                 RelationshipNotDeletedException,
-                                                                                                 UnexpectedResponseException
+                                                                        InvalidParameterException,
+                                                                        MetadataServerUncontactableException,
+                                                                        UserNotAuthorizedException,
+                                                                        UnrecognizedGUIDException,
+                                                                        FunctionNotSupportedException,
+                                                                        RelationshipNotDeletedException,
+                                                                        UnexpectedResponseException, PropertyServerException
     ;
     /**
      *  Purge a validValue relationship, which is link between glossary terms where one defines one of the data values for the another.
@@ -1348,23 +1546,28 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeValidValueRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 GUIDNotPurgedException,
-                                                                                                 UnrecognizedGUIDException,
-                                                                                                 MetadataServerUncontactableException,
-                                                                                                 UnexpectedResponseException
+                                                                        UserNotAuthorizedException,
+                                                                        RelationshipNotPurgedException,
+                                                                        UnrecognizedGUIDException,
+                                                                        MetadataServerUncontactableException,
+                                                                        UnexpectedResponseException,
+                                                                        PropertyServerException,
+                                                                        FunctionNotSupportedException
     ;
     /**
      * Restore a valid value relationship
      *
-     * Restore allows the deletedvalid value relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * Restore allows the deleted valid value relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the valid value relationship to delete
@@ -1374,6 +1577,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1381,10 +1586,12 @@ public interface SubjectAreaRelationship
      */
 
     ValidValue restoreValidValueRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+                                                                                UserNotAuthorizedException,
+                                                                                MetadataServerUncontactableException,
+                                                                                UnexpectedResponseException,
+                                                                                UnrecognizedGUIDException,
+                                                                                PropertyServerException,
+                                                                                FunctionNotSupportedException
     ;
     /**
      *  Create a ReplacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
@@ -1399,12 +1606,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    ReplacementTerm createReplacementTermRelationship(String userId, ReplacementTerm replacementTerm) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    ReplacementTerm createReplacementTermRelationship(String userId, ReplacementTerm replacementTerm) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             MetadataServerUncontactableException,
+                                                                                                             UnexpectedResponseException,
+                                                                                                             UnrecognizedGUIDException,
+                                                                                                             PropertyServerException,
+                                                                                                             FunctionNotSupportedException
     ;
     /**
      *  Get a replacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
@@ -1418,16 +1633,21 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
     ReplacementTerm getReplacementTermRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                               MetadataServerUncontactableException,
-                                                                                                               UserNotAuthorizedException,
-                                                                                                               UnexpectedResponseException,
-                                                                                                               UnrecognizedGUIDException
+                                                                                      MetadataServerUncontactableException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      UnexpectedResponseException,
+                                                                                      UnrecognizedGUIDException,
+                                                                                      PropertyServerException,
+                                                                                      FunctionNotSupportedException
     ;
     /**
      * Update a ReplacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
@@ -1441,17 +1661,21 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    ReplacementTerm updateReplacementTermRelationship(String userId, ReplacementTerm replacementTermRelationship)  throws InvalidParameterException,
-                                                                                                                                                    MetadataServerUncontactableException,
-                                                                                                                                                    UserNotAuthorizedException,
-                                                                                                                                                    UnexpectedResponseException,
-                                                                                                                                                    UnrecognizedGUIDException ;
+    ReplacementTerm updateReplacementTermRelationship(String userId, ReplacementTerm replacementTermRelationship) throws InvalidParameterException,
+                                                                                                                         MetadataServerUncontactableException,
+                                                                                                                         UserNotAuthorizedException,
+                                                                                                                         UnexpectedResponseException,
+                                                                                                                         UnrecognizedGUIDException,
+                                                                                                                         PropertyServerException,
+                                                                                                                         FunctionNotSupportedException;
     /**
      * Replace an ReplacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
      * <p>
@@ -1464,16 +1688,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    ReplacementTerm replaceReplacementTermRelationship(String userId, ReplacementTerm replacementTermRelationship)  throws InvalidParameterException,
-                                                                                                                                                     MetadataServerUncontactableException,
-                                                                                                                                                     UserNotAuthorizedException,
-                                                                                                                                                     UnexpectedResponseException,
-                                                                                                                                                     UnrecognizedGUIDException;
+    ReplacementTerm replaceReplacementTermRelationship(String userId, ReplacementTerm replacementTermRelationship) throws InvalidParameterException,
+                                                                                                                          MetadataServerUncontactableException,
+                                                                                                                          UserNotAuthorizedException,
+                                                                                                                          UnexpectedResponseException,
+                                                                                                                          UnrecognizedGUIDException,
+                                                                                                                          PropertyServerException,
+                                                                                                                          FunctionNotSupportedException;
     /**
      *  Delete a replacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -1491,18 +1719,20 @@ public interface SubjectAreaRelationship
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
+     * @throws PropertyServerException              property server exception
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     ReplacementTerm deleteReplacementTermRelationship(String userId, String guid) throws
-                                                                                                           InvalidParameterException,
-                                                                                                           MetadataServerUncontactableException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           UnrecognizedGUIDException,
-                                                                                                           FunctionNotSupportedException,
-                                                                                                           RelationshipNotDeletedException,
-                                                                                                           UnexpectedResponseException
+                                                                                  InvalidParameterException,
+                                                                                  MetadataServerUncontactableException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  UnrecognizedGUIDException,
+                                                                                  FunctionNotSupportedException,
+                                                                                  RelationshipNotDeletedException,
+                                                                                  UnexpectedResponseException, PropertyServerException
     ;
     /**
      *  Purge a replacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
@@ -1516,18 +1746,23 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException              property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeReplacementTermRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      GUIDNotPurgedException,
-                                                                                                      UnrecognizedGUIDException,
-                                                                                                      MetadataServerUncontactableException,
-                                                                                                      UnexpectedResponseException
+                                                                             UserNotAuthorizedException,
+                                                                             RelationshipNotPurgedException,
+                                                                             UnrecognizedGUIDException,
+                                                                             MetadataServerUncontactableException,
+                                                                             UnexpectedResponseException,
+                                                                             PropertyServerException,
+                                                                             FunctionNotSupportedException
     ;
     /**
      * Restore a replacement term relationship
@@ -1542,6 +1777,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1549,10 +1786,12 @@ public interface SubjectAreaRelationship
      */
 
     ReplacementTerm restoreReplacementTermRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+                                                                                          UserNotAuthorizedException,
+                                                                                          MetadataServerUncontactableException,
+                                                                                          UnexpectedResponseException,
+                                                                                          UnrecognizedGUIDException,
+                                                                                          PropertyServerException,
+                                                                                          FunctionNotSupportedException
     ;
     /**
      *  Create a TypedBy relationship, which is defines the relationship between a spine attribute and its type.
@@ -1567,12 +1806,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    TypedBy createTermTYPEDBYRelationship(String userId, TypedBy termTYPEDBYRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    TypedBy createTermTYPEDBYRelationship(String userId, TypedBy termTYPEDBYRelationship) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 MetadataServerUncontactableException,
+                                                                                                 UnexpectedResponseException,
+                                                                                                 UnrecognizedGUIDException,
+                                                                                                 PropertyServerException,
+                                                                                                 FunctionNotSupportedException
     ;
     /**
      *  Get a termTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
@@ -1586,6 +1833,9 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1595,7 +1845,9 @@ public interface SubjectAreaRelationship
                                                                           MetadataServerUncontactableException,
                                                                           UserNotAuthorizedException,
                                                                           UnexpectedResponseException,
-                                                                          UnrecognizedGUIDException
+                                                                          UnrecognizedGUIDException,
+                                                                          PropertyServerException,
+                                                                          FunctionNotSupportedException
     ;
     /**
      * Update a TypedBy relationship, which is defines the relationship between a spine attribute and its type.
@@ -1609,6 +1861,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1619,7 +1873,9 @@ public interface SubjectAreaRelationship
                                                                                                  MetadataServerUncontactableException,
                                                                                                  UserNotAuthorizedException,
                                                                                                  UnexpectedResponseException,
-                                                                                                 UnrecognizedGUIDException ;
+                                                                                                 UnrecognizedGUIDException,
+                                                                                                 PropertyServerException,
+                                                                                                 FunctionNotSupportedException;
     /**
      * Replace an TypedBy relationship, which is defines the relationship between a spine attribute and its type.
      * <p>
@@ -1632,6 +1888,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1641,7 +1899,9 @@ public interface SubjectAreaRelationship
                                                                                                   MetadataServerUncontactableException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   UnexpectedResponseException,
-                                                                                                  UnrecognizedGUIDException;
+                                                                                                  UnrecognizedGUIDException,
+                                                                                                  PropertyServerException,
+                                                                                                  FunctionNotSupportedException;
     /**
      *  Delete a termTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -1659,18 +1919,21 @@ public interface SubjectAreaRelationship
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
+     * @throws PropertyServerException              property server exception
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     TypedBy deleteTermTYPEDBYRelationship(String userId, String guid) throws
-                                                                                                                           InvalidParameterException,
-                                                                                                                           MetadataServerUncontactableException,
-                                                                                                                           UserNotAuthorizedException,
-                                                                                                                           UnrecognizedGUIDException,
-                                                                                                                           FunctionNotSupportedException,
-                                                                                                                           RelationshipNotDeletedException,
-                                                                                                                           UnexpectedResponseException
+                                                                      InvalidParameterException,
+                                                                      MetadataServerUncontactableException,
+                                                                      UserNotAuthorizedException,
+                                                                      UnrecognizedGUIDException,
+                                                                      FunctionNotSupportedException,
+                                                                      RelationshipNotDeletedException,
+                                                                      UnexpectedResponseException,
+                                                                      PropertyServerException
     ;
     /**
      *  Purge a termTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
@@ -1684,18 +1947,23 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeTermTYPEDBYRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                              UserNotAuthorizedException,
-                                                                                                              GUIDNotPurgedException,
-                                                                                                              UnrecognizedGUIDException,
-                                                                                                              MetadataServerUncontactableException,
-                                                                                                              UnexpectedResponseException
+                                                                         UserNotAuthorizedException,
+                                                                         RelationshipNotPurgedException,
+                                                                         UnrecognizedGUIDException,
+                                                                         MetadataServerUncontactableException,
+                                                                         UnexpectedResponseException,
+                                                                         PropertyServerException,
+                                                                         FunctionNotSupportedException
     ;
     /**
      * Restore a typed by relationship
@@ -1710,6 +1978,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1720,7 +1990,9 @@ public interface SubjectAreaRelationship
                                                                           UserNotAuthorizedException,
                                                                           MetadataServerUncontactableException,
                                                                           UnexpectedResponseException,
-                                                                          UnrecognizedGUIDException
+                                                                          UnrecognizedGUIDException,
+                                                                          PropertyServerException,
+                                                                          FunctionNotSupportedException
     ;
     /**
      *  Create a Isa relationship, which is link between a more general glossary term and a more specific definition.
@@ -1735,12 +2007,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    Isa createIsaRelationship(String userId, Isa isa) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    Isa createIsaRelationship(String userId, Isa isa) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             MetadataServerUncontactableException,
+                                                             UnexpectedResponseException,
+                                                             UnrecognizedGUIDException,
+                                                             PropertyServerException,
+                                                             FunctionNotSupportedException
     ;
     /**
      *  Get a isa relationship, which is link between a more general glossary term and a more specific definition.
@@ -1754,7 +2034,10 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * Client library Exceptions
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
+     *  Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
@@ -1763,7 +2046,9 @@ public interface SubjectAreaRelationship
                                                               MetadataServerUncontactableException,
                                                               UserNotAuthorizedException,
                                                               UnexpectedResponseException,
-                                                              UnrecognizedGUIDException
+                                                              UnrecognizedGUIDException,
+                                                              PropertyServerException,
+                                                              FunctionNotSupportedException
     ;
     /**
      * Update a Isa relationship, which is link between a more general glossary term and a more specific definition.
@@ -1777,6 +2062,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1787,7 +2074,9 @@ public interface SubjectAreaRelationship
                                                                          MetadataServerUncontactableException,
                                                                          UserNotAuthorizedException,
                                                                          UnexpectedResponseException,
-                                                                         UnrecognizedGUIDException ;
+                                                                         UnrecognizedGUIDException,
+                                                                         PropertyServerException,
+                                                                         FunctionNotSupportedException;
     /**
      * Replace an Isa relationship, which is link between a more general glossary term and a more specific definition.
      * <p>
@@ -1800,6 +2089,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1809,7 +2100,9 @@ public interface SubjectAreaRelationship
                                                                           MetadataServerUncontactableException,
                                                                           UserNotAuthorizedException,
                                                                           UnexpectedResponseException,
-                                                                          UnrecognizedGUIDException;
+                                                                          UnrecognizedGUIDException,
+                                                                          PropertyServerException,
+                                                                          FunctionNotSupportedException;
     /**
      *  Delete a isa relationship, which is link between a more general glossary term and a more specific definition.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -1827,18 +2120,20 @@ public interface SubjectAreaRelationship
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
+     * @throws PropertyServerException property server exception
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     Isa deleteIsaRelationship(String userId, String guid) throws
-                                                                                               InvalidParameterException,
-                                                                                               MetadataServerUncontactableException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               UnrecognizedGUIDException,
-                                                                                               FunctionNotSupportedException,
-                                                                                               RelationshipNotDeletedException,
-                                                                                               UnexpectedResponseException
+                                                          InvalidParameterException,
+                                                          MetadataServerUncontactableException,
+                                                          UserNotAuthorizedException,
+                                                          UnrecognizedGUIDException,
+                                                          FunctionNotSupportedException,
+                                                          RelationshipNotDeletedException,
+                                                          UnexpectedResponseException, PropertyServerException
     ;
     /**
      *  Purge a isa relationship, which is link between a more general glossary term and a more specific definition.
@@ -1852,18 +2147,23 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeIsaRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          GUIDNotPurgedException,
-                                                                                          UnrecognizedGUIDException,
-                                                                                          MetadataServerUncontactableException,
-                                                                                          UnexpectedResponseException
+                                                                 UserNotAuthorizedException,
+                                                                 RelationshipNotPurgedException,
+                                                                 UnrecognizedGUIDException,
+                                                                 MetadataServerUncontactableException,
+                                                                 UnexpectedResponseException,
+                                                                 PropertyServerException,
+                                                                 FunctionNotSupportedException
     ;
     /**
      * Restore an is a relationship
@@ -1878,6 +2178,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1888,7 +2190,9 @@ public interface SubjectAreaRelationship
                                                                   UserNotAuthorizedException,
                                                                   MetadataServerUncontactableException,
                                                                   UnexpectedResponseException,
-                                                                  UnrecognizedGUIDException
+                                                                  UnrecognizedGUIDException,
+                                                                  PropertyServerException,
+                                                                  FunctionNotSupportedException
     ;
     /**
      *  Create a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
@@ -1903,12 +2207,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    IsaTypeOf createTermISATypeOFRelationship(String userId, IsaTypeOf TermISATypeOFRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    IsaTypeOf createTermISATypeOFRelationship(String userId, IsaTypeOf TermISATypeOFRelationship) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         MetadataServerUncontactableException,
+                                                                                                         UnexpectedResponseException,
+                                                                                                         UnrecognizedGUIDException,
+                                                                                                         PropertyServerException,
+                                                                                                         FunctionNotSupportedException
     ;
     /**
      *  Get a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
@@ -1922,6 +2234,9 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -1931,7 +2246,9 @@ public interface SubjectAreaRelationship
                                                                               MetadataServerUncontactableException,
                                                                               UserNotAuthorizedException,
                                                                               UnexpectedResponseException,
-                                                                              UnrecognizedGUIDException
+                                                                              UnrecognizedGUIDException,
+                                                                              PropertyServerException,
+                                                                              FunctionNotSupportedException
     ;
     /**
      * Update a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
@@ -1945,6 +2262,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1954,7 +2273,9 @@ public interface SubjectAreaRelationship
                                                                                          MetadataServerUncontactableException,
                                                                                          UserNotAuthorizedException,
                                                                                          UnexpectedResponseException,
-                                                                                         UnrecognizedGUIDException ;
+                                                                                         UnrecognizedGUIDException,
+                                                                                         PropertyServerException,
+                                                                                         FunctionNotSupportedException;
     /**
      * Replace an isATypeOf relationship, which is defines an inheritance relationship between two spine objects.
      * <p>
@@ -1967,6 +2288,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -1976,7 +2299,9 @@ public interface SubjectAreaRelationship
                                                                                           MetadataServerUncontactableException,
                                                                                           UserNotAuthorizedException,
                                                                                           UnexpectedResponseException,
-                                                                                          UnrecognizedGUIDException;
+                                                                                          UnrecognizedGUIDException,
+                                                                                          PropertyServerException,
+                                                                                          FunctionNotSupportedException;
     /**
      *  Delete a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -1994,18 +2319,20 @@ public interface SubjectAreaRelationship
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
+     * @throws PropertyServerException              property server exception
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     IsaTypeOf deleteTermISATypeOFRelationship(String userId, String guid) throws
-                                                                                                                               InvalidParameterException,
-                                                                                                                               MetadataServerUncontactableException,
-                                                                                                                               UserNotAuthorizedException,
-                                                                                                                               UnrecognizedGUIDException,
-                                                                                                                               FunctionNotSupportedException,
-                                                                                                                               RelationshipNotDeletedException,
-                                                                                                                               UnexpectedResponseException
+                                                                          InvalidParameterException,
+                                                                          MetadataServerUncontactableException,
+                                                                          UserNotAuthorizedException,
+                                                                          UnrecognizedGUIDException,
+                                                                          FunctionNotSupportedException,
+                                                                          RelationshipNotDeletedException,
+                                                                          UnexpectedResponseException, PropertyServerException
     ;
     /**
      *  Purge a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
@@ -2019,18 +2346,23 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeTermISATypeOFRelationship(String userId, String guid) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                GUIDNotPurgedException,
-                                                                                                                UnrecognizedGUIDException,
-                                                                                                                MetadataServerUncontactableException,
-                                                                                                                UnexpectedResponseException
+                                                                           UserNotAuthorizedException,
+                                                                           RelationshipNotPurgedException,
+                                                                           UnrecognizedGUIDException,
+                                                                           MetadataServerUncontactableException,
+                                                                           UnexpectedResponseException,
+                                                                           PropertyServerException,
+                                                                           FunctionNotSupportedException
     ;
     /**
      * Restore an is a type of relationship
@@ -2045,6 +2377,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2055,7 +2389,9 @@ public interface SubjectAreaRelationship
                                                                               UserNotAuthorizedException,
                                                                               MetadataServerUncontactableException,
                                                                               UnexpectedResponseException,
-                                                                              UnrecognizedGUIDException
+                                                                              UnrecognizedGUIDException,
+                                                                              PropertyServerException,
+                                                                              FunctionNotSupportedException
     ;
 
     /**
@@ -2071,6 +2407,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2080,7 +2418,9 @@ public interface SubjectAreaRelationship
                                                                                                                              UserNotAuthorizedException,
                                                                                                                              MetadataServerUncontactableException,
                                                                                                                              UnexpectedResponseException,
-                                                                                                                             UnrecognizedGUIDException
+                                                                                                                             UnrecognizedGUIDException,
+                                                                                                                             PropertyServerException,
+                                                                                                                             FunctionNotSupportedException
     ;
     /**
      * Get a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
@@ -2094,6 +2434,9 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2103,7 +2446,9 @@ public interface SubjectAreaRelationship
                                                                                         MetadataServerUncontactableException,
                                                                                         UserNotAuthorizedException,
                                                                                         UnexpectedResponseException,
-                                                                                        UnrecognizedGUIDException
+                                                                                        UnrecognizedGUIDException,
+                                                                                        PropertyServerException,
+                                                                                        FunctionNotSupportedException
     ;
     /**
      * Update a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
@@ -2117,12 +2462,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    Categorization updateTermCategorizationRelationship(String userId, Categorization termCategorizationRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    Categorization updateTermCategorizationRelationship(String userId, Categorization termCategorizationRelationship) throws InvalidParameterException,
+                                                                                                                             UserNotAuthorizedException,
+                                                                                                                             MetadataServerUncontactableException,
+                                                                                                                             UnexpectedResponseException,
+                                                                                                                             UnrecognizedGUIDException,
+                                                                                                                             PropertyServerException,
+                                                                                                                             FunctionNotSupportedException
     ;
     /**
      * Replace a Term HASA Relationship.
@@ -2136,6 +2489,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2145,7 +2500,9 @@ public interface SubjectAreaRelationship
                                                                                                                               UserNotAuthorizedException,
                                                                                                                               MetadataServerUncontactableException,
                                                                                                                               UnexpectedResponseException,
-                                                                                                                              UnrecognizedGUIDException
+                                                                                                                              UnrecognizedGUIDException,
+                                                                                                                              PropertyServerException,
+                                                                                                                              FunctionNotSupportedException
     ;
     /**
      * Delete a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -2163,18 +2520,20 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException              property server exception
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     Categorization deleteTermCategorizationRelationship(String userId, String guid) throws
-            InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnrecognizedGUIDException,
-            FunctionNotSupportedException,
-            RelationshipNotDeletedException,
-            UnexpectedResponseException
+                                                                                    InvalidParameterException,
+                                                                                    MetadataServerUncontactableException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    UnrecognizedGUIDException,
+                                                                                    FunctionNotSupportedException,
+                                                                                    RelationshipNotDeletedException,
+                                                                                    UnexpectedResponseException, PropertyServerException
     ;
     /**
      * Purge a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
@@ -2188,18 +2547,23 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            GUIDNotPurgedException,
-            UnrecognizedGUIDException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException
+                                                                                UserNotAuthorizedException,
+                                                                                RelationshipNotPurgedException,
+                                                                                UnrecognizedGUIDException,
+                                                                                MetadataServerUncontactableException,
+                                                                                UnexpectedResponseException,
+                                                                                PropertyServerException,
+                                                                                FunctionNotSupportedException
     ;
     /**
      * Restore a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
@@ -2214,6 +2578,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2224,7 +2590,9 @@ public interface SubjectAreaRelationship
                                                                                             UserNotAuthorizedException,
                                                                                             MetadataServerUncontactableException,
                                                                                             UnexpectedResponseException,
-                                                                                            UnrecognizedGUIDException
+                                                                                            UnrecognizedGUIDException,
+                                                                                            PropertyServerException,
+                                                                                            FunctionNotSupportedException
     ;
 
     /**
@@ -2243,6 +2611,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2252,7 +2622,9 @@ public interface SubjectAreaRelationship
                                                                                                      UserNotAuthorizedException,
                                                                                                      MetadataServerUncontactableException,
                                                                                                      UnexpectedResponseException,
-                                                                                                     UnrecognizedGUIDException
+                                                                                                     UnrecognizedGUIDException,
+                                                                                                     PropertyServerException,
+                                                                                                     FunctionNotSupportedException
     ;
     /**
      * Get a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.
@@ -2266,6 +2638,9 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2275,7 +2650,9 @@ public interface SubjectAreaRelationship
                                                                             MetadataServerUncontactableException,
                                                                             UserNotAuthorizedException,
                                                                             UnexpectedResponseException,
-                                                                            UnrecognizedGUIDException
+                                                                            UnrecognizedGUIDException,
+                                                                            PropertyServerException,
+                                                                            FunctionNotSupportedException
     ;
 
     /**
@@ -2290,6 +2667,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2299,7 +2678,9 @@ public interface SubjectAreaRelationship
                                                                                                       UserNotAuthorizedException,
                                                                                                       MetadataServerUncontactableException,
                                                                                                       UnexpectedResponseException,
-                                                                                                      UnrecognizedGUIDException
+                                                                                                      UnrecognizedGUIDException,
+                                                                                                      PropertyServerException,
+                                                                                                      FunctionNotSupportedException
     ;
     /**
      * Delete a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -2317,18 +2698,21 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     TermAnchor deleteTermAnchorRelationship(String userId, String guid) throws
-            InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnrecognizedGUIDException,
-            FunctionNotSupportedException,
-            RelationshipNotDeletedException,
-            UnexpectedResponseException
+                                                                        InvalidParameterException,
+                                                                        MetadataServerUncontactableException,
+                                                                        UserNotAuthorizedException,
+                                                                        UnrecognizedGUIDException,
+                                                                        FunctionNotSupportedException,
+                                                                        RelationshipNotDeletedException,
+                                                                        UnexpectedResponseException,
+                                                                        PropertyServerException
     ;
     /**
      * Purge a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.
@@ -2342,18 +2726,23 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeTermAnchorRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            GUIDNotPurgedException,
-            UnrecognizedGUIDException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException
+                                                                        UserNotAuthorizedException,
+                                                                        RelationshipNotPurgedException,
+                                                                        UnrecognizedGUIDException,
+                                                                        MetadataServerUncontactableException,
+                                                                        UnexpectedResponseException,
+                                                                        PropertyServerException,
+                                                                        FunctionNotSupportedException
     ;
     /**
      * Restore a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.
@@ -2368,6 +2757,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2378,7 +2769,9 @@ public interface SubjectAreaRelationship
                                                                                 UserNotAuthorizedException,
                                                                                 MetadataServerUncontactableException,
                                                                                 UnexpectedResponseException,
-                                                                                UnrecognizedGUIDException
+                                                                                UnrecognizedGUIDException,
+                                                                                PropertyServerException,
+                                                                                FunctionNotSupportedException
     ;
 
     /**
@@ -2394,6 +2787,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2403,7 +2798,9 @@ public interface SubjectAreaRelationship
                                                                                                                      UserNotAuthorizedException,
                                                                                                                      MetadataServerUncontactableException,
                                                                                                                      UnexpectedResponseException,
-                                                                                                                     UnrecognizedGUIDException
+                                                                                                                     UnrecognizedGUIDException,
+                                                                                                                     PropertyServerException,
+                                                                                                                     FunctionNotSupportedException
     ;
     /**
      * Get a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
@@ -2416,6 +2813,9 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2425,7 +2825,9 @@ public interface SubjectAreaRelationship
                                                                                     MetadataServerUncontactableException,
                                                                                     UserNotAuthorizedException,
                                                                                     UnexpectedResponseException,
-                                                                                    UnrecognizedGUIDException
+                                                                                    UnrecognizedGUIDException,
+                                                                                    PropertyServerException,
+                                                                                    FunctionNotSupportedException
     ;
     /**
      *Update a Category Anchor Relationship.
@@ -2439,6 +2841,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2448,7 +2852,9 @@ public interface SubjectAreaRelationship
                                                                                                                      UserNotAuthorizedException,
                                                                                                                      MetadataServerUncontactableException,
                                                                                                                      UnexpectedResponseException,
-                                                                                                                     UnrecognizedGUIDException
+                                                                                                                     UnrecognizedGUIDException,
+                                                                                                                     PropertyServerException,
+                                                                                                                     FunctionNotSupportedException
     ;
 
     /**
@@ -2463,6 +2869,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2472,10 +2880,13 @@ public interface SubjectAreaRelationship
                                                                                                                       UserNotAuthorizedException,
                                                                                                                       MetadataServerUncontactableException,
                                                                                                                       UnexpectedResponseException,
-                                                                                                                      UnrecognizedGUIDException
+                                                                                                                      UnrecognizedGUIDException,
+                                                                                                                      PropertyServerException,
+                                                                                                                      FunctionNotSupportedException
     ;
     /**
-     * Delete a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
+     * Delete a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categories to be owned by a glossary.
+     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
@@ -2489,18 +2900,20 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException              property server exception
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     CategoryAnchor deleteCategoryAnchorRelationship(String userId, String guid) throws
-            InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnrecognizedGUIDException,
-            FunctionNotSupportedException,
-            RelationshipNotDeletedException,
-            UnexpectedResponseException
+                                                                                InvalidParameterException,
+                                                                                MetadataServerUncontactableException,
+                                                                                UserNotAuthorizedException,
+                                                                                UnrecognizedGUIDException,
+                                                                                FunctionNotSupportedException,
+                                                                                RelationshipNotDeletedException,
+                                                                                UnexpectedResponseException, PropertyServerException
     ;
     /**
      * Purge a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
@@ -2513,18 +2926,23 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     void purgeCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            GUIDNotPurgedException,
-            UnrecognizedGUIDException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException
+                                                                            UserNotAuthorizedException,
+                                                                            RelationshipNotPurgedException,
+                                                                            UnrecognizedGUIDException,
+                                                                            MetadataServerUncontactableException,
+                                                                            UnexpectedResponseException,
+                                                                            PropertyServerException,
+                                                                            FunctionNotSupportedException
     ;
     /**
      * Restore a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
@@ -2538,6 +2956,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2548,7 +2968,9 @@ public interface SubjectAreaRelationship
                                                                                         UserNotAuthorizedException,
                                                                                         MetadataServerUncontactableException,
                                                                                         UnexpectedResponseException,
-                                                                                        UnrecognizedGUIDException
+                                                                                        UnrecognizedGUIDException,
+                                                                                        PropertyServerException,
+                                                                                        FunctionNotSupportedException
     ;
     /**
      *  Create a ProjectScope relationship. A link between the project content and the project.
@@ -2561,13 +2983,21 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    ProjectScope createProjectScopeRelationship(String userId, ProjectScope projectScope) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
-   ;
+    ProjectScope createProjectScopeRelationship(String userId, ProjectScope projectScope) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 MetadataServerUncontactableException,
+                                                                                                 UnexpectedResponseException,
+                                                                                                 UnrecognizedGUIDException,
+                                                                                                 PropertyServerException,
+                                                                                                 FunctionNotSupportedException
+    ;
     /**
      *  Get a ProjectScope relationship. A link between the project content and the project.
      *
@@ -2579,6 +3009,9 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -2588,8 +3021,10 @@ public interface SubjectAreaRelationship
                                                                                 MetadataServerUncontactableException,
                                                                                 UserNotAuthorizedException,
                                                                                 UnexpectedResponseException,
-                                                                                UnrecognizedGUIDException
-  ;
+                                                                                UnrecognizedGUIDException,
+                                                                                PropertyServerException,
+                                                                                FunctionNotSupportedException
+    ;
     /**
      * Update a ProjectScope relationship which is a link between the project content and the project.
      * <p>
@@ -2602,6 +3037,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2611,8 +3048,10 @@ public interface SubjectAreaRelationship
                                                                                                              MetadataServerUncontactableException,
                                                                                                              UserNotAuthorizedException,
                                                                                                              UnexpectedResponseException,
-                                                                                                             UnrecognizedGUIDException
-        ;
+                                                                                                             UnrecognizedGUIDException,
+                                                                                                             PropertyServerException,
+                                                                                                             FunctionNotSupportedException
+    ;
     /**
      * Replace a ProjectScope relationship which is a link between the project content and the project.
      * <p>
@@ -2625,6 +3064,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2634,8 +3075,10 @@ public interface SubjectAreaRelationship
                                                                                                               MetadataServerUncontactableException,
                                                                                                               UserNotAuthorizedException,
                                                                                                               UnexpectedResponseException,
-                                                                                                              UnrecognizedGUIDException
-;
+                                                                                                              UnrecognizedGUIDException,
+                                                                                                              PropertyServerException,
+                                                                                                              FunctionNotSupportedException
+    ;
 
     /**
      *  Delete a ProjectScope relationship. A link between the project content and the project.
@@ -2653,19 +3096,21 @@ public interface SubjectAreaRelationship
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException              property server exception
+     *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     ProjectScope deleteProjectScopeRelationship(String userId, String guid) throws
-            InvalidParameterException,
-            MetadataServerUncontactableException,
-            UnrecognizedGUIDException,
-            UserNotAuthorizedException,
-            FunctionNotSupportedException,
-            RelationshipNotDeletedException,
-            UnexpectedResponseException
-   ;
+                                                                            InvalidParameterException,
+                                                                            MetadataServerUncontactableException,
+                                                                            UnrecognizedGUIDException,
+                                                                            UserNotAuthorizedException,
+                                                                            FunctionNotSupportedException,
+                                                                            RelationshipNotDeletedException,
+                                                                            UnexpectedResponseException, PropertyServerException
+    ;
 
 
     /**
@@ -2679,19 +3124,24 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws RelationshipNotPurgedException               a hard delete was issued but the relationship was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * Client library Exceptions
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
+     *
+     *  Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
      void purgeProjectScopeRelationship(String userId, String guid) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            GUIDNotPurgedException,
-            UnrecognizedGUIDException,
-            MetadataServerUncontactableException,
-            UnexpectedResponseException
-    ;
+                                                                           UserNotAuthorizedException,
+                                                                           RelationshipNotPurgedException,
+                                                                           UnrecognizedGUIDException,
+                                                                           MetadataServerUncontactableException,
+                                                                           UnexpectedResponseException,
+                                                                           PropertyServerException,
+                                                                           FunctionNotSupportedException
+     ;
     /**
      * Restore a ProjectScope relationship which  is a link between the project content and the project.
      *
@@ -2704,6 +3154,8 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -2713,8 +3165,10 @@ public interface SubjectAreaRelationship
                                                                                      UserNotAuthorizedException,
                                                                                      MetadataServerUncontactableException,
                                                                                      UnexpectedResponseException,
-                                                                                     UnrecognizedGUIDException
-   ;
+                                                                                     UnrecognizedGUIDException,
+                                                                                     PropertyServerException,
+                                                                                     FunctionNotSupportedException
+     ;
 
 
     
@@ -2729,16 +3183,20 @@ public interface SubjectAreaRelationship
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws PropertyServerException property server exception
+     * @throws FunctionNotSupportedException function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    SemanticAssignment getSemanticAssignmentRelationship(String userId,String guid)  throws InvalidParameterException,
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            UnexpectedResponseException,
-            UnrecognizedGUIDException
+    SemanticAssignment getSemanticAssignmentRelationship(String userId,String guid) throws InvalidParameterException,
+                                                                                           MetadataServerUncontactableException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           UnexpectedResponseException,
+                                                                                           UnrecognizedGUIDException,
+                                                                                           PropertyServerException,
+                                                                                           FunctionNotSupportedException
     ;
 
 }

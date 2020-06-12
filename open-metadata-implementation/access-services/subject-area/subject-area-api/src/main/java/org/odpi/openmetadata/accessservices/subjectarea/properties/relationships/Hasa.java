@@ -58,10 +58,10 @@ public class Hasa extends Line {
             // Terminate the list
             null
     };
-    private static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES)));
-    private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
-    private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
-    private static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
+    private static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES));
+    private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
+    private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
+    private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
     private String owningTermGuid;
     private String ownedTermGuid;
 
@@ -212,20 +212,19 @@ public class Hasa extends Line {
     }
 
     @Override
-    public StringBuilder toString(StringBuilder sb)
-    {
-        if (sb == null)
-        {
+    public StringBuilder toString(StringBuilder sb) {
+        if (sb == null) {
             sb = new StringBuilder();
         }
+
         sb.append(" Hasa=");
         sb.append(super.toString(sb));
         sb.append(" Hasa Attributes{");
-        sb.append("description=" + this.description +",");
-        sb.append("steward=" + this.steward +",");
-        sb.append("source=" + this.source +",");
+        sb.append("description=").append(this.description).append(",");
+        sb.append("steward=").append(this.steward).append(",");
+        sb.append("source=").append(this.source).append(",");
         if ( status!=null) {
-            sb.append("status=" + status.name());
+            sb.append("status=").append(status.name());
         }
         sb.append("}");
         return sb;
@@ -234,6 +233,4 @@ public class Hasa extends Line {
     public String toString() {
         return toString(new StringBuilder()).toString();
     }
-
-
 }
