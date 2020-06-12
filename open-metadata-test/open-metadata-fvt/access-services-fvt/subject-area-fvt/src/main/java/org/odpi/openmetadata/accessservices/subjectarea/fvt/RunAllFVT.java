@@ -35,7 +35,7 @@ public class RunAllFVT
             System.out.println("Error getting user input");
         } catch (SubjectAreaCheckedException e)
         {
-            System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            System.out.println("ERROR: " + e.getMessage() + " Suggested action: " + e.getReportedUserAction());
         } catch (SubjectAreaFVTCheckedException e) {
             System.out.println("ERROR: " + e.getMessage() );
         }
@@ -50,7 +50,7 @@ public class RunAllFVT
      *
      * @param args arguments supplied
      * @return the url to use on the calls to the server
-     * @throws IOException IO exception occured while getting input from the user.
+     * @throws IOException IO exception occurred while getting input from the user.
      */
     public static String getUrl(String args[]) throws IOException
     {

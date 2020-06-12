@@ -25,6 +25,7 @@ public class RelationshipNotDeletedException extends GuidOrientatedException {
                                            String actionDescription,
                                            String guid) {
         super(messageDefinition, className, actionDescription, guid);
+
     }
 
 
