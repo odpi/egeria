@@ -11,6 +11,7 @@ import EntityInheritanceDiagram           from "./EntityInheritanceDiagram";
 
 import PropTypes                          from "prop-types";
 
+import "./diagram.scss";
 
 
 
@@ -98,16 +99,13 @@ export default function DiagramManager(props) {
 
 
   return (
-    <div>
-      <h2>Diagram Manager</h2>
-
+    <div className="diagram-manager">
       {renderDiagramSelector()}
       <br/>
       {diagram()}
-
     </div>     
   );
-  
+
 }
 
 

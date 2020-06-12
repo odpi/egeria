@@ -1,3 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
+.diagram-manager {
+  height           : 1200px;
+  width            : 1150px;
+  overflow         : hidden;
+}
+
+.drawing-container {
+  height         : 1150px;
+  width          : 1150px;
+}
+
+.d3-component {
+  height         : 1150px;
+  width          : 1150px;
+  overflow       : scroll;
+}
