@@ -24,19 +24,23 @@ public class ExceptionMapper {
         SubjectAreaOMASAPIResponse response =null;
         ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.valueOf( ocfCheckedExceptionBase.getReportedErrorMessageId()).getMessageDefinition();
         if (ocfCheckedExceptionBase instanceof org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException) {
+            String parameterName =    ((org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException)ocfCheckedExceptionBase).getParameterName();
+            messageDefinition.setMessageParameters(parameterName);
             InvalidParameterException e = new InvalidParameterException(
                     messageDefinition,
                     ocfCheckedExceptionBase.getReportingClassName(),
                     ocfCheckedExceptionBase.getReportingActionDescription(),
-                    "",
-                    null);
+                    parameterName ,
+                    "unknown");
             response = new InvalidParameterExceptionResponse(e);
         } else if (ocfCheckedExceptionBase instanceof org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException) {
+            String parameterName =    ((org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException)ocfCheckedExceptionBase).getUserId();
+            messageDefinition.setMessageParameters(parameterName);
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException e  = new UserNotAuthorizedException(
                     messageDefinition,
                     ocfCheckedExceptionBase.getReportingClassName(),
                     ocfCheckedExceptionBase.getReportingActionDescription(),
-                    ((org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException) ocfCheckedExceptionBase).getUserId());
+                    parameterName);
             response = new UserNotAuthorizedExceptionResponse(e);
         } else if (ocfCheckedExceptionBase instanceof org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException) {
             PropertyServerException e = new PropertyServerException(

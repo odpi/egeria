@@ -277,19 +277,19 @@ public class SubjectAreaUtils {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName );
         }
-        SubjectAreaOMASAPIResponse response = null;
         if (status.equals(Status.DELETED)) {
-            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition();
+            String propertyName =   "Status";
+            String propertyValue =  Status.DELETED.name();
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition(propertyName,propertyValue);
             throw new InvalidParameterException(messageDefinition,
                     className,
                     methodName,
-                    "Status",
-                    Status.DELETED.name());
+                    propertyName,
+                    propertyValue);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName );
         }
-
     }
 
     public static Status convertInstanceStatusToStatus(InstanceStatus instanceStatus) {

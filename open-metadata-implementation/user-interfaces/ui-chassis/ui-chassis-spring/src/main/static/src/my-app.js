@@ -210,8 +210,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             },
             token: {
                 type: Object,
-                notify: true,
-                observer: '_tokenChanged'
+                notify: true
             },
             routeData: Object,
             pages: {
@@ -332,7 +331,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     }
 
     _onLogout(event) {
-        console.log('removing token:');
         //TODO invalidate token from server
         console.log('LOGOUT: removing token...');
         this.token = null;
@@ -340,10 +338,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
     _hasToken(){
         return typeof this.token !== "undefined" && this.token != null;
-    }
-
-    _tokenChanged(newValue, oldValue) {
-        console.debug('token changed from: '+ oldValue +' \nto new value: ' + newValue)
     }
 
     _pageChanged(page) {

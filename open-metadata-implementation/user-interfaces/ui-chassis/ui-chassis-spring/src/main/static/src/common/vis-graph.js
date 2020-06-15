@@ -10,31 +10,34 @@ class VisGraph extends PolymerElement {
     return html`
       <style include="shared-styles">
           :host {
-            display: block;
-            box-sizing: border-box;
-            width: 100%;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
           }
           
           #vis_container {
             display: flex;
-            width: 100%;
-            height: 100%;
+            flex-direction: column;
+            flex-grow: 1;
+            /*align-items: stretch;*/
+          }
+          
+          .vis-network {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+          }
+          
+          div.vis-network canvas {
+             flex-grow: 1;
           }
           
           .flex-center-align {
-            @apply(--layout-horizontal);
-            @apply(--layout-center-center);
+            /*@apply(--layout-horizontal);*/
+            /*@apply(--layout-center-center);*/
           }
           
-          .nodeContent {
-            position: relative;
-            border: 1px solid lightgray;
-            /*width: 30%;*/
-            height: 100%;
-            padding: 10px;
-          }
-          
-          div.vis-tooltip {
+          .vis-tooltip {
             position: absolute;
             visibility: hidden;
             padding: 5px;
@@ -56,17 +59,9 @@ class VisGraph extends PolymerElement {
         </style>
         
         <div id="vis_container">
-          <div class="vis-network" tabindex="900" style="position: relative; overflow: hidden; touch-action: pan-y; 
-                  user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
-              width: 100%; height: 100%;">
-              <canvas style="position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; 
-                      -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
-                       width="600" height="400"></canvas>
-                       
-               <div class="vis-tooltip" style="left: 239px; top: 119px; visibility: hidden; box-sizing: border-box;"><div style="text-align:center;">test</div></div>
-          </div>
-         
+          
         </div>
+        <div class="vis-tooltip" style="left: 239px; top: 119px; visibility: hidden; box-sizing: border-box;"><div style="text-align:center;">test</div></div>
      
     `;
   }
@@ -92,37 +87,16 @@ class VisGraph extends PolymerElement {
             },
             arrows:'to'
           },
-          interaction: {
-            tooltipDelay: 200,
-            hideEdgesOnDrag: true
-          },
-          layout: {
-            hierarchical: {
-              enabled: true,
-              levelSeparation: 300,
-              direction: 'LR'
-            }
-          },
+          interaction: { type : Object },
+          layout: { type : Object },
           physics: false,
-          groups: {
-
-          }
+          groups: { type : Object }
         }
       },
 
-      width: {
-        type: String,
-        value: '100%',
-        observer: '_widthChanged'
-      },
-      height: {
-        type: String,
-        value: '100%',
-        observer: '_heightChanged'
-      },
       data: {
-        nodes: {type: vis.DataSet},
-        edges: {type: vis.DataSet}
+        nodes: {},
+        edges: {}
       },
       interaction: {
         tooltipDelay: 200,
@@ -132,20 +106,12 @@ class VisGraph extends PolymerElement {
     };
   }
 
-  attached() {
-    this.$.vis_container.style.height = this.height;
-    this.$.vis_container.style.width = this.width;
-  }
 
   setData(data) {
     if(this.data === null || this.data === undefined ) {
       this.data = {
-        nodes: {
-          type: vis.DataSet
-        },
-        edges: {
-          type: vis.DataSet
-        }
+        nodes: {},
+        edges: {}
       };
     }
 
@@ -171,9 +137,7 @@ class VisGraph extends PolymerElement {
       console.debug('stabilized!');
 
     });
-    this.network.fit();
     this.network.stabilize();
-    this.network.options.physics=false;
   }
 
   networkChanged(newNetwork) {
@@ -190,8 +154,8 @@ class VisGraph extends PolymerElement {
 
   importNodesAndEdges(nodes, edges) {
     var data = {
-      nodes: new vis.DataSet(nodes),
-      edges: new vis.DataSet(edges)
+      nodes: nodes,
+      edges: edges
     };
     this.setData(data);
   }
@@ -206,31 +170,7 @@ class VisGraph extends PolymerElement {
   }
 
   handleSelectNode(params) {
-    var eventDetail = {};
-    // if (params.nodes.length > 0) {
-    //   eventDetail.selectedNode = params.nodes[0];
-    //   eventDetail.pointer = params.pointer;
-    //   var nodeContent = this.data.nodes.get(params.nodes[0]);
-    //   this.$.node_content.innerHTML = JSON.stringify(nodeContent, undefined, 3);
-    //   // this.fire('node-selected', eventDetail);
-    //   // this.network.fit();
-    // }
-  }
 
-  _widthChanged(value) {
-    if (this.$.vis_container === null) {
-      console.log('vis container is null');
-      return false;
-    }
-    this.$.vis_container.style.width = value;
-  }
-
-  _heightChanged(value) {
-    if (this.$.vis_container === null) {
-      console.log('vis container is null');
-      return false;
-    }
-    this.$.vis_container.style.height = value;
   }
 
   _graphChanged(value) {

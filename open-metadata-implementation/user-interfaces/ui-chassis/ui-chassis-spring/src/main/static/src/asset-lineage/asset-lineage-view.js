@@ -23,14 +23,16 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     <style include="shared-styles">
         :host {
           display: flex;
-          flex-flow: column;
+          flex-direction: column;
           margin:var(--egeria-view-margin);
           min-height: var(--egeria-view-min-height);
+          max-height: var(--egeria-view-min-height);
         }
         
-        .container {
-          background-color: white;
+        #container {
+          /*background-color: var( --egeria-background-color );*/
           display: flex;
+          flex-direction: column;
           flex-grow: 1;
         }
         #useCases {
@@ -45,8 +47,8 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
     <token-ajax id="tokenAjaxDetails" last-response="{{item}}" ></token-ajax>
     <div>
-        <vaadin-tabs id ="useCases" selected="[[_getUseCase(routeData.usecase)]]" >
-          <vaadin-tab value="ultimateSource">
+        <vaadin-tabs id ="useCases"  selected="[[ _getUseCase(routeData.usecase) ]]" >
+          <vaadin-tab value="ultimateSource" >
             <a href="[[rootPath]]#/asset-lineage/ultimateSource/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
                 Ultimate Source
             </a>
@@ -93,7 +95,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         </div>
     </div>
 
-    <div class="container" id="container">
+    <div id="container">
         <vis-graph id="visgraph" data=[[graphData]]></vis-graph>
     </div>
     `;
@@ -118,6 +120,23 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             graphData: {
                 type: Object,
                 observer: '_graphDataChanged'
+            },
+            graphInteraction: {
+                type: Object,
+                value: {
+                    tooltipDelay: 200,
+                    hideEdgesOnDrag: true
+                }
+            },
+            graphLayout: {
+                type: Object,
+                value: {
+                    hierarchical: {
+                        enabled: true,
+                        levelSeparation: 300,
+                        direction: 'LR'
+                    }
+                }
             },
             groups : {
                 type: Object,
@@ -149,6 +168,14 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 }
             }
         }
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        this.$.visgraph.options.groups = this.groups;
+        this.$.visgraph.options.interaction = this.graphInteraction;
+        this.$.visgraph.options.layout = this.graphLayout;
+        this.$.visgraph.options.physics = false;
     }
 
     static get observers() {
@@ -237,76 +264,76 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     }
 
     _ultimateSource(guid, includeProcesses) {
+    if (includeProcesses === null || includeProcesses === undefined) {
+     includeProcesses  = "true";
+    }
+    this.$.visgraph.options.groups = this.groups;
+    this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?includeProcesses=' + includeProcesses;
+    this.$.tokenAjax._go();
+    }
+
+    _endToEndLineage(guid, includeProcesses){
       if (includeProcesses === null || includeProcesses === undefined) {
-         includeProcesses  = "true";
+          includeProcesses  = "true";
       }
       this.$.visgraph.options.groups = this.groups;
-      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?includeProcesses=' + includeProcesses;
+      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/end2end?includeProcesses=' + includeProcesses;
       this.$.tokenAjax._go();
-  }
+    }
 
-      _endToEndLineage(guid, includeProcesses){
-          if (includeProcesses === null || includeProcesses === undefined) {
-              includeProcesses  = "true";
-          }
-          this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/end2end?includeProcesses=' + includeProcesses;
-          this.$.tokenAjax._go();
+    _ultimateDestination(guid, includeProcesses){
+      if (includeProcesses === null || includeProcesses === undefined) {
+          includeProcesses  = "true";
       }
+      this.$.visgraph.options.groups = this.groups;
+      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-destination?includeProcesses=' + includeProcesses;
+      this.$.tokenAjax._go();
+    }
 
-      _ultimateDestination(guid, includeProcesses){
-          if (includeProcesses === null || includeProcesses === undefined) {
-              includeProcesses  = "true";
-          }
-          this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-destination?includeProcesses=' + includeProcesses;
-          this.$.tokenAjax._go();
+    _glossaryLineage(guid, includeProcesses){
+      if (includeProcesses === null || includeProcesses === undefined) {
+          includeProcesses  = "true";
       }
+      this.$.visgraph.options.groups = this.groups;
+      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?includeProcesses=' + includeProcesses;
+      this.$.tokenAjax._go();
+    }
 
-      _glossaryLineage(guid, includeProcesses){
-          if (includeProcesses === null || includeProcesses === undefined) {
-              includeProcesses  = "true";
-          }
-          this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?includeProcesses=' + includeProcesses;
-          this.$.tokenAjax._go();
+    _sourceAndDestination(guid, includeProcesses){
+      if (includeProcesses === null || includeProcesses === undefined) {
+          includeProcesses  = "true";
       }
-
-      _sourceAndDestination(guid, includeProcesses){
-          if (includeProcesses === null || includeProcesses === undefined) {
-              includeProcesses  = "true";
-          }
-          this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/source-and-destination?includeProcesses=' + includeProcesses;
-          this.$.tokenAjax._go();
-      }
+      this.$.visgraph.options.groups = this.groups;
+      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/source-and-destination?includeProcesses=' + includeProcesses;
+      this.$.tokenAjax._go();
+    }
 
     _reload(usecase, includeProcesses) {
-        switch (usecase) {
-            case 'ultimateSource':
-                this._ultimateSource(this.routeData.guid, includeProcesses);
-                break;
-            case 'endToEnd':
-                this._endToEndLineage(this.routeData.guid, includeProcesses);
-                break;
-            case 'ultimateDestination':
-                this._ultimateDestination(this.routeData.guid, includeProcesses);
-                break;
-            case 'glossaryLineage':
-                this._glossaryLineage(this.routeData.guid, includeProcesses);
-                break;
-            case 'sourceAndDestination':
-                this._sourceAndDestination(this.routeData.guid, includeProcesses);
-                break;
-        }
+    switch (usecase) {
+        case 'ultimateSource':
+            this._ultimateSource(this.routeData.guid, includeProcesses);
+            break;
+        case 'endToEnd':
+            this._endToEndLineage(this.routeData.guid, includeProcesses);
+            break;
+        case 'ultimateDestination':
+            this._ultimateDestination(this.routeData.guid, includeProcesses);
+            break;
+        case 'glossaryLineage':
+            this._glossaryLineage(this.routeData.guid, includeProcesses);
+            break;
+        case 'sourceAndDestination':
+            this._sourceAndDestination(this.routeData.guid, includeProcesses);
+            break;
+    }
     }
 
     _getUseCase(usecase){
-      return this.usecases.indexOf(usecase);
+        return this.usecases.indexOf(usecase);
     }
 
     _hideIncludeGlossaryTerms(usecase) {
-        return !("ultimateDestination" === usecase || "ultimateSource" === usecase) ;
+    return !("ultimateDestination" === usecase || "ultimateSource" === usecase) ;
     }
 }
 

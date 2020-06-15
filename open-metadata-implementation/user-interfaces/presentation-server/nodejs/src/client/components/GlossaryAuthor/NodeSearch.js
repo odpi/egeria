@@ -51,6 +51,12 @@ const NodeSearch = props => {
       header.header = attribute.label;
       headerData.push(header);
     });
+    glossaryAuthorContext.currentNodeType.summaryResponseAttributes.map(function(attribute, index ) {
+      let header = {};
+      header.key=attribute.key;
+      header.header = attribute.label;
+      headerData.push(header);
+    });
     return headerData;
   }
 
@@ -89,16 +95,16 @@ const NodeSearch = props => {
                 // console.log(" name is " + row.name);
                 // row.description = node.description;
                 // row.qualifiedName = node.qualifiedName;
-                for (property in node) {
+                for (const property in node) {
                   console.log("result property is ", property);
-                  if (property.key == 'glossary') {
-                      const glossary = node[property.key];
+                  if (property == 'glossary') {
+                      const glossary = node[property];
                       row.glossaryName = glossary.name;
                       row.glossaryGuid = glossary.guid;
-                  } else if (property.key == 'systemAttributes' ) {
-                      row.guid = node[property.key].guid;
+                  } else if (property == 'systemAttributes' ) {
+                      row.guid = node[property].guid;
                   }  else {
-                      row[property] = node[property.key];
+                      row[property] = node[property];
                   }
                 }
                 return row;
