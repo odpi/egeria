@@ -60,6 +60,22 @@ public class GlossaryViewController extends SecureController {
     }
 
     /**
+     * @param from the index from witch the results to start, used for pagination
+     * @param size number of results returned, used for pagination
+     * @return all the glossary categories
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
+     */
+    @GetMapping("/categories")
+    public List<GlossaryCategory> getAllGlossaryCategories(@RequestParam(defaultValue = "0") Integer from,
+                                                  @RequestParam(defaultValue = "100") Integer size, HttpServletRequest request)
+            throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
+        String userId = getUser(request);
+        return glossaryViewClient.getAllCategories(userId, from, size);
+    }
+
+    /**
      * @param glossaryGUID GUID of the glossary to be retrieved
      * @return the glossary with the GUID or null
      * @throws PropertyServerException if a problem occurs while serving the request

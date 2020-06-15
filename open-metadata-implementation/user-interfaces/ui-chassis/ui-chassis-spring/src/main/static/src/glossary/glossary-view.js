@@ -166,12 +166,18 @@ class GlossaryView extends PolymerElement {
             this.$.tokenAjax.url='/api/glossaries';
             this.$.tokenAjax._go();
             this._loadAllTerms();
+            this._loadAllCategories();
         }
     }
 
     _loadAllTerms() {
         this.$.tokenAjaxTerms.url='/api/glossaries/terms';
         this.$.tokenAjaxTerms._go();
+    }
+
+    _loadAllCategories() {
+        this.$.tokenAjaxCategories.url='/api/glossaries/categories';
+        this.$.tokenAjaxCategories._go();
     }
 
     _loadTermsByGlossary(guid) {
