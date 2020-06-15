@@ -7,6 +7,8 @@ import PropTypes           from "prop-types";
 
 import TypeDisplay         from "./TypeDisplay"
 
+import "./details-panel.scss";
+
 /**
 *
 * DetailsPanel implements a web component for presentation of details of the focus or view type
