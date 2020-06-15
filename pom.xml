@@ -242,6 +242,13 @@
             </dependency>
 
             <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <scope>compile</scope>
+                <version>${logback.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
                 <scope>compile</scope>
@@ -2770,7 +2777,7 @@
                                 <ignoredUnusedDeclaredDependency>io.micrometer:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.junit.platform:*</ignoredUnusedDeclaredDependency>
                                 <!-- Used with slf4j as default implementation in test scope only -->
-                                <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:*
+                                <ignoredUnusedDeclaredDependency>ch.qos.logback:logback*:*
                                 </ignoredUnusedDeclaredDependency>
                                 <!-- Used with slf4j as default implementation for chassis & apps (more configurable in xml)-->
                                 <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple:*
@@ -2786,7 +2793,7 @@
                         <phase>verify</phase>
                         <configuration>
                             <failBuild>true</failBuild>
-                            <ignoreDirect>false</ignoreDirect>
+                            <ignoreDirect>true</ignoreDirect>
                         </configuration>
                     </execution>
                 </executions>
