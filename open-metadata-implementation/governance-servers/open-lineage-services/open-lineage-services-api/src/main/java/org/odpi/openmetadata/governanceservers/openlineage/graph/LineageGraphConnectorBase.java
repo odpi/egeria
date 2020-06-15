@@ -32,6 +32,9 @@ public abstract class LineageGraphConnectorBase extends ConnectorBase implements
     public abstract void deleteClassification(String entityGuid, Map<String, Set<GraphContext>> classificationContext);
 
     @Override
+    public abstract void upsertRelationship(LineageRelationship lineageRelationship);
+
+    @Override
     public abstract void deleteRelationship(String guid);
 
     @Override
