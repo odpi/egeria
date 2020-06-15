@@ -32,7 +32,7 @@ export default function EntityPropertiesDisplay(props) {
     if (inheritedProps !== undefined) {
       const inheritedPropsSorted = inheritedProps.sort();
       inheritedPropsSorted.forEach(inheritedProp => {
-          console.log("inherited attribute: "+inheritedProp.attributeName);
+          //console.log("inherited attribute: "+inheritedProp.attributeName);
           attributeEntries[inheritedProp.attributeName] = {};
           attributeEntries[inheritedProp.attributeName].inherited = true;
           attributeEntries[inheritedProp.attributeName].attributeTypeName = inheritedProp.attributeType.name;
@@ -44,7 +44,7 @@ export default function EntityPropertiesDisplay(props) {
     if (localProps !== undefined) {
       const localPropsSorted = localProps.sort();
       localPropsSorted.forEach(localProp => {
-          console.log("local attribute: "+localProp.attributeName);
+          //console.log("local attribute: "+localProp.attributeName);
           attributeEntries[localProp.attributeName] = {};
           attributeEntries[localProp.attributeName].inherited = false;
           attributeEntries[localProp.attributeName].attributeTypeName = localProp.attributeType.name;

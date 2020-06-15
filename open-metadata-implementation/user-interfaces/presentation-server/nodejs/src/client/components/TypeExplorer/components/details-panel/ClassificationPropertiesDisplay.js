@@ -33,7 +33,7 @@ export default function ClassificationPropertiesDisplay(props) {
     if (localProps !== undefined) {
       const localPropsSorted = localProps.sort();
       localPropsSorted.forEach(localProp => {
-          console.log("local attribute: "+localProp.attributeName);
+          //console.log("local attribute: "+localProp.attributeName);
           attributeEntries[localProp.attributeName] = {};
           attributeEntries[localProp.attributeName].inherited = false;
           attributeEntries[localProp.attributeName].attributeTypeName = localProp.attributeType.name;
