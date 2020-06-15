@@ -36,6 +36,24 @@ public class CategoryResource {
     }
 
     /**
+     * Extract all categories definitions
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param from from
+     * @param size size
+     *
+     * @return glossaries
+     */
+    @GetMapping( path = "/categories")
+    public GlossaryViewEntityDetailResponse getAllCategories(@PathVariable("serverName") String serverName,
+                                                             @PathVariable("userId") String userId,
+                                                             @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                             @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
+        return categoryService.getAllCategories(userId, serverName, from, size);
+    }
+
+    /**
      * Extract the category definition for the given GUID
      *
      * @param serverName instance to call

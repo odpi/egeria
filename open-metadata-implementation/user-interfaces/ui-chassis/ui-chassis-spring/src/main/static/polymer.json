@@ -13,7 +13,7 @@
     "node_modules/web-animations-js/*.js",
     "!node_modules/@webcomponents/webcomponentsjs/gulpfile.js",
     "node_modules/@webcomponents/webcomponentsjs/bundles/*.js",
-    "node_modules/vis/dist/vis-network.min.*"
+    "node_modules/visjs-network/dist/vis-network.min.*"
   ],
   "builds": [
     {
