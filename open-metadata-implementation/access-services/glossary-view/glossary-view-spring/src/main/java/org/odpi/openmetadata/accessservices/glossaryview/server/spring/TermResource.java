@@ -43,7 +43,7 @@ public class TermResource {
      * @param from from
      * @param size size
      *
-     * @return glossaries
+     * @return all terms
      */
     @GetMapping( path = "/terms")
     public GlossaryViewEntityDetailResponse getAllTerms(@PathVariable("serverName") String serverName,
@@ -69,23 +69,6 @@ public class TermResource {
         return termService.getTerm(userId, serverName, termGUID);
     }
 
-    /**
-     * Extract a all terms
-     *
-     * @param serverName instance to call
-     * @param userId calling user
-     * @param from from
-     * @param size size
-     *
-     * @return terms
-     */
-    @GetMapping( path = "/terms")
-    public GlossaryViewEntityDetailResponse getTerms(@PathVariable("serverName") String serverName,
-                                                     @PathVariable("userId") String userId,
-                                                     @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                     @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
-        return termService.getAllGlossaryTerms(userId, serverName, from, size);
-    }
 
     /**
      * Extract term definitions for the given glossary GUID via the 'TermAnchor' type relationships
