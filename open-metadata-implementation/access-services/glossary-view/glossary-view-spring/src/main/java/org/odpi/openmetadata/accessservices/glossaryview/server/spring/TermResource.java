@@ -52,14 +52,14 @@ public class TermResource {
     }
 
     /**
-     * Extract a term definition for the given GUID
+     * Extract a all terms
      *
      * @param serverName instance to call
      * @param userId calling user
      * @param from from
      * @param size size
      *
-     * @return term
+     * @return terms
      */
     @GetMapping( path = "/terms")
     public GlossaryViewEntityDetailResponse getTerms(@PathVariable("serverName") String serverName,
