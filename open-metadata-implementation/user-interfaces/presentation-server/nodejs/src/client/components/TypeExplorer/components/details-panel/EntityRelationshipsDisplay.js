@@ -34,7 +34,7 @@ export default function EntityRelationshipsDisplay(props) {
   if (inheritedRelNames !== undefined) {
     const inheritedRelNamesSorted = inheritedRelNames.sort();
     inheritedRelNamesSorted.forEach(inheritedRelName => {
-      console.log("inherited relationship: "+inheritedRelName);
+      //console.log("inherited relationship: "+inheritedRelName);
       relationshipEntries[inheritedRelName] = {};
       relationshipEntries[inheritedRelName].inherited = true;
     });
@@ -45,7 +45,7 @@ export default function EntityRelationshipsDisplay(props) {
   if (relationshipNames !== undefined) {
     const relationshipNamesSorted = relationshipNames.sort();
     relationshipNamesSorted.forEach(relationshipName => {
-      console.log("local relationship: "+relationshipName);
+      //console.log("local relationship: "+relationshipName);
       relationshipEntries[relationshipName]={};
       relationshipEntries[relationshipName].inherited=false;
     });

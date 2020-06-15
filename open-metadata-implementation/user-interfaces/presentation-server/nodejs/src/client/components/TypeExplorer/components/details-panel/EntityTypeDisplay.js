@@ -25,6 +25,13 @@ export default function EntityTypeDisplay(props) {
 
   const entityExpl  = typesContext.getEntityType(typeName);
 
+  const hasInheritedRelationships = entityExpl.inheritedRelationshipNames && entityExpl.inheritedRelationshipNames.length > 0;
+  const hasLocalRelationships = entityExpl.RelationshipNames && entityExpl.RelationshipNames.length > 0;
+  const hasRelationships = hasInheritedRelationships || hasLocalRelationships;
+
+  const hasInheritedClassifications = entityExpl.inheritedClassificationNames && entityExpl.inheritedClassificationNames.length > 0;
+  const hasLocalClassifications = entityExpl.classificationNames && entityExpl.classificationNames.length > 0;
+  const hasClassifications = hasInheritedClassifications || hasLocalClassifications;
 
   return (
     <div className="instance-details-container">
@@ -32,9 +39,9 @@ export default function EntityTypeDisplay(props) {
       <div className="instance-details-item">{entityExpl.entityDef.description}</div>
       <div className="instance-details-item">Attributes : { !entityExpl.inheritedAttributes && !entityExpl.entityDef.propertiesDefinition ? "none" :
         <EntityPropertiesDisplay expl={entityExpl} />}</div>     
-      <div className="instance-details-item">Relationships : { !entityExpl.inheritedRelationshipNames && !entityExpl.relationshipNames ? "none" :
+      <div className="instance-details-item">Relationships : { !hasRelationships ? "none" :
         <EntityRelationshipsDisplay expl={entityExpl} />}</div>     
-      <div className="instance-details-item">Classifications : { !entityExpl.inheritedClassificationNames && !entityExpl.classificationNames ? "none" :
+      <div className="instance-details-item">Classifications : { !hasClassifications ? "none" :
         <EntityClassificationsDisplay expl={entityExpl} />}</div>
     </div>
   );

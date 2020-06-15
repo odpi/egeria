@@ -36,7 +36,7 @@ export default function EntityClassificationsDisplay(props) {
   if (inheritedClassificationNames !== undefined) {
     const inheritedClassificationNamesSorted = inheritedClassificationNames.sort();
     inheritedClassificationNamesSorted.forEach(inheritedClassificationName => {
-      console.log("inherited classification: "+inheritedClassificationName);
+      //console.log("inherited classification: "+inheritedClassificationName);
       classificationEntries[inheritedClassificationName] = {};
       classificationEntries[inheritedClassificationName].inherited = true;
     });
@@ -47,7 +47,7 @@ export default function EntityClassificationsDisplay(props) {
   if (classificationNames !== undefined) {
     const classificationNamesSorted = classificationNames.sort();
     classificationNamesSorted.forEach(classificationName => {
-      console.log("local classification: "+classificationName);
+      //console.log("local classification: "+classificationName);
       classificationEntries[classificationName]={};
       classificationEntries[classificationName].inherited=false;
     });
