@@ -51,10 +51,10 @@ export default function ConnectionDetails(props) {
     typesContext.loadTypeInfo()
   }
   
+  // TODO - alignment
+
   return (
-    
-    <div className={props.className}>
-     
+
       <div className="connection-controls">  
 
         <p>Repository Server</p>
@@ -80,13 +80,11 @@ export default function ConnectionDetails(props) {
                value={ repositoryServerContext.repositoryServerEnterpriseOption }  />
         <br />
           
-        <button className="top-control-button"  onClick = { setServerDetails } >
+        <button className="connection-button"  onClick = { setServerDetails } >
           Set Server Details
         </button>
       </div>
 
-    </div>     
-  
   );
 
 }
@@ -95,5 +93,4 @@ export default function ConnectionDetails(props) {
 ConnectionDetails.propTypes = {  
   className  : PropTypes.string
 }
-
 
