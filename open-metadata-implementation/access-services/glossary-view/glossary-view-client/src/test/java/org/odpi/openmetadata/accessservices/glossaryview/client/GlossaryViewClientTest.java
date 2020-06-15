@@ -155,6 +155,18 @@ public class GlossaryViewClientTest {
     }
 
     @Test
+    public void getAllategories() throws Exception{
+        response.addEntityDetails(Arrays.asList(categories.get(0), categories.get(1), categories.get(2)));
+
+        when(connector.callGetRESTCall(eq("getAllCategories"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
+                eq(USER_ID), anyInt(), anyInt())).thenReturn(response);
+
+        List<GlossaryCategory> categories = underTest.getAllCategories(USER_ID, 0, 10);
+
+        assertEquals(3, categories.size());
+    }
+
+    @Test
     public void getAllGlossaries() throws Exception{
         response.addEntityDetails(glossaries);
 
