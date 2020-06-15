@@ -33,13 +33,7 @@ export default function EntityInheritanceDiagram(props) {
   const margin                      = {top: 30, right: 30, bottom: 30, left: 30};
   const egeria_primary_color_string = "#71ccdc";
 
-  /*
-   * Conversion is necessary between bounding client rectangle and
-   * parent container offset position, which requires (fixed) offsets to accommmodate
-   * top and lhs containers.
-   */
-  const topOffset =  230;
-  const leftOffset = 750;
+
 
 
   /*
@@ -268,7 +262,16 @@ export default function EntityInheritanceDiagram(props) {
    * If an entity type is selected and the view has not already been scrolled, scroll it now.
    */
   const scrollSelectedIntoView = (typeToView) => {
-      if (scrolled === false) {
+
+    /*
+     * Conversion is necessary between bounding client rectangle and
+     * parent container offset position, which requires (fixed) offsets to accommmodate
+     * top and lhs containers.
+     */
+    const topOffset =  230;
+    const leftOffset = 750;
+
+    if (scrolled === false) {
           console.log("Scrolling...for type "+typeToView);
 
           scrolled = true;
