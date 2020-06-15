@@ -332,4 +332,17 @@ public class TermService extends GlossaryViewOMAS {
                 from, size, "getTypes");
     }
 
+    /**
+     * Extract all terms definitions
+     *
+     * @param userId calling user
+     * @param serverName instance to call
+     * @param from offset start for the return values
+     * @param size maximum number of results
+     *
+     * @return EntityDetailResponse all glossaries
+     */
+    public GlossaryViewEntityDetailResponse getAllTerms(String userId, String serverName, Integer from, Integer size) {
+        return getAllEntityDetailsResponse(userId, serverName, TERM_TYPE_NAME, from, size, "getAllTerms");
+    }
 }

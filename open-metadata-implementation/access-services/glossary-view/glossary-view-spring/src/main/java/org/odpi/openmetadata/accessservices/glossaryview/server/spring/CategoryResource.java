@@ -46,7 +46,7 @@ public class CategoryResource {
      * @return categories
      */
     @GetMapping( path = "/categories")
-    public GlossaryViewEntityDetailResponse getTerms(@PathVariable("serverName") String serverName,
+    public GlossaryViewEntityDetailResponse getAllCategories(@PathVariable("serverName") String serverName,
                                                      @PathVariable("userId") String userId,
                                                      @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
                                                      @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {

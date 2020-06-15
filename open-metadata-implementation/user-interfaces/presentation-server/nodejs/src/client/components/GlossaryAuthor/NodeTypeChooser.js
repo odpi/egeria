@@ -54,7 +54,7 @@ const NodeTypeChooser = (props) => {
               >
                 <option value="term">Term</option>
                 <option value="category">Category</option>
-                <option value="glossary">Glossary</option>
+                <option selected value="glossary">Glossary</option>
                 <option value="project">Project</option>
               </select>
             </div>
