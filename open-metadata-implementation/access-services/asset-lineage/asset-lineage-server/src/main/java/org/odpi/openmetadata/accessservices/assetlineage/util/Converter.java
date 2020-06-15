@@ -10,6 +10,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -55,8 +56,11 @@ public class Converter {
         setInstanceHeaderProperties(relationship, lineageRelationship);
         lineageRelationship.setProperties(instancePropertiesToMap(relationship.getProperties()));
 
-        lineageRelationship.setFirstEndGUID(relationship.getEntityTwoProxy().getGUID());
-        lineageRelationship.setSecondEndGUID(relationship.getEntityTwoProxy().getGUID());
+        LineageEntity firstEntity = getLineageEntityFromLineageProxy(relationship.getEntityOneProxy());
+        LineageEntity secondEntity = getLineageEntityFromLineageProxy(relationship.getEntityTwoProxy());
+
+        lineageRelationship.setFirstEntity(firstEntity);
+        lineageRelationship.setSecondEntity(secondEntity);
 
         return lineageRelationship;
     }
@@ -103,15 +107,28 @@ public class Converter {
         lineageEntity.setMetadataCollectionId(instanceHeader.getMetadataCollectionId());
     }
 
+    private LineageEntity getLineageEntityFromLineageProxy(EntityProxy entityProxy) {
+        LineageEntity entity = new LineageEntity();
+        entity.setGuid(entityProxy.getGUID());
+        entity.setVersion(entityProxy.getVersion());
+        entity.setCreatedBy(entityProxy.getCreatedBy());
+        entity.setUpdatedBy(entityProxy.getUpdatedBy());
+        entity.setCreateTime(entityProxy.getCreateTime());
+        entity.setUpdateTime(entityProxy.getUpdateTime());
+        entity.setTypeDefName(entityProxy.getType().getTypeDefName());
+        entity.setProperties(instancePropertiesToMap(entityProxy.getUniqueProperties()));
+        return entity;
+    }
+
     private String listToString(List<String> list) {
-        if(CollectionUtils.isEmpty(list)) {
+        if (CollectionUtils.isEmpty(list)) {
             return null;
         }
         return String.join(",", list);
     }
 
     private String mapToString(Map<String, Object> map) {
-        if(MapUtils.isEmpty(map)) {
+        if (MapUtils.isEmpty(map)) {
             return null;
         }
         return map.keySet().stream().map(key -> key + ": " + map.get(key))
