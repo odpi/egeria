@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
@@ -49,6 +50,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.CONDENSED_NODE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.DESTINATION_CONDENSATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_ANTONYM;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CLASSIFICATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CONDENSED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_DATAFLOW_WITH_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_IS_A_RELATIONSHIP;
@@ -66,6 +68,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PATH;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY;
@@ -82,6 +85,8 @@ public class LineageGraphConnectorHelper {
     private JanusGraph lineageGraph;
     private String[] glossaryTermEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM,
             EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP};
+    private String[] glossaryTermAndClassificationEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM,
+            EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP, EDGE_LABEL_CLASSIFICATION};
 
     public LineageGraphConnectorHelper(JanusGraph lineageGraph) {
         this.lineageGraph = lineageGraph;
@@ -101,10 +106,10 @@ public class LineageGraphConnectorHelper {
         Graph sourceGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                         union(
-                                inE(EDGE_LABEL_SEMANTIC_ASSIGNMENT).subgraph("subGraph").outV().simplePath(),
+                                inE(EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_CLASSIFICATION).subgraph("subGraph").outV().simplePath(),
                                 until(inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS, EDGE_LABEL_SEMANTIC_ASSIGNMENT).count().is(0)).
-                                        repeat((Traversal) inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS, EDGE_LABEL_SEMANTIC_ASSIGNMENT)
-                                                .subgraph("subGraph").outV().simplePath())
+                                        repeat((Traversal) inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS, EDGE_LABEL_SEMANTIC_ASSIGNMENT,
+                                                EDGE_LABEL_CLASSIFICATION).subgraph("subGraph").outV().simplePath())
                         ).cap("subGraph").next();
 
         List<Vertex> sourcesList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -129,7 +134,7 @@ public class LineageGraphConnectorHelper {
         Graph destinationGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                         union(
-                                inE(EDGE_LABEL_SEMANTIC_ASSIGNMENT).subgraph("subGraph").outV().simplePath(),
+                                inE(EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_CLASSIFICATION).subgraph("subGraph").outV().simplePath(),
                                 until(outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).count().is(0)).
                                         repeat((Traversal) outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).subgraph("subGraph").inV().simplePath())
                         ).cap("subGraph").next();
@@ -198,7 +203,8 @@ public class LineageGraphConnectorHelper {
     LineageVerticesAndEdges glossary(String guid, boolean includeProcesses) {
         GraphTraversalSource g = lineageGraph.traversal();
 
-        Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(glossaryTermEdges).subgraph("s").cap("s").next();
+        Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(glossaryTermAndClassificationEdges)
+                .subgraph("s").cap("s").next();
 
         return getLineageVerticesAndEdges(subGraph, includeProcesses);
     }
@@ -281,13 +287,19 @@ public class LineageGraphConnectorHelper {
         if (originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).isPresent()) {
             String displayName = originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString();
             lineageVertex.setDisplayName(displayName);
-        }
-
-        //Displayname key is stored inconsistently in the graphDB.
-        else if (originalVertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).isPresent()) {
+        } else if (originalVertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).isPresent()) {
+            //Displayname key is stored inconsistently in the graphDB.
             String displayName = originalVertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString();
             lineageVertex.setDisplayName(displayName);
+        } else if (originalVertex.property(PROPERTY_KEY_LABEL).isPresent()){
+            // if no display props exist use the label. every vertex should have it
+            String displayName = originalVertex.property(PROPERTY_KEY_LABEL).value().toString();
+            lineageVertex.setDisplayName(displayName);
+        } else {
+            // if all else fails
+            lineageVertex.setDisplayName("undefined");
         }
+
 
         if (originalVertex.property(PROPERTY_KEY_ENTITY_GUID).isPresent()) {
             String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
@@ -339,11 +351,12 @@ public class LineageGraphConnectorHelper {
      * @return the filtered properties of the vertex
      */
     private Map<String, String> retrieveProperties(Vertex vertex) {
+        boolean isClassificationVertex = vertex.edges(Direction.IN, EDGE_LABEL_CLASSIFICATION).hasNext();
         Map<String, String> newNodeProperties = new HashMap<>();
         Iterator<VertexProperty<Object>> originalProperties = vertex.properties();
         while (originalProperties.hasNext()) {
             Property<Object> originalProperty = originalProperties.next();
-            if (immutableReturnedPropertiesWhiteList.contains(originalProperty.key())) {
+            if (immutableReturnedPropertiesWhiteList.contains(originalProperty.key()) || isClassificationVertex) {
                 String newPropertyKey = originalProperty.key().
                         replace(PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY, "").
                         replace(PROPERTY_KEY_PREFIX_ELEMENT, "");

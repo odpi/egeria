@@ -668,7 +668,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 lineageVerticesAndEdges = helper.sourceAndDestination(guid, includeProcesses);
                 break;
             case END_TO_END:
-                lineageVerticesAndEdges = helper.endToEnd(guid, includeProcesses, EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_DATAFLOW_WITH_PROCESS);
+                lineageVerticesAndEdges = helper.endToEnd(guid, includeProcesses, EDGE_LABEL_SEMANTIC_ASSIGNMENT,
+                        EDGE_LABEL_DATAFLOW_WITH_PROCESS, EDGE_LABEL_CLASSIFICATION);
                 break;
             case ULTIMATE_SOURCE:
                 lineageVerticesAndEdges = helper.ultimateSource(guid, includeProcesses);
