@@ -265,7 +265,7 @@ public class TermFVT
         return issueCreateTerm(term);
     }
 
-    public Term issueCreateTerm(Term term) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
+    public Term issueCreateTerm(Term term) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, PropertyServerException {
         Term newTerm = subjectAreaTerm.createTerm(this.userId, term);
         if (newTerm != null)
         {
@@ -400,7 +400,7 @@ public class TermFVT
         System.out.println("Purge succeeded");
     }
 
-    public List<Line> getTermRelationships(Term term) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
+    public List<Line> getTermRelationships(Term term) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, PropertyServerException {
         return subjectAreaTerm.getTermRelationships(this.userId,
                 term.getSystemAttributes().getGUID(),
                 null,
@@ -410,7 +410,7 @@ public class TermFVT
                 null);
     }
 
-    public List<Line> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder, String sequenceProperty) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
+    public List<Line> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder, String sequenceProperty) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, PropertyServerException {
         return subjectAreaTerm.getTermRelationships(this.userId,
                 term.getSystemAttributes().getGUID(),
                 asOfTime,

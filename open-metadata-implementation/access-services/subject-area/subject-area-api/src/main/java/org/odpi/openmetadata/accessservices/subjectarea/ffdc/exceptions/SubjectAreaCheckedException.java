@@ -18,7 +18,6 @@ import java.util.Map;
 public class SubjectAreaCheckedException extends OMAGCheckedExceptionBase {
 
     private static final long serialVersionUID = 1L;
-    private String formattedMessage =null;
 
     /**
      * This is the typical constructor used for creating an SubjectAreaCheckedException.
@@ -31,9 +30,6 @@ public class SubjectAreaCheckedException extends OMAGCheckedExceptionBase {
                                        String className,
                                        String actionDescription) {
         super(messageDefinition, className, actionDescription);
-        // set the exception message to the formatted message so it can be sent in the exception rest response
-        this.formattedMessage = new MessageFormatter().getFormattedMessage(messageDefinition);
-
     }
 
 
@@ -89,11 +85,4 @@ public class SubjectAreaCheckedException extends OMAGCheckedExceptionBase {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
     }
 
-    /**
-     * Get the formatted Message
-     * @return formatted Message
-     */
-    public String getFormattedMessage() {
-        return formattedMessage;
-    }
 }

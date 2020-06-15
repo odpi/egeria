@@ -17,7 +17,7 @@ export default function GlossaryAuthor() {
   const [exceptionErrorMessage, setExceptionErrorMessage] = useState();
   const [systemAction, setSystemAction] = useState();
   const [fullResponse, setFullResponse] = useState();
-
+  
   const nodeType = getNodeType("glossary");
   // Try to connect to the server. The [] means it only runs on mount (rather than every render)
   useEffect(() => {
@@ -27,7 +27,6 @@ export default function GlossaryAuthor() {
   const handleOnAnimationEnd = (e) => {
     document.getElementById("connectionChecker").classList.remove("shaker");
   };
-
   const issueConnect = () => {
     // it could be that we have lost the connection due to a refresh in that case the we will not have a userid. 
    
