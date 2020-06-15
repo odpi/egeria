@@ -7,80 +7,83 @@
   position        : absolute;
   top             : 0px;
   left            : 260px;
-  height          : 1450px;
-  width           : 1600px;
-  /*border-style    : solid;
+  height  : 100%;
+  display          : flex;         /*  EXPERIMENT */
+  flex-flow        : column;       /*  EXPERIMENT */
+  border-style    : solid;
   border-width    : 3px;
-  border-color    : rgb(72, 205, 209) ;*/
+  border-color    : red ;
 }
 
-.top {
-  position         : absolute;
-  top              : 0px;
-  left             : 0px;
-  height           : 250px;
+.tex-top {
+  display          : flex;
+  flex-flow        : row;
+  /*height           : 200px;   EXPERIMENT */
   width            : 100%; 
   overflow         : none;
   padding          : 10px;
   font-size        : 10px;
   background-color : rgb(240,240,240);  
   color            : 'black';
-  /*border-style     : solid;
+  border-style     : solid;
   border-width     : 3px;
-  border-color     : purple ;*/
+  border-color     : purple ;
 }
 
-.top-left {
-  position   : absolute;  
-  left       : 0px;  
+.tex-top-left {
+  flex       : 0 0 auto;
   width      : 300px;   
-  height     : 230px;  
+  height     : 140px;  
 }
 
-.top-middle {
-  position   : absolute;  
-  left       : 310px;  
+.tex-top-middle {
+  flex       : 0 0 auto;
+  /*left       : 310px;  */
   width      : 300px;   
-  height     : 230px;  
+  height     : 140px;  
 }
 
-.top-right {
-  position   : absolute;  
-  left       : 620px;  
-  width      : 450px;   
-  height     : 230px;  
-}
 
-.lhs {
-  position         : absolute;
-  top              : 250px;
-  left             : 0px;
-  height           : 1200px;
-  width            : 450px; 
-  overflow         : none;
+.tex-content {
+  flex             : 2;  /*  EXPERIMENT */
+  display          : flex;
+  flex-flow        : row;
+  width            : 100%; 
+ 
   padding          : 10px;
+  font-size        : 10px;
+  background-color : rgb(240,240,240);  
+  color            : 'black';
+  border-style     : solid;
+  border-width     : 3px;
+  border-color     : lightblue ;
+}
+
+.tex-lhs {  
+  flex             : 0 0 auto;   /* EXPERIMENT  - can neither grow nor shrink...*/
+  width            : 450px;
+  overflow         : auto;
+  padding          : 0px 10px 10px 10px;
   font-size        : 10px;
   background-color : rgb(240,240,240);    
   color            : 'black';
-  /*border-style     : solid;
+  border-style     : solid;
   border-width     : 3px;
-  border-color     : green ;*/
+  border-color     : green ;
 }
 
-.rhs {
-  position     : absolute;
-  top          : 250px;
-  right        : 0px;
-  height       : 1200px;
-  width        : 1150px;
-  overflow     : none;
+.tex-rhs {
+  flex             : 1 1 auto; 
+  /*width        : 1150px;*/
+  /*overflow         : auto;*/
   padding      : 10px;
   font-size    : 10px;
+  background-color : white;  
   background   : 'white';
   color        : 'black';
-  /*border-style : solid;
+  border-style : solid;
   border-width : 3px;
-  border-color : orangered ;*/
+  border-color : orangered ;
 }
 
 .descriptive-text {
@@ -102,4 +105,9 @@
   width            : 100px;
   background-color : rgb(180,180,180);  
 
+}
+
+.title {
+  padding           : 20px;
+  font-size         : 20px;
 }
