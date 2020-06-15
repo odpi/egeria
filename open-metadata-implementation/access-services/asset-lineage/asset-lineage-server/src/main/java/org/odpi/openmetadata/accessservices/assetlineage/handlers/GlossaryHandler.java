@@ -10,6 +10,8 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -46,6 +48,20 @@ public class GlossaryHandler {
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
     }
 
+    /**
+     *
+     * @param userId the user id
+     * @return the existing list of glossary terms available in the repository
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public List<EntityDetail> getGlossaryTerms(String userId) throws UserNotAuthorizedException, PropertyServerException {
+        final String methodName = "getGlossaryTerms";
+
+        String glossaryTermTypeGuid = handlerHelper.getTypeByName(userId, GLOSSARY_TERM);
+
+        return repositoryHandler.getEntitiesByType(userId, glossaryTermTypeGuid, 0, 0, methodName);
+    }
 
     /**
      * Returns the glossary term object corresponding to the supplied asset that can possibly have a glossary Term.

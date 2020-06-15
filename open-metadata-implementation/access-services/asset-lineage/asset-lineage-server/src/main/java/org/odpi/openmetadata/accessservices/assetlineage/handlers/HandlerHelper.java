@@ -232,13 +232,13 @@ public class HandlerHelper {
 
     public void addLineageClassificationToContext(EntityDetail startEntity, AssetContext graph) {
         List<Classification> classifications = filterLineageClassifications(startEntity.getClassifications());
-        if(CollectionUtils.isNotEmpty(classifications)){
+        if (CollectionUtils.isNotEmpty(classifications)) {
             addClassificationsToGraphContext(classifications, graph, startEntity);
         }
     }
 
     public List<Classification> filterLineageClassifications(List<Classification> classifications) {
-        if(CollectionUtils.isEmpty(classifications)){
+        if (CollectionUtils.isEmpty(classifications)) {
             return Collections.emptyList();
         }
 

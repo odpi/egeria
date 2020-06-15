@@ -52,15 +52,15 @@ public class ProcessContextHandler {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
-        this.assetContextHandler= assetContextHandler;
+        this.assetContextHandler = assetContextHandler;
         this.supportedZones = supportedZones;
     }
 
     /**
      * Retrieves the full context for a Process
      *
-     * @param userId      String - userId of user making request.
-     * @param process     the asset that has been created
+     * @param userId  String - userId of user making request.
+     * @param process the asset that has been created
      * @return Map of the relationships between the Entities that are relevant to a Process
      */
     public Map<String, Set<GraphContext>> getProcessContext(String userId, EntityDetail process) throws OCFCheckedExceptionBase {

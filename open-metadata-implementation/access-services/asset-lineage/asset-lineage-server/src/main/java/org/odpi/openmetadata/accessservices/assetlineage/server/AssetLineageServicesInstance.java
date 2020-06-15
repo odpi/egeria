@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.*;
+import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -24,6 +25,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private AssetContextHandler assetContextHandler;
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
+    private AssetLineagePublisher assetLineagePublisher;
 
     /**
      * Set up the handlers for this server.
@@ -126,6 +128,13 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
         return classificationHandler;
     }
 
+    public void setAssetLineagePublisher(AssetLineagePublisher assetLineagePublisher) {
+        this.assetLineagePublisher = assetLineagePublisher;
+    }
+
+    public AssetLineagePublisher getAssetLineagePublisher() {
+        return assetLineagePublisher;
+    }
 }
 
 

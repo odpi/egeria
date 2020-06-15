@@ -47,6 +47,12 @@
             <artifactId>swagger-annotations</artifactId>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-lineage-api</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

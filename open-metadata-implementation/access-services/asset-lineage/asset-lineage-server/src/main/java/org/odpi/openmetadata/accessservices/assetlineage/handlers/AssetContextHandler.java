@@ -58,8 +58,8 @@ public class AssetContextHandler {
     /**
      * Gets asset context.
      *
-     * @param userId the user id
-     * @param entityDetail   the entity for which the context is build
+     * @param userId       the user id
+     * @param entityDetail the entity for which the context is build
      * @return the asset context
      */
     public AssetContext getAssetContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
@@ -83,7 +83,6 @@ public class AssetContextHandler {
         return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER, type, methodName));
     }
 
-
     private void buildAssetContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         final String typeDefName = entityDetail.getType().getTypeDefName();
 
@@ -101,7 +100,7 @@ public class AssetContextHandler {
                 setAssetDetails(userId, schemaTypeEntity);
             } else {
                 Optional<EntityDetail> first = tableTypeEntities.stream().findFirst();
-                if(first.isPresent()) {
+                if (first.isPresent()) {
                     buildAssetContext(userId, first.get());
                 }
             }

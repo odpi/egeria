@@ -5,11 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.util;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class AssetLineageConstants {
 

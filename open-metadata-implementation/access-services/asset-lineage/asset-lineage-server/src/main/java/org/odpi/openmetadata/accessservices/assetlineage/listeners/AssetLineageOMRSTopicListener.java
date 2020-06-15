@@ -25,12 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_HIERARCHY;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SEMANTIC_ASSIGNMENT;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.VALUE_FOR_ACTIVE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableValidLineageEntityEvents;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableValidLineageRelationshipTypes;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
 
 /**
  * AssetLineageOMRSTopicListener received details of each OMRS event from the cohorts that the local server
@@ -65,6 +60,15 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         this.lineageClassificationTypes = lineageClassificationTypes;
         this.auditLog = auditLog;
         converter = new Converter(repositoryHelper);
+    }
+
+    /**
+     * Returns the Asset Lineage Publisher
+     *
+     * @return Asset Lineage Publisher
+     */
+    public AssetLineagePublisher getPublisher() {
+        return publisher;
     }
 
     /**
