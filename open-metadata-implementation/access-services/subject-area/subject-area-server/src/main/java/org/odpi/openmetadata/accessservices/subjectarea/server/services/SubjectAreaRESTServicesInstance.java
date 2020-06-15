@@ -114,6 +114,7 @@ public class SubjectAreaRESTServicesInstance {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName rest api name
      * @param userId     userId under which the request is performed
+     * @param guid       unique identifier of the Line
      * @param className  class name
      * @param line       the relationship to update
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -129,14 +130,14 @@ public class SubjectAreaRESTServicesInstance {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    protected SubjectAreaOMASAPIResponse updateLine(String serverName, String restAPIName, String userId, String className, Line line, boolean isReplace) {
+    protected SubjectAreaOMASAPIResponse updateLine(String serverName, String restAPIName, String userId, String guid, String className, Line line, boolean isReplace) {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
         SubjectAreaOMASAPIResponse response = null;
         try {
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
-            response = handler.updateLine(restAPIName, userId, className, line, isReplace);
+            response = handler.updateLine(restAPIName, userId, guid, className, line, isReplace);
 
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
             response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);

@@ -134,11 +134,15 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             final String suppliedCategoryName = suppliedCategory.getName();
             if (suppliedCategoryName == null || suppliedCategoryName.equals("")) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_WITHOUT_NAME.getMessageDefinition();
-                throw new InvalidParameterException(messageDefinition,
+                String propertyName = "Name";
+                String propertyValue = null;
+                messageDefinition.setMessageParameters(propertyName,propertyValue);
+                throw new InvalidParameterException(
+                        messageDefinition,
                         className,
                         methodName,
-                        "Name",
-                        null);
+                        propertyName,
+                        propertyValue);
             }
             GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
             SubjectAreaOMASAPIResponse glossaryResponse = validateGlossarySummaryDuringCreation(glossaryHandler, userId, methodName, suppliedGlossary);

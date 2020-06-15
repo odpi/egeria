@@ -122,12 +122,14 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             // need to check we have a name
             final String suppliedTermName = suppliedTerm.getName();
             if (suppliedTermName == null || suppliedTermName.equals("")) {
-                ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITHOUT_NAME.getMessageDefinition();
+                String propertyName = "Name";
+                String propertyValue = null;
+                ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITHOUT_NAME.getMessageDefinition(propertyName, propertyValue);
                 throw new InvalidParameterException(messageDefinition,
                         className,
                         methodName,
-                        "Name",
-                        null);
+                        propertyName,
+                        propertyValue);
             }
             TermMapper termMapper = new TermMapper(oMRSAPIHelper);
             EntityDetail suppliedTermEntityDetail = termMapper.mapNodeToEntityDetail(suppliedTerm);

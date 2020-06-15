@@ -1350,14 +1350,19 @@ public class OMRSAPIHelper {
             try {
                 sequencingProperty = URLDecoder.decode(sequencingProperty, "UTF-8");
             } catch (UnsupportedEncodingException e) {
+                String propertyName = "sequencingProperty";
+                String propertyValue = sequencingProperty;
+
                 SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.ERROR_ENCODING_QUERY_PARAMETER;
+                ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition(propertyName, propertyValue);
+
                 response = new InvalidParameterExceptionResponse(
                         new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(
-                                errorCode.getMessageDefinition(),
+                                messageDefinition,
                                 className,
                                 restAPIName,
-                                "sequencingProperty",
-                                sequencingProperty)
+                                propertyName,
+                                propertyValue)
                 );
             }
         }
@@ -1365,14 +1370,19 @@ public class OMRSAPIHelper {
             try {
                 searchCriteria = URLDecoder.decode(searchCriteria, "UTF-8");
             } catch (UnsupportedEncodingException e) {
+                String propertyName = "searchCriteria";
+                String propertyValue = searchCriteria;
+
                 SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.ERROR_ENCODING_QUERY_PARAMETER;
+                ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition(propertyName, propertyValue);
+
                 response = new InvalidParameterExceptionResponse(
                         new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(
-                                errorCode.getMessageDefinition(),
+                                messageDefinition,
                                 className,
                                 restAPIName,
-                                "searchCriteria",
-                                searchCriteria)
+                                propertyName,
+                                propertyValue)
                 );
             }
         }

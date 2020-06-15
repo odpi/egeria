@@ -14,19 +14,24 @@ const getNodeType = (key) => {
       typeName: "Project",
       attributes: [
         {
-         key: "name",
-         label: "Name" 
+          key: "name",
+          label: "Name",
         },
         {
           key: "description",
-          label: "Description" 
-         },
-         {
+          label: "Description",
+        },
+        {
           key: "qualifiedName",
-          label: "Qualified Name" 
-         }
-      ]
-      
+          label: "Qualified Name",
+        },
+      ],
+      summaryResponseAttributes: [
+        {
+          key: "guid",
+          label: "Guid",
+        },
+      ],
     },
     term: {
       key: "term",
@@ -35,34 +40,48 @@ const getNodeType = (key) => {
       hasGlossary: true,
       attributes: [
         {
-         key: "name",
-         label: "Name" 
+          key: "name",
+          label: "Name",
         },
         {
           key: "description",
-          label: "Description" 
-         },
-         {
+          label: "Description",
+        },
+        {
           key: "qualifiedName",
-          label: "Qualified Name" 
-         },
-         {
+          label: "Qualified Name",
+        },
+        {
           key: "summary",
-          label: "Summary" 
-         },
-         {
+          label: "Summary",
+        },
+        {
           key: "abbreviation",
-          label: "Abbreviation" 
-         },
-         {
+          label: "Abbreviation",
+        },
+        {
           key: "examples",
-          label: "Examples" 
-         },
-         {
+          label: "Examples",
+        },
+        {
           key: "usage",
-          label: "Usage" 
-         }
-      ]
+          label: "Usage",
+        },
+      ],
+      summaryResponseAttributes: [
+        {
+          key: "guid",
+          label: "Guid",
+        },
+        {
+          key: "glossaryGuid",
+          label: "Glossary Guid",
+        },
+        {
+          key: "glossaryName",
+          label: "Glossary name",
+        },
+      ],
     },
     glossary: {
       key: "glossary",
@@ -70,18 +89,24 @@ const getNodeType = (key) => {
       typeName: "Glossary",
       attributes: [
         {
-         key: "name",
-         label: "Name" 
+          key: "name",
+          label: "Name",
         },
         {
           key: "description",
-          label: "Description" 
-         },
-         {
+          label: "Description",
+        },
+        {
           key: "qualifiedName",
-          label: "Qualified Name" 
-         }
-      ]
+          label: "Qualified Name",
+        },
+      ],
+      summaryResponseAttributes: [
+        {
+          key: "guid",
+          label: "Guid",
+        },
+      ],
     },
     category: {
       key: "category",
@@ -90,23 +115,37 @@ const getNodeType = (key) => {
       hasGlossary: true,
       attributes: [
         {
-         key: "name",
-         label: "Name" 
+          key: "name",
+          label: "Name",
         },
         {
           key: "description",
-          label: "Description" 
-         },
-         {
+          label: "Description",
+        },
+        {
           key: "qualifiedName",
-          label: "Qualified Name" 
-         }
-      ]
+          label: "Qualified Name",
+        },
+      ],
+      summaryResponseAttributes: [
+        {
+          key: "guid",
+          label: "Guid",
+        },
+        {
+          key: "glossaryGuid",
+          label: "Glossary Guid",
+        },
+        {
+          key: "glossaryName",
+          label: "Glossary name",
+        },
+      ],
     },
     notSet: {
       key: "undefined",
       plural: "undefined",
-      typeName: "undefined"
+      typeName: "undefined",
     },
     error: {
       key: "error",
@@ -114,28 +153,30 @@ const getNodeType = (key) => {
       typeName: "Error",
       attributes: [
         {
-         key: "name",
-         label: "Name" 
+          key: "name",
+          label: "Name",
         },
         {
           key: "description",
-          label: "Description" 
-         },
-         {
+          label: "Description",
+        },
+        {
           key: "qualifiedName",
-          label: "Qualified Name" 
-         }
-      ]
-    }
+          label: "Qualified Name",
+        },
+      ],
+    },
   };
-  
+
   let nodeType = nodeTypes[key];
   if (nodeType) {
-  nodeType.url =
-    identificationContext.getRestURL("glossary-author") + "/" + nodeType.plural;
+    nodeType.url =
+      identificationContext.getRestURL("glossary-author") +
+      "/" +
+      nodeType.plural;
   } else {
-    nodeType =  nodeTypes["unSet"];
-  }  
+    nodeType = nodeTypes["unSet"];
+  }
   return nodeType;
 };
 
