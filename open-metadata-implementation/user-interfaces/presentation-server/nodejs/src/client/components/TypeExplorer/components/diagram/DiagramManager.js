@@ -9,6 +9,8 @@ import { TypesContext }                   from "../../contexts/TypesContext";
 
 import EntityInheritanceDiagram           from "./EntityInheritanceDiagram";
 
+import EntityNeighborhoodDiagram          from "./EntityNeighborhoodDiagram";
+
 import PropTypes                          from "prop-types";
 
 import "./diagram.scss";
@@ -65,7 +67,7 @@ export default function DiagramManager(props) {
           diagram = <EntityInheritanceDiagram outerHeight={height} outerWidth={width}/>
           break;
         case "Neighborhood":
-          diagram = <div>Neighborhood Diagram will be drawn here</div>
+          diagram = <EntityNeighborhoodDiagram outerHeight={height} outerWidth={width}/>
           break;
       }
     }
