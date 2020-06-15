@@ -19,10 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COMPLEX_SCHEMA_TYPE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SCHEMA_ELEMENT;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
 
 /**
  * The glossary handler provide methods to provide business glossary terms for lineage.
@@ -42,10 +39,11 @@ public class GlossaryHandler {
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
      */
-    public GlossaryHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper, RepositoryHandler repositoryHandler) {
+    public GlossaryHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
+                           RepositoryHandler repositoryHandler, List<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
-        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler);
+        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
     }
 
 
@@ -102,7 +100,7 @@ public class GlossaryHandler {
             return;
 
         EntityDetail glossaryTerm = repositoryHandler.getEntityByGUID(userId, assetGuid, "guid", typeDefName, methodName);
-
+        handlerHelper.addLineageClassificationToContext(glossaryTerm, graph);
         addSemanticAssignmentToContext(userId, glossaryTerm, semanticAssignments.toArray(new Relationship[0]));
     }
 

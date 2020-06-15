@@ -74,7 +74,7 @@ public class AssetLineagePublisher {
      * @param entityDetail entity to get context
      */
     public void publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
-        Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail.getGUID());
+        Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail);
         LineageEvent event = new LineageEvent();
         event.setAssetContext(processContext);
         event.setAssetLineageEventType(AssetLineageEventType.PROCESS_CONTEXT_EVENT);
@@ -83,7 +83,7 @@ public class AssetLineagePublisher {
 
     public void publishAssetContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         String technicalGuid = entityDetail.getGUID();
-        AssetContext assetContext = this.assetContextHandler.getAssetContext(serverUserName, technicalGuid, entityDetail.getType().getTypeDefName());
+        AssetContext assetContext = this.assetContextHandler.getAssetContext(serverUserName, entityDetail);
         Map<String, Set<GraphContext>> context = this.glossaryHandler.getGlossaryTerm(technicalGuid, serverUserName, assetContext, this.superTypesRetriever);
         LineageEvent event = new LineageEvent();
         if (!context.isEmpty())
