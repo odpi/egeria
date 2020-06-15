@@ -23,6 +23,9 @@ import "./diagram.scss";
 
 export default function DiagramManager(props) {
 
+  let height = props.height;
+  let width = props.width;
+  console.log("DiagramManager: width is "+width+" height is "+height);
  
   const typesContext = useContext(TypesContext);
 
@@ -53,13 +56,13 @@ export default function DiagramManager(props) {
     let diagram;
 
     if (typesContext.getEntityTypes() === null) {
-        diagram = <div>Waiting for type information to be loaded...</div>
+        diagram = <p>Diagrams appear here once server details are set...</p>
     }
     else {
       switch (selectedDiagram) {
         case "Entity Inheritance":
           //diagram = <div>EntityInheritance Diagram will be drawn here</div>
-          diagram = <EntityInheritanceDiagram />
+          diagram = <EntityInheritanceDiagram outerHeight={height} outerWidth={width}/>
           break;
         case "Neighborhood":
           diagram = <div>Neighborhood Diagram will be drawn here</div>
@@ -110,5 +113,7 @@ export default function DiagramManager(props) {
 
 
 DiagramManager.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  height   : PropTypes.number,
+  width   : PropTypes.number
 }

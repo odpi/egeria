@@ -11,7 +11,7 @@ import * as d3                            from "d3";
 
 import PropTypes                          from "prop-types";
 
-
+import "./diagram.scss";
 
 
 /*
@@ -28,10 +28,18 @@ export default function EntityInheritanceDiagram(props) {
 
   const focusContext = useContext(FocusContext);
 
-  const width                       = 1070;
-  const height                      = 1100;
+  const width                       = 1200;
+  const height                      = 1120;
   const margin                      = {top: 30, right: 30, bottom: 30, left: 30};
   const egeria_primary_color_string = "#71ccdc";
+
+  /*
+   * Conversion is necessary between bounding client rectangle and
+   * parent container offset position, which requires (fixed) offsets to accommmodate
+   * top and lhs containers.
+   */
+  const topOffset =  230;
+  const leftOffset = 750;
 
 
   /*
@@ -39,10 +47,12 @@ export default function EntityInheritanceDiagram(props) {
    */
   const d3Container = useRef(null);
 
+  const drgContainerDiv = useRef();
+
 
   const [renderedTrees, setRenderedTrees] = useState({});
-  const [scrolled, setScrolled] = useState(false);
-
+  //const [scrolled, setScrolled] = useState(false);
+  let scrolled = false;
 
   let treeDepth;
   
@@ -50,12 +60,12 @@ export default function EntityInheritanceDiagram(props) {
    * The use of diagramFocusGUID is to ensure that the instancesContext focus is visible in the 
    * Diagram component. A function can either use it, or call instancesContext.focus directly.
    */ 
-  let diagramFocusType;
-
-  const setDiagramFocus = () => {   
-    console.log("setDiagramFocus to "+focusContext.focus);
-    diagramFocusType = focusContext.focus;
-  };
+  //let diagramFocusType;
+  // TODO remove me....
+  //const setDiagramFocus = () => {
+  //  console.log("setDiagramFocus to "+focusContext.focus);
+  //  diagramFocusType = focusContext.focus;
+  //};
 
   /*
    * This method clears any introductory text or previous rendering of the diagram, and resets control properties
@@ -71,7 +81,8 @@ export default function EntityInheritanceDiagram(props) {
 
     // Initialise control state...
     setRenderedTrees([]);
-    setScrolled(false);
+    //setScrolled(false);
+    scrolled = false;
     
   }
 
@@ -174,8 +185,6 @@ export default function EntityInheritanceDiagram(props) {
      */
     const renderInheritanceTree = (typeHierarchy, typeName, treeDepth) => {
 
-      console.log("render inheritance tree for root type "+typeName+" tree depth "+treeDepth);
-
       //var width = drawingArea.offsetWidth;
       //var margin = this.margin;
 
@@ -214,7 +223,7 @@ export default function EntityInheritanceDiagram(props) {
       const loc_renderedTrees = renderedTrees;
       loc_renderedTrees[typeName] = thisTree;
       setRenderedTrees(loc_renderedTrees);
-      console.log("rendered inheritance tree for root type "+typeName);
+
   }
 
   /*
@@ -226,7 +235,6 @@ export default function EntityInheritanceDiagram(props) {
     const treeNames = Object.keys(renderedTrees);
 
     treeNames.forEach(treeName => {
-      console.log("called update for tree "+treeName);
       const thisTree = renderedTrees[treeName];
       const root = thisTree.root;
       if (root !== undefined) {
@@ -248,13 +256,94 @@ export default function EntityInheritanceDiagram(props) {
   const transitionComplete = () => {
 
     // Earliest opportunity to scroll accurately
-    if (diagramFocusType !== undefined && diagramFocusType !== "") {
-        scrollSelectedIntoView(diagramFocusType);
+    //if (diagramFocusType !== undefined && diagramFocusType !== "") {
+        //scrollSelectedIntoView(diagramFocusType);
+    if (focusContext.focus !== undefined && focusContext.focus !== "") {
+        scrollSelectedIntoView(focusContext.focus);
     }
-  }  
+  }
 
-  const scrollSelectedIntoView = (typeName) => {
-    console.log("Scroll selected into view TODO!!");
+  // TODO - alignment
+  /*
+   * If an entity type is selected and the view has not already been scrolled, scroll it now.
+   */
+  const scrollSelectedIntoView = (typeToView) => {
+      if (scrolled === false) {
+          console.log("Scrolling...for type "+typeToView);
+
+          scrolled = true;
+
+          if (typeToView !== undefined && typeToView !== "") {
+
+              const elem = document.getElementById('elem'+typeToView);
+
+              // scrollIntoView almost works but the options do not work across browsers,
+              // including Safari, so it does not center and is not smooth. The lack of centering
+              // means it doesn't unscroll a scrolled diagram
+              // The following is what we might *like* to do:
+              // elem.scrollIntoView({behavior: "smooth", block:"center", inline:"center"});
+
+              // Instead of scrollIntoView - try to persist with the incremental scrolling
+              // which does work outside of a web component...
+              const brect = elem.getBoundingClientRect();
+
+              let v_togo = brect.top-(topOffset + props.outerHeight/2.0);
+              let h_togo = brect.left-(leftOffset + props.outerWidth/2.0);
+              console.log("Scroll by "+h_togo+" , "+v_togo);
+
+              const inc = 10;
+
+              //const drg = document.getElementById("drawingArea");
+              const drg = document.getElementById("drawingContainer");
+              incrementalScroll(drg, h_togo, v_togo, inc);
+
+          }
+      }
+  }
+
+  const incrementalScroll = (drg, h_togo, v_togo, inc) => {
+
+    let v_dirinc, h_dirinc;
+
+    // Vertical dimension
+    let v_inc = inc;
+// TODO alignment!!
+
+// TODO - try to unify the scroll dimensions...
+
+      if (Math.abs(v_togo) < v_inc) {
+          v_inc = Math.abs(v_togo);
+      }
+      const v_rate = Math.abs(v_togo) / (10 * v_inc);
+      if (Math.abs(v_togo) > 0) {
+          v_dirinc = Math.sign(v_togo) * v_inc * v_rate;
+          // scrollBy does not seem to work when in a web component
+          // scrollIntoView (which could be called from scrollSelectedIntoView() almost works
+          // but the center and smooth options are not well-supported across browsers
+          //drg.scrollBy(0, v_dirinc);
+          v_togo = v_togo - v_dirinc;
+      }
+
+      // Horizontal dimension
+      let h_inc = inc;
+      if (Math.abs(h_togo) < h_inc) {
+        h_inc = Math.abs(h_togo);
+      }
+      const h_rate = Math.abs(h_togo) / (10 * h_inc);
+      if (Math.abs(h_togo) > 0) {
+        h_dirinc = Math.sign(h_togo) * h_inc * h_rate;
+        // scrollBy does not seem to work when in a web component
+        // scrollIntoView (which could be called from scrollSelectedIntoView() almost works
+        // but the center and smooth options are not well-supported across browsers
+        //drg.scrollBy(h_dirinc, 0);
+        h_togo = h_togo - h_dirinc;
+      }
+
+      drg.scrollBy(h_dirinc, v_dirinc);
+
+      if (Math.abs(h_togo) > h_inc || Math.abs(v_togo) > v_inc) {
+          setTimeout( () => incrementalScroll(drg, h_togo, v_togo, inc) , 10);
+      }
   }
 
 
@@ -266,7 +355,8 @@ export default function EntityInheritanceDiagram(props) {
 
       // Since an update is being performed, unset scrolled so that on transition completion
       // the code will re-evaluate the scroll position
-      setScrolled(false);  // TODO - probably should not be state
+      //setScrolled(false);  // TODO - probably should not be state
+      scrolled = false;
 
       //var width = drawingArea.offsetWidth;
       const thisTree = tree;                        // TODO - rename
@@ -295,8 +385,6 @@ export default function EntityInheritanceDiagram(props) {
       });
       const height = right.x - left.x + margin.top + margin.bottom;
 
-      console.log("Tree has left "+left.x+" right "+right.x+" height "+height);
-      console.log("Tree has subtree.y0 "+subtree.y0+" subtree.x0 "+subtree.x0);
 
       const transition = thisTree.svg
                                  .transition()
@@ -369,13 +457,10 @@ export default function EntityInheritanceDiagram(props) {
 
        // Transition nodes to their new position.
 
-       console.log("do nodeUpdate");
        const nodeUpdate = node.merge(nodeEnter).transition(transition)
-         .attr("stroke", d => console.log("d.x "+d.x+" d.y "+d.y))  // TODO !!
                               .attr("transform", d => `translate(${d.y},${d.x})`)
                               .attr("fill-opacity", 1)
                               .attr("stroke-opacity", 1);
-      console.log("done nodeUpdate");
 
        // Toggle minus to plus depending on collapsed/expanded state...
        nodeUpdate.select('line')
@@ -386,7 +471,6 @@ export default function EntityInheritanceDiagram(props) {
        nodeUpdate.selectAll('text')
                  .attr("fill", d => inhHighlight(d) ? "blue" : "black" );
 
-
        // Transition exiting nodes to the parent's new position.
        const nodeExit = node.exit();
        nodeExit.transition(transition).remove()
@@ -394,7 +478,6 @@ export default function EntityInheritanceDiagram(props) {
                                    .attr("fill-opacity", 0)
                                    .attr("stroke-opacity", 0);
 
-       console.log("done all node processing");
 
        /*
         * Update the links…
@@ -478,7 +561,7 @@ export default function EntityInheritanceDiagram(props) {
 
 
   useEffect(
-    () => {      
+    () => {
       if ( d3Container.current && typesContext.tex) {       
         /* 
          * Initial rendering...
@@ -504,34 +587,47 @@ export default function EntityInheritanceDiagram(props) {
     [d3Container.current, typesContext.tex]  //, focusContext.focus]
   )
   useEffect(
-    () => {      
-      
-        // DOESN'T HELP setDiagramFocus();  TODO remove me
+    () => {
         updateAllTrees();
     },
   
     [focusContext.focus]
   )
+
+  useEffect(
+    () => {
+
+      console.log("EID effect set drgContainer to width "+props.outerWidth);
+      drgContainerDiv.current.style.width=""+props.outerWidth+"px";
+      console.log("EID effect set drgContainer to height "+props.outerHeight);
+      drgContainerDiv.current.style.height=""+props.outerHeight+"px";
+    },
+
+    [props.outerHeight, props.outerWidth]
+  )
   
 
   return (
-    <div>
-      <p>Entity Inheritance Diagram</p>
-
-      <div>
-        <div className="d3-component"
-             width={width} 
-             height={height} 
-             ref={d3Container}>        
-        </div>              
-      </div>
-    
-    </div>     
+    <div className="drawing-container" id="drawingContainer" ref={drgContainerDiv}>
+        <div id="drawingArea" className="d3-component"
+             ref={d3Container}>
+        </div>
+    </div>
   );
 
 }
 
 
 EntityInheritanceDiagram.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  outerHeight: PropTypes.number,
+  outerWidth: PropTypes.number
 }
+
+/*
+TOOK THESE OFF d3-component declaration
+ width={width}
+             height={height}
+*/
+
+// TODO - rename d3-component??
