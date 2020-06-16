@@ -152,6 +152,9 @@ public class GlossaryViewClientTest {
         List<GlossaryCategory> categories = underTest.getCategories(USER_ID, glossaries.get(0).getGuid(), 0, 10);
 
         assertEquals(3, categories.size());
+        assertEquals(this.categories.get(0).getGuid(), categories.get(0).getGuid());
+        assertEquals(this.categories.get(1).getGuid(), categories.get(1).getGuid());
+        assertEquals(this.categories.get(2).getGuid(), categories.get(2).getGuid());
     }
 
     @Test
@@ -176,6 +179,9 @@ public class GlossaryViewClientTest {
         List<Glossary> glossaries = underTest.getAllGlossaries(USER_ID,0, 10);
 
         assertEquals(3, glossaries.size());
+        assertEquals(this.glossaries.get(0).getGuid(), glossaries.get(0).getGuid());
+        assertEquals(this.glossaries.get(1).getGuid(), glossaries.get(1).getGuid());
+        assertEquals(this.glossaries.get(2).getGuid(), glossaries.get(2).getGuid());
     }
 
     @Test
