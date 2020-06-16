@@ -4,7 +4,6 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
