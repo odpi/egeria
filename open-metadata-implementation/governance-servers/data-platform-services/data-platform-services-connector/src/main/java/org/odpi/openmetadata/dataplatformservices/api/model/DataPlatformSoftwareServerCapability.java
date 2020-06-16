@@ -2,15 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.dataplatformservices.api.model;
 
-import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatformProperties;
 
 /**
  * The type Data platform software server capability.
  */
 public class DataPlatformSoftwareServerCapability {
 
-    private String userId;
-    private SoftwareServerCapability softwareServerCapability;
+    private String                 userId;
+    private DataPlatformProperties dataPlatformProperties;
 
     /**
      * Gets user id.
@@ -35,24 +35,24 @@ public class DataPlatformSoftwareServerCapability {
      *
      * @return the software server capability
      */
-    public SoftwareServerCapability getSoftwareServerCapability() {
-        return softwareServerCapability;
+    public DataPlatformProperties getDataPlatformProperties() {
+        return dataPlatformProperties;
     }
 
     /**
      * Sets software server capability.
      *
-     * @param softwareServerCapability the software server capability
+     * @param dataPlatformProperties the software server capability
      */
-    public void setSoftwareServerCapability(SoftwareServerCapability softwareServerCapability) {
-        this.softwareServerCapability = softwareServerCapability;
+    public void setDataPlatformProperties(DataPlatformProperties dataPlatformProperties) {
+        this.dataPlatformProperties = dataPlatformProperties;
     }
 
     @Override
     public String toString() {
         return "DataPlatformSoftwareServerCapability{" +
                 "userId='" + userId + '\'' +
-                ", softwareServerCapability=" + softwareServerCapability +
+                ", dataPlatformProperties=" + dataPlatformProperties +
                 '}';
     }
 }

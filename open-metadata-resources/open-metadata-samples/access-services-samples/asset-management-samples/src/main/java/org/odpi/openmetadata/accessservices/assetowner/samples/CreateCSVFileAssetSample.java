@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetowner.samples;
 
 
-import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
 
 /**
@@ -69,8 +68,6 @@ public class CreateCSVFileAssetSample
      */
     public static void main(String[] args)
     {
-        org.apache.log4j.BasicConfigurator.configure(new NullAppender());
-
         String  fileName = "open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/ContactList.csv";
         String  serverName = "cocoMDS1";
         String  serverURLRoot = "http://localhost:8081";

@@ -40,6 +40,11 @@ public class SuperTypesRetriever {
             return;
         }
         superTypes.add(type.getName());
+
+        if(type.getSuperType() == null){
+            return;
+        }
+
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, type.getSuperType().getName());
         if (typeDefByName != null) {
             collectSuperTypes(userId, typeDefByName, superTypes);

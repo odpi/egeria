@@ -31,7 +31,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     }
 
     /**
-     * Create a TermHASARelationship is the relationship between a spine object and a spine attribute.
+     * Create a Hasa is the relationship between a spine object and a spine attribute.
      * Note that this method does not error if the relationship ends are not spine objects or spine attributes.
      * This allows the user to create terms then make them spine objects and spine attributes at a later stage.
      * <p>
@@ -39,7 +39,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
-     * @return response, when successful contains the created TermHASARelationship
+     * @return response, when successful contains the created Hasa
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -51,7 +51,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/has-as")
-    public SubjectAreaOMASAPIResponse createTermHASARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermHASARelationship termHASARelationship)
+    public SubjectAreaOMASAPIResponse createTermHASARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody Hasa termHASARelationship)
     {
         return restAPI.createTermHASARelationship(serverName, userId,termHASARelationship);
     }
@@ -75,14 +75,14 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
         return restAPI.getTermHASARelationship(serverName, userId,guid);
     }
     /**
-     * Update a TermHASARelationship is the relationship between a spine object and a spine attribute.
+     * Update a Hasa is the relationship between a spine object and a spine attribute.
      * <p>
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created TermHASARelationship
+     * @return response, when successful contains the created Hasa
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -94,7 +94,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/has-as")
-    public SubjectAreaOMASAPIResponse updateTermHASARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermHASARelationship termHASARelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTermHASARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody Hasa termHASARelationship, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermHASARelationship(serverName, userId,termHASARelationship,isReplace);
     }
 
@@ -1098,7 +1098,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param termTYPEDBYRelationship the TermTYPEDBYRelationship relationship
+     * @param termTYPEDBYRelationship the TypedBy relationship
      * @return response, when successful contains the created termTYPEDBYRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1111,7 +1111,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/typed-bys")
-    public SubjectAreaOMASAPIResponse createtermTYPEDBYRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermTYPEDBYRelationship  termTYPEDBYRelationship)
+    public SubjectAreaOMASAPIResponse createtermTYPEDBYRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TypedBy termTYPEDBYRelationship)
     {
         return restAPI.createTermTYPEDBYRelationship(serverName, userId,termTYPEDBYRelationship);
     }
@@ -1137,7 +1137,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     }
 
     /**
-     * Update a TermTYPEDBYRelationship relationship, which is a link between a spine attribute and its type.
+     * Update a TypedBy relationship, which is a link between a spine attribute and its type.
      * <p>
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -1156,16 +1156,16 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/typed-bys")
-    public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermTYPEDBYRelationship termTYPEDBYRelationship,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TypedBy termTYPEDBYRelationship, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermTYPEDBYRelationship(serverName, userId,termTYPEDBYRelationship,isReplace);
     }
 
     /**
-     * Delete a TermTYPEDBYRelationship relationship, which is a link between a spine attribute and its type.
+     * Delete a TypedBy relationship, which is a link between a spine attribute and its type.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermTYPEDBYRelationship relationship to delete
+     * @param guid   guid of the TypedBy relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -1217,7 +1217,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param iSARelationship the ISARelationship relationship
+     * @param iSARelationship the Isa relationship
      * @return response, when successful contains the created iSARelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1230,7 +1230,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/is-as")
-    public SubjectAreaOMASAPIResponse createiSARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody ISARelationship  iSARelationship)
+    public SubjectAreaOMASAPIResponse createiSARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody Isa iSARelationship)
     {
         return restAPI.createISARelationship(serverName, userId,iSARelationship);
     }
@@ -1256,7 +1256,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     }
 
     /**
-     * Update a ISARelationship relationship, which is a link between a more general glossary term and a more specific definition.
+     * Update a Isa relationship, which is a link between a more general glossary term and a more specific definition.
      * <p>
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -1275,15 +1275,15 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/is-as")
-    public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody ISARelationship isa,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody Isa isa, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateISARelationship(serverName, userId,isa,isReplace);
     }
     /**
-     * Delete a ISARelationship relationship, which is a link between a more general glossary term and a more specific definition.
+     * Delete a Isa relationship, which is a link between a more general glossary term and a more specific definition.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the ISARelationship relationship to delete
+     * @param guid   guid of the Isa relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -1336,7 +1336,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param termISATypeOFRelationship the TermISATypeOFRelationship relationship
+     * @param termISATypeOFRelationship the IsaTypeOf relationship
      * @return response, when successful contains the created termISATypeOFRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1349,7 +1349,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/is-a-type-ofs")
-    public SubjectAreaOMASAPIResponse createtermISATypeOFRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermISATypeOFRelationship  termISATypeOFRelationship)
+    public SubjectAreaOMASAPIResponse createtermISATypeOFRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody IsaTypeOf termISATypeOFRelationship)
     {
         return restAPI.createTermISATypeOFRelationship(serverName, userId,termISATypeOFRelationship);
     }
@@ -1375,7 +1375,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     }
 
     /**
-     * Update a ISARelationship relationship, which is a link between a more general glossary term and a more specific definition.
+     * Update a Isa relationship, which is a link between a more general glossary term and a more specific definition.
      * <p>
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -1394,17 +1394,17 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/is-a-type-ofs")
-    public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermISATypeOFRelationship isatypeof,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateISARelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody IsaTypeOf isatypeof, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermISATypeOFRelationship(serverName, userId,isatypeof,isReplace);
     }
 
 
     /**
-     * Delete a TermISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Delete a IsaTypeOf relationship, which is an inheritance relationship between two spine objects.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermISATypeOFRelationship relationship to delete
+     * @param guid   guid of the IsaTypeOf relationship to delete
      * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -1474,7 +1474,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/term-categorizations")
-    public SubjectAreaOMASAPIResponse createTermCategorization(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermCategorizationRelationship  termCategorizationRelationship)
+    public SubjectAreaOMASAPIResponse createTermCategorization(@PathVariable String serverName, @PathVariable String userId, @RequestBody Categorization termCategorizationRelationship)
     {
         return  restAPI.createTermCategorizationRelationship(serverName, userId, termCategorizationRelationship);
     }
@@ -1519,7 +1519,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/term-categorizations")
-    public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermCategorizationRelationship isatypeof,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody Categorization isatypeof, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTermCategorizationRelationship(serverName, userId,isatypeof,isReplace);
     }
 
@@ -1597,7 +1597,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/term-anchor")
-    public SubjectAreaOMASAPIResponse createTermAnchor(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermAnchorRelationship  termAnchorRelationship)
+    public SubjectAreaOMASAPIResponse createTermAnchor(@PathVariable String serverName, @PathVariable String userId, @RequestBody TermAnchor termAnchorRelationship)
     {
         return restAPI.createTermAnchorRelationship(serverName, userId, termAnchorRelationship);
     }
@@ -1692,7 +1692,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/category-anchor")
-    public SubjectAreaOMASAPIResponse createCategoryAnchor(@PathVariable String serverName, @PathVariable String userId, @RequestBody CategoryAnchorRelationship  categoryAnchorRelationship)
+    public SubjectAreaOMASAPIResponse createCategoryAnchor(@PathVariable String serverName, @PathVariable String userId, @RequestBody CategoryAnchor categoryAnchorRelationship)
     {
         return restAPI.createCategoryAnchorRelationship(serverName, userId, categoryAnchorRelationship);
     }
@@ -1783,7 +1783,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PostMapping( path = "/users/{userId}/relationships/project-scopes")
-    public SubjectAreaOMASAPIResponse createProjectScopeRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody ProjectScopeRelationship projectScope)
+    public SubjectAreaOMASAPIResponse createProjectScopeRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody ProjectScope projectScope)
     {
         return restAPI.createProjectScopeRelationship(serverName, userId,projectScope);
     }
@@ -1826,7 +1826,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @PutMapping( path = "/users/{userId}/relationships/project-scopes")
-    public SubjectAreaOMASAPIResponse updateProjectScopeRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody ProjectScopeRelationship projectScope,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateProjectScopeRelationship(@PathVariable String serverName, @PathVariable String userId, @RequestBody ProjectScope projectScope, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateProjectScopeRelationship(serverName, userId,projectScope,isReplace);
     }
     /**

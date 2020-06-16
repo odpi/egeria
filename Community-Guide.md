@@ -7,16 +7,79 @@ This project welcomes contributors from any organization or background, provided
 willing to follow the simple processes outlined below, as well as adhere to the 
 [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
 
-## Steps to contribute
+## Joining the community
+
+The community collaborates primarily through `Zoom` calls, `GitHub` and the instance messaging tool, `Slack`.
+There is also a mailing list.
+
+### Zoom calls
+
+There are two regular online meetings using Zoom each week, both on a Tuesday. All are welcome.
+
+* **Developers call** - one hour - 
+  Discussion on code development - not minuted -
+  
+  10 am (UK); 11 am (Amsterdam/CET); 12pm (Bucharest)
+  
+  Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)
+  
+* **Community call** - one hour - 
+  Demos, meet-ups and other activities going on in the Egeria community
+  
+  2pm (UK); 3pm (Amsterdam/CET); 4pm (Bucharest)
+  
+  Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)
+ 
+  Meeting Agenda and Minutes are here [https://github.com/odpi/data-governance/wiki](https://github.com/odpi/data-governance/wiki)
+  
+
+### Connecting to Slack
+
+Egeria uses the [ODPi's Slack community](http://slack.odpi.org/) to provide an ongoing dialogue between members.
+This creates a recorded discussion of design decisions and discussions that complement the project meetings.
+
+Follow the link above and register with the ODPi slack service using your email address.
+Once signed in you can see all of the active slack channels.
+The main slack channel for the Egeria project is called `#egeria-project`:
+
+[https://odpi.slack.com/messages/CAZDMLTFF](https://odpi.slack.com/messages/CAZDMLTFF]).
+
+Additional channels are added from time to time as new workgroups and discussion topics are established.
+
+### Egeria's mailing list
+
+Follow the link to sign up to the [mailing list](https://lists.odpi.org/g/odpi-project-egeria).
+
+## Steps to contribute content to the project
+
+The Egeria project used [GitHub](https://github.com/odpi)
+to maintain its content.  It has the following repositories:
+
+* [egeria](https://github.com/odpi/egeria) - contains the core Egeria function along with samples, tutorials and documentation.
+* [egeria-connector-hadoop-ecosystem](https://github.com/odpi/egeria-connector-hadoop-ecosystem) - contains connectors to integrate
+technologies from the hadoop ecosystem into the open metadata ecosystem.
+* [egeria-connector-ibm-information-server](https://github.com/odpi/egeria-connector-ibm-information-server) - contains connectors to integrate IBM Information Server into the open metadata ecosystem.
+* [data-governance](https://github.com/odpi/data-governance) - contains Egeria's Guidance on Governance (GoG) as well as
+large media files such as presentations and movies.
+* [egeria-dev-projects](https://github.com/odpi/egeria-dev-projects) - contains fun projects for developers to help them learn about the Egeria technology.
+* [egeria-palisade](https://github.com/odpi/egeria-palisade) - contains content from the collaboration between
+the Egeria project and the [Palisade](https://github.com/gchq/palisade) project.
+
+All of these repositories are publicly visible.  However, if you want to contribute new content then you need
+to create a GitHub account.  This can be done from the top of the GitHub home page.
+
+## Steps to contribute content to the project
+
+Once you have a GitHub id you can proceed.
 
 1. Review the [developer guidelines](developer-resources/Developer-Guidelines.md).
-1. Open an issue on [GitHub](https://github.com/) to cover the proposed change (you may need to create an account on GitHub first).
-1. Clone the repository and prepare your contribution in a new git branch (see [Using git to prepare a contribution](#using-git-to-prepare-a-contribution)).
+1. Link to the repository that you want to contribute to and open an issue to cover the proposed change.
+1. Fork/clone the repository and prepare your contribution in a new git branch (see [Using git to prepare a contribution](#using-git-to-prepare-a-contribution)).
 1. As you commit your changes, make sure they are signed (see [Why the DCO?](#why-the-dco)).
-1. Issue a [git pull request](#creating-a-pull-request) from [GitHub](https://github.com/odpi/egeria) to initiate the review.
-1. Wait for a maintainer to review and approve the commit.
+1. Create a [git pull request](#creating-a-pull-request) from [GitHub](https://github.com/odpi/egeria) to initiate the request to include your changes into the master branch of Egeria.
+1. Wait for a maintainer to review and approve the pull request.
 
-## Important additional setup for Windows users
+### Important additional setup for Windows users
 
 If using git on windows, it is **essential** to configure long pathname support, since 
 otherwise the git clone, and other git operations on Egeria **will** fail.
@@ -31,19 +94,21 @@ For more detail see [this article](https://github.com/msysgit/msysgit/wiki/Git-c
 
 This is not required on MacOS or Linux.
 
-## Creating a Linux Foundation account and creating an issue
-
-The Linux Foundation provide build and distribution facilities.
-You need an account to access some of the reports from the build.
-
-This is the link to create a [Linux Foundation account](https://identity.linuxfoundation.org). 
-Note the username and password you selected.
-
 ## Using git to prepare a contribution
 
-The Egeria content is located in git at https://github.com/odpi/egeria.
+The core Egeria content is located in git at [https://github.com/odpi/egeria](https://github.com/odpi/egeria).
 
-Whilst project maintainers are able to directly work with the Egeria repository, as an open source project we recommend use of the [GitHub's fork and pull model](https://help.github.com/articles/about-collaborative-development-models/), which will support contributions from anyone without requiring direct write access to the Egeria repository.
+All contributors must use the [GitHub's fork and pull model](https://help.github.com/articles/about-collaborative-development-models/),
+which will support contributions from anyone without requiring direct write access to the Egeria repository.
+
+### Create an issue on GitHub
+
+All contributions should begin by creating an new a
+[GitHub Issue](https://github.com/odpi/egeria/issues).
+Describe the change that you propose to make and why.
+This will help the Egeria maintainers understand your contribution.
+It is also possible to ask questions and validate your design
+through the issue.  
 
 ### Creating a fork
 
@@ -51,11 +116,14 @@ If you are intending to contribute code rather than browse, the easiest way to p
 a contribution is to start off by
 creating a [fork](https://guides.github.com/activities/forking/) of the Egeria repository.
 
-This can be done by navigating the the Egeria URL above, and logging into the github UI with a 
+This can be done by navigating the the [Egeria URL](https://github.com/odpi/egeria) above,
+and logging into the github UI with a 
 registered account. You will then see a 'Fork' button at the top right, and should click this to 
 create your own fork to work with Egeria. 
 
-This needs doing only once.
+![Fork Button](developer-resources/tools/git-hub-fork-button.png)
+
+This only needs to be done once.
 
 ### Creating a local copy of the code
 
@@ -104,6 +172,8 @@ $ git push origin example-branch
 
 When you create your own branch, use a name that describes that the branch is for as you will
 use it for all changes you are collecting together to push as one group to Egeria.
+This name will be publicly visible too once you start pushing your changes
+to Egeria so keep it clean :).
 
 You can also see that 'origin' will point to your GitHub fork, whilst 'upstream' points to the Egeria master branch:
 
@@ -155,7 +225,7 @@ directly link to GitHub
 issues. By doing this others following the issue will see the commits to your fork
 easily so can track the work going on even before you submit to the **egeria** repository.
 
-It is also essential to push the changes from your local machine up to GitHub ready for the next step - note this references GitHub issues, also read [the section on JIRA](#creating-a-linux-foundation-account-and-creating-an-issue):
+It is also essential to push the changes from your local machine up to GitHub ready for the next step.
 
 ```bash
 $ git commit -s -m 'Best code change ever as per Issue #1433'
@@ -173,10 +243,31 @@ and then making any necessary changes to merge conflicts, and commit/push as abo
 
 ### Creating a pull request
 
-The easiest way to create a pull request is by navigating to your local fork of the Egeria repository eg. `https://github.com/USER/egeria`, selecting your working branch, and clicking on 'pull request'. Add an explanation and links to any JIRA or GitHub Issues, and then submit to the Egeria maintainers for review and inclusion in the code.
+The easiest way to create a pull request is by navigating to your local fork of the Egeria repository eg. `https://github.com/USER/egeria`,
+selecting your working branch,
+and clicking on 'pull request'.
+Add an explanation and links to any GitHub Issues that are relevant
+to your change,
+and then submit the pull request.
+
+GitHub automatically validates that you have signed all of your commits and
+that any code builds.
+
+The Egeria maintainers will then review and if all is well, it will be merged
+into the master branch and you have officially made a successful contribution to
+the project.  Congratulations :).
 
 Further changes can be done using the same branch, and will be added to the same pull request
-automatically.
+automatically until the pull request is merged into master.
+
+### Creating a Linux Foundation account
+
+The Linux Foundation provide build and distribution facilities.
+You need an account to access some of the reports from the build.
+
+This is the link to create a [Linux Foundation account](https://identity.linuxfoundation.org). 
+Note the username and password you selected.
+
 
 ### Cleaning up
 

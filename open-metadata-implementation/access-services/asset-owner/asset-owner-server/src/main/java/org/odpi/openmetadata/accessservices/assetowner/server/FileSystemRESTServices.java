@@ -3,13 +3,17 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.handlers.FileSystemHandler;
+import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
+import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.FileSystemHandler;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SoftwareServerCapabilityHandler;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SoftwareServerCapabilityMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -75,20 +79,21 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                SoftwareServerCapabilityHandler handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
 
-                response.setGUID(handler.createFileSystemInCatalog(userId,
-                                                                   requestBody.getUniqueName(),
-                                                                   requestBody.getDisplayName(),
-                                                                   requestBody.getDescription(),
-                                                                   requestBody.getFileSystemType(),
-                                                                   requestBody.getVersion(),
-                                                                   requestBody.getPatchLevel(),
-                                                                   requestBody.getSource(),
-                                                                   requestBody.getFormat(),
-                                                                   requestBody.getEncryption(),
-                                                                   requestBody.getAdditionalProperties(),
-                                                                   methodName));
+                response.setGUID(handler.createFileSystem(userId,
+                                                          requestBody.getUniqueName(),
+                                                          requestBody.getDisplayName(),
+                                                          requestBody.getDescription(),
+                                                          requestBody.getFileSystemType(),
+                                                          requestBody.getVersion(),
+                                                          requestBody.getPatchLevel(),
+                                                          requestBody.getSource(),
+                                                          requestBody.getFormat(),
+                                                          requestBody.getEncryption(),
+                                                          requestBody.getAdditionalProperties(),
+                                                          null,
+                                                          methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -147,7 +152,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.createFolderStructureInCatalog(userId,
                                                                          anchorGUID,
@@ -209,7 +214,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.createFolderStructureInCatalog(userId,
                                                                          requestBody.getFullPath(),
@@ -253,6 +258,7 @@ public class FileSystemRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse attachFolderToFileSystem(String          serverName,
                                                  String          userId,
                                                  String          fileSystemGUID,
@@ -270,7 +276,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
             handler.attachFolderToFileSystem(userId,
                                              fileSystemGUID,
@@ -314,6 +320,7 @@ public class FileSystemRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse detachFolderFromFileSystem(String          serverName,
                                                    String          userId,
                                                    String          fileSystemGUID,
@@ -331,7 +338,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
             handler.detachFolderFromFileSystem(userId,
                                                fileSystemGUID,
@@ -394,7 +401,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.addDataFileAssetToCatalog(userId,
                                                                     requestBody.getDisplayName(),
@@ -462,7 +469,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.addDataFolderAssetToCatalog(userId,
                                                                       requestBody.getDisplayName(),
@@ -510,6 +517,7 @@ public class FileSystemRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  attachDataFileAssetToFolder(String          serverName,
                                                      String          userId,
                                                      String          folderGUID,
@@ -527,7 +535,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
             handler.attachDataFileAssetToFolder(userId,
                                                 folderGUID,
@@ -573,6 +581,7 @@ public class FileSystemRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  detachDataFileAssetFromFolder(String          serverName,
                                                        String          userId,
                                                        String          folderGUID,
@@ -590,7 +599,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
             handler.detachDataFileAssetFromFolder(userId,
                                                   folderGUID,
@@ -635,6 +644,7 @@ public class FileSystemRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  moveDataFileInCatalog(String          serverName,
                                                String          userId,
                                                String          folderGUID,
@@ -652,7 +662,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
             handler.moveDataFileInCatalog(userId,
                                           folderGUID,
@@ -697,6 +707,7 @@ public class FileSystemRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  moveDataFolderInCatalog(String          serverName,
                                                  String          userId,
                                                  String          folderGUID,
@@ -714,7 +725,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
             handler.moveDataFolderInCatalog(userId,
                                             folderGUID,
@@ -771,11 +782,11 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            SoftwareServerCapabilityHandler handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
 
-            response.setFileSystem(handler.getFileSystemByGUID(userId,
-                                                               fileSystemGUID,
-                                                               methodName));
+            response.setFileSystem(new FileSystem(handler.getSoftwareServerCapabilityByGUID(userId,
+                                                                                            fileSystemGUID,
+                                                                                            methodName)));
         }
         catch (InvalidParameterException error)
         {
@@ -827,11 +838,11 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            SoftwareServerCapabilityHandler handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
 
-            response.setFileSystem(handler.getFileSystemByUniqueName(userId,
-                                                                     uniqueName,
-                                                                     methodName));
+            response.setFileSystem(new FileSystem(handler.getSoftwareServerCapabilityByUniqueName(userId,
+                                                                                                  uniqueName,
+                                                                                                  methodName)));
         }
         catch (InvalidParameterException error)
         {
@@ -885,12 +896,13 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            SoftwareServerCapabilityHandler handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
 
-            response.setGUIDs(handler.getFileSystems(userId,
-                                                     startingFrom,
-                                                     maxPageSize,
-                                                     methodName));
+            response.setGUIDs(handler.getSoftwareServerCapabilityGUIDsByClassification(userId,
+                                                                                       SoftwareServerCapabilityMapper.FILE_SYSTEM_CLASSIFICATION_NAME,
+                                                                                       startingFrom,
+                                                                                       maxPageSize,
+                                                                                       methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -943,11 +955,11 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
-            response.setFolder(handler.getFolderByGUID(userId,
-                                                       folderGUID,
-                                                       methodName));
+            response.setFolder(new Folder(handler.getFolderByGUID(userId,
+                                                                  folderGUID,
+                                                                  methodName)));
         }
         catch (InvalidParameterException error)
         {
@@ -1001,11 +1013,11 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
-                response.setFolder(handler.getFolderByPathName(userId,
-                                                               requestBody.getFullPath(),
-                                                               methodName));
+                response.setFolder(new Folder(handler.getFolderByPathName(userId,
+                                                                          requestBody.getFullPath(),
+                                                                          methodName)));
             }
         }
         catch (InvalidParameterException error)
@@ -1062,7 +1074,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
             response.setGUIDs(handler.getNestedFolders(userId,
                                                        anchorGUID,
@@ -1124,7 +1136,7 @@ public class FileSystemRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
             response.setGUIDs(handler.getFolderFiles(userId,
                                                      folderGUID,
@@ -1190,7 +1202,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.addAvroFileToCatalog(userId,
                                                                requestBody.getDisplayName(),
@@ -1257,7 +1269,7 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FileSystemHandler handler = instanceHandler.getFileSystemHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.addCSVFileToCatalog(userId,
                                                               requestBody.getDisplayName(),

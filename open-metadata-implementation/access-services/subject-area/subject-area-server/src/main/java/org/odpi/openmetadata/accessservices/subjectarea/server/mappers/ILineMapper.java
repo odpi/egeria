@@ -34,4 +34,10 @@ public interface ILineMapper
      * @throws InvalidParameterException a supplied parameter was null or invalid.
      */
      Relationship mapLineToRelationship(Line line)  throws InvalidParameterException;
+
+    /**
+     * Get the type name
+     * @return type name
+     */
+     String getTypeName();
 }

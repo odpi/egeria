@@ -69,7 +69,7 @@ class LoginView extends PolymerElement {
        <div class="container6">
           <div   class="login">
              <iron-form id="form">
-                <form method="post" action="/auth/login">
+                <form method="post" action="auth/login">
                     <paper-input value={{username}} label="Username" name="username" required
                                  error-message="Username is required"                                
                                  autofocus></paper-input>

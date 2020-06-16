@@ -6,6 +6,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Column;
 import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
@@ -25,6 +26,7 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sound.sampled.Line;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -35,42 +37,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_DELEGATION;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_IMPLEMENTATION;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_SCHEMA;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS_PORT;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_DATAFLOW_WITH_PROCESS;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_INCLUDED_IN;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC_ASSIGNMENT;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_CREATED_BY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_CREATE_TIME;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_UPDATED_BY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_UPDATE_TIME;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_VERSION;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_METADATA_ID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_CREATED_BY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_CREATE_TIME;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_DISPLAY_NAME;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_UPDATED_BY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_VERSION;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PORT_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
 public class LineageGraphConnector extends LineageGraphConnectorBase {
 
@@ -81,7 +49,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     private boolean supportingTransactions;
     /**
      * Instantiates the graph based on the configuration passed.
-     *
      */
     public void initializeGraphDB() throws OpenLineageException {
 
@@ -143,7 +110,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     /**
      * Finds the paths to the input columns from all the processes in the graph.
-     * @param g - Graph traversal object
+     *
+     * @param g    - Graph traversal object
      * @param guid - The unique identifier of a Process
      */
     private void findInputColumns(GraphTraversalSource g,String guid) {
@@ -159,9 +127,10 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     /**
      * Finds the output column of a Process based on the input.
-     * @param g - Graph traversal object
+     *
+     * @param g        - Graph traversal object
      * @param columnIn - THe vertex of the schema element before processing.
-     * @param process - The vertex of the process.
+     * @param process  - The vertex of the process.
      */
     private void findOutputColumn(GraphTraversalSource g,Vertex columnIn,Vertex process){
         List<Vertex> schemaElementVertex = g.V()
@@ -182,9 +151,10 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     /**
      * Returns the vertex from where the searching for the output column will start.
-     * @param g - Graph traversal object
+     *
+     * @param g                   - Graph traversal object
      * @param schemaElementVertex - THe vertex of the column before processing.
-     * @param process - The vertex of the process.
+     * @param process             - The vertex of the process.
      * @return Return the vertex of the initial column
      */
     private Vertex getProcessForTheSchemaElement(GraphTraversalSource g,List<Vertex> schemaElementVertex,Vertex process){
@@ -207,25 +177,27 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     /**
      * Initiates the process of copying the input and output vertices to the MainGraph.
-     * @param columnIn - The vertex of the input schema element
+     *
+     * @param columnIn  - The vertex of the input schema element
      * @param columnOut - THe vertex of the output schema element
-     * @param process - The vertex of the process.
+     * @param process   - The vertex of the process.
      */
     private void moveColumnProcessColumn(Vertex columnIn,Vertex columnOut,Vertex process){
         if (columnOut != null) {
             String columnOutGuid = g.V(columnOut.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID).toString();
             String columnInGuid = g.V(columnIn.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID).toString();
             if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
-                addNodesAndEdgesForQuerying(columnIn,columnOut,process);
+                addNodesAndEdgesForQuerying(columnIn, columnOut, process);
             }
         }
     }
 
     /**
      * Add nodes and edges that are going to be used for lineage UI
-     * @param columnIn - The vertex of the input schema element
+     *
+     * @param columnIn  - The vertex of the input schema element
      * @param columnOut - THe vertex of the output schema element
-     * @param process - The vertex of the process.
+     * @param process   - The vertex of the process.
      */
     private void addNodesAndEdgesForQuerying(Vertex columnIn,Vertex columnOut,Vertex process){
 
@@ -279,6 +251,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     /**
      * Creates vertices and the relationships between them
+     *
      * @param graphContext - graph Collection that contains vertices and edges to be stored
      */
     @Override
@@ -301,32 +274,37 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         LineageEntity fromEntity = graphContext.getFromVertex();
         LineageEntity toEntity = graphContext.getToVertex();
 
+        upsertToGraph(fromEntity,toEntity,graphContext.getRelationshipType(),graphContext.getRelationshipGuid());
+
+    }
+
+    private void upsertToGraph(LineageEntity fromEntity,LineageEntity toEntity,String relationshipLabel,String relationshipGuid){
 
         Vertex from =   g.V().has(PROPERTY_KEY_ENTITY_GUID, fromEntity.getGuid())
-                             .fold()
-                             .coalesce(unfold(),
-                                     addV(fromEntity.getTypeDefName())
-                                                .property(PROPERTY_KEY_ENTITY_GUID,fromEntity.getGuid()))
-                             .next();
+                .fold()
+                .coalesce(unfold(),
+                        addV(fromEntity.getTypeDefName())
+                                .property(PROPERTY_KEY_ENTITY_GUID,fromEntity.getGuid()))
+                .next();
 
         Vertex to =  g.V().has(PROPERTY_KEY_ENTITY_GUID,toEntity.getGuid())
-                          .fold()
-                          .coalesce(unfold(),
-                                  addV(toEntity.getTypeDefName())
-                                             .property(PROPERTY_KEY_ENTITY_GUID,toEntity.getGuid()))
-                          .next();
+                .fold()
+                .coalesce(unfold(),
+                        addV(toEntity.getTypeDefName())
+                                .property(PROPERTY_KEY_ENTITY_GUID,toEntity.getGuid()))
+                .next();
 
 
-                g.V(from.id()).as("from")
-                        .V(to.id())
-                        .coalesce(inE(graphContext.getRelationshipType()).where(outV().as("from")),
-                                addE(graphContext.getRelationshipType()).from("from")).property(PROPERTY_KEY_RELATIONSHIP_GUID,graphContext.getRelationshipGuid()).next();
+        g.V(from.id()).as("from")
+                .V(to.id())
+                .coalesce(inE(relationshipLabel).where(outV().as("from")),
+                        addE(relationshipLabel).from("from")).property(PROPERTY_KEY_RELATIONSHIP_GUID,relationshipGuid).next();
         addOrUpdatePropertiesVertex(from,fromEntity);
         addOrUpdatePropertiesVertex(to,toEntity);
-         //TODO add relationship properties -> meaning add relationship properties on AssetLineage omas event
-         if(supportingTransactions){
-             g.tx().commit();
-         }
+        //TODO add relationship properties -> meaning add relationship properties on AssetLineage omas event
+        if(supportingTransactions){
+            g.tx().commit();
+        }
     }
 
     /**
@@ -362,6 +340,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     /**
      * Updates the properties of a vertex
+     *
      * @param lineageEntity - LineageEntity object that has the updated values
      */
     @Override
@@ -389,7 +368,26 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     /**
+     * Create or update the relationship between two edges
+     * In case the vertexes are not created, they are firstly created
+     *
+     * @param lineageRelationship relationship to be updated or created
+     */
+    @Override
+    public void upsertRelationship(LineageRelationship lineageRelationship) {
+        GraphTraversalSource g = lineageGraph.traversal();
+
+        LineageEntity firstEnd = lineageRelationship.getFirstEntity();
+        LineageEntity secondEnd = lineageRelationship.getSecondEntity();
+
+        upsertToGraph(firstEnd,secondEnd,lineageRelationship.getTypeDefName(),lineageRelationship.getGuid());
+
+        addOrUpdatePropertiesEdge(lineageRelationship);
+    }
+
+    /**
      * Updates the properties of an edge
+     *
      * @param lineageRelationship - lineageRelationship object that has the updated values
      */
     @Override
@@ -403,6 +401,78 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             return;
         }
         addOrUpdatePropertiesEdge(lineageRelationship);
+    }
+
+    /**
+     * Updates the classification of a vertex
+     * @param classificationContext - LineageEntity object that has the updated values
+     */
+    @Override
+    public void updateClassification(Map<String, Set<GraphContext>> classificationContext){
+        if(classificationContext.entrySet().size() != 1){
+            log.debug("Unable to update classifications for no or multiple entities.");
+            return;
+        }
+
+        Set<GraphContext> graphContexts = classificationContext.entrySet().iterator().next().getValue();
+        for (GraphContext graphContext : graphContexts) {
+            String classificationGuid = graphContext.getToVertex().getGuid();
+            Iterator<Vertex> vertexIterator = g.V().has(PROPERTY_KEY_ENTITY_GUID, classificationGuid);
+            if (!vertexIterator.hasNext()) {
+                log.debug("Classification with guid {} not found", classificationGuid);
+                if(supportingTransactions) {
+                    g.tx().rollback();
+                }
+                continue;
+            }
+
+            Vertex storedClassification = vertexIterator.next();
+            long storedClassificationVersion = (long) g.V(storedClassification.id()).elementMap(PROPERTY_KEY_ENTITY_VERSION)
+                    .toList().get(0).get(PROPERTY_KEY_ENTITY_VERSION);
+//            long storedClassificationVersion = (long) storedClassification.property(PROPERTY_KEY_ENTITY_VERSION).value();
+            if (storedClassificationVersion < graphContext.getToVertex().getVersion()) {
+                addOrUpdatePropertiesVertex(storedClassification, graphContext.getToVertex());
+                break;
+            }
+        }
+    }
+
+    /**
+     * Deletes a classification of a vertex
+     *
+     * @param entityGuid entity guid
+     * @param classificationContext - any remaining classifications, empty map if none
+     */
+    @Override
+    public void deleteClassification(String entityGuid, Map<String, Set<GraphContext>> classificationContext){
+        if(classificationContext.entrySet().size() > 1){
+            log.debug("Unable to delete classifications for multiple entities.");
+            return;
+        }
+
+        Set<GraphContext> remainingClassifications = classificationContext.entrySet().iterator().next().getValue();
+
+        Graph entityAndClassificationsGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, entityGuid).bothE(EDGE_LABEL_CLASSIFICATION)
+                .subgraph("s").cap("s").next();
+
+        Iterator<Edge> edges = entityAndClassificationsGraph.edges();
+
+        while(edges.hasNext()){
+            Edge edge = edges.next();
+//            String storedClassificationGuid = (String)edge.inVertex().property(PROPERTY_KEY_ENTITY_GUID).value();
+            String storedClassificationGuid = (String) g.E(edge.id()).inV().elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID);
+
+            boolean classificationExists =  remainingClassifications.stream()
+                    .anyMatch(gc -> gc.getToVertex().getGuid().equals(storedClassificationGuid));
+            if(!classificationExists){
+                g.V().has(PROPERTY_KEY_ENTITY_GUID,storedClassificationGuid).drop();
+                g.E(edge.id()).drop();
+                if(supportingTransactions) {
+                    g.tx().commit();
+                }
+                break;
+            }
+        }
     }
 
     @Override
@@ -466,9 +536,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
             g.inject(properties)
                     .as("properties")
-                    .V(lineageRelationship.getFirstEndGUID())
+                    .V(lineageRelationship.getFirstEntity().getGuid())
                     .outE()
-                    .where(inV().hasId(lineageRelationship.getSecondEndGUID()))
+                    .where(inV().hasId(lineageRelationship.getSecondEntity().getGuid()))
                     .as("edge")
                     .sideEffect(__.select("properties")
                             .unfold()
@@ -557,6 +627,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
         String methodName = "lineage";
 
+        GraphTraversalSource g = lineageGraph.traversal();
         try {
             g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         } catch (NoSuchElementException e) {
@@ -570,23 +641,21 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                     errorCode.getUserAction());
         }
 
-        List<String> edgeLabels = Arrays.asList(EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_DATAFLOW_WITH_PROCESS);
-
         LineageVerticesAndEdges lineageVerticesAndEdges = null;
 
-        String[] edgeLabelsArray = edgeLabels.toArray(new String[0]);
         switch (scope) {
             case SOURCE_AND_DESTINATION:
-                lineageVerticesAndEdges = helper.sourceAndDestination(guid, edgeLabelsArray);
+                lineageVerticesAndEdges = helper.sourceAndDestination(guid, includeProcesses);
                 break;
             case END_TO_END:
-                lineageVerticesAndEdges = helper.endToEnd(guid, includeProcesses, edgeLabelsArray);
+                lineageVerticesAndEdges = helper.endToEnd(guid, includeProcesses, EDGE_LABEL_SEMANTIC_ASSIGNMENT,
+                        EDGE_LABEL_DATAFLOW_WITH_PROCESS, EDGE_LABEL_CLASSIFICATION);
                 break;
             case ULTIMATE_SOURCE:
-                lineageVerticesAndEdges = helper.ultimateSource(guid, edgeLabelsArray);
+                lineageVerticesAndEdges = helper.ultimateSource(guid, includeProcesses);
                 break;
             case ULTIMATE_DESTINATION:
-                lineageVerticesAndEdges = helper.ultimateDestination(guid, edgeLabelsArray);
+                lineageVerticesAndEdges = helper.ultimateDestination(guid, includeProcesses);
                 break;
             case GLOSSARY:
                 lineageVerticesAndEdges = helper.glossary(guid, includeProcesses);
@@ -596,6 +665,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             helper.filterDisplayName(lineageVerticesAndEdges, displayNameMustContain);
         return new LineageResponse(lineageVerticesAndEdges);
     }
+
 
 }
 

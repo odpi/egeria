@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.samples;
 
-import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.adapters.connectors.datastore.avrofile.AvroFileStoreConnector;
 import org.odpi.openmetadata.adapters.connectors.datastore.avrofile.AvroFileStoreProvider;
@@ -295,7 +294,6 @@ public class AvroFileReaderSample
      */
     public static void main(String[] args)
     {
-        org.apache.log4j.BasicConfigurator.configure(new NullAppender());
 
         if ((args == null) || (args.length < 1))
         {

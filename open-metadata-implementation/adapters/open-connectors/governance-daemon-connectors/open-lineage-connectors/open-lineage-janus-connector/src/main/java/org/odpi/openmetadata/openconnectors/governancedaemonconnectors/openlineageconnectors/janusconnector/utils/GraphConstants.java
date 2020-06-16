@@ -63,6 +63,7 @@ public class GraphConstants {
     public static final String NODE_LABEL_PROCESS = "process";
     public static final String NODE_LABEL_SUB_PROCESS = "subProcess";
 
+    // GLOSSARY TERM RELATED EDGE LABELS
     public static final String EDGE_LABEL_SEMANTIC_ASSIGNMENT = "SemanticAssignment";
     public static final String EDGE_LABEL_RELATED_TERM = "RelatedTerm";
     public static final String EDGE_LABEL_SYNONYM = "Synonym";
@@ -72,9 +73,12 @@ public class GraphConstants {
     public static final String EDGE_LABEL_IS_A_RELATIONSHIP = "ISARelationship";
     public static final String EDGE_LABEL_CONDENSED = "condensed";
     public static final String EDGE_LABEL_INCLUDED_IN = "includedIn";
+
     public static final String EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS = "DataFlowWithoutProcess";
     public static final String EDGE_LABEL_DATAFLOW_WITH_PROCESS = "DataFlowWithProcess";
 
+    // CLASSIFICATION RELATED EDGE LABELS
+    public static final String EDGE_LABEL_CLASSIFICATION = "Classification";
 
     public static final String PROPERTY_KEY_ENTITY_NODE_ID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_NODE_ID;
     public static final String PROPERTY_KEY_ENTITY_GUID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_GUID;

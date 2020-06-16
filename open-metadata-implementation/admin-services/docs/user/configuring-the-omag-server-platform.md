@@ -6,25 +6,33 @@
 The OMAG Server platform is a JVM process that includes a tomcat
 web server and uses [Spring Boot](https://spring.io/) to support REST APIs.
 
-By default it registers the REST APIs
+By default
+* It registers the REST APIs
 at **http://localhost:8080**. This address is called the server platform's **root URL** and
 is configured in a number of places in the [OMAG Server](configuring-an-omag-server.md) configuration.
 
-By default the platform also supports no specific security
-authorization and stores its configuration in files in clear
-text JSON format.
+* The platform also supports no specific security
+  authorization and stores its configuration in files in clear
+  text JSON format.
 
-This is suitable for a development environment. However for
-production, the platform should be configured with
-more robust options.
+These defaults are suitable for a development environment. However for
+production, the platform should be configured with more robust options.
+
+Figure 1 shows the points of configuration for the OMAG Server Platform.
+
+![Figure 1](../concepts/configurability-of-platform.png)
+> **Figure 1:** What needs to be configured in the server platform
 
 The choices are:
 
-* [Configuring the storage location and format of OMAG Server configuration documents](configuring-the-configuration-document-store.md).
+* [Configuring the Configuration Connector](configuring-the-configuration-document-store.md) -
+to change the storage location and format of OMAG Server configuration documents.
   
-* [Defining the security authorization connector for the platform that will
-  determine who is allowed to call the platform services.](configuring-the-platform-security-connector.md)
-  
+* [Configuring the Platform Security Connector](configuring-the-platform-security-connector.md) -
+to change who is allowed to call the platform services.
+
+## Application Properties
+
 Since the OMAG Server Platform is a Spring Boot application, there are other values that can be set in
 its **application.properties** file found in the **resources** subdirectory.
 

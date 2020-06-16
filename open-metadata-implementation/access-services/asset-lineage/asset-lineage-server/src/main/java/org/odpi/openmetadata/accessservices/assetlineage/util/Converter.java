@@ -2,19 +2,34 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The converter is used for creating and mapping required properties between different objects.
  */
 public class Converter {
 
+    OMRSRepositoryHelper repositoryHelper;
+
+    public Converter(OMRSRepositoryHelper repositoryHelper) {
+        this.repositoryHelper = repositoryHelper;
+    }
 
     /**
      * Create entity lineage entity.
@@ -41,11 +56,15 @@ public class Converter {
         setInstanceHeaderProperties(relationship, lineageRelationship);
         lineageRelationship.setProperties(instancePropertiesToMap(relationship.getProperties()));
 
-        lineageRelationship.setFirstEndGUID(relationship.getEntityTwoProxy().getGUID());
-        lineageRelationship.setSecondEndGUID(relationship.getEntityTwoProxy().getGUID());
+        LineageEntity firstEntity = getLineageEntityFromLineageProxy(relationship.getEntityOneProxy());
+        LineageEntity secondEntity = getLineageEntityFromLineageProxy(relationship.getEntityTwoProxy());
+
+        lineageRelationship.setFirstEntity(firstEntity);
+        lineageRelationship.setSecondEntity(secondEntity);
 
         return lineageRelationship;
     }
+
     /**
      * Retrieve the properties from an InstanceProperties object and return them as a map
      *
@@ -53,29 +72,26 @@ public class Converter {
      * @return the map properties
      */
     public Map<String, String> instancePropertiesToMap(InstanceProperties properties) {
+        Map<String, Object> instancePropertiesAsMap = repositoryHelper.getInstancePropertiesAsMap(properties);
         Map<String, String> attributes = new HashMap<>();
 
-        if (properties == null)
-            return attributes;
+        String methodName = "instancePropertiesToMap";
 
-        Map<String, InstancePropertyValue> instanceProperties = properties.getInstanceProperties();
-
-        if (instanceProperties == null)
-            return attributes;
-
-        for (Map.Entry<String, InstancePropertyValue> property : instanceProperties.entrySet()) {
-
-            if (property.getValue() == null)
-                continue;
-
-            String propertyValue = propertyValueToString(property.getValue());
-            if (propertyValue.equals(""))
-                continue;
-
-            if (property.getKey().equals("name"))
-                attributes.put("displayName", propertyValue);
-            else
-                attributes.put(property.getKey(), propertyValue);
+        if (MapUtils.isNotEmpty(instancePropertiesAsMap)) {
+            instancePropertiesAsMap.forEach((key, value) -> {
+                if (value instanceof ArrayPropertyValue) {
+                    List<String> stringArrayProperty = repositoryHelper.getStringArrayProperty(AssetLineageConstants.ASSET_LINEAGE_OMAS, key, properties, methodName);
+                    attributes.put(key, listToString(stringArrayProperty));
+                } else if (value instanceof MapPropertyValue) {
+                    Map<String, Object> mapProperty = repositoryHelper.getMapFromProperty(AssetLineageConstants.ASSET_LINEAGE_OMAS, key, properties, methodName);
+                    attributes.put(key, mapToString(mapProperty));
+                } else {
+                    if (key.equals("name")) {
+                        key = "displayName";
+                    }
+                    attributes.put(key, String.valueOf(value));
+                }
+            });
         }
         return attributes;
     }
@@ -91,41 +107,31 @@ public class Converter {
         lineageEntity.setMetadataCollectionId(instanceHeader.getMetadataCollectionId());
     }
 
-    private String propertyValueToString(InstancePropertyValue ipv) {
-        if (ipv instanceof PrimitivePropertyValue) {
-            PrimitiveDefCategory primtype =
-                    ((PrimitivePropertyValue) ipv).getPrimitiveDefCategory();
-            switch (primtype) {
-                case OM_PRIMITIVE_TYPE_STRING:
-                    return (String) ((PrimitivePropertyValue) ipv).getPrimitiveValue();
-                case OM_PRIMITIVE_TYPE_INT:
-                case OM_PRIMITIVE_TYPE_BIGDECIMAL:
-                case OM_PRIMITIVE_TYPE_BIGINTEGER:
-                case OM_PRIMITIVE_TYPE_BOOLEAN:
-                case OM_PRIMITIVE_TYPE_BYTE:
-                case OM_PRIMITIVE_TYPE_CHAR:
-                case OM_PRIMITIVE_TYPE_DATE:
-                case OM_PRIMITIVE_TYPE_DOUBLE:
-                case OM_PRIMITIVE_TYPE_FLOAT:
-                case OM_PRIMITIVE_TYPE_LONG:
-                case OM_PRIMITIVE_TYPE_SHORT:
-                    PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) ipv;
-                    if (primitivePropertyValue.getPrimitiveValue() != null) {
-                        return ((PrimitivePropertyValue) ipv).getPrimitiveValue().toString();
-                    } else {
-                        return "null";
-                    }
-                case OM_PRIMITIVE_TYPE_UNKNOWN:
-                default:
-                    return "";
-            }
-        } else {
-            if (ipv instanceof EnumPropertyValue) {
-                return ((EnumPropertyValue) ipv).getSymbolicName();
-            } else {
-                return "";
-            }
-        }
+    private LineageEntity getLineageEntityFromLineageProxy(EntityProxy entityProxy) {
+        LineageEntity entity = new LineageEntity();
+        entity.setGuid(entityProxy.getGUID());
+        entity.setVersion(entityProxy.getVersion());
+        entity.setCreatedBy(entityProxy.getCreatedBy());
+        entity.setUpdatedBy(entityProxy.getUpdatedBy());
+        entity.setCreateTime(entityProxy.getCreateTime());
+        entity.setUpdateTime(entityProxy.getUpdateTime());
+        entity.setTypeDefName(entityProxy.getType().getTypeDefName());
+        entity.setProperties(instancePropertiesToMap(entityProxy.getUniqueProperties()));
+        return entity;
     }
 
+    private String listToString(List<String> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+        return String.join(",", list);
+    }
+
+    private String mapToString(Map<String, Object> map) {
+        if (MapUtils.isEmpty(map)) {
+            return null;
+        }
+        return map.keySet().stream().map(key -> key + ": " + map.get(key))
+                .collect(Collectors.joining(", "));
+    }
 }

@@ -5,12 +5,20 @@
 
 # Platform Services
 
-The platform services provides the
-APIs for querying the
+The platform services provides the APIs for querying the
 [Open Metadata and Governance (OMAG) Server Platform](../admin-services/docs/concepts/omag-server-platform.md)
-and discovering information about the
-OMAG Servers that it is hosting.
+and discovering information about the OMAG Servers that it is hosting.
 
+There are two parts to the platform services:
+
+* **OMAG Server Platform Origin Service** - returns a platform identifier that indicates which version of the
+  platform is running.
+  
+* **OMAG Server Platform Active Service** - returns information about the known and active servers
+  running on the platform along with definitions of each type of Open Metadata and Governance (OMAG)
+  services.
+
+----
 Return to [open-metadata-implementation](..).
 
 ----

@@ -58,6 +58,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         };
         app-header paper-icon-button {
           --paper-icon-button-ink-color: white;
+          --iron-icon-fill-color: white;
         };
         .drawer-list a {
           display: block;
@@ -130,7 +131,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path query-params="{{queryParams}}"></app-location>
 
-      <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{tail}}"></app-route>
+      <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{tail}}"></app-route>
        
       <toast-feedback duration="0"></toast-feedback> 
        
@@ -163,7 +164,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <app-toolbar>
                       <paper-icon-button on-tap="_toggleDrawer" id="toggle" icon="menu"></paper-icon-button>
                       <template is="dom-if" if="[[narrow]]" >
-                        <img src="../images/logo-white.png" style="vertical-align: middle; max-height: 80%; margin-left: 15pt; margin-right: 15pt; display: inline-block; "/>
+                        <img src="./images/logo-white.png" style="vertical-align: middle; max-height: 80%; margin-left: 15pt; margin-right: 15pt; display: inline-block; "/>
                       </template>
                       <div>
                         <template is="dom-if" if="[[!narrow]]" >
