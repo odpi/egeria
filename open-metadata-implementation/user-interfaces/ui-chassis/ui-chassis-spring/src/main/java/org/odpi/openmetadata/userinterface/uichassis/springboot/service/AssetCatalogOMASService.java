@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.slf4j.Logger;
@@ -43,14 +44,11 @@ public class AssetCatalogOMASService {
      */
     public AssetDescription getAssetDetails(String user, String assetId, String assetType) throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         try {
-            if (assetCatalog.getAssetDetails(user, assetId, assetType) != null) {
-                return assetCatalog.getAssetDetails(user, assetId, assetType).getAssetDescription();
-            }
+            return assetCatalog.getAssetDetails(user, assetId, assetType).getAssetDescription();
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | PropertyServerException e) {
             LOG.error(String.format("Error retrieving asset details for %s", assetId));
             throw e;
         }
-        return null;
     }
 
     /**
