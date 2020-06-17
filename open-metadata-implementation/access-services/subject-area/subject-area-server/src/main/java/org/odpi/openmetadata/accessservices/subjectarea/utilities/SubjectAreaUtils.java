@@ -263,36 +263,6 @@ public class SubjectAreaUtils {
     }
 
     /**
-     * convert omas sequencing order to omrs sequencing order
-     *
-     * @param sequencingOrder supplied omas sequencing order
-     * @return omrs sequencing order
-     */
-    public static SequencingOrder convertOMASToOMRSSequencingOrder(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder) {
-        SequencingOrder omrsSequencingOrder = null;
-        if (sequencingOrder == null) {
-            omrsSequencingOrder = SequencingOrder.ANY;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.ANY)) {
-            omrsSequencingOrder = SequencingOrder.ANY;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.CREATION_DATE_RECENT)) {
-            omrsSequencingOrder = SequencingOrder.CREATION_DATE_RECENT;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.CREATION_DATE_OLDEST)) {
-            omrsSequencingOrder = SequencingOrder.CREATION_DATE_OLDEST;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.LAST_UPDATE_RECENT)) {
-            omrsSequencingOrder = SequencingOrder.LAST_UPDATE_RECENT;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.LAST_UPDATE_OLDEST)) {
-            omrsSequencingOrder = SequencingOrder.LAST_UPDATE_OLDEST;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.PROPERTY_ASCENDING)) {
-            omrsSequencingOrder = SequencingOrder.PROPERTY_ASCENDING;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.PROPERTY_DESCENDING)) {
-            omrsSequencingOrder = SequencingOrder.PROPERTY_DESCENDING;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.GUID)) {
-            omrsSequencingOrder = SequencingOrder.GUID;
-        }
-        return omrsSequencingOrder;
-    }
-
-    /**
      * create SystemAttributes instance from an insance header object
      *
      * @param instanceHeader omrs instance header

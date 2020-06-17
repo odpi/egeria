@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
@@ -16,6 +15,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.RestCaller;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

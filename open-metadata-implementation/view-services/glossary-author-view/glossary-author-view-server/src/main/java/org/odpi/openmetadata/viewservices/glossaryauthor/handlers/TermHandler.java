@@ -4,9 +4,9 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.handlers;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

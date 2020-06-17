@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.RestCaller;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,7 @@ import java.util.List;
  * SubjectAreaImpl is the OMAS client library implementation of the SubjectAreaImpl OMAS.
  * This interface provides term term authoring interface for subject area experts.
  */
-public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm {
+public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements SubjectAreaTerm {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermImpl.class);
 
     private static final String className = SubjectAreaTermImpl.class.getName();
@@ -161,7 +162,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                            Date asOfTime,
                                            int offset,
                                            int pageSize,
-                                           org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                           SequencingOrder sequencingOrder,
                                            String sequencingProperty) throws
                                                                       UserNotAuthorizedException,
                                                                       InvalidParameterException,
@@ -478,7 +479,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                Date asOfTime,
                                int offset,
                                int pageSize,
-                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                               SequencingOrder sequencingOrder,
                                String sequencingProperty) throws
                                                           MetadataServerUncontactableException,
                                                           UserNotAuthorizedException,

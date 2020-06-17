@@ -13,11 +13,11 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Confide
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.CriticalityLevel;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.RetentionBasis;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 
 import java.io.IOException;
 import java.util.Date;
