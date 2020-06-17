@@ -77,10 +77,10 @@ export default function EntityNeighborhoodDiagram(props) {
 
   const drgContainerDiv = useRef();
 
-  const [hood, setHood] = useState({});
+  //const [hood, setHood] = useState({});
 
-  let scrolled = false;
-
+  let scrolling = false;
+  //const [scrolling, setScrolling] = useState(false);
 
   const checkFocusSet = () => {
     // Check focusType is set...
@@ -103,8 +103,9 @@ export default function EntityNeighborhoodDiagram(props) {
     d3Container.current.innerHTML = "";
 
     // Initialise control state...
-    setHood({});
-    scrolled = false;
+    //setHood({});
+    scrolling = false;
+    //setScrolling(false);
   }
 
 
@@ -386,7 +387,8 @@ const nhbdUpdate = (nhbd) => {
 
   const diagram = d3Container.current; 
 
-  scrolled = false;
+  //scrolling = false;
+  //setScrolling(false);
 
   const duration = d3.event && d3.event.altKey ? 2500 : 250;
 
@@ -405,6 +407,9 @@ const nhbdUpdate = (nhbd) => {
 
   nhbd.root.x = width / 2;
   nhbd.root.y = height / 2;
+
+  // The root node has an extra property to distinguish it...
+  nhbd.root.root = true;
 
   const neighbours = nhbd.nodes;
 
@@ -452,7 +457,7 @@ const nhbdUpdate = (nhbd) => {
 
 
   // Get the lists of nodes and links
-  var nodes = [];
+  let nodes = [];
   if (nhbd.nodes !== undefined) {
     nodes = nhbd.nodes;
   }
@@ -462,7 +467,7 @@ const nhbdUpdate = (nhbd) => {
   }
 
   nodes.push(nhbd.root);
-  var links = nhbd.links;
+  const links = nhbd.links;
 
   const transition = nhbd.svg
                          .transition()
@@ -514,7 +519,7 @@ const nhbdUpdate = (nhbd) => {
 
 
   nodeEnter.append("circle")
-           .attr('id',d => "elem"+d.name)
+           .attr('id',d => d.root ? "root-"+d.name : "elem-"+d.name)
            .lower()
            .attr("r", 6)
            .attr("stroke-opacity", d => (d.category === "Entity" ? 1 : 0))
@@ -627,90 +632,115 @@ const nhbdUpdate = (nhbd) => {
    */
   const scrollSelectedIntoView = (typeToView) => {
 
-    /*
-     * Conversion is necessary between bounding client rectangle and
-     * parent container offset position, which requires (fixed) offsets to accommmodate
-     * top and lhs containers.
-     */
-    const topOffset =  230;
-    const leftOffset = 750;
+    if (scrolling === false) {
 
-    if (scrolled === false) {
-      //console.log("Scrolling...for type "+typeToView);
-
-      scrolled = true;
+      scrolling = true;
 
       if (typeToView !== undefined && typeToView !== "") {
 
-        const elem = document.getElementById('elem'+typeToView);
-
-        // scrollIntoView almost works but the options do not work across browsers,
-        // including Safari, so it does not center and is not smooth. The lack of centering
-        // means it doesn't unscroll a scrolled diagram
-        // The following is what we might *like* to do:
-        // elem.scrollIntoView({behavior: "smooth", block:"center", inline:"center"});
-
-        // Instead of scrollIntoView - try to persist with the incremental scrolling
-        // which does work outside of a web component...
-        const brect = elem.getBoundingClientRect();
-
-        let v_togo = brect.top-(topOffset + props.outerHeight/2.0);
-        let h_togo = brect.left-(leftOffset + props.outerWidth/2.0);
-        //console.log("Scroll by "+h_togo+" , "+v_togo);
-
-        const inc = 10;
-
-        //const drg = document.getElementById("drawingArea");
         const drg = document.getElementById("drawingContainer");
-        incrementalScroll(drg, h_togo, v_togo, inc);
+
+        const leftOffset = 750;
+        const h_target = (leftOffset + props.outerWidth/2.0);
+        const topOffset = 230;
+        const v_target = (topOffset + props.outerHeight/2.0);
+
+        const tol = 10; // #pixels tolerance
+
+        // Supply target as hpos, vpos to achieve initial scroll attempt.
+        incrementalScroll(drg, typeToView, h_target, true, v_target, true, tol);
 
       }
     }
   }
 
-  const incrementalScroll = (drg, h_togo, v_togo, inc) => {
 
-    let v_dirinc, h_dirinc;
+  /*
+   * Although both dimensions could be scrolled together, if one hits the wall it should not
+   * prevent the other from continuing to make progress. Yuo could employ lots of state
+   * checking, but it is simpler to scroll each dimension independently.
+   *
+   * Conversion is necessary between bounding client rectangle and
+   * parent container offset position, which requires (fixed) offsets to accommmodate
+   * top and lhs containers.
+   */
+  const incrementalScroll = (drg, typeName, h_pos, h, v_pos, v, tol) => {
 
-    // Vertical dimension
-    let v_inc = inc;
+    if (scrolling) {
 
-    if (Math.abs(v_togo) < v_inc) {
-      v_inc = Math.abs(v_togo);
+      /* See where the element is since the previous scroll attempt */
+      const elem = document.getElementById('root-'+typeName);
+      const brect = elem.getBoundingClientRect();
+      //console.log("Pre scroll : h "+h+" v "+v+" elem "+typeName+" at ("+brect.left+", "+brect.top+")");
+      const hcur = brect.left;
+      const vcur = brect.top;
+
+      // horizontal
+      if (h) {
+        /* Did predecessor manage to move by at least tol? */
+        if (Math.abs(hcur - h_pos) === 0) {  // TODo - obviously a mixed bag now...
+          //console.log("h has not moved by tol");
+          h = false;
+        }
+        /* Continue even if above was false, to get at least one scroll effort */
+        else {
+          const leftOffset = 750;
+          const h_target = (leftOffset + props.outerWidth/2.0);
+          const h_diff = hcur - h_target;
+
+          if (Math.abs(h_diff) > tol) {
+            const h_mov = h_diff / 2.0;
+            //console.log("Scroll type "+typeName+" by h "+h_mov);
+            drg.scrollBy(h_mov,0); 
+          }
+          else {
+            //console.log("h does not need to move by tol");
+            h = false;
+          }
+        }
+      }
+
+      // vertical
+      if (v) {
+        /* Did predecessor manage to move by at least tol? */
+        if (Math.abs(vcur - v_pos) === 0) {
+          //console.log("v has not moved by tol");
+          v = false;
+        }
+        else {
+          const topOffset = 230;
+          const v_target = (topOffset + props.outerHeight/2.0);
+          const v_diff = vcur - v_target;
+
+          if (Math.abs(v_diff) > tol) {
+            const v_mov = v_diff / 2.0;
+            //console.log("Scroll type "+typeName+" by v "+v_mov);
+            drg.scrollBy(0,v_mov);
+          }
+          else {
+            //console.log("v does not need to move by tol");
+            v = false;
+          }
+        }
+      }
+
+
+
+      if (h || v) {
+        // Repeat...
+        //console.log("Repeat call to scroll with hpos "+hcur+" vpos "+vcur);
+        setTimeout( () => incrementalScroll(drg, typeName, hcur, h, vcur, v, tol) , 10);
+      }
+      else {
+        //console.log("Dun scrollin' - both dimensions");
+        scrolling = false;
+      }
     }
-    const v_rate = Math.abs(v_togo) / (10 * v_inc);
-    if (Math.abs(v_togo) > 0) {
-      v_dirinc = Math.sign(v_togo) * v_inc * v_rate;
-      // scrollBy does not seem to work when in a web component
-      // scrollIntoView (which could be called from scrollSelectedIntoView() almost works
-      // but the center and smooth options are not well-supported across browsers
-      //drg.scrollBy(0, v_dirinc);
-      v_togo = v_togo - v_dirinc;
-    }
+    //else {
+    //  console.log("scrolling is false, so abandoning");
+    //}
 
-    // Horizontal dimension
-    let h_inc = inc;
-    if (Math.abs(h_togo) < h_inc) {
-      h_inc = Math.abs(h_togo);
-    }
-    const h_rate = Math.abs(h_togo) / (10 * h_inc);
-    if (Math.abs(h_togo) > 0) {
-      h_dirinc = Math.sign(h_togo) * h_inc * h_rate;
-      // scrollBy does not seem to work when in a web component
-      // scrollIntoView (which could be called from scrollSelectedIntoView() almost works
-      // but the center and smooth options are not well-supported across browsers
-      //drg.scrollBy(h_dirinc, 0);
-      h_togo = h_togo - h_dirinc;
-    }
-
-    drg.scrollBy(h_dirinc, v_dirinc);
-
-    if (Math.abs(h_togo) > h_inc || Math.abs(v_togo) > v_inc) {
-      setTimeout( () => incrementalScroll(drg, h_togo, v_togo, inc) , 10);
-    }
   }
-
-
 
 
   /*
@@ -720,8 +750,6 @@ const nhbdUpdate = (nhbd) => {
     return 'M' + source.x + ',' + source.y
          + 'L' + target.x + ',' + target.y;
   }
-
-
 
 
   /*
@@ -741,27 +769,23 @@ const nhbdUpdate = (nhbd) => {
 
 
   const locateRelationshipLabelX = (d, width, height) => {
-    var x;
-    x = (d.x-width/2)*.05 + (0.2*Math.abs(d.y - height/2) > Math.abs(d.x - width/2) ? (width/2 - d.x)*.5 : 0);
+    const x = (d.x-width/2)*.05 + (0.2*Math.abs(d.y - height/2) > Math.abs(d.x - width/2) ? (width/2 - d.x)*.5 : 0);
     return x;
   }
 
   const locateEntityLabelX = (d, width, height) => {
-    var x;
-    x = (d.x-width/2)*.05;
+    const x = (d.x-width/2)*.05;
     return x;
   }
 
   const locateRelationshipLabelY = (d, width, height) => {
-    var y;
-    y = (d.y-height/2)*.15 + (0.15*Math.abs(d.y - height/2) > Math.abs(d.x - width/2) ? (d.y-height/2)*.08 : 0);
+    const y = (d.y-height/2)*.15 + (0.15*Math.abs(d.y - height/2) > Math.abs(d.x - width/2) ? (d.y-height/2)*.08 : 0);
     return y;
   }
 
 
   const locateEntityLabelY = (d, width, height) => {
-    var y;
-    y = (d.y-height/2)*.05;
+    const y = (d.y-height/2)*.05;
     return y;
   }
 
@@ -782,6 +806,8 @@ const nhbdUpdate = (nhbd) => {
 
   useEffect(
     () => {
+      console.log("NHBD Mount Effect called");
+
       if ( d3Container.current && typesContext.tex) {       
         /* 
          * Initial rendering...
@@ -790,7 +816,7 @@ const nhbdUpdate = (nhbd) => {
          * Data is unlikely to change unless server is changed - repeat the initial rendering...
          */ 
 
-        const diagram = document.getElementById("drawingContainer");
+        //const diagram = document.getElementById("drawingContainer");
 
         if (!checkFocusSet()) {
 
@@ -803,7 +829,7 @@ const nhbdUpdate = (nhbd) => {
           let nhbd = createNeighborhood(focusContext.focus);
           nhbd = renderNeighborhoodDiagram(nhbd);
           nhbd = nhbdUpdate(nhbd);
-          setHood(nhbd);
+          //setHood(nhbd);
         }
 
       }
@@ -817,10 +843,26 @@ const nhbdUpdate = (nhbd) => {
   useEffect(
     () => {
 
+      console.log("NHBD Resize Effect called");
       //console.log("EID effect set drgContainer to width "+props.outerWidth);
       drgContainerDiv.current.style.width=""+props.outerWidth+"px";
       //console.log("EID effect set drgContainer to height "+props.outerHeight);
       drgContainerDiv.current.style.height=""+props.outerHeight+"px";
+
+      /*
+       * It is better not to scroll on a resize as we do not know the user's
+       * intentions and they mau not want the focus type in the (new) center.
+       * If we did want to, it would be possible to auto-scroll but would need
+       * to ensure it is an 'immediate' scroll rather than the smooth scroll
+       * implemented for focus changes. This is because resize is not a single
+       * event, but a stream of events, with the user very much driving the
+       * current size. So snapping to the target position would be preferable
+       * over the use of a decaying trajectory which does not necessarily
+       * reflect the latest size target. The events would need to be serialized
+       * and the one currently being processed is likely to be using a stale
+       * target.
+       */
+
     },
 
     [props.outerHeight, props.outerWidth]
