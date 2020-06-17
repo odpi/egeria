@@ -152,7 +152,7 @@ public class ProjectFVT
         return issueCreateProject(project);
     }
 
-    public Project issueCreateProject(Project project) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException {
+    public Project issueCreateProject(Project project) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException, PropertyServerException {
         Project newProject = subjectAreaProject.createProject(this.userId, project);
         if (newProject != null)
         {
@@ -225,7 +225,7 @@ public class ProjectFVT
         subjectAreaProject.purgeProject(this.userId, guid);
         System.out.println("Purge succeeded");
     }
-    public List<Line> getProjectRelationships(Project project) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
+    public List<Line> getProjectRelationships(Project project) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, PropertyServerException {
         return subjectAreaProject.getProjectRelationships(this.userId,
                 project.getSystemAttributes().getGUID(),
                 null,

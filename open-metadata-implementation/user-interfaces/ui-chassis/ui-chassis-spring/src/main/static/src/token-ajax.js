@@ -109,7 +109,6 @@ class TokenAjax extends PolymerElement {
     }
 
     _tokenUpdated(){
-        console.debug(this.id + ' -- token updated with:'+this.token)
         this.$.ajax.headers['x-auth-token'] = this.token;
     }
 
@@ -125,7 +124,6 @@ class TokenAjax extends PolymerElement {
         // Token is not valid, log out.
         if(status > 299)
             if (status === 401 || status === 403 || resp.exception == 'io.jsonwebtoken.ExpiredJwtException') {
-                console.log('Token invalid:'+ this.token);
                 this.dispatchEvent(new CustomEvent('logout', {
                     bubbles: true,
                     composed: true,

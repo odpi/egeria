@@ -65,7 +65,7 @@
     "@vaadin/vaadin-time-picker": "^2.0.1",
     "@webcomponents/webcomponentsjs": "^2.1.3",
     "multiselect-combo-box": "^2.1.0",
-    "vis": "^4.21.0",
+    "visjs-network": "^4.24.11",
     "web-animations-js": "^2.3.1"
   },
   "engines": {

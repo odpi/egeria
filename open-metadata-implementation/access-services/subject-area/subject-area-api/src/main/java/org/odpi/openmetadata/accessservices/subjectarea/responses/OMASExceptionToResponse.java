@@ -18,6 +18,10 @@ public class OMASExceptionToResponse {
        return new UnrecognizedGUIDExceptionResponse(e);
     }
 
+    public static SubjectAreaOMASAPIResponse convertPropertyServerException(PropertyServerException e) {
+        return new PropertyServerExceptionResponse(e);
+    }
+
     public static SubjectAreaOMASAPIResponse convertFunctionNotSupportedException(FunctionNotSupportedException e) {
        return new  FunctionNotSupportedExceptionResponse(e);
     }
