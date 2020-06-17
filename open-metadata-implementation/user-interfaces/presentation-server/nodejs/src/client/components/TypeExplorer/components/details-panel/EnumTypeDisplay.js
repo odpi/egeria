@@ -40,27 +40,24 @@ export default function EnumTypeDisplay(props) {
 
   }
 
-// TODO alignment
-  
-    // TODO - add back link to entity (well, actually do it to the current view type...?)
 
-    return (
-      <div className="instance-details-container">  
-        <br/>
-        <button className="backlink" id="back-link" onClick={viewLinkHandler}> Back to {focusContext.prevView.category} {focusContext.prevView.typeName} </button>   
-        <br/>
-        <hr/>
-        
-        <div className="instance-details-item-bold">Enum Type : {typeName}</div>
-        <div className="instance-details-item">{enumExpl.description}</div>        
-        <div className="instance-details-item">Possible Values : { !enumExpl.elementDefs ? "none" :
-            expandValues( enumExpl.elementDefs ) }
-        </div>     
+  return (
+    <div className="type-details-container">
+      <br/>
+      <button className="backlink" id="back-link" onClick={viewLinkHandler}> Back to {focusContext.prevView.category} {focusContext.prevView.typeName} </button>
+      <br/>
+      <hr/>
+
+      <div className="type-details-item-bold">Enum Type : {typeName}</div>
+      <div className="type-details-item">{enumExpl.description}</div>
+      <div className="type-details-item">Possible Values : { !enumExpl.elementDefs ? "none" :
+        expandValues( enumExpl.elementDefs ) }
       </div>
-    );
-  }
+    </div>
+  );
+}
 
-  EnumTypeDisplay.propTypes = {
-    typeName: PropTypes.string
-  };
+EnumTypeDisplay.propTypes = {
+  typeName: PropTypes.string
+};
   

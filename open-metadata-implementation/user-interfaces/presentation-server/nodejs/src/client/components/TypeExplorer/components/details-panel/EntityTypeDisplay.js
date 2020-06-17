@@ -34,14 +34,14 @@ export default function EntityTypeDisplay(props) {
   const hasClassifications = hasInheritedClassifications || hasLocalClassifications;
 
   return (
-    <div className="instance-details-container">
-      <div className="instance-details-item-bold">Entity Type : {typeName}</div>
-      <div className="instance-details-item">{entityExpl.entityDef.description}</div>
-      <div className="instance-details-item">Attributes : { !entityExpl.inheritedAttributes && !entityExpl.entityDef.propertiesDefinition ? "none" :
+    <div className="type-details-container">
+      <div className="type-details-item-bold">Entity Type : {typeName}</div>
+      <div className="type-details-item">{entityExpl.entityDef.description}</div>
+      <div className="type-details-item">Attributes : { !entityExpl.inheritedAttributes && !entityExpl.entityDef.propertiesDefinition ? "none" :
         <EntityPropertiesDisplay expl={entityExpl} />}</div>     
-      <div className="instance-details-item">Relationships : { !hasRelationships ? "none" :
-        <EntityRelationshipsDisplay expl={entityExpl} />}</div>     
-      <div className="instance-details-item">Classifications : { !hasClassifications ? "none" :
+      <div className="type-details-item">Relationships : { !hasRelationships ? "none" :
+        <EntityRelationshipsDisplay expl={entityExpl} />}</div>
+      <div className="type-details-item">Classifications : { !hasClassifications ? "none" :
         <EntityClassificationsDisplay expl={entityExpl} />}</div>
     </div>
   );

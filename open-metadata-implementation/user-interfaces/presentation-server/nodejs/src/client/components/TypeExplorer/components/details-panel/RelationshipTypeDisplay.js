@@ -26,12 +26,12 @@ export default function RelationshipTypeDisplay(props) {
 
 
     return (
-      <div className="instance-details-container">
-        <div className="instance-details-item-bold">Relationship Type : {typeName}</div>
-        <div className="instance-details-item">{relationshipExpl.relationshipDef.description}</div>        
-        <div className="instance-details-item">Attributes : { !relationshipExpl.relationshipDef.propertiesDefinition ? "none" :
+      <div className="type-details-container">
+        <div className="type-details-item-bold">Relationship Type : {typeName}</div>
+        <div className="type-details-item">{relationshipExpl.relationshipDef.description}</div>
+        <div className="type-details-item">Attributes : { !relationshipExpl.relationshipDef.propertiesDefinition ? "none" :
           <RelationshipPropertiesDisplay expl={relationshipExpl} />}</div>     
-        <div className="instance-details-item">Entities : { !relationshipExpl.relationshipDef.endDef1 && !relationshipExpl.relationshipDef.endDef2 ? "none" :
+        <div className="type-details-item">Entities : { !relationshipExpl.relationshipDef.endDef1 && !relationshipExpl.relationshipDef.endDef2 ? "none" :
           <RelationshipEntitiesDisplay expl={relationshipExpl} />}</div>     
       
        
