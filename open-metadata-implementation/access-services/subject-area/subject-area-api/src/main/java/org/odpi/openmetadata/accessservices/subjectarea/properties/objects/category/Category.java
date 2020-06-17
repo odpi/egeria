@@ -26,8 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SubjectAreaDefinition.class, name = "SubjectAreaDefinition")
         })
 public class Category extends Node {
-    private GlossarySummary glossary =null;
-    private CategorySummary parentCategory;
+    private GlossarySummary glossary = null;
+    private CategorySummary parentCategory = null;
 
     public Category() {
         nodeType = NodeType.Category;

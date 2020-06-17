@@ -16,5 +16,5 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CategorySummary extends NodeSummary {
-    protected final NodeType nodeType = NodeType.Category;
+    public CategorySummary() {  type = NodeType.Category; }
 }
