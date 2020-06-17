@@ -263,6 +263,66 @@ public class FFDCRESTClientBase
         return null;
     }
 
+    /**
+     * Issue a PUT REST call that returns a response object.  This is typically an update.
+     *
+     * @param <T> return type
+     * @param methodName  name of the method being called.
+     * @param returnClass class of the response object.
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the request.
+     * @param params  a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    protected  <T> T callPutRESTCall(String    methodName,
+                                      Class<T>  returnClass,
+                                      String    urlTemplate,
+                                      Object    requestBody,
+                                      Object... params) throws PropertyServerException
+    {
+        try
+        {
+            return clientConnector.callPutRESTCall(methodName, returnClass, urlTemplate, requestBody, params);
+        }
+        catch (Throwable error)
+        {
+            logRESTCallException(methodName, error);
+        }
+
+        return null;
+    }
+
+    /**
+     * Issue a Delete REST call that returns a response object.
+     *
+     * @param <T> return type
+     * @param methodName  name of the method being called.
+     * @param returnClass class of the response object.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    protected  <T> T callDeleteRESTCall(String    methodName,
+                                     Class<T>  returnClass,
+                                     String    urlTemplate,
+                                     Object... params) throws PropertyServerException
+    {
+        try
+        {
+           return clientConnector.callDeleteRESTCall(methodName, returnClass, urlTemplate, null, params);
+        }
+        catch (Throwable error)
+        {
+            logRESTCallException(methodName, error);
+        }
+
+        return null;
+    }
+
 
     /**
      * Provide detailed logging for exceptions.

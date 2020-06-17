@@ -141,7 +141,7 @@ public class GlossaryFVT {
         return issueCreateGlossary(glossary);
     }
 
-    public Glossary issueCreateGlossary(Glossary glossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException {
+    public Glossary issueCreateGlossary(Glossary glossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException, PropertyServerException {
         Glossary newGlossary = subjectAreaGlossary.createGlossary(this.userId, glossary);
         if (newGlossary != null) {
             System.out.println("Created Glossary " + newGlossary.getName() + " with userId " + newGlossary.getSystemAttributes().getGUID());
@@ -222,7 +222,6 @@ public class GlossaryFVT {
         Glossary glossary = subjectAreaGlossary.getGlossaryByGuid(this.userId, guid);
         FVTUtils.validateNode(glossary);
         System.out.println("Got Glossary " + glossary.getName() + " with userId " + glossary.getSystemAttributes().getGUID() + " and status " + glossary.getSystemAttributes().getStatus());
-
         return glossary;
     }
 
@@ -252,7 +251,7 @@ public class GlossaryFVT {
         System.out.println("Purge succeeded");
     }
 
-    public List<Line> getGlossaryRelationships(Glossary glossary) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
+    public List<Line> getGlossaryRelationships(Glossary glossary) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, PropertyServerException {
         return subjectAreaGlossary.getGlossaryRelationships(this.userId,
                                                             glossary.getSystemAttributes().getGUID(),
                                                             null,

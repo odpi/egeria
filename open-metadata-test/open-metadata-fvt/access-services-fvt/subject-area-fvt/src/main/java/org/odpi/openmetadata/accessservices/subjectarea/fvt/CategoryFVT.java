@@ -180,7 +180,7 @@ public class CategoryFVT {
         return issueCreateCategory(category);
     }
 
-    private Category issueCreateCategory(Category category) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException {
+    private Category issueCreateCategory(Category category) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException, PropertyServerException {
         Category newCategory = subjectAreaCategory.createCategory(this.userId, category);
         if (newCategory != null) {
             System.out.println("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
@@ -242,7 +242,7 @@ public class CategoryFVT {
         System.out.println("Purge succeeded");
     }
 
-    public List<Line> getCategoryRelationships(Category category) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
+    public List<Line> getCategoryRelationships(Category category) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, PropertyServerException {
         return subjectAreaCategory.getCategoryRelationships(this.userId,
                                                             category.getSystemAttributes().getGUID(),
                                                             null,

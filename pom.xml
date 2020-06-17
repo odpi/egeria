@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
@@ -107,7 +106,6 @@
         <module>open-metadata-publication</module>
         <module>open-metadata-resources</module>
         <module>open-metadata-test</module>
-
     </modules>
 
 
@@ -138,11 +136,11 @@
         <janus.version>0.5.2</janus.version>
         <gremlin.version>3.4.7</gremlin.version>
         <netty.version>4.1.50.Final</netty.version>
-        <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
+        <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
         <spring.version>5.2.7.RELEASE</spring.version>
         <spring-security.version>5.3.3.RELEASE</spring-security.version>
-        <spring-data.version>2.3.0.RELEASE</spring-data.version>
-        <tomcat.version>9.0.35</tomcat.version>
+        <spring-data.version>2.3.1.RELEASE</spring-data.version>
+        <tomcat.version>9.0.36</tomcat.version>
         <commons-io.version>2.7</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <jena.version>3.15.0</jena.version>
@@ -177,8 +175,8 @@
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.7.5</snappy.version>
         <snakeyaml.version>1.26</snakeyaml.version>
-        <springdoc.version>1.4.0</springdoc.version>
-        <classgraph.version>4.8.83</classgraph.version>
+        <springdoc.version>1.4.1</springdoc.version>
+        <classgraph.version>4.8.86</classgraph.version>
         <swagger.version>2.1.2</swagger.version>
         <groovy.version>3.0.4</groovy.version>
         <micrometer-registry-prometheus.version>1.5.1</micrometer-registry-prometheus.version>
@@ -238,6 +236,13 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
+                <scope>compile</scope>
+                <version>${logback.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
                 <scope>compile</scope>
                 <version>${logback.version}</version>
             </dependency>
@@ -1077,6 +1082,34 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>digital-architecture-spring</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>digital-service-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>digital-service-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>digital-service-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>digital-service-spring</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2777,7 +2810,7 @@
                                 <ignoredUnusedDeclaredDependency>io.micrometer:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.junit.platform:*</ignoredUnusedDeclaredDependency>
                                 <!-- Used with slf4j as default implementation in test scope only -->
-                                <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:*
+                                <ignoredUnusedDeclaredDependency>ch.qos.logback:logback*:*
                                 </ignoredUnusedDeclaredDependency>
                                 <!-- Used with slf4j as default implementation for chassis & apps (more configurable in xml)-->
                                 <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple:*
@@ -2793,7 +2826,7 @@
                         <phase>verify</phase>
                         <configuration>
                             <failBuild>true</failBuild>
-                            <ignoreDirect>false</ignoreDirect>
+                            <ignoreDirect>true</ignoreDirect>
                         </configuration>
                     </execution>
                 </executions>
