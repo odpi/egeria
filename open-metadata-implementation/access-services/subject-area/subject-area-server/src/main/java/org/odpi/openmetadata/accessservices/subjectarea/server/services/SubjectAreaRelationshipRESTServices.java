@@ -5,9 +5,6 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -16,20 +13,12 @@ import org.slf4j.LoggerFactory;
  */
 
 public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServicesInstance {
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaRelationshipRESTServices.class);
-    private static final String className = SubjectAreaRelationshipRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
-
 
     /**
      * Default constructor
      */
     public SubjectAreaRelationshipRESTServices() {
         //SubjectAreaRESTServicesInstance registers this omas.
-    }
-
-    public SubjectAreaRelationshipRESTServices(OMRSAPIHelper oMRSAPIHelper) {
-        this.oMRSAPIHelper = oMRSAPIHelper;
     }
 
     /**
@@ -74,7 +63,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getTermHASARelationship(String serverName, String userId, String guid) {
 
         String restAPIName = "getTermHASARelationship";
@@ -194,7 +182,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getRelatedTerm(String serverName, String userId, String guid) {
         String restAPIName = "getRelatedTerm";
         return getLine(serverName, restAPIName, userId, RelatedTerm.class.getName(), guid);
@@ -245,7 +232,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteRelatedTerm(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteRelatedTerm";
         return deleteLine(serverName, restAPIName, userId, RelatedTerm.class.getName(), guid, isPurge);
@@ -315,7 +301,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getSynonymRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getSynonymRelationship";
         return getLine(serverName, restAPIName, userId, Synonym.class.getName(), guid);
@@ -366,7 +351,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteSynonymRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteSynonymRelationship";
         return deleteLine(serverName, restAPIName, userId, Synonym.class.getName(), guid, isPurge);
@@ -435,7 +419,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getAntonymRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getAntonymRelationship";
         return getLine(serverName, restAPIName, userId, Antonym.class.getName(), guid);
@@ -486,7 +469,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteAntonymRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteAntonymRelationship";
         return deleteLine(serverName, restAPIName, userId, Antonym.class.getName(), guid, isPurge);
@@ -556,7 +538,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getTranslationRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getTranslationRelationship";
         return getLine(serverName, restAPIName, userId, Translation.class.getName(), guid);
@@ -607,7 +588,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteTranslationRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteTranslationRelationship";
         return deleteLine(serverName, restAPIName, userId, Translation.class.getName(), guid, isPurge);
@@ -677,7 +657,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getUsedInContextRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getUsedInContextRelationship";
         return getLine(serverName, restAPIName, userId, UsedInContext.class.getName(), guid);
@@ -727,7 +706,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteUsedInContextRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteUsedInContextRelationship";
         return deleteLine(serverName, restAPIName, userId, UsedInContext.class.getName(), guid, isPurge);
@@ -796,7 +774,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getPreferredTermRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getPreferredTermRelationship";
         return getLine(serverName, restAPIName, userId, PreferredTerm.class.getName(), guid);
@@ -848,7 +825,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deletePreferredTermRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deletePreferredTermRelationship";
         return deleteLine(serverName, restAPIName, userId, PreferredTerm.class.getName(), guid, isPurge);
@@ -918,7 +894,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getValidValueRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getValidValueRelationship";
         return getLine(serverName, restAPIName, userId, ValidValue.class.getName(), guid);
@@ -969,7 +944,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteValidValueRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteValidValueRelationship";
         return deleteLine(serverName, restAPIName, userId, ValidValue.class.getName(), guid, isPurge);
@@ -1038,7 +1012,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getReplacementTerm(String serverName, String userId, String guid) {
         String restAPIName = "getReplacementTerm";
         return getLine(serverName, restAPIName, userId, ReplacementTerm.class.getName(), guid);
@@ -1089,7 +1062,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteReplacementTerm(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteReplacementTerm";
         return deleteLine(serverName, restAPIName, userId, ReplacementTerm.class.getName(), guid, isPurge);
@@ -1159,7 +1131,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getTermTYPEDBYRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getTermTYPEDBYRelationship";
         return getLine(serverName, restAPIName, userId, TypedBy.class.getName(), guid);
@@ -1210,7 +1181,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteTermTYPEDBYRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteTermTYPEDBYRelationship";
         return deleteLine(serverName, restAPIName, userId, TypedBy.class.getName(), guid, isPurge);
@@ -1280,7 +1250,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getISARelationship(String serverName, String userId, String guid) {
         String restAPIName = "getISARelationship";
         return getLine(serverName, restAPIName, userId, Isa.class.getName(), guid);
@@ -1331,7 +1300,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteISARelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteISARelationship";
         return deleteLine(serverName, restAPIName, userId, Isa.class.getName(), guid, isPurge);
@@ -1401,7 +1369,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getTermISATypeOFRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getTermISATypeOFRelationship";
         return getLine(serverName, restAPIName, userId, IsaTypeOf.class.getName(), guid);
@@ -1452,7 +1419,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteIsATypeOfRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteIsATypeOfRelationship";
         return deleteLine(serverName, restAPIName, userId, IsaTypeOf.class.getName(), guid, isPurge);
@@ -1828,7 +1794,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getProjectScopeRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getProjectScopeRelationship";
         return getLine(serverName, restAPIName, userId, ProjectScope.class.getName(), guid);
@@ -1879,7 +1844,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteProjectScopeRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteProjectScopeRelationship";
         return deleteLine(serverName, restAPIName, userId, ProjectScope.class.getName(), guid, isPurge);
@@ -1925,11 +1889,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getSemanticAssignmentRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getSemanticAssignmentRelationship";
         return restoreLine(serverName, restAPIName, userId, SemanticAssignment.class.getName(), guid);
     }
-
-
 }
