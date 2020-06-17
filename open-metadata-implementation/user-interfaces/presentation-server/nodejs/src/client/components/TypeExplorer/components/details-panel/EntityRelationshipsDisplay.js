@@ -64,9 +64,11 @@ export default function EntityRelationshipsDisplay(props) {
         <div>
           <button className="collapsible" onClick={flipSection}> <span className="italic">{relationshipName}</span> </button>
           <div className="content">
-            Attributes: 
-            <RelationshipPropertiesDisplay expl={typesContext.getRelationshipType(relationshipName)} />
-            <button className="linkable" id={relationshipName} onClick={relationshipLinkHandler}> More Details </button>
+            Attributes: { !typesContext.getRelationshipType(relationshipName).relationshipDef.propertiesDefinition ? "none" :
+              <RelationshipPropertiesDisplay expl={typesContext.getRelationshipType(relationshipName)} />}
+            <div className="v-spreader">
+              <button className="linkable" id={relationshipName} onClick={relationshipLinkHandler}> More Details </button>
+            </div>
           </div>
         </div>
       );   
@@ -77,9 +79,11 @@ export default function EntityRelationshipsDisplay(props) {
         <div>
           <button className="collapsible" onClick={flipSection}> {relationshipName} </button>
           <div className="content">
-            Attributes: 
-            <RelationshipPropertiesDisplay expl={typesContext.getRelationshipType(relationshipName)} />
-            <button className="linkable" id={relationshipName} onClick={relationshipLinkHandler}> More Details </button>
+            Attributes: { !typesContext.getRelationshipType(relationshipName).relationshipDef.propertiesDefinition ? "none" :
+              <RelationshipPropertiesDisplay expl={typesContext.getRelationshipType(relationshipName)} />}
+            <div className="v-spreader">
+              <button className="linkable" id={relationshipName} onClick={relationshipLinkHandler}> More Details </button>
+            </div>
           </div>
         </div>
         

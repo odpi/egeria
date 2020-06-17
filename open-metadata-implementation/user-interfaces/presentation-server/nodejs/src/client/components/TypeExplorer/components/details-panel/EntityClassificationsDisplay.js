@@ -65,9 +65,11 @@ export default function EntityClassificationsDisplay(props) {
         <div>
           <button className="collapsible" onClick={flipSection}> <span className="italic">{classificationName}</span> </button>
           <div className="content">
-            Attributes: 
-            <ClassificationPropertiesDisplay expl={typesContext.getClassificationType(classificationName)} />
-            <button className="linkable" id={classificationName} onClick={classificationLinkHandler}> More Details </button>
+            Attributes: { !typesContext.getClassificationType(classificationName).classificationDef.propertiesDefinition ? "none" :
+              <ClassificationPropertiesDisplay expl={typesContext.getClassificationType(classificationName)} />}
+            <div className="v-spreader">
+              <button className="linkable" id={classificationName} onClick={classificationLinkHandler}> More Details </button>
+            </div>
           </div>
         </div>
       );   
@@ -78,9 +80,11 @@ export default function EntityClassificationsDisplay(props) {
         <div>
           <button className="collapsible" onClick={flipSection}> {classificationName} </button>
           <div className="content">
-            Attributes: 
-            <ClassificationPropertiesDisplay expl={typesContext.getClassificationType(classificationName)} />
-            <button className="linkable" id={classificationName} onClick={classificationLinkHandler}> More Details </button>
+            Attributes: { !typesContext.getClassificationType(classificationName).classificationDef.propertiesDefinition ? "none" :
+              <ClassificationPropertiesDisplay expl={typesContext.getClassificationType(classificationName)} />}
+            <div className="v-spreader">
+              <button className="linkable" id={classificationName} onClick={classificationLinkHandler}> More Details </button>
+            </div>
           </div>
         </div>
       );   
