@@ -56,8 +56,8 @@ public class SubjectAreaServicesInstance extends OCFOMASServiceInstance
                 this.oMRSAPIHelper = new OMRSAPIHelper(
                         serviceName,
                         serverName,
-                        repositoryHelper,
-                        repositoryHandler.getMetadataCollection()
+                        repositoryHandler,
+                        repositoryHelper
                 );
             }
 

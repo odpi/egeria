@@ -3,9 +3,12 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlossaryHandler;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +23,7 @@ import java.util.Date;
 public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGlossaryRESTServices.class);
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
+    private static final String className = SubjectAreaGlossaryRESTServices.class.getName();
 
     /**
      * Default constructor
@@ -57,21 +61,14 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li>StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createGlossary(String serverName, String userId, Glossary suppliedGlossary) {
+    public SubjectAreaOMASAPIResponse2<Glossary> createGlossary(String serverName, String userId, Glossary suppliedGlossary) {
         final String methodName = "createGlossary";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId);
-        }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse2<Glossary> response = new SubjectAreaOMASAPIResponse2<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.createGlossary(userId, suppliedGlossary);
-
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
@@ -91,21 +88,14 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse getGlossaryByGuid(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse2<Glossary> getGlossaryByGuid(String serverName, String userId, String guid) {
         final String methodName = "getGlossaryByGuid";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse2<Glossary> response = new SubjectAreaOMASAPIResponse2<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.getGlossaryByGuid(userId, guid);
-
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
@@ -132,28 +122,29 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse findGlossary(String serverName,
-                                                   String userId,
-                                                   String searchCriteria,
-                                                   Date asOfTime,
-                                                   Integer offset,
-                                                   Integer pageSize,
-                                                   org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                   String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse2<Glossary> findGlossary(String serverName,
+                                                              String userId,
+                                                              String searchCriteria,
+                                                              Date asOfTime,
+                                                              Integer offset,
+                                                              Integer pageSize,
+                                                              SequencingOrder sequencingOrder,
+                                                              String sequencingProperty) {
 
         final String methodName = "findGlossary";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId);
-        }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse2<Glossary> response = new SubjectAreaOMASAPIResponse2<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
-            response = handler.findGlossary(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setSearchCriteria(searchCriteria);
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+            response = handler.findGlossary(userId, findRequest);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
 
         return response;
@@ -182,31 +173,30 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getGlossaryRelationships(String serverName,
-                                                               String userId,
-                                                               String guid,
-                                                               Date asOfTime,
-                                                               Integer offset,
-                                                               Integer pageSize,
-                                                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                               String sequencingProperty
-                                                              ) {
+    public SubjectAreaOMASAPIResponse2<Line> getGlossaryRelationships(String serverName,
+                                                                      String userId,
+                                                                      String guid,
+                                                                      Date asOfTime,
+                                                                      Integer offset,
+                                                                      Integer pageSize,
+                                                                      SequencingOrder sequencingOrder,
+                                                                      String sequencingProperty) {
         String methodName = "getGlossaryRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse2<Line> response = new SubjectAreaOMASAPIResponse2<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
-            response = handler.getGlossaryRelationships(userId,
-                                                    guid,
-                                                    asOfTime,
-                                                    offset,
-                                                    pageSize,
-                                                    sequencingOrder,
-                                                    sequencingProperty);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+            response = handler.getGlossaryRelationships(userId, guid, findRequest);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -239,17 +229,17 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<Glossary> updateGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary, boolean isReplace) {
         final String methodName = "updateGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse2<Glossary> response = new SubjectAreaOMASAPIResponse2<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.updateGlossary(userId, guid, suppliedGlossary, isReplace);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -287,17 +277,17 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> EntityNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteGlossary(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse2<Glossary> deleteGlossary(String serverName, String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse2<Glossary> response = new SubjectAreaOMASAPIResponse2<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.deleteGlossary(userId, guid, isPurge);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -324,17 +314,17 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreGlossary(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse2<Glossary> restoreGlossary(String serverName, String userId, String guid) {
         final String methodName = "restoreGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse2<Glossary> response = new SubjectAreaOMASAPIResponse2<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.restoreGlossary(userId, guid);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);

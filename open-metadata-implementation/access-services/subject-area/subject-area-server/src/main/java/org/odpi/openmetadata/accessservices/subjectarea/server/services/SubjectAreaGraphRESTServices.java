@@ -4,8 +4,9 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGraphHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.StatusFilter;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,7 @@ import java.util.Date;
  */
 
 public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstance {
+    private static final String className = SubjectAreaGraphRESTServices.class.getName();
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGraphRESTServices.class);
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
@@ -54,20 +56,20 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse getGraph(String serverName,
-                                                String userId,
-                                                String guid,
-                                                Date asOfTime,
-                                                String nodeFilterStr,
-                                                String lineFilterStr,
-                                                StatusFilter statusFilter,   // may need to extend this for controlled terms
-                                                Integer level ) {
+    public SubjectAreaOMASAPIResponse2<Graph> getGraph(String serverName,
+                                                       String userId,
+                                                       String guid,
+                                                       Date asOfTime,
+                                                       String nodeFilterStr,
+                                                       String lineFilterStr,
+                                                       StatusFilter statusFilter,   // may need to extend this for controlled terms
+                                                       Integer level ) {
 
         final String methodName = "getGraph";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse2<Graph> response = new SubjectAreaOMASAPIResponse2<>();
         try {
             SubjectAreaGraphHandler handler = instanceHandler.getSubjectAreaGraphHandler(userId, serverName, methodName);
             response = handler.getGraph(
@@ -79,8 +81,8 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
                                         statusFilter,   // may need to extend this for controlled terms
                                         level);
 
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
