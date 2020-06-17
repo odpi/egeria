@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.*;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
@@ -50,7 +51,7 @@ import java.util.Map;
 
         })
 
-public class Line implements Serializable {
+public class Line implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
     private Date effectiveFromTime = null;
