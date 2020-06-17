@@ -2,6 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.restclients.spring;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.codehaus.plexus.util.Base64;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.RESTClientConnectorErrorCode;
@@ -14,16 +19,19 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import javax.net.ssl.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.List;
@@ -41,12 +49,249 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
     private static final Logger log = LoggerFactory.getLogger(SpringRESTClientConnector.class);
 
+    // These are distinct from SERVER (in the context of a socket) settings
+    // As we may want to make distinction (for mutual ssl). here is only client
+    private static final String ENV_SSL_VERIFY = "EGERIA_SSL_CLIENT_VERIFY";
+    private static final String SYSPROP_SSL_VERIFY = "egeria.ssl.client.verify";
+    private static boolean SSL_VERIFY=false;
+
+    private static final String ENV_SSL_TRUSTSTORE = "EGERIA_SSL_CLIENT_TRUSTSTORE";
+    private static final String SYSPROP_SSL_SERVER_TRUSTSTORE = "server.ssl.trust-store";
+    private static final String SYSPROP_SSL_TRUSTSTORE = "egeria.ssl.client.truststore";
+    private static final String SYSPROP_SSL_JVM_TRUSTSTORE = "javax.net.ssl.trustStore";
+    private static String truststore=null; // use to check a received certificate
+
+    private static final String ENV_SSL_TRUSTSTOREPASS = "EGERIA_SSL_CLIENT_TRUSTSTOREPASS";
+    private static final String SYSPROP_SSL_SERVER_TRUSTSTOREPASS = "server.ssl.trust-store-password";
+    private static final String SYSPROP_SSL_TRUSTSTOREPASS = "egeria.ssl.client.truststorepass";
+    private static final String SYSPROP_SSL_JVM_TRUSTSTOREPASS = "javax.net.ssl.trustStorePassword";
+    private static String truststorePassword=null; // auth for above
+
+    private static final String ENV_SSL_KEYSTORE = "EGERIA_SSL_CLIENT_KEYSTORE";
+    private static final String SYSPROP_SSL_SERVER_KEYSTORE = "server.ssl.key-store";
+    private static final String SYSPROP_SSL_KEYSTORE = "egeria.ssl.client.keystore";
+    private static final String SYSPROP_SSL_JVM_KEYSTORE = "javax.net.ssl.keyStore";
+    private static String keystore=null; // use to check a received certificate
+
+    private static final String ENV_SSL_KEYSTOREPASS = "EGERIA_SSL_CLIENT_KEYSTOREPASS";
+    private static final String SYSPROP_SSL_SERVER_KEYSTOREPASS = "server.ssl.key-store-password";
+    private static final String SYSPROP_SSL_KEYSTOREPASS = "egeria.ssl.client.keystorepass";
+    private static final String SYSPROP_SSL_JVM_KEYSTOREPASS = "javax.net.ssl.keyStorePassword";
+    private static String keystorePassword=null; // auth for above
+
+    // Initialize configuration
+    // Environment variables take precedence, then system properties, then our built-in defaults
+    // used if not explicitly passed on other methods
+
+    static{
+        String sslVerifySetting;
+        String truststoreSetting=null;
+        String truststorePasswordSetting=null;
+        String keystoreSetting=null;
+        String keystorePasswordSetting=null;
+
+        // Take care to default to strict security checks. Any non-empty value is used - env then property,
+        // but we only switch off the check if set to (case insignificant) false - hence double -ve on compare
+        sslVerifySetting = System.getenv(ENV_SSL_VERIFY);
+        if (StringUtils.isNotBlank(sslVerifySetting))
+        {
+            log.debug("egeria-ssl: ssl verification set from environment " + ENV_SSL_VERIFY);
+        }
+        else
+        {
+             sslVerifySetting = System.getProperty(SYSPROP_SSL_VERIFY);
+                    if (StringUtils.isNotBlank(sslVerifySetting))
+                    {
+                        log.debug("egeria-ssl: ssl verification set from system property " + SYSPROP_SSL_VERIFY);
+
+                    }
+                    else {
+                        sslVerifySetting = "true"; // default
+                        log.debug("egeria-ssl: ssl verification left to default");
+                    }
+        }
+
+        SSL_VERIFY = !StringUtils.equalsIgnoreCase(sslVerifySetting, "false");
+        log.debug("egeria-ssl: ssl verification SET to: " + SSL_VERIFY);
+
+
+        // Decide which truststore to use - once we decide we'll use the corresponding password if found
+        // We will use Environment -> Egeria Client Property -> JVM property -> server config (if found)
+        // If none found we'll remain set at null
+        // NOte that a null password is valid - so if the truststore is set we'll take the associated pass even if null
+        truststoreSetting = System.getenv(ENV_SSL_TRUSTSTORE);
+        if (StringUtils.isNotBlank(truststoreSetting)) {
+            log.debug("egeria-ssl: truststore set from environment " + ENV_SSL_TRUSTSTORE);
+            truststorePasswordSetting = System.getenv(ENV_SSL_TRUSTSTOREPASS);
+        }
+        else
+        {
+            truststore = System.getProperty(SYSPROP_SSL_TRUSTSTORE);
+            if (StringUtils.isNotBlank(truststore)) {
+                log.debug("egeria-ssl: truststore set from egeria system property " + SYSPROP_SSL_TRUSTSTORE);
+                truststorePasswordSetting = System.getProperty(SYSPROP_SSL_TRUSTSTOREPASS);
+            }
+            else
+            {
+                truststore = System.getProperty(SYSPROP_SSL_JVM_TRUSTSTORE);
+                if (StringUtils.isNotBlank(truststore)) {
+                    log.debug("egeria-ssl: truststore set from jvm system property " + SYSPROP_SSL_JVM_TRUSTSTORE);
+                    truststorePasswordSetting = System.getProperty(SYSPROP_SSL_JVM_TRUSTSTOREPASS);
+                }
+                else
+                {
+                    truststore = System.getProperty(SYSPROP_SSL_SERVER_TRUSTSTORE);
+                    if (StringUtils.isNotBlank(truststore)) {
+                        log.debug("egeria-ssl: truststore set from spring server environment " + SYSPROP_SSL_SERVER_TRUSTSTORE);
+                        truststorePasswordSetting = System.getProperty(SYSPROP_SSL_SERVER_TRUSTSTOREPASS);
+                    }
+                }
+            }
+        }
+
+        if (truststoreSetting != null)
+        {
+            truststore=truststoreSetting;
+            truststorePassword=truststorePasswordSetting;
+            log.debug("egeria-ssl: truststore SET to " + truststore);
+        }
+        else
+            log.debug("egeria-ssl: truststore left at default");
+
+        // Decide which truststore to use - once we decide we'll use the corresponding password if found
+        // We will use Environment -> Egeria Client Property -> JVM property -> server config (if found)
+        // If none found we'll remain set at null
+        // NOte that a null password is valid - so if the truststore is set we'll take the associated pass even if null
+        keystoreSetting = System.getenv(ENV_SSL_KEYSTORE);
+        if (StringUtils.isNotBlank(keystoreSetting)) {
+            log.debug("egeria-ssl: keystore set from environment " + ENV_SSL_KEYSTORE);
+            keystorePasswordSetting = System.getenv(ENV_SSL_KEYSTOREPASS);
+        }
+        else
+        {
+            keystore = System.getProperty(SYSPROP_SSL_KEYSTORE);
+            if (StringUtils.isNotBlank(keystore)) {
+                log.debug("egeria-ssl: keystore set from egeria system property " + SYSPROP_SSL_KEYSTORE);
+                keystorePasswordSetting = System.getProperty(SYSPROP_SSL_KEYSTOREPASS);
+            }
+            else
+            {
+                keystore = System.getProperty(SYSPROP_SSL_JVM_KEYSTORE);
+                if (StringUtils.isNotBlank(keystore)) {
+                    log.debug("egeria-ssl: keystore set from jvm system property " + SYSPROP_SSL_JVM_KEYSTORE);
+                    keystorePasswordSetting = System.getProperty(SYSPROP_SSL_JVM_KEYSTOREPASS);
+                }
+                else
+                {
+                    keystore = System.getProperty(SYSPROP_SSL_SERVER_KEYSTORE);
+                    if (StringUtils.isNotBlank(keystore)) {
+                        log.debug("egeria-ssl: keystore set from spring server environment " + SYSPROP_SSL_SERVER_KEYSTORE);
+                        keystorePasswordSetting = System.getProperty(SYSPROP_SSL_SERVER_KEYSTOREPASS);
+                    }
+                }
+            }
+        }
+
+        if (keystoreSetting != null)
+        {
+            keystore=keystoreSetting;
+            keystorePassword=keystorePasswordSetting;
+            log.debug("egeria-ssl: keystore SET to " + truststore);
+        }
+        else
+            log.debug("egeria-ssl: keystore left at default");
+
+        // The truststore and password should now be available - null will just mean not certs loaded
+    }
+
     /**
      * Default constructor
      */
-    public SpringRESTClientConnector() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException
-    {
+    public SpringRESTClientConnector() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException, CertificateException, UnrecoverableKeyException {
+        this(SSL_VERIFY);
+    }
+
+    /**
+     * constructor with ssl option
+     * @param ssl_verify boolean to indicate if SSL cert checking is done
+     */
+    public SpringRESTClientConnector(boolean ssl_verify) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException,
+            IOException, CertificateException, UnrecoverableKeyException {
         super();
+
+        /* TODO: Disable SSL cert verification -- for now */
+        SSLContext sc = SSLContext.getInstance("TLS v1.3");
+
+        // TODO - this is where we inject key manager and trust manager if we want to use non-default settings
+        // For now keystore must be in pkcs12 - default Java 9 & above, and for all non java
+        if (ssl_verify) {
+            InputStream tsf;
+            InputStream ksf;
+
+            // Truststore -- where we store CAs & certificates we trust. Used by client in 1way and mutual SSL
+            KeyStore tStore = KeyStore.getInstance("PKCS12");
+            TrustManagerFactory tmFactory = TrustManagerFactory.getInstance("X509");
+
+            // Allow use of classpath - to find resource inside jar. Useful for out of the box config
+            if (StringUtils.startsWithIgnoreCase(truststore, "classpath:")) {
+                tsf=this.getClass().getClassLoader().getResourceAsStream(StringUtils.removeStart(truststore,"classpath:"));
+            }
+            else
+                // otherwise absolute filename
+                tsf = new FileInputStream(truststore);
+
+            // Load the keystore, initialise the factory
+            tStore.load(tsf,truststorePassword.toCharArray());
+            tmFactory.init(tStore);
+            tsf.close();
+
+            // Very similar for keystore - this is needed for mutual ssl
+            // Default KeyManager will choose an appropriate cert to use
+            //TODO: Implement own X509KeyManager if required to choose by alias - the default
+            //implementation will chose the first appropriate one in alphanumeric order.
+            KeyStore kStore = KeyStore.getInstance("PKCS12");
+            KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+
+            if (StringUtils.startsWithIgnoreCase(keystore, "classpath:")) {
+                ksf=this.getClass().getClassLoader().getResourceAsStream(StringUtils.removeStart(keystore,"classpath:"));
+            }
+            else
+                ksf = new FileInputStream(keystore);
+            kStore.load(ksf,keystorePassword.toCharArray());
+            kmf.init(kStore, keystorePassword.toCharArray());
+            ksf.close();
+
+            // Get a good seed for the crypt
+            SecureRandom random = new SecureRandom();
+            random.setSeed(System.currentTimeMillis());
+
+            // Now have a new SSL context
+            sc.init(kmf.getKeyManagers(), tmFactory.getTrustManagers(), random);
+        }
+
+        else
+            // no-ops when SSL verification is not used
+            sc.init(null, INSECURE_MANAGER, null);
+
+
+        // Get a custom httpclient - scope to Egeria rest API calls & do not impact other usages
+
+        HttpClientBuilder httpBuilder = HttpClientBuilder.create();
+        httpBuilder.useSystemProperties();
+        httpBuilder.setSSLContext(sc);
+
+        if (ssl_verify)
+            httpBuilder.setSSLHostnameVerifier(new DefaultHostnameVerifier());
+        else
+            httpBuilder.setSSLHostnameVerifier(new NoopHostnameVerifier());
+
+        CloseableHttpClient httpClient;
+        httpClient = httpBuilder.build();
+
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        requestFactory.setHttpClient(httpClient);
+
+        restTemplate = new RestTemplate(requestFactory);
 
         /*
          * Rather than creating a RestTemplate directly, the RestTemplateBuilder is used so that the
@@ -59,16 +304,6 @@ public class SpringRESTClientConnector extends RESTClientConnector
          */
         DefaultUriBuilderFactory builderFactory = new DefaultUriBuilderFactory();
         builderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
-
-
-        /* TODO: Disable SSL cert verification -- for now */
-        HttpsURLConnection.setDefaultHostnameVerifier(bypassVerifier);
-        SSLContext sc = SSLContext.getInstance("SSL");
-        sc.init(null, INSECURE_MANAGER, null);
-        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-
-        restTemplate = new RestTemplate();
-
         restTemplate.setUriTemplateHandler(builderFactory);
 
         /* Ensure that the REST template always uses UTF-8 */
@@ -78,12 +313,10 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
     }
 
+
     /**
      * Dummy TrustManager that is happy with any cert
      *
-     * @param hostname hostname
-     * @param sslSession ssl ession
-     * @return boolean result
      */
     private static final TrustManager[] INSECURE_MANAGER = new TrustManager[]{new X509TrustManager() {
         public X509Certificate[] getAcceptedIssuers() {
@@ -95,7 +328,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
          * (an exception would be caused if not)
          *
          * @param certs X509 certificates
-         * @param authType authtype
+         * @param authType authType
          */
         public void checkClientTrusted(X509Certificate[] certs, String authType) {
         }
@@ -105,25 +338,13 @@ public class SpringRESTClientConnector extends RESTClientConnector
          * (an exception would be caused if not)
          *
          * @param certs X509 certificates
-         * @param authType authtype
+         * @param authType authType
          */
         public void checkServerTrusted(X509Certificate[] certs, String authType) {
         }
     }
     };
 
-    /**
-     * Dummy HostnameVerifier that is happy with any host (for the SSL host checking)
-     *
-     * @param hostname hostname
-     * @param sslSession ssl ession
-     * @return boolean result
-     */
-    private static final HostnameVerifier bypassVerifier = new HostnameVerifier() {
-        public boolean verify(String hostname, SSLSession sslSession) {
-            return true;
-        }
-    };
 
     /**
      * Initialize the connector.

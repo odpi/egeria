@@ -91,12 +91,10 @@ public class EgeriaUIPlatform {
 
         //making sure truststore was not set using JVM options
         // and strict.ssl is true ( if false, truststore will ignored anyway )
-        if(strictSSL && System.getProperty("javax.net.ssl.trustStore")==null) {
-            //load the 'javax.net.ssl.trustStore' and
-            //'javax.net.ssl.trustStorePassword' from application.properties
-            System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
-            System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
-        }
+        // TODO: further security cleanup - for now we'll inject this into environment for our SSL code to use
+        // We are saving the server specific spring setting for potential later use by the rest client code
+        System.setProperty("server.ssl.trust-store", env.getProperty("server.ssl.trust-store"));
+        System.setProperty("server.ssl.trust-store-password", env.getProperty("server.ssl.trust-store-password"));
     }
 }
 

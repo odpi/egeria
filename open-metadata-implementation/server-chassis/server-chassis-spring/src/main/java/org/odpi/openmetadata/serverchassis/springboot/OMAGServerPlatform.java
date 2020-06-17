@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
-import org.odpi.openmetadata.http.HttpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -98,10 +97,12 @@ public class OMAGServerPlatform
     public InitializingBean getInitialize()
     {
         return () -> {
+            // TODO: This section will be removed once the new implementation is complete and tested
             if (!strictSSL)
             {
-                log.warn("strict.ssl is set to false! Invalid certificates will be accepted for connection!");
-                HttpHelper.noStrictSSL();
+                log.warn("strict.ssl is *DEPRECATED*! Please use egeria.ssl.client.verify system property or environment variable. If already set they will take precedence over strict.ssl. Note also that strict.ssl=true is the same as egeria.ssl.client.verify=false, and in the new implementation only affects client interaction");
+                System.setProperty("egeria.ssl.client.verify", "false"); // inverse of strictSSL
+                //HttpHelper.noStrictSSL(); -- no longer used. code is now in SpringRESTClientConnector.java
             }
             autoStartConfig();
         };
@@ -212,14 +213,13 @@ public class OMAGServerPlatform
     @PostConstruct
     private void configureTrustStore() {
 
-        //making sure truststore was not set using JVM options
+        // making sure truststore was not set using JVM options
         // and strict.ssl is true ( if false, truststore will ignored anyway )
-        if(strictSSL && System.getProperty("javax.net.ssl.trustStore")==null) {
-            //load the 'javax.net.ssl.trustStore' and
-            //'javax.net.ssl.trustStorePassword' from application.properties
-            System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
-            System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
-        }
+        // TODO: further security cleanup - for now we'll inject this into environment for our SSL code to use
+        // Keeping for compatability
+        // We are saving the server specific spring setting for potential later use by the rest client code
+        System.setProperty("server.ssl.trust-store", env.getProperty("server.ssl.trust-store"));
+        System.setProperty("server.ssl.trust-store-password", env.getProperty("server.ssl.trust-store-password"));
     }
 
 }
