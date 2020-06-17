@@ -23,6 +23,7 @@ The Egeria content is organized into the following modules:
     * **[design-model](open-metadata-implementation/access-services/design-model)** - manage content from design models.
     * **[dev-ops](open-metadata-implementation/access-services/dev-ops)** - manage metadata for a devOps pipeline.
     * **[digital-architecture](open-metadata-implementation/access-services/digital-architecture)** - support the definition of data standards and models.
+    * **[digital-service](open-metadata-implementation/access-services/digital-service)** - manage metadata for a Digital Service.
     * **[discovery-engine](open-metadata-implementation/access-services/discovery-engine)** - manage metadata for metadata discovery services.
     * **[glossary-view](open-metadata-implementation/access-services/glossary-view)** - search for glossary content.
     * **[governance-engine](open-metadata-implementation/access-services/governance-engine)** - manage metadata for an operational governance engine.
