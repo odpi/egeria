@@ -128,6 +128,10 @@ public class CategoryFVT {
         if (results.size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on the find got " + results.size());
         }
+        results = findCategories(null);
+        if (results.size() != 2) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on the find got " + results.size());
+        }
         //soft delete a category and check it is not found
         Category deleted4 = deleteCategory(categoryForFind2.getSystemAttributes().getGUID());
         FVTUtils.validateNode(deleted4);

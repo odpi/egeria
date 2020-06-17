@@ -76,7 +76,7 @@ public class ProjectFVT
 
         List<Project> results = findProjects(null);
         if (results.size() !=2 ) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on the find got " +results.size());
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on the find got " + results.size());
         }
 
         Project projectForUpdate = new Project();

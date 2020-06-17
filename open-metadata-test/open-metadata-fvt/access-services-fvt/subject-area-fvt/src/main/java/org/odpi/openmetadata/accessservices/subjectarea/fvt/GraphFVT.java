@@ -220,7 +220,7 @@ public class GraphFVT
         checkNodesContainNodeType(graph.getNodes(),NodeType.SubjectAreaDefinition);
     }
 
-    private void checkNodesContainNodeType(Set<Node> nodes, NodeType nodeTypeToCheck) throws SubjectAreaFVTCheckedException {
+    private void checkNodesContainNodeType(Set<? extends Node> nodes, NodeType nodeTypeToCheck) throws SubjectAreaFVTCheckedException {
         boolean found = false;
         for (Node node:nodes) {
             if (node.getNodeType() == nodeTypeToCheck) {
