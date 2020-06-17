@@ -5,10 +5,11 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGlossaryRESTServices;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -58,7 +59,7 @@ public class SubjectAreaGlossaryRESTResource {
      * StatusNotSupportedException          A status value is not supported
      */
     @PostMapping(path = "/users/{userId}/glossaries")
-    public SubjectAreaOMASAPIResponse createGlossary(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse2<Glossary> createGlossary(@PathVariable String serverName,
                                                      @PathVariable String userId,
                                                      @RequestBody Glossary suppliedGlossary) {
         return restAPI.createGlossary(serverName, userId, suppliedGlossary);
@@ -82,9 +83,9 @@ public class SubjectAreaGlossaryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/glossaries/{guid}")
-    public SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName,
-                                                  @PathVariable String userId,
-                                                  @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse2<Glossary> getGlossary(@PathVariable String serverName,
+                                                   @PathVariable String userId,
+                                                   @PathVariable String guid) {
         return restAPI.getGlossaryByGuid(serverName, userId, guid);
     }
 
@@ -111,7 +112,7 @@ public class SubjectAreaGlossaryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/glossaries")
-    public SubjectAreaOMASAPIResponse findGlossary(@PathVariable String serverName, @PathVariable String userId,
+    public SubjectAreaOMASAPIResponse2<Glossary> findGlossary(@PathVariable String serverName, @PathVariable String userId,
                                                    @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
                                                    @RequestParam(value = "asOfTime", required = false) Date asOfTime,
                                                    @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
@@ -147,13 +148,13 @@ public class SubjectAreaGlossaryRESTResource {
 
 
     @GetMapping(path = "/users/{userId}/glossaries/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                               @PathVariable String guid,
-                                                               @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                               @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                               @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
-                                                               @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                               @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    public SubjectAreaOMASAPIResponse2<Line> getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                      @PathVariable String guid,
+                                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                      @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                                      @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                                      @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                      @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
         return restAPI.getGlossaryRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
@@ -183,7 +184,7 @@ public class SubjectAreaGlossaryRESTResource {
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/glossaries/{guid}")
-    public SubjectAreaOMASAPIResponse updateGlossary(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse2<Glossary> updateGlossary(@PathVariable String serverName,
                                                      @PathVariable String userId,
                                                      @PathVariable String guid,
                                                      @RequestBody Glossary glossary,
@@ -221,7 +222,7 @@ public class SubjectAreaGlossaryRESTResource {
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/glossaries/{guid}")
-    public SubjectAreaOMASAPIResponse deleteGlossary(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse2<Glossary> deleteGlossary(@PathVariable String serverName,
                                                      @PathVariable String userId,
                                                      @PathVariable String guid,
                                                      @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
@@ -247,7 +248,7 @@ public class SubjectAreaGlossaryRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/glossaries/{guid}")
-    public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse2<Glossary> restoreGlossary(@PathVariable String serverName,
                                                       @PathVariable String userId,
                                                       @PathVariable String guid) {
         return restAPI.restoreGlossary(serverName, userId, guid);

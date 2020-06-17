@@ -6,9 +6,10 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaCategoryRESTServices;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -64,7 +65,7 @@ public class SubjectAreaCategoryRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/categories")
-    public SubjectAreaOMASAPIResponse createCategory(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse2<Category> createCategory(@PathVariable String serverName,
                                                      @PathVariable String userId,
                                                      @RequestBody Category suppliedCategory) {
         return restAPI.createCategory(serverName, userId, suppliedCategory);
@@ -87,7 +88,7 @@ public class SubjectAreaCategoryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/categories/{guid}")
-    public SubjectAreaOMASAPIResponse getCategoryByGuid(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse2<Category> getCategoryByGuid(@PathVariable String serverName,
                                                         @PathVariable String userId,
                                                         @PathVariable String guid) {
         return restAPI.getCategory(serverName, userId, guid);
@@ -116,7 +117,7 @@ public class SubjectAreaCategoryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/categories")
-    public SubjectAreaOMASAPIResponse findCategory(@PathVariable String serverName, @PathVariable String userId,
+    public SubjectAreaOMASAPIResponse2<Category> findCategory(@PathVariable String serverName, @PathVariable String userId,
                                                @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
                                                @RequestParam(value = "asOfTime", required = false) Date asOfTime,
                                                @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
@@ -150,13 +151,13 @@ public class SubjectAreaCategoryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/categories/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse getCategoryRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                               @PathVariable String guid,
-                                                               @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                               @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                               @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
-                                                               @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                               @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    public SubjectAreaOMASAPIResponse2<Line> getCategoryRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                      @PathVariable String guid,
+                                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                      @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                                      @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                                      @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                      @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
         return restAPI.getCategoryRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
@@ -181,7 +182,7 @@ public class SubjectAreaCategoryRESTResource {
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/categories/{guid}")
-    public SubjectAreaOMASAPIResponse updateCategory(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse2<Category> updateCategory(@PathVariable String serverName,
                                                      @PathVariable String userId,
                                                      @PathVariable String guid,
                                                      @RequestBody Category suppliedCategory,
@@ -217,10 +218,10 @@ public class SubjectAreaCategoryRESTResource {
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/categories/{guid}")
-    public SubjectAreaOMASAPIResponse deleteCategory(@PathVariable String serverName,
-                                                     @PathVariable String userId,
-                                                     @PathVariable String guid,
-                                                     @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse2<Category> deleteCategory(@PathVariable String serverName,
+                                                      @PathVariable String userId,
+                                                      @PathVariable String guid,
+                                                      @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteCategory(serverName, userId, guid, isPurge);
     }
 
@@ -243,7 +244,7 @@ public class SubjectAreaCategoryRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/categories/{guid}")
-    public SubjectAreaOMASAPIResponse restoreCategory(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse2<Category> restoreCategory(@PathVariable String serverName,
                                                       @PathVariable String userId,
                                                       @PathVariable String guid) {
         return restAPI.restoreCategory(serverName, userId, guid);

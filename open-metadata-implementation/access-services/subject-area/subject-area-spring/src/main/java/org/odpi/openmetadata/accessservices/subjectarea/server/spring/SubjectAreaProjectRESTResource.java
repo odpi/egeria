@@ -5,10 +5,12 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaProjectRESTServices;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -53,9 +55,9 @@ public class SubjectAreaProjectRESTResource {
      * StatusNotSupportedException          A status value is not supported
      */
     @PostMapping(path = "/users/{userId}/projects")
-    public SubjectAreaOMASAPIResponse createProject(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @RequestBody Project suppliedProject) {
+    public SubjectAreaOMASAPIResponse2<Project> createProject(@PathVariable String serverName,
+                                                              @PathVariable String userId,
+                                                              @RequestBody Project suppliedProject) {
         return restAPI.createProject(serverName, userId, suppliedProject);
     }
 
@@ -77,9 +79,9 @@ public class SubjectAreaProjectRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/projects/{guid}")
-    public SubjectAreaOMASAPIResponse getProject(@PathVariable String serverName,
-                                                 @PathVariable String userId,
-                                                 @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse2<Project> getProject(@PathVariable String serverName,
+                                                           @PathVariable String userId,
+                                                           @PathVariable String guid) {
         return restAPI.getProjectByGuid(serverName, userId, guid);
     }
 
@@ -106,7 +108,7 @@ public class SubjectAreaProjectRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/projects")
-    public SubjectAreaOMASAPIResponse findProject(@PathVariable String serverName, @PathVariable String userId,
+    public SubjectAreaOMASAPIResponse2<Project> findProject(@PathVariable String serverName, @PathVariable String userId,
                                                   @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
                                                   @RequestParam(value = "asOfTime", required = false) Date asOfTime,
                                                   @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
@@ -142,13 +144,13 @@ public class SubjectAreaProjectRESTResource {
 
 
     @GetMapping(path = "/users/{userId}/projects/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                              @PathVariable String guid,
-                                                              @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                              @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                              @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
-                                                              @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                              @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    public SubjectAreaOMASAPIResponse2<Line> getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                     @PathVariable String guid,
+                                                                     @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                     @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                                     @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                     @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
         return restAPI.getProjectRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
@@ -175,14 +177,12 @@ public class SubjectAreaProjectRESTResource {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-
     @GetMapping(path = "/users/{userId}/projects/{guid}/terms")
-    public SubjectAreaOMASAPIResponse getProjectTerms(@PathVariable String serverName,
-                                                      @PathVariable String userId,
-                                                      @PathVariable String guid,
-                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime
+    public SubjectAreaOMASAPIResponse2<Term> getProjectTerms(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @PathVariable String guid
     ) {
-        return restAPI.getProjectTerms(serverName, userId, guid, asOfTime);
+        return restAPI.getProjectTerms(serverName, userId, guid);
     }
 
     /**
@@ -210,7 +210,7 @@ public class SubjectAreaProjectRESTResource {
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/projects/{guid}")
-    public SubjectAreaOMASAPIResponse updateProject(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse2<Project> updateProject(@PathVariable String serverName,
                                                     @PathVariable String userId,
                                                     @PathVariable String guid,
                                                     @RequestBody Project Project,
@@ -247,10 +247,10 @@ public class SubjectAreaProjectRESTResource {
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/projects/{guid}")
-    public SubjectAreaOMASAPIResponse deleteProject(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String guid,
-                                                    @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse2<Project> deleteProject(@PathVariable String serverName,
+                                                              @PathVariable String userId,
+                                                              @PathVariable String guid,
+                                                              @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteProject(serverName, userId, guid, isPurge);
     }
@@ -274,9 +274,9 @@ public class SubjectAreaProjectRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/projects/{guid}")
-    public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String serverName,
-                                                     @PathVariable String userId,
-                                                     @PathVariable String guid
+    public SubjectAreaOMASAPIResponse2<Project> restoreProject(@PathVariable String serverName,
+                                                               @PathVariable String userId,
+                                                               @PathVariable String guid
     ) {
         return restAPI.restoreProject(serverName, userId, guid);
     }

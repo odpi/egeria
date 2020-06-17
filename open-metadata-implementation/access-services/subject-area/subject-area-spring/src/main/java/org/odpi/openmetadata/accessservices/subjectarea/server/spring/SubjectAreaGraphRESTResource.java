@@ -6,7 +6,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.StatusFilter;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGraphRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,14 +59,14 @@ public class SubjectAreaGraphRESTResource {
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/nodes/{guid}")
-    public  SubjectAreaOMASAPIResponse getGraph(@PathVariable String serverName,
-                                                @PathVariable String userId,
-                                                @PathVariable String guid,
-                                                @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                @RequestParam(value = "nodeFilter", required=false)String nodeFilterStr,
-                                                @RequestParam(value = "lineFilter", required=false)String lineFilterStr,
-                                                @RequestParam(value = "statusFilter", required=false)StatusFilter statusFilter,   // may need to extend this for controlled terms
-                                                @RequestParam(value = "level", required=false) Integer level ) {
+    public SubjectAreaOMASAPIResponse2<Graph> getGraph(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String guid,
+                                                       @RequestParam(value = "asOfTime", required=false) Date asOfTime,
+                                                       @RequestParam(value = "nodeFilter", required=false)String nodeFilterStr,
+                                                       @RequestParam(value = "lineFilter", required=false)String lineFilterStr,
+                                                       @RequestParam(value = "statusFilter", required=false)StatusFilter statusFilter,   // may need to extend this for controlled terms
+                                                       @RequestParam(value = "level", required=false) Integer level ) {
 
         return restAPI.getGraph(serverName,userId,guid,asOfTime,nodeFilterStr,lineFilterStr,statusFilter,level);
     }
