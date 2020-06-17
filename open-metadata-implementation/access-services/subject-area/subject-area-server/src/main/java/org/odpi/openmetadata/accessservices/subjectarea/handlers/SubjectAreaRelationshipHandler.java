@@ -5,28 +5,20 @@ package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.RelationshipResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.InvalidParameterExceptionResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.ResponseCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineBundle;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineBundleFactory;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ResponseFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.Optional;
 
 
 /**
@@ -35,9 +27,7 @@ import java.util.StringTokenizer;
  */
 
 public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaRelationshipHandler.class);
-
+    private static final String className = SubjectAreaRelationshipHandler.class.getName();
 
     /**
      * Construct the Subject Area Relationship Handler
@@ -49,19 +39,13 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         super(oMRSAPIHelper);
     }
 
-    // nothing to change for relationships
-    @Override
-    protected SubjectAreaOMASAPIResponse getResponse(SubjectAreaOMASAPIResponse response) {
-        return response;
-    }
-
     /**
      * Create a Line (relationship), which is a link between two Nodes.
      * <p>
      *
      * @param restAPIName rest API name
      * @param userId      userId under which the request is performed
-     * @param className   class name
+     * @param clazz       mapper Class
      * @param line        line to create
      * @return response, when successful contains the created line
      * when not successful the following Exception responses can occur
@@ -75,34 +59,24 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function is not supported.
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createLine(String restAPIName, String userId, String className, Line line) {
-        String methodName = "createLine";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",className=" + className);
-        }
-        SubjectAreaOMASAPIResponse response = null;
-        ILineBundleFactory factory = new ILineBundleFactory(oMRSAPIHelper);
-        ILineBundle bundle = factory.getInstance(className);
-        ILineMapper mapper = bundle.getMapper();
-
+    public <L extends Line>SubjectAreaOMASAPIResponse2<L> createLine(String restAPIName,
+                                                                     String userId,
+                                                                     Class<? extends ILineMapper<L>> clazz,
+                                                                     L line)
+    {
+        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
         try {
-            Relationship omrsRelationship = mapper.mapLineToRelationship(line);
-            response = oMRSAPIHelper.callOMRSAddRelationship(restAPIName, userId, omrsRelationship);
-            if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
-                Relationship createdOMRSRelationship = ((RelationshipResponse) response).getRelationship();
-                Line createdLine = mapper.mapRelationshipToLine(createdOMRSRelationship);
-                response = new ResponseFactory().getInstance(className, createdLine);
+            ILineMapper<L> mapper = mappersFactory.get(clazz);
+            Relationship omrsRelationship = mapper.map(line);
+            Optional<Relationship> createdOMRSRelationship = oMRSAPIHelper.callOMRSAddRelationship(restAPIName, userId, omrsRelationship);
+            if (createdOMRSRelationship.isPresent()) {
+                L createdLine = mapper.map(createdOMRSRelationship.get());
+                response.addResult(createdLine);
             }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }
-
-
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
-
     }
 
     /**
@@ -110,7 +84,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      *
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
-     * @param className   class name
+     * @param clazz       mapper Class
      * @param guid        guid of the relationship to get
      * @return response which when successful contains the relationship with the requested guid
      * when not successful the following Exception responses can occur
@@ -121,43 +95,32 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse getLine(String restAPIName, String userId, String className, String guid) {
-
-        String methodName = "getLine";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
-        SubjectAreaOMASAPIResponse response = null;
-        ILineBundleFactory factory = new ILineBundleFactory(oMRSAPIHelper);
-        ILineBundle bundle = factory.getInstance(className);
-        ILineMapper mapper = bundle.getMapper();
-
+    public <L extends Line>SubjectAreaOMASAPIResponse2<L> getLine(String restAPIName,
+                                                                  String userId,
+                                                                  Class<? extends ILineMapper<L>> clazz,
+                                                                  String guid)
+    {
+        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, guid);
-            if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
-                Relationship createdOMRSRelationship = ((RelationshipResponse) response).getRelationship();
-                Line gotLine = mapper.mapRelationshipToLine(createdOMRSRelationship);
-                response = new ResponseFactory().getInstance(className, gotLine);
+            ILineMapper<L> mapper = mappersFactory.get(clazz);
+            Optional<Relationship> gotRelationship = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, guid);
+            if (gotRelationship.isPresent()) {
+                L gotLine = mapper.map(gotRelationship.get());
+                response.addResult(gotLine);
             }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }
-
-
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
 
-    /**
+     /**
      * Update a relationship.
      * <p>
      *
      * @param restAPIName rest API name
      * @param userId      userId under which the request is performed
-     * @param className   class name
+     * @param clazz       mapper Class
      * @param line        the relationship to update
      * @param isReplace   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response,              when successful contains the updated Line
@@ -172,81 +135,70 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateLine(String restAPIName, String userId, String className, Line line, boolean isReplace) {
-        String methodName = "updateLine";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",className=" + className, ",isReplace=" + isReplace);
-        }
-
-        SubjectAreaOMASAPIResponse response = null;
-        ILineBundleFactory factory = new ILineBundleFactory(oMRSAPIHelper);
-        ILineBundle bundle = factory.getInstance(className);
-        ILineMapper mapper = bundle.getMapper();
+    public <L extends Line>SubjectAreaOMASAPIResponse2<L> updateLine(String restAPIName,
+                                                                     String userId,
+                                                                     Class<? extends ILineMapper<L>> clazz,
+                                                                     L line,
+                                                                     Boolean isReplace)
+    {
+        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
 
         try {
-            String relationshipGuid = line.getGuid();
-            InputValidator.validateGUIDNotNull(className, methodName, relationshipGuid, "termGuid");
-            response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, relationshipGuid);
-            if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
-                Relationship originalRelationship = ((RelationshipResponse) response).getRelationship();
-                Relationship relationshipToUpdate = mapper.mapLineToRelationship(line);
+            ILineMapper<L> mapper = mappersFactory.get(clazz);
+            Optional<Relationship> gotRelationship = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, line.getGuid());
+            if (gotRelationship.isPresent()) {
+                Relationship originalRelationship = gotRelationship.get();
+                Relationship relationshipToUpdate = mapper.map(line);
 
-                if (isReplace) {
-                    // use the relationship as supplied
-                } else {
-                    if (relationshipToUpdate.getProperties() != null && relationshipToUpdate.getProperties().getPropertyCount() > 0) {
-                        Map<String, InstancePropertyValue> updateInstanceProperties = relationshipToUpdate.getProperties().getInstanceProperties();
-                        if (originalRelationship.getProperties() != null) {
-                            Map<String, InstancePropertyValue> orgInstanceProperties = originalRelationship.getProperties().getInstanceProperties();
-
-                            // if there a property that already exists but is not in the update properties then make sure that value is not overwritten by including it in this update request.
-                            for (String orgPropertyName : orgInstanceProperties.keySet()) {
-                                if (!updateInstanceProperties.containsKey(orgPropertyName)) {
-                                    // make sure the original value is not lost.
-                                    updateInstanceProperties.put(orgPropertyName, orgInstanceProperties.get(orgPropertyName));
-                                }
-                            }
-                        }
-                        InstanceProperties instancePropertiesToUpdate = new InstanceProperties();
-                        instancePropertiesToUpdate.setInstanceProperties(updateInstanceProperties);
-                        // copy over with effectivity dates - honour what is in the request. So null means we lose any effectivity time that are set.
-                        instancePropertiesToUpdate.setEffectiveFromTime(line.getEffectiveFromTime());
-                        instancePropertiesToUpdate.setEffectiveToTime(line.getEffectiveToTime());
-                        relationshipToUpdate.setProperties(instancePropertiesToUpdate);
-                    }
-                }
                 if (relationshipToUpdate.getProperties() == null || relationshipToUpdate.getProperties().getPropertyCount() == 0) {
                     // nothing to update.
                     // TODO may need to change this logic if effectivity updates can be made through this call.
                     ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.LINE_UPDATE_ATTEMPTED_WITH_NO_PROPERTIES.getMessageDefinition();
-
-                    response = new InvalidParameterExceptionResponse(
-                            new InvalidParameterException(messageDefinition, className, methodName, "properties", null)
-                    );
-                } else {
-                    response = oMRSAPIHelper.callOMRSUpdateRelationship(restAPIName, userId, relationshipToUpdate);
-                    if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
-                        Relationship updatedOmrsRelationship = ((RelationshipResponse) response).getRelationship();
-                        Line updatedLine = mapper.mapRelationshipToLine(updatedOmrsRelationship);
-                        response = new ResponseFactory().getInstance(className, updatedLine);
-                    }
+                    throw new InvalidParameterException(messageDefinition, className, restAPIName, "properties", null);
                 }
+
+                if (!isReplace) {
+                    // copy over with effectivity dates - honour what is in the request. So null means we lose any effectivity time that are set.
+                    InstanceProperties instanceProperties = updateProperties(originalRelationship, relationshipToUpdate);
+                    instanceProperties.setEffectiveFromTime(line.getEffectiveFromTime());
+                    instanceProperties.setEffectiveToTime(line.getEffectiveToTime());
+                    relationshipToUpdate.setProperties(instanceProperties);
+                }
+                oMRSAPIHelper.callOMRSUpdateRelationship(restAPIName, userId, relationshipToUpdate);
+                response = getLine(restAPIName, userId, clazz, line.getGuid());
             }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        } catch (PropertyServerException | UserNotAuthorizedException | SubjectAreaCheckedException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
+
+    private InstanceProperties updateProperties(Relationship originalRelationship, Relationship relationshipToUpdate) {
+            Map<String, InstancePropertyValue> updateInstanceProperties = relationshipToUpdate.getProperties().getInstanceProperties();
+            if (originalRelationship.getProperties() != null) {
+                Map<String, InstancePropertyValue> orgInstanceProperties = originalRelationship.getProperties().getInstanceProperties();
+
+                // if there a property that already exists but is not in the update properties
+                // then make sure that value is not overwritten by including it in this update request.
+                for (String orgPropertyName : orgInstanceProperties.keySet()) {
+                    if (!updateInstanceProperties.containsKey(orgPropertyName)) {
+                        // make sure the original value is not lost.
+                        updateInstanceProperties.put(orgPropertyName, orgInstanceProperties.get(orgPropertyName));
+                    }
+                }
+            }
+            InstanceProperties instancePropertiesToUpdate = new InstanceProperties();
+            instancePropertiesToUpdate.setInstanceProperties(updateInstanceProperties);
+
+            return instancePropertiesToUpdate;
+        }
 
     /**
      * Delete a Line (relationship)
      *
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
-     * @param className   class name
+     * @param clazz       mapper Class
      * @param guid        guid of the HAS A relationship to delete
      * @param isPurge     true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete, the response contains the deleted relationship
@@ -261,40 +213,23 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteLine(String restAPIName, String userId, String className, String guid, Boolean isPurge) {
-
-        String methodName = "deleteLine";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid + ",isPurge=" + isPurge);
-        }
-        SubjectAreaOMASAPIResponse response = null;
-        OMRSRepositoryHelper repositoryHelper = oMRSAPIHelper.getOMRSRepositoryHelper();
-        ILineBundleFactory factory = new ILineBundleFactory(oMRSAPIHelper);
-        ILineBundle bundle = factory.getInstance(className);
-        ILineMapper mapper = bundle.getMapper();
+    public <L extends Line>SubjectAreaOMASAPIResponse2<L> deleteLine(String restAPIName,
+                                                                     String userId,
+                                                                     Class<? extends ILineMapper<L>> clazz,
+                                                                     String guid,
+                                                                     Boolean isPurge) {
+        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
 
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            StringTokenizer st = new StringTokenizer(className, ".");
-            String typeName = mapper.getTypeName();
-            String source = oMRSAPIHelper.getServiceName();
-            String typeGuid = repositoryHelper.getTypeDefByName(source, typeName).getGUID();
+            ILineMapper<L> mapper = mappersFactory.get(clazz);
+            String typeGuid = mapper.getTypeDefGuid();
             if (isPurge) {
-                response = oMRSAPIHelper.callOMRSPurgeRelationship(restAPIName, userId, typeGuid, typeName, guid);
+                oMRSAPIHelper.callOMRSPurgeRelationship(restAPIName, userId, typeGuid, mapper.getTypeName(), guid);
             } else {
-                response = oMRSAPIHelper.callOMRSDeleteRelationship(restAPIName, userId, typeGuid, typeName, guid);
-                if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
-                    Relationship omrsRelationship = ((RelationshipResponse) response).getRelationship();
-                    Line deletedLine = mapper.mapRelationshipToLine(omrsRelationship);
-                    response = new ResponseFactory().getInstance(className, deletedLine);
-                }
+                oMRSAPIHelper.callOMRSDeleteRelationship(restAPIName, userId, typeGuid, mapper.getTypeName(), guid);
             }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
@@ -306,7 +241,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      *
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
-     * @param className   class name
+     * @param clazz       mapper Class
      * @param guid        guid of the relationship to restore
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
@@ -320,30 +255,17 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> EntityNotPurgedException             a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreLine(String restAPIName, String userId, String className, String guid) {
-
-        String methodName = "deleteLine";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
-        SubjectAreaOMASAPIResponse response = null;
-        ILineBundleFactory factory = new ILineBundleFactory(oMRSAPIHelper);
-        ILineBundle bundle = factory.getInstance(className);
-        ILineMapper mapper = bundle.getMapper();
+    public <L extends Line>SubjectAreaOMASAPIResponse2<L>  restoreLine(String restAPIName,
+                                                                       String userId,
+                                                                       Class<? extends ILineMapper<L>> clazz,
+                                                                       String guid)
+    {
+        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            response = this.oMRSAPIHelper.callOMRSRestoreRelationship(restAPIName, userId, guid);
-            if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
-                Relationship omrsRelationship = ((RelationshipResponse) response).getRelationship();
-                Line restoredLine = mapper.mapRelationshipToLine(omrsRelationship);
-                response = new ResponseFactory().getInstance(className, restoredLine);
-            }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+            oMRSAPIHelper.callOMRSRestoreRelationship(restAPIName, userId, guid);
+            response = getLine(restAPIName, userId, clazz, guid);
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }

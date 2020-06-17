@@ -2,36 +2,31 @@
 /* Copyright Contributors to the ODPi Egeria term. */
 package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailsResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.GlossarySummaryResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.RelationshipsResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Activity;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermAnchorMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.TypeGuids;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,9 +36,7 @@ import java.util.stream.Collectors;
  * OMAS and retrieves entities and relationships through the OMRSRepositoryConnector.
  */
 public class SubjectAreaTermHandler extends SubjectAreaHandler {
-    private static final Class<?> clazz = SubjectAreaTermHandler.class;
-    private static final String className = clazz.getName();
-    private static final Logger log = LoggerFactory.getLogger(clazz);
+    private static final String className = SubjectAreaTermHandler.class.getName();
 
     /**
      * Construct the Subject Area Term Handler
@@ -53,32 +46,6 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      */
     public SubjectAreaTermHandler(OMRSAPIHelper oMRSAPIHelper) {
         super(oMRSAPIHelper);
-    }
-
-    /**
-     * Take an entityDetail response and map it to the appropriate Term orientated response
-     * @param response entityDetailResponse
-     * @return Term response containing the appropriate Term object.
-     */
-    @Override
-    protected SubjectAreaOMASAPIResponse getResponse( SubjectAreaOMASAPIResponse response) {
-        EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
-        EntityDetail entityDetail = entityDetailResponse.getEntityDetail();
-        TermMapper termMapper = new TermMapper(oMRSAPIHelper);
-
-        try {
-            Term term= termMapper.mapEntityDetailToNode(entityDetail);
-            if (term.getNodeType()==NodeType.Activity) {
-                Activity activity = (Activity)term;
-                response = new TermResponse(activity);
-            } else {
-                response = new TermResponse(term);
-            }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }
-
-        return response;
     }
 
     /**
@@ -97,7 +64,6 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li>Term to create a term that is not a taxonomy or a canonical term</li>
      * </ul>
      *
-     * @param glossaryHandler  glossary handler
      * @param userId           unique identifier for requesting user, under which the request is performed
      * @param suppliedTerm Term to create
      * @return response, when successful contains the created term.
@@ -111,61 +77,44 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li>StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTerm(SubjectAreaGlossaryHandler glossaryHandler, String userId, Term suppliedTerm) {
+    public SubjectAreaOMASAPIResponse2<Term> createTerm(String userId, Term suppliedTerm) {
         final String methodName = "createTerm";
-        SubjectAreaOMASAPIResponse response = null;
-        Glossary associatedGlossary = null;
+        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
 
+        String createdTermGuid = null;
         try {
-            // TODO Activity
             InputValidator.validateNodeType(className, methodName, suppliedTerm.getNodeType(), NodeType.Term);
             // need to check we have a name
             final String suppliedTermName = suppliedTerm.getName();
             if (suppliedTermName == null || suppliedTermName.equals("")) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITHOUT_NAME.getMessageDefinition();
-                throw new InvalidParameterException(messageDefinition,
-                        className,
-                        methodName,
-                        "Name",
-                        null);
-            }
-            TermMapper termMapper = new TermMapper(oMRSAPIHelper);
-            EntityDetail suppliedTermEntityDetail = termMapper.mapNodeToEntityDetail(suppliedTerm);
-            GlossarySummary suppliedGlossary = suppliedTerm.getGlossary();
+                throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
+            } else {
+                TermMapper termMapper = mappersFactory.get(TermMapper.class);
+                EntityDetail termEntityDetail = termMapper.map(suppliedTerm);
+                GlossarySummary suppliedGlossary = suppliedTerm.getGlossary();
 
-            SubjectAreaOMASAPIResponse glossaryResponse = validateGlossarySummaryDuringCreation(glossaryHandler, userId, methodName, suppliedGlossary);
-            if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Glossary)) {
-                // store the associated glossary
-                associatedGlossary = ((GlossaryResponse) glossaryResponse).getGlossary();
-                response = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, suppliedTermEntityDetail);
-                if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                    EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
-                    EntityDetail createdTermEntityDetail = entityDetailResponse.getEntityDetail();
-                    String termGuid = createdTermEntityDetail.getGUID();
-                    // Knit the Term to the supplied glossary
-                    String glossaryGuid = associatedGlossary.getSystemAttributes().getGUID();
+                String glossaryGuid = validateGlossarySummaryDuringCreation(userId, methodName, suppliedGlossary);
+                createdTermGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, termEntityDetail);
+                if (createdTermGuid != null) {
                     TermAnchor termAnchor = new TermAnchor();
                     termAnchor.setGlossaryGuid(glossaryGuid);
-                    termAnchor.setTermGuid(termGuid);
-                    TermAnchorMapper termAnchorMapper = new TermAnchorMapper(oMRSAPIHelper);
-                    Relationship relationship = termAnchorMapper.mapLineToRelationship(termAnchor);
-                    response = oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
-                    if (response.getResponseCategory().equals(ResponseCategory.OmrsRelationship)) {
-                        // the relationship creation was successful so get the Term to return.
-                        response = getTermByGuid(userId, termGuid);
-                    }
+                    termAnchor.setTermGuid(createdTermGuid);
+                    TermAnchorMapper termAnchorMapper = mappersFactory.get(TermAnchorMapper.class);
+                    Relationship relationship = termAnchorMapper.map(termAnchor);
+                    oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
+                    response = getTermByGuid(userId, createdTermGuid);
                 }
-            } else {
-                // error
-                response = glossaryResponse;
             }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+            //if the entity is created, but subsequently an error occurred while creating the relationship
+            if (createdTermGuid != null) {
+                deleteTerm(userId, createdTermGuid, false);
+                deleteTerm(userId, createdTermGuid, true);
+            }
+            response.setExceptionInfo(e, className);
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
-        }
         return response;
     }
 
@@ -183,63 +132,30 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse getTermByGuid(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse2<Term> getTermByGuid(String userId, String guid) {
         final String methodName = "getTermByGuid";
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
 
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
-            if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
-                EntityDetail gotEntityDetail = entityDetailResponse.getEntityDetail();
-                TermMapper termMapper = new TermMapper(oMRSAPIHelper);
-                Term gotTerm = termMapper.mapEntityDetailToNode(gotEntityDetail);
-                String anchorTypeGuid = TypeGuids.getTermAnchorTypeGuid();
-
-                response = oMRSAPIHelper.callGetRelationshipsForEntity(methodName, userId, guid, anchorTypeGuid, 0, null, null, null, 0);
-                if (response.getResponseCategory().equals(ResponseCategory.OmrsRelationships)) {
-                    RelationshipsResponse relationshipsResponse = (RelationshipsResponse) response;
-                    List<Relationship> glossaryRelationships = relationshipsResponse.getRelationships();
-                    if (glossaryRelationships.iterator().hasNext()) {
-                        Relationship glossaryRelationship = glossaryRelationships.iterator().next();
-                        TermAnchor termAnchor = (TermAnchor) new TermAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
-                        response = this.oMRSAPIHelper.getGlossarySummary(methodName, userId, termAnchor);
-                        if (response.getResponseCategory().equals(ResponseCategory.GlossarySummary)) {
-                            GlossarySummaryResponse glossarySummaryResponse = (GlossarySummaryResponse) response;
-                            GlossarySummary glossarySummary = glossarySummaryResponse.getGlossarySummary();
-                            gotTerm.setGlossary(glossarySummary);
-                            response = new TermResponse(gotTerm);
-                        }
-                    } else {
-                        // return the Term without a Glossary summary as we have not got one.
-                        response = new TermResponse(gotTerm);
-                    }
-                }
+            Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, TERM_TYPE_NAME, methodName);
+            if (entityDetail.isPresent()) {
+                TermMapper termMapper = mappersFactory.get(TermMapper.class);
+                Term term = termMapper.map(entityDetail.get());
+                setGlossary(userId, term, methodName);
+                response.addResult(term);
             }
-
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
+
 
     /**
      * Find Term
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria     String expression matching Term property values. If not specified then all terms are returned.
-     * @param asOfTime           the terms returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param findRequest        {@link FindRequest}
      * @return A list of Terms meeting the search Criteria
      *
      * <ul>
@@ -249,64 +165,56 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse findTerm(String userId,
-                                               String searchCriteria,
-                                               Date asOfTime,
-                                               Integer offset,
-                                               Integer pageSize,
-                                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                               String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse2<Term> findTerm(String userId, FindRequest findRequest) {
 
         final String methodName = "findTerm";
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
 
-        /*
-         * If no search criteria is supplied then we return all terms, this should not be too many.
-         */
-        if (searchCriteria == null) {
-            response = this.oMRSAPIHelper.getEntitiesByType(methodName, userId, "GlossaryTerm", asOfTime, offset, pageSize, sequencingProperty, sequencingOrder);
-        } else {
-            response = this.oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "GlossaryTerm", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
-        }
-        if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetails)) {
-            EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
-            List<EntityDetail> entityDetails = entityDetailsResponse.getEntityDetails();
-
-            List<Term> terms = new ArrayList<>();
-            if (entityDetails == null) {
-                response = new TermsResponse(terms);
-            } else {
-                for (EntityDetail entityDetail : entityDetails) {
-                    // call the getTerm so that the TermSummary and other parts are populated.
-                    response = getTermByGuid(userId, entityDetail.getGUID());
-                    if (response.getResponseCategory() == ResponseCategory.Term) {
-                        TermResponse termResponse = (TermResponse) response;
-                        Term term = termResponse.getTerm();
-                        terms.add(term);
-                    } else {
-                        break;
-                    }
+        // If no search criteria is supplied then we return all terms, this should not be too many
+        try {
+            List<Term> foundTerms = findEntities(userId, TERM_TYPE_NAME, findRequest, TermMapper.class, methodName);
+            if (foundTerms != null) {
+                for (Term term : foundTerms) {
+                    setGlossary(userId, term, methodName);
+                    response.addResult(term);
                 }
-                if (response.getResponseCategory() == ResponseCategory.Term) {
-                    response = new TermsResponse(terms);
+            } else {
+                return response;
+            }
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException | InvalidParameterException e) {
+            response.setExceptionInfo(e, className);
+        }
+        return response;
+    }
+
+
+    private void setGlossary(String userId, Term term, String methodName) throws SubjectAreaCheckedException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 InvalidParameterException
+    {
+        final String guid = term.getSystemAttributes().getGUID();
+        List<Relationship> relationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, TERM_TYPE_NAME, TERM_ANCHOR_RELATIONSHIP_NAME, methodName);
+        if (CollectionUtils.isNotEmpty(relationships)) {
+            for (Relationship relationship : relationships) {
+                TermAnchorMapper termAnchorMapper = mappersFactory.get(TermAnchorMapper.class);
+                TermAnchor termAnchor = termAnchorMapper.map(relationship);
+                GlossarySummary glossarySummary = getGlossarySummary(methodName, userId, termAnchor);
+                if (glossarySummary != null) {
+                    term.setGlossary(glossarySummary);
+                    break;
                 }
             }
         }
-        return response;
+        // return the Term without a Glossary summary as we have not got one.
     }
 
     /**
      * Get Term relationships
      *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
-     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
-     * @param sequencingOrder the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param userId             unique identifier for requesting user, under which the request is performed
+     * @param guid               guid
+     * @param findRequest        {@link FindRequest}
      * @return the relationships associated with the requested Term guid
      *
      * when not successful the following Exception responses can occur
@@ -317,15 +225,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getTermRelationships(String userId, String guid,
-                                                               Date asOfTime,
-                                                               Integer offset,
-                                                               Integer pageSize,
-                                                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                               String sequencingProperty
-                                                              ) {
+    public SubjectAreaOMASAPIResponse2<Line> getTermRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getTermRelationships";
-        return getRelationshipsFromGuid(methodName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        return getAllRelationshipsForEntity(methodName, userId, guid, findRequest);
     }
 
     /**
@@ -352,137 +254,101 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTerm(String userId, String guid, Term suppliedTerm, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<Term> updateTerm(String userId, String guid, Term suppliedTerm, boolean isReplace) {
         final String methodName = "updateTerm";
-        SubjectAreaOMASAPIResponse response = null;
-        TermMapper termMapper = new TermMapper(oMRSAPIHelper);
-        try {
+        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
 
+        try {
             InputValidator.validateNodeType(className, methodName, suppliedTerm.getNodeType(), NodeType.Term, NodeType.Activity);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
             response = getTermByGuid(userId, guid);
-            if (response.getResponseCategory().equals(ResponseCategory.Term)) {
-                Term originalTerm = ((TermResponse) response).getTerm();
-                Term updateTerm = new Term();
-                updateTerm.setSystemAttributes(originalTerm.getSystemAttributes());
-                if (isReplace) {
-                    // copy over attributes
-                    updateTerm.setName(suppliedTerm.getName());
-                    updateTerm.setQualifiedName(suppliedTerm.getQualifiedName());
-                    updateTerm.setDescription(suppliedTerm.getDescription());
-                    updateTerm.setAbbreviation(suppliedTerm.getAbbreviation());
-                    updateTerm.setExamples(suppliedTerm.getExamples());
-                    updateTerm.setUsage(suppliedTerm.getUsage());
-                    updateTerm.setObjectIdentifier(suppliedTerm.isObjectIdentifier());
-                    updateTerm.setSpineAttribute(suppliedTerm.isSpineAttribute());
-                    updateTerm.setSpineObject(suppliedTerm.isSpineObject());
-                    updateTerm.setAdditionalProperties(suppliedTerm.getAdditionalProperties());
-                    updateTerm.setAdditionalProperties(suppliedTerm.getAdditionalProperties());
-                    //TODO handle other classifications
-                } else {
-                    // copy over attributes if specified
-                    if (suppliedTerm.getName() == null) {
-                        updateTerm.setName(originalTerm.getName());
-                    } else {
-                        updateTerm.setName(suppliedTerm.getName());
-                    }
-                    if (suppliedTerm.getQualifiedName() == null) {
-                        updateTerm.setQualifiedName(originalTerm.getQualifiedName());
-                    } else {
-                        updateTerm.setQualifiedName(suppliedTerm.getQualifiedName());
-                    }
-                    if (suppliedTerm.getDescription() == null) {
-                        updateTerm.setDescription(originalTerm.getDescription());
-                    } else {
-                        updateTerm.setDescription(suppliedTerm.getDescription());
-                    }
-                    if (suppliedTerm.getUsage() == null) {
-                        updateTerm.setUsage(originalTerm.getUsage());
-                    } else {
-                        updateTerm.setUsage(suppliedTerm.getUsage());
-                    }
-                    if (suppliedTerm.getAbbreviation() == null) {
-                        updateTerm.setAbbreviation(originalTerm.getAbbreviation());
-                    } else {
-                        updateTerm.setAbbreviation(suppliedTerm.getAbbreviation());
-                    }
-                    if (suppliedTerm.getAdditionalProperties() == null) {
-                        updateTerm.setAdditionalProperties(originalTerm.getAdditionalProperties());
-                    } else {
-                        updateTerm.setAdditionalProperties(suppliedTerm.getAdditionalProperties());
-                    }
-                    if (suppliedTerm.getExamples() == null) {
-                        updateTerm.setExamples(originalTerm.getExamples());
-                    } else {
-                        updateTerm.setExamples(suppliedTerm.getExamples());
-                    }
-                    //TODO handle other classifications
-                }
+            if (response.getHead() != null) {
+                Term currentTerm = response.getHead();
 
-                // always update the governance actions for a replace or an update
-                GovernanceActions suppliedGovernanceActions = suppliedTerm.getGovernanceActions();
-                updateTerm.setGovernanceActions(suppliedGovernanceActions);
+                Set<String> currentClassificationNames = currentTerm.getClassifications()
+                        .stream()
+                        .map(x -> x.getClassificationName())
+                        .collect(Collectors.toSet());
+
+                if (isReplace)
+                    replaceAttributes(currentTerm, suppliedTerm);
+                else
+                    updateAttributes(currentTerm, suppliedTerm);
+
                 Date termFromTime = suppliedTerm.getEffectiveFromTime();
                 Date termToTime = suppliedTerm.getEffectiveToTime();
-                updateTerm.setEffectiveFromTime(termFromTime);
-                updateTerm.setEffectiveToTime(termToTime);
+                currentTerm.setEffectiveFromTime(termFromTime);
+                currentTerm.setEffectiveToTime(termToTime);
+                // always update the governance actions for a replace or an update
+                currentTerm.setGovernanceActions(suppliedTerm.getGovernanceActions());
 
-                EntityDetail updateEntityDetail = termMapper.mapNodeToEntityDetail(updateTerm);
-                response = oMRSAPIHelper.callOMRSUpdateEntityProperties(methodName, userId, updateEntityDetail);
-                if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                    if (updateEntityDetail.getClassifications() != null && !updateEntityDetail.getClassifications().isEmpty()) {
-                        for (Classification classification : updateEntityDetail.getClassifications()) {
-                            response = oMRSAPIHelper.callOMRSClassifyEntity(methodName, userId, guid, classification.getName(), classification.getProperties());
-                            if (!response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                                break;
-                            }
-                        }
-                    }
-                    /*
-                     * The update might involve removing a classification. Check to see if there was a governance actions existing
-                     * classification, that we now need to remove because it was null in the requested GovernanceActions
-                     */
-                    if (updateEntityDetail.getClassifications() != null && !updateEntityDetail.getClassifications().isEmpty()) {
-                        Set<String> currentClassificationNames = updateEntityDetail.getClassifications().stream().map(x -> x.getName()).collect(Collectors.toSet());
-                        if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                            if (originalTerm.getGovernanceActions().getRetention() != null && !currentClassificationNames.contains("Retention")) {
-                                response = oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, "Retention");
-                            }
-                        }
-                        if (!response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                            if (originalTerm.getGovernanceActions().getCriticality() != null && !currentClassificationNames.contains("Criticality")) {
-                                response = oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, "Criticality");
-                            }
-                        }
-                        if (!response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                            if (originalTerm.getGovernanceActions().getConfidence() != null && !currentClassificationNames.contains("Confidence")) {
-                                response = oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, "Confidence");
-                            }
-                        }
-                        if (!response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                            if (originalTerm.getGovernanceActions().getConfidentiality() != null && !currentClassificationNames.contains("Confidentility")) {
-                                response = oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, "Confidentility");
-                            }
-                        }
+                TermMapper termMapper = mappersFactory.get(TermMapper.class);
+                EntityDetail updateEntityDetail = termMapper.map(currentTerm);
+                oMRSAPIHelper.callOMRSUpdateEntity(methodName, userId, updateEntityDetail);
+
+                if (CollectionUtils.isNotEmpty(updateEntityDetail.getClassifications())) {
+
+                    for (Classification classification : updateEntityDetail.getClassifications()) {
+                        oMRSAPIHelper.callOMRSClassifyEntity(methodName, userId, guid, classification);
+                        currentClassificationNames.remove(classification.getName());
                     }
 
-                    if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                        response = getTermByGuid(userId, guid);
+                    for (String deClassifyName : currentClassificationNames) {
+                        oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, deClassifyName);
                     }
                 }
+
+                    response = getTermByGuid(userId, guid);
             }
 
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+            response.setExceptionInfo(e, className);
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ",response=" + response);
-        }
         return response;
     }
 
+    private void replaceAttributes(Term currentTerm, Term newTerm) {
+        currentTerm.setName(newTerm.getName());
+        currentTerm.setQualifiedName(newTerm.getQualifiedName());
+        currentTerm.setDescription(newTerm.getDescription());
+        currentTerm.setAbbreviation(newTerm.getAbbreviation());
+        currentTerm.setExamples(newTerm.getExamples());
+        currentTerm.setUsage(newTerm.getUsage());
+        currentTerm.setObjectIdentifier(newTerm.isObjectIdentifier());
+        currentTerm.setSpineAttribute(newTerm.isSpineAttribute());
+        currentTerm.setSpineObject(newTerm.isSpineObject());
+        currentTerm.setAdditionalProperties(newTerm.getAdditionalProperties());
+        currentTerm.setClassifications(newTerm.getClassifications());
+    }
+
+    private void updateAttributes(Term currentTerm, Term newTerm) {
+        if (newTerm.getName() != null) {
+            currentTerm.setName(newTerm.getName());
+        }
+        if (newTerm.getQualifiedName() != null) {
+            currentTerm.setQualifiedName(newTerm.getQualifiedName());
+        }
+        if (newTerm.getDescription() != null) {
+            currentTerm.setDescription(newTerm.getDescription());
+        }
+        if (newTerm.getUsage() != null) {
+            currentTerm.setUsage(newTerm.getUsage());
+        }
+        if (newTerm.getAbbreviation() != null) {
+            currentTerm.setAbbreviation(newTerm.getAbbreviation());
+        }
+        if (newTerm.getAdditionalProperties() != null) {
+            currentTerm.setAdditionalProperties(newTerm.getAdditionalProperties());
+        }
+        if (newTerm.getExamples() != null) {
+            currentTerm.setExamples(newTerm.getExamples());
+        }
+
+        if (newTerm.getClassifications() != null) {
+            currentTerm.setClassifications(newTerm.getClassifications());
+        }
+    }
 
     /**
      * Delete a Term instance
@@ -512,34 +378,17 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> EntityNotPurgedException             a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteTerm(String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse2<Term> deleteTerm(String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteTerm";
-        SubjectAreaOMASAPIResponse response = null;
-        OMRSRepositoryHelper repositoryHelper = this.oMRSAPIHelper.getOMRSRepositoryHelper();
+        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-
-            //TODO get source properly
-            String source = oMRSAPIHelper.getServiceName();
-            String typeDefName = "GlossaryTerm";
-            String typeDefGuid = repositoryHelper.getTypeDefByName(source, typeDefName).getGUID();
             if (isPurge) {
-                response = oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, typeDefName, typeDefGuid, guid);
+                oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, TERM_TYPE_NAME, guid);
             } else {
-                response = oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, typeDefName, typeDefGuid, guid);
-                if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                    EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
-                    EntityDetail entityDetail = entityDetailResponse.getEntityDetail();
-                    TermMapper termMapper = new TermMapper(oMRSAPIHelper);
-                    Term term = termMapper.mapEntityDetailToNode(entityDetail);
-                    response = new TermResponse(term);
-                }
+                oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, TERM_TYPE_NAME, guid);
             }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId);
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
@@ -561,21 +410,14 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreTerm(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse2<Term> restoreTerm(String userId, String guid) {
         final String methodName = "restoreTerm";
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
-            if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
-                response = getTermByGuid(userId, guid);
-            }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+            this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
+            response = getTermByGuid(userId, guid);
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
