@@ -26,8 +26,6 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.sound.sampled.Line;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -265,7 +263,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 log.debug("graphContext.size: "+graphContext.size());
             } catch (Exception e) {
                 log.error("An exception happened when trying to create vertices and relationships in LineageGraph. The error is", e);
-                g.tx().rollback();
+                if(supportingTransactions) {
+                    g.tx().rollback();
+                }
             }
         });
     }
@@ -313,6 +313,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      * @param lineageEntity - LineageEntity object that has the updates values
      */
     private void addOrUpdatePropertiesVertex(Vertex vertex,LineageEntity lineageEntity){
+
         Map<String, Object> properties  = lineageEntity.getProperties().entrySet().stream().collect(Collectors.toMap(
                 e -> PROPERTY_KEY_PREFIX_ELEMENT+PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+e.getKey(),
                 Map.Entry::getValue));
@@ -324,7 +325,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATED_BY,val -> lineageEntity.getUpdatedBy());
         properties.computeIfAbsent(PROPERTY_KEY_LABEL,val -> lineageEntity.getTypeDefName());
         properties.computeIfAbsent(PROPERTY_KEY_ENTITY_VERSION,val -> lineageEntity.getVersion());
-        properties.put(PROPERTY_KEY_METADATA_ID,lineageEntity.getMetadataCollectionId());
+        properties.computeIfAbsent(PROPERTY_KEY_METADATA_ID, val -> lineageEntity.getMetadataCollectionId());
 
         g.inject(properties)
                 .unfold()
@@ -375,7 +376,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      */
     @Override
     public void upsertRelationship(LineageRelationship lineageRelationship) {
-        GraphTraversalSource g = lineageGraph.traversal();
 
         LineageEntity firstEnd = lineageRelationship.getFirstEntity();
         LineageEntity secondEnd = lineageRelationship.getSecondEntity();
@@ -523,14 +523,14 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 Map.Entry::getValue
         ));
 
-        properties.put(PROPERTY_KEY_RELATIONSHIP_GUID,lineageRelationship.getGuid());
-        properties.put(PROPERTY_KEY_RELATIONSHIP_CREATE_TIME,lineageRelationship.getCreateTime());
-        properties.put(PROPERTY_KEY_RELATIONSHIP_CREATED_BY,lineageRelationship.getCreatedBy());
-        properties.put(PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME,lineageRelationship.getUpdateTime());
-        properties.put(PROPERTY_KEY_RELATIONSHIP_UPDATED_BY,lineageRelationship.getUpdatedBy());
-        properties.put(PROPERTY_KEY_RELATIONSHIP_DISPLAY_NAME,lineageRelationship.getTypeDefName());
-        properties.put(PROPERTY_KEY_RELATIONSHIP_VERSION,lineageRelationship.getVersion());
-
+        properties.values().remove(null);
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_CREATE_TIME,val -> lineageRelationship.getCreateTime());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_CREATED_BY,val -> lineageRelationship.getCreatedBy());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATE_TIME,val -> lineageRelationship.getUpdateTime());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATED_BY,val -> lineageRelationship.getUpdatedBy());
+        properties.computeIfAbsent(PROPERTY_KEY_LABEL,val -> lineageRelationship.getTypeDefName());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_VERSION,val -> lineageRelationship.getVersion());
+        properties.computeIfAbsent(PROPERTY_KEY_METADATA_ID, val ->lineageRelationship.getMetadataCollectionId());
 
         try {
 
