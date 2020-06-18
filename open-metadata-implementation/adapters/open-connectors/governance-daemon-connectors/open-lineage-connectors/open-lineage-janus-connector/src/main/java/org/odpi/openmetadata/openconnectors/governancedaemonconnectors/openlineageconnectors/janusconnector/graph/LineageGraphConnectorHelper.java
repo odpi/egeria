@@ -83,10 +83,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 public class LineageGraphConnectorHelper {
 
     private JanusGraph lineageGraph;
-    private String[] glossaryTermEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM,
-            EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP};
-    private String[] glossaryTermAndClassificationEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM,
-            EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP, EDGE_LABEL_CLASSIFICATION};
+    private String[] glossaryTermAndClassificationEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM,
+            EDGE_LABEL_ANTONYM, EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP, EDGE_LABEL_CLASSIFICATION};
 
     public LineageGraphConnectorHelper(JanusGraph lineageGraph) {
         this.lineageGraph = lineageGraph;
@@ -321,28 +319,6 @@ public class LineageGraphConnectorHelper {
     }
 
     /**
-     * Map a Tinkerpop edge to the Open Lineage format.
-     *
-     * @param originalEdge  The edge to be mapped
-     * @param invertedEdges boolean describing if edges should be inverted
-     *
-     * @return The edge in the Open Lineage format.
-     */
-    private LineageEdge abstractEdge(Edge originalEdge, boolean invertedEdges) {
-        Vertex sourceVertex;
-        Vertex destinationVertex;
-        if (invertedEdges && !Arrays.asList(glossaryTermEdges).contains(originalEdge.label())) {
-            sourceVertex = originalEdge.inVertex();
-            destinationVertex = originalEdge.outVertex();
-        } else {
-            sourceVertex = originalEdge.outVertex();
-            destinationVertex = originalEdge.inVertex();
-        }
-
-        return new LineageEdge(originalEdge.label(), getNodeID(sourceVertex), getNodeID(destinationVertex));
-    }
-
-    /**
      * Retrieve all properties of the vertex from the db and return the ones that match the whitelist. This will filter out irrelevant
      * properties that should not be returned to a UI.
      *
@@ -461,7 +437,8 @@ public class LineageGraphConnectorHelper {
         Iterator<Edge> originalEdges = subGraph.edges();
         Set<LineageEdge> lineageEdges = new HashSet<>();
         while (originalEdges.hasNext()) {
-            LineageEdge newLineageEdge = abstractEdge(originalEdges.next(), invertedEdges);
+            Edge next = originalEdges.next();
+            LineageEdge newLineageEdge = new LineageEdge(next.label(), getNodeID(next.outVertex()), getNodeID(next.inVertex()));
             lineageEdges.add(newLineageEdge);
         }
         return lineageEdges;
