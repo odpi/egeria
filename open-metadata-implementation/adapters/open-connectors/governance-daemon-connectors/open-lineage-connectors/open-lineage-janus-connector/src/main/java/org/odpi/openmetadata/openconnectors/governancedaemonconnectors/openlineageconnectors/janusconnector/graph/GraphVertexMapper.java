@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_CREATED_BY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_CREATE_TIME;
@@ -21,18 +22,14 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 
 public class GraphVertexMapper {
 
-    private static final Logger log = LoggerFactory.getLogger(GraphVertexMapper.class);
-
     public void mapEntityToVertex(LineageEntity lineageEntity, Vertex vertex){
 
         mapEntitySummaryToVertex(lineageEntity, vertex);
         Map<String,String> instanceProperties = lineageEntity.getProperties();
         if (instanceProperties != null) {
-
-            for(Map.Entry<String,String> entry: instanceProperties.entrySet()){
-                String key = PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY +entry.getKey();
-                vertex.property(key,entry.getValue());
-            }
+            instanceProperties.entrySet().stream()
+                    .filter(e -> Objects.nonNull(e.getValue()))
+                    .forEach(e -> vertex.property(PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY + e.getKey(), e.getValue()));
         }
     }
 
