@@ -12,8 +12,8 @@ import Portal                                     from "../components/portal/Por
 /*
  * The InteractionContext provides the Portal for all user interactions.
  * 
- 
  */
+
 export const InteractionContext         = createContext();
 
 export const InteractionContextConsumer = InteractionContext.Consumer;

@@ -17,9 +17,6 @@ export const TypesContextConsumer = TypesContext.Consumer;
 
 
 
-
-
-
 const TypesContextProvider = (props) => {
 
   const repositoryServerContext    = useContext(RepositoryServerContext);
