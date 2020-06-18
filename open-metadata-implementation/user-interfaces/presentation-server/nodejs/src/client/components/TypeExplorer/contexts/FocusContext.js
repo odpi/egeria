@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
+import React, { createContext, useContext, useState, useEffect }   from "react";
 
-import React, { createContext, useState }   from "react";
+import PropTypes                                                   from "prop-types";
 
-import PropTypes                                        from "prop-types";
-
-
+import { TypesContext }                                            from "./TypesContext";
 
 
 
@@ -17,11 +16,9 @@ export const FocusContextConsumer = FocusContext.Consumer;
 
 
 
-
-
 const FocusContextProvider = (props) => {
 
-  
+  const typesContext = useContext(TypesContext);
 
   /*
    * The focus state tracks the user's focus on an entity type. The type name is stored. It is initially empty... 
@@ -41,13 +38,7 @@ const FocusContextProvider = (props) => {
    */
   const [view, setView]                = useState({ typeName : "" , catgeory : ""});
 
-
   const [prevView, setPrevView]        = useState({ typeName : "" , catgeory : ""});
-
-
-  /* 
-   * TODO : When type information is loaded (into the TypesContext) the focus and view settings should be cleared.
-   */
 
 
   /*
@@ -72,8 +63,21 @@ const FocusContextProvider = (props) => {
         setPrevView(view);  // Only required on Enum Type display.
         setView({ typeName : typeName , category : category });
         break;
-   }
- };
+    }
+  };
+
+
+  useEffect(
+    () => {
+      /*
+       * If types have been reloaded we want to reset our focus and view selections.
+       */
+      setFocus("");
+      setView({ typeName : "" , catgeory : ""});
+    },
+
+    [typesContext.tex]
+  )
 
   return (
     <FocusContext.Provider
@@ -85,8 +89,7 @@ const FocusContextProvider = (props) => {
         prevView,
         setPrevView,
         typeSelected
-      }}
-    >
+      }}>
      {props.children}
     </FocusContext.Provider>
   );
