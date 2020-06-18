@@ -18,26 +18,26 @@ import "./details-panel.scss";
 
 export default function ClassificationTypeDisplay(props) {
 
-    const typesContext = useContext(TypesContext);
+  const typesContext = useContext(TypesContext);
 
-    const typeName    = props.typeName;
+  const typeName    = props.typeName;
 
-    const classificationExpl  = typesContext.getClassificationType(typeName);
+  const classificationExpl  = typesContext.getClassificationType(typeName);
 
 
-    return (
-      <div className="instance-details-container">
-        <div className="instance-details-item-bold">Classification Type : {typeName}</div>
-        <div className="instance-details-item">{classificationExpl.classificationDef.description}</div>        
-        <div className="instance-details-item">Attributes : { !classificationExpl.classificationDef.propertiesDefinition ? "none" :
-          <ClassificationPropertiesDisplay expl={classificationExpl} />}</div>     
-        <div className="instance-details-item">Valid entity types : { !classificationExpl.classificationDef.validEntityDefs && !classificationExpl.classificationDef.validEntityDefs.length > 0 ? "none" :
-          <ClassificationEntitiesDisplay expl={classificationExpl} />}</div>
-      </div>
-    );
-  }
+  return (
+    <div className="instance-details-container">
+      <div className="instance-details-item-bold">Classification Type : {typeName}</div>
+      <div className="instance-details-item">{classificationExpl.classificationDef.description}</div>
+      <div className="instance-details-item">Attributes : { !classificationExpl.classificationDef.propertiesDefinition ? "none" :
+        <ClassificationPropertiesDisplay expl={classificationExpl} />}</div>
+      <div className="instance-details-item">Valid entity types : { !classificationExpl.classificationDef.validEntityDefs && !classificationExpl.classificationDef.validEntityDefs.length > 0 ? "none" :
+        <ClassificationEntitiesDisplay expl={classificationExpl} />}</div>
+    </div>
+  );
+}
 
-  ClassificationTypeDisplay.propTypes = {
-    typeName: PropTypes.string
-  };
+ClassificationTypeDisplay.propTypes = {
+  typeName: PropTypes.string
+};
   

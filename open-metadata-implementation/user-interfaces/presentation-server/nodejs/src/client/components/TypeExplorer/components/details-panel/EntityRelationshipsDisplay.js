@@ -29,32 +29,31 @@ export default function EntityRelationshipsDisplay(props) {
    */
   let relationshipEntries = {};
     
-  // Inherited attributes
+  /*
+   * Inherited attributes
+   */
   const inheritedRelNames = explorer.inheritedRelationshipNames;
   if (inheritedRelNames !== undefined) {
     const inheritedRelNamesSorted = inheritedRelNames.sort();
     inheritedRelNamesSorted.forEach(inheritedRelName => {
-      //console.log("inherited relationship: "+inheritedRelName);
       relationshipEntries[inheritedRelName] = {};
       relationshipEntries[inheritedRelName].inherited = true;
     });
   }
 
-  // Local relationships
+  /*
+   * Local relationships
+   */
   const relationshipNames = explorer.relationshipNames;
   if (relationshipNames !== undefined) {
     const relationshipNamesSorted = relationshipNames.sort();
     relationshipNamesSorted.forEach(relationshipName => {
-      //console.log("local relationship: "+relationshipName);
       relationshipEntries[relationshipName]={};
       relationshipEntries[relationshipName].inherited=false;
     });
   }
 
 
-  
-  
-  
   const formatRelationship = (relationshipName, relationship) => {
     let formattedRelationship;
     
@@ -73,6 +72,7 @@ export default function EntityRelationshipsDisplay(props) {
         </div>
       );   
     }
+
     else {
       
       formattedRelationship = (
@@ -86,7 +86,6 @@ export default function EntityRelationshipsDisplay(props) {
             </div>
           </div>
         </div>
-        
       );   
     }
     
@@ -95,15 +94,18 @@ export default function EntityRelationshipsDisplay(props) {
 
 
   const flipSection = (evt) => {
-    // Important to use currentTarget (not target) - because we need to operate relative to the button,
-    // which is where the handler is defined, in order for the content section to be the sibling.
+    /*
+     * Use currentTarget (not target) - because we need to operate relative to the button,
+     * which is where the handler is defined, in order for the content section to be the sibling.
+     */
     const element = evt.currentTarget;
     element.classList.toggle("active");
     const content = element.nextElementSibling;
     if (content.style.display === "block") {
-        content.style.display = "none";
-    } else {
-        content.style.display = "block";
+      content.style.display = "none";
+    }
+    else {
+      content.style.display = "block";
     }
   };
 
@@ -124,10 +126,9 @@ export default function EntityRelationshipsDisplay(props) {
     const relationshipNamesSorted = relationshipNamesUnsorted.sort();
 
     let attributeList = relationshipNamesSorted.map( (relName) => 
-        <li className="details-sublist-item" key={relName}> 
-           {formatRelationship(relName, relationshipEntries[relName])}                  
-        </li>
-        
+      <li className="details-sublist-item" key={relName}>
+        {formatRelationship(relName, relationshipEntries[relName])}
+      </li>
     );
 
     return attributeList;
@@ -141,12 +142,10 @@ export default function EntityRelationshipsDisplay(props) {
     )
   }
   else {
-   
     relationships = (              
       <ul className="details-sublist">       
        {expandRelationships(relationshipEntries)}          
       </ul>
-      
     );
   }
 

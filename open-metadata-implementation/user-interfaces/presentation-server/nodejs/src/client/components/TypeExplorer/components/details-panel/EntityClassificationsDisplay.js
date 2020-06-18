@@ -31,29 +31,29 @@ export default function EntityClassificationsDisplay(props) {
    */
   let classificationEntries = {};
     
-  // Inherited attributes
+  /* 
+   * Inherited attributes
+   */
   const inheritedClassificationNames = explorer.inheritedClassificationNames;
   if (inheritedClassificationNames !== undefined) {
     const inheritedClassificationNamesSorted = inheritedClassificationNames.sort();
     inheritedClassificationNamesSorted.forEach(inheritedClassificationName => {
-      //console.log("inherited classification: "+inheritedClassificationName);
       classificationEntries[inheritedClassificationName] = {};
       classificationEntries[inheritedClassificationName].inherited = true;
     });
   }
 
-  // Local classifications
+  /*
+   * Local classifications
+   */
   const classificationNames = explorer.classificationNames;
   if (classificationNames !== undefined) {
     const classificationNamesSorted = classificationNames.sort();
     classificationNamesSorted.forEach(classificationName => {
-      //console.log("local classification: "+classificationName);
       classificationEntries[classificationName]={};
       classificationEntries[classificationName].inherited=false;
     });
   }
-
-
 
 
   const formatClassification = (classificationName, classification) => {
@@ -74,8 +74,9 @@ export default function EntityClassificationsDisplay(props) {
         </div>
       );   
     }
+
     else {
-      
+
       formattedClassification = (
         <div>
           <button className="collapsible" onClick={flipSection}> {classificationName} </button>
@@ -89,13 +90,16 @@ export default function EntityClassificationsDisplay(props) {
         </div>
       );   
     }
-    
+
     return formattedClassification
   };
 
+
   const flipSection = (evt) => {
-    // Important to use currentTarget (not target) - because we need to operate relative to the button,
-    // which is where the handler is defined, in order for the content section to be the sibling.
+    /*
+     * Use currentTarget (not target) - because we need to operate relative to the button,
+     * which is where the handler is defined, in order for the content section to be the sibling.
+     */
     const element = evt.currentTarget;
     element.classList.toggle("active");
     const content = element.nextElementSibling;
@@ -123,10 +127,9 @@ export default function EntityClassificationsDisplay(props) {
     const classificationNamesSorted = classificationNamesUnsorted.sort();
 
     let classificationList = classificationNamesSorted.map( (clsName) => 
-        <li className="details-sublist-item" key={clsName}> 
-           {formatClassification(clsName, classificationEntries[clsName])}                  
-        </li>
-        
+      <li className="details-sublist-item" key={clsName}>
+        {formatClassification(clsName, classificationEntries[clsName])}
+      </li>
     );
 
     return classificationList;
