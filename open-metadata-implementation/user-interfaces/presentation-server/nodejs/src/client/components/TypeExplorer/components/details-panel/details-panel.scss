@@ -2,40 +2,38 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 .details-panel {
-  width             : 430px;
-  /* height            : 1150px; EXPERIMENT */
-  
+  width              : 430px;
 }
 
 .type-details-container {
-  text-align        : left;
-  padding           : 5px;
-  background-color  : rgb(240, 240, 240);
-  font-size         : 12px;
+  text-align         : left;
+  padding            : 5px;
+  background-color   : rgb(240, 240, 240);
+  font-size          : 12px;
 }
 
 .type-details-item {
-  padding           : 10px 5px;
+  padding            : 10px 5px;
 }
 
 .type-details-item-bold {
-  padding           : inherit;
-  font-weight       : bold;
+  padding            : inherit;
+  font-weight        : bold;
 }
 
 .details-sublist {
-  margin-left       : 5px; 
-  padding           : inherit;
+  margin-left        : 5px;
+  padding            : inherit;
 }
 
 .end-sublist {
-  margin-top        : 10px; 
-  padding           : inherit;
+  margin-top         : 10px;
+  padding            : inherit;
 }
 
 .details-sublist-item {
-  margin-top        : 5px;
-  padding           : inherit;
+  margin-top         : 5px;
+  padding            : inherit;
 }
 
 .details-sub-container {
@@ -46,68 +44,68 @@
   padding            : 0px;
 }
 .details-sub-item {
-  margin-top        : 3px;
-  padding           : inherit;
+  margin-top         : 3px;
+  padding            : inherit;
 }
 
 .v-spreader {
-  margin-top        : 10px;
+  margin-top         : 10px;
 }
 
 .italic {
-  font-style        : italic;
+  font-style         : italic;
 }
 
 .backlink {
-  background-color : rgb(240,240,240);
-  color            : black;
-  cursor           : pointer;
-  padding          : 0px;
-  width            : 100%;
-  border           : none;
-  text-align       : left;
-  outline          : none;
-  font-size        : 12px;
+  background-color   : rgb(240,240,240);
+  color              : black;
+  cursor             : pointer;
+  padding            : 0px;
+  width              : 100%;
+  border             : none;
+  text-align         : left;
+  outline            : none;
+  font-size          : 12px;
 }
 
 .linkable {
-  background-color : rgb(240,240,240);   
-  color            : black;
-  cursor           : pointer;
-  padding          : 0px;
-  width            : 200px;
-  border           : none;
-  text-align       : left;
-  outline          : none;
-  font-size        : 12px;
+  background-color   : rgb(240,240,240);
+  color              : black;
+  cursor             : pointer;
+  padding            : 0px;
+  width              : 200px;
+  border             : none;
+  text-align         : left;
+  outline            : none;
+  font-size          : 12px;
 }
 
 .collapsible {
-  background-color :  rgb(240,240,240);   
-  color            : black;
-  cursor           : pointer;
-  padding          : 5px;
-  width            : 300px;
-  border           : none;
-  text-align       : left;
-  outline          : none;
-  font-size        : 12px;
+  background-color   : rgb(240,240,240);
+  color              : black;
+  cursor             : pointer;
+  padding            : 5px;
+  width              : 300px;
+  border             : none;
+  text-align         : left;
+  outline            : none;
+  font-size          : 12px;
 }
 
 .content {
-  padding          : 10px 0px 10px 10px;
-  display          : none;
-  overflow         : hidden;
-  background-color : rgb(240,240,240);   
+  padding            : 10px 0px 10px 10px;
+  display            : none;
+  overflow           : hidden;
+  background-color   : rgb(240,240,240);
 }
 
 .highlight {
-  background-color : #EEEEEE;
-  color            : black;
-  padding          : 5px;
-  width            : 300px;
-  border           : 2px;
-  text-align       : left;
-  outline          : none;
-  font-size        : 12px;
+  background-color   : #EEEEEE;
+  color              : black;
+  padding            : 5px;
+  width              : 300px;
+  border             : 2px;
+  text-align         : left;
+  outline            : none;
+  font-size          : 12px;
 }

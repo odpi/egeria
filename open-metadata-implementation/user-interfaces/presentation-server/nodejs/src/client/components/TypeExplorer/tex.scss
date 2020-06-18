@@ -4,86 +4,66 @@
 
 
 .tex-container {
-  position        : absolute;
-  top             : 0px;
-  left            : 260px;
-  height  : 100%;
-  display          : flex;         /*  EXPERIMENT */
-  flex-flow        : column;       /*  EXPERIMENT */
-  border-style    : solid;
-  border-width    : 3px;
-  border-color    : red ;
+  position         : absolute;
+  top              : 0px;
+  left             : 260px;
+  height           : 100%;
+  display          : flex;
+  flex-flow        : column;
 }
 
 .tex-top {
   display          : flex;
   flex-flow        : row;
-  /*height           : 200px;   EXPERIMENT */
   width            : 100%; 
   overflow         : none;
   padding          : 10px;
   font-size        : 10px;
   background-color : rgb(240,240,240);  
   color            : 'black';
-  border-style     : solid;
-  border-width     : 3px;
-  border-color     : purple ;
 }
 
 .tex-top-left {
-  flex       : 0 0 auto;
-  width      : 300px;   
-  height     : 140px;  
+  flex             : 0 0 auto;
+  width            : 300px;   
+  height           : 140px;  
 }
 
 .tex-top-middle {
-  flex       : 0 0 auto;
-  /*left       : 310px;  */
-  width      : 300px;   
-  height     : 140px;  
+  flex             : 0 0 auto;
+  width            : 300px;   
+  height           : 140px;  
 }
 
 
 .tex-content {
-  flex             : 2;  /*  EXPERIMENT */
+  flex             : 2;
   display          : flex;
   flex-flow        : row;
-  width            : 100%; 
- 
+  width            : 100%;
   padding          : 10px;
   font-size        : 10px;
   background-color : rgb(240,240,240);  
   color            : 'black';
-  border-style     : solid;
-  border-width     : 3px;
-  border-color     : lightblue ;
 }
 
 .tex-lhs {  
-  flex             : 0 0 auto;   /* EXPERIMENT  - can neither grow nor shrink...*/
+  flex             : 0 0 auto;
   width            : 450px;
   overflow         : auto;
   padding          : 0px 10px 10px 10px;
   font-size        : 10px;
   background-color : rgb(240,240,240);    
   color            : 'black';
-  border-style     : solid;
-  border-width     : 3px;
-  border-color     : green ;
 }
 
 .tex-rhs {
   flex             : 1 1 auto; 
-  /*width        : 1150px;*/
-  /*overflow         : auto;*/
-  padding      : 10px;
-  font-size    : 10px;
+  padding          : 10px;
+  font-size        : 10px;
   background-color : white;  
-  background   : 'white';
-  color        : 'black';
-  border-style : solid;
-  border-width : 3px;
-  border-color : orangered ;
+  background       : 'white';
+  color            : 'black';
 }
 
 .descriptive-text {
@@ -97,17 +77,15 @@
   height           : 40px;
   width            : 100px;
   background-color : rgb(180,180,180);  
-
 }
 
 .graph-control-button {  
   height           : 40px;
   width            : 100px;
   background-color : rgb(180,180,180);  
-
 }
 
 .title {
-  padding           : 20px;
-  font-size         : 20px;
+  padding          : 20px;
+  font-size        : 20px;
 }
