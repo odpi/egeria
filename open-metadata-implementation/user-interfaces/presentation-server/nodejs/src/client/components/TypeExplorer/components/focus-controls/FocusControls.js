@@ -6,9 +6,7 @@ import React, { useContext, useEffect }           from "react";
 
 import { TypesContext }                from "../../contexts/TypesContext";  
 
-import { FocusContext }                from "../../contexts/FocusContext";  
-
-import PropTypes                       from "prop-types";
+import { FocusContext }                from "../../contexts/FocusContext";
 
 import "./focus-controls.scss"
 
@@ -24,12 +22,11 @@ import "./focus-controls.scss"
  */
 
 
-export default function FocusControls(props) {
+export default function FocusControls() {
   
-  const typesContext = useContext(TypesContext);
+  const typesContext                = useContext(TypesContext);
 
-  const focusContext = useContext(FocusContext);
-
+  const focusContext                = useContext(FocusContext);
 
   const entityTypes                 = typesContext.getEntityTypes();
   const relationshipTypes           = typesContext.getRelationshipTypes();
@@ -55,8 +52,7 @@ export default function FocusControls(props) {
    * When the focus is changed - this resets the view selectors
    */
   const entityChangeHandler = (e) => {
-    const typeName = e.target.value;    
-    console.log("Entity selector with typeName "+typeName);
+    const typeName = e.target.value;
     resetRelTypeSelector();    
     resetClsTypeSelector();
     focusContext.typeSelected("Entity",typeName);
@@ -66,15 +62,13 @@ export default function FocusControls(props) {
    * When the view is changed - this resets the other view selector
    */
   const relationshipSelectorHandler = (e) => {        
-    const typeName = e.target.value;   
-    console.log("Relationship selector with typeName "+typeName);
+    const typeName = e.target.value;
     resetClsTypeSelector();
     focusContext.typeSelected("Relationship",typeName);
   };
 
   const classificationSelectorHandler = (e) => {    
-    const typeName = e.target.value;   
-    console.log("Classification selector with typeName "+typeName);
+    const typeName = e.target.value;
     resetRelTypeSelector();     
     focusContext.typeSelected("Classification",typeName);
   };
@@ -102,36 +96,6 @@ export default function FocusControls(props) {
     const selector = document.getElementById('classificationTypeSelector');
     selector.value = "none";
   };
-  
-
-  
-
-  /*
-   * Test only - TODO - remove
-   */
-  const showFocusViewState = () => {
-    console.log("Focus is "+ focusContext.focus);
-    console.log("View type is "+ focusContext.view.typeName);   
-    console.log("View category is "+ focusContext.view.category); 
-  };
-
-  /*
-   * Test only - TODO - remove
-   */
-  const testFocusSwitch= () => {
-    console.log("Forcing a focus change to Asset");
-    focusContext.typeSelected("Entity","Asset");    
-  };
-
-  /*
-   * Test only - TODO - remove
-   */
-  const testViewSwitch= () => {
-    console.log("Forcing a view change to relationship type CategoryAnchor");
-    focusContext.typeSelected("Relationship","CategoryAnchor");    
-  };
-
-
 
 
   /* 
@@ -159,7 +123,7 @@ export default function FocusControls(props) {
       case "Classification":
         selector = document.getElementById("classificationTypeSelector");
         selector.value = focusContext.view.typeName;
-        resetRelTypeSelector();    
+        resetRelTypeSelector();
         break;
     }
   };
@@ -171,8 +135,12 @@ export default function FocusControls(props) {
     () => {      
       if (focusContext.view.typeName !== "")
         updateSelectorValues();
+      else {
+        resetEntTypeSelector();
+        resetRelTypeSelector();
+        resetClsTypeSelector();
+      }
     },
-  
     [focusContext.view]
   )
  
@@ -256,6 +224,3 @@ export default function FocusControls(props) {
 }
 
 
-FocusControls.propTypes = {  
-  className  : PropTypes.string
-}
