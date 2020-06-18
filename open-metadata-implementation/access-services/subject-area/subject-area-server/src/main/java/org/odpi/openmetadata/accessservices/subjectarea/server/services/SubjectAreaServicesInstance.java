@@ -53,56 +53,25 @@ public class SubjectAreaServicesInstance extends OCFOMASServiceInstance
         if (repositoryHandler != null)
         {
             if (this.oMRSAPIHelper == null ) {
-                this.oMRSAPIHelper = new OMRSAPIHelper(serviceName);
+                this.oMRSAPIHelper = new OMRSAPIHelper(
+                        serviceName,
+                        serverName,
+                        repositoryHelper,
+                        repositoryHandler.getMetadataCollection()
+                );
             }
-            this.glossaryHandler= new SubjectAreaGlossaryHandler(serviceName,
-                                                                     serverName,
-                                                                     invalidParameterHandler,
-                                                                     repositoryHelper,
-                                                                     repositoryHandler,
-                                                                     oMRSAPIHelper,
-                                                                     errorHandler);
-            this.termHandler= new SubjectAreaTermHandler(serviceName,
-                                                                 serverName,
-                                                                 invalidParameterHandler,
-                                                                 repositoryHelper,
-                                                                 repositoryHandler,
-                                                                 oMRSAPIHelper,
-                                                                 errorHandler);
 
-            this.categoryHandler= new SubjectAreaCategoryHandler(serviceName,
-                                                                         serverName,
-                                                                         invalidParameterHandler,
-                                                                         repositoryHelper,
-                                                                         repositoryHandler,
-                                                                         oMRSAPIHelper,
-                                                                         errorHandler);
+            this.glossaryHandler= new SubjectAreaGlossaryHandler(oMRSAPIHelper);
 
-            this.projectHandler= new SubjectAreaProjectHandler(serviceName,
-                                                                     serverName,
-                                                                     invalidParameterHandler,
-                                                                     repositoryHelper,
-                                                                     repositoryHandler,
-                                                                     oMRSAPIHelper
-            );
+            this.termHandler= new SubjectAreaTermHandler(oMRSAPIHelper);
 
-            this.graphHandler= new SubjectAreaGraphHandler(serviceName,
-                                                               serverName,
-                                                               invalidParameterHandler,
-                                                               repositoryHelper,
-                                                               repositoryHandler,
-                                                               oMRSAPIHelper,
-                                                               errorHandler);
+            this.categoryHandler= new SubjectAreaCategoryHandler(oMRSAPIHelper);
 
-            this.relationshipHandler= new SubjectAreaRelationshipHandler(serviceName,
-                                                           serverName,
-                                                           invalidParameterHandler,
-                                                           repositoryHelper,
-                                                           repositoryHandler,
-                                                           oMRSAPIHelper,
-                                                           errorHandler);
+            this.projectHandler= new SubjectAreaProjectHandler(oMRSAPIHelper);
 
+            this.graphHandler= new SubjectAreaGraphHandler(oMRSAPIHelper);
 
+            this.relationshipHandler= new SubjectAreaRelationshipHandler(oMRSAPIHelper);
         }
         else
         {

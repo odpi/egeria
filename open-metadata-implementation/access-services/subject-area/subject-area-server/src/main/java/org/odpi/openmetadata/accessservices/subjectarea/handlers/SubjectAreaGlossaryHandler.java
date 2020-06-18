@@ -16,12 +16,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gloss
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGlossaryRESTServices;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -48,24 +44,11 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * Construct the Subject Area Glossary Handler
      * needed to operate within a single server instance.
      *
-     * @param serviceName             name of the consuming service
-     * @param serverName              name of this server instance
-     * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
      * @param oMRSAPIHelper           omrs API helper
-     * @param errorHandler            handler for repository service errors
      */
-    public SubjectAreaGlossaryHandler(String serviceName,
-                                      String serverName,
-                                      InvalidParameterHandler invalidParameterHandler,
-                                      OMRSRepositoryHelper repositoryHelper,
-                                      RepositoryHandler repositoryHandler,
-                                      OMRSAPIHelper oMRSAPIHelper,
-                                      RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName,invalidParameterHandler,repositoryHelper,repositoryHandler,oMRSAPIHelper);
+    public SubjectAreaGlossaryHandler(OMRSAPIHelper oMRSAPIHelper) {
+        super(oMRSAPIHelper);
     }
-
 
     /**
      * Take an entityDetail response and map it to the appropriate glossary orientated response
@@ -131,9 +114,6 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse createGlossary(String userId, Glossary suppliedGlossary) {
         final String methodName = "createGlossary";
         SubjectAreaOMASAPIResponse response = null;
-
-        SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
-        glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
             InputValidator.validateNodeType(className, methodName, suppliedGlossary.getNodeType(), NodeType.Glossary, NodeType.Taxonomy, NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
             final String suppliedGlossaryName = suppliedGlossary.getName();
@@ -183,9 +163,6 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse getGlossaryByGuid(String userId, String guid) {
         final String methodName = "getGlossaryByGuid";
         SubjectAreaOMASAPIResponse response = null;
-        SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
-        glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
-
         try {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
@@ -229,16 +206,14 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
 
         final String methodName = "findGlossary";
         SubjectAreaOMASAPIResponse response = null;
-        SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
-        glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
 
         /*
          * If no search criteria is supplied then we return all glossaries, this should not be too many.
          */
         if (searchCriteria == null) {
-            response = oMRSAPIHelper.getEntitiesByType(oMRSAPIHelper, methodName, userId, "Glossary", asOfTime, offset, pageSize);
+            response = this.oMRSAPIHelper.getEntitiesByType(methodName, userId, "Glossary", asOfTime, offset, pageSize, sequencingProperty, sequencingOrder);
         } else {
-            response = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "Glossary", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+            response = this.oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "Glossary", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
         }
         if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetails)) {
             EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
@@ -326,9 +301,6 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse updateGlossary(String userId, String guid, Glossary suppliedGlossary, boolean isReplace) {
         final String methodName = "updateGlossary";
         SubjectAreaOMASAPIResponse response = null;
-        SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
-        glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
-
         try {
 
             InputValidator.validateNodeType(className, methodName, suppliedGlossary.getNodeType(), NodeType.Glossary, NodeType.Taxonomy, NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
@@ -416,8 +388,6 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse deleteGlossary(String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteGlossary";
         SubjectAreaOMASAPIResponse response = null;
-        SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
-        glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             // do not delete if there is glossary content (terms or categories)
@@ -491,8 +461,6 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse restoreGlossary(String userId, String guid) {
         final String methodName = "restoreGlossary";
         SubjectAreaOMASAPIResponse response = null;
-        SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
-        glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
@@ -504,5 +472,4 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         }
         return response;
     }
-
 }
