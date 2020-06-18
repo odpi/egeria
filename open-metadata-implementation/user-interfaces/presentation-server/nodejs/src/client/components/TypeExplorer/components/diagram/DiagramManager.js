@@ -5,8 +5,6 @@ import React, { useContext, useState }    from "react";
 
 import { TypesContext }                   from "../../contexts/TypesContext";
 
-//import { FocusContext }                   from "../../contexts/FocusContext";
-
 import EntityInheritanceDiagram           from "./EntityInheritanceDiagram";
 
 import EntityNeighborhoodDiagram          from "./EntityNeighborhoodDiagram";
@@ -27,26 +25,19 @@ export default function DiagramManager(props) {
 
   let height = props.height;
   let width = props.width;
-  console.log("DiagramManager: width is "+width+" height is "+height);
  
   const typesContext = useContext(TypesContext);
 
-  //const focusContext = useContext(FocusContext);
 
   const [selectedDiagram, setSelectedDiagram] = useState("Entity Inheritance");
+
   /*
    * Although there is a default diagram it should not be set until after the types are loaded.
-   * It is therefore set explicitly on conditional rendering rather than used as the initial state
-   * of selectedDiagram.
+   * It is therefore set explicitly on conditional rendering rather than used as initial state.
    */
-  //const defaultDiagram = "Entity Inheritance";
-
-
-  //const typesLoaded = typesContext.getEntityTypes() !== null;
 
   const diagramChangeHandler = (evt) => {
     const diagramName = evt.target.value;
-    console.log("DiagramManager: diagram selected - "+diagramName);
     setSelectedDiagram(diagramName);
   }
 
@@ -93,9 +84,8 @@ export default function DiagramManager(props) {
               defaultValue={selectedDiagram}
               onChange={diagramChangeHandler}>
           {diagramTypes.map(diagramName => (
-              <option key={diagramName} value={diagramName}> {diagramName} </option>
+            <option key={diagramName} value={diagramName}> {diagramName} </option>
           ))}
-
       </select>
       </div>
       );
@@ -110,7 +100,6 @@ export default function DiagramManager(props) {
       {diagram()}
     </div>     
   );
-
 }
 
 
