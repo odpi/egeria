@@ -14,12 +14,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.ResponseCatego
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.LineTypeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.NodeTypeMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGraphRESTServices;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
@@ -42,22 +38,10 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
      * Construct the Subject Area Graph Handler
      * needed to operate within a single server instance.
      *
-     * @param serviceName             name of the consuming service
-     * @param serverName              name of this server instance
-     * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
      * @param oMRSAPIHelper           omrs API helper
-     * @param errorHandler            handler for repository service errors
      */
-    public SubjectAreaGraphHandler(String serviceName,
-                                   String serverName,
-                                   InvalidParameterHandler invalidParameterHandler,
-                                   OMRSRepositoryHelper repositoryHelper,
-                                   RepositoryHandler repositoryHandler,
-                                   OMRSAPIHelper oMRSAPIHelper,
-                                   RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper);
+    public SubjectAreaGraphHandler(OMRSAPIHelper oMRSAPIHelper) {
+        super(oMRSAPIHelper);
     }
 
     @Override
@@ -107,9 +91,6 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         SubjectAreaOMASAPIResponse response = null;
-
-        SubjectAreaGraphRESTServices graphRESTServices = new SubjectAreaGraphRESTServices();
-        graphRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
 
         //set of entity type guids so we do not have duplicates
         Set<String> entityTypeGUIDs = new HashSet<>();

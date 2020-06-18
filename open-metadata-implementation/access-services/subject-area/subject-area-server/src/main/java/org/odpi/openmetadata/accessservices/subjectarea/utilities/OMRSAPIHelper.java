@@ -5,10 +5,20 @@ package org.odpi.openmetadata.accessservices.subjectarea.utilities;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.*;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.InvalidParameterExceptionResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.VoidResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.handlers.ErrorHandler;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.*;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -23,26 +33,36 @@ import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * This is a facade around the OMRS API. It transforms the OMRS Exceptions into OMAS exceptions
  */
 public class OMRSAPIHelper {
 
-    // logging
     private static final Logger log = LoggerFactory.getLogger(OMRSAPIHelper.class);
     private static final String className = OMRSAPIHelper.class.getName();
+    private final String serviceName;
+    private final String serverName;
+    private OMRSRepositoryHelper omrsRepositoryHelper;
+    private OMRSMetadataCollection omrsMetadataCollection;
 
-    private OMRSMetadataCollection oMRSMetadataCollection=null;
-    final private String serviceName;
-    private String serverName = null;
-    private OMRSRepositoryHelper omrsRepositoryHelper = null;
-
-    public OMRSAPIHelper(String serviceName) {
+    /**
+     * @param serviceName             name of the consuming service
+     * @param serverName              name of this server instance
+     * @param repositoryHelper        helper used by the converters
+     * @param omrsMetadataCollection  metadata collection for the repository
+     * */
+    public OMRSAPIHelper(
+            String serviceName,
+            String serverName,
+            OMRSRepositoryHelper repositoryHelper,
+            OMRSMetadataCollection omrsMetadataCollection
+    ) {
         this.serviceName = serviceName;
+        this.serverName = serverName;
+        this.omrsRepositoryHelper = repositoryHelper;
+        this.omrsMetadataCollection = omrsMetadataCollection;
     }
 
     /**
@@ -55,19 +75,11 @@ public class OMRSAPIHelper {
 
     public OMRSMetadataCollection getOMRSMetadataCollection(String restAPIName) throws MetadataServerUncontactableException {
         validateInitialization(restAPIName);
-        return oMRSMetadataCollection;
+        return this.omrsMetadataCollection;
     }
 
     public OMRSRepositoryHelper getOMRSRepositoryHelper() {
-        return omrsRepositoryHelper;
-    }
-
-    public void setOMRSMetadataCollection(OMRSMetadataCollection oMRSMetadataCollection) {
-        this.oMRSMetadataCollection = oMRSMetadataCollection;
-    }
-
-    public void setOmrsRepositoryHelper(OMRSRepositoryHelper omrsRepositoryHelper) {
-        this.omrsRepositoryHelper = omrsRepositoryHelper;
+        return this.omrsRepositoryHelper;
     }
 
     /**
@@ -84,7 +96,7 @@ public class OMRSAPIHelper {
         }
 
         try {
-            this.oMRSMetadataCollection = connector.getMetadataCollection();
+            this.omrsMetadataCollection = connector.getMetadataCollection();
             this.omrsRepositoryHelper = connector.getRepositoryHelper();
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.METADATA_SERVER_UNCONTACTABLE_ERROR.getMessageDefinition();
@@ -107,7 +119,7 @@ public class OMRSAPIHelper {
      */
     private void validateInitialization(String restAPIName) throws MetadataServerUncontactableException {
 
-        if (oMRSMetadataCollection == null) {
+        if (omrsMetadataCollection == null) {
             if (this.omrsRepositoryHelper == null) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition();
 
@@ -316,7 +328,9 @@ public class OMRSAPIHelper {
                                                             String entityTypeGUID,
                                                             Date asOfTime,
                                                             int fromEntityElement,
-                                                            int pageSize) {
+                                                            int pageSize,
+                                                            String sequencingProperty,
+                                                            SequencingOrder sequencingOrder) {
 
         String methodName = "callGetEntitiesByType";
         if (log.isDebugEnabled()) {
@@ -333,8 +347,8 @@ public class OMRSAPIHelper {
                                                                                                              null,
                                                                                                              null,
                                                                                                              asOfTime,
-                                                                                                             null,
-                                                                                                             null,
+                                                                                                             sequencingProperty,
+                                                                                                             sequencingOrder,
                                                                                                              pageSize
                                                                                                             );
             response = new EntityDetailsResponse(foundEntities);
@@ -1329,7 +1343,7 @@ public class OMRSAPIHelper {
     }
 
 
-    public SubjectAreaOMASAPIResponse findEntitiesByPropertyValue(String restAPIName, String userId, String typeName, String searchCriteria, Date asOfTime, int offset, int pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) {
+    public SubjectAreaOMASAPIResponse findEntitiesByPropertyValue(String restAPIName, String userId, String typeName, String searchCriteria, Date asOfTime, int offset, int pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty) {
         // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
         SubjectAreaOMASAPIResponse response = null;
         if (sequencingProperty !=null) {
@@ -1346,7 +1360,7 @@ public class OMRSAPIHelper {
                         new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(
                                 messageDefinition,
                                 className,
-                                methodName,
+                                restAPIName,
                                 propertyName,
                                 propertyValue)
                 );
@@ -1366,7 +1380,7 @@ public class OMRSAPIHelper {
                         new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(
                                 messageDefinition,
                                 className,
-                                methodName,
+                                restAPIName,
                                 propertyName,
                                 propertyValue)
                 );
@@ -1392,22 +1406,183 @@ public class OMRSAPIHelper {
         return response;
     }
 
-    public SubjectAreaOMASAPIResponse getEntitiesByType(OMRSAPIHelper oMRSAPIHelper,
-                                                               String restAPIName,
+    public SubjectAreaOMASAPIResponse getEntitiesByType(String restAPIName,
                                                                String userId,
                                                                String typeName,
                                                                Date asOfTime,
                                                                int offset,
-                                                               int pageSize
+                                                               int pageSize,
+                                                        String sequencingProperty,
+                                                        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder
     ) {
-        TypeDef typeDef = this.omrsRepositoryHelper.getTypeDefByName("getEntitiesByType",typeName);
-        String entityTypeGUID = typeDef.getGUID();
-        return oMRSAPIHelper.callGetEntitiesByType(
+            TypeDef typeDef = this.omrsRepositoryHelper.getTypeDefByName("getEntitiesByType", typeName);
+            SequencingOrder omrsSequencingOrder = SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
+            String entityTypeGUID = typeDef.getGUID();
+        return this.callGetEntitiesByType(
                 restAPIName,
                 userId,
                 entityTypeGUID,
                 asOfTime,
                 offset,
-                pageSize);
+                pageSize,
+                sequencingProperty,
+                omrsSequencingOrder);
+    }
+
+    /**
+     * Set icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
+     *
+     * Note that we should only return the icons that are effective - by checking the effective From and To dates against the current time
+     * @param userId userid under which to issue to the get of the related media
+     * @param guid to get associated icons from
+     * @return response with Set of IconSummary objects or an Exception response.
+     */
+    public SubjectAreaOMASAPIResponse  getIconSummarySet(String userId, String guid) {
+        // if there are no icons then return an empty set
+
+        //TODO implement icon logic
+        SubjectAreaOMASAPIResponse response;
+        Set<IconSummary> icons = new HashSet<>();
+        response = new IconSummarySetResponse(icons);
+        return response;
+
+    }
+
+    /**
+     * Get glossary summary
+     * @param restAPIName rest API Name
+     * @param userId userid under which to issue to the get of the related media
+     * @param line glossary relationship {@link TermAnchor} or {@link CategoryAnchor}
+     * @return Glossary summary
+     */
+    public SubjectAreaOMASAPIResponse getGlossarySummary(String restAPIName, String userId, Line line) {
+        String glossaryGuid = SubjectAreaUtils.getGlossaryGuidFromAnchor(line);
+        SubjectAreaOMASAPIResponse response = this.callOMRSGetEntityByGuid(restAPIName, userId, glossaryGuid);
+        if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
+            EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
+            EntityDetail glossaryEntity = entityDetailResponse.getEntityDetail();
+            Glossary glossary = null;
+            try {
+                glossary = new GlossaryMapper(this).mapEntityDetailToNode(glossaryEntity);
+
+                GlossarySummary glossarySummary = SubjectAreaUtils.extractGlossarySummaryFromGlossary(glossary, line);
+
+                if (glossarySummary != null) {
+                    response = new GlossarySummaryResponse(glossarySummary);
+                    // TODO sort out icons
+                }
+            } catch (org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException e) {
+                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            }
+        }
+        return response;
+    }
+
+    /**
+     * Get a summary of the parent category. The parent category is optional. We might validly have more than one parent category. this can occur if effectivity dates are being used
+     * The parent category is the first relationship we find of the right type that is effective.
+     * @param restAPIName rest API Name
+     * @param userId userid that the requests are issued under
+     * @param lines set of Lines that are of the right type.
+     * @return a parent category as a CategorySummary
+     * @throws org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException one of the parameters is null or invalid.
+     */
+    public CategorySummary getParentCategorySummary(String restAPIName, String userId, Set<Line> lines) throws org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException
+    {
+        CategorySummary parentCategorySummary =null;
+        SubjectAreaOMASAPIResponse response = null;
+        final Iterator<Line> iterator = lines.iterator();
+        while (iterator.hasNext() && parentCategorySummary ==null) {
+            CategoryHierarchyLink parentRelationship = (CategoryHierarchyLink) iterator.next();
+            String parentCategoryGuid = parentRelationship.getSuperCategoryGuid();
+            response = this.callOMRSGetEntityByGuid(restAPIName, userId, parentCategoryGuid);
+            if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
+                EntityDetailResponse parentCategoryEntityResponse  = (EntityDetailResponse)response;
+                EntityDetail parentCategoryEntity = parentCategoryEntityResponse.getEntityDetail();
+                Category category = new CategoryMapper(this).mapEntityDetailToNode(parentCategoryEntity);
+                parentCategorySummary = SubjectAreaUtils.extractCategorySummaryFromCategory(category,parentRelationship);
+                // TODO implement icon logic
+            }
+        }
+
+        return parentCategorySummary;
+    }
+
+    /**
+     * Convert the OMRS Lines to their equivalent OMAS objects and return them in a Response of type lines.
+     * @param omrsRelationships - these are OMRS relationships
+     * @return omasLines - these are the Lines (the OMAS relationships) that are exposed in the OMAS API - note the list in the response can be empty
+     */
+    public SubjectAreaOMASAPIResponse convertOMRSRelationshipsToOMASLines(List<Relationship> omrsRelationships) {
+        List<Line> omasLines = new ArrayList<>();
+        for (Relationship omrsRelationship : omrsRelationships) {
+            String omrsName = omrsRelationship.getType().getTypeDefName();
+            Line omasLine = null;
+            switch (omrsName) {
+                case "TermHASARelationship":
+                    omasLine = new TermHASARelationshipMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                case "RelatedTerm":
+                    omasLine = new RelatedTermMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                case "Synonym":
+                    omasLine = new SynonymMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                case "Antonym":
+                    omasLine = new AntonymMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                case "Translation":
+                    omasLine = new TranslationMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                case "ISARelationship":
+                    omasLine = new ISARelationshipMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                case "PreferredTerm":
+                    omasLine = new PreferredTermMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                case "TermISATypeOFRelationship":
+                    omasLine = new TermISATypeOFRelationshipMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                case "ReplacementTerm":
+                    omasLine = new ReplacementTermMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                case "TermTYPEDBYRelationship":
+                    omasLine = new TermTYPEDBYRelationshipMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                case "UsedInContext":
+                    omasLine = new UsedInContextMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                case "ValidValue":
+                    omasLine = new ValidValueMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                // external glossary relationships
+                case "LibraryCategoryReferenceRelationshipRelationship":
+                    // TODO
+                    break;
+                case "LibraryTermReferenceRelationshipRelationship":
+                    // TODO
+                    break;
+                // term to asset
+                case "SemanticAssignment":
+                    omasLine = new SemanticAssignmentMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                // category to term
+                case "TermCategorization":
+                    omasLine = new TermCategorizationMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                // Term to glossary
+                case "TermAnchor":
+                    omasLine = new TermAnchorMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+                // Category to glossary
+                case "CategoryAnchor":
+                    omasLine = new CategoryAnchorMapper(this).mapRelationshipToLine(omrsRelationship);
+                    break;
+            }
+            if (omasLine != null) {
+                omasLines.add(omasLine);
+            }
+        }
+        return  new LinesResponse(omasLines);
     }
 }

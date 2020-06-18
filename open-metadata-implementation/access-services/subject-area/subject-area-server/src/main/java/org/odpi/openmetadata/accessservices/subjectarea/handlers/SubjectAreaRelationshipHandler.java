@@ -17,9 +17,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapp
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ResponseFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
@@ -46,22 +43,10 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * Construct the Subject Area Relationship Handler
      * needed to operate within a single server instance.
      *
-     * @param serviceName             name of the consuming service
-     * @param serverName              name of this server instance
-     * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
      * @param oMRSAPIHelper           omrs API helper
-     * @param errorHandler            handler for repository service errors
      */
-    public SubjectAreaRelationshipHandler(String serviceName,
-                                          String serverName,
-                                          InvalidParameterHandler invalidParameterHandler,
-                                          OMRSRepositoryHelper repositoryHelper,
-                                          RepositoryHandler repositoryHandler,
-                                          OMRSAPIHelper oMRSAPIHelper,
-                                          RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper);
+    public SubjectAreaRelationshipHandler(OMRSAPIHelper oMRSAPIHelper) {
+        super(oMRSAPIHelper);
     }
 
     // nothing to change for relationships
