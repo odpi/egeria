@@ -8,14 +8,12 @@ import { RepositoryServerContext }     from "../../contexts/RepositoryServerCont
 
 import { TypesContext }                from "../../contexts/TypesContext";  
 
-import PropTypes                       from "prop-types";
-
 import "./connection-details.scss"
 
 
 
 
-export default function ConnectionDetails(props) {
+export default function ConnectionDetails() {
   
   const repositoryServerContext = useContext(RepositoryServerContext);
 
@@ -51,46 +49,39 @@ export default function ConnectionDetails(props) {
     typesContext.loadTypeInfo()
   }
   
-  // TODO - alignment
+
 
   return (
 
-      <div className="connection-controls">  
+    <div className="connection-controls">
 
-        <p>Repository Server</p>
+      <p>Repository Server</p>
 
-        <label htmlFor="serverNameField">Server name: </label>
-        <input name="serverNameField"
-           value = { repositoryServerContext.repositoryServerName }      
-           onChange = { updatedServerName }   />
-        <br />
+      <label htmlFor="serverNameField">Server name: </label>
+      <input name="serverNameField"
+        value = { repositoryServerContext.repositoryServerName }
+        onChange = { updatedServerName }   />
+      <br />
 
-        <label htmlFor="serverURLRootField">Server URL root: </label>
-        <input name="serverURLRootField"
-           value = { repositoryServerContext.repositoryServerURLRoot }      
-           onChange = { updatedServerURLRoot }  /> 
-       <br />
+      <label htmlFor="serverURLRootField">Server URL root: </label>
+      <input name="serverURLRootField"
+        value = { repositoryServerContext.repositoryServerURLRoot }
+        onChange = { updatedServerURLRoot }  />
+      <br />
          
-        <label htmlFor="cbEnterprise">Enterprise : </label>
-        <input type="checkbox" 
-               id="cbEnterprise" 
-               name="cbEnterprise" 
-               onChange={updatedEnterpriseOption} 
-               checked={ repositoryServerContext.repositoryServerEnterpriseOption } 
-               value={ repositoryServerContext.repositoryServerEnterpriseOption }  />
-        <br />
+      <label htmlFor="cbEnterprise">Enterprise : </label>
+      <input type="checkbox"
+        id="cbEnterprise"
+        name="cbEnterprise"
+        onChange={updatedEnterpriseOption}
+        checked={ repositoryServerContext.repositoryServerEnterpriseOption }
+        value={ repositoryServerContext.repositoryServerEnterpriseOption }  />
+      <br />
           
-        <button className="connection-button"  onClick = { setServerDetails } >
-          Set Server Details
-        </button>
-      </div>
+      <button className="connection-button"  onClick = { setServerDetails } >
+        Set Server Details
+      </button>
+    </div>
 
   );
-
 }
-
-
-ConnectionDetails.propTypes = {  
-  className  : PropTypes.string
-}
-
