@@ -21,6 +21,9 @@ The installation instructions for Postman are found here:
  
 Once Postman is installed it can be started like any other desktop application.
 
+Egeria by default uses https:// requests with a self-signed certificate. Any PostMan users therefore will need to
+go into settings->general and turn off 'SSL certificate verification' or requests will fail.
+
 ## Next steps
 
 If you are working through the Egeria Dojo, you can

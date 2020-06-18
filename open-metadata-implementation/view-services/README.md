@@ -55,7 +55,7 @@ remote server called 'Server1' is:
    "localServerId":"a8e40a02-a95a-4dce-a5ba-8d4f68298ec9",
    "localServerName":"viewserver",
    "localServerType":"View Server",
-   "localServerURL":"http://localhost:8085",
+   "localServerURL":"https://localhost:9448",
    "localServerUserId":"OMAGServer",
    "maxPageSize":1000,
    "viewServicesConfig":[ 
@@ -65,7 +65,7 @@ remote server called 'Server1' is:
          "viewServiceFullName":"Glossary Author",
          "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.glossaryauthor.admin.GlossaryAuthorViewAdmin",
          "viewServiceOperationalStatus":"ENABLED",
-         "omagserverPlatformRootURL":"http://localhost:8080",
+         "omagserverPlatformRootURL":"https://localhost:9443",
          "omagserverName":"Server1"
       }
    ],

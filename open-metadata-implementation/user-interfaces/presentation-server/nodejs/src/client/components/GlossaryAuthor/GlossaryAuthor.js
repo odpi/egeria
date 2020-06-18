@@ -17,7 +17,7 @@ export default function GlossaryAuthor() {
   const [exceptionErrorMessage, setExceptionErrorMessage] = useState();
   const [systemAction, setSystemAction] = useState();
   const [fullResponse, setFullResponse] = useState();
-
+  
   const nodeType = getNodeType("glossary");
   // Try to connect to the server. The [] means it only runs on mount (rather than every render)
   useEffect(() => {
@@ -27,8 +27,32 @@ export default function GlossaryAuthor() {
   const handleOnAnimationEnd = (e) => {
     document.getElementById("connectionChecker").classList.remove("shaker");
   };
-
   const issueConnect = () => {
+    // it could be that we have lost the connection due to a refresh in that case the we will not have a userid. 
+   
+    if (nodeType.url.includes("users//")) {
+      const serverName = window.location.pathname.split("/")[1];
+   
+      const loginUrl =
+        window.location.protocol +
+        "//" +
+        window.location.hostname +
+        ":" +
+        window.location.port +
+        "/" +
+        serverName +
+        "/login";
+      if (history.pushState) {
+        alert("We have lost the session possibly due to a refresh of the web page. Please re-enter your credentials");
+        history.pushState({}, null, loginUrl);
+        history.go();
+      } else {
+        alert("The Browser does not support history. Please re-login here: " + loginUrl);
+      }  
+    } else {
+  
+  
+  
     console.log("URL to be submitted is " + nodeType.url);
     setErrorMsg(undefined);
     setExceptionUserAction(undefined);
@@ -79,6 +103,7 @@ export default function GlossaryAuthor() {
         setConnected(false);
         setErrorMsg("Full Response is " + JSON.stringify(res));
       });
+    }
   };
 
   const handleOnClick = (e) => {

@@ -89,11 +89,11 @@ egeria-lineage-repositories/**
 *-graph-repository/**
 
 # Ignore archives if they are in the top level directory
-./CloudInformationModel.json
-./DataStoreConnectorTypes.json
-./OpenMetadataTypes.json
-./*Archive.json
-./*GUIDMap.json
+/CloudInformationModel.json
+/DataStoreConnectorTypes.json
+/OpenMetadataTypes.json
+/*Archive.json
+/*GUIDMap.json
 
 # Ignore any json files generated during junit
 open-metadata-resources/open-metadata-archives/design-model-archives/*.json
@@ -112,6 +112,8 @@ open-metadata-implementation/user-interfaces/presentation-server/nodejs/package-
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/.vscode
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/*.log
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/yarn.lock
+open-metadata-implementation/user-interfaces/presentation-server/nodejs/node/**
+open-metadata-implementation/user-interfaces/presentation-server/nodejs/.env
 
 # Ignore Deployment / Samples Generated content
 open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/cache/**

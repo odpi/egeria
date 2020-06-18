@@ -19,12 +19,12 @@ Here is a code example with the user id and password specified:
 
 ```
 AssetConsumer   client = new AssetConsumer("cocoMDS1",
-                                           "http://localhost:8081",
+                                           "https://localhost:9444",
                                            "cocoUI",
                                            "cocoUIPassword");
 ```
 
-This client is set up to call the `cocoMDS1` server running on the `http://localhost:8081`
+This client is set up to call the `cocoMDS1` server running on the `https://localhost:9444`
 OMAG Server Platform.  The userId and password is for the application
 where the client is running.  The userId of the real end user is passed
 on each request.

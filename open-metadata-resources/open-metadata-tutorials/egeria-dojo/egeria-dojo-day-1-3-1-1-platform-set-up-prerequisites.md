@@ -13,6 +13,9 @@ hosts many of the services provided by Egeria.
 However, before we get started there are some steps to prepare your machine.
 
 For this session you will need both **Docker Desktop** and **Postman** running on your machine.
+
+What the video for an overview of this session: [https://youtu.be/jnxY2epKgzY](https://youtu.be/jnxY2epKgzY)
+
 Follow the links below to find out a little bit about these technologies and ensure the software
 is installed.
 

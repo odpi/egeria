@@ -2,18 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
-import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
-import org.odpi.openmetadata.accessservices.subjectarea.utils.RestCaller;
-import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,8 +16,8 @@ import java.util.List;
 
 
 /**
- * SubjectAreaImpl is the OMAS client library implementation of the SubjectAreaImpl OMAS.
- * This interface provides glossary category  authoring interfaces for subject area experts.
+ * SubjectAreaImpl is the OMAS client library implementation of the Subject Area API
+ * This interface provides glossary category authoring interfaces for subject area experts.
  */
 public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaCategoryImpl.class);
@@ -33,13 +27,16 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
     private static final String BASE_URL = SubjectAreaImpl.SUBJECT_AREA_BASE_URL + "categories";
 
     /**
-     * Default Constructor used once a connector is created.
+     * Constructor for no authentication.
      *
-     * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param omasServerURL unique id for the connector instance
+     * @param serverName            name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                                                                    REST API calls.
      */
-    public SubjectAreaCategoryImpl(String omasServerURL, String serverName) {
-        super(omasServerURL, serverName);
+    public SubjectAreaCategoryImpl(String serverName, String serverPlatformURLRoot) throws
+                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+        super(serverName, serverPlatformURLRoot);
     }
 
     /**
@@ -50,40 +47,25 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * @return the created category.
      * <p>
      * Exceptions returned by the server
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws ClassificationException              Error processing a classification
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
+     * @throws UserNotAuthorizedException    the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException     one of the parameters is null or invalid.
+     * @throws UnrecognizedGUIDException     the supplied guid was not recognised
+     * @throws ClassificationException       Error processing a classification
+     * @throws FunctionNotSupportedException Function not supported
+     * @throws PropertyServerException       Property Server Exception
+     *                                       <p>
+     *                                       Client library Exceptions
+     * @throws UnexpectedResponseException   an unexpected response was returned from the server
      */
 
-    public Category createCategory(String userId, Category suppliedCategory) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
+    public Category createCategory(String userId, Category suppliedCategory) throws InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, PropertyServerException {
         final String methodName = "createCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        final String url = this.omasServerURL + String.format(BASE_URL, serverName, userId);
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        ObjectMapper mapper = new ObjectMapper();
-        String requestBody = null;
-        try {
-            requestBody = mapper.writeValueAsString(suppliedCategory);
-        } catch (JsonProcessingException error) {
-            RestCaller.throwJsonParseError(className, methodName, error);
-        }
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePost(className, methodName, requestBody, url);
-
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
-        DetectUtils.detectAndThrowClassificationException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        Category category = DetectUtils.detectAndReturnCategory(className, methodName, restResponse);
+        final String urlTemplate = BASE_URL;
+        SubjectAreaOMASAPIResponse response = postRESTCall(userId, methodName, urlTemplate, suppliedCategory);
+        Category category = DetectUtils.detectAndReturnCategory(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -102,27 +84,21 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws FunctionNotSupportedException        Function not supported
+     * @throws PropertyServerException              Property Server Exception
      *                                              <p>
      *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
 
-    public Category getCategoryByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
+    public Category getCategoryByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException, PropertyServerException {
         final String methodName = "getCategoryByGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s";
-        String url = String.format(urlTemplate, serverName, userId, guid);
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        Category category = DetectUtils.detectAndReturnCategory(className, methodName, restResponse);
+        final String urlTemplate = BASE_URL + "/%s";
+        SubjectAreaOMASAPIResponse response = getByIdRESTCall(userId, guid, methodName, urlTemplate);
+        Category category = DetectUtils.detectAndReturnCategory(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -162,7 +138,8 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                           InvalidParameterException,
                                                                           FunctionNotSupportedException,
                                                                           UnexpectedResponseException,
-                                                                          MetadataServerUncontactableException {
+                                                                          MetadataServerUncontactableException,
+                                                                          PropertyServerException {
         final String methodName = "getCategoryRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -208,51 +185,23 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                   UserNotAuthorizedException,
                                                                   InvalidParameterException,
                                                                   FunctionNotSupportedException,
-                                                                  UnexpectedResponseException {
+                                                                  UnexpectedResponseException,
+                                                                  PropertyServerException {
 
         final String methodName = "findCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        final String urlTemplate = this.omasServerURL + BASE_URL;
-        String url = String.format(urlTemplate, serverName, userId);
-
-        if (sequencingOrder == null) {
-            sequencingOrder = SequencingOrder.ANY;
-        }
-        StringBuffer queryStringSB = new StringBuffer();
-        QueryUtils.addCharacterToQuery(queryStringSB);
-        queryStringSB.append("sequencingOrder=" + sequencingOrder);
-        if (asOfTime != null) {
-            QueryUtils.addCharacterToQuery(queryStringSB);
-            queryStringSB.append("asOfTime=" + asOfTime);
-        }
-        if (searchCriteria != null) {
-            // encode the string
-
-            encodeQueryProperty("searchCriteria", searchCriteria, methodName, queryStringSB);
-        }
-        if (offset != 0) {
-            QueryUtils.addCharacterToQuery(queryStringSB);
-            queryStringSB.append("offset=" + offset);
-        }
-        if (pageSize != 0) {
-            QueryUtils.addCharacterToQuery(queryStringSB);
-            queryStringSB.append("pageSize=" + pageSize);
-        }
-        if (sequencingProperty != null) {
-            // encode the string
-            encodeQueryProperty("sequencingProperty", sequencingProperty, methodName, queryStringSB);
-        }
-        if (queryStringSB.length() > 0) {
-            url = url + queryStringSB.toString();
-        }
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        List<Category> categories = DetectUtils.detectAndReturnCategories(className, methodName, restResponse);
+        SubjectAreaOMASAPIResponse response = findRESTCall(userId,
+                                                           methodName,
+                                                           BASE_URL,
+                                                           searchCriteria,
+                                                           asOfTime,
+                                                           offset,
+                                                           pageSize,
+                                                           sequencingOrder,
+                                                           sequencingProperty);
+        List<Category> categories = DetectUtils.detectAndReturnCategories(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -281,7 +230,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                            UserNotAuthorizedException,
                                                                                            FunctionNotSupportedException,
                                                                                            InvalidParameterException,
-                                                                                           MetadataServerUncontactableException {
+                                                                                           MetadataServerUncontactableException, PropertyServerException {
         final String methodName = "replaceCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -320,7 +269,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                  UserNotAuthorizedException,
                                                                                                  FunctionNotSupportedException,
                                                                                                  InvalidParameterException,
-                                                                                                 MetadataServerUncontactableException {
+                                                                                                 MetadataServerUncontactableException, PropertyServerException {
         final String methodName = "updateCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -358,24 +307,16 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                       UserNotAuthorizedException,
                                                                       FunctionNotSupportedException,
                                                                       UnexpectedResponseException,
-                                                                      EntityNotDeletedException {
+                                                                      EntityNotDeletedException,
+                                                                      PropertyServerException {
         final String methodName = "deleteCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isPurge=false";
-        String url = String.format(urlTemplate, serverName, userId, guid);
-
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        DetectUtils.detectAndThrowEntityNotDeletedException(restResponse);
-
-        Category category = DetectUtils.detectAndReturnCategory(className, methodName, restResponse);
+        final String urlTemplate = BASE_URL + "/%s?isPurge=false";
+        SubjectAreaOMASAPIResponse response = deleteEntityRESTCall(userId, guid, methodName, urlTemplate);
+        Category category = DetectUtils.detectAndReturnCategory(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -402,22 +343,14 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                  UserNotAuthorizedException,
                                                                  MetadataServerUncontactableException,
                                                                  EntityNotPurgedException,
-                                                                 FunctionNotSupportedException {
+                                                                 FunctionNotSupportedException,
+                                                                 PropertyServerException {
         final String methodName = "purgeCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isPurge=true";
-        String url = String.format(urlTemplate, serverName, userId, guid);
-
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowEntityNotPurgedException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
+        final String urlTemplate = BASE_URL + "/%s?isPurge=true";
+        purgeEntityRESTCall(userId, guid, methodName, urlTemplate);
 
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
@@ -445,23 +378,17 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                        MetadataServerUncontactableException,
                                                                        UnrecognizedGUIDException,
                                                                        FunctionNotSupportedException,
-                                                                       UnexpectedResponseException {
+                                                                       UnexpectedResponseException,
+                                                                       PropertyServerException {
         final String methodName = "restoreCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s";
-        String url = String.format(urlTemplate, serverName, userId, guid);
+        final String urlTemplate = BASE_URL + "/%s";
+        SubjectAreaOMASAPIResponse response = restoreRESTCall(userId, guid, methodName, urlTemplate);
 
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePostNoBody(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        Category category = DetectUtils.detectAndReturnCategory(className, methodName, restResponse);
+        Category category = DetectUtils.detectAndReturnCategory(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -488,29 +415,14 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
 
-    public SubjectAreaDefinition createSubjectAreaDefinition(String userId, SubjectAreaDefinition suppliedSubjectAreaDefinition) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
+    public SubjectAreaDefinition createSubjectAreaDefinition(String userId, SubjectAreaDefinition suppliedSubjectAreaDefinition) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, PropertyServerException {
         final String methodName = "createSubjectAreaDefinition";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        final String url = this.omasServerURL + String.format(BASE_URL, serverName, userId);
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        ObjectMapper mapper = new ObjectMapper();
-        String requestBody = null;
-        try {
-            requestBody = mapper.writeValueAsString(suppliedSubjectAreaDefinition);
-        } catch (JsonProcessingException error) {
-            RestCaller.throwJsonParseError(className, methodName, error);
-        }
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePost(className, methodName, requestBody, url);
-
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
-        DetectUtils.detectAndThrowClassificationException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        SubjectAreaDefinition subjectAreaDefinition = DetectUtils.detectAndReturnSubjectAreaDefinition(className, methodName, restResponse);
+        final String urlTemplate = BASE_URL;
+        SubjectAreaOMASAPIResponse response = postRESTCall(userId, methodName, urlTemplate, suppliedSubjectAreaDefinition);
+        SubjectAreaDefinition subjectAreaDefinition = DetectUtils.detectAndReturnSubjectAreaDefinition(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -535,21 +447,20 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
      * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
 
-    public SubjectAreaDefinition getSubjectAreaDefinitionByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException {
+    public SubjectAreaDefinition getSubjectAreaDefinitionByGuid(String userId, String guid) throws MetadataServerUncontactableException,
+                                                                                                   UnrecognizedGUIDException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   InvalidParameterException,
+                                                                                                   FunctionNotSupportedException,
+                                                                                                   UnexpectedResponseException,
+                                                                                                   PropertyServerException {
         final String methodName = "getSubjectAreaDefinitionByGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s";
-        String url = String.format(urlTemplate, serverName, userId, guid);
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        SubjectAreaDefinition subjectAreaDefinition = DetectUtils.detectAndReturnSubjectAreaDefinition(className, methodName, restResponse);
+        final String urlTemplate = BASE_URL + "/%s";
+        SubjectAreaOMASAPIResponse response = getByIdRESTCall(userId, guid, methodName, urlTemplate);
+        SubjectAreaDefinition subjectAreaDefinition = DetectUtils.detectAndReturnSubjectAreaDefinition(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -576,12 +487,11 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                                                                UnexpectedResponseException,
                                                                                                                                                UserNotAuthorizedException,
                                                                                                                                                InvalidParameterException,
-                                                                                                                                               MetadataServerUncontactableException {
+                                                                                                                                               MetadataServerUncontactableException, PropertyServerException, FunctionNotSupportedException {
         final String methodName = "replaceSubjectAreaDefinition";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-
         SubjectAreaDefinition subjectAreaDefinition = updateSubjectAreaDefinition(userId, guid, suppliedSubjectAreaDefinition, true);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
@@ -613,7 +523,7 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
     public SubjectAreaDefinition updateSubjectAreaDefinition(String userId, String guid, SubjectAreaDefinition suppliedSubjectAreaDefinition) throws UnexpectedResponseException,
                                                                                                                                                      UserNotAuthorizedException,
                                                                                                                                                      InvalidParameterException,
-                                                                                                                                                     MetadataServerUncontactableException {
+                                                                                                                                                     MetadataServerUncontactableException, PropertyServerException, FunctionNotSupportedException {
         final String methodName = "updateSubjectAreaDefinition";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -648,24 +558,16 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                 UserNotAuthorizedException,
                                                                                                 FunctionNotSupportedException,
                                                                                                 UnexpectedResponseException,
-                                                                                                EntityNotDeletedException {
+                                                                                                EntityNotDeletedException, PropertyServerException {
         final String methodName = "deleteSubjectAreaDefinition";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isPurge=false";
-        String url = String.format(urlTemplate, serverName, userId, guid);
+        final String urlTemplate = BASE_URL + "/%s?isPurge=false";
+        SubjectAreaOMASAPIResponse response = deleteEntityRESTCall(userId, guid, methodName, urlTemplate);
 
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        DetectUtils.detectAndThrowEntityNotDeletedException(restResponse);
-
-        SubjectAreaDefinition subjectAreaDefinition = DetectUtils.detectAndReturnSubjectAreaDefinition(className, methodName, restResponse);
+        SubjectAreaDefinition subjectAreaDefinition = DetectUtils.detectAndReturnSubjectAreaDefinition(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -692,21 +594,15 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                               UserNotAuthorizedException,
                                                                               MetadataServerUncontactableException,
                                                                               EntityNotPurgedException,
-                                                                              UnexpectedResponseException {
+                                                                              UnexpectedResponseException,
+                                                                              PropertyServerException,
+                                                                              FunctionNotSupportedException {
         final String methodName = "purgeSubjectAreaDefinition";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isPurge=false";
-        String url = String.format(urlTemplate, serverName, userId, guid);
-
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowEntityNotPurgedException(restResponse);
+        final String urlTemplate = BASE_URL + "/%s?isPurge=true";
+        purgeEntityRESTCall(userId, guid, methodName, urlTemplate);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -733,75 +629,52 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
                                                                                                  MetadataServerUncontactableException,
                                                                                                  UnrecognizedGUIDException,
                                                                                                  FunctionNotSupportedException,
-                                                                                                 UnexpectedResponseException {
+                                                                                                 UnexpectedResponseException, PropertyServerException {
         final String methodName = "restoreSubjectArea";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s";
-        String url = String.format(urlTemplate, serverName, userId, guid);
-
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePostNoBody(className, methodName, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowUnrecognizedGUIDException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-        SubjectAreaDefinition subjectArea = DetectUtils.detectAndReturnSubjectAreaDefinition(className, methodName, restResponse);
+        final String urlTemplate = BASE_URL + "/%s";
+        SubjectAreaOMASAPIResponse response = restoreRESTCall(userId, guid, methodName, urlTemplate);
+        SubjectAreaDefinition subjectArea = DetectUtils.detectAndReturnSubjectAreaDefinition(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
         return subjectArea;
     }
 
-    /*
-     *  Update Category.
+    /**
+     * Update Category.
      *
-     *
-     * @param userId userId under which the request is performed
-     * @param userId guid of the category to update
+     * @param userId           userId under which the request is performed
+     * @param userId           guid of the category to update
      * @param suppliedCategory Category to be updated
-     * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return the updated category.
-     *
+     * <p>
      * Exceptions returned by the server
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException   Function not supported
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     *
-     * Client library Exceptions
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws FunctionNotSupportedException        Function not supported
+     * @throws InvalidParameterException            one of the parameters is null or invalid
+     *                                              <p>
+     *                                              Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
     private Category updateCategory(String userId, String guid, Category suppliedCategory, boolean isReplace) throws UserNotAuthorizedException,
                                                                                                                      InvalidParameterException,
                                                                                                                      FunctionNotSupportedException,
                                                                                                                      MetadataServerUncontactableException,
-                                                                                                                     UnexpectedResponseException {
+                                                                                                                     UnexpectedResponseException,
+                                                                                                                     PropertyServerException {
         final String methodName = "updateCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isReplace=%b";
-        String url = String.format(urlTemplate, serverName, userId, guid, isReplace);
-        ObjectMapper mapper = new ObjectMapper();
-        String requestBody = null;
-        try {
-            requestBody = mapper.writeValueAsString(suppliedCategory);
-        } catch (JsonProcessingException error) {
-            RestCaller.throwJsonParseError(className, methodName, error);
-        }
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePut(className, methodName, requestBody, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
-        DetectUtils.detectAndThrowFunctionNotSupportedException(restResponse);
-
-        Category category = DetectUtils.detectAndReturnCategory(className, methodName, restResponse);
+        final String urlTemplate = BASE_URL + "/%s?isReplace=%b";
+        SubjectAreaOMASAPIResponse response = putRESTCall(userId, guid, isReplace, methodName, urlTemplate, suppliedCategory);
+        Category category = DetectUtils.detectAndReturnCategory(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
@@ -828,28 +701,16 @@ public class SubjectAreaCategoryImpl extends SubjectAreaBaseImpl implements org.
     private SubjectAreaDefinition updateSubjectAreaDefinition(String userId, String guid, SubjectAreaDefinition suppliedSubjectAreaDefinition, boolean isReplace) throws UserNotAuthorizedException,
                                                                                                                                                                          InvalidParameterException,
                                                                                                                                                                          MetadataServerUncontactableException,
-                                                                                                                                                                         UnexpectedResponseException {
+                                                                                                                                                                         UnexpectedResponseException, PropertyServerException, FunctionNotSupportedException {
         final String methodName = "updateSubjectAreaDefinition";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
-        final String urlTemplate = this.omasServerURL + BASE_URL + "/%s?isReplace=%b";
-        String url = String.format(urlTemplate, serverName, userId, guid, isReplace);
-        ObjectMapper mapper = new ObjectMapper();
-        String requestBody = null;
-        try {
-            requestBody = mapper.writeValueAsString(suppliedSubjectAreaDefinition);
-        } catch (JsonProcessingException error) {
-            RestCaller.throwJsonParseError(className, methodName, error);
-        }
-        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePut(className, methodName, requestBody, url);
-        DetectUtils.detectAndThrowUserNotAuthorizedException(restResponse);
-        DetectUtils.detectAndThrowInvalidParameterException(restResponse);
+        final String urlTemplate = BASE_URL + "/%s?isReplace=%b";
+        SubjectAreaOMASAPIResponse response = putRESTCall(userId, guid, isReplace, methodName, urlTemplate, suppliedSubjectAreaDefinition);
 
-        SubjectAreaDefinition subjectAreaDefinition = DetectUtils.detectAndReturnSubjectAreaDefinition(className, methodName, restResponse);
+        SubjectAreaDefinition subjectAreaDefinition = DetectUtils.detectAndReturnSubjectAreaDefinition(className, methodName, response);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }

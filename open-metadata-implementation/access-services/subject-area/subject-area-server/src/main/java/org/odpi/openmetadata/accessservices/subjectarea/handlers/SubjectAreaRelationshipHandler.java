@@ -17,9 +17,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapp
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ResponseFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
@@ -46,22 +43,10 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * Construct the Subject Area Relationship Handler
      * needed to operate within a single server instance.
      *
-     * @param serviceName             name of the consuming service
-     * @param serverName              name of this server instance
-     * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
      * @param oMRSAPIHelper           omrs API helper
-     * @param errorHandler            handler for repository service errors
      */
-    public SubjectAreaRelationshipHandler(String serviceName,
-                                          String serverName,
-                                          InvalidParameterHandler invalidParameterHandler,
-                                          OMRSRepositoryHelper repositoryHelper,
-                                          RepositoryHandler repositoryHandler,
-                                          OMRSAPIHelper oMRSAPIHelper,
-                                          RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper);
+    public SubjectAreaRelationshipHandler(OMRSAPIHelper oMRSAPIHelper) {
+        super(oMRSAPIHelper);
     }
 
     // nothing to change for relationships
@@ -172,6 +157,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      *
      * @param restAPIName rest API name
      * @param userId      userId under which the request is performed
+     * @param guid        unique identifier of the Line
      * @param className   class name
      * @param line        the relationship to update
      * @param isReplace   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -187,7 +173,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateLine(String restAPIName, String userId, String className, Line line, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateLine(String restAPIName, String userId, String guid, String className, Line line, boolean isReplace) {
         String methodName = "updateLine";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",className=" + className, ",isReplace=" + isReplace);
@@ -199,9 +185,8 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         ILineMapper mapper = bundle.getMapper();
 
         try {
-            String relationshipGuid = line.getGuid();
-            InputValidator.validateGUIDNotNull(className, methodName, relationshipGuid, "termGuid");
-            response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, relationshipGuid);
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "termGuid");
+            response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, guid);
             if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
                 Relationship originalRelationship = ((RelationshipResponse) response).getRelationship();
                 Relationship relationshipToUpdate = mapper.mapLineToRelationship(line);
@@ -216,7 +201,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
 
                             // if there a property that already exists but is not in the update properties then make sure that value is not overwritten by including it in this update request.
                             for (String orgPropertyName : orgInstanceProperties.keySet()) {
-                                if (!updateInstanceProperties.keySet().contains(orgPropertyName)) {
+                                if (!updateInstanceProperties.containsKey(orgPropertyName)) {
                                     // make sure the original value is not lost.
                                     updateInstanceProperties.put(orgPropertyName, orgInstanceProperties.get(orgPropertyName));
                                 }
@@ -233,11 +218,18 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                 if (relationshipToUpdate.getProperties() == null || relationshipToUpdate.getProperties().getPropertyCount() == 0) {
                     // nothing to update.
                     // TODO may need to change this logic if effectivity updates can be made through this call.
-                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.LINE_UPDATE_ATTEMPTED_WITH_NO_PROPERTIES.getMessageDefinition();
 
-                    response = new InvalidParameterExceptionResponse(
-                            new InvalidParameterException(messageDefinition, className, methodName, "properties", null)
-                    );
+                    String propertyName = "properties";
+                    String propertyValue = null;
+                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.LINE_UPDATE_ATTEMPTED_WITH_NO_PROPERTIES.getMessageDefinition(propertyName, propertyValue);
+                    InvalidParameterException invalidParameterException = new InvalidParameterException(
+                            messageDefinition,
+                            className,
+                            methodName,
+                            propertyName,
+                            propertyValue);
+
+                    response = new InvalidParameterExceptionResponse(invalidParameterException);
                 } else {
                     response = oMRSAPIHelper.callOMRSUpdateRelationship(restAPIName, userId, relationshipToUpdate);
                     if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {

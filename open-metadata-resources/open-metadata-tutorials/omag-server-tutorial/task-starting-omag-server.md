@@ -9,7 +9,7 @@ it is started in the
 using the following command (this is request **11.** in Postman).
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
+POST https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
 ```
 
 The response from the command lists the subsystems that have been activated in the OMAG server:
@@ -26,7 +26,7 @@ The window where your OMAG server platform is running will show the start up
 messages, something like this:
 
 ```text
-/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/bin/java -Dserver.port=8080 ...
+/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/bin/java -Dserver.port=9443 ...
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
    / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _
   / / / // /|_/ // /| | / / __    \__ \ / _ \ / __/| | / // _ \ / __/  / /_/ // //   |  / _\ / /_ /  | /  _// || |
@@ -35,7 +35,11 @@ messages, something like this:
 
  :: Powered by Spring Boot (v2.1.2.RELEASE) ::
 
-Tue Feb 05 16:14:20 GMT 2019 OMAG server platform ready for configuration
+16:13:18.047 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9443 (https)
+16:13:41.688 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 9443 (https) with context path ''
+
+Tue Feb 05 16:14:20 GMT 2019 2020 No OMAG servers listed in startup configuration
+Tue Feb 05 16:14:20 GMT 2019 OMAG server platform ready for more configuration
 Tue Feb 05 16:14:27 GMT 2019 cocoMDS1 OMRS-AUDIT-0001 The Open Metadata Repository Services (OMRS) is initializing
 Tue Feb 05 16:14:27 GMT 2019 cocoMDS1 OMRS-AUDIT-0002 Enterprise access through the Enterprise Repository Services is initializing
 Tue Feb 05 16:14:27 GMT 2019 cocoMDS1 OMRS-AUDIT-0003 The local repository is initializing with metadata collection named cocoMDS1 with an id of ad405dc2-1361-48f8-9ea2-538bd43db1b0

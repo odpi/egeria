@@ -15,7 +15,7 @@ Below are the highlights:
 * There is a new user interface module:
     * The [Repository Explorer](../open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/docs/RepositoryExplorer/RepositoryExplorerGuide.md) (Rex) can help you explore and visualize the metadata in a repository. It retrieves entities and relationships from the repository and displays them. A details panel also shows the properties and other information about an object. Each entity or relationship is added to a network diagram, which shows how they are connected.
 
-* The Swagger-based API documentation for the Egeria server chassis has been reorganized to align with our modules structure & to provide links into our other documentation which also will clarify if the module is released, in Tech Preview, or still in development. The docs can be found at `http://<server>:<port>/swagger-ui.htm`. Further enhancements will follow in future releases.
+* The Swagger-based API documentation for the Egeria server chassis has been reorganized to align with our modules structure & to provide links into our other documentation which also will clarify if the module is released, in Tech Preview, or still in development. The docs can be found at `https://<server>:<port>/swagger-ui.htm`. Further enhancements will follow in future releases.
 
 * Many dependencies have been updated including:
     * Kafka client upgraded to 2.4.1

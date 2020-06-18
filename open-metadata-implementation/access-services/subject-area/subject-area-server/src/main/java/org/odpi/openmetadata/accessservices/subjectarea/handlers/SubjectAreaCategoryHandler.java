@@ -20,15 +20,10 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryAnchorMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryHierarchyLinkMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaCategoryRESTServices;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGlossaryRESTServices;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.TypeGuids;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -57,22 +52,10 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * Construct the Subject Area Category Handler
      * needed to operate within a single server instance.
      *
-     * @param serviceName             name of the consuming service
-     * @param serverName              name of this server instance
-     * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
      * @param oMRSAPIHelper           omrs API helper
-     * @param errorHandler            handler for repository service errors
      */
-    public SubjectAreaCategoryHandler(String serviceName,
-                                      String serverName,
-                                      InvalidParameterHandler invalidParameterHandler,
-                                      OMRSRepositoryHelper repositoryHelper,
-                                      RepositoryHandler repositoryHandler,
-                                      OMRSAPIHelper oMRSAPIHelper,
-                                      RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper);
+    public SubjectAreaCategoryHandler(OMRSAPIHelper oMRSAPIHelper) {
+        super(oMRSAPIHelper);
     }
 
     /**
@@ -135,17 +118,12 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-
-    public SubjectAreaOMASAPIResponse createCategory( SubjectAreaGlossaryHandler glossaryHandler, String userId, Category suppliedCategory) {
+    public SubjectAreaOMASAPIResponse createCategory(SubjectAreaGlossaryHandler glossaryHandler, String userId, Category suppliedCategory) {
         final String methodName = "createCategory";
         SubjectAreaOMASAPIResponse response = null;
 
-        SubjectAreaCategoryRESTServices categoryRESTServices = new SubjectAreaCategoryRESTServices();
-        categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
             InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
-            SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
-            glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
             String suppliedCategoryParentGuid = null;
             if (suppliedCategory.getParentCategory() != null) {
                 //store the parent category guid
@@ -156,15 +134,19 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             final String suppliedCategoryName = suppliedCategory.getName();
             if (suppliedCategoryName == null || suppliedCategoryName.equals("")) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_WITHOUT_NAME.getMessageDefinition();
-                throw new InvalidParameterException(messageDefinition,
-                                                    className,
-                                                    methodName,
-                                                    "Name",
-                                                    null);
+                String propertyName = "Name";
+                String propertyValue = null;
+                messageDefinition.setMessageParameters(propertyName,propertyValue);
+                throw new InvalidParameterException(
+                        messageDefinition,
+                        className,
+                        methodName,
+                        propertyName,
+                        propertyValue);
             }
             GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
             SubjectAreaOMASAPIResponse glossaryResponse = validateGlossarySummaryDuringCreation(glossaryHandler, userId, methodName, suppliedGlossary);
-            if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Glossary)) {
+            if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Glossary)) {
                 // the glossary that was supplied is valid.
                 EntityDetail entityDetail = new CategoryMapper(oMRSAPIHelper).mapNodeToEntityDetail(suppliedCategory);
 
@@ -201,7 +183,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
         }
 
-
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
         }
@@ -228,8 +209,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         final String methodName = "getCategory";
         SubjectAreaOMASAPIResponse response = null;
 
-        SubjectAreaCategoryRESTServices categoryRESTServices = new SubjectAreaCategoryRESTServices();
-        categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
@@ -237,7 +216,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
                 EntityDetail gotEntityDetail = entityDetailResponse.getEntityDetail();
                 CategoryMapper categoryMapper = new CategoryMapper(oMRSAPIHelper);
-                Category gotCategory = (Category) categoryMapper.mapEntityDetailToNode(gotEntityDetail);
+                Category gotCategory = categoryMapper.mapEntityDetailToNode(gotEntityDetail);
                 String anchorTypeGuid = TypeGuids.getCategoryAnchorTypeGuid();
                 response = oMRSAPIHelper.callGetRelationshipsForEntity(methodName, userId, guid, anchorTypeGuid, 0, null, null, null, 0);
                 if (response.getResponseCategory().equals(ResponseCategory.OmrsRelationships)) {
@@ -246,7 +225,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                     if (glossaryRelationships.iterator().hasNext()) {
                         Relationship glossaryRelationship = glossaryRelationships.iterator().next();
                         CategoryAnchor categoryAnchor = (CategoryAnchor) new CategoryAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
-                        response = SubjectAreaUtils.getGlossarySummaryForCategory(methodName, userId, oMRSAPIHelper, categoryAnchor);
+                        response = this.oMRSAPIHelper.getGlossarySummary(methodName, userId, categoryAnchor);
                         if (response.getResponseCategory().equals(ResponseCategory.GlossarySummary)) {
                             GlossarySummaryResponse glossarySummaryResponse = (GlossarySummaryResponse) response;
                             GlossarySummary glossarySummary = glossarySummaryResponse.getGlossarySummary();
@@ -316,11 +295,12 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         }
         // initialise omrs API helper with the right instance based on the server name
         SubjectAreaOMASAPIResponse response = null;
+        if (searchCriteria == null) {
+            response = this.oMRSAPIHelper.getEntitiesByType(methodName, userId, "GlossaryCategory", asOfTime, offset, pageSize, sequencingProperty, sequencingOrder);
+        } else {
+            response = this.oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "GlossaryCategory", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        }
 
-        SubjectAreaCategoryRESTServices categoryRESTServices = new SubjectAreaCategoryRESTServices();
-        categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
-
-        response = this.oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "GlossaryCategory", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
         if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetails) {
             EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
             List<EntityDetail> entitydetails = entityDetailsResponse.getEntityDetails();
@@ -350,6 +330,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         }
         return response;
     }
+
     /**
      * Get Category relationships
      *
@@ -406,8 +387,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         final String methodName = "updateCategory";
         SubjectAreaOMASAPIResponse response = null;
 
-        SubjectAreaCategoryRESTServices categoryRESTServices = new SubjectAreaCategoryRESTServices();
-        categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
             InputValidator.validateUserIdNotNull(className, methodName, userId);
             InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
@@ -464,12 +443,10 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
         }
 
-
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ",response=" + response);
         }
         return response;
-
     }
 
     /**
@@ -503,8 +480,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         final String methodName = "deleteCategory";
         SubjectAreaOMASAPIResponse response = null;
 
-        SubjectAreaCategoryRESTServices categoryRESTServices = new SubjectAreaCategoryRESTServices();
-        categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         OMRSRepositoryHelper repositoryHelper = this.oMRSAPIHelper.getOMRSRepositoryHelper();
         try {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
@@ -555,8 +530,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         final String methodName = "restoreCategory";
         SubjectAreaOMASAPIResponse response = null;
 
-        SubjectAreaCategoryRESTServices categoryRESTServices = new SubjectAreaCategoryRESTServices();
-        categoryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
         try {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
@@ -572,5 +545,4 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         }
         return response;
     }
-
 }

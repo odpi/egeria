@@ -5,9 +5,6 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -16,20 +13,12 @@ import org.slf4j.LoggerFactory;
  */
 
 public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServicesInstance {
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaRelationshipRESTServices.class);
-    private static final String className = SubjectAreaRelationshipRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
-
 
     /**
      * Default constructor
      */
     public SubjectAreaRelationshipRESTServices() {
         //SubjectAreaRESTServicesInstance registers this omas.
-    }
-
-    public SubjectAreaRelationshipRESTServices(OMRSAPIHelper oMRSAPIHelper) {
-        this.oMRSAPIHelper = oMRSAPIHelper;
     }
 
     /**
@@ -74,7 +63,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getTermHASARelationship(String serverName, String userId, String guid) {
 
         String restAPIName = "getTermHASARelationship";
@@ -86,6 +74,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid                 guid of the HAS A relationship
      * @param userId               userId under which the request is performed
      * @param termHASARelationship the HASA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -101,9 +90,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermHASARelationship(String serverName, String userId, Hasa termHASARelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTermHASARelationship(String serverName, String guid, String userId, Hasa termHASARelationship, boolean isReplace) {
         String restAPIName = "updateTermHASARelationship";
-        return updateLine(serverName, restAPIName, userId, Hasa.class.getName(), termHASARelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, Hasa.class.getName(), termHASARelationship, isReplace);
     }
 
     /**
@@ -193,7 +182,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getRelatedTerm(String serverName, String userId, String guid) {
         String restAPIName = "getRelatedTerm";
         return getLine(serverName, restAPIName, userId, RelatedTerm.class.getName(), guid);
@@ -204,6 +192,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid                    guid of the related term relationship
      * @param userId                  userId under which the request is performed
      * @param relatedTermRelationship the related term  relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -219,9 +208,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateRelatedTerm(String serverName, String userId, RelatedTerm relatedTermRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateRelatedTerm(String serverName, String guid, String userId, RelatedTerm relatedTermRelationship, boolean isReplace) {
         String restAPIName = "updateRelatedTerm";
-        return updateLine(serverName, restAPIName, userId, RelatedTerm.class.getName(), relatedTermRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, RelatedTerm.class.getName(), relatedTermRelationship, isReplace);
     }
 
     /**
@@ -243,7 +232,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteRelatedTerm(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteRelatedTerm";
         return deleteLine(serverName, restAPIName, userId, RelatedTerm.class.getName(), guid, isPurge);
@@ -303,8 +291,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the termCategorization relationship to get
-     * @return response which when successful contains the termCategorization relationship with the requested guid
+     * @param guid       guid of the synonym relationship to get
+     * @return response which when successful contains the synonym relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -313,7 +301,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getSynonymRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getSynonymRelationship";
         return getLine(serverName, restAPIName, userId, Synonym.class.getName(), guid);
@@ -325,6 +312,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
+     * @param guid       guid of the synonym relationship
      * @param synonym    the Synonym relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated SynonymRelationship
@@ -339,9 +327,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateSynonymRelationship(String serverName, String userId, Synonym synonym, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateSynonymRelationship(String serverName, String guid, String userId, Synonym synonym, boolean isReplace) {
         String restAPIName = "updateSynonymRelationship";
-        return updateLine(serverName, restAPIName, userId, Synonym.class.getName(), synonym, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, Synonym.class.getName(), synonym, isReplace);
     }
 
     /**
@@ -363,7 +351,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteSynonymRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteSynonymRelationship";
         return deleteLine(serverName, restAPIName, userId, Synonym.class.getName(), guid, isPurge);
@@ -432,7 +419,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getAntonymRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getAntonymRelationship";
         return getLine(serverName, restAPIName, userId, Antonym.class.getName(), guid);
@@ -443,6 +429,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid       guid of the antonym relationship
      * @param userId     userId under which the request is performed
      * @param antonym    the Antonym relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -458,9 +445,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateAntonymRelationship(String serverName, String userId, Antonym antonym, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateAntonymRelationship(String serverName, String guid, String userId, Antonym antonym, boolean isReplace) {
         String restAPIName = "updateAntonymRelationship";
-        return updateLine(serverName, restAPIName, userId, Antonym.class.getName(), antonym, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, Antonym.class.getName(), antonym, isReplace);
     }
 
     /**
@@ -482,7 +469,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteAntonymRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteAntonymRelationship";
         return deleteLine(serverName, restAPIName, userId, Antonym.class.getName(), guid, isPurge);
@@ -552,7 +538,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getTranslationRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getTranslationRelationship";
         return getLine(serverName, restAPIName, userId, Translation.class.getName(), guid);
@@ -563,6 +548,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid                    guid of the translation relationship
      * @param userId                  userId under which the request is performed
      * @param translationRelationship the Translation relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -578,9 +564,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTranslationRelationship(String serverName, String userId, Translation translationRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTranslationRelationship(String serverName, String guid, String userId, Translation translationRelationship, boolean isReplace) {
         String restAPIName = "updateTranslationRelationship";
-        return updateLine(serverName, restAPIName, userId, Translation.class.getName(), translationRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, Translation.class.getName(), translationRelationship, isReplace);
     }
 
     /**
@@ -602,7 +588,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteTranslationRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteTranslationRelationship";
         return deleteLine(serverName, restAPIName, userId, Translation.class.getName(), guid, isPurge);
@@ -672,7 +657,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getUsedInContextRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getUsedInContextRelationship";
         return getLine(serverName, restAPIName, userId, UsedInContext.class.getName(), guid);
@@ -683,6 +667,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid                      guid of the usedInContext relationship
      * @param userId                    userId under which the request is performed
      * @param usedInContextRelationship the UsedInContext relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -697,9 +682,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateUsedInContextRelationship(String serverName, String userId, UsedInContext usedInContextRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateUsedInContextRelationship(String serverName, String guid, String userId, UsedInContext usedInContextRelationship, boolean isReplace) {
         String restAPIName = "updateUsedInContextRelationship";
-        return updateLine(serverName, restAPIName, userId, UsedInContext.class.getName(), usedInContextRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, UsedInContext.class.getName(), usedInContextRelationship, isReplace);
     }
 
     /**
@@ -721,7 +706,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteUsedInContextRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteUsedInContextRelationship";
         return deleteLine(serverName, restAPIName, userId, UsedInContext.class.getName(), guid, isPurge);
@@ -790,7 +774,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getPreferredTermRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getPreferredTermRelationship";
         return getLine(serverName, restAPIName, userId, PreferredTerm.class.getName(), guid);
@@ -801,6 +784,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid                      guid of the preferred term relationship
      * @param userId                    userId under which the request is performed
      * @param preferredTermRelationship the PreferredTerm relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -817,9 +801,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updatePreferredTermRelationship(String serverName, String userId, PreferredTerm preferredTermRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updatePreferredTermRelationship(String serverName, String guid, String userId, PreferredTerm preferredTermRelationship, boolean isReplace) {
         String restAPIName = "updatePreferredTermRelationship";
-        return updateLine(serverName, restAPIName, userId, PreferredTerm.class.getName(), preferredTermRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, PreferredTerm.class.getName(), preferredTermRelationship, isReplace);
     }
 
     /**
@@ -841,7 +825,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deletePreferredTermRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deletePreferredTermRelationship";
         return deleteLine(serverName, restAPIName, userId, PreferredTerm.class.getName(), guid, isPurge);
@@ -911,7 +894,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getValidValueRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getValidValueRelationship";
         return getLine(serverName, restAPIName, userId, ValidValue.class.getName(), guid);
@@ -922,6 +904,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName             serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid                   guid of the valid value relationship
      * @param userId                 userId under which the request is performed
      * @param validValueRelationship the ValidValue relationship
      * @param isReplace              flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -937,9 +920,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateValidValueRelationship(String serverName, String userId, ValidValue validValueRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateValidValueRelationship(String serverName, String guid, String userId, ValidValue validValueRelationship, boolean isReplace) {
         String restAPIName = "updateValidValueRelationship";
-        return updateLine(serverName, restAPIName, userId, ValidValue.class.getName(), validValueRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, ValidValue.class.getName(), validValueRelationship, isReplace);
     }
 
     /**
@@ -961,7 +944,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteValidValueRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteValidValueRelationship";
         return deleteLine(serverName, restAPIName, userId, ValidValue.class.getName(), guid, isPurge);
@@ -1030,7 +1012,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getReplacementTerm(String serverName, String userId, String guid) {
         String restAPIName = "getReplacementTerm";
         return getLine(serverName, restAPIName, userId, ReplacementTerm.class.getName(), guid);
@@ -1041,6 +1022,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName                  serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid                        guid of the ReplacementTerm relationship
      * @param userId                      userId under which the request is performed
      * @param replacementTermRelationship the ReplacementTerm relationship
      * @param isReplace                   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -1056,9 +1038,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateReplacementTerm(String serverName, String userId, ReplacementTerm replacementTermRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateReplacementTerm(String serverName, String guid, String userId, ReplacementTerm replacementTermRelationship, boolean isReplace) {
         String restAPIName = "updateReplacementTerm";
-        return updateLine(serverName, restAPIName, userId, ReplacementTerm.class.getName(), replacementTermRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, ReplacementTerm.class.getName(), replacementTermRelationship, isReplace);
     }
 
     /**
@@ -1080,7 +1062,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteReplacementTerm(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteReplacementTerm";
         return deleteLine(serverName, restAPIName, userId, ReplacementTerm.class.getName(), guid, isPurge);
@@ -1150,7 +1131,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getTermTYPEDBYRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getTermTYPEDBYRelationship";
         return getLine(serverName, restAPIName, userId, TypedBy.class.getName(), guid);
@@ -1161,6 +1141,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid                    guid of the typed by relationship
      * @param userId                  userId under which the request is performed
      * @param termTYPEDBYRelationship the TypedBy relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -1176,9 +1157,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(String serverName, String userId, TypedBy termTYPEDBYRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(String serverName, String guid, String userId, TypedBy termTYPEDBYRelationship, boolean isReplace) {
         String restAPIName = "updateTermTYPEDBYRelationship";
-        return updateLine(serverName, restAPIName, userId, TypedBy.class.getName(), termTYPEDBYRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, TypedBy.class.getName(), termTYPEDBYRelationship, isReplace);
     }
 
     /**
@@ -1200,7 +1181,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteTermTYPEDBYRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteTermTYPEDBYRelationship";
         return deleteLine(serverName, restAPIName, userId, TypedBy.class.getName(), guid, isPurge);
@@ -1270,7 +1250,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getISARelationship(String serverName, String userId, String guid) {
         String restAPIName = "getISARelationship";
         return getLine(serverName, restAPIName, userId, Isa.class.getName(), guid);
@@ -1281,6 +1260,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName      serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid            guid of the isa relationship
      * @param userId          userId under which the request is performed
      * @param iSARelationship the Isa relationship
      * @param isReplace       flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -1296,9 +1276,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateISARelationship(String serverName, String userId, Isa iSARelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateISARelationship(String serverName, String guid, String userId, Isa iSARelationship, boolean isReplace) {
         String restAPIName = "updateISARelationship";
-        return updateLine(serverName, restAPIName, userId, Isa.class.getName(), iSARelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, Isa.class.getName(), iSARelationship, isReplace);
     }
 
     /**
@@ -1320,7 +1300,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteISARelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteISARelationship";
         return deleteLine(serverName, restAPIName, userId, Isa.class.getName(), guid, isPurge);
@@ -1390,7 +1369,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getTermISATypeOFRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getTermISATypeOFRelationship";
         return getLine(serverName, restAPIName, userId, IsaTypeOf.class.getName(), guid);
@@ -1401,6 +1379,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid                      guid of the IsaTypeOf relationship
      * @param userId                    userId under which the request is performed
      * @param termISATypeOFRelationship the IsaTypeOf relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -1416,9 +1395,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermISATypeOFRelationship(String serverName, String userId, IsaTypeOf termISATypeOFRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTermISATypeOFRelationship(String serverName, String guid, String userId, IsaTypeOf termISATypeOFRelationship, boolean isReplace) {
         String restAPIName = "updateTermISATypeOFRelationship";
-        return updateLine(serverName, restAPIName, userId, IsaTypeOf.class.getName(), termISATypeOFRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, IsaTypeOf.class.getName(), termISATypeOFRelationship, isReplace);
     }
 
     /**
@@ -1440,7 +1419,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteIsATypeOfRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteIsATypeOfRelationship";
         return deleteLine(serverName, restAPIName, userId, IsaTypeOf.class.getName(), guid, isPurge);
@@ -1521,6 +1499,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName                     serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid                           guid of the term Categorisation relationship
      * @param userId                         userId under which the request is performed
      * @param termCategorizationRelationship the termCategorization relationship
      * @param isReplace                      flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -1536,9 +1515,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(String serverName, String userId, Categorization termCategorizationRelationship, Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(String serverName, String guid, String userId, Categorization termCategorizationRelationship, Boolean isReplace) {
         String restAPIName = "updateTermCategorizationRelationship";
-        return updateLine(serverName, restAPIName, userId, Categorization.class.getName(), termCategorizationRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, Categorization.class.getName(), termCategorizationRelationship, isReplace);
     }
 
 
@@ -1815,7 +1794,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getProjectScopeRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getProjectScopeRelationship";
         return getLine(serverName, restAPIName, userId, ProjectScope.class.getName(), guid);
@@ -1826,6 +1804,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param guid         guid of the project scope relationship
      * @param userId       userId under which the request is performed
      * @param projectScope the ProjectScope relationship
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -1841,9 +1820,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateProjectScopeRelationship(String serverName, String userId, ProjectScope projectScope, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateProjectScopeRelationship(String serverName, String guid, String userId, ProjectScope projectScope, boolean isReplace) {
         String restAPIName = "updateProjectScopeRelationship";
-        return updateLine(serverName, restAPIName, userId, ProjectScope.class.getName(), projectScope, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, ProjectScope.class.getName(), projectScope, isReplace);
     }
 
     /**
@@ -1865,7 +1844,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse deleteProjectScopeRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteProjectScopeRelationship";
         return deleteLine(serverName, restAPIName, userId, ProjectScope.class.getName(), guid, isPurge);
@@ -1911,11 +1889,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getSemanticAssignmentRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getSemanticAssignmentRelationship";
         return restoreLine(serverName, restAPIName, userId, SemanticAssignment.class.getName(), guid);
     }
-
-
 }

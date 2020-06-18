@@ -85,7 +85,7 @@ Below is an example of an audit trail:
 ```
 {
  "auditTrail" : [
-    "Thu Jan 30 22:37:12 GMT 2020 garygeeke updated configuration for local server's URL root to http://localhost:8081.",
+    "Thu Jan 30 22:37:12 GMT 2020 garygeeke updated configuration for local server's URL root to https://localhost:9444.",
     "Thu Jan 30 22:37:12 GMT 2020 garygeeke updated configuration for maximum page size to 100.",
     "Thu Jan 30 22:37:12 GMT 2020 garygeeke updated configuration for local server type name to Open Metadata Server.",
     "Thu Jan 30 22:37:12 GMT 2020 garygeeke updated configuration for local server's owning organization's name to Coco Pharmaceuticals.",

@@ -32,7 +32,7 @@ In addition, access services that create assets, use the **defaultZones** option
 the list of zones set up in any new asset they create.
 
 Finally access services that are synchronizing assets between different third party
-technologies, such as the [Data Platform OMAS](../../../data-platform), will also use the
+technologies, such as the [Data Manager OMAS](../../../data-manager), will also use the
 **publishZones** option to publish an asset to consumer zones once they are completely defined in the
 catalog.
 

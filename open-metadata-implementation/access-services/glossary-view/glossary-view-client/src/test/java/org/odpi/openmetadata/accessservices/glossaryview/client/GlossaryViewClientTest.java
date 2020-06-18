@@ -152,9 +152,21 @@ public class GlossaryViewClientTest {
         List<GlossaryCategory> categories = underTest.getCategories(USER_ID, glossaries.get(0).getGuid(), 0, 10);
 
         assertEquals(3, categories.size());
-        assertEquals(categories.get(0).getGuid(), categories.get(0).getGuid());
-        assertEquals(categories.get(1).getGuid(), categories.get(1).getGuid());
-        assertEquals(categories.get(2).getGuid(), categories.get(2).getGuid());
+        assertEquals(this.categories.get(0).getGuid(), categories.get(0).getGuid());
+        assertEquals(this.categories.get(1).getGuid(), categories.get(1).getGuid());
+        assertEquals(this.categories.get(2).getGuid(), categories.get(2).getGuid());
+    }
+
+    @Test
+    public void getAllCategories() throws Exception{
+        response.addEntityDetails(Arrays.asList(categories.get(0), categories.get(1), categories.get(2)));
+
+        when(connector.callGetRESTCall(eq("getAllCategories"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
+                eq(USER_ID), anyInt(), anyInt())).thenReturn(response);
+
+        List<GlossaryCategory> categories = underTest.getAllCategories(USER_ID, 0, 10);
+
+        assertEquals(3, categories.size());
     }
 
     @Test
@@ -167,9 +179,21 @@ public class GlossaryViewClientTest {
         List<Glossary> glossaries = underTest.getAllGlossaries(USER_ID,0, 10);
 
         assertEquals(3, glossaries.size());
-        assertEquals(glossaries.get(0).getGuid(), glossaries.get(0).getGuid());
-        assertEquals(glossaries.get(1).getGuid(), glossaries.get(1).getGuid());
-        assertEquals(glossaries.get(2).getGuid(), glossaries.get(2).getGuid());
+        assertEquals(this.glossaries.get(0).getGuid(), glossaries.get(0).getGuid());
+        assertEquals(this.glossaries.get(1).getGuid(), glossaries.get(1).getGuid());
+        assertEquals(this.glossaries.get(2).getGuid(), glossaries.get(2).getGuid());
+    }
+
+    @Test
+    public void getAllTerms() throws Exception{
+        response.addEntityDetails(terms);
+
+        when(connector.callGetRESTCall(eq("getAllGlossaryTerms"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
+                eq(USER_ID), anyInt(), anyInt())).thenReturn(response);
+
+        List<GlossaryTerm> terms = underTest.getAllGlossaryTerms(USER_ID,0, 10);
+
+        assertEquals(7, terms.size());
     }
 
     @Test

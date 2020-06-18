@@ -14,12 +14,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.ResponseCatego
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.LineTypeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.NodeTypeMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGraphRESTServices;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
@@ -42,22 +38,10 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
      * Construct the Subject Area Graph Handler
      * needed to operate within a single server instance.
      *
-     * @param serviceName             name of the consuming service
-     * @param serverName              name of this server instance
-     * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
      * @param oMRSAPIHelper           omrs API helper
-     * @param errorHandler            handler for repository service errors
      */
-    public SubjectAreaGraphHandler(String serviceName,
-                                   String serverName,
-                                   InvalidParameterHandler invalidParameterHandler,
-                                   OMRSRepositoryHelper repositoryHelper,
-                                   RepositoryHandler repositoryHandler,
-                                   OMRSAPIHelper oMRSAPIHelper,
-                                   RepositoryErrorHandler errorHandler) {
-        super(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler, oMRSAPIHelper);
+    public SubjectAreaGraphHandler(OMRSAPIHelper oMRSAPIHelper) {
+        super(oMRSAPIHelper);
     }
 
     @Override
@@ -108,16 +92,13 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
         }
         SubjectAreaOMASAPIResponse response = null;
 
-        SubjectAreaGraphRESTServices graphRESTServices = new SubjectAreaGraphRESTServices();
-        graphRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
-
         //set of entity type guids so we do not have duplicates
-        Set<String> entityTypeGUIDs = new HashSet();
+        Set<String> entityTypeGUIDs = new HashSet<>();
         Set<NodeType> nodeFilter = new HashSet<>();
         Set<LineType> lineFilter = new HashSet<>();
         // if there was no NodeFilter supplied then limit to the the NodeType values, so we only get the types that this omas is interested in.
         if (nodeFilterStr == null) {
-            nodeFilter = new HashSet();
+            nodeFilter = new HashSet<>();
             for (NodeType nodeType : NodeType.values()) {
                 if (nodeType != NodeType.Unknown) {
                     nodeFilter.add(nodeType);
@@ -182,7 +163,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
 
             List<String> entityTypeGUIDList = null;
             if (!entityTypeGUIDs.isEmpty()) {
-                entityTypeGUIDList = new ArrayList(entityTypeGUIDs);
+                entityTypeGUIDList = new ArrayList<>(entityTypeGUIDs);
             }
             List<InstanceStatus> requestedInstanceStatus = null;
             requestedInstanceStatus = new ArrayList<>();
@@ -237,7 +218,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
                         if (entityProperties != null) {
                             node.setEffectiveFromTime(entity.getProperties().getEffectiveFromTime());
                             node.setEffectiveToTime(entity.getProperties().getEffectiveToTime());
-                            Iterator omrsPropertyIterator = entityProperties.getPropertyNames();
+                            Iterator<?> omrsPropertyIterator = entityProperties.getPropertyNames();
 
                             while (omrsPropertyIterator.hasNext()) {
                                 String name = (String) omrsPropertyIterator.next();
@@ -329,7 +310,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
         List<Classification> classifications = entity.getClassifications();
         Set<String> classificationNames = null;
         if (classifications != null && !classifications.isEmpty()) {
-            classificationNames = classifications.stream().map(x -> x.getName()).collect(Collectors.toSet());
+            classificationNames = classifications.stream().map(Classification::getName).collect(Collectors.toSet());
         }
         /*
          * the nodeType variable needs to be changed for certain classifications.

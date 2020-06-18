@@ -75,6 +75,7 @@ public class InvalidParameterException extends SubjectAreaCheckedException {
         super(messageDefinition, className, actionDescription, caughtError);
         this.invalidPropertyName = invalidPropertyName;
         this.invalidPropertyValue = invalidPropertyValue;
+        messageDefinition.setMessageParameters(invalidPropertyName, invalidPropertyValue);
     }
 
     public Map<String, Object> getRelatedProperties() {

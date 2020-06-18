@@ -15,6 +15,8 @@ along with the key concepts and use cases it supports.
 This session provides background information to the Egeria project
 using a presentation.
 
+Watch a video of the presentation: [https://youtu.be/s249ofNoETY](https://youtu.be/s249ofNoETY).
+
 The charts for the presentation are located here:
 [https://github.com/odpi/data-governance/tree/master/workshops/may-2020/egeria-dojo-day-1-1-introduction.pptx](https://github.com/odpi/data-governance/tree/master/workshops/may-2020).
 

@@ -10,6 +10,8 @@ participate effectively in the Egeria community.
 
 ![Participating in the Community Content](egeria-dojo-day-1-4-participating-in-the-community.png)
 
+Watch the video of this session: [https://youtu.be/UJ7to5aG2oc](https://youtu.be/UJ7to5aG2oc).
+
 ## Mind set
 
 Egeria is an open source project.  This means its most important asset is the community

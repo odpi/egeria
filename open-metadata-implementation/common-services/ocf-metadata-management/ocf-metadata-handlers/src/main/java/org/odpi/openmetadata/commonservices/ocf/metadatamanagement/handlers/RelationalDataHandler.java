@@ -3,20 +3,20 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.AssetBuilder;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * RelationalDataHandler manages the assets, connections and schemas for relational data.
@@ -528,6 +528,8 @@ public class RelationalDataHandler
      * instance of the Data Platform OMAS).
      *
      * @param userId calling user
+     * @param integratorGUID unique identifier of software server capability representing the caller
+     * @param integratorName unique name of software server capability representing the caller
      * @param databaseGUID unique identifier of the metadata element to publish
      * @param methodName calling method
      *
@@ -1274,7 +1276,7 @@ public class RelationalDataHandler
 
 
     /**
-     * Return the list of schemas associated with a database.
+     * Return the list of (deployed database) schemas associated with a database.
      *
      * @param userId calling user
      * @param databaseGUID unique identifier of the database to query
@@ -1311,7 +1313,33 @@ public class RelationalDataHandler
                                                                         serviceName,
                                                                         methodName);
 
-        return null;
+        /*
+         * The RelatedAsset is a wrapper around the asset we need to return.
+         */
+        List<Asset> assets = null;
+
+        if (schemaAssets != null)
+        {
+            assets = new ArrayList<>();
+
+            for (RelatedAsset relatedAsset : schemaAssets)
+            {
+                if (relatedAsset != null)
+                {
+                    if (relatedAsset.getRelatedAsset() != null)
+                    {
+                        assets.add(relatedAsset.getRelatedAsset());
+                    }
+                }
+            }
+
+            if (assets.isEmpty())
+            {
+                assets = null;
+            }
+        }
+
+        return assets;
     }
 
 
@@ -1345,7 +1373,43 @@ public class RelationalDataHandler
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        invalidParameterHandler.throwMethodNotSupported(userId, serviceName, serverName, methodName);
+        AssetBuilder builder = new AssetBuilder(name,
+                                                null,
+                                                repositoryHelper,
+                                                serviceName,
+                                                serverName);
+
+        List<EntityDetail>  entities = repositoryHandler.getEntitiesByName(userId,
+                                                                           builder.getNameInstanceProperties(methodName),
+                                                                           AssetMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                                                                           startFrom,
+                                                                           validatedPageSize,
+                                                                           methodName);
+
+        if (entities != null)
+        {
+            List<Asset> assets = new ArrayList<>();
+
+            for (EntityDetail entity : entities)
+            {
+                if (entity != null)
+                {
+                    AssetConverter converter = new AssetConverter(entity,
+                                                                  null,
+                                                                  repositoryHelper,
+                                                                  serviceName);
+
+                    assets.add(converter.getAssetBean());
+                }
+            }
+
+            if (assets.isEmpty())
+            {
+                assets = null;
+            }
+
+            return assets;
+        }
 
         return null;
     }
@@ -1438,9 +1502,109 @@ public class RelationalDataHandler
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        invalidParameterHandler.throwMethodNotSupported(userId, serviceName, serverName, methodName);
+        /*
+         * It is not possible to update the attachments to assets that are outside of the supported zones or the user
+         * does not have access to.
+         */
+        Asset asset = assetHandler.getValidatedVisibleAsset(userId, supportedZones, databaseSchemaGUID, serviceName, methodName);
 
-        return null;
+        if (asset == null)
+        {
+            invalidParameterHandler.throwUnknownElement(userId,
+                                                        databaseSchemaGUID,
+                                                        AssetMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                        serviceName,
+                                                        serverName,
+                                                        methodName);
+        }
+
+
+        /*
+         * If the deployed database schema (which is an asset) is new, it will not have a schema type attached.
+         * However, if there are other tables already attached, the schema type will be there too.
+         */
+        int    tableCount = 0;
+        String databaseSchemaTypeGUID;
+
+        SchemaType databaseSchemaType = schemaTypeHandler.getSchemaTypeForAsset(userId, databaseSchemaGUID, methodName);
+        if (databaseSchemaType == null)
+        {
+            SchemaType newSchemaType = schemaTypeHandler.getEmptyComplexSchemaType(SchemaElementMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                   null,
+                                                                                   integratorGUID,
+                                                                                   integratorName,
+                                                                                   methodName);
+
+            newSchemaType.setQualifiedName("SchemaOf:" + asset.getQualifiedName());
+            newSchemaType.setAnchorGUID(databaseSchemaGUID);
+
+            databaseSchemaTypeGUID = assetHandler.saveAssociatedSchemaType(userId,
+                                                                           asset,
+                                                                           newSchemaType,
+                                                                           null,
+                                                                           methodName);
+        }
+        else
+        {
+            databaseSchemaTypeGUID = databaseSchemaType.getGUID();
+
+            tableCount = schemaTypeHandler.countSchemaAttributes(userId,
+                                                                 databaseSchemaTypeGUID,
+                                                                 parentElementGUIDParameterName,
+                                                                 methodName);
+        }
+
+        /*
+         * If the type name is provided, it means the caller wants to create a subclass of database table.
+         * Any additional properties for this subclass are stored in the extendedProperties.
+         */
+        String schemaAttributeTypeName = SchemaElementMapper.RELATIONAL_TABLE_TYPE_NAME;
+        if (typeName != null)
+        {
+            schemaAttributeTypeName = typeName;
+        }
+
+        /*
+         * Build the schema attribute for the database table
+         */
+        SchemaAttribute   tableSchemaAttribute = schemaTypeHandler.getEmptySchemaAttribute(schemaAttributeTypeName,
+                                                                                           null,
+                                                                                           integratorGUID,
+                                                                                           integratorName,
+                                                                                           methodName);
+
+        tableSchemaAttribute.setQualifiedName(qualifiedName);
+        tableSchemaAttribute.setAttributeName(displayName);
+        tableSchemaAttribute.setDescription(description);
+        tableSchemaAttribute.setDeprecated(isDeprecated);
+        tableSchemaAttribute.setAliases(aliases);
+        tableSchemaAttribute.setAdditionalProperties(additionalProperties);
+        tableSchemaAttribute.setMinCardinality(1);
+        tableSchemaAttribute.setMaxCardinality(1);
+        tableSchemaAttribute.setElementPosition(tableCount ++);
+        tableSchemaAttribute.setAnchorGUID(databaseSchemaGUID);
+
+        ComplexSchemaType tableSchemaType = schemaTypeHandler.getEmptyComplexSchemaType(SchemaElementMapper.RELATIONAL_TABLE_TYPE_TYPE_NAME,
+                                                                                        null,
+                                                                                        integratorGUID,
+                                                                                        integratorName,
+                                                                                        methodName);
+
+        tableSchemaType.setQualifiedName(qualifiedName + ":tableType");
+
+        tableSchemaAttribute.setAttributeType(tableSchemaType);
+
+        /*
+         * All preparation is done - ready to add the database table to the database schema.
+         */
+        String databaseTableGUID = schemaTypeHandler.saveSchemaAttribute(userId,
+                                                                         databaseSchemaTypeGUID,
+                                                                         tableSchemaAttribute,
+                                                                         methodName);
+
+
+
+        return databaseTableGUID;
     }
 
 
@@ -1486,6 +1650,9 @@ public class RelationalDataHandler
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
+        /*
+         *
+         */
         invalidParameterHandler.throwMethodNotSupported(userId, serviceName, serverName, methodName);
 
         return null;

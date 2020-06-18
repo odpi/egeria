@@ -9,16 +9,12 @@ import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.Relatio
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGlossaryRESTServices;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,47 +31,20 @@ import java.util.Set;
  * OMAS and retrieves entities and relationships through the OMRSRepositoryConnector.
  */
 public abstract class SubjectAreaHandler {
-    private static final Class clazz = SubjectAreaHandler.class;
+    private static final Class<?> clazz = SubjectAreaHandler.class;
     private static final String className = clazz.getName();
     private static final Logger log = LoggerFactory.getLogger(clazz);
 
-    protected String serviceName;
-    protected String serverName;
-    protected RepositoryHandler repositoryHandler;
-    protected OMRSRepositoryHelper repositoryHelper;
-    protected InvalidParameterHandler invalidParameterHandler;
     protected OMRSAPIHelper oMRSAPIHelper;
 
     /**
      * Construct the Subject Area Project Handler
      * needed to operate within a single server instance.
      *
-     * @param serviceName             name of the consuming service
-     * @param serverName              name of this server instance
-     * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
      * @param oMRSAPIHelper           omrs API helper
      */
-    public SubjectAreaHandler(String serviceName,
-                              String serverName,
-                              InvalidParameterHandler invalidParameterHandler,
-                              OMRSRepositoryHelper repositoryHelper,
-                              RepositoryHandler repositoryHandler,
-                              OMRSAPIHelper oMRSAPIHelper) {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHelper = repositoryHelper;
-        this.repositoryHandler = repositoryHandler;
-        // this is set as a mock object for junits.
-        if (oMRSAPIHelper == null) {
-            this.oMRSAPIHelper = new OMRSAPIHelper(serviceName);
-        } else {
-            this.oMRSAPIHelper = oMRSAPIHelper;
-        }
-        this.oMRSAPIHelper.setOmrsRepositoryHelper(repositoryHelper);
-        this.oMRSAPIHelper.setOMRSMetadataCollection(repositoryHandler.getMetadataCollection());
+    public SubjectAreaHandler(OMRSAPIHelper oMRSAPIHelper) {
+        this.oMRSAPIHelper = oMRSAPIHelper;
     }
 
 
@@ -118,96 +87,87 @@ public abstract class SubjectAreaHandler {
             String userId,
             String guid,
             Date asOfTime,
-            Integer offset,
-            Integer pageSize,
+            int offset,
+            int pageSize,
             org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
             String sequencingProperty
-                                                                 ) {
+    ) {
         String methodName = "getRelationshipsFromGuid";
         SubjectAreaOMASAPIResponse response = null;
-        SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
-        glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
-        if (response == null) {
-            try {
-                InputValidator.validateGUIDNotNull(className, restAPIName, guid, "guid");
-                // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
-                if (offset == null) {
-                    offset = new Integer(0);
-                }
-                if (pageSize == null) {
-                    pageSize = new Integer(0);
-                }
-                if (sequencingProperty != null) {
-                    sequencingProperty = URLDecoder.decode(sequencingProperty, "UTF-8");
-                }
-                SequencingOrder omrsSequencingOrder = SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
-                List<Relationship> omrsRelationships = null;
-                response = getRelationshipsFromGuid(
-                        restAPIName,
-                        userId,
-                        guid,
-                        null,
-                        offset,
-                        asOfTime,
-                        sequencingProperty,
-                        omrsSequencingOrder,
-                        pageSize);
-                if (response.getResponseCategory() == ResponseCategory.OmrsRelationships) {
-                    RelationshipsResponse relationshipsResponse = (RelationshipsResponse) response;
-                    omrsRelationships = relationshipsResponse.getRelationships();
-                    response = SubjectAreaUtils.convertOMRSRelationshipsToOMASLines(oMRSAPIHelper, omrsRelationships);
+        try {
+            InputValidator.validateGUIDNotNull(className, restAPIName, guid, "guid");
+            // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
+            if (sequencingProperty != null) {
+                sequencingProperty = URLDecoder.decode(sequencingProperty, "UTF-8");
+            }
+            SequencingOrder omrsSequencingOrder = SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
+            List<Relationship> omrsRelationships = null;
+            response = getRelationshipsFromGuid(
+                    restAPIName,
+                    userId,
+                    guid,
+                    null,
+                    offset,
+                    asOfTime,
+                    sequencingProperty,
+                    omrsSequencingOrder,
+                    pageSize);
+            if (response.getResponseCategory() == ResponseCategory.OmrsRelationships) {
+                RelationshipsResponse relationshipsResponse = (RelationshipsResponse) response;
+                omrsRelationships = relationshipsResponse.getRelationships();
+                response = this.oMRSAPIHelper.convertOMRSRelationshipsToOMASLines(omrsRelationships);
 
-                    if (response.getResponseCategory() == ResponseCategory.Lines) {
-                        LinesResponse linesResponse = (LinesResponse) response;
-                        List<Line> linesToReturn = linesResponse.getLines();
+                if (response.getResponseCategory() == ResponseCategory.Lines) {
+                    LinesResponse linesResponse = (LinesResponse) response;
+                    List<Line> linesToReturn = linesResponse.getLines();
 
-                        if (pageSize > 0) {
-                            /*
-                             * There are  some relationships that do not translate to lines for example CategoryAnchor is represented as the GlossarySummary object embedded in Category
-                             * this is important if there is a page size - as we may end up returning less that a pagesize of data.
-                             * The following logic attempts to get more relationships that can be turned in to Lines so that the requested page of data is returned.
-                             */
-                            int sizeToGet = 0;
-                            // omrsRelationships.size() should be page size or less
-                            if (omrsRelationships.size() > linesToReturn.size()) {
-                                sizeToGet = omrsRelationships.size() - linesToReturn.size();
-                            }
-                            // bump up the offset by whay we have received.
-                            offset = offset + omrsRelationships.size();
+                    if (pageSize > 0) {
+                        /*
+                         * There are  some relationships that do not translate to lines for example CategoryAnchor is represented as the GlossarySummary object embedded in Category
+                         * this is important if there is a page size - as we may end up returning less that a pagesize of data.
+                         * The following logic attempts to get more relationships that can be turned in to Lines so that the requested page of data is returned.
+                         */
+                        int sizeToGet = 0;
+                        // omrsRelationships.size() should be page size or less
+                        if (omrsRelationships.size() > linesToReturn.size()) {
+                            sizeToGet = omrsRelationships.size() - linesToReturn.size();
+                        }
+                        // bump up the offset by whay we have received.
+                        offset = offset + omrsRelationships.size();
 
-                            while (sizeToGet > 0) {
+                        while (sizeToGet > 0) {
 
-                                // there are more relationships we need to get
-                                response = getRelationshipsFromGuid(
-                                        restAPIName,
-                                        userId,
-                                        guid,
-                                        null,
-                                        offset,
-                                        asOfTime,
-                                        sequencingProperty,
-                                        omrsSequencingOrder,
-                                        sizeToGet);
-                                sizeToGet = 0;
-                                if (response.getResponseCategory() == ResponseCategory.OmrsRelationships) {
-                                    relationshipsResponse = (RelationshipsResponse) response;
-                                    List<Relationship> moreOmrsRelationships = relationshipsResponse.getRelationships();
-                                    if (moreOmrsRelationships != null && moreOmrsRelationships.size() > 0) {
+                            // there are more relationships we need to get
+                            response = getRelationshipsFromGuid(
+                                    restAPIName,
+                                    userId,
+                                    guid,
+                                    null,
+                                    offset,
+                                    asOfTime,
+                                    sequencingProperty,
+                                    omrsSequencingOrder,
+                                    sizeToGet);
+                            sizeToGet = 0;
+                            if (response.getResponseCategory() == ResponseCategory.OmrsRelationships) {
+                                relationshipsResponse = (RelationshipsResponse) response;
+                                List<Relationship> moreOmrsRelationships = relationshipsResponse.getRelationships();
+                                if (moreOmrsRelationships != null && moreOmrsRelationships.size() > 0) {
 
-                                        response = SubjectAreaUtils.convertOMRSRelationshipsToOMASLines(oMRSAPIHelper, omrsRelationships);
-                                        if (response.getResponseCategory() == ResponseCategory.Lines) {
-                                            linesResponse = (LinesResponse) response;
-                                            List<Line> moreLines = linesResponse.getLines();
-                                            if (moreLines != null && !moreLines.isEmpty()) {
-                                                // we have found more lines
-                                                linesToReturn.addAll(moreLines);
-                                                // check whether we need to get more.
-                                                sizeToGet = moreOmrsRelationships.size() - moreLines.size();
-                                                // bump up the offset by what we have just received.
-                                                offset = offset + moreOmrsRelationships.size();
-                                            }
+                                    response = this.oMRSAPIHelper.convertOMRSRelationshipsToOMASLines(omrsRelationships);
+                                    if (response.getResponseCategory() == ResponseCategory.Lines) {
+                                        linesResponse = (LinesResponse) response;
+                                        List<Line> moreLines = linesResponse.getLines();
+                                        if (moreLines != null && !moreLines.isEmpty()) {
+                                            // we have found more lines
+                                            linesToReturn.addAll(moreLines);
+                                            // check whether we need to get more.
+                                            sizeToGet = moreOmrsRelationships.size() - moreLines.size();
+                                            // bump up the offset by what we have just received.
+                                            offset = offset + moreOmrsRelationships.size();
                                         }
                                     }
+                                }
 
                                 }
                             }
@@ -219,16 +179,17 @@ public abstract class SubjectAreaHandler {
                 response = OMASExceptionToResponse.convertInvalidParameterException(e);
             } catch (UnsupportedEncodingException e) {
                 SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.ERROR_ENCODING_QUERY_PARAMETER;
-                response = new InvalidParameterExceptionResponse(
-                        new org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException(
-                                errorCode.getMessageDefinition(),
-                                className,
-                                methodName,
-                                "sequencingProperty",
-                                sequencingProperty)
-                );
+                String propertyName = "sequencingProperty";
+                String propertyValue = sequencingProperty;
+                ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition(propertyName,propertyValue);
+                InvalidParameterException invalidParameterException = new InvalidParameterException(
+                        messageDefinition,
+                        className,
+                        methodName,
+                        propertyName,
+                        propertyValue);
+                response = new InvalidParameterExceptionResponse(invalidParameterException);
             }
-        }
 
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ", Response=" + response);
@@ -288,7 +249,7 @@ public abstract class SubjectAreaHandler {
                 List<Relationship> omrsRelationships = relationshipsResponse.getRelationships();
                 if (omrsRelationships != null) {
                     Set<Relationship> relationshipSet = new HashSet<>(omrsRelationships);
-                    response = SubjectAreaUtils.convertOMRSRelationshipsToOMASLines(oMRSAPIHelper, omrsRelationships);
+                    response = this.oMRSAPIHelper.convertOMRSRelationshipsToOMASLines(omrsRelationships);
                     // the response if successful will be LinesResponse
                 }
             }
@@ -330,55 +291,65 @@ public abstract class SubjectAreaHandler {
 
         if (suppliedGlossary == null) {
             // error - glossary is mandatory
-            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY.getMessageDefinition();
-            InvalidParameterException e = new InvalidParameterException(
+
+            String propertyName = "glossary";
+            String propertyValue = null;
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY.getMessageDefinition(propertyName, propertyValue);
+            InvalidParameterException invalidParameterException = new InvalidParameterException(
                     messageDefinition,
                     className,
                     methodName,
-                    "glossary",
-                    null);
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+                    propertyName,
+                    propertyValue);
+            response = OMASExceptionToResponse.convertInvalidParameterException(invalidParameterException);
         } else {
             guid = suppliedGlossary.getGuid();
             relationshipGuid = suppliedGlossary.getRelationshipguid();
             if (relationshipGuid != null) {
                 // glossary relationship cannot exist before the Term exists.
-                ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITH_GLOSSARY_RELATIONSHIP.getMessageDefinition();
-                InvalidParameterException e = new InvalidParameterException(
+                String propertyName = "glossaryRelationshipGuid";
+                String propertyValue = null;
+                ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITH_GLOSSARY_RELATIONSHIP.getMessageDefinition(propertyName, propertyValue);
+                InvalidParameterException invalidParameterException = new InvalidParameterException(
                         messageDefinition,
                         className,
                         methodName,
-                        "glossary",
-                        null);
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+                        propertyName,
+                        propertyValue);
+                response = OMASExceptionToResponse.convertInvalidParameterException(invalidParameterException);
             }
             if (response == null) {
                 if (guid == null) {
                     // error -  glossary userId is mandatory
-                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY.getMessageDefinition();
-                    InvalidParameterException e = new InvalidParameterException(
+                    String propertyName = "glossary guid";
+                    String propertyValue = null;
+                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY.getMessageDefinition(propertyName, propertyValue);
+                    InvalidParameterException invalidParameterException = new InvalidParameterException(
                             messageDefinition,
                             className,
                             methodName,
-                            "glossary",
-                            null);
-                    response = OMASExceptionToResponse.convertInvalidParameterException(e);
+                            propertyName,
+                            propertyValue);
+                    response = OMASExceptionToResponse.convertInvalidParameterException(invalidParameterException);
                 } else {
                     // find by guid
                     response = glossaryHandler.getGlossaryByGuid(userId, guid);
                     // set error code in case we failed
-                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITH_NON_EXISTANT_GLOSSARY_GUID.getMessageDefinition();
-                    if (response.getResponseCategory() != ResponseCategory.Glossary) {
-                        // glossary relationship cannot exist before the Term exists.
 
-                        InvalidParameterException e = new InvalidParameterException(
+                    if (response.getResponseCategory() != ResponseCategory.Glossary) {
+                        // glossary
+
+                        String propertyName = "glossary Guid";
+                        String propertyValue = guid;
+                        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITH_NON_EXISTANT_GLOSSARY_GUID.getMessageDefinition(propertyName, propertyValue);
+                        InvalidParameterException invalidParameterException = new InvalidParameterException(
                                 messageDefinition,
                                 className,
                                 methodName,
-                                "glossary guid",
-                                guid);
+                                propertyName,
+                                propertyValue);
 
-                        response = OMASExceptionToResponse.convertInvalidParameterException(e);
+                        response = OMASExceptionToResponse.convertInvalidParameterException(invalidParameterException);
                     }
                 }
             }
