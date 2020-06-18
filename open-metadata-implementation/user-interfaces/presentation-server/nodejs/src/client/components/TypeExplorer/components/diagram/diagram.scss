@@ -2,28 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 .diagram-manager {
-  /*height           : 1200px;*/
-  /*width            : 1150px; */
-  border-style : solid;
-  border-width : 3px;
-  border-color : rgb(229, 255, 0) ; 
+  font-size          : 12px;
 }
 
 .drawing-container {
-  /*height         : 1150px;*/
-  /*width          : 1150px;*/
-  overflow       : auto;
-  border-style : solid;
-  border-width : 3px;
-  border-color : rgb(21, 126, 7) ; 
-}
-
-.d3-component {
-  /*height         : 1150px; EXPERIMENT */
-  /*max-height     : 80vh;*/ /* EXPERIMENT */
-  /*width          : 1150px;*/
-  border-style : solid;
-  border-width : 3px;
-  border-color : rgb(126, 7, 100) ; 
-  
+  overflow           : auto;
 }

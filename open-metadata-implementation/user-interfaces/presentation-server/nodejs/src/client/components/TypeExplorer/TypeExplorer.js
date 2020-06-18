@@ -3,7 +3,6 @@
 
 import React, {useEffect, useRef, useState}     from "react";
 
-
 /* 
  * Import the DEFAULT export from the InteractionContext module - which is actually the InteractionContextProvider
  * Naming it explicitly for clarity that this is the provider not the context.
@@ -28,12 +27,13 @@ import TypesContextProvider            from "./contexts/TypesContext";
  */
 import FocusContextProvider            from "./contexts/FocusContext";
 
-
 import ConnectionDetails               from "./components/connection-details/ConnectionDetails";
-import FocusControls                   from "./components/focus-controls/FocusControls";
-import DetailsPanel                    from "./components/details-panel/DetailsPanel";
-import DiagramManager                  from "./components/diagram/DiagramManager";
 
+import FocusControls                   from "./components/focus-controls/FocusControls";
+
+import DetailsPanel                    from "./components/details-panel/DetailsPanel";
+
+import DiagramManager                  from "./components/diagram/DiagramManager";
 
 import "./tex.scss";
 
@@ -43,32 +43,36 @@ export default function TypeExplorer() {
 
   const containerDiv = useRef();
 
-  // Make this stateful to cause a re-render..... TODO did it work???  SAME FOR WIDTH
+  /*
+   * Height and width are stateful, so will cause a re-render.
+   */
   const [cltHeight, setCltHeight] = useState(document.documentElement.clientHeight);  
   const [cltWidth, setCltWidth]   = useState(document.documentElement.clientWidth);  
 
   let workingHeight = cltHeight - 50;
   let workingWidth  = cltWidth - 265;
 
-  /* You cannot set the containerDiv dimensions until AFTER the cpt has rendered, as this creates the containerDiv */
-  const updateSize = () => {    
-    /* determine client height, width and set container dimensions */    
+  /*
+   * Do not set the containerDiv dimensions until AFTER the cpt has rendered, as this creates the containerDiv
+   */
+  const updateSize = () => {
+
+    /*
+     * Determine client height, width and set container dimensions 
+     */    
     setCltHeight(document.documentElement.clientHeight);
-    console.log("cltHeight is "+cltHeight);
     workingHeight = cltHeight - 50;
-    console.log("workingHeight is "+workingHeight);
     containerDiv.current.style.height=""+workingHeight+"px";
 
-    //const cltWidth = document.documentElement.clientWidth;  // TODO ?? 
     setCltWidth(document.documentElement.clientWidth);
-    console.log("ClientWidth is "+cltWidth);
     workingWidth = cltWidth - 265;
-    console.log("workingWidth is "+workingWidth);
     containerDiv.current.style.width=""+workingWidth+"px";
   }
 
 
-  /* useEffect to set size of container... */
+  /*
+   * useEffect to set size of container... 
+   */
   useEffect(
     () => {
       /* Attach event listener for resize events */
@@ -82,20 +86,20 @@ export default function TypeExplorer() {
   
 
   return (
-    
+
     <div className="tex-container" ref={containerDiv}>
 
       <InteractionContextProvider>
         <RepositoryServerContextProvider>
           <TypesContextProvider>
             <FocusContextProvider>
-   
+
               <div className="tex-top">
 
                 <div className="title">
                   <p>Type Explorer</p>
                 </div>
-                
+
                 <div className="tex-top-left">
                   <ConnectionDetails />
                 </div>
@@ -117,7 +121,7 @@ export default function TypeExplorer() {
                 </div>
 
               </div>
-       
+
             </FocusContextProvider>
           </TypesContextProvider>
         </RepositoryServerContextProvider>
@@ -128,5 +132,3 @@ export default function TypeExplorer() {
   );
 }
 
-// TODO - it would be better to not get the document size and then deduct, but to get the tex-container (for height)
-// and the rhs (for diagram manager width) if possible...
