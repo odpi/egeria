@@ -16,7 +16,7 @@ export default function ClassificationEntitiesDisplay(props) {
 
   const explorer           = props.expl;
 
-  const focusContext = useContext(FocusContext);
+  const focusContext       = useContext(FocusContext);
 
   
   const formattedEntityName = (name) => {

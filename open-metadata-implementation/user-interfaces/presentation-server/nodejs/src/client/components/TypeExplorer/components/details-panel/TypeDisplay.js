@@ -1,21 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import React, { useContext }     from "react";
+import React, { useContext }      from "react";
 
+import { FocusContext }           from "../../contexts/FocusContext";
 
+import PropTypes                  from "prop-types";
 
-import { FocusContext }          from "../../contexts/FocusContext";
+import EntityTypeDisplay          from "./EntityTypeDisplay";
 
-import PropTypes                 from "prop-types";
+import RelationshipTypeDisplay    from "./RelationshipTypeDisplay";
 
-import EntityTypeDisplay         from "./EntityTypeDisplay";
+import ClassificationTypeDisplay  from "./ClassificationTypeDisplay";
 
-import RelationshipTypeDisplay   from "./RelationshipTypeDisplay";
-
-import ClassificationTypeDisplay from "./ClassificationTypeDisplay";
-
-import EnumTypeDisplay           from "./EnumTypeDisplay";
+import EnumTypeDisplay            from "./EnumTypeDisplay";
 
 
 
@@ -30,7 +28,6 @@ export default function TypeDisplay() {
    * Once there is a focus type, display the type selected for the current view category (not simply the focus)
    */
 
-  //if (focusContext.focus === "") {
   if (focusContext.view.typeName === "") {
 
     /* 
@@ -63,25 +60,10 @@ export default function TypeDisplay() {
         break;
 
     }
-    
   }
-
- 
- 
-
 }
 
 
 TypeDisplay.propTypes = {
   children: PropTypes.node 
 };
-
-
-/***
- * 
- case "Relatonship":
-        return <RelationshipTypeDisplay typeName={focusContext.view.typeName} />  
-
-      case "Classification":
-        return <ClassificationTypeDisplay typeName={focusContext.view.typeName} />  
- */

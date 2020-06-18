@@ -3,11 +3,10 @@
 
 import React               from "react";
 
-import PropTypes           from "prop-types";
-
 import TypeDisplay         from "./TypeDisplay"
 
 import "./details-panel.scss";
+
 
 /**
 *
@@ -48,15 +47,9 @@ import "./details-panel.scss";
 export default function DetailsPanel() {
 
   return (
-    
     <div className="details-panel">
-        <TypeDisplay />        
+      <TypeDisplay />
     </div>
-  
   );
-}
-
-DetailsPanel.propTypes = {  
-  //className  : PropTypes.string
 }
 
