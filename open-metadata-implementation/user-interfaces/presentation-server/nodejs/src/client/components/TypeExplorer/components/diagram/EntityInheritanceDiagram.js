@@ -39,43 +39,35 @@ export default function EntityInheritanceDiagram(props) {
   /*
    * Need to retain d3 across calls to render diagram
    */
-  const d3Container = useRef(null);
+  const d3Container                       = useRef(null);
 
-  const drgContainerDiv = useRef();
-
+  const drgContainerDiv                   = useRef();
 
   const [renderedTrees, setRenderedTrees] = useState({});
-  //const [scrolled, setScrolled] = useState(false);
+
   let scrolled = false;
 
   let treeDepth;
   
-  /*
-   * The use of diagramFocusGUID is to ensure that the instancesContext focus is visible in the 
-   * Diagram component. A function can either use it, or call instancesContext.focus directly.
-   */ 
-  //let diagramFocusType;
-  // TODO remove me....
-  //const setDiagramFocus = () => {
-  //  console.log("setDiagramFocus to "+focusContext.focus);
-  //  diagramFocusType = focusContext.focus;
-  //};
 
   /*
    * This method clears any introductory text or previous rendering of the diagram, and resets control properties
    */
   const initialiseInheritanceDiagram = () => {
 
-    const svg = d3.select(d3Container.current);   // TODO rename svg -> drawing-div or something???
+    const svg = d3.select(d3Container.current);
 
     svg.selectAll("svg").remove();
 
-    // Clear the introductory text...
+    /*
+     * Clear the introductory text...
+     */
     svg.innerHTML = "";
 
-    // Initialise control state...
+    /* 
+     * Initialise control state...
+     */
     setRenderedTrees([]);
-    //setScrolled(false);
     scrolled = false;
     
   }
@@ -104,9 +96,8 @@ export default function EntityInheritanceDiagram(props) {
      *     },
      *   ]
      * }
-     */
-
-    /*
+     *
+     *
      * The createInheritanceTree method will get an entity type and its subtypes from 
      * the typesContext and produce the necessary tree.
      */
@@ -139,7 +130,9 @@ export default function EntityInheritanceDiagram(props) {
 
     let inheritanceTree = {};
 
-    // Start at the type with typeName and follow subtype links to compose children
+    /*
+     * Start at the type with typeName and follow subtype links to compose children
+     */
     const entityType = typesContext.getEntityType(typeName);
     const childNames = entityType.subTypeNames;
     inheritanceTree = addSubTree(inheritanceTree, typeName, childNames, 1)
@@ -152,7 +145,9 @@ export default function EntityInheritanceDiagram(props) {
    */
   const addSubTree = (tree, name, childNames, nodeDepth) => {
 
-    // Add the current node then recurse for the children
+    /*
+     * Add the current node then recurse for the children
+     */
     const level = nodeDepth;
     if (nodeDepth > treeDepth) {
       treeDepth = nodeDepth;
@@ -174,49 +169,50 @@ export default function EntityInheritanceDiagram(props) {
   }
 
   
+  /*
+   * Render one inheritance tree
+   */
+  const renderInheritanceTree = (typeHierarchy, typeName, treeDepth) => {
+
+    let thisTree     = {};
+    thisTree.dx      = 30;
+    thisTree.dy      = width / treeDepth;
+    thisTree.root    = d3.hierarchy(typeHierarchy);
+    thisTree.root.x0 = thisTree.dy / 2;
+    thisTree.root.y0 = 0;
+    thisTree.root.descendants().forEach((d, i) => {
+      d.id = i;
+      d._children = d.children;
+      /*
+       * For nodes to be initially in collapsed state, set d.children = null;
+       */
+    });
+
+    thisTree.svg = d3.select(d3Container.current)
+                     .append("svg")
+                     .attr("width", width)
+                     .attr("height", thisTree.dx)
+                     .attr("viewBox", [-margin.left, -margin.top, width, thisTree.dx])
+                     .style("font", "12px sans-serif")
+                     .style("user-select", "none");
+
+    thisTree.gLink = thisTree.svg
+                             .append("g")
+                             .attr("fill", "none")
+                             .attr("stroke", "#888")
+                             .attr("stroke-opacity", 0.4)
+                             .attr("stroke-width", 1.5);
+
+    thisTree.gNode = thisTree.svg
+                             .append("g")
+                             .attr("cursor", "pointer");
+
     /*
-     * Render one inheritance tree   -- TODO alignment
+     * Remember this tree
      */
-    const renderInheritanceTree = (typeHierarchy, typeName, treeDepth) => {
-
-      //var width = drawingArea.offsetWidth;
-      //var margin = this.margin;
-
-      let thisTree     = {};
-      thisTree.dx      = 30;
-      thisTree.dy      = width / treeDepth;
-      thisTree.root    = d3.hierarchy(typeHierarchy);
-      thisTree.root.x0 = thisTree.dy / 2;
-      thisTree.root.y0 = 0;
-      thisTree.root.descendants().forEach((d, i) => {
-          d.id = i;
-          d._children = d.children;
-          // For nodes to be initially in collapsed state, set d.children = null;
-      });
-
-      thisTree.svg = d3.select(d3Container.current)
-                       .append("svg")
-                       .attr("width", width)
-                       .attr("height", thisTree.dx)
-                       .attr("viewBox", [-margin.left, -margin.top, width, thisTree.dx])
-                       .style("font", "12px sans-serif")
-                       .style("user-select", "none");
-
-      thisTree.gLink = thisTree.svg
-                               .append("g")
-                               .attr("fill", "none")
-                               .attr("stroke", "#888")
-                               .attr("stroke-opacity", 0.4)
-                               .attr("stroke-width", 1.5);
-
-      thisTree.gNode = thisTree.svg
-                               .append("g")
-                               .attr("cursor", "pointer");
-
-      // Remember this tree
-      const loc_renderedTrees = renderedTrees;
-      loc_renderedTrees[typeName] = thisTree;
-      setRenderedTrees(loc_renderedTrees);
+    const loc_renderedTrees = renderedTrees;
+    loc_renderedTrees[typeName] = thisTree;
+    setRenderedTrees(loc_renderedTrees);
 
   }
 
@@ -249,15 +245,15 @@ export default function EntityInheritanceDiagram(props) {
 
   const transitionComplete = () => {
 
-    // Earliest opportunity to scroll accurately
-    //if (diagramFocusType !== undefined && diagramFocusType !== "") {
-        //scrollSelectedIntoView(diagramFocusType);
+    /*
+     * Earliest opportunity to scroll accurately
+     */
     if (focusContext.focus !== undefined && focusContext.focus !== "") {
         scrollSelectedIntoView(focusContext.focus);
     }
   }
 
-  // TODO - alignment
+
   /*
    * If an entity type is selected and the view has not already been scrolled, scroll it now.
    */
@@ -272,261 +268,289 @@ export default function EntityInheritanceDiagram(props) {
     const leftOffset = 750;
 
     if (scrolled === false) {
-          console.log("Scrolling...for type "+typeToView);
+      scrolled = true;
 
-          scrolled = true;
+      if (typeToView !== undefined && typeToView !== "") {
 
-          if (typeToView !== undefined && typeToView !== "") {
+        const elem = document.getElementById('elem'+typeToView);
 
-              const elem = document.getElementById('elem'+typeToView);
+        /*
+         * scrollIntoView almost works but the options do not work across browsers,
+         * including Safari, so it does not center and is not smooth. The lack of centering
+         * means it doesn't unscroll a scrolled diagram
+         * The following is what we might *like* to do:
+         * elem.scrollIntoView({behavior: "smooth", block:"center", inline:"center"});
+         *
+         * Instead of scrollIntoView - use incremental scrolling which does work outside 
+         * of a web component...
+         */
+        const brect = elem.getBoundingClientRect();
 
-              // scrollIntoView almost works but the options do not work across browsers,
-              // including Safari, so it does not center and is not smooth. The lack of centering
-              // means it doesn't unscroll a scrolled diagram
-              // The following is what we might *like* to do:
-              // elem.scrollIntoView({behavior: "smooth", block:"center", inline:"center"});
+        let v_togo = brect.top-(topOffset + props.outerHeight/2.0);
+        let h_togo = brect.left-(leftOffset + props.outerWidth/2.0);
 
-              // Instead of scrollIntoView - try to persist with the incremental scrolling
-              // which does work outside of a web component...
-              const brect = elem.getBoundingClientRect();
+        const inc = 10;
 
-              let v_togo = brect.top-(topOffset + props.outerHeight/2.0);
-              let h_togo = brect.left-(leftOffset + props.outerWidth/2.0);
-              console.log("Scroll by "+h_togo+" , "+v_togo);
+        const drg = document.getElementById("drawingContainer");
+        incrementalScroll(drg, typeToView, h_togo, v_togo, inc);
 
-              const inc = 10;
-
-              //const drg = document.getElementById("drawingArea");
-              const drg = document.getElementById("drawingContainer");
-              incrementalScroll(drg, h_togo, v_togo, inc);
-
-          }
       }
+    }
   }
 
-  const incrementalScroll = (drg, h_togo, v_togo, inc) => {
+  const incrementalScroll = (drg, typeName, h_togo, v_togo, inc) => {
 
     let v_dirinc, h_dirinc;
 
-    // Vertical dimension
+    /*
+     * Vertical dimension
+     */
     let v_inc = inc;
-// TODO alignment!!
 
-// TODO - try to unify the scroll dimensions...
+    if (Math.abs(v_togo) < v_inc) {
+      v_inc = Math.abs(v_togo);
+    }
+    const v_rate = Math.abs(v_togo) / (10 * v_inc);
+    if (Math.abs(v_togo) > 0) {
+      v_dirinc = Math.sign(v_togo) * v_inc * v_rate;
+      /*
+       * scrollBy does not seem to work when in a web component
+       * scrollIntoView (which could be called from scrollSelectedIntoView() almost works
+       * but the center and smooth options are not well-supported across browsers
+       */
+      v_togo = v_togo - v_dirinc;
+    }
 
-      if (Math.abs(v_togo) < v_inc) {
-          v_inc = Math.abs(v_togo);
-      }
-      const v_rate = Math.abs(v_togo) / (10 * v_inc);
-      if (Math.abs(v_togo) > 0) {
-          v_dirinc = Math.sign(v_togo) * v_inc * v_rate;
-          // scrollBy does not seem to work when in a web component
-          // scrollIntoView (which could be called from scrollSelectedIntoView() almost works
-          // but the center and smooth options are not well-supported across browsers
-          //drg.scrollBy(0, v_dirinc);
-          v_togo = v_togo - v_dirinc;
-      }
+    /*
+     * Horizontal dimension
+     */
+    let h_inc = inc;
+    if (Math.abs(h_togo) < h_inc) {
+      h_inc = Math.abs(h_togo);
+    }
+    const h_rate = Math.abs(h_togo) / (10 * h_inc);
+    if (Math.abs(h_togo) > 0) {
+      h_dirinc = Math.sign(h_togo) * h_inc * h_rate;
+      /*
+       * scrollBy does not seem to work when in a web component
+       * scrollIntoView (which could be called from scrollSelectedIntoView() almost works
+       *  but the center and smooth options are not well-supported across browsers
+       */
+      h_togo = h_togo - h_dirinc;
+    }
 
-      // Horizontal dimension
-      let h_inc = inc;
-      if (Math.abs(h_togo) < h_inc) {
-        h_inc = Math.abs(h_togo);
-      }
-      const h_rate = Math.abs(h_togo) / (10 * h_inc);
-      if (Math.abs(h_togo) > 0) {
-        h_dirinc = Math.sign(h_togo) * h_inc * h_rate;
-        // scrollBy does not seem to work when in a web component
-        // scrollIntoView (which could be called from scrollSelectedIntoView() almost works
-        // but the center and smooth options are not well-supported across browsers
-        //drg.scrollBy(h_dirinc, 0);
-        h_togo = h_togo - h_dirinc;
-      }
+    drg.scrollBy(h_dirinc, v_dirinc);
 
-      drg.scrollBy(h_dirinc, v_dirinc);
-
-      if (Math.abs(h_togo) > h_inc || Math.abs(v_togo) > v_inc) {
-          setTimeout( () => incrementalScroll(drg, h_togo, v_togo, inc) , 10);
-      }
+    if (Math.abs(h_togo) > h_inc || Math.abs(v_togo) > v_inc) {
+      setTimeout( () => incrementalScroll(drg, typeName, h_togo, v_togo, inc) , 10);
+    }
   }
 
 
-   /*  TODO - alignment
-     * Update a subtree within the diagram
-     * 'subtree' is the node at the root of the subtree being updated
-     */
+  /*
+   * Update a subtree within the diagram
+   * 'subtree' is the node at the root of the subtree being updated
+   */
   const update = (tree, subtree) => {
 
-      // Since an update is being performed, unset scrolled so that on transition completion
-      // the code will re-evaluate the scroll position
-      //setScrolled(false);  // TODO - probably should not be state
-      scrolled = false;
+    /*
+     * Since an update is being performed, unset scrolled so that on transition completion
+     * the code will re-evaluate the scroll position
+     */
+    scrolled = false;
 
-      //var width = drawingArea.offsetWidth;
-      const thisTree = tree;                        // TODO - rename
-      //const sourceTypeName = subtree.data.name;
+    const thisTree = tree;
 
-      //var margin = this.margin;
-      const duration = d3.event && d3.event.altKey ? 2500 : 250;   // TODO - promote to constants at head fo file
+    const duration = d3.event && d3.event.altKey ? 2500 : 250;
 
-      // Compute the new tree layout.
-      const treeLayout = d3.tree();
-      treeLayout.nodeSize([thisTree.dx, thisTree.dy])
-      treeLayout(thisTree.root);
+    /*
+     * Compute the new tree layout.
+     */
+    const treeLayout = d3.tree();
+    treeLayout.nodeSize([thisTree.dx, thisTree.dy])
+    treeLayout(thisTree.root);
 
-      const root = thisTree.root;
+    const root = thisTree.root;
 
-      // Get the lists of nodes and links
-      const nodes = root.descendants();
-      const links = root.links();
+    /*
+     * Get the lists of nodes and links
+     */
+    const nodes = root.descendants();
+    const links = root.links();
 
-      // Calculate the overall height of the tree (across all the nodes - the tree is drawn horizontally)
-      let left  = root;
-      let right = root;
-      root.eachBefore(node => {
-          if (node.x < left.x) left = node;
-          if (node.x > right.x) right = node;
-      });
-      const height = right.x - left.x + margin.top + margin.bottom;
-
-
-      const transition = thisTree.svg
-                                 .transition()
-                                 .duration(duration)
-                                 .attr("height", height)
-                                 .attr("viewBox", [-margin.left, left.x - margin.top, width, height])
-                                 .tween("resize", window.ResizeObserver ? null : () => () => thisTree.svg.dispatch("toggle"))
-                                 .on('end',  () => transitionComplete() );
+    /*
+     * Calculate the overall height of the tree (across all the nodes - the tree is drawn horizontally)
+     */
+    let left  = root;
+    let right = root;
+    root.eachBefore(node => {
+      if (node.x < left.x)   left = node;
+      if (node.x > right.x) right = node;
+    });
+    const height = right.x - left.x + margin.top + margin.bottom;
 
 
+    const transition = thisTree.svg
+                               .transition()
+                               .duration(duration)
+                               .attr("height", height)
+                               .attr("viewBox", [-margin.left, left.x - margin.top, width, height])
+                               .tween("resize", window.ResizeObserver ? null : () => () => thisTree.svg.dispatch("toggle"))
+                               .on('end',  () => transitionComplete() );
 
-      /*
-       * Update the nodes…
-       */
 
-      const node = thisTree.gNode
-                           .selectAll("g")
-                           .data(nodes, d => d.id);
 
-      // Enter new nodes at the subtree root's prior position.
-      const nodeEnter = node.enter()
-                            .append("g")
-                            .attr("transform", d => `translate(${subtree.y0},${subtree.x0})`)
-                            .attr("fill-opacity", 0)
-                            .attr("stroke-opacity", 0)
-                            ;
+    /*
+     * Update the nodes…
+     */
 
-      /*
-       * Each node is rendered as a circle with decoration for expand/collapse, plus text label
-       */
-       nodeEnter.append("circle")
-                .attr('id',d => "elem"+d.data.name)
-                .attr("r", 6)
-                .attr("stroke-width",1)
-                .attr("stroke", "#000")
-                .attr("fill", "#FFF")
-                .on("click", d => {
-                     d.children = d.children ? null : d._children;
-                     update(tree,d);
-                });
+    const node = thisTree.gNode
+                         .selectAll("g")
+                         .data(nodes, d => d.id);
 
-       nodeEnter.append("line")
-                .attr("x1", 0).attr("y1", -2).attr("x2", 0).attr("y2", 2)
-                .attr("stroke-width",1)
-                .attr("stroke-linecap","round")
-                .attr("stroke", d => d._children && !d.children ? "#000" : "#FFF")
-                .attr("pointer-events","none");
+    /*
+     * Enter new nodes at the subtree root's prior position.
+     */
 
-       nodeEnter.append("line")
-                .attr("x1", -2).attr("y1", 0).attr("x2", 2).attr("y2", 0)
-                .attr("stroke-width",1)
-                .attr("stroke-linecap","round")
-                .attr("stroke", d => d._children ? "#000" : "#FFF")
-                .attr("pointer-events","none");
+    const nodeEnter = node.enter()
+                          .append("g")
+                          .attr("transform", d => `translate(${subtree.y0},${subtree.x0})`)
+                          .attr("fill-opacity", 0)
+                          .attr("stroke-opacity", 0)
+                          ;
 
-       /*
-        * node text consists of clickable text rendered on top of a shadow to provide contrast with links
-        */
-       nodeEnter.append("text")
-                .attr("dy", "0.31em")
-                .attr("x", 12)
-                .attr("text-anchor", "start")
-                .text(d => d.data.name)
-                .on("click", d => { typeSelected("Entity", d.data.name); })
-                .clone(true)
-                .lower()
-                .attr("stroke-linejoin", "round")
-                .attr("stroke-width", 3)
-                .attr("stroke", "white");
+    /*
+     * Each node is rendered as a circle with decoration for expand/collapse, plus text label
+     */
 
-       // Transition nodes to their new position.
+    nodeEnter.append("circle")
+              .attr('id',d => "elem"+d.data.name)
+              .attr("r", 6)
+              .attr("stroke-width",1)
+              .attr("stroke", "#000")
+              .attr("fill", "#FFF")
+              .on("click", d => {
+                d.children = d.children ? null : d._children;
+                update(tree,d);
+              });
 
-       const nodeUpdate = node.merge(nodeEnter).transition(transition)
-                              .attr("transform", d => `translate(${d.y},${d.x})`)
-                              .attr("fill-opacity", 1)
-                              .attr("stroke-opacity", 1);
+    nodeEnter.append("line")
+             .attr("x1", 0).attr("y1", -2).attr("x2", 0).attr("y2", 2)
+             .attr("stroke-width",1)
+             .attr("stroke-linecap","round")
+             .attr("stroke", d => d._children && !d.children ? "#000" : "#FFF")
+             .attr("pointer-events","none");
 
-       // Toggle minus to plus depending on collapsed/expanded state...
-       nodeUpdate.select('line')
-                 .attr("x1", 0).attr("y1", -2).attr("x2", 0).attr("y2", 2)
-                 .attr("stroke", d => d._children && !d.children ? "#000" : "#FFF");
+    nodeEnter.append("line")
+             .attr("x1", -2).attr("y1", 0).attr("x2", 2).attr("y2", 0)
+             .attr("stroke-width",1)
+             .attr("stroke-linecap","round")
+             .attr("stroke", d => d._children ? "#000" : "#FFF")
+             .attr("pointer-events","none");
 
-       // Highlight a selected node, if a type has been selected and selectedCategory is Entity
-       nodeUpdate.selectAll('text')
-                 .attr("fill", d => inhHighlight(d) ? "blue" : "black" );
+    /*
+     * node text consists of clickable text rendered on top of a shadow to provide contrast with links
+     */
 
-       // Transition exiting nodes to the parent's new position.
-       const nodeExit = node.exit();
-       nodeExit.transition(transition).remove()
+    nodeEnter.append("text")
+             .attr("dy", "0.31em")
+             .attr("x", 12)
+             .attr("text-anchor", "start")
+             .text(d => d.data.name)
+             .on("click", d => { typeSelected("Entity", d.data.name); })
+             .clone(true)
+             .lower()
+             .attr("stroke-linejoin", "round")
+             .attr("stroke-width", 3)
+             .attr("stroke", "white");
+
+    /*
+     * Transition nodes to their new position.
+     */
+
+    const nodeUpdate = node.merge(nodeEnter).transition(transition)
+                           .attr("transform", d => `translate(${d.y},${d.x})`)
+                           .attr("fill-opacity", 1)
+                           .attr("stroke-opacity", 1);
+
+    /*
+     * Toggle minus to plus depending on collapsed/expanded state...
+     */
+    nodeUpdate.select('line')
+              .attr("x1", 0).attr("y1", -2).attr("x2", 0).attr("y2", 2)
+              .attr("stroke", d => d._children && !d.children ? "#000" : "#FFF");
+
+    /*
+     * Highlight a selected node, if a type has been selected and selectedCategory is Entity
+     */
+    nodeUpdate.selectAll('text')
+              .attr("fill", d => inhHighlight(d) ? "blue" : "black" );
+
+    /*
+     * Transition exiting nodes to the parent's new position.
+     */
+    const nodeExit = node.exit();
+    nodeExit.transition(transition).remove()
                                    .attr("transform", d => `translate(${subtree.y},${subtree.x})`)
                                    .attr("fill-opacity", 0)
                                    .attr("stroke-opacity", 0);
 
 
-       /*
-        * Update the links…
-        */
+    /*
+     * Update the links…
+     */
 
-       const link = thisTree.gLink
-                            .selectAll("path")
-                            .data(links, d => d.target.id);
+    const link = thisTree.gLink
+                         .selectAll("path")
+                         .data(links, d => d.target.id);
 
-       // Enter any new links at the parent's prior position.
-       const linkEnter = link.enter()
-                             .append("path")
-                             .attr("d", d => {
-                                  const o = {x: subtree.x0, y: subtree.y0};
-                                  var curve = curvedPath( {source : o , target : o } );
-                                  return curve;
-                             });
+    /*
+     * Enter any new links at the parent's prior position.
+     */
 
-
-       // Transition links to their new position.
-       link.merge(linkEnter)
-           .transition(transition)
-           .attr("d", d => {
-                const s = {x: d.source.x, y: d.source.y};
-                const t = {x: d.target.x, y: d.target.y};
-                var curve = curvedPath( {source : s , target : t } );
-                return curve;
-           });
+    const linkEnter = link.enter()
+                          .append("path")
+                          .attr("d", d => {
+                            const o = {x: subtree.x0, y: subtree.y0};
+                            var curve = curvedPath( {source : o , target : o } );
+                            return curve;
+                          });
 
 
-       // Transition exiting nodes to the parent's new position.
-       link.exit()
-           .transition(transition)
-           .remove()
-           .attr('d', function (d) {
-                const o = {x: subtree.x, y: subtree.y};
-                var curve =  curvedPath( {source : o , target : o } );
-                return curve;
-           });
+    /*
+     * Transition links to their new position.
+     */
 
+    link.merge(linkEnter)
+        .transition(transition)
+        .attr("d", d => {
+          const s = {x: d.source.x, y: d.source.y};
+          const t = {x: d.target.x, y: d.target.y};
+          var curve = curvedPath( {source : s , target : t } );
+          return curve;
+        });
 
-       // Remember the current positions as prior positions - they will be used to calculate transitions
-       root.eachBefore(d => {
-           d.x0 = d.x;
-           d.y0 = d.y;
-       });
+    /*
+     * Transition exiting nodes to the parent's new position.
+     */
+
+    link.exit()
+        .transition(transition)
+        .remove()
+        .attr('d', function (d) {
+          const o = {x: subtree.x, y: subtree.y};
+          var curve =  curvedPath( {source : o , target : o } );
+          return curve;
+        });
+
+    /*
+     * Remember the current positions as prior positions - they will be used to calculate transitions
+     */
+
+    root.eachBefore(d => {
+      d.x0 = d.x;
+      d.y0 = d.y;
+    });
 
   }
 
@@ -535,13 +559,9 @@ export default function EntityInheritanceDiagram(props) {
    * Indicate whether a node should be highlighted
    */
   const inhHighlight = (d) => {
-    /* WORKS BUT CLUNKY
-    // Check whether node is selected as focus
-    if (diagramFocusType === d.data.name) {
-      return true;
-    }
-    return false;
-    */
+    /*
+     * Check whether node is selected as focus
+     */
     if (focusContext.focus === d.data.name) {
       return true;
     }
@@ -555,11 +575,9 @@ export default function EntityInheritanceDiagram(props) {
    * type will request a change of focus.
    */
   const typeSelected = (cat, typeName) => {
-    console.log("Type Selected : "+typeName);
-    // TODO handle the event... this.outEvtChangeFocus(typeName);
-    //focusContext.setFocus(typeName);
+
     focusContext.typeSelected("Entity", typeName);
- }
+  }
 
 
 
@@ -575,46 +593,35 @@ export default function EntityInheritanceDiagram(props) {
          */ 
         initialiseInheritanceDiagram();
 
-        // TODO - create trees();
         createInheritanceTrees();
 
-        // WORKS BUT CLUNKY setDiagramFocus();  
-
-        // TODO - render trees
         updateAllTrees();
-         
+
       }
-      
     },
-  
-    [d3Container.current, typesContext.tex]  //, focusContext.focus]
+    [d3Container.current, typesContext.tex]
   )
+
   useEffect(
     () => {
         updateAllTrees();
     },
-  
     [focusContext.focus]
   )
 
   useEffect(
     () => {
-
-      console.log("EID effect set drgContainer to width "+props.outerWidth);
       drgContainerDiv.current.style.width=""+props.outerWidth+"px";
-      console.log("EID effect set drgContainer to height "+props.outerHeight);
       drgContainerDiv.current.style.height=""+props.outerHeight+"px";
     },
-
     [props.outerHeight, props.outerWidth]
   )
   
 
   return (
     <div className="drawing-container" id="drawingContainer" ref={drgContainerDiv}>
-        <div id="drawingArea" className="d3-component"
-             ref={d3Container}>
-        </div>
+      <div id="drawingArea" ref={d3Container}>
+      </div>
     </div>
   );
 
@@ -626,11 +633,3 @@ EntityInheritanceDiagram.propTypes = {
   outerHeight: PropTypes.number,
   outerWidth: PropTypes.number
 }
-
-/*
-TOOK THESE OFF d3-component declaration
- width={width}
-             height={height}
-*/
-
-// TODO - rename d3-component??

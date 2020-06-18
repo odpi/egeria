@@ -35,7 +35,6 @@ export default function RelationshipEntitiesDisplay(props) {
         <li className="details-sublist-item"> Attribute Name : {endDef.attributeName} </li>
       </ul>
     );
-        
     return endEntry;
   };
 

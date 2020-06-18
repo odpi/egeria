@@ -23,47 +23,37 @@ export default function RelationshipPropertiesDisplay(props) {
   const explorer           = props.expl;
 
 
-    /*
-     * Marshall a map of attributes to display 
-     */
-    let attributeEntries = {};
+  /*
+   * Marshall a map of attributes to display
+   */
+  let attributeEntries = {};
     
-     // Inherited attributes
-    const inheritedProps = explorer.inheritedAttributes;
-    if (inheritedProps !== undefined) {
-      const inheritedPropsSorted = inheritedProps.sort();
-      inheritedPropsSorted.forEach(inheritedProp => {
-          //console.log("inherited attribute: "+inheritedProp.attributeName);
-          attributeEntries[inheritedProp.attributeName] = {};
-          attributeEntries[inheritedProp.attributeName].inherited = true;
-          attributeEntries[inheritedProp.attributeName].attributeTypeName = inheritedProp.attributeType.name;
-      });
-    }
+  /*
+   * Inherited attributes
+   */
+  const inheritedProps = explorer.inheritedAttributes;
+  if (inheritedProps !== undefined) {
+    const inheritedPropsSorted = inheritedProps.sort();
+    inheritedPropsSorted.forEach(inheritedProp => {
+      attributeEntries[inheritedProp.attributeName] = {};
+      attributeEntries[inheritedProp.attributeName].inherited = true;
+      attributeEntries[inheritedProp.attributeName].attributeTypeName = inheritedProp.attributeType.name;
+    });
+  }
 
-    // Local attributes
-    const localProps = explorer.relationshipDef.propertiesDefinition;
-    if (localProps !== undefined) {
-      const localPropsSorted = localProps.sort();
-      localPropsSorted.forEach(localProp => {
-          //console.log("local attribute: "+localProp.attributeName);
-          attributeEntries[localProp.attributeName] = {};
-          attributeEntries[localProp.attributeName].inherited = false;
-          attributeEntries[localProp.attributeName].attributeTypeName = localProp.attributeType.name;
-      });
-    }
+  /*
+   * Local attributes
+   */
+  const localProps = explorer.relationshipDef.propertiesDefinition;
+  if (localProps !== undefined) {
+    const localPropsSorted = localProps.sort();
+    localPropsSorted.forEach(localProp => {
+      attributeEntries[localProp.attributeName] = {};
+      attributeEntries[localProp.attributeName].inherited = false;
+      attributeEntries[localProp.attributeName].attributeTypeName = localProp.attributeType.name;
+    });
+  }
 
-  
-  /*const formatAttribute = (attributeName, attribute) => {
-    let formattedAttribute;
-    if (attribute.inherited) {
-      formattedAttribute = <div> <span className="italic">{attributeName}</span> : {attribute.attributeTypeName}</div>;      
-    }
-    else {
-      formattedAttribute = <div>{attributeName} : {attribute.attributeTypeName}</div>;   
-    }
-    return formattedAttribute
-  };
-  */
   const formatAttribute = (attributeName, attribute) => {
     let formattedAttribute;
     const formattedAttributeType = formatAttributeType(attributeName, attribute);
@@ -75,20 +65,20 @@ export default function RelationshipPropertiesDisplay(props) {
     const attributeTypeName = attribute.attributeTypeName;
     let formattedAttributeType;
     if (typesContext.getEnumType(attributeTypeName)) {
-      // ENUM      
+      /* Enumerated type */
       formattedAttributeType = <button className="linkable" id={attributeTypeName} onClick={enumLinkHandler}> {attributeTypeName} </button>   
     }
     else {
-      // NOT AN ENUM
+      /* Not an enumerated type */
       formattedAttributeType = attributeTypeName ;   
     }
     return formattedAttributeType;
   }
 
-const enumLinkHandler = (evt) => {
-  const typeName = evt.target.id;
-  focusContext.typeSelected("Enum",typeName);
-}
+  const enumLinkHandler = (evt) => {
+    const typeName = evt.target.id;
+    focusContext.typeSelected("Enum",typeName);
+  }
 
 
   
@@ -97,17 +87,18 @@ const enumLinkHandler = (evt) => {
   let properties;
 
   
-  
+  /*
+   * expandProperties
+   */
   const expandProperties = (attributeEntries) => {
 
     const attributeNamesUnsorted = Object.keys(attributeEntries);
     const attributeNamesSorted = attributeNamesUnsorted.sort();
 
     let attributeList = attributeNamesSorted.map( (propName) => 
-        <li className="details-sublist-item" key={propName}> 
-           {formatAttribute(propName,attributeEntries[propName])}                  
-        </li>
-        
+      <li className="details-sublist-item" key={propName}>
+        {formatAttribute(propName,attributeEntries[propName])}
+      </li> 
     );
 
     return attributeList;
@@ -120,13 +111,13 @@ const enumLinkHandler = (evt) => {
       </ul>
     )
   }
+
   else {
-   
+
     properties = (              
       <ul className="details-sublist">       
        {expandProperties(attributeEntries)}          
       </ul>
-      
     );
   }
 

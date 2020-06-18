@@ -64,10 +64,8 @@ export default function EntityNeighborhoodDiagram(props) {
 
   const focusContext = useContext(FocusContext);
 
-  //const width                       = 1200;
-  //const height                      = 1120;
-
   const margin                      = {top: 0, right: 0, bottom: 0, left: 0};
+
   const egeria_primary_color_string = "#71ccdc";
   
   /*
@@ -77,15 +75,13 @@ export default function EntityNeighborhoodDiagram(props) {
 
   const drgContainerDiv = useRef();
 
-  //const [hood, setHood] = useState({});
-
   let scrolling = false;
-  //const [scrolling, setScrolling] = useState(false);
 
   const checkFocusSet = () => {
-    // Check focusType is set...
+    /*
+     * Check focusType is set...
+     */
     if (focusContext.focus === undefined || focusContext.focus === "") {
-      //alert("Please select an entity type so it's neighbourhood can be displayed");
       return false;
     }
     return true;
@@ -97,15 +93,17 @@ export default function EntityNeighborhoodDiagram(props) {
    */
   const initialiseNeighborhoodDiagram = () => {
 
-    const svg = d3.select(d3Container.current);   // TODO rename svg -> drawing-div or something???
+    const svg = d3.select(d3Container.current);
     svg.selectAll("svg").remove();
-    // Clear the introductory text...
+    /*
+     * Clear the introductory text...
+     */
     d3Container.current.innerHTML = "";
 
-    // Initialise control state...
-    //setHood({});
+    /*
+     * Initialise control state...
+     */
     scrolling = false;
-    //setScrolling(false);
   }
 
 
@@ -152,10 +150,14 @@ export default function EntityNeighborhoodDiagram(props) {
     n.nodes = [];
     n.links = [];
 
-    // Form a list of all relationships in alpha order
+    /*
+     * Form a list of all relationships in alpha order
+     */
     let relationshipEntries = {};
 
-    // Inherited relationships
+    /*
+     * Inherited relationships
+     */
     const inheritedRelNames = eex.inheritedRelationshipNames;
     if (inheritedRelNames !== undefined) {
       inheritedRelNames.forEach(inheritedRelName => {
@@ -164,10 +166,11 @@ export default function EntityNeighborhoodDiagram(props) {
       });
     }
 
-    // Local relationships
+    /*
+     * Local relationships
+     */
     const relationshipNames = eex.relationshipNames;
     if (relationshipNames !== undefined) {
-      // relationshipNamesSorted = relationshipNames.sort();
       relationshipNames.forEach(relationshipName => {
         relationshipEntries[relationshipName]={};
         relationshipEntries[relationshipName].inherited=false;
@@ -184,66 +187,75 @@ export default function EntityNeighborhoodDiagram(props) {
       const end1TypeName = end1.entityType.name;
       const end2TypeName = end2.entityType.name;
 
-      //let closerEnd;
-      //let remoteEntity;
       let remoteTypeName;
       let roleRemote;
       let roleRoot;
       let cardRemote;
       let cardRoot;
-      //let numRemote;
       let numRoot;
 
 
-      // Match the currently selected type to one end of the relationship type.
+      /*
+       * Match the currently selected type to one end of the relationship type.
+       */
 
-      // Test whether this type is a type of end1 - and get the distance
+      /*
+       * Test whether this type is a type of end1 - and get the distance
+       */
       const dist1 = entityIsTypeOf(typeName, end1TypeName);
 
-      // Test whether this type is a type of end2 - and get the distance
+      /*
+       * Test whether this type is a type of end2 - and get the distance
+       */
       const dist2 = entityIsTypeOf(typeName, end2TypeName);
 
-      // Choose the shorter valid distance - for max. entropy
+      /*
+       * Choose the shorter valid distance - for max. entropy
+       */
 
-      // Dispense with the obvious error case first:
+      /*
+       * Dispense with the obvious error case first:
+       */
       if (dist1 < 0 && dist2 < 0) {
         alert("ERROR: neither end of relationship type "+relName+" is suitable for type "+typeName);
-        // Return (from this loop function) without adding the relationship
+        /*
+         * Return (from loop function) without adding the relationship
+         */
         return;
       }
 
-      // We know that at least one of dist1, dist2 is >=0, and should select the lower of the two.
-      // If they are equal then can arbitrarily select end1.
-      //
-      // Simplest tests are:
-      //   if dist1 < 0     - it must be end2
-      //   if dist2 >= 0    - if dist1 > dist2 it must be end2
-      //   else             - it must be end1
-      //
-      // Also set end roles
+      /*
+       * We know that at least one of dist1, dist2 is >=0, and should select the lower of the two.
+       * If they are equal then can arbitrarily select end1.
+       * 
+       * Simplest tests are:
+       *   if dist1 < 0     - it must be end2
+       *   if dist2 >= 0    - if dist1 > dist2 it must be end2
+       *   else             - it must be end1
+       * 
+       * Also set end roles
+       */
 
       if (dist1 < 0 || (dist2 >= 0 && dist1 > dist2) ) {
-        //closerEnd      = end2TypeName;
         remoteTypeName = end1TypeName;
         roleRemote     = end1.attributeName;
         roleRoot       = end2.attributeName;
         cardRemote     = convertCardinalityToSymbol(end1.attributeCardinality);
         cardRoot       = convertCardinalityToSymbol(end2.attributeCardinality);
-        //numRemote      = "1";
         numRoot        = "2";
       }
       else {
-        //closerEnd      = end1TypeName;
         remoteTypeName = end2TypeName;
         roleRemote     = end2.attributeName;
         roleRoot       = end1.attributeName;
         cardRemote     = convertCardinalityToSymbol(end2.attributeCardinality);
         cardRoot       = convertCardinalityToSymbol(end1.attributeCardinality);
-        //numRemote      = "2";
         numRoot        = "1";
       }
 
-      // Set up nodes
+      /*
+       * Set up nodes
+       */
       const remoteEntityX = typesContext.getEntityType(remoteTypeName);
 
       let relNode = {};
@@ -271,9 +283,10 @@ export default function EntityNeighborhoodDiagram(props) {
         outerLink.target = remoteNode;
         outerLink.name = "("+cardRemote+")"+":"+roleRemote;
         n.links.push(outerLink);
-      });
+      }
+    );
 
-      return n;
+    return n;
   }
 
   /*
@@ -316,7 +329,9 @@ export default function EntityNeighborhoodDiagram(props) {
       const superTypeX = typesContext.getEntityType(superTypeName);
       superType = superTypeX.entityDef.superType;
     }
-    // If you get to here there has not been a match...
+    /*
+     * If you get to here there has not been a match...
+     */
     return -1;
   }
 
@@ -324,15 +339,16 @@ export default function EntityNeighborhoodDiagram(props) {
    * This method renders a warning that no focus has been set and displays it in the 'diagram' element
    */
 
-  // TODO - rename 'svg'
   const renderLackOfFocus = () => {
 
     const displayDiv = d3Container.current;
 
-    const svg = d3.select(displayDiv);   // TODO rename svg?? it is a d3 selectornfor clearing svgs...
+    const svg = d3.select(displayDiv);
     svg.selectAll("svg").remove();
 
-    // Clear the introductory text...
+    /*
+     * Clear the introductory text...
+     */
     const textNode = document.createTextNode("No entity type has been selected as the focus");
     const paraNode = document.createElement("p");
     paraNode.appendChild(textNode);
@@ -341,16 +357,17 @@ export default function EntityNeighborhoodDiagram(props) {
 
 
 
+  /*
+   * Render the neighborhood diagram
+   */
   const renderNeighborhoodDiagram = (nhbd) => {
     
+    /*
+     * The diagram is approximately circular so set the effective height to the width.
+     */
     const diagram = d3Container.current;
-
-    // The diagram is approximately circular so set the effective height to the width.
-    //const drg_width  = diagram.offsetWidth;
-    //const drg_height = diagram.offsetHeight;
     const width = diagram.offsetWidth;
     const height = width;
-    //console.log("RenderNHBDDiagram: width "+width+" height "+height);
 
     let updatedHood = Object.assign(nhbd);
 
@@ -374,7 +391,6 @@ export default function EntityNeighborhoodDiagram(props) {
                                    .attr("cursor", "pointer");
 
     return updatedHood;
-
 }
 
 
@@ -385,30 +401,29 @@ export default function EntityNeighborhoodDiagram(props) {
  */
 const nhbdUpdate = (nhbd) => {
 
-  const diagram = d3Container.current; 
-
-  //scrolling = false;
-  //setScrolling(false);
 
   const duration = d3.event && d3.event.altKey ? 2500 : 250;
 
-  // Although we know the offset width and height, the diagram is approximately circular
-  // so set the effective height to the width.
-  //const drg_width  = diagram.offsetWidth;
-  //const drg_height = diagram.offsetHeight;
+  /*
+   * Although we know the offset width and height, the diagram is approximately circular
+   * so set the effective height to the width.
+   */
+  const diagram = d3Container.current;
   const width = diagram.offsetWidth;
   const height = width;
 
-  
   const root = nhbd.root;
-  //const rootTypeName = root.name;
 
-  // Compute the new layout.
+  /*
+   * Compute the new layout.
+   */
 
   nhbd.root.x = width / 2;
   nhbd.root.y = height / 2;
 
-  // The root node has an extra property to distinguish it...
+  /*
+   * The root node has an extra property to distinguish it...
+   */
   nhbd.root.root = true;
 
   const neighbours = nhbd.nodes;
@@ -426,7 +441,9 @@ const nhbdUpdate = (nhbd) => {
     const angle = Math.PI * 2 / numRels;
     const ang_offset = angle / 2;
 
-    // Place the relationships first.
+    /*
+     * Place the relationships first.
+     */
     let index = 0;
     neighbours.forEach((nhbr) => {
       if (nhbr.category === "Relationship") {
@@ -434,11 +451,13 @@ const nhbdUpdate = (nhbd) => {
         nhbr.x = radius / 2 * Math.cos(ang) + width/2;
         nhbr.y = radius / 2 * Math.sin(ang) + height/2;
         index = index+1;
-     }
+      }
     })
 
-    // Place the remote entities relative to the relationships. Note that this relies
-    // on consistent ordering between the two lists.
+    /*
+     * Place the remote entities relative to the relationships. Note that this relies
+     * on consistent ordering between the two lists.
+     */
 
     index = 0;
     neighbours.forEach((nhbr) => {
@@ -451,18 +470,24 @@ const nhbdUpdate = (nhbd) => {
     })       
   }
   else {
-    // Neighbourhood root has no neighbours... odd but may as well give up now   
+    /*
+     * Neighbourhood root has no neighbours... odd but may as well give up now
+     */
     return;
   }
 
 
-  // Get the lists of nodes and links
+  /*
+   * Get the lists of nodes and links
+   */
   let nodes = [];
   if (nhbd.nodes !== undefined) {
     nodes = nhbd.nodes;
   }
   else {
-    // Neighbourhood root has no nodes... odd but may as well give up now
+    /*
+     * Neighbourhood root has no nodes... odd but may as well give up now
+     */
     return;
   }
 
@@ -485,7 +510,9 @@ const nhbdUpdate = (nhbd) => {
                    .selectAll("g")
                    .data(nodes, d => d.name);
 
-  // Enter new nodes at the root's current position.
+  /*
+   * Enter new nodes at the root's current position.
+   */
   const nodeEnter = node.enter()
                         .append("g")
                         .attr("transform", d => `translate(${root.x},${root.y})`)
@@ -517,7 +544,6 @@ const nhbdUpdate = (nhbd) => {
            .attr("stroke-width", 3)
            .attr("stroke", "white");
 
-
   nodeEnter.append("circle")
            .attr('id',d => d.root ? "root-"+d.name : "elem-"+d.name)
            .lower()
@@ -528,7 +554,6 @@ const nhbdUpdate = (nhbd) => {
            .attr("fill", d => (d.category === "Relationship" ? "none" : "#FFF"))
            .on("click", d => { nodeSelected(d.category, d.name); });
 
-
   nodeEnter.append("polyline")
            .lower()
            .attr("points","-4 -8, 0 8, 4 -8")
@@ -538,8 +563,9 @@ const nhbdUpdate = (nhbd) => {
            .attr("fill", "none")
            .attr("transform" , d => `rotate(${ ((d.numRoot==="1")?180:0) + ( (d.x===root.x)?(d.y<root.y?0:180): 180/Math.PI *  Math.atan( (d.y-root.y) / (d.x-root.x) ) + (d.x>root.x?90:-90) ) },0,0)`)
 
-
-  // Transition nodes to their new position.
+  /*
+   * Transition nodes to their new position.
+   */
   const nodeUpdate = node.merge(nodeEnter)
                          .transition(transition)
                          .attr("transform", d => `translate(${d.x},${d.y})`)
@@ -548,12 +574,16 @@ const nhbdUpdate = (nhbd) => {
 
 
 
-  // Highlight a selected node, if a type has been selected and selectedCategory is Entity
+  /*
+   * Highlight a selected node, if a type has been selected and selectedCategory is Entity
+   */
   nodeUpdate.selectAll('text')
             .attr("fill", d => nhbHighlight(d) ? "blue" : "black" );
 
 
-  // Transition exiting nodes to the root's position.
+  /*
+   * Transition exiting nodes to the root's position.
+   */
   const nodeExit = node.exit()
                        .transition(transition).remove()
                        .attr("transform", d => `translate(${root.x},${root.y})`)
@@ -602,13 +632,17 @@ const nhbdUpdate = (nhbd) => {
             })
            .lower();
 
-  // Transition links to their new position.
+  /*
+   * Transition links to their new position.
+   */
   const linkUpdate = link.merge(linkEnter)
                          .transition(transition)
                          .attr("fill-opacity", 1)
                          .attr("stroke-opacity", 1);
 
-  // Transition exiting nodes to the root's position.
+  /*
+   * Transition exiting nodes to the root's position.
+   */
   link.exit()
       .transition(transition)
       .remove()
@@ -645,9 +679,11 @@ const nhbdUpdate = (nhbd) => {
         const topOffset = 230;
         const v_target = (topOffset + props.outerHeight/2.0);
 
-        const tol = 10; // #pixels tolerance
+        const tol = 10; /* #pixels tolerance */
 
-        // Supply target as hpos, vpos to achieve initial scroll attempt.
+        /*
+         * Supply target as hpos, vpos to achieve initial scroll attempt.
+         */
         incrementalScroll(drg, typeToView, h_target, true, v_target, true, tol);
 
       }
@@ -671,15 +707,15 @@ const nhbdUpdate = (nhbd) => {
       /* See where the element is since the previous scroll attempt */
       const elem = document.getElementById('root-'+typeName);
       const brect = elem.getBoundingClientRect();
-      //console.log("Pre scroll : h "+h+" v "+v+" elem "+typeName+" at ("+brect.left+", "+brect.top+")");
       const hcur = brect.left;
       const vcur = brect.top;
 
-      // horizontal
+      /*
+       * Horizontal
+       */
       if (h) {
         /* Did predecessor manage to move by at least tol? */
-        if (Math.abs(hcur - h_pos) === 0) {  // TODo - obviously a mixed bag now...
-          //console.log("h has not moved by tol");
+        if (hcur - h_pos === 0) {
           h = false;
         }
         /* Continue even if above was false, to get at least one scroll effort */
@@ -690,21 +726,20 @@ const nhbdUpdate = (nhbd) => {
 
           if (Math.abs(h_diff) > tol) {
             const h_mov = h_diff / 2.0;
-            //console.log("Scroll type "+typeName+" by h "+h_mov);
             drg.scrollBy(h_mov,0); 
           }
           else {
-            //console.log("h does not need to move by tol");
             h = false;
           }
         }
       }
 
-      // vertical
+      /*
+       * Vertical
+       */
       if (v) {
         /* Did predecessor manage to move by at least tol? */
-        if (Math.abs(vcur - v_pos) === 0) {
-          //console.log("v has not moved by tol");
+        if (vcur - v_pos === 0) {
           v = false;
         }
         else {
@@ -714,32 +749,22 @@ const nhbdUpdate = (nhbd) => {
 
           if (Math.abs(v_diff) > tol) {
             const v_mov = v_diff / 2.0;
-            //console.log("Scroll type "+typeName+" by v "+v_mov);
             drg.scrollBy(0,v_mov);
           }
           else {
-            //console.log("v does not need to move by tol");
             v = false;
           }
         }
       }
 
-
-
       if (h || v) {
-        // Repeat...
-        //console.log("Repeat call to scroll with hpos "+hcur+" vpos "+vcur);
+        /* Repeat... */
         setTimeout( () => incrementalScroll(drg, typeName, hcur, h, vcur, v, tol) , 10);
       }
       else {
-        //console.log("Dun scrollin' - both dimensions");
         scrolling = false;
       }
     }
-    //else {
-    //  console.log("scrolling is false, so abandoning");
-    //}
-
   }
 
 
@@ -756,7 +781,9 @@ const nhbdUpdate = (nhbd) => {
    * Indicate whether a node should be highlighted - only the focus is highlighted so applies to Entity types only
    */
   const nhbHighlight = (d) => {
-    // Check whether node is selected as focus
+    /*
+     * Check whether node is selected as focus
+     */
     if (focusContext.focus === d.name) {
       return true;
     }
@@ -765,7 +792,9 @@ const nhbdUpdate = (nhbd) => {
 
 
 
-// UTILITY FUNCTIONS
+  /*
+   * Utility functions
+   */
 
 
   const locateRelationshipLabelX = (d, width, height) => {
@@ -798,7 +827,6 @@ const nhbdUpdate = (nhbd) => {
    * type will request a change of focus.
    */
   const nodeSelected = (cat, typeName) => {
-    //console.log("Type Selected : "+typeName);
     focusContext.typeSelected(cat, typeName);
   }
 
@@ -806,7 +834,6 @@ const nhbdUpdate = (nhbd) => {
 
   useEffect(
     () => {
-      console.log("NHBD Mount Effect called");
 
       if ( d3Container.current && typesContext.tex) {       
         /* 
@@ -816,26 +843,17 @@ const nhbdUpdate = (nhbd) => {
          * Data is unlikely to change unless server is changed - repeat the initial rendering...
          */ 
 
-        //const diagram = document.getElementById("drawingContainer");
-
         if (!checkFocusSet()) {
-
           renderLackOfFocus();
         }
         else {
-
           initialiseNeighborhoodDiagram();
-          console.log("About to create neighborhood with focus "+focusContext.focus);
           let nhbd = createNeighborhood(focusContext.focus);
           nhbd = renderNeighborhoodDiagram(nhbd);
-          nhbd = nhbdUpdate(nhbd);
-          //setHood(nhbd);
+          nhbdUpdate(nhbd);
         }
-
       }
-      
     },
-  
     [d3Container.current, typesContext.tex, focusContext.focus]
   )
 
@@ -843,10 +861,7 @@ const nhbdUpdate = (nhbd) => {
   useEffect(
     () => {
 
-      console.log("NHBD Resize Effect called");
-      //console.log("EID effect set drgContainer to width "+props.outerWidth);
       drgContainerDiv.current.style.width=""+props.outerWidth+"px";
-      //console.log("EID effect set drgContainer to height "+props.outerHeight);
       drgContainerDiv.current.style.height=""+props.outerHeight+"px";
 
       /*
@@ -864,21 +879,14 @@ const nhbdUpdate = (nhbd) => {
        */
 
     },
-
     [props.outerHeight, props.outerWidth]
   )
 
 
-  
-
-  
-  
-
   return (
     <div className="drawing-container" id="drawingContainer" ref={drgContainerDiv}>
-        <div id="drawingArea" className="d3-component"
-             ref={d3Container}>
-        </div>
+      <div id="drawingArea" ref={d3Container}>
+      </div>
     </div>
   );
 

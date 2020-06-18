@@ -15,29 +15,27 @@ import "./details-panel.scss";
 
 export default function EnumTypeDisplay(props) {
 
-    const typesContext = useContext(TypesContext);
+  const typesContext = useContext(TypesContext);
 
-    const focusContext = useContext(FocusContext);
+  const focusContext = useContext(FocusContext);
 
-    const typeName     = props.typeName;
+  const typeName     = props.typeName;
 
-    const enumExpl     = typesContext.getEnumType(typeName);
+  const enumExpl     = typesContext.getEnumType(typeName);
 
 
   
   const expandValues = (elementDefs) => {
     let values = elementDefs.map( (element) => 
-        <li className="details-sublist-item" key={element.ordinal}> 
-           {element.ordinal} : {element.value} : {element.description}                
-        </li>        
+      <li className="details-sublist-item" key={element.ordinal}> 
+        {element.ordinal} : {element.value} : {element.description}                
+      </li>        
     );
     return values;
   };
 
   const viewLinkHandler = () => {
-    focusContext.typeSelected(focusContext.prevView.category,focusContext.prevView.typeName ); 
-    // TODO - could add a focusContext resetView function instead...
-
+    focusContext.typeSelected(focusContext.prevView.category,focusContext.prevView.typeName );
   }
 
 
@@ -47,7 +45,6 @@ export default function EnumTypeDisplay(props) {
       <button className="backlink" id="back-link" onClick={viewLinkHandler}> Back to {focusContext.prevView.category} {focusContext.prevView.typeName} </button>
       <br/>
       <hr/>
-
       <div className="type-details-item-bold">Enum Type : {typeName}</div>
       <div className="type-details-item">{enumExpl.description}</div>
       <div className="type-details-item">Possible Values : { !enumExpl.elementDefs ? "none" :
