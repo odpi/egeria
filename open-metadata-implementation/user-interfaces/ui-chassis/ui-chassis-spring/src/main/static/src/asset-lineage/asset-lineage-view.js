@@ -41,56 +41,80 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     <app-route route="{{route}}" pattern="/:usecase/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
      
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
-    <token-ajax id="tokenAjaxDetails" last-response="{{items}}" ></token-ajax>
-    
-    <vaadin-tabs id ="useCases" selected="[[_getUseCase(routeData.usecase)]]" >
-      <vaadin-tab value="ultimateSource">
-        <a href="[[rootPath]]#/asset-lineage/ultimateSource/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
-            Ultimate Source
-        </a>
-      </vaadin-tab>
-      <vaadin-tab value="endToEnd">
-        <a href="[[rootPath]]#/asset-lineage/endToEnd/[[routeData.guid]]" tabindex="-1"  rel="noopener"> 
-            End to End Lineage
-        </a>
-      </vaadin-tab>
-      <vaadin-tab value="ultimateDestination">
-        <a href="[[rootPath]]#/asset-lineage/ultimateDestination/[[routeData.guid]]" tabindex="-1"  rel="noopener"> 
-            Ultimate Destination
-        </a>
-      </vaadin-tab>
-      <vaadin-tab value="glossaryLineage">
-        <a href="[[rootPath]]#/asset-lineage/glossaryLineage/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
-            Glossary Lineage
-        </a>
-      </vaadin-tab>
-      <vaadin-tab value="sourceAndDestination">
-        <a href="[[rootPath]]#/asset-lineage/sourceAndDestination/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
-            Source and Destination
-        </a>
-      </vaadin-tab>
-    </vaadin-tabs>
-    
+    <token-ajax id="tokenAjaxDetails" last-response="{{item}}" ></token-ajax>
     <div>
-        <vaadin-select id="processMenu" value="false" >
-          <template>
-            <vaadin-list-box>
-              <vaadin-item value="true" selected>Include ETL Jobs</vaadin-item>
-              <vaadin-item value="false">Exclude ETL Jobs</vaadin-item>
-            </vaadin-list-box>
-            </template>
-        </vaadin-select>
+        <vaadin-tabs id ="useCases"  selected="[[ _getUseCase(routeData.usecase) ]]" >
+          <vaadin-tab value="ultimateSource" >
+            <a href="[[rootPath]]#/asset-lineage/ultimateSource/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
+                Ultimate Source
+            </a>
+          </vaadin-tab>
+          <vaadin-tab value="endToEnd">
+            <a href="[[rootPath]]#/asset-lineage/endToEnd/[[routeData.guid]]" tabindex="-1"  rel="noopener"> 
+                End to End Lineage
+            </a>
+          </vaadin-tab>
+          <vaadin-tab value="ultimateDestination">
+            <a href="[[rootPath]]#/asset-lineage/ultimateDestination/[[routeData.guid]]" tabindex="-1"  rel="noopener"> 
+                Ultimate Destination
+            </a>
+          </vaadin-tab>
+          <vaadin-tab value="glossaryLineage">
+            <a href="[[rootPath]]#/asset-lineage/glossaryLineage/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
+                Glossary Lineage
+            </a>
+          </vaadin-tab>
+          <vaadin-tab value="sourceAndDestination">
+            <a href="[[rootPath]]#/asset-lineage/sourceAndDestination/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
+                Source and Destination
+            </a>
+          </vaadin-tab>
+        </vaadin-tabs>
+        <div> 
+            <vaadin-select id="processMenu" value="true" >
+              <template>
+                <vaadin-list-box>
+                  <vaadin-item value="true" selected>With ETL Jobs</vaadin-item>
+                  <vaadin-item value="false">Without ETL Jobs</vaadin-item>
+                </vaadin-list-box>
+                </template>
+            </vaadin-select>
+            <vaadin-select id="glossaryTermMenu" value="true" 
+                hidden = "[[_hideIncludeGlossaryTerms(routeData.usecase)]]" >
+              <template>
+                <vaadin-list-box>
+                  <vaadin-item value="true" selected>With Glossary Term</vaadin-item>
+                  <vaadin-item value="false">Without Glossary Term</vaadin-item>
+                </vaadin-list-box>  
+              </template>
+            </vaadin-select>
+            <vaadin-select id="classificationMenu" value="true" 
+                hidden = "[[_hideClassifications(routeData.usecase)]]" >
+              <template>
+                <vaadin-list-box>
+                  <vaadin-item value="true" selected>With Classification</vaadin-item>
+                  <vaadin-item value="false">Without Classification</vaadin-item>
+                </vaadin-list-box>  
+              </template>
+            </vaadin-select>
+            
+        </div>
     </div>
-    
-    <div class="container" id="container">
-        <vis-graph id="visgraph" data=[[graphData]]></vis-graph>
+
+    <div id="container">
+        <vis-graph id="visgraph" data=[[renderGraphData]]></vis-graph>
     </div>
     `;
   }
 
     ready() {
         super.ready();
-        this.$.processMenu.addEventListener('value-changed', () => this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
+        this.$.processMenu.addEventListener('value-changed', () =>
+            this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
+
+        this.$.glossaryTermMenu.addEventListener('value-changed', () => this.filterGraph());
+
+        this.$.classificationMenu.addEventListener('value-changed', () => this.filterGraph());
     }
 
     static get properties() {
@@ -103,39 +127,88 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 type: Object,
                 observer: '_graphDataChanged'
             },
+            graphInteraction: {
+                type: Object,
+                value: {
+                    tooltipDelay: 200,
+                    hideEdgesOnDrag: true
+                }
+            },
+            graphLayout: {
+                type: Object,
+                value: {
+                    hierarchical: {
+                        enabled: true,
+                        levelSeparation: 300,
+                        direction: 'LR'
+                    }
+                }
+            },
             groups : {
                 type: Object,
                 value: {
                     GlossaryTerm: {
-                        shape: 'diamond',
-                        color: '#FCF68E'
+                        color: '#f0e442',
+                        shape: 'circle'
                     },
                     Column: {
-                        color: '#99E17E'
+                        color: '#009e73'
                     },
                     RelationalColumn: {
-                        color: '#99E17E'
+                        color: '#0072b2'
                     },
                     TabularColumn: {
-                        color: '#99E17E'
+                        color: '#cc79a7'
                     },
                     RelationalTable: {
                         shape: 'box',
+                        color: '#007836'
                     },
                     Process: {
-                        shape: 'parallelogram'
+                        shape: 'parallelogram',
+                        color: '#b276b2'
                     },
                     condensedNode: {
-                        color: '#71ccdc'
+                        color: '#faa43a'
                     }
                 }
             }
         }
     }
 
+    filterGraph() {
+
+        var deepCopyNodes = JSON.parse(JSON.stringify(this.graphData.nodes))
+        var deepCopyEdges = JSON.parse(JSON.stringify(this.graphData.edges))
+
+        var newData = {
+            nodes : deepCopyNodes,
+            edges : deepCopyEdges
+        }
+
+
+        if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
+            this.filterNodesFromGraph(newData, "GlossaryTerm");
+        }
+
+        if (!this._hideClassifications(this.routeData.usecase) && this.$.classificationMenu.value === "false" ) {
+            this.filterNodesFromGraph(newData, "Classification");
+        }
+        this.$.visgraph.importNodesAndEdges(newData.nodes, newData.edges);
+
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        this.$.visgraph.options.groups = this.groups;
+        this.$.visgraph.options.interaction = this.graphInteraction;
+        this.$.visgraph.options.layout = this.graphLayout;
+        this.$.visgraph.options.physics = false;
+    }
+
     static get observers() {
         return [
-            '_routeChanged(routeData)'
+            '_routeChanged(route)'
         ];
     }
 
@@ -144,8 +217,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     }
 
     _graphDataChanged(data, newData) {
-        console.debug("oldData" + JSON.stringify(data));
-        console.debug("newData" + JSON.stringify(newData));
+
         if (data === null || data === undefined) {
             if (newData != null) {
                 data = newData;
@@ -157,11 +229,17 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             }
         }
         for (var i = 0; i < data.nodes.length; i++) {
+            const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
             data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "", '<br>');
             if (data.nodes[i].properties == null) {
                 continue;
             }
             let displayName;
+            if (data.nodes[i].id === this.routeData.guid){
+                data.nodes[i].group='';
+                data.nodes[i].color=egeriaColor;
+                data.nodes[i].font= {color:'white'};
+            }
             if (data.nodes[i].properties['tableDisplayName'] != null) {
                 displayName = data.nodes[i].properties['tableDisplayName']
             } else if (data.nodes[i].properties['vertex--tableDisplayName'] != null) {
@@ -171,77 +249,152 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 data.nodes[i].label += ' \n Table : ' + displayName;
             }
         }
+        if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
+            this.filterNodesFromGraph(data, "GlossaryTerm");
+        }
+
+        if (!this._hideClassifications(this.routeData.usecase) && this.$.classificationMenu.value === "false" ) {
+            this.filterNodesFromGraph(data, "Classification");
+        }
         this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
     }
 
-  _ultimateSource(guid, includeProcesses) {
-      if (includeProcesses === null || includeProcesses === undefined) {
-         includeProcesses  = "false";
-      }
-      this.$.visgraph.options.groups = this.groups;
-      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?includeProcesses=' + includeProcesses;
-      this.$.tokenAjax._go();
-  }
+    filterNodesFromGraph(data, nodeType) {
+        var filteredNodes = [];
+        var nodesToRemove = [];
+        var filteredEdges = [];
 
+        for (var i = 0; i < data.nodes.length; i++) {
+            if (data.nodes[i].group === nodeType) {
+                nodesToRemove.push(data.nodes[i])
+                if (nodeType === "GlossaryTerm") {
+                    this.handleConnectedClassificationNodes(data, i, nodesToRemove);
+                }
+            }
+        }
+        for (var i = 0; i < data.nodes.length; i++) {
+            if (!nodesToRemove.includes(data.nodes[i])) {
+                filteredNodes.push(data.nodes[i])
+            }
+         }
+        for (var j = 0; j < data.edges.length; j++) {
+            var edgeRemoved = false;
+            for (var i = 0; i < nodesToRemove.length; i++) {
+                if (data.edges[j].from === nodesToRemove[i].id) {
+                    for (var k = 0; k < data.edges.length; k++) {
+                        if (data.edges[k].to === nodesToRemove[i].id) {
+                            edgeRemoved = true;
+                            filteredEdges.push({
+                                to: data.edges[j].to,
+                                from: data.edges[k].from,
+                                label: data.edges[k].label
+                            })
+                        }
+                    }
+                }
+            }
+            if (edgeRemoved === false) {
+                filteredEdges.push(data.edges[j])
+            }
+        }
+        data.nodes = filteredNodes;
+        data.edges = filteredEdges;
+    }
 
-      _endToEndLineage(guid, includeProcesses){
-          if (includeProcesses === null || includeProcesses === undefined) {
-              includeProcesses  = "false";
-          }
-          this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/end2end?includeProcesses=' + includeProcesses;
-          this.$.tokenAjax._go();
-      }
-
-      _ultimateDestination(guid, includeProcesses){
-          if (includeProcesses === null || includeProcesses === undefined) {
-              includeProcesses  = "false";
-          }
-          this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-destination?includeProcesses=' + includeProcesses;
-          this.$.tokenAjax._go();
-      }
-
-      _glossaryLineage(guid, includeProcesses){
-          if (includeProcesses === null || includeProcesses === undefined) {
-              includeProcesses  = "false";
-          }
-          this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?includeProcesses=' + includeProcesses;
-          this.$.tokenAjax._go();
-      }
-
-      _sourceAndDestination(guid, includeProcesses){
-          if (includeProcesses === null || includeProcesses === undefined) {
-              includeProcesses  = "false";
-          }
-          this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/source-and-destination?includeProcesses=' + includeProcesses;
-          this.$.tokenAjax._go();
-      }
-
-    _reload(usecase, includeProcesses) {
-
-        switch (usecase) {
-            case 'ultimateSource':
-                this._ultimateSource(this.routeData.guid, includeProcesses);
-                break;
-            case 'endToEnd':
-                this._endToEndLineage(this.routeData.guid, includeProcesses);
-                break;
-            case 'ultimateDestination':
-                this._ultimateDestination(this.routeData.guid, includeProcesses);
-                break;
-            case 'glossaryLineage':
-                this._glossaryLineage(this.routeData.guid, includeProcesses);
-                break;
-            case 'sourceAndDestination':
-                this._sourceAndDestination(this.routeData.guid, includeProcesses);
-                break;
+    handleConnectedClassificationNodes(data, i, nodesToRemove) {
+        for (var j = 0; j < data.nodes.length; j++) {
+            if (data.nodes[j].group === "Confidentiality") {
+                this.filterConnectedClassificationNodes(data, i, j, nodesToRemove);
+            }
         }
     }
+
+    filterConnectedClassificationNodes(data, i, j, nodesToRemove) {
+        for (var k = 0; k < data.edges.length; k++) {
+            if (data.edges[k].to === data.nodes[i].id && data.edges[k].from === data.nodes[j].id) {
+                nodesToRemove.push(data.nodes[j])
+            }
+            if (data.edges[k].from === data.nodes[i].id && data.edges[k].to === data.nodes[j].id) {
+                nodesToRemove.push(data.nodes[j])
+            }
+        }
+    }
+
+    _ultimateSource(guid, includeProcesses) {
+    if (includeProcesses === null || includeProcesses === undefined) {
+     includeProcesses  = "true";
+    }
+    this.$.visgraph.options.groups = this.groups;
+    this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?includeProcesses=' + includeProcesses;
+    this.$.tokenAjax._go();
+    }
+
+    _endToEndLineage(guid, includeProcesses){
+      if (includeProcesses === null || includeProcesses === undefined) {
+          includeProcesses  = "true";
+      }
+      this.$.visgraph.options.groups = this.groups;
+      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/end2end?includeProcesses=' + includeProcesses;
+      this.$.tokenAjax._go();
+    }
+
+    _ultimateDestination(guid, includeProcesses){
+      if (includeProcesses === null || includeProcesses === undefined) {
+          includeProcesses  = "true";
+      }
+      this.$.visgraph.options.groups = this.groups;
+      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-destination?includeProcesses=' + includeProcesses;
+      this.$.tokenAjax._go();
+    }
+
+    _glossaryLineage(guid, includeProcesses){
+      if (includeProcesses === null || includeProcesses === undefined) {
+          includeProcesses  = "true";
+      }
+      this.$.visgraph.options.groups = this.groups;
+      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?includeProcesses=' + includeProcesses;
+      this.$.tokenAjax._go();
+    }
+
+    _sourceAndDestination(guid, includeProcesses){
+      if (includeProcesses === null || includeProcesses === undefined) {
+          includeProcesses  = "true";
+      }
+      this.$.visgraph.options.groups = this.groups;
+      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/source-and-destination?includeProcesses=' + includeProcesses;
+      this.$.tokenAjax._go();
+    }
+
+    _reload(usecase, includeProcesses) {
+    switch (usecase) {
+        case 'ultimateSource':
+            this._ultimateSource(this.routeData.guid, includeProcesses);
+            break;
+        case 'endToEnd':
+            this._endToEndLineage(this.routeData.guid, includeProcesses);
+            break;
+        case 'ultimateDestination':
+            this._ultimateDestination(this.routeData.guid, includeProcesses);
+            break;
+        case 'glossaryLineage':
+            this._glossaryLineage(this.routeData.guid, includeProcesses);
+            break;
+        case 'sourceAndDestination':
+            this._sourceAndDestination(this.routeData.guid, includeProcesses);
+            break;
+    }
+    }
+
     _getUseCase(usecase){
       return this.usecases.indexOf(usecase);
+    }
+
+    _hideIncludeGlossaryTerms(usecase) {
+        return !("ultimateDestination" === usecase || "ultimateSource" === usecase || "sourceAndDestination" === usecase || "endToEnd" === usecase) ;
+    }
+
+    _hideClassifications(usecase) {
+        return "glossaryLineage" === usecase;
     }
 }
 

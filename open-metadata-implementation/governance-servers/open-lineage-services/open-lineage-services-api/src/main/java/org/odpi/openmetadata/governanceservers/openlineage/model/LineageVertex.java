@@ -48,6 +48,10 @@ public class LineageVertex {
         return nodeType;
     }
 
+    public void setNodeType(String nodeType) {
+        this.nodeType = nodeType;
+    }
+
     public String getGuid() {
         return guid;
     }

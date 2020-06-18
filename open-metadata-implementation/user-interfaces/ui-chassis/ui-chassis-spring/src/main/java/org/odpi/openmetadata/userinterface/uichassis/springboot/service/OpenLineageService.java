@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
@@ -23,6 +24,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,8 +37,9 @@ import java.util.stream.Stream;
 @Service
 public class OpenLineageService {
 
-    public static final String EDGES_LABEL = "edges";
-    public static final String NODES_LABEL = "nodes";
+    private static final String EDGES_LABEL = "edges";
+    private static final String NODES_LABEL = "nodes";
+    private static final String CLASSIFICATION = "Classification";
     private final OpenLineageClient openLineageClient;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
@@ -144,28 +149,56 @@ public class OpenLineageService {
         if (response == null || CollectionUtils.isEmpty(response.getLineageVertices())) {
             graphData.put(EDGES_LABEL, listEdges);
             graphData.put(NODES_LABEL, listNodes);
+            return graphData;
         }
 
-        listNodes = Optional.ofNullable(response.getLineageVertices())
+        determineClassificationNodes(response);
+
+        listNodes = Optional.of(response).map(LineageVerticesAndEdges::getLineageVertices)
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
-                .map(v -> createNode(v))
+                .map(this::createNode)
                 .collect(Collectors.toList());
 
-        listEdges = Optional.ofNullable(response.getLineageEdges())
-                .map(e -> e.stream())
+        listEdges = Optional.of(response).map(LineageVerticesAndEdges::getLineageEdges)
+                .map(Collection::stream)
                 .orElseGet(Stream::empty)
-                .map(e -> {
-                    Edge newEdge = new Edge(e.getSourceNodeID(),
-                            e.getDestinationNodeID());
-                    return newEdge;
-                })
+                .map(e -> new Edge(e.getSourceNodeID(),
+                        e.getDestinationNodeID()))
                 .collect(Collectors.toList());
 
         graphData.put(EDGES_LABEL, listEdges);
         graphData.put(NODES_LABEL, listNodes);
 
         return graphData;
+    }
+
+    private void determineClassificationNodes(LineageVerticesAndEdges response) {
+        Set<LineageVertex> lineageVertices = response.getLineageVertices();
+        Set<LineageEdge> lineageEdges = response.getLineageEdges();
+        Set<LineageVertex> classificationNodes = new HashSet<>();
+        for (LineageEdge lineageEdge : lineageEdges) {
+            if (CLASSIFICATION.equals(lineageEdge.getEdgeType())) {
+                Set<LineageVertex> vertices = lineageVertices.stream().filter(lineageVertex ->
+                        isVertexPartOfEdge(lineageEdge, lineageVertex))
+                        .collect(Collectors.toSet());
+                Iterator<LineageVertex> iterator = vertices.iterator();
+                LineageVertex firstNode = iterator.next();
+                LineageVertex secondNode = iterator.next();
+                if (firstNode.getNodeID().endsWith(secondNode.getNodeID()) &&
+                        !firstNode.getNodeID().startsWith(secondNode.getNodeID())) {
+                    classificationNodes.add(firstNode);
+                } else {
+                    classificationNodes.add(secondNode);
+                }
+            }
+        }
+        classificationNodes.forEach(node -> node.setNodeType(CLASSIFICATION));
+    }
+
+    private boolean isVertexPartOfEdge(LineageEdge lineageEdge, LineageVertex lineageVertex) {
+        return lineageVertex.getNodeID().equals(lineageEdge.getDestinationNodeID()) ||
+                lineageVertex.getNodeID().equals(lineageEdge.getSourceNodeID());
     }
 
     /**
