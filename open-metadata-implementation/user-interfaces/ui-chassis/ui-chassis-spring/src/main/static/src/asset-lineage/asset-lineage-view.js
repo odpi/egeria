@@ -92,11 +92,21 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 </vaadin-list-box>  
               </template>
             </vaadin-select>
+            <vaadin-select id="classificationMenu" value="true" 
+                hidden = "[[_hideClassifications(routeData.usecase)]]" >
+              <template>
+                <vaadin-list-box>
+                  <vaadin-item value="true" selected>With Classification</vaadin-item>
+                  <vaadin-item value="false">Without Classification</vaadin-item>
+                </vaadin-list-box>  
+              </template>
+            </vaadin-select>
+            
         </div>
     </div>
 
     <div id="container">
-        <vis-graph id="visgraph" data=[[graphData]]></vis-graph>
+        <vis-graph id="visgraph" data=[[renderGraphData]]></vis-graph>
     </div>
     `;
   }
@@ -106,9 +116,9 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         this.$.processMenu.addEventListener('value-changed', () =>
             this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
 
-        this.$.glossaryTermMenu.addEventListener('value-changed', () =>
-            this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
+        this.$.glossaryTermMenu.addEventListener('value-changed', () => this.filterGraph());
 
+        this.$.classificationMenu.addEventListener('value-changed', () => this.filterGraph());
     }
 
     static get properties() {
@@ -170,6 +180,28 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         }
     }
 
+    filterGraph() {
+
+        var deepCopyNodes = JSON.parse(JSON.stringify(this.graphData.nodes))
+        var deepCopyEdges = JSON.parse(JSON.stringify(this.graphData.edges))
+
+        var newData = {
+            nodes : deepCopyNodes,
+            edges : deepCopyEdges
+        }
+
+
+        if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
+            this.filterNodesFromGraph(newData, "GlossaryTerm");
+        }
+
+        if (!this._hideClassifications(this.routeData.usecase) && this.$.classificationMenu.value === "false" ) {
+            this.filterNodesFromGraph(newData, "Classification");
+        }
+        this.$.visgraph.importNodesAndEdges(newData.nodes, newData.edges);
+
+    }
+
     connectedCallback() {
         super.connectedCallback();
         this.$.visgraph.options.groups = this.groups;
@@ -227,40 +259,74 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             }
         }
         if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
-            var filteredNodes = [];
-            var nodesToRemove = [];
-            var filteredEdges = [];
-            for (var i = 0; i < data.nodes.length; i++) {
-                if (data.nodes[i].group !== "GlossaryTerm") {
-                    filteredNodes.push(data.nodes[i]);
-                } else {
-                    nodesToRemove.push(data.nodes[i])
+            this.filterNodesFromGraph(data, "GlossaryTerm");
+        }
+
+        if (!this._hideClassifications(this.routeData.usecase) && this.$.classificationMenu.value === "false" ) {
+            this.filterNodesFromGraph(data, "Classification");
+        }
+        this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
+    }
+
+    filterNodesFromGraph(data, nodeType) {
+        var filteredNodes = [];
+        var nodesToRemove = [];
+        var filteredEdges = [];
+
+        for (var i = 0; i < data.nodes.length; i++) {
+            if (data.nodes[i].group === nodeType) {
+                nodesToRemove.push(data.nodes[i])
+                if (nodeType === "GlossaryTerm") {
+                    this.handleConnectedClassificationNodes(data, i, nodesToRemove);
                 }
             }
-            for (var j = 0; j < data.edges.length; j++) {
-                var edgeRemoved = false;
-                for (var i = 0; i < nodesToRemove.length; i++) {
-                    if (data.edges[j].from === nodesToRemove[i].id) {
-                        for (var k = 0; k < data.edges.length; k++) {
-                            if (data.edges[k].to === nodesToRemove[i].id) {
-                                edgeRemoved = true;
-                                filteredEdges.push({
-                                    to : data.edges[j].to,
-                                    from : data.edges[k].from,
-                                    label : data.edges[k].label
-                                })
-                            }
+        }
+        for (var i = 0; i < data.nodes.length; i++) {
+            if (!nodesToRemove.includes(data.nodes[i])) {
+                filteredNodes.push(data.nodes[i])
+            }
+         }
+        for (var j = 0; j < data.edges.length; j++) {
+            var edgeRemoved = false;
+            for (var i = 0; i < nodesToRemove.length; i++) {
+                if (data.edges[j].from === nodesToRemove[i].id) {
+                    for (var k = 0; k < data.edges.length; k++) {
+                        if (data.edges[k].to === nodesToRemove[i].id) {
+                            edgeRemoved = true;
+                            filteredEdges.push({
+                                to: data.edges[j].to,
+                                from: data.edges[k].from,
+                                label: data.edges[k].label
+                            })
                         }
                     }
                 }
-                if (edgeRemoved === false) {
-                    filteredEdges.push(data.edges[j])
-                }
             }
-            data.nodes = filteredNodes;
-            data.edges = filteredEdges;
+            if (edgeRemoved === false) {
+                filteredEdges.push(data.edges[j])
+            }
         }
-        this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
+        data.nodes = filteredNodes;
+        data.edges = filteredEdges;
+    }
+
+    handleConnectedClassificationNodes(data, i, nodesToRemove) {
+        for (var j = 0; j < data.nodes.length; j++) {
+            if (data.nodes[j].group === "Confidentiality") {
+                this.filterConnectedClassificationNodes(data, i, j, nodesToRemove);
+            }
+        }
+    }
+
+    filterConnectedClassificationNodes(data, i, j, nodesToRemove) {
+        for (var k = 0; k < data.edges.length; k++) {
+            if (data.edges[k].to === data.nodes[i].id && data.edges[k].from === data.nodes[j].id) {
+                nodesToRemove.push(data.nodes[j])
+            }
+            if (data.edges[k].from === data.nodes[i].id && data.edges[k].to === data.nodes[j].id) {
+                nodesToRemove.push(data.nodes[j])
+            }
+        }
     }
 
     _ultimateSource(guid, includeProcesses) {
@@ -333,7 +399,11 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     }
 
     _hideIncludeGlossaryTerms(usecase) {
-    return !("ultimateDestination" === usecase || "ultimateSource" === usecase) ;
+        return !("ultimateDestination" === usecase || "ultimateSource" === usecase || "sourceAndDestination" === usecase) ;
+    }
+
+    _hideClassifications(usecase) {
+        return "glossaryLineage" === usecase;
     }
 }
 
