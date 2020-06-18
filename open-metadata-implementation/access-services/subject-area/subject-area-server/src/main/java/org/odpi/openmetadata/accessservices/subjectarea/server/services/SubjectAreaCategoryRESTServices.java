@@ -11,7 +11,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.CategoryRespon
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaDefinitionResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,25 +22,15 @@ import java.util.Date;
  * Access Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 
-public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesInstance
-{
+public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaCategoryRESTServices.class);
-
-    private static final String className = SubjectAreaCategoryRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
-
-
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
      * Default constructor
      */
     public SubjectAreaCategoryRESTServices() {
         //SubjectAreaRESTServicesInstance registers this omas.
-    }
-
-    public SubjectAreaCategoryRESTServices(OMRSAPIHelper oMRSAPIHelper)
-    {
-        this.oMRSAPIHelper=oMRSAPIHelper;
     }
 
     /**
@@ -76,8 +65,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse createCategory(String serverName, String userId, Category suppliedCategory)
-    {
+    public SubjectAreaOMASAPIResponse createCategory(String serverName, String userId, Category suppliedCategory) {
         final String methodName = "createCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
@@ -112,9 +100,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised
      * </ul>
      */
-
-    public SubjectAreaOMASAPIResponse getCategory( String serverName, String userId, String guid)
-    {
+    public SubjectAreaOMASAPIResponse getCategory( String serverName, String userId, String guid) {
         final String methodName = "getCategoryByGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -192,6 +178,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
 
         return response;
     }
+
     /**
      * Get Category relationships
      *
@@ -214,7 +201,6 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> FunctionNotSupportedException   Function not supported.</li>
      * </ul>
      */
-
     public  SubjectAreaOMASAPIResponse getCategoryRelationships(String serverName,
                                                                 String userId,
                                                                 String guid,
@@ -225,7 +211,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                                                                 String sequencingProperty
     ) {
 
-            String methodName = "getCategoryRelationships";
+        final String methodName = "getCategoryRelationships";
+
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
@@ -331,6 +318,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
         }
         return response;
     }
+
     /**
      * Restore a Category or a SubjectAreaDefinition
      *
@@ -348,8 +336,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreCategory(String serverName, String userId, String guid)
-    {
+    public SubjectAreaOMASAPIResponse restoreCategory(String serverName, String userId, String guid) {
         final String methodName = "restoreCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);

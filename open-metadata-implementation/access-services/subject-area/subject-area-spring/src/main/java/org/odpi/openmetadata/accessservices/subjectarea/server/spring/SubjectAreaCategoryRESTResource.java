@@ -116,7 +116,7 @@ public class SubjectAreaCategoryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/categories")
-    public SubjectAreaOMASAPIResponse findTerm(@PathVariable String serverName, @PathVariable String userId,
+    public SubjectAreaOMASAPIResponse findCategory(@PathVariable String serverName, @PathVariable String userId,
                                                @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
                                                @RequestParam(value = "asOfTime", required = false) Date asOfTime,
                                                @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
