@@ -369,9 +369,9 @@ export default function EntityNeighborhoodDiagram(props) {
     const width = diagram.offsetWidth;
     const height = width;
 
-    let updatedHood = Object.assign(nhbd);
+    let updatedNhbd = Object.assign(nhbd);
 
-    updatedHood.svg = d3.select(d3Container.current)
+    updatedNhbd.svg = d3.select(d3Container.current)
                         .append("svg")
                         .attr("width", width)
                         .attr("height", height)
@@ -379,18 +379,18 @@ export default function EntityNeighborhoodDiagram(props) {
                         .style("font", "12px sans-serif")
                         .style("user-select", "none");
 
-    updatedHood.gLink = updatedHood.svg
+    updatedNhbd.gLink = updatedNhbd.svg
                                    .append("g")
                                    .attr("fill", "none")
                                    .attr("stroke", "#CCC")
                                    .attr("stroke-opacity", 0.4)
                                    .attr("stroke-width", 1.5);
 
-    updatedHood.gNode = updatedHood.svg
+    updatedNhbd.gNode = updatedNhbd.svg
                                    .append("g")
                                    .attr("cursor", "pointer");
 
-    return updatedHood;
+    return updatedNhbd;
 }
 
 
