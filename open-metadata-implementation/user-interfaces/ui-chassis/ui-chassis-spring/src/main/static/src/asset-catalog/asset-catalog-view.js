@@ -11,8 +11,8 @@ class AssetCatalogView extends PolymerElement {
       <style include="shared-styles">
        :host {
           display: block;
-          margin: 0 24px;
-          min-height: calc(100vh - 85px);
+          margin:var(--egeria-view-margin);
+          min-height: var(--egeria-view-min-height);
         }
          #useCases {
             color: var(--egeria-primary-color);
@@ -63,6 +63,9 @@ class AssetCatalogView extends PolymerElement {
         return [
             '_routeChanged(route)'
         ];
+    }
+    _getUseCase(usecase){
+        return this.usecases.indexOf(usecase);
     }
 
     _tabsVisible(routeData){

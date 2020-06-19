@@ -22,14 +22,18 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     return html`
     <style include="shared-styles">
         :host {
-          display: block;
-          margin: 0 24px;
+          display: flex;
+          flex-direction: column;
+          margin:var(--egeria-view-margin);
+          min-height: var(--egeria-view-min-height);
+          max-height: var(--egeria-view-min-height);
         }
         
-        .container {
-          margin: auto; 
-          height: calc(100vh - 130px);
-          background-color: white;
+        #container {
+          background-color: var( --egeria-background-color );
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
         }
         #useCases {
             color: var(--egeria-primary-color);
@@ -212,8 +216,12 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         ];
     }
 
-    _routeChanged(routeData){
-        this._reload(this.routeData.usecase, this.$.processMenu.value);
+    _routeChanged(route){
+        if (this.route.prefix === '/asset-lineage') {
+            this.$.tokenAjaxDetails.url = '/api/assets/' + this.routeData.guid;
+            this.$.tokenAjaxDetails._go();
+            this._reload(this.routeData.usecase, this.$.processMenu.value);
+        }
     }
 
     _graphDataChanged(data, newData) {
@@ -249,14 +257,21 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 data.nodes[i].label += ' \n Table : ' + displayName;
             }
         }
+        var deepCopyNodes = JSON.parse(JSON.stringify(data.nodes))
+        var deepCopyEdges = JSON.parse(JSON.stringify(data.edges))
+
+        var renderData = {
+            nodes : deepCopyNodes,
+            edges : deepCopyEdges
+        }
         if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
-            this.filterNodesFromGraph(data, "GlossaryTerm");
+            this.filterNodesFromGraph(renderData, "GlossaryTerm");
         }
 
         if (!this._hideClassifications(this.routeData.usecase) && this.$.classificationMenu.value === "false" ) {
-            this.filterNodesFromGraph(data, "Classification");
+            this.filterNodesFromGraph(renderData, "Classification");
         }
-        this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
+        this.$.visgraph.importNodesAndEdges(renderData.nodes, renderData.edges);
     }
 
     filterNodesFromGraph(data, nodeType) {
@@ -386,11 +401,11 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     }
 
     _getUseCase(usecase){
-      return this.usecases.indexOf(usecase);
+        return this.usecases.indexOf(usecase);
     }
 
     _hideIncludeGlossaryTerms(usecase) {
-        return !("ultimateDestination" === usecase || "ultimateSource" === usecase || "sourceAndDestination" === usecase || "endToEnd" === usecase) ;
+        return !("ultimateDestination" === usecase || "ultimateSource" === usecase || "sourceAndDestination" === usecase) ;
     }
 
     _hideClassifications(usecase) {

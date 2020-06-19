@@ -88,4 +88,15 @@ public class LineageVertex {
     public int hashCode() {
         return Objects.hash(nodeID, nodeType, displayName, guid, properties);
     }
+
+    @Override
+    public String toString() {
+        return "LineageVertex{" +
+                "nodeID='" + nodeID + '\'' +
+                ", nodeType='" + nodeType + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", guid='" + guid + '\'' +
+                ", properties=" + properties +
+                '}';
+    }
 }
