@@ -258,14 +258,21 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 data.nodes[i].label += ' \n Table : ' + displayName;
             }
         }
+        var deepCopyNodes = JSON.parse(JSON.stringify(data.nodes))
+        var deepCopyEdges = JSON.parse(JSON.stringify(data.edges))
+
+        var renderData = {
+            nodes : deepCopyNodes,
+            edges : deepCopyEdges
+        }
         if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
-            this.filterNodesFromGraph(data, "GlossaryTerm");
+            this.filterNodesFromGraph(renderData, "GlossaryTerm");
         }
 
         if (!this._hideClassifications(this.routeData.usecase) && this.$.classificationMenu.value === "false" ) {
-            this.filterNodesFromGraph(data, "Classification");
+            this.filterNodesFromGraph(renderData, "Classification");
         }
-        this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
+        this.$.visgraph.importNodesAndEdges(renderData.nodes, renderData.edges);
     }
 
     filterNodesFromGraph(data, nodeType) {
