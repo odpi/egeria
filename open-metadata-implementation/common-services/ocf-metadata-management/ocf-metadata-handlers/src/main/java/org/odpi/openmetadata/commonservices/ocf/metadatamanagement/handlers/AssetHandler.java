@@ -634,6 +634,7 @@ public class AssetHandler
     }
 
 
+    
     /**
      * Save any associated schema type.
      *
