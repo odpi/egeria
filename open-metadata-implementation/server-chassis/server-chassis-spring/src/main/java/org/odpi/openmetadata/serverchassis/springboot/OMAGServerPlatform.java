@@ -102,7 +102,6 @@ public class OMAGServerPlatform
             {
                 log.warn("strict.ssl is *DEPRECATED*! Please use egeria.ssl.client.verify system property or environment variable. If already set they will take precedence over strict.ssl. Note also that strict.ssl=true is the same as egeria.ssl.client.verify=false, and in the new implementation only affects client interaction");
                 System.setProperty("egeria.ssl.client.verify", "false"); // inverse of strictSSL
-                //HttpHelper.noStrictSSL(); -- no longer used. code is now in SpringRESTClientConnector.java
             }
             autoStartConfig();
         };

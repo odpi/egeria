@@ -137,12 +137,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>http-helper</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
         </dependency>
 

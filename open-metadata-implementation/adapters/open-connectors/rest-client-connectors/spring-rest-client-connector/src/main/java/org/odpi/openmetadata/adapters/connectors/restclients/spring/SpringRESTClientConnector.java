@@ -126,22 +126,22 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         else
         {
-            truststore = System.getProperty(SYSPROP_SSL_TRUSTSTORE);
-            if (StringUtils.isNotBlank(truststore)) {
+            truststoreSetting = System.getProperty(SYSPROP_SSL_TRUSTSTORE);
+            if (StringUtils.isNotBlank(truststoreSetting)) {
                 log.debug("egeria-ssl: truststore set from egeria system property " + SYSPROP_SSL_TRUSTSTORE);
                 truststorePasswordSetting = System.getProperty(SYSPROP_SSL_TRUSTSTOREPASS);
             }
             else
             {
-                truststore = System.getProperty(SYSPROP_SSL_JVM_TRUSTSTORE);
-                if (StringUtils.isNotBlank(truststore)) {
+                truststoreSetting = System.getProperty(SYSPROP_SSL_JVM_TRUSTSTORE);
+                if (StringUtils.isNotBlank(truststoreSetting)) {
                     log.debug("egeria-ssl: truststore set from jvm system property " + SYSPROP_SSL_JVM_TRUSTSTORE);
                     truststorePasswordSetting = System.getProperty(SYSPROP_SSL_JVM_TRUSTSTOREPASS);
                 }
                 else
                 {
-                    truststore = System.getProperty(SYSPROP_SSL_SERVER_TRUSTSTORE);
-                    if (StringUtils.isNotBlank(truststore)) {
+                    truststoreSetting = System.getProperty(SYSPROP_SSL_SERVER_TRUSTSTORE);
+                    if (StringUtils.isNotBlank(truststoreSetting)) {
                         log.debug("egeria-ssl: truststore set from spring server environment " + SYSPROP_SSL_SERVER_TRUSTSTORE);
                         truststorePasswordSetting = System.getProperty(SYSPROP_SSL_SERVER_TRUSTSTOREPASS);
                     }
@@ -220,7 +220,9 @@ public class SpringRESTClientConnector extends RESTClientConnector
         super();
 
         /* TODO: Disable SSL cert verification -- for now */
-        SSLContext sc = SSLContext.getInstance("TLS v1.3");
+        //TODO: Can throw NoSuchAlgorithmException : TLS v1.3 SSLContext not available
+        // TLS v1.3 only possible in Java 11+
+        SSLContext sc = SSLContext.getInstance("TLSv1.2");
 
         // TODO - this is where we inject key manager and trust manager if we want to use non-default settings
         // For now keystore must be in pkcs12 - default Java 9 & above, and for all non java
@@ -238,6 +240,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
             }
             else
                 // otherwise absolute filename
+            //TODO: If truststore is null - or file not found, we'll hit an exception here
                 tsf = new FileInputStream(truststore);
 
             // Load the keystore, initialise the factory
@@ -245,28 +248,38 @@ public class SpringRESTClientConnector extends RESTClientConnector
             tmFactory.init(tStore);
             tsf.close();
 
-            // Very similar for keystore - this is needed for mutual ssl
-            // Default KeyManager will choose an appropriate cert to use
-            //TODO: Implement own X509KeyManager if required to choose by alias - the default
-            //implementation will chose the first appropriate one in alphanumeric order.
-            KeyStore kStore = KeyStore.getInstance("PKCS12");
-            KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+            KeyStore kStore=null;
+            KeyManagerFactory kmf=null;
+            if (StringUtils.isNotBlank(keystore)) {
+                // Very similar for keystore - this is needed for mutual ssl
+                // Default KeyManager will choose an appropriate cert to use
+                //TODO: Implement own X509KeyManager if required to choose by alias - the default
+                //implementation will chose the first appropriate one in alphanumeric order.
+                kStore = KeyStore.getInstance("PKCS12");
+                 kmf = KeyManagerFactory.getInstance("X509");
 
-            if (StringUtils.startsWithIgnoreCase(keystore, "classpath:")) {
-                ksf=this.getClass().getClassLoader().getResourceAsStream(StringUtils.removeStart(keystore,"classpath:"));
+                if (StringUtils.startsWithIgnoreCase(keystore, "classpath:")) {
+                    ksf = this.getClass().getClassLoader().getResourceAsStream(StringUtils.removeStart(keystore, "classpath:"));
+                } else
+                    ksf = new FileInputStream(keystore);
+                kStore.load(ksf, keystorePassword.toCharArray());
+                kmf.init(kStore, keystorePassword.toCharArray());
+                ksf.close();
             }
-            else
-                ksf = new FileInputStream(keystore);
-            kStore.load(ksf,keystorePassword.toCharArray());
-            kmf.init(kStore, keystorePassword.toCharArray());
-            ksf.close();
 
             // Get a good seed for the crypt
             SecureRandom random = new SecureRandom();
             random.setSeed(System.currentTimeMillis());
 
             // Now have a new SSL context
-            sc.init(kmf.getKeyManagers(), tmFactory.getTrustManagers(), random);
+            // Quick fix - if keystore not set let's skip that part
+            if (StringUtils.isNotBlank(keystore))
+            {
+                sc.init(kmf.getKeyManagers(), tmFactory.getTrustManagers(), random);
+            }
+            else
+                sc.init(null, tmFactory.getTrustManagers(), random);
+
         }
 
         else

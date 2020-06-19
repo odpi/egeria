@@ -182,6 +182,7 @@
         <micrometer-registry-prometheus.version>1.5.1</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <apache.httpclient.version>4.5.12</apache.httpclient.version>
+        <apache.httpcore.version>4.4.13</apache.httpcore.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -1312,12 +1313,6 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>http-helper</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
                 <artifactId>analytics-modeling-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -2396,6 +2391,24 @@
                 <artifactId>httpclient</artifactId>
                 <version>${apache.httpclient.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>${apache.httpcore.version}</version>
+            </dependency>
+
+            <dependency>
+                 <groupId>org.apache.httpcomponents</groupId>
+                 <artifactId>httpcore-osgi</artifactId>
+                 <version>${apache.httpcore.version}</version>
+             </dependency>
+
+            <dependency>
+                 <groupId>org.apache.httpcomponents</groupId>
+                 <artifactId>httpclient-osgi</artifactId>
+                 <version>${apache.httpclient.version}</version>
+             </dependency>
 
         </dependencies>
 

@@ -29,7 +29,6 @@
         access to data/metadata.
     </description>
     <modules>
-        <module>http-helper</module>
         <module>gaian-impersonation</module>
     </modules>
 

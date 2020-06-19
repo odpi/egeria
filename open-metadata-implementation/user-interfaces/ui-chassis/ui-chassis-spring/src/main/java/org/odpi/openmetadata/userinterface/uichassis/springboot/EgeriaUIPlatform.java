@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
-import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.SessionAuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenAuthService;
@@ -46,9 +45,10 @@ public class EgeriaUIPlatform {
     public InitializingBean getInitialize()
     {
         return () -> {
-            if (!strictSSL)
-            {
-                HttpHelper.noStrictSSL();
+            // TODO: This section will be removed once the new implementation is complete and tested
+            if (!strictSSL) {
+                LOG.warn("strict.ssl is *DEPRECATED*! Please use egeria.ssl.client.verify system property or environment variable. If already set they will take precedence over strict.ssl. Note also that strict.ssl=true is the same as egeria.ssl.client.verify=false, and in the new implementation only affects client interaction");
+                System.setProperty("egeria.ssl.client.verify", "false"); // inverse of strictSSL
             }
         };
     }
