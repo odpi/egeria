@@ -177,6 +177,9 @@ public class OpenLineageService {
         Set<LineageVertex> lineageVertices = response.getLineageVertices();
         Set<LineageEdge> lineageEdges = response.getLineageEdges();
         Set<LineageVertex> classificationNodes = new HashSet<>();
+        if (lineageEdges == null) {
+            return;
+        }
         for (LineageEdge lineageEdge : lineageEdges) {
             if (CLASSIFICATION.equals(lineageEdge.getEdgeType())) {
                 Set<LineageVertex> vertices = lineageVertices.stream().filter(lineageVertex ->
