@@ -1983,6 +1983,28 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>tex-view-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>tex-view-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>tex-view-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>view-generator-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
