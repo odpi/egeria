@@ -27,7 +27,7 @@ import '@polymer/paper-listbox/paper-listbox.js';
 *
 *   * initial load       - no diagrams are available (because there is no type information yet):
 *   * types loaded       - an inheritance diagram is possible (because this can be displayed with no focus)
-*   * focus selected     - either inheritance diagram (with focus) or neighbourhood diagram are avauilable
+*   * focus selected     - either inheritance diagram (with focus) or neighbourhood diagram are available
 *
 * As the interface progresses through the above states, the diagram selector is populated with the options
 * that are available. Once a focus type is chosen, it can be changed but there is no ability in the UI to
