@@ -34,7 +34,7 @@
         <node.downloadRoot>https://nodejs.org/dist/</node.downloadRoot>
         <npm.version>6.13.4</npm.version>
         <npm.downloadRoot>https://registry.npmjs.org/npm/-/</npm.downloadRoot>
-        <polymer.build>uncompiled-unbundled</polymer.build>
+        <polymer.build>es6-unbundled</polymer.build>
     </properties>
 
     <dependencies>
@@ -312,9 +312,9 @@
 
     <profiles>
         <profile>
-            <id>prod</id>
+            <id>dev</id>
             <properties>
-                <polymer.build>es6-unbundled</polymer.build>
+                <polymer.build>uncompiled-unbundled</polymer.build>
             </properties>
         </profile>
     </profiles>
