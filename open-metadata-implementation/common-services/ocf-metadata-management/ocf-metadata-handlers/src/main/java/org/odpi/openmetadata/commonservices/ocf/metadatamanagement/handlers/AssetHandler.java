@@ -633,7 +633,6 @@ public class AssetHandler
                                       methodName);
     }
 
-
     
     /**
      * Save any associated schema type.
