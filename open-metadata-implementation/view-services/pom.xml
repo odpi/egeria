@@ -30,5 +30,6 @@
     <modules>
         <module>glossary-author-view</module>
         <module>rex-view</module>
+        <module>tex-view</module>
     </modules>
 </project>

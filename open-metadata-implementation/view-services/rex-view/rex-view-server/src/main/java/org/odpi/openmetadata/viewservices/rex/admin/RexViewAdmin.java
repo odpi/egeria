@@ -6,6 +6,7 @@ package org.odpi.openmetadata.viewservices.rex.admin;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -104,7 +105,7 @@ public class RexViewAdmin extends ViewServiceAdmin {
                                   error);
 
             super.throwUnexpectedInitializationException(actionDescription,
-                                                         AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName(),
+                                                         ViewServiceDescription.REPOSITORY_EXPLORER.getViewServiceFullName(),
                                                          error);
         }
 
