@@ -96,15 +96,13 @@ function NodeCreate(props) {
             glossaryAuthorContext.setMyProjectState();
           }
 
-          // check if fully setup fully setup - we might still have only set the myProject or myGlossary (not both)
+          // check if fully setup - we might still have only set the myProject or myGlossary (not both)
           if (
             glossaryAuthorContext.myProject &&
             glossaryAuthorContext.myGlossary
           ) {
             glossaryAuthorContext.setMyState(5);
           }
-         
-         
         } else {
           let msg = "";
           if (res.responseCategory) {

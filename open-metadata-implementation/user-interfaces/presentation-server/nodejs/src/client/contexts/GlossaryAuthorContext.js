@@ -44,8 +44,8 @@ const GlossaryAuthorContextProvider = (props) => {
       setMyState(5);
     } else {
       setMyState(3);
+      setCurrentNodeType(glossaryNodeType);
     }
-    setCurrentNodeType(glossaryNodeType);
   };
   const setMyProjectState = () => {
     console.log("setMyProjectState");
@@ -54,8 +54,8 @@ const GlossaryAuthorContextProvider = (props) => {
       setCurrentNodeType(termNodeType);
     } else {
       setMyState(4);
+      setCurrentNodeType(projectNodeType);
     }
-    setCurrentNodeType(projectNodeType);
   };
 
   // 0 = unset 1 = creating 2 = created 3 = searching 4 searched.
