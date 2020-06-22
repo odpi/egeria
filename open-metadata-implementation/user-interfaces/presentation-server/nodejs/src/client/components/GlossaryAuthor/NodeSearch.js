@@ -61,7 +61,6 @@ const NodeSearch = props => {
   }
 
 
-
   const isSelectedNode = () => {
     let isSelected = false;
     if (glossaryAuthorContext.selectedNode) {

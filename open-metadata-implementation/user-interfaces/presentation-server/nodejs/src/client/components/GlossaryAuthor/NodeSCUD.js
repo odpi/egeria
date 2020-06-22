@@ -9,16 +9,14 @@ import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 const NodeSCUD = props => {
   console.log("NodeSCUD");
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
-  const [showCreate, setShowCreate] = useState(true);
-
   const onClickAdd = () => {
-    setShowCreate(true);
+    glossaryAuthorContext.setCreatingActionState()
   };
   const onClickSearch = () => {
-    setShowCreate(false);
+    glossaryAuthorContext.setSearchingActionState()
   };
-  console.log("NodeSCUD " + glossaryAuthorContext.authoringState);
-  if (glossaryAuthorContext.authoringState == 0) {
+  console.log("NodeSCUD " + glossaryAuthorContext.myState);
+  if (glossaryAuthorContext.myState == 0) {
     return null;
   } else {
     return (
@@ -32,7 +30,7 @@ const NodeSCUD = props => {
           </div>
         </div>
         <div class="bx--row">
-          <NodeActionContent showCreate={showCreate}></NodeActionContent>
+          <NodeActionContent></NodeActionContent>
         </div>
       </div>
     );
