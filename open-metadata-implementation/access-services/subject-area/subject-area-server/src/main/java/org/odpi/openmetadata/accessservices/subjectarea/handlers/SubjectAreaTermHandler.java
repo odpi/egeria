@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
@@ -265,10 +266,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             if (response.getHead() != null) {
                 Term currentTerm = response.getHead();
 
-                Set<String> currentClassificationNames = currentTerm.getClassifications()
-                        .stream()
-                        .map(x -> x.getClassificationName())
-                        .collect(Collectors.toSet());
+                Set<String> currentClassificationNames = getCurrentClassificationNames(currentTerm);
 
                 if (isReplace)
                     replaceAttributes(currentTerm, suppliedTerm);
@@ -283,21 +281,21 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 currentTerm.setGovernanceActions(suppliedTerm.getGovernanceActions());
 
                 TermMapper termMapper = mappersFactory.get(TermMapper.class);
-                EntityDetail updateEntityDetail = termMapper.map(currentTerm);
-                oMRSAPIHelper.callOMRSUpdateEntity(methodName, userId, updateEntityDetail);
+                EntityDetail forUpdate = termMapper.map(currentTerm);
+                Optional<EntityDetail> updatedEntity = oMRSAPIHelper.callOMRSUpdateEntity(methodName, userId, forUpdate);
+                if (updatedEntity.isPresent()) {
+                    List<Classification> classifications = forUpdate.getClassifications();
+                    if (CollectionUtils.isNotEmpty(classifications)) {
+                        for (Classification classification : classifications) {
+                            oMRSAPIHelper.callOMRSClassifyEntity(methodName, userId, guid, classification);
+                            currentClassificationNames.remove(classification.getName());
+                        }
 
-                if (CollectionUtils.isNotEmpty(updateEntityDetail.getClassifications())) {
-
-                    for (Classification classification : updateEntityDetail.getClassifications()) {
-                        oMRSAPIHelper.callOMRSClassifyEntity(methodName, userId, guid, classification);
-                        currentClassificationNames.remove(classification.getName());
-                    }
-
-                    for (String deClassifyName : currentClassificationNames) {
-                        oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, deClassifyName);
+                        for (String deClassifyName : currentClassificationNames) {
+                            oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, deClassifyName);
+                        }
                     }
                 }
-
                     response = getTermByGuid(userId, guid);
             }
 
@@ -306,6 +304,26 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         }
 
         return response;
+    }
+
+    private Set<String> getCurrentClassificationNames(Term currentTerm) {
+        Set<String> currentClassificationNames = currentTerm.getClassifications()
+                .stream()
+                .map(x -> x.getClassificationName())
+                .collect(Collectors.toSet());
+
+        GovernanceActions currentActions = currentTerm.getGovernanceActions();
+        if (currentActions != null) {
+            if (currentActions.getConfidence()!=null)
+                currentClassificationNames.add(currentActions.getConfidence().getClassificationName());
+            if (currentActions.getConfidentiality()!=null)
+                currentClassificationNames.add(currentActions.getConfidentiality().getClassificationName());
+            if (currentActions.getRetention()!=null)
+                currentClassificationNames.add(currentActions.getRetention().getClassificationName());
+            if (currentActions.getCriticality()!=null)
+                currentClassificationNames.add(currentActions.getCriticality().getClassificationName());
+        }
+        return currentClassificationNames;
     }
 
     private void replaceAttributes(Term currentTerm, Term newTerm) {

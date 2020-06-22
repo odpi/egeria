@@ -115,7 +115,7 @@ public class Node implements Serializable, OmasObject {
      * @param classifications list of classifications to set on the Node.
      */
     public void setClassifications(List<Classification> classifications) {
-        this.classifications=classifications;
+        this.classifications = classifications;
     }
     /**
      * icon summary

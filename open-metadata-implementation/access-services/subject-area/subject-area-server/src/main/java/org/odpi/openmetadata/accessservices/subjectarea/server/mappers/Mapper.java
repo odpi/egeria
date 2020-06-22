@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
 
-public interface Mapper<OMRS extends InstanceHeader, OMAS extends OmasObject> {
+public interface Mapper<OMRS extends InstanceAuditHeader, OMAS extends OmasObject> {
 
     /**
      * Map from an OMRS object to a Subject Area OMAS object

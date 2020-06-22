@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
@@ -188,25 +189,25 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
         instanceProperties.setEffectiveToTime(node.getEffectiveToTime());
     }
     private void mapOmrsClassificationsToNode(EntityDetail omrsEntityDetail, N node) {
-        List<Classification> omrsclassifications = omrsEntityDetail.getClassifications() ;
-        if (omrsclassifications != null && !omrsclassifications.isEmpty()){
-            for (Classification omrsClassification:omrsclassifications) {
+        List<Classification> omrsclassifications = omrsEntityDetail.getClassifications();
+        if (CollectionUtils.isNotEmpty(omrsclassifications)) {
+            ClassificationFactory classficationFactory = new ClassificationFactory(omrsapiHelper);
+            List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification>
+                    existingClassifications = node.getClassifications();
+            if (existingClassifications == null) {
+                existingClassifications = new ArrayList<>();
+            }
+            for (Classification omrsClassification : omrsclassifications) {
                 String omrsClassificationName = omrsClassification.getName();
-                ClassificationFactory classficationFactory = new ClassificationFactory(omrsapiHelper);
-                org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification = classficationFactory.getOMASClassification(omrsClassificationName,omrsClassification);
-                if (omasClassification !=null) {
+                org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification = classficationFactory.getOMASClassification(omrsClassificationName, omrsClassification);
+                if (omasClassification != null) {
                     // this is a classification we know about.
-                    if (!updateNodeWithClassification(node,omasClassification)) {
-                        // need to add this classification to the classifications
-                        List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> existingClassifications = node.getClassifications();
-                        if ( existingClassifications==null) {
-                            existingClassifications = new ArrayList<>();
-                        }
-                        existingClassifications.add(omasClassification);
-                        node.setClassifications(existingClassifications);
-                    }
+                    updateNodeWithClassification(node, omasClassification);
+                    // need to add this classification to the classifications
+                    existingClassifications.add(omasClassification);
                 }
             }
+            node.setClassifications(existingClassifications);
         }
     }
 
