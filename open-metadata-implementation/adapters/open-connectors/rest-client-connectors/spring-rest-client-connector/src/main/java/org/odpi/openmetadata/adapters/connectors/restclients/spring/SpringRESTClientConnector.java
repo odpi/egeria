@@ -10,6 +10,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.codehaus.plexus.util.Base64;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.RESTClientConnectorErrorCode;
+import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTConfigurationException;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
@@ -27,11 +28,10 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import javax.net.ssl.*;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.security.*;
-import java.security.cert.CertificateException;
+import java.security.KeyStore;
+import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.List;
@@ -53,7 +53,9 @@ public class SpringRESTClientConnector extends RESTClientConnector
     // As we may want to make distinction (for mutual ssl). here is only client
     private static final String ENV_SSL_VERIFY = "EGERIA_SSL_CLIENT_VERIFY";
     private static final String SYSPROP_SSL_VERIFY = "egeria.ssl.client.verify";
-    private static boolean SSL_VERIFY=false;
+
+    // TODO: Rename vars
+    private static boolean sslVerify=false;
 
     private static final String ENV_SSL_TRUSTSTORE = "EGERIA_SSL_CLIENT_TRUSTSTORE";
     private static final String SYSPROP_SSL_SERVER_TRUSTSTORE = "server.ssl.trust-store";
@@ -78,6 +80,10 @@ public class SpringRESTClientConnector extends RESTClientConnector
     private static final String SYSPROP_SSL_KEYSTOREPASS = "egeria.ssl.client.keystorepass";
     private static final String SYSPROP_SSL_JVM_KEYSTOREPASS = "javax.net.ssl.keyStorePassword";
     private static String keystorePassword=null; // auth for above
+
+    private static String protocol12="TLSv1.2";
+    private static String protocol13="TLSv1.3";
+    private static String protocol=protocol12;
 
     // Initialize configuration
     // Environment variables take precedence, then system properties, then our built-in defaults
@@ -111,8 +117,8 @@ public class SpringRESTClientConnector extends RESTClientConnector
                     }
         }
 
-        SSL_VERIFY = !StringUtils.equalsIgnoreCase(sslVerifySetting, "false");
-        log.debug("egeria-ssl: ssl verification SET to: " + SSL_VERIFY);
+        sslVerify = !StringUtils.equalsIgnoreCase(sslVerifySetting, "false");
+        log.debug("egeria-ssl: ssl verification SET to: " + sslVerify);
 
 
         // Decide which truststore to use - once we decide we'll use the corresponding password if found
@@ -202,129 +208,144 @@ public class SpringRESTClientConnector extends RESTClientConnector
             log.debug("egeria-ssl: keystore left at default");
 
         // The truststore and password should now be available - null will just mean not certs loaded
+
+        // As of Mar 2020 TLS v1.1 is deprecated. Java 8 supports v1.2, so is our default
+        // Java 11 upwards supports TLS v1.3 so we will enable that if we can
+        if (Float.valueOf(System.getProperty("java.specification.version"))>=11) {
+            protocol = protocol13;
+        }
+
+        log.debug("egeria-ssl: protocol is " + protocol);
     }
 
     /**
      * Default constructor
      */
-    public SpringRESTClientConnector() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException, CertificateException, UnrecoverableKeyException {
-        this(SSL_VERIFY);
-    }
+    public SpringRESTClientConnector() throws RESTConfigurationException {
 
-    /**
-     * constructor with ssl option
-     * @param ssl_verify boolean to indicate if SSL cert checking is done
-     */
-    public SpringRESTClientConnector(boolean ssl_verify) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException,
-            IOException, CertificateException, UnrecoverableKeyException {
         super();
 
+        final String methodName = "SpringRESTClientConnector";
         /* TODO: Disable SSL cert verification -- for now */
         //TODO: Can throw NoSuchAlgorithmException : TLS v1.3 SSLContext not available
         // TLS v1.3 only possible in Java 11+
-        SSLContext sc = SSLContext.getInstance("TLSv1.2");
+        try {
+            SSLContext sc = SSLContext.getInstance("TLSv1.2");
 
-        // TODO - this is where we inject key manager and trust manager if we want to use non-default settings
-        // For now keystore must be in pkcs12 - default Java 9 & above, and for all non java
-        if (ssl_verify) {
-            InputStream tsf;
-            InputStream ksf;
 
-            // Truststore -- where we store CAs & certificates we trust. Used by client in 1way and mutual SSL
-            KeyStore tStore = KeyStore.getInstance("PKCS12");
-            TrustManagerFactory tmFactory = TrustManagerFactory.getInstance("X509");
+            // TODO - this is where we inject key manager and trust manager if we want to use non-default settings
+            // For now keystore must be in pkcs12 - default Java 9 & above, and for all non java
+            if (sslVerify) {
+                InputStream tsf;
+                InputStream ksf;
 
-            // Allow use of classpath - to find resource inside jar. Useful for out of the box config
-            if (StringUtils.startsWithIgnoreCase(truststore, "classpath:")) {
-                tsf=this.getClass().getClassLoader().getResourceAsStream(StringUtils.removeStart(truststore,"classpath:"));
-            }
-            else
-                // otherwise absolute filename
-            //TODO: If truststore is null - or file not found, we'll hit an exception here
-                tsf = new FileInputStream(truststore);
+                // Truststore -- where we store CAs & certificates we trust. Used by client in 1way and mutual SSL
+                KeyStore tStore = KeyStore.getInstance("PKCS12");
+                TrustManagerFactory tmFactory = TrustManagerFactory.getInstance("X509");
 
-            // Load the keystore, initialise the factory
-            tStore.load(tsf,truststorePassword.toCharArray());
-            tmFactory.init(tStore);
-            tsf.close();
-
-            KeyStore kStore=null;
-            KeyManagerFactory kmf=null;
-            if (StringUtils.isNotBlank(keystore)) {
-                // Very similar for keystore - this is needed for mutual ssl
-                // Default KeyManager will choose an appropriate cert to use
-                //TODO: Implement own X509KeyManager if required to choose by alias - the default
-                //implementation will chose the first appropriate one in alphanumeric order.
-                kStore = KeyStore.getInstance("PKCS12");
-                 kmf = KeyManagerFactory.getInstance("X509");
-
-                if (StringUtils.startsWithIgnoreCase(keystore, "classpath:")) {
-                    ksf = this.getClass().getClassLoader().getResourceAsStream(StringUtils.removeStart(keystore, "classpath:"));
+                // Allow use of classpath - to find resource inside jar. Useful for out of the box config
+                if (StringUtils.startsWithIgnoreCase(truststore, "classpath:")) {
+                    tsf = this.getClass().getClassLoader().getResourceAsStream(StringUtils.removeStart(truststore, "classpath:"));
                 } else
-                    ksf = new FileInputStream(keystore);
-                kStore.load(ksf, keystorePassword.toCharArray());
-                kmf.init(kStore, keystorePassword.toCharArray());
-                ksf.close();
-            }
+                    // otherwise absolute filename
+                    //TODO: If truststore is null - or file not found, we'll hit an exception here
+                    tsf = new FileInputStream(truststore);
 
-            // Get a good seed for the crypt
-            SecureRandom random = new SecureRandom();
-            random.setSeed(System.currentTimeMillis());
+                // Load the keystore, initialise the factory
+                tStore.load(tsf, truststorePassword.toCharArray());
+                tmFactory.init(tStore);
+                tsf.close();
 
-            // Now have a new SSL context
-            // Quick fix - if keystore not set let's skip that part
-            if (StringUtils.isNotBlank(keystore))
-            {
-                sc.init(kmf.getKeyManagers(), tmFactory.getTrustManagers(), random);
-            }
+                KeyStore kStore = null;
+                KeyManagerFactory kmf = null;
+                if (StringUtils.isNotBlank(keystore)) {
+                    // Very similar for keystore - this is needed for mutual ssl
+                    // Default KeyManager will choose an appropriate cert to use
+                    //TODO: Implement own X509KeyManager if required to choose by alias - the default
+                    //implementation will chose the first appropriate one in alphanumeric order.
+                    kStore = KeyStore.getInstance("PKCS12");
+                    kmf = KeyManagerFactory.getInstance("X509");
+
+                    if (StringUtils.startsWithIgnoreCase(keystore, "classpath:")) {
+                        ksf = this.getClass().getClassLoader().getResourceAsStream(StringUtils.removeStart(keystore, "classpath:"));
+                    } else
+                        ksf = new FileInputStream(keystore);
+                    kStore.load(ksf, keystorePassword.toCharArray());
+                    kmf.init(kStore, keystorePassword.toCharArray());
+                    ksf.close();
+                }
+
+                // Get a good seed for the crypt
+                SecureRandom random = new SecureRandom();
+                random.setSeed(System.currentTimeMillis());
+
+                // Now have a new SSL context
+                // Quick fix - if keystore not set let's skip that part
+                if (StringUtils.isNotBlank(keystore)) {
+                    sc.init(kmf.getKeyManagers(), tmFactory.getTrustManagers(), random);
+                } else
+                    sc.init(null, tmFactory.getTrustManagers(), random);
+
+            } else
+                // no-ops when SSL verification is not used
+                sc.init(null, INSECURE_MANAGER, null);
+
+
+            // Get a custom httpclient - scope to Egeria rest API calls & do not impact other usages
+
+            HttpClientBuilder httpBuilder = HttpClientBuilder.create();
+            httpBuilder.useSystemProperties();
+            httpBuilder.setSSLContext(sc);
+
+            if (sslVerify)
+                httpBuilder.setSSLHostnameVerifier(new DefaultHostnameVerifier());
             else
-                sc.init(null, tmFactory.getTrustManagers(), random);
+                httpBuilder.setSSLHostnameVerifier(new NoopHostnameVerifier());
 
+            CloseableHttpClient httpClient;
+            httpClient = httpBuilder.build();
+
+            HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+            requestFactory.setHttpClient(httpClient);
+
+            restTemplate = new RestTemplate(requestFactory);
+
+            /*
+             * Rather than creating a RestTemplate directly, the RestTemplateBuilder is used so that the
+             * uriTemplateHandler can be specified. The URI encoding is set to VALUES_ONLY so that the
+             * '+' character, which is used in queryParameters conveying searchCriteria, which can be a
+             * regex, is encoded as '+' and not converted to a space character.
+             * Prior to this change a regex containing a '+' character would be split into two space
+             * separated words. For example, the regex "name_0+7" (which would match name_07, name_007,
+             * name_0007, etc) would be sent to the server as "name_0 7".
+             */
+            DefaultUriBuilderFactory builderFactory = new DefaultUriBuilderFactory();
+            builderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
+            restTemplate.setUriTemplateHandler(builderFactory);
+
+            /* Ensure that the REST template always uses UTF-8 */
+            List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
+            converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
+            converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+
+        } catch (Exception error) {
+            RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.REST_CLIENT_CONFIG_ERROR;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+                    methodName,
+                    error.getMessage());
+
+            throw new RESTConfigurationException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    error);
         }
-
-        else
-            // no-ops when SSL verification is not used
-            sc.init(null, INSECURE_MANAGER, null);
-
-
-        // Get a custom httpclient - scope to Egeria rest API calls & do not impact other usages
-
-        HttpClientBuilder httpBuilder = HttpClientBuilder.create();
-        httpBuilder.useSystemProperties();
-        httpBuilder.setSSLContext(sc);
-
-        if (ssl_verify)
-            httpBuilder.setSSLHostnameVerifier(new DefaultHostnameVerifier());
-        else
-            httpBuilder.setSSLHostnameVerifier(new NoopHostnameVerifier());
-
-        CloseableHttpClient httpClient;
-        httpClient = httpBuilder.build();
-
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-        requestFactory.setHttpClient(httpClient);
-
-        restTemplate = new RestTemplate(requestFactory);
-
-        /*
-         * Rather than creating a RestTemplate directly, the RestTemplateBuilder is used so that the
-         * uriTemplateHandler can be specified. The URI encoding is set to VALUES_ONLY so that the
-         * '+' character, which is used in queryParameters conveying searchCriteria, which can be a
-         * regex, is encoded as '+' and not converted to a space character.
-         * Prior to this change a regex containing a '+' character would be split into two space
-         * separated words. For example, the regex "name_0+7" (which would match name_07, name_007,
-         * name_0007, etc) would be sent to the server as "name_0 7".
-         */
-        DefaultUriBuilderFactory builderFactory = new DefaultUriBuilderFactory();
-        builderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
-        restTemplate.setUriTemplateHandler(builderFactory);
-
-        /* Ensure that the REST template always uses UTF-8 */
-        List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
-        converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
-        converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
-
     }
+
+
 
 
     /**

@@ -40,7 +40,11 @@ public enum RESTClientConnectorErrorCode
     EXCEPTION_RESPONSE_FROM_API(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-003 ",
             "A {0} exception was received from REST API call {1} to server {2}: error message was: {3}",
             "The system has issued a call to an open metadata access service REST API in a remote server and has received an exception response.",
-            "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error.")
+            "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error."),
+    REST_CLIENT_CONFIG_ERROR(403, "CLIENT-SIDE-REST-API-CONNECTOR-503-004 ",
+            "A {0} exception was received in method {1} when configuring the http client: error message was: {3}",
+            "The system has tried to initialise the SSL Configuration and has received an exception response.",
+            "The error message should indicate the cause of the error.  It is likely the java security configuration needs correcting.")
     ;
 
 
