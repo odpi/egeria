@@ -536,17 +536,18 @@ public class RepositoryHandler
      * @param entityTypeName name of the entity's type
      * @param properties properties for the entity
      * @param methodName name of calling method
+     * @return updated EntityDetail or null
      *
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void    updateEntity(String                  userId,
-                                String                  entityGUID,
-                                String                  entityTypeGUID,
-                                String                  entityTypeName,
-                                InstanceProperties      properties,
-                                String                  methodName) throws UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public EntityDetail updateEntity(String                  userId,
+                                     String                  entityGUID,
+                                     String                  entityTypeGUID,
+                                     String                  entityTypeName,
+                                     InstanceProperties      properties,
+                                     String                  methodName) throws UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         try
         {
@@ -561,6 +562,8 @@ public class RepositoryHandler
                                             properties,
                                             methodName);
             }
+
+            return newEntity;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -570,6 +573,8 @@ public class RepositoryHandler
         {
             errorHandler.handleRepositoryError(error, methodName);
         }
+
+        return null;
     }
 
 

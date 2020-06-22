@@ -188,29 +188,31 @@ public class OMRSAPIHelper {
     }
 
 
-    public void callOMRSUpdateEntity(String restAPIName,
-                                     String userId,
-                                     EntityDetail entityDetail) throws UserNotAuthorizedException,
-                                                                        PropertyServerException,
-                                                                        SubjectAreaCheckedException
+    public Optional<EntityDetail> callOMRSUpdateEntity(String restAPIName,
+                                                       String userId,
+                                                       EntityDetail entityDetail) throws UserNotAuthorizedException,
+                                                                                         PropertyServerException,
+                                                                                         SubjectAreaCheckedException
     {
         String methodName = "callOMRSUpdateEntityProperties";
         showMethodNameIfDebugEnabled(methodName);
 
         try {
-            getRepositoryHandler().updateEntity(
+           return Optional.ofNullable(
+                   getRepositoryHandler().updateEntity(
                     userId,
                     entityDetail.getGUID(),
                     entityDetail.getType().getTypeDefGUID(),
                     entityDetail.getType().getTypeDefName(),
                     entityDetail.getProperties(),
-                    restAPIName
-            );
+                    restAPIName)
+           );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
         } catch (Throwable error) {
             prepareUnexpectedError(error, methodName);
         }
+        return Optional.empty();
     }
 
     public void callOMRSDeleteEntity(String restAPIName,
@@ -899,7 +901,7 @@ public class OMRSAPIHelper {
         return getTypeDefGUID(getServiceName(), typeDefName);
     }
 
-    public String getTypeDefGUID(String sourceName,  String typeDefName){
+    public String getTypeDefGUID(String sourceName,  String typeDefName) {
         return getOMRSRepositoryHelper().getTypeDefByName(sourceName, typeDefName).getGUID();
     }
 
