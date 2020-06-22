@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -30,9 +30,18 @@ function NodeCreate(props) {
 
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
   console.log("NodeCreate glossaryAuthorContext", glossaryAuthorContext);
+
   const [errorMsg, setErrorMsg] = useState();
   const [createBody, setCreateBody] = useState({});
-  const [created, setCreated] = useState();
+  const [createResponse, setCreateResponse] = useState(undefined);
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    if (
+      glossaryAuthorContext.authoringActionState == 1 
+    )
+      setCreateResponse(undefined);
+  });
   /**
    * If there was an error the button has a class added to it to cause it to shake. After the animation ends, we need to remove the class.
    * @param {*} e end anomation event
@@ -75,24 +84,25 @@ function NodeCreate(props) {
         const nodeResponse = res[nodeType.key];
         // if there is a node response then we have successfully created a node
         if (nodeResponse) {
-          if (glossaryAuthorContext.authoringState == 1) {
+          glossaryAuthorContext.setCreatedActionState();
+          setCreateResponse(nodeResponse);
+          if (glossaryAuthorContext.myState == 1) {
             glossaryAuthorContext.setMyGlossary(nodeResponse);
             glossaryAuthorContext.setMyGlossaryLabel(nodeResponse.name);
             glossaryAuthorContext.setMyGlossaryState();
-          } else if (glossaryAuthorContext.authoringState == 2) {
+          } else if (glossaryAuthorContext.myState == 2) {
             glossaryAuthorContext.setMyProject(nodeResponse);
             glossaryAuthorContext.setMyProjectLabel(nodeResponse.name);
             glossaryAuthorContext.setMyProjectState();
           }
 
-          // check if fully setup fully setup - we might still have only set the myProject or myGlossary (not both)
+          // check if fully setup - we might still have only set the myProject or myGlossary (not both)
           if (
             glossaryAuthorContext.myProject &&
             glossaryAuthorContext.myGlossary
           ) {
-            glossaryAuthorContext.setAuthoringState(5);
+            glossaryAuthorContext.setMyState(5);
           }
-          setCreated(nodeResponse);
         } else {
           let msg = "";
           if (res.responseCategory) {
@@ -147,14 +157,14 @@ function NodeCreate(props) {
   ];
 
   const getCreatedTableTitle = () => {
-    return "Created " + created.name;
+    return "Successfully created " + createResponse.name;
   };
 
   const getCreatedTableAttrRowData = () => {
     let rowData = [];
     const attributes = glossaryAuthorContext.currentNodeType.attributes;
 
-    for (var prop in created) {
+    for (var prop in createResponse) {
       if (
         prop != "systemAttributes" &&
         prop != "glossary" &&
@@ -175,7 +185,7 @@ function NodeCreate(props) {
           }
         }
 
-        let value = created[prop];
+        let value = createResponse[prop];
         // TODO deal with the other types (and null? and arrays?) properly
         value = JSON.stringify(value);
         row.value = value;
@@ -186,7 +196,7 @@ function NodeCreate(props) {
   };
   const getSystemDataRowData = () => {
     let rowData = [];
-    const systemAttributes = created.systemAttributes;
+    const systemAttributes = createResponse.systemAttributes;
     for (var prop in systemAttributes) {
       let row = {};
       row.id = prop;
@@ -211,7 +221,7 @@ function NodeCreate(props) {
 
   return (
     <div>
-      {created && (
+      {glossaryAuthorContext.currentNodeType && createResponse && (
         <div>
           <DataTable
             isSortable
@@ -283,70 +293,72 @@ function NodeCreate(props) {
         </div>
       )}
 
-      {!created && (
-        <form>
-          <div>
-            <h4>
-              Create{" "}
-              {glossaryAuthorContext.currentNodeType
-                ? glossaryAuthorContext.currentNodeType.typeName
-                : ""}
-              <Info16 />
-            </h4>
-          </div>
+      {glossaryAuthorContext.currentNodeType && !createResponse && (
+        <div>
+          <form>
+            <div>
+              <h4>
+                Create{" "}
+                {glossaryAuthorContext.currentNodeType
+                  ? glossaryAuthorContext.currentNodeType.typeName
+                  : ""}
+                <Info16 />
+              </h4>
+            </div>
 
-          {glossaryAuthorContext.currentNodeType &&
-            !created &&
-            glossaryAuthorContext.currentNodeType.attributes.map((item) => {
-              return (
-                <div class="bx--form-item">
-                  <label for={createLabelId(item.key)} class="bx--label">
-                    {item.label} <Info16 />
-                  </label>
-                  <input
-                    id={createLabelId(item.key)}
+            {glossaryAuthorContext.currentNodeType &&
+              !createResponse &&
+              glossaryAuthorContext.currentNodeType.attributes.map((item) => {
+                return (
+                  <div class="bx--form-item">
+                    <label for={createLabelId(item.key)} class="bx--label">
+                      {item.label} <Info16 />
+                    </label>
+                    <input
+                      id={createLabelId(item.key)}
+                      type="text"
+                      class="bx--text-input"
+                      value={item.name}
+                      onChange={(e) => setAttribute(item, e.target.value)}
+                      placeholder={item.label}
+                    ></input>
+                  </div>
+                );
+              })}
+            <Accordion>
+              <AccordionItem title="Advanced options">
+                <DatePicker dateFormat="m/d/Y" datePickerType="range">
+                  <DatePickerInput
+                    id="date-picker-range-start"
+                    placeholder="mm/dd/yyyy"
+                    labelText="Effective from date"
                     type="text"
-                    class="bx--text-input"
-                    value={item.name}
-                    onChange={(e) => setAttribute(item, e.target.value)}
-                    placeholder={item.label}
-                  ></input>
-                </div>
-              );
-            })}
-          <Accordion>
-            <AccordionItem title="Advanced options">
-              <DatePicker dateFormat="m/d/Y" datePickerType="range">
-                <DatePickerInput
-                  id="date-picker-range-start"
-                  placeholder="mm/dd/yyyy"
-                  labelText="Effective from date"
-                  type="text"
-                />
-                <DatePickerInput
-                  id="date-picker-range-end"
-                  placeholder="mm/dd/yyyy"
-                  labelText="Effective to date"
-                  type="text"
-                />
-              </DatePicker>
-            </AccordionItem>
-          </Accordion>
+                  />
+                  <DatePickerInput
+                    id="date-picker-range-end"
+                    placeholder="mm/dd/yyyy"
+                    labelText="Effective to date"
+                    type="text"
+                  />
+                </DatePicker>
+              </AccordionItem>
+            </Accordion>
 
-          <div class="bx--form-item">
-            <button
-              id="nodeCreateButton"
-              class="bx--btn bx--btn--primary"
-              disabled={!validateForm()}
-              onClick={handleClick}
-              onAnimationEnd={handleOnAnimationEnd}
-              type="button"
-            >
-              Create
-            </button>
-            <div style={{ color: "red" }}>{errorMsg}</div>
-          </div>
-        </form>
+            <div class="bx--form-item">
+              <button
+                id="nodeCreateButton"
+                class="bx--btn bx--btn--primary"
+                disabled={!validateForm()}
+                onClick={handleClick}
+                onAnimationEnd={handleOnAnimationEnd}
+                type="button"
+              >
+                Create
+              </button>
+              <div style={{ color: "red" }}>{errorMsg}</div>
+            </div>
+          </form>
+        </div>
       )}
     </div>
   );

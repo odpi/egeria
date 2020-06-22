@@ -27,8 +27,8 @@ the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-serve
     * `remoteServerName` the remote server name
     * `remoteURL` the remote url. 
 * An example of the environment variable you would specify for a UI tenant with server name `aaa` with a remote server name
-`  cocoMDSV1` and remote URL of `https://localhost:9443 ` is
- ` EGERIA_PRESENTATIONSERVER_SERVER_aaa={"remoteServerName":"cocoMDSV1","remoteURL":"https://localhost:9443"}`
+`  cocoView1` and remote URL of `https://localhost:9443 ` is
+ ` EGERIA_PRESENTATIONSERVER_SERVER_aaa={"remoteServerName":"cocoView1","remoteURL":"https://localhost:9443"}`
 * To run the presentation server in production, use the presentation server assembly and specify the environment variables as required.   
 
 ## For development
@@ -42,7 +42,7 @@ the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-serve
 ## Access UI using the browser. 
  * Enter 'https://localhost:8091/<tenant-name>/' on the UI to access the tenanted UI (<tenant-name> is the serverName used by the presentation server). The Ui will prompt for a login; some of the 
  Coco Pharmaceutical personnas have been enabled here - use user 'faith' and password 'admin'. If there is an environment variable :
-  ` EGERIA_PRESENTATIONSERVER_SERVER_aaa={"remoteServerName":"cocoMDSV1","remoteURL":"https://localhost:9443"}`
+  ` EGERIA_PRESENTATIONSERVER_SERVER_aaa={"remoteServerName":"cocoView1","remoteURL":"https://localhost:9443"}`
   then the browser url to use to login is `https://localhost:8091/aaa`. All browser requests for this tenant will be issued using urls starting
   `https://localhost:8091/aaa`. 
     
