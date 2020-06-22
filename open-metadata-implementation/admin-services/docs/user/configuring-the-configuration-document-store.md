@@ -143,7 +143,7 @@ the following command:
 DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/stores/connection
 ```
 
-This reverts the store to the default clear text JSON file store.
+This reverts the store to the default encrypted JSON file store.
 
 ----
 Return to [Configuring the OMAG Server Platform](configuring-the-omag-server-platform.md)
