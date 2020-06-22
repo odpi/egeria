@@ -15,11 +15,7 @@
     "node_modules/@webcomponents/webcomponentsjs/bundles/*.js",
     "node_modules/visjs-network/dist/vis-network.min.*"
   ],
-  "builds": [
-    {
-      "name": "dev"
-    }
-  ],
+  "builds": [],
   "moduleResolution": "node",
   "npm": true,
   "lint": {

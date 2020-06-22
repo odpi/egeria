@@ -32,7 +32,7 @@ const TypesContextProvider = (props) => {
 
 
   /*
-   * loadTypeInfo function is an asynchronous funcition that triggers loading of types and (in _loadTypeInfo) sets the state for tex, 
+   * loadTypeInfo function is an asynchronous function that triggers loading of types and (in _loadTypeInfo) sets the state for tex,
    * which can then be accessed by getter functions below
    */
   const loadTypeInfo = () => {
