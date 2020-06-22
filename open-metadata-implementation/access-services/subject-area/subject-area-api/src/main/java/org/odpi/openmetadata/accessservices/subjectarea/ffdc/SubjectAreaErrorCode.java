@@ -242,7 +242,7 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The system is unable to connect to the OMAG Server to retrieve metadata properties as the server name was not specified.",
             "Ensure a valid OMAG Server name is passed to the Subject Area OMAS when it is created."),
     UNEXPECTED_EXCEPTION(400, "OMAS-SUBJECT-AREA-400-070",
-            "An unexpected Exception occurred. The Exception message is {1}.",
+            "An unexpected Exception occurred. The Exception message is {0}.",
             "The system encountered an unexpected exception.",
             "Review the exception message to assess whether this is a logic error (in which case raise a git issue against Egeria, or a resource constraint - in which case address that issue."),
     BAD_OUT_TOPIC_CONNECTION(400, "OMAS-SUBJECT-AREA-400-071",

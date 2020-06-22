@@ -17,9 +17,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodes
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.NodeSummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -27,9 +26,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Subject Area OMAS utilities.
@@ -341,5 +338,23 @@ public class SubjectAreaUtils {
         Long timestamp = date.getTime();
         primitivePropertyValue.setPrimitiveValue(timestamp);
         instanceProperties.setProperty(propertyName, primitivePropertyValue);
+    }
+
+    /**
+     * Set icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
+     *
+     * Note that we should only return the icons that are effective - by checking the effective From and To dates against the current time
+     * @param userId userid under which to issue to the get of the related media
+     * @param guid to get associated icons from
+     * @return response with Set of IconSummary objects or an Exception response.
+     */
+    public SubjectAreaOMASAPIResponse2<IconSummary> getIconSummarySet(String userId, String guid) {
+        // if there are no icons then return an empty set
+
+        //TODO implement icon logic
+        SubjectAreaOMASAPIResponse2<IconSummary> response = new SubjectAreaOMASAPIResponse2<>();
+        Set<IconSummary> icons = new HashSet<>();
+        response.addAllResults(icons);
+        return response;
     }
 }

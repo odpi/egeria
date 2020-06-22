@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.accessservices.subjectarea.utilities;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -25,7 +25,6 @@ import java.util.*;
 public class OMRSAPIHelper {
 
     private static final Logger log = LoggerFactory.getLogger(OMRSAPIHelper.class);
-    private static final String className = OMRSAPIHelper.class.getName();
     private final String serviceName;
     private final String serverName;
     private OMRSRepositoryHelper omrsRepositoryHelper;
@@ -42,6 +41,7 @@ public class OMRSAPIHelper {
             String serverName,
             RepositoryHandler repositoryHandler,
             OMRSRepositoryHelper repositoryHelper
+
     ) {
         this.serviceName = serviceName;
         this.serverName = serverName;
@@ -70,6 +70,7 @@ public class OMRSAPIHelper {
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
+        String methodName = "callOMRSAddEntity";
         try {
            return getRepositoryHandler().createEntity(
                    userId,
@@ -82,12 +83,10 @@ public class OMRSAPIHelper {
            );
         } catch (UserNotAuthorizedException | PropertyServerException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
+        return null;
     }
 
     public Optional<EntityDetail> callOMRSGetEntityByGuid(String userId,
@@ -98,6 +97,7 @@ public class OMRSAPIHelper {
                                                                                      UserNotAuthorizedException,
                                                                                      InvalidParameterException
     {
+        String methodName = "callOMRSGetEntityByGuid";
         try {
             return Optional.ofNullable(getRepositoryHandler()
                             .getEntityByGUID(userId,
@@ -108,12 +108,11 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
+
+        return Optional.empty();
     }
 
     public List<EntityDetail> callFindEntitiesByPropertyValue(String userId,
@@ -146,12 +145,11 @@ public class OMRSAPIHelper {
                     );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
+
+        return null;
     }
 
     public List<EntityDetail> callGetEntitiesByType(String userId,
@@ -182,12 +180,11 @@ public class OMRSAPIHelper {
                     );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
+
+        return null;
     }
 
 
@@ -211,11 +208,8 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
     }
 
@@ -240,11 +234,8 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
     }
 
@@ -268,11 +259,8 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
     }
 
@@ -289,11 +277,8 @@ public class OMRSAPIHelper {
             getRepositoryHandler().restoreEntity(userId, deletedEntityGUID, restAPIName);
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
     }
 
@@ -304,14 +289,27 @@ public class OMRSAPIHelper {
                                                                              PropertyServerException,
                                                                              SubjectAreaCheckedException
     {
-        this.callOMRSClassifyEntity(
-                restAPIName,
-                userId,
-                entityGUID,
-                classification.getType().getTypeDefGUID(),
-                classification.getName(),
-                classification.getProperties()
-        );
+        String methodName = "callOMRSClassifyEntity";
+        try {
+            InstanceType type = classification.getType();
+            String typeDefGUID = null;
+
+            if (type != null) {
+                typeDefGUID = type.getTypeDefGUID();
+            }
+            this.callOMRSClassifyEntity(
+                    restAPIName,
+                    userId,
+                    entityGUID,
+                    typeDefGUID,
+                    classification.getName(),
+                    classification.getProperties()
+            );
+        } catch (PropertyServerException | UserNotAuthorizedException e) {
+            throw e;
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
+        }
     }
 
     public void callOMRSClassifyEntity(String restAPIName,
@@ -337,11 +335,8 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
     }
 
@@ -365,11 +360,8 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
     }
 
@@ -394,12 +386,10 @@ public class OMRSAPIHelper {
            );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
+        return Optional.empty();
     }
 
     public Optional<Relationship> callOMRSGetRelationshipByGuid(String restAPIName,
@@ -421,12 +411,11 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
+
+        return Optional.empty();
     }
 
     public void callOMRSUpdateRelationship(String restAPIName,
@@ -455,11 +444,8 @@ public class OMRSAPIHelper {
             }
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
     }
 
@@ -484,11 +470,8 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
     }
 
@@ -509,11 +492,8 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
 
     }
@@ -540,11 +520,8 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
     }
 
@@ -569,12 +546,10 @@ public class OMRSAPIHelper {
                     );
         } catch (UserNotAuthorizedException | PropertyServerException e) {
             throw e;
-        }  catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        }  catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
+        return null;
     }
 
     public List<Relationship> callGetRelationshipsForEntity(String restAPIName,
@@ -675,12 +650,11 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
+
+        return null;
     }
 
     public List<EntityDetail> callGetEntitiesForRelationshipEnd2(String restAPIName,
@@ -758,12 +732,11 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        }  catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        }  catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
+
+        return null;
     }
 
     public InstanceGraph callGetEntityNeighbourhood(String restAPIName,
@@ -795,12 +768,11 @@ public class OMRSAPIHelper {
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
-        } catch (Exception e) {
-            throw new SubjectAreaCheckedException(
-                    null,
-                    className,
-                    "Anything", e);
+        } catch (Throwable error) {
+            prepareUnexpectedError(error, methodName);
         }
+
+        return null;
     }
 
 
@@ -941,21 +913,8 @@ public class OMRSAPIHelper {
         }
     }
 
-    /**
-     * Set icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
-     *
-     * Note that we should only return the icons that are effective - by checking the effective From and To dates against the current time
-     * @param userId userid under which to issue to the get of the related media
-     * @param guid to get associated icons from
-     * @return response with Set of IconSummary objects or an Exception response.
-     */
-    public SubjectAreaOMASAPIResponse2<IconSummary> getIconSummarySet(String userId, String guid) {
-        // if there are no icons then return an empty set
-
-        //TODO implement icon logic
-        SubjectAreaOMASAPIResponse2<IconSummary> response = new SubjectAreaOMASAPIResponse2<>();
-        Set<IconSummary> icons = new HashSet<>();
-        response.addAllResults(icons);
-        return response;
+    private void prepareUnexpectedError(Throwable error, String methodName) throws SubjectAreaCheckedException {
+        ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getMessage());
+        throw new SubjectAreaCheckedException(messageDefinition, this.getClass().getName(), methodName);
     }
 }
