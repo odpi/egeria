@@ -84,6 +84,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid                 unique identifier of the Line
      * @param termHASARelationship the HASA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TermHASARelationship
@@ -97,13 +98,14 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/has-as")
+    @PutMapping(path = "/users/{userId}/relationships/has-as/{guid}")
     public SubjectAreaOMASAPIResponse2<Hasa> updateTermHASARelationship(@PathVariable String serverName,
                                                                         @PathVariable String userId,
+                                                                        @PathVariable String guid,
                                                                         @RequestBody Hasa termHASARelationship,
                                                                         @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
-        return restAPI.updateTermHASARelationship(serverName, userId, termHASARelationship, isReplace);
+        return restAPI.updateTermHASARelationship(serverName, userId, guid, termHASARelationship, isReplace);
     }
 
     /**
@@ -213,6 +215,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
+     * @param guid                    unique identifier of the Line
      * @param relatedTermRelationship the related term  relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created RelatedTerm
@@ -226,13 +229,14 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/related-terms")
+    @PutMapping(path = "/users/{userId}/relationships/related-terms/{guid}")
     public SubjectAreaOMASAPIResponse2<RelatedTerm> updateRelatedTerm(@PathVariable String serverName,
                                                                       @PathVariable String userId,
+                                                                      @PathVariable String guid,
                                                                       @RequestBody RelatedTerm relatedTermRelationship,
                                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
-        return restAPI.updateRelatedTerm(serverName, userId, relatedTermRelationship, isReplace);
+        return restAPI.updateRelatedTerm(serverName, userId, guid, relatedTermRelationship, isReplace);
     }
 
     /**
@@ -344,6 +348,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
+     * @param guid       unique identifier of the Line
      * @param synonym    the synonym  relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created SynonymRelationship
@@ -357,13 +362,14 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/synonyms")
+    @PutMapping(path = "/users/{userId}/relationships/synonyms/{guid}")
     public SubjectAreaOMASAPIResponse2<Synonym> updateSynonymRelationship(@PathVariable String serverName,
                                                                           @PathVariable String userId,
+                                                                          @PathVariable String guid,
                                                                           @RequestBody Synonym synonym,
                                                                           @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
-        return restAPI.updateSynonymRelationship(serverName, userId, synonym, isReplace);
+        return restAPI.updateSynonymRelationship(serverName, userId, guid, synonym, isReplace);
     }
 
     /**
@@ -473,6 +479,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
+     * @param guid       unique identifier of the Line
      * @param antonym    the antonym relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created AntonymRelationship
@@ -486,13 +493,14 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/antonyms")
+    @PutMapping(path = "/users/{userId}/relationships/antonyms/{guid}")
     public SubjectAreaOMASAPIResponse2<Antonym> updateAntonymRelationship(@PathVariable String serverName,
                                                                           @PathVariable String userId,
+                                                                          @PathVariable String guid,
                                                                           @RequestBody Antonym antonym,
                                                                           @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
-        return restAPI.updateAntonymRelationship(serverName, userId, antonym, isReplace);
+        return restAPI.updateAntonymRelationship(serverName, userId, guid, antonym, isReplace);
     }
 
     /**
@@ -602,6 +610,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName  serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId      userId under which the request is performed
+     * @param guid        unique identifier of the Line
      * @param translation the translation relationship
      * @param isReplace   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TranslationRelationship
@@ -615,13 +624,14 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/translations")
+    @PutMapping(path = "/users/{userId}/relationships/translations/{guid}")
     public SubjectAreaOMASAPIResponse2<Translation> updateTranslationRelationship(@PathVariable String serverName,
                                                                                   @PathVariable String userId,
+                                                                                  @PathVariable String guid,
                                                                                   @RequestBody Translation translation,
                                                                                   @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
-        return restAPI.updateTranslationRelationship(serverName, userId, translation, isReplace);
+        return restAPI.updateTranslationRelationship(serverName, userId, guid, translation, isReplace);
     }
 
     /**
@@ -731,6 +741,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId        userId under which the request is performed
+     * @param guid          unique identifier of the Line
      * @param usedInContext the used in context relationship
      * @param isReplace     flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created UsedInContextRelationship
@@ -744,13 +755,14 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/used-in-contexts")
+    @PutMapping(path = "/users/{userId}/relationships/used-in-contexts/{guid}")
     public SubjectAreaOMASAPIResponse2<UsedInContext> updateUsedInContextRelationship(@PathVariable String serverName,
                                                                                       @PathVariable String userId,
+                                                                                      @PathVariable String guid,
                                                                                       @RequestBody UsedInContext usedInContext,
                                                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
-        return restAPI.updateUsedInContextRelationship(serverName, userId, usedInContext, isReplace);
+        return restAPI.updateUsedInContextRelationship(serverName, userId, guid, usedInContext, isReplace);
     }
 
     /**
@@ -826,7 +838,7 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/preferred-terms")
-    public SubjectAreaOMASAPIResponse2<PreferredTerm> createpreferredTerm(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse2<PreferredTerm> createPreferredTerm(@PathVariable String serverName,
                                                                           @PathVariable String userId,
                                                                           @RequestBody PreferredTerm preferredTerm) {
         return restAPI.createPreferredTerm(serverName, userId, preferredTerm);
@@ -860,6 +872,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId        userId under which the request is performed
+     * @param guid          unique identifier of the Line
      * @param preferredTerm the preferred term relationship
      * @param isReplace     flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created PreferredTermRelationship
@@ -874,13 +887,14 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/preferred-terms")
+    @PutMapping(path = "/users/{userId}/relationships/preferred-terms/{guid}")
     public SubjectAreaOMASAPIResponse2<PreferredTerm> updatePreferredTermRelationship(@PathVariable String serverName,
                                                                                       @PathVariable String userId,
+                                                                                      @PathVariable String guid,
                                                                                       @RequestBody PreferredTerm preferredTerm,
                                                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
-        return restAPI.updatePreferredTermRelationship(serverName, userId, preferredTerm, isReplace);
+        return restAPI.updatePreferredTermRelationship(serverName, userId, guid, preferredTerm, isReplace);
     }
 
     /**
@@ -991,6 +1005,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
+     * @param guid       unique identifier of the Line
      * @param validValue the valid value relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ValidValueRelationship
@@ -1004,13 +1019,14 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/valid-values")
+    @PutMapping(path = "/users/{userId}/relationships/valid-values/{guid}")
     public SubjectAreaOMASAPIResponse2<ValidValue> updateValidValueRelationship(@PathVariable String serverName,
                                                                                 @PathVariable String userId,
+                                                                                @PathVariable String guid,
                                                                                 @RequestBody ValidValue validValue,
                                                                                 @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
-        return restAPI.updateValidValueRelationship(serverName, userId, validValue, isReplace);
+        return restAPI.updateValidValueRelationship(serverName, userId, guid, validValue, isReplace);
     }
 
 
@@ -1121,6 +1137,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName      serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId          userId under which the request is performed
+     * @param guid            unique identifier of the Line
      * @param replacementTerm the replacement term relationship
      * @param isReplace       flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ReplacementTermRelationship
@@ -1134,13 +1151,14 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/replacement-terms")
+    @PutMapping(path = "/users/{userId}/relationships/replacement-terms/{guid}")
     public SubjectAreaOMASAPIResponse2<ReplacementTerm> updateReplacementTermRelationship(@PathVariable String serverName,
                                                                                           @PathVariable String userId,
+                                                                                          @PathVariable String guid,
                                                                                           @RequestBody ReplacementTerm replacementTerm,
                                                                                           @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
-        return restAPI.updateReplacementTerm(serverName, userId, replacementTerm, isReplace);
+        return restAPI.updateReplacementTerm(serverName, userId, guid, replacementTerm, isReplace);
     }
 
     /**
@@ -1250,6 +1268,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
+     * @param guid                    unique identifier of the Line
      * @param termTYPEDBYRelationship the typed by relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TermTYPEDBYRelationshipRelationship
@@ -1263,13 +1282,14 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/typed-bys")
+    @PutMapping(path = "/users/{userId}/relationships/typed-bys/{guid}")
     public SubjectAreaOMASAPIResponse2<TypedBy> updateTermTYPEDBYRelationship(@PathVariable String serverName,
                                                                               @PathVariable String userId,
+                                                                              @PathVariable String guid,
                                                                               @RequestBody TypedBy termTYPEDBYRelationship,
                                                                               @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
-        return restAPI.updateTermTYPEDBYRelationship(serverName, userId, termTYPEDBYRelationship, isReplace);
+        return restAPI.updateTermTYPEDBYRelationship(serverName, userId, guid, termTYPEDBYRelationship, isReplace);
     }
 
     /**
@@ -1379,6 +1399,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
+     * @param guid       unique identifier of the Line
      * @param isa        the is-a relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ISARelationshipRelationship
@@ -1392,12 +1413,13 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/is-as")
+    @PutMapping(path = "/users/{userId}/relationships/is-as/{guid}")
     public SubjectAreaOMASAPIResponse2<Isa> updateISARelationship(@PathVariable String serverName,
                                                                   @PathVariable String userId,
+                                                                  @PathVariable String guid,
                                                                   @RequestBody Isa isa,
                                                                   @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
-        return restAPI.updateISARelationship(serverName, userId, isa, isReplace);
+        return restAPI.updateISARelationship(serverName, userId, guid, isa, isReplace);
     }
 
     /**
@@ -1507,6 +1529,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
+     * @param guid       unique identifier of the Line
      * @param isatypeof  the is-a-type-of relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ISARelationshipRelationship
@@ -1520,12 +1543,13 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/is-a-type-ofs")
+    @PutMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse2<IsaTypeOf> updateISARelationship(@PathVariable String serverName,
                                                                         @PathVariable String userId,
+                                                                        @PathVariable String guid,
                                                                         @RequestBody IsaTypeOf isatypeof,
                                                                         @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
-        return restAPI.updateTermISATypeOFRelationship(serverName, userId, isatypeof, isReplace);
+        return restAPI.updateTermISATypeOFRelationship(serverName, userId, guid, isatypeof, isReplace);
     }
 
 
@@ -1638,6 +1662,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
+     * @param guid       unique identifier of the Line
      * @param isatypeof  the is-a-type-of relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created termCategorization Relationship
@@ -1651,12 +1676,13 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/term-categorizations")
+    @PutMapping(path = "/users/{userId}/relationships/term-categorizations/{guid}")
     public SubjectAreaOMASAPIResponse2<Categorization> updateTermCategorizationRelationship(@PathVariable String serverName,
                                                                                             @PathVariable String userId,
+                                                                                            @PathVariable String guid,
                                                                                             @RequestBody Categorization isatypeof,
                                                                                             @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
-        return restAPI.updateTermCategorizationRelationship(serverName, userId, isatypeof, isReplace);
+        return restAPI.updateTermCategorizationRelationship(serverName, userId, guid, isatypeof, isReplace);
     }
 
 
@@ -1975,6 +2001,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed
+     * @param guid         unique identifier of the Line
      * @param projectScope the projectScope relationship
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ProjectScopeRelationship
@@ -1988,12 +2015,13 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/project-scopes")
+    @PutMapping(path = "/users/{userId}/relationships/project-scopes/{guid}")
     public SubjectAreaOMASAPIResponse2<ProjectScope> updateProjectScopeRelationship(@PathVariable String serverName,
                                                                                     @PathVariable String userId,
+                                                                                    @PathVariable String guid,
                                                                                     @RequestBody ProjectScope projectScope,
                                                                                     @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
-        return restAPI.updateProjectScopeRelationship(serverName, userId, projectScope, isReplace);
+        return restAPI.updateProjectScopeRelationship(serverName, userId, guid, projectScope, isReplace);
     }
 
     /**

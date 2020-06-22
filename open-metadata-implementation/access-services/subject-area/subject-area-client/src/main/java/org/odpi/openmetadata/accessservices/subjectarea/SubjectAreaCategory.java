@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 
 import java.util.Date;
 import java.util.List;
@@ -297,7 +298,7 @@ public interface SubjectAreaCategory {
                                         Date asOfTime,
                                         int offset,
                                         int pageSize,
-                                        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                        SequencingOrder sequencingOrder,
                                         String sequencingProperty) throws
                                                                    UserNotAuthorizedException,
                                                                    InvalidParameterException,
@@ -336,7 +337,7 @@ public interface SubjectAreaCategory {
             Date asOfTime,
             int offset,
             int pageSize,
-            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+            SequencingOrder sequencingOrder,
             String sequencingProperty) throws
                                        MetadataServerUncontactableException,
                                        UserNotAuthorizedException,

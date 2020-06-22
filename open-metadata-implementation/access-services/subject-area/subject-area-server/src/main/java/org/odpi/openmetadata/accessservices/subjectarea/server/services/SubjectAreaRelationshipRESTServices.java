@@ -76,6 +76,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid                 unique identifier of the Line
      * @param termHASARelationship the HASA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated Hasa
@@ -90,9 +91,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Hasa> updateTermHASARelationship(String serverName, String userId, Hasa termHASARelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<Hasa> updateTermHASARelationship(String serverName, String userId, String guid, Hasa termHASARelationship, boolean isReplace) {
         String restAPIName = "updateTermHASARelationship";
-        return updateLine(serverName, restAPIName, userId, TermHASARelationshipMapper.class, termHASARelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, TermHASARelationshipMapper.class, termHASARelationship, isReplace);
     }
 
     /**
@@ -193,6 +194,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
+     * @param guid                    unique identifier of the Line
      * @param relatedTermRelationship the related term  relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated RelatedTerm
@@ -207,9 +209,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<RelatedTerm> updateRelatedTerm(String serverName, String userId, RelatedTerm relatedTermRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<RelatedTerm> updateRelatedTerm(String serverName, String userId, String guid, RelatedTerm relatedTermRelationship, boolean isReplace) {
         String restAPIName = "updateRelatedTerm";
-        return updateLine(serverName, restAPIName, userId, RelatedTermMapper.class, relatedTermRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, RelatedTermMapper.class, relatedTermRelationship, isReplace);
     }
 
     /**
@@ -311,6 +313,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
+     * @param guid       unique identifier of the Line
      * @param synonym    the Synonym relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated SynonymRelationship
@@ -325,9 +328,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Synonym> updateSynonymRelationship(String serverName, String userId, Synonym synonym, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<Synonym> updateSynonymRelationship(String serverName, String userId, String guid, Synonym synonym, boolean isReplace) {
         String restAPIName = "updateSynonymRelationship";
-        return updateLine(serverName, restAPIName, userId, SynonymMapper.class, synonym, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, SynonymMapper.class, synonym, isReplace);
     }
 
     /**
@@ -428,6 +431,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
+     * @param guid       unique identifier of the Line
      * @param antonym    the Antonym relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated AntonymRelationship
@@ -442,9 +446,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Antonym> updateAntonymRelationship(String serverName, String userId, Antonym antonym, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<Antonym> updateAntonymRelationship(String serverName, String userId, String guid, Antonym antonym, boolean isReplace) {
         String restAPIName = "updateAntonymRelationship";
-        return updateLine(serverName, restAPIName, userId, AntonymMapper.class, antonym, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, AntonymMapper.class, antonym, isReplace);
     }
 
     /**
@@ -546,6 +550,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
+     * @param guid                    unique identifier of the Line
      * @param translationRelationship the Translation relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated TranslationRelationship
@@ -560,9 +565,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Translation> updateTranslationRelationship(String serverName, String userId, Translation translationRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<Translation> updateTranslationRelationship(String serverName, String userId, String guid, Translation translationRelationship, boolean isReplace) {
         String restAPIName = "updateTranslationRelationship";
-        return updateLine(serverName, restAPIName, userId, TranslationMapper.class, translationRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, TranslationMapper.class, translationRelationship, isReplace);
     }
 
     /**
@@ -664,6 +669,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
+     * @param guid                      unique identifier of the Line
      * @param usedInContextRelationship the UsedInContext relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated UsedInContextRelationship
@@ -677,9 +683,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<UsedInContext> updateUsedInContextRelationship(String serverName, String userId, UsedInContext usedInContextRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<UsedInContext> updateUsedInContextRelationship(String serverName, String userId, String guid, UsedInContext usedInContextRelationship, boolean isReplace) {
         String restAPIName = "updateUsedInContextRelationship";
-        return updateLine(serverName, restAPIName, userId, UsedInContextMapper.class, usedInContextRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, UsedInContextMapper.class, usedInContextRelationship, isReplace);
     }
 
     /**
@@ -780,6 +786,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
+     * @param guid                      unique identifier of the Line
      * @param preferredTermRelationship the PreferredTerm relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated PreferredTermRelationship
@@ -795,9 +802,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<PreferredTerm> updatePreferredTermRelationship(String serverName, String userId, PreferredTerm preferredTermRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<PreferredTerm> updatePreferredTermRelationship(String serverName, String userId, String guid, PreferredTerm preferredTermRelationship, boolean isReplace) {
         String restAPIName = "updatePreferredTermRelationship";
-        return updateLine(serverName, restAPIName, userId, PreferredTermMapper.class, preferredTermRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, PreferredTermMapper.class, preferredTermRelationship, isReplace);
     }
 
     /**
@@ -899,6 +906,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName             serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                 userId under which the request is performed
+     * @param guid                   unique identifier of the Line
      * @param validValueRelationship the ValidValue relationship
      * @param isReplace              flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated ValidValueRelationship
@@ -913,9 +921,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<ValidValue> updateValidValueRelationship(String serverName, String userId, ValidValue validValueRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<ValidValue> updateValidValueRelationship(String serverName, String userId, String guid, ValidValue validValueRelationship, boolean isReplace) {
         String restAPIName = "updateValidValueRelationship";
-        return updateLine(serverName, restAPIName, userId, ValidValueMapper.class, validValueRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, ValidValueMapper.class, validValueRelationship, isReplace);
     }
 
     /**
@@ -1016,6 +1024,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName                  serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                      userId under which the request is performed
+     * @param guid                        unique identifier of the Line
      * @param replacementTermRelationship the ReplacementTerm relationship
      * @param isReplace                   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated ReplacementRelationship
@@ -1030,9 +1039,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<ReplacementTerm> updateReplacementTerm(String serverName, String userId, ReplacementTerm replacementTermRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<ReplacementTerm> updateReplacementTerm(String serverName, String userId, String guid, ReplacementTerm replacementTermRelationship, boolean isReplace) {
         String restAPIName = "updateReplacementTerm";
-        return updateLine(serverName, restAPIName, userId, ReplacementTermMapper.class, replacementTermRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, ReplacementTermMapper.class, replacementTermRelationship, isReplace);
     }
 
     /**
@@ -1134,6 +1143,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
+     * @param guid                    unique identifier of the Line
      * @param termTYPEDBYRelationship the TypedBy relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated TypedBy
@@ -1148,9 +1158,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<TypedBy> updateTermTYPEDBYRelationship(String serverName, String userId, TypedBy termTYPEDBYRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<TypedBy> updateTermTYPEDBYRelationship(String serverName, String userId, String guid, TypedBy termTYPEDBYRelationship, boolean isReplace) {
         String restAPIName = "updateTermTYPEDBYRelationship";
-        return updateLine(serverName, restAPIName, userId, TermTYPEDBYRelationshipMapper.class, termTYPEDBYRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, TermTYPEDBYRelationshipMapper.class, termTYPEDBYRelationship, isReplace);
     }
 
     /**
@@ -1252,6 +1262,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName      serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId          userId under which the request is performed
+     * @param guid            unique identifier of the Line
      * @param iSARelationship the Isa relationship
      * @param isReplace       flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated Isa
@@ -1266,9 +1277,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Isa> updateISARelationship(String serverName, String userId, Isa iSARelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<Isa> updateISARelationship(String serverName, String userId, String guid, Isa iSARelationship, boolean isReplace) {
         String restAPIName = "updateISARelationship";
-        return updateLine(serverName, restAPIName, userId, ISARelationshipMapper.class, iSARelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, ISARelationshipMapper.class, iSARelationship, isReplace);
     }
 
     /**
@@ -1370,6 +1381,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
+     * @param guid                      unique identifier of the Line
      * @param termISATypeOFRelationship the IsaTypeOf relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated IsaTypeOf
@@ -1384,9 +1396,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<IsaTypeOf> updateTermISATypeOFRelationship(String serverName, String userId, IsaTypeOf termISATypeOFRelationship, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<IsaTypeOf> updateTermISATypeOFRelationship(String serverName, String userId, String guid, IsaTypeOf termISATypeOFRelationship, boolean isReplace) {
         String restAPIName = "updateTermISATypeOFRelationship";
-        return updateLine(serverName, restAPIName, userId, TermISATypeOFRelationshipMapper.class, termISATypeOFRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, TermISATypeOFRelationshipMapper.class, termISATypeOFRelationship, isReplace);
     }
 
     /**
@@ -1489,6 +1501,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName                     serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                         userId under which the request is performed
+     * @param guid                           unique identifier of the Line
      * @param termCategorizationRelationship the termCategorization relationship
      * @param isReplace                      flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated Isa
@@ -1503,9 +1516,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Categorization> updateTermCategorizationRelationship(String serverName, String userId, Categorization termCategorizationRelationship, Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<Categorization> updateTermCategorizationRelationship(String serverName, String userId, String guid, Categorization termCategorizationRelationship, Boolean isReplace) {
         String restAPIName = "updateTermCategorizationRelationship";
-        return updateLine(serverName, restAPIName, userId, TermCategorizationMapper.class, termCategorizationRelationship, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, TermCategorizationMapper.class, termCategorizationRelationship, isReplace);
     }
 
 
@@ -1793,6 +1806,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed
+     * @param guid         unique identifier of the Line
      * @param projectScope the ProjectScope relationship
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated ProjectScopeRelationship
@@ -1807,9 +1821,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<ProjectScope> updateProjectScopeRelationship(String serverName, String userId, ProjectScope projectScope, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse2<ProjectScope> updateProjectScopeRelationship(String serverName, String userId, String guid, ProjectScope projectScope, boolean isReplace) {
         String restAPIName = "updateProjectScopeRelationship";
-        return updateLine(serverName, restAPIName, userId, ProjectScopeMapper.class, projectScope, isReplace);
+        return updateLine(serverName, restAPIName, userId, guid, ProjectScopeMapper.class, projectScope, isReplace);
     }
 
     /**

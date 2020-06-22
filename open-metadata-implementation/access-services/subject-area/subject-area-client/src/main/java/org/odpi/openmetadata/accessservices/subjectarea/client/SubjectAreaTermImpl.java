@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +79,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                            Date asOfTime,
                                            int offset,
                                            int pageSize,
-                                           org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                           SequencingOrder sequencingOrder,
                                            String sequencingProperty) throws
                                                                       UserNotAuthorizedException,
                                                                       InvalidParameterException,
@@ -283,7 +284,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
                                Date asOfTime,
                                int offset,
                                int pageSize,
-                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                               SequencingOrder sequencingOrder,
                                String sequencingProperty) throws
                                                           MetadataServerUncontactableException,
                                                           UserNotAuthorizedException,

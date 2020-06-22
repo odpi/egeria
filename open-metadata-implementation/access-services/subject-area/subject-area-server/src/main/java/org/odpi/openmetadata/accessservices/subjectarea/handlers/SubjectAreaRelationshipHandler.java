@@ -120,6 +120,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      *
      * @param restAPIName rest API name
      * @param userId      userId under which the request is performed
+     * @param lineGuid        unique identifier of the Line
      * @param clazz       mapper Class
      * @param line        the relationship to update
      * @param isReplace   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -137,6 +138,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      */
     public <L extends Line>SubjectAreaOMASAPIResponse2<L> updateLine(String restAPIName,
                                                                      String userId,
+                                                                     String lineGuid,
                                                                      Class<? extends ILineMapper<L>> clazz,
                                                                      L line,
                                                                      Boolean isReplace)
@@ -145,7 +147,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
 
         try {
             ILineMapper<L> mapper = mappersFactory.get(clazz);
-            Optional<Relationship> gotRelationship = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, line.getGuid());
+            Optional<Relationship> gotRelationship = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, lineGuid);
             if (gotRelationship.isPresent()) {
                 Relationship originalRelationship = gotRelationship.get();
                 Relationship relationshipToUpdate = mapper.map(line);
@@ -165,7 +167,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                     relationshipToUpdate.setProperties(instanceProperties);
                 }
                 oMRSAPIHelper.callOMRSUpdateRelationship(restAPIName, userId, relationshipToUpdate);
-                response = getLine(restAPIName, userId, clazz, line.getGuid());
+                response = getLine(restAPIName, userId, clazz, lineGuid);
             }
         } catch (PropertyServerException | UserNotAuthorizedException | SubjectAreaCheckedException e) {
             response.setExceptionInfo(e, className);

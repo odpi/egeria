@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
+import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
@@ -10,6 +11,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMA
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +23,7 @@ import java.util.List;
  * SubjectAreaImpl is the OMAS client library implementation of the Subject Area OMAS.
  * This interface provides glossary authoring interface for subject area experts.
  */
-public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary {
+public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements SubjectAreaGlossary {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGlossaryImpl.class);
 
     private static final String className = SubjectAreaGlossaryImpl.class.getName();
@@ -93,7 +95,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                                Date asOfTime,
                                                int offset,
                                                int pageSize,
-                                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                               SequencingOrder sequencingOrder,
                                                String sequencingProperty) throws
                                                                           UserNotAuthorizedException,
                                                                           InvalidParameterException,
@@ -117,7 +119,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                        Date asOfTime,
                                        int offset,
                                        int pageSize,
-                                       org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                       SequencingOrder sequencingOrder,
                                        String sequencingProperty) throws
                                                                   MetadataServerUncontactableException,
                                                                   UserNotAuthorizedException,

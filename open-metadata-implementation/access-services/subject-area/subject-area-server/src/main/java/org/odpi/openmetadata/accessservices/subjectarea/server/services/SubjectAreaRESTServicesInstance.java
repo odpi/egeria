@@ -126,6 +126,7 @@ public class SubjectAreaRESTServicesInstance {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName rest api name
      * @param userId     userId under which the request is performed
+     * @param guid        unique identifier of the Line
      * @param clazz       mapper Class
      * @param line       the relationship to update
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -144,6 +145,7 @@ public class SubjectAreaRESTServicesInstance {
     protected <L extends Line>SubjectAreaOMASAPIResponse2<L> updateLine(String serverName,
                                                                         String restAPIName,
                                                                         String userId,
+                                                                        String guid,
                                                                         Class<? extends ILineMapper<L>> clazz,
                                                                         L line,
                                                                         boolean isReplace)
@@ -154,7 +156,7 @@ public class SubjectAreaRESTServicesInstance {
         SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
         try {
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
-            response = handler.updateLine(restAPIName, userId, clazz, line, isReplace);
+            response = handler.updateLine(restAPIName, userId, guid, clazz, line, isReplace);
 
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
