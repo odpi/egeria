@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 
 import java.util.List;
 import java.util.Map;
@@ -69,7 +70,10 @@ public class ClassificationHandler {
 
     private void copyClassificationProperties(LineageEntity lineageEntity, Classification classification) {
         lineageEntity.setVersion(classification.getVersion());
-        lineageEntity.setTypeDefName(classification.getType().getTypeDefName());
+        InstanceType type = classification.getType();
+        if(type != null) {
+            lineageEntity.setTypeDefName(type.getTypeDefName());
+        }
         lineageEntity.setCreatedBy(classification.getCreatedBy());
         lineageEntity.setUpdatedBy(classification.getUpdatedBy());
         lineageEntity.setCreateTime(classification.getCreateTime());
