@@ -224,19 +224,19 @@ public class OMRSLine extends Line implements Serializable {
 
         sb.append("OMRSLine{");
         sb.append("line="+"super.toString(sb),");
-        sb.append("lineType=" + lineType.name()+",");
-        sb.append("entity1Name="+entity1Name+",");
-        sb.append("entity1Type="+entity1Type+",");
-        sb.append("relatedTerm1Guid="+entity1Guid+",");
-        sb.append("entity1PropertyName="+ entity1PropertyName+",");
-        sb.append("entity1Label="+ entity1Label+",");
+        sb.append("lineType=").append(lineType.name()).append(",");
+        sb.append("entity1Name=").append(entity1Name).append(",");
+        sb.append("entity1Type=").append(entity1Type).append(",");
+        sb.append("relatedTerm1Guid=").append(entity1Guid).append(",");
+        sb.append("entity1PropertyName=").append(entity1PropertyName).append(",");
+        sb.append("entity1Label=").append(entity1Label).append(",");
 
-        sb.append("entity2Name="+entity2Name+",");
-        sb.append("entity2Type="+entity2Type+",");
-        sb.append("relatedTerm2Guid="+entity2Guid+",");
-        sb.append("entity2PropertyName="+ entity2PropertyName+",");
-        sb.append("entity2Label="+ entity2Label+",");
-        sb.append("name=" + name);
+        sb.append("entity2Name=").append(entity2Name).append(",");
+        sb.append("entity2Type=").append(entity2Type).append(",");
+        sb.append("relatedTerm2Guid=").append(entity2Guid).append(",");
+        sb.append("entity2PropertyName=").append(entity2PropertyName).append(",");
+        sb.append("entity2Label=").append(entity2Label).append(",");
+        sb.append("name=").append(name);
         sb.append('}');
         return sb;
     }

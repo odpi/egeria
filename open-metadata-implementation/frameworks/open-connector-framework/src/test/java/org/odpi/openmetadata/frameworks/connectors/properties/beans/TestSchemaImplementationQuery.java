@@ -13,9 +13,6 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestSchemaImplementationQuery
 {
-    private SchemaAttribute schemaAttribute = new SchemaAttribute();
-
-
     /**
      * Default constructor
      */
@@ -34,10 +31,10 @@ public class TestSchemaImplementationQuery
     {
         SchemaImplementationQuery testObject = new SchemaImplementationQuery();
 
-        testObject.setQueryId(23);
+        testObject.setQueryId("23");
         testObject.setQuery("TestQuery");
         testObject.setQueryType("TestQueryType");
-        testObject.setQueryTargetElement(schemaAttribute);
+        testObject.setQueryTargetGUID("TestQueryTargetGUID");
 
         return testObject;
     }
@@ -50,10 +47,10 @@ public class TestSchemaImplementationQuery
      */
     private void validateResultObject(SchemaImplementationQuery resultObject)
     {
-        assertTrue(resultObject.getQueryId() == 23);
+        assertTrue(resultObject.getQueryId() == "23");
         assertTrue(resultObject.getQuery().equals("TestQuery"));
         assertTrue(resultObject.getQueryType().equals("TestQueryType"));
-        assertTrue(resultObject.getQueryTargetElement().equals(schemaAttribute));
+        assertTrue(resultObject.getQueryTargetGUID().equals("TestQueryTargetGUID"));
     }
 
 
@@ -64,16 +61,16 @@ public class TestSchemaImplementationQuery
     {
         SchemaImplementationQuery nullObject = new SchemaImplementationQuery();
 
-        assertTrue(nullObject.getQueryId() == 0);
+        assertTrue(nullObject.getQueryId() == null);
         assertTrue(nullObject.getQuery() == null);
-        assertTrue(nullObject.getQueryTargetElement() == null);
+        assertTrue(nullObject.getQueryTargetGUID() == null);
         assertTrue(nullObject.getQueryType() == null);
 
         nullObject = new SchemaImplementationQuery(null);
 
-        assertTrue(nullObject.getQueryId() == 0);
+        assertTrue(nullObject.getQueryId() == null);
         assertTrue(nullObject.getQuery() == null);
-        assertTrue(nullObject.getQueryTargetElement() == null);
+        assertTrue(nullObject.getQueryTargetGUID() == null);
         assertTrue(nullObject.getQueryType() == null);
     }
 

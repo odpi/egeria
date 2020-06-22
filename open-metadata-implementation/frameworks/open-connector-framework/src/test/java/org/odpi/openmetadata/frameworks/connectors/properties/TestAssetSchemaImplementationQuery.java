@@ -38,10 +38,10 @@ public class TestAssetSchemaImplementationQuery
     {
         SchemaImplementationQuery testBean = new SchemaImplementationQuery();
 
-        testBean.setQueryId(5);
+        testBean.setQueryId("5");
         testBean.setQueryType("TestQueryType");
         testBean.setQuery("TestQuery");
-        testBean.setQueryTargetElement(schemaAttribute);
+        testBean.setQueryTargetGUID("TestGUID");
 
         return new AssetSchemaImplementationQuery(testBean, queryTargetElement);
     }
@@ -57,10 +57,10 @@ public class TestAssetSchemaImplementationQuery
         AssetSummary              parentAsset = new AssetSummary(new Asset());
         SchemaImplementationQuery testBean    = new SchemaImplementationQuery();
 
-        testBean.setQueryId(5);
+        testBean.setQueryId("5");
         testBean.setQueryType("TestQueryType");
         testBean.setQuery("TestQuery");
-        testBean.setQueryTargetElement(schemaAttribute);
+        testBean.setQueryTargetGUID("TestGUID");
 
         return new AssetSchemaImplementationQuery(parentAsset, testBean, queryTargetElement);
     }
@@ -75,10 +75,10 @@ public class TestAssetSchemaImplementationQuery
     {
         SchemaImplementationQuery testBean = new SchemaImplementationQuery();
 
-        testBean.setQueryId(5);
+        testBean.setQueryId("5");
         testBean.setQueryType("TestQueryType");
         testBean.setQuery("TestDifferentQuery");
-        testBean.setQueryTargetElement(schemaAttribute);
+        testBean.setQueryTargetGUID("TestGUID");
 
         return new AssetSchemaImplementationQuery(testBean, queryTargetElement);
     }
@@ -95,10 +95,10 @@ public class TestAssetSchemaImplementationQuery
         SchemaAttribute           queryTargetBean = new SchemaAttribute();
         queryTargetBean.setAttributeName("TestAttributeName");
 
-        testBean.setQueryId(5);
+        testBean.setQueryId("5");
         testBean.setQueryType("TestQueryType");
         testBean.setQuery("TestQuery");
-        testBean.setQueryTargetElement(schemaAttribute);
+        testBean.setQueryTargetGUID("TestGUID");
 
         return new AssetSchemaImplementationQuery(testBean, new AssetSchemaAttribute(null, queryTargetBean));
     }
@@ -111,7 +111,7 @@ public class TestAssetSchemaImplementationQuery
      */
     private void validateResultObject(AssetSchemaImplementationQuery resultObject)
     {
-        assertTrue(resultObject.getQueryId() == 5);
+        assertTrue("5".equals(resultObject.getQueryId()));
         assertTrue(resultObject.getQueryType().equals("TestQueryType"));
         assertTrue(resultObject.getQuery().equals("TestQuery"));
         assertTrue(resultObject.getQueryTargetElement() == null);
@@ -127,7 +127,7 @@ public class TestAssetSchemaImplementationQuery
     {
         assertTrue(nullObject.getQueryType() == null);
         assertTrue(nullObject.getQuery() == null);
-        assertTrue(nullObject.getQueryId() == 0);
+        assertTrue(nullObject.getQueryId() == null);
         assertTrue(nullObject.getQueryTargetElement() == null);
     }
 
@@ -184,7 +184,7 @@ public class TestAssetSchemaImplementationQuery
         AssetSchemaAttribute queryTarget     = new AssetSchemaAttribute(schemaAttribute);
 
         SchemaImplementationQuery testBean = new SchemaImplementationQuery();
-        testBean.setQueryTargetElement(schemaAttribute);
+        testBean.setQueryTargetGUID("TestGUID");
 
         AssetSchemaImplementationQuery
                                        testTemplate = new AssetSchemaImplementationQuery((SchemaImplementationQuery)null, null);

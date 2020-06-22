@@ -19,9 +19,7 @@ import java.util.Date;
 
 public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGlossaryRESTServices.class);
-    private static final String className = SubjectAreaGlossaryRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
-
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
      * Default constructor
@@ -77,7 +75,6 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         }
         return response;
     }
-
 
     /**
      * Get a glossary by guid.
@@ -135,7 +132,8 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse findGlossary(String serverName, String userId,
+    public SubjectAreaOMASAPIResponse findGlossary(String serverName,
+                                                   String userId,
                                                    String searchCriteria,
                                                    Date asOfTime,
                                                    Integer offset,
@@ -160,6 +158,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
 
         return response;
     }
+
     /**
      * Get Glossary relationships
      *
@@ -183,7 +182,8 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getGlossaryRelationships(String serverName, String userId,
+    public SubjectAreaOMASAPIResponse getGlossaryRelationships(String serverName,
+                                                               String userId,
                                                                String guid,
                                                                Date asOfTime,
                                                                Integer offset,
@@ -284,7 +284,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteGlossary(String serverName, String userId, String guid, Boolean isPurge) {

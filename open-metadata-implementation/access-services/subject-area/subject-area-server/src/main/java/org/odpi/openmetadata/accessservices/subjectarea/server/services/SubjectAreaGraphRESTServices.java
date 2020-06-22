@@ -4,21 +4,12 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGraphHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.StatusFilter;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 /**
@@ -26,22 +17,14 @@ import java.util.stream.Collectors;
  * Access Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 
-public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstance
-{
+public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGraphRESTServices.class);
-    private static final String className = SubjectAreaGraphRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
-
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
      * Default constructor
      */
     public SubjectAreaGraphRESTServices() {}
-    public SubjectAreaGraphRESTServices(OMRSAPIHelper oMRSAPIHelper)
-    {
-        this.oMRSAPIHelper =oMRSAPIHelper;
-    }
-
 
     /**
      * Get the graph of nodes and Lines radiating out from a node.
@@ -103,65 +86,5 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
         return response;
-    }
-
-    /**
-     * Set the NodeType in the node based on the entity contents
-     * @param methodName - method name for logging
-     * @param oMRSRepositoryHelper helper to allow us to issue isTypeOf call
-     * @param entity EntityDetail - that contains classifications and type used to determine the NodeType
-     * @param node the node to update
-     */
-    private void setNodeTypeInNode(String methodName, OMRSRepositoryHelper oMRSRepositoryHelper, EntityDetail entity, Node node) {
-        String typeDefName = entity.getType().getTypeDefName();
-
-        String nodeType = null;
-        if (oMRSRepositoryHelper.isTypeOf(methodName, typeDefName, "GlossaryTerm")) {
-            nodeType = "Term";
-        }
-        if (oMRSRepositoryHelper.isTypeOf(methodName, typeDefName, "GlossaryCategory")) {
-            nodeType = "Category";
-        }
-        if (oMRSRepositoryHelper.isTypeOf(methodName, typeDefName, "Glossary")) {
-            nodeType = "Glossary";
-        }
-        if (oMRSRepositoryHelper.isTypeOf(methodName, typeDefName, "Asset")) {
-            nodeType = "Asset";
-        }
-        if (oMRSRepositoryHelper.isTypeOf(methodName, typeDefName, "Project")) {
-            nodeType = "Project";
-        }
-        List<Classification> classifications = entity.getClassifications();
-        Set<String> classificationNames = null;
-        if (classifications != null && !classifications.isEmpty()) {
-            classificationNames = classifications.stream().map(x -> x.getName()).collect(Collectors.toSet());
-        }
-        /*
-         * the nodeType variable needs to be changed for certain classifications.
-         */
-        for (NodeType nodeTypeValue : NodeType.values()) {
-            if (nodeTypeValue.name().equals(nodeType)) {
-                if (classificationNames != null) {
-                    if (nodeType.equals("Category") && classificationNames.contains("SubjectArea")) {
-                        node.setNodeType(NodeType.SubjectAreaDefinition);
-                    } else if (nodeType.equals("Glossary")) {
-                        if (classificationNames.contains("Taxonomy") && classificationNames.contains("CanonicalGlossary")) {
-                            node.setNodeType(NodeType.TaxonomyAndCanonicalGlossary);
-                        } else if (classificationNames.contains("Taxonomy")) {
-                            node.setNodeType(NodeType.Taxonomy);
-                        } else if (classificationNames.contains("CanonicalGlossary")) {
-                            node.setNodeType(NodeType.CanonicalGlossary);
-                        }
-                    } else if (typeDefName.equals("Term") && classificationNames.contains("Activity")) {
-                        node.setNodeType(NodeType.Activity);
-                    } else if (typeDefName.equals("Project") && classificationNames.contains("GlossaryProject")) {
-                        node.setNodeType(NodeType.GlossaryProject);
-                    }
-                }
-                if (node.getNodeType() == NodeType.Unknown) {
-                    node.setNodeType(nodeTypeValue);
-                }
-            }
-        }
     }
 }

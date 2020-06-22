@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -49,11 +50,10 @@ public class Graph implements Serializable {
         this.lines = lines;
     }
 
-    public StringBuilder toString(StringBuilder sb) {
+    public String toString(StringBuilder sb) {
         if (sb == null) {
             sb = new StringBuilder();
         }
-
 
         if (nodes !=null && !nodes.isEmpty()) {
             sb.append("Nodes= [\n");
@@ -72,49 +72,26 @@ public class Graph implements Serializable {
 
         sb.append('}');
 
-        return sb;
+        return sb.toString();
     }
 
 
     @Override
     public String toString() {
-        return toString(new StringBuilder()).toString();
+        return toString(new StringBuilder());
     }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Graph graph = (Graph) o;
-        Set<Node> oNodes = graph.getNodes();
-        Set<Line> oLines = graph.getLines();
-        if (nodes == null && (oNodes ==null)) {
-            //matches
-        } else if (nodes.isEmpty() && oNodes.isEmpty()) {
-            // matches
-        } else {
-            //TODO we have nodes to compare.
-        }
-
-
-        if (lines == null && (oLines ==null)) {
-            //matches
-        } else if (lines.isEmpty() && oLines.isEmpty()) {
-            // matches
-        } else {
-            // TODO we have Lines to compare
-        }
-
-        return false;
-
+        return Objects.equals(nodes, graph.nodes) &&
+                Objects.equals(lines, graph.lines);
     }
 
     @Override
     public int hashCode() {
-         //TODO
-        return 0;
+        return Objects.hash(nodes, lines);
     }
-
 }

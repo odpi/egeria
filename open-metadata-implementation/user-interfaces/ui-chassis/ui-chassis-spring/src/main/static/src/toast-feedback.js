@@ -31,13 +31,11 @@ class ToastFeedback extends PolymerElement {
     connectedCallback() {
         super.connectedCallback();
         window.addEventListener('show-feedback', this._boundListener);
-        console.log('feedback listener created!');
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
         window.removeEventListener('show-feedback', this._boundListener);
-        console.log('feedback event listener removed!');
     }
 
     ready(){

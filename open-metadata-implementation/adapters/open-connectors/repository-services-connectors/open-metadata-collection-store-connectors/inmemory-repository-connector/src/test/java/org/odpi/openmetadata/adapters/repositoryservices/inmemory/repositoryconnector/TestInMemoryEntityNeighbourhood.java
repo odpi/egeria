@@ -118,9 +118,13 @@ public class TestInMemoryEntityNeighbourhood
         assertTrue(graphContainsRelationshipWithGuid(graph, "6666"));
 
         // test limit by classification
-        List classificationsForEntity2 = new ArrayList();
-        classificationsForEntity2.add(CLASSIFICATION_1);
-        classificationsForEntity2.add(CLASSIFICATION_2);
+        List<Classification> classificationsForEntity2 = new ArrayList<>();
+        Classification testClassification = new Classification();
+        testClassification.setName(CLASSIFICATION_1);
+        classificationsForEntity2.add(testClassification);
+        testClassification = new Classification();
+        testClassification.setName(CLASSIFICATION_2);
+        classificationsForEntity2.add(testClassification);
         entity2.setClassifications(classificationsForEntity2);
         entityStore.put(entity2.getGUID(), entity2);
         // check the same results are returned when there is no limitation on classification but one of the entities is classified

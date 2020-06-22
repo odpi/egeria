@@ -10,7 +10,7 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.8-SNAPSHOT</version>
+        <version>2.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -174,6 +174,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>digital-service-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>data-science-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -198,6 +204,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>analytics-modeling-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -239,7 +251,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-platform-spring</artifactId>
+            <artifactId>data-manager-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -252,6 +264,18 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>glossary-author-view-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>rex-view-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>tex-view-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -269,6 +293,12 @@
         </dependency>
 
         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>http-helper</artifactId>
         </dependency>
@@ -277,6 +307,22 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+
+            <!--dependency>
+  <groupId>jakarta.annotation</groupId>
+  <artifactId>jakarta.annotation-api</artifactId>
+  <version>1.3.5</version>
+</dependency-->
 
         <!-- Documentation -->
 

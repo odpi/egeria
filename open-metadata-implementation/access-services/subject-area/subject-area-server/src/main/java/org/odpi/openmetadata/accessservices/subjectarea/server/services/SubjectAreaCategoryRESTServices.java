@@ -11,7 +11,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.CategoryRespon
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaDefinitionResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,25 +22,15 @@ import java.util.Date;
  * Access Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 
-public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesInstance
-{
+public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaCategoryRESTServices.class);
-
-    private static final String className = SubjectAreaCategoryRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
-
-
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
      * Default constructor
      */
     public SubjectAreaCategoryRESTServices() {
         //SubjectAreaRESTServicesInstance registers this omas.
-    }
-
-    public SubjectAreaCategoryRESTServices(OMRSAPIHelper oMRSAPIHelper)
-    {
-        this.oMRSAPIHelper=oMRSAPIHelper;
     }
 
     /**
@@ -76,8 +65,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse createCategory(String serverName, String userId, Category suppliedCategory)
-    {
+    public SubjectAreaOMASAPIResponse createCategory(String serverName, String userId, Category suppliedCategory) {
         final String methodName = "createCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
@@ -112,9 +100,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised
      * </ul>
      */
-
-    public SubjectAreaOMASAPIResponse getCategory( String serverName, String userId, String guid)
-    {
+    public SubjectAreaOMASAPIResponse getCategory( String serverName, String userId, String guid) {
         final String methodName = "getCategoryByGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -166,7 +152,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
 
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse findCategory(String serverName, String userId,
+    public  SubjectAreaOMASAPIResponse findCategory(String serverName,
+                                                    String userId,
                                                     String searchCriteria,
                                                     Date asOfTime,
                                                     Integer offset,
@@ -191,12 +178,13 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
 
         return response;
     }
-    /*
+
+    /**
      * Get Category relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
+     * @param guid   guid of the category to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -204,7 +192,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Category guid
+     * @return the relationships associated with the requested Category userId
      *
      * when not successful the following Exception responses can occur
      * <ul>
@@ -213,8 +201,9 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> FunctionNotSupportedException   Function not supported.</li>
      * </ul>
      */
-
-    public  SubjectAreaOMASAPIResponse getCategoryRelationships(String serverName, String userId,String guid,
+    public  SubjectAreaOMASAPIResponse getCategoryRelationships(String serverName,
+                                                                String userId,
+                                                                String guid,
                                                                 Date asOfTime,
                                                                 Integer offset,
                                                                 Integer pageSize,
@@ -222,7 +211,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                                                                 String sequencingProperty
     ) {
 
-            String methodName = "getCategoryRelationships";
+        final String methodName = "getCategoryRelationships";
+
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
@@ -308,7 +298,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the category was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteCategory(String serverName, String userId, String guid, Boolean isPurge) {
@@ -328,6 +318,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
         }
         return response;
     }
+
     /**
      * Restore a Category or a SubjectAreaDefinition
      *
@@ -345,8 +336,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreCategory(String serverName, String userId, String guid)
-    {
+    public SubjectAreaOMASAPIResponse restoreCategory(String serverName, String userId, String guid) {
         final String methodName = "restoreCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);

@@ -1197,17 +1197,41 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                String         methodName) throws InvalidParameterException,
                                                                                  RepositoryErrorException
     {
+        final String localMethodName = "validateTypeForInstanceDelete";
+
         /*
          * Just make sure the instance has a type :)
          */
         this.validateInstanceType(sourceName, instance);
 
-
         /*
          * Both the GUID and the name must match
          */
-        if ((! typeDefGUID.equals(instance.getType().getTypeDefGUID())) ||
-            (! typeDefName.equals(instance.getType().getTypeDefName())))
+        TypeDef knownType = repositoryContentManager.getTypeDefByName(typeDefName);
+
+        if (knownType == null)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.BAD_TYPEDEF_IDS_FOR_DELETE.getMessageDefinition(typeDefName,
+                                                                                                              typeDefGUID,
+                                                                                                              methodName,
+                                                                                                              instance.getGUID(),
+                                                                                                              sourceName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                "typeDefName");
+        }
+        else if (! typeDefGUID.equals(knownType.getGUID()))
+        {
+            throw new InvalidParameterException(OMRSErrorCode.BAD_TYPEDEF_IDS_FOR_DELETE.getMessageDefinition(typeDefName,
+                                                                                                              typeDefGUID,
+                                                                                                              methodName,
+                                                                                                              instance.getGUID(),
+                                                                                                              sourceName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                "typeDefGUID");
+        }
+        else if (! this.isATypeOf(sourceName, instance, typeDefName, localMethodName))
         {
             throw new InvalidParameterException(OMRSErrorCode.BAD_TYPEDEF_IDS_FOR_DELETE.getMessageDefinition(typeDefName,
                                                                                                               typeDefGUID,
@@ -1218,7 +1242,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                 methodName,
                                                 "type");
         }
-
     }
 
 

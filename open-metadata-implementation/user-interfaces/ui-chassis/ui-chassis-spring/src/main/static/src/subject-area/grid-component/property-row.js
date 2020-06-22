@@ -124,7 +124,6 @@ class PropertyRow extends PolymerElement {
 
     computeUrl(compName,artifactName) {
             var urlStr ="/properties/" +compName + "/" + artifactName +".json";
-            console.log("computing url  " + urlStr);
             return urlStr;
     }
     /**

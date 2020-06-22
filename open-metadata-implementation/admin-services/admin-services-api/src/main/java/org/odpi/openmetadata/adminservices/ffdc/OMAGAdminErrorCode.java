@@ -285,6 +285,15 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                           "The OMAG Server name is supplied by the caller to the OMAG server. This remote server name needs to be corrected before " +
                                   "the server can operate correctly."),
 
+    BAD_CONNECTION(400, "OMAG-ADMIN-400-041",
+                          "The connection passed to the {0} method does not describe a valid connector.  Connection object is: {1}.  " +
+                                  "The resulting exception {2} had message of {3}, system action of {4} and user action of {5}",
+                          "The connection was tested by the Open Connector Framework (OCF) Connector Broker and it was unable to create a" +
+                           "connector for this connection and returned a detailed exception. Because of this exception, the system is " +
+                           "unable to accept an invalid connection object and so the request is rejected.  No change is made to the configuration.",
+                          "Use the detail messages from the connector broker to work out what is wrong with the connection object.  " +
+                           "Once the connection object is corrected, retry the request."),
+
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
             "The system is unable to configure the OMAG server.  No change was made to the server's configuration document.",

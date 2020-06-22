@@ -17,7 +17,7 @@ import '../token-ajax.js';
 * The FocusManager component API has functions to clear all types and load all types.
 * The load all types operation will refer to the TypeManager to access the current types, and add them to the selectors. It also initialises
 * the focus and view types.
-* The clear all types operation will drop all tyeps from the selectors and reset the focus and view types.
+* The clear all types operation will drop all types from the selectors and reset the focus and view types.
 * The clear and load all types operations are invoked on receipt of the typesLoaded event.
 *
 * The FocusManager component is the only component that csn actually change the focus or view. Other components have controls that the user
@@ -331,7 +331,6 @@ class FilterManager extends PolymerElement {
         if (this.polymer) {
 
              // Clear down the selectors and replace the 'no types' entry with 'select a type'...
-             //var selector = this.$[selectorName];
              var selectorList = this.shadowRoot.getElementById(selectorName);
              while (selectorList.firstChild) {
                  selectorList.removeChild(selectorList.firstChild);

@@ -4,18 +4,13 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlossaryHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTermHandler;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * The SubjectAreaTermRESTServices provides the server-side implementation of the SubjectArea Open Metadata
@@ -25,38 +20,13 @@ import java.util.Set;
 public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
 {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermRESTServices.class);
-
-    private static final String className = SubjectAreaTermRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
-
-
-    public static final Set<String> SUBJECT_AREA_TERM_CLASSIFICATIONS= new HashSet(Arrays.asList(
-            // spine objects
-            SpineObject.class.getSimpleName(),
-            SpineAttribute.class.getSimpleName(),
-            ObjectIdentifier.class.getSimpleName(),
-            //governance actions
-            Confidentiality.class.getSimpleName(),
-            Confidence.class.getSimpleName(),
-            Criticality.class.getSimpleName(),
-            Retention.class.getSimpleName(),
-            // dictionary
-            AbstractConcept.class.getSimpleName(),
-            ActivityDescription.class.getSimpleName(),
-            DataValue.class.getSimpleName(),
-            // context
-            ContextDefinition.class.getSimpleName()));
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
      * Default constructor
      */
-    public SubjectAreaTermRESTServices()
-    {
+    public SubjectAreaTermRESTServices() {
         //SubjectAreaRESTServicesInstance registers this omas.
-    }
-    public SubjectAreaTermRESTServices(OMRSAPIHelper oMRSAPIHelper)
-    {
-        this.oMRSAPIHelper =oMRSAPIHelper;
     }
 
     /**
@@ -76,7 +46,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.
      * <li> InvalidParameterException            one of the parameters is null or invalid.
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised
      * <li> ClassificationException              Error processing a classification
@@ -114,12 +84,11 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getTermByGuid(String serverName, String userId, String guid)
     {
         final String methodName = "getTermByGuid";
@@ -139,13 +108,13 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         }
         return response;
     }
-    /*
+
+    /**
      * Get Term relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param restAPIName rest API name
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
+     * @param guid   guid
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -155,17 +124,16 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return the relationships associated with the requested Term guid
      *
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException   Function not supported
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * </ul>
      */
-
-    public  SubjectAreaOMASAPIResponse getTermRelationships(String serverName, String userId,
+    public  SubjectAreaOMASAPIResponse getTermRelationships(String serverName,
+                                                            String userId,
                                                             String guid,
                                                             Date asOfTime,
                                                             Integer offset,
@@ -193,12 +161,9 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
-
         return response;
-
-
-
     }
+
     /**
      * Find Term
      *
@@ -309,7 +274,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteTerm(String serverName, String userId, String guid, Boolean isPurge)

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,9 +33,11 @@ public class RunAllFVT
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
-        } catch (SubjectAreaCheckedExceptionBase e)
+        } catch (SubjectAreaCheckedException e)
         {
-            System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            System.out.println("ERROR: " + e.getMessage() + " Suggested action: " + e.getReportedUserAction());
+        } catch (SubjectAreaFVTCheckedException e) {
+            System.out.println("ERROR: " + e.getMessage() );
         }
     }
 
@@ -48,7 +50,7 @@ public class RunAllFVT
      *
      * @param args arguments supplied
      * @return the url to use on the calls to the server
-     * @throws IOException IO exception occured while getting input from the user.
+     * @throws IOException IO exception occurred while getting input from the user.
      */
     public static String getUrl(String args[]) throws IOException
     {

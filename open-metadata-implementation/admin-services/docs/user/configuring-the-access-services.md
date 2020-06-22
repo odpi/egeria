@@ -163,10 +163,10 @@ The result looks something like this:
             "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/data-privacy/"
         },
         {
-            "serviceName": "Data Platform",
-            "serviceURLMarker": "data-platform",
-            "serviceDescription": "Capture changes to the data stores and data set managed by a data platform",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/data-platform/"
+            "serviceName": "Data Manager",
+            "serviceURLMarker": "data-manager",
+            "serviceDescription": "Capture changes to the data stores and data set managed by a technology managing collections of data",
+            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager/"
         }
     ]
 }

@@ -2,20 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGraphHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaProjectHandler;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.ProjectResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.ProjectMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,19 +21,12 @@ import java.util.Date;
 public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInstance
 {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaProjectRESTServices.class);
-    private static final String className = SubjectAreaProjectRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
-
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
      * Default constructor
      */
     public SubjectAreaProjectRESTServices() {}
-    public SubjectAreaProjectRESTServices(OMRSAPIHelper oMRSAPIHelper)
-    {
-        this.oMRSAPIHelper =oMRSAPIHelper;
-    }
-
 
     /**
      * Create a Project.
@@ -122,6 +106,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         }
         return response;
     }
+
     /**
      * Find Project
      *
@@ -144,7 +129,8 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse findProject(String serverName, String userId,
+    public  SubjectAreaOMASAPIResponse findProject(String serverName,
+                                                   String userId,
                                                    String searchCriteria,
                                                    Date asOfTime,
                                                    Integer offset,
@@ -170,6 +156,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
 
         return response;
     }
+
     /**
      * Get Project relationships
      *
@@ -193,7 +180,9 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * </ul>
      */
 
-    public  SubjectAreaOMASAPIResponse getProjectRelationships(String serverName, String userId,String guid,
+    public  SubjectAreaOMASAPIResponse getProjectRelationships(String serverName,
+                                                               String userId,
+                                                               String guid,
                                                                Date asOfTime,
                                                                Integer offset,
                                                                Integer pageSize,
@@ -221,7 +210,9 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
 
-        return response;    }
+        return response;
+    }
+
     /**
      * Get the terms in this project.
      *
@@ -306,8 +297,6 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         return response;
     }
 
-
-
     /**
      * Delete a Project instance
      * <p>
@@ -332,7 +321,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the Project was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the Project was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the Project was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteProject(String serverName, String userId, String guid, Boolean isPurge) {
@@ -353,7 +342,6 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         }
         return response;
     }
-
 
     /**
      * Restore a Project
@@ -389,31 +377,6 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
-        return response;
-    }
-
-    /**
-     * Take an entityDetail response and map it to the appropriate Project orientated response
-     * @param response entityDetailResponse
-     * @return Project response containing the appropriate Project object.
-     */
-    protected SubjectAreaOMASAPIResponse getResponse( SubjectAreaOMASAPIResponse response) {
-        EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
-        EntityDetail entityDetail = entityDetailResponse.getEntityDetail();
-        ProjectMapper ProjectMapper = new ProjectMapper(oMRSAPIHelper);
-
-        try {
-            Project project= ProjectMapper.mapEntityDetailToNode(entityDetail);
-            if (project.getNodeType()==NodeType.GlossaryProject) {
-                GlossaryProject glossaryProject = (GlossaryProject)project;
-                response = new ProjectResponse(glossaryProject);
-            } else {
-                response = new ProjectResponse(project);
-            }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }
-
         return response;
     }
 }

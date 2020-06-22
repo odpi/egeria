@@ -17,12 +17,13 @@ The Egeria content is organized into the following modules:
     * **[asset-owner](open-metadata-implementation/access-services/asset-owner)** - manage metadata and feedback for owned assets.
     * **[community-profile](open-metadata-implementation/access-services/community-profile)** - manage personal profiles and communities.
     * **[data-engine](open-metadata-implementation/access-services/data-engine)** - exchange metadata with a data processing engine.
-    * **[data-platform](open-metadata-implementation/access-services/data-platform)** - exchange metadata with a data platform.
+    * **[data-manager](open-metadata-implementation/access-services/data-manager)** - exchange metadata with a technology that manages collections of data.
     * **[data-privacy](open-metadata-implementation/access-services/data-privacy)** - support a data privacy officer.
     * **[data-science](open-metadata-implementation/access-services/data-science)** - manage metadata for analytics.
     * **[design-model](open-metadata-implementation/access-services/design-model)** - manage content from design models.
     * **[dev-ops](open-metadata-implementation/access-services/dev-ops)** - manage metadata for a devOps pipeline.
     * **[digital-architecture](open-metadata-implementation/access-services/digital-architecture)** - support the definition of data standards and models.
+    * **[digital-service](open-metadata-implementation/access-services/digital-service)** - manage metadata for a Digital Service.
     * **[discovery-engine](open-metadata-implementation/access-services/discovery-engine)** - manage metadata for metadata discovery services.
     * **[glossary-view](open-metadata-implementation/access-services/glossary-view)** - search for glossary content.
     * **[governance-engine](open-metadata-implementation/access-services/governance-engine)** - manage metadata for an operational governance engine.
@@ -64,7 +65,8 @@ The Egeria content is organized into the following modules:
     * **[odf-metadata-management](open-metadata-implementation/common-services/odf-metadata-management)** - provides metadata management for the [Open Discovery Framework (ODF)](open-metadata-implementation/frameworks/open-discovery-framework) properties and APIs.
     * **[repository-handler](open-metadata-implementation/common-services/repository-handler)** - provides an enhanced set of services for accessing metadata from the [repository services](open-metadata-implementation/repository-services).
   * **[frameworks](open-metadata-implementation/frameworks)** - frameworks that support pluggable components.
-    * **[open-connector-framework](open-metadata-implementation/frameworks/open-connector-framework)** provides the interfaces and base implementations for components (called connectors) that access data-related assets. OCF connectors also provide detailed metadata about the assets they access.
+    * **[audit-log-framework](open-metadata-implementation/frameworks/audit-log-framework)** provides the interfaces and base implementations for components (called connectors) that access data-related assets. OCF connectors also provide detailed metadata about the assets they access.
+    * **[open-connector-framework](open-metadata-implementation/frameworks/open-connector-framework)** provides the interfaces for diagnostics and exceptions.
     * **[open-discovery-framework](open-metadata-implementation/frameworks/open-discovery-framework)** provides the interfaces and base implementations for components (called discovery services) that access data-related assets and extract characteristics about the data that can be stored in an open metadata repository.
     * **[governance-action-framework](open-metadata-implementation/frameworks/governance-action-framework)** provides the interfaces and base implementations for components (called governance actions) that take action to correct a situation that is harmful the data, or the organization in some way.
   * **[governance-servers](open-metadata-implementation/governance-servers)** - servers and daemons to run open metadata and governance function.

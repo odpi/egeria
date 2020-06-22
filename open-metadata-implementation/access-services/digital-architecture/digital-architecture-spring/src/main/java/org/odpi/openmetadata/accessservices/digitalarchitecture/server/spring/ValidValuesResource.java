@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.server.spring;
 
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.server.ValidValuesRESTServices;
@@ -23,6 +25,12 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/digital-architecture/users/{userId}")
+
+@Tag(name="Digital Architecture OMAS",
+        description="The Digital Architecture OMAS provides APIs for tools and applications managing the design of data structures, software and the IT infrastructure that supports the operations of the organization.",
+        externalDocs=@ExternalDocumentation(description="Digital Architecture Open Metadata Access Service (OMAS)",
+                url="https://egeria.odpi.org/open-metadata-implementation/access-services/digital-architecture/"))
+
 public class ValidValuesResource
 {
     private ValidValuesRESTServices restAPI = new ValidValuesRESTServices();
