@@ -227,76 +227,84 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
         final String methodName = "SpringRESTClientConnector";
         /* TODO: Disable SSL cert verification -- for now */
-        //TODO: Can throw NoSuchAlgorithmException : TLS v1.3 SSLContext not available
-        // TLS v1.3 only possible in Java 11+
+
+        // Numerous opportunities for error. We'll propogate the base exception to caller, and it will appear in audit log
         try {
-            SSLContext sc = SSLContext.getInstance("TLSv1.2");
+            SSLContext sc = SSLContext.getInstance(protocol);
 
+            TrustManager[] trustManagers = null;
+            KeyManager[] keyManagers = null;
 
-            // TODO - this is where we inject key manager and trust manager if we want to use non-default settings
-            // For now keystore must be in pkcs12 - default Java 9 & above, and for all non java
+            // If verification is to be done we need to configure the truststore & keystore
             if (sslVerify) {
-                InputStream tsf;
-                InputStream ksf;
+
+                // First configure the truststore -- this is always needed for SSL (one way) & is where certs/CA we trust sit
+                InputStream tsFile;
 
                 // Truststore -- where we store CAs & certificates we trust. Used by client in 1way and mutual SSL
-                KeyStore tStore = KeyStore.getInstance("PKCS12");
+                KeyStore tStore = KeyStore.getInstance("PKCS12"); // only support the open pkcs12 format
                 TrustManagerFactory tmFactory = TrustManagerFactory.getInstance("X509");
 
                 // Allow use of classpath - to find resource inside jar. Useful for out of the box config
                 if (StringUtils.startsWithIgnoreCase(truststore, "classpath:")) {
-                    tsf = this.getClass().getClassLoader().getResourceAsStream(StringUtils.removeStart(truststore, "classpath:"));
+                    tsFile = this.getClass().getClassLoader().getResourceAsStream(StringUtils.removeStart(truststore, "classpath:"));
                 } else
                     // otherwise absolute filename
                     //TODO: If truststore is null - or file not found, we'll hit an exception here
-                    tsf = new FileInputStream(truststore);
+                    tsFile = new FileInputStream(truststore);
 
                 // Load the keystore, initialise the factory
-                tStore.load(tsf, truststorePassword.toCharArray());
+                tStore.load(tsFile, truststorePassword.toCharArray());
                 tmFactory.init(tStore);
-                tsf.close();
+                tsFile.close();
 
-                KeyStore kStore = null;
-                KeyManagerFactory kmf = null;
+                // Get the trust manager list for our ssl context initialization
+                trustManagers = tmFactory.getTrustManagers();
+
+                // Next we configure the keystore - but only if a keystore is configured - for mutual SSL
                 if (StringUtils.isNotBlank(keystore)) {
-                    // Very similar for keystore - this is needed for mutual ssl
-                    // Default KeyManager will choose an appropriate cert to use
-                    //TODO: Implement own X509KeyManager if required to choose by alias - the default
-                    //implementation will chose the first appropriate one in alphanumeric order.
-                    kStore = KeyStore.getInstance("PKCS12");
-                    kmf = KeyManagerFactory.getInstance("X509");
+                    InputStream ksFile;
 
-                    if (StringUtils.startsWithIgnoreCase(keystore, "classpath:")) {
-                        ksf = this.getClass().getClassLoader().getResourceAsStream(StringUtils.removeStart(keystore, "classpath:"));
-                    } else
-                        ksf = new FileInputStream(keystore);
-                    kStore.load(ksf, keystorePassword.toCharArray());
-                    kmf.init(kStore, keystorePassword.toCharArray());
-                    ksf.close();
+                    KeyStore kStore = null;
+                    KeyManagerFactory kmFactory = null;
+                    if (StringUtils.isNotBlank(keystore)) {
+
+                        //TODO: Default KeyManagers chooses a cert to use ie by alpha sort -- Implement own X509KeyManager if required to choose by alias - the default
+                        kStore = KeyStore.getInstance("PKCS12");
+                        kmFactory = KeyManagerFactory.getInstance("X509");
+
+                        // Support classpath:
+                        if (StringUtils.startsWithIgnoreCase(keystore, "classpath:")) {
+                            ksFile = this.getClass().getClassLoader().getResourceAsStream(StringUtils.removeStart(keystore, "classpath:"));
+                        } else
+                            ksFile = new FileInputStream(keystore);
+
+                        kStore.load(ksFile, keystorePassword.toCharArray());
+                        kmFactory.init(kStore, keystorePassword.toCharArray());
+                        ksFile.close();
+
+                        keyManagers = kmFactory.getKeyManagers();
+                    }
                 }
+            }
+            else {
+                trustManagers = INSECURE_MANAGER;
+                keyManagers = null;
+            }
 
-                // Get a good seed for the crypt
-                SecureRandom random = new SecureRandom();
-                random.setSeed(System.currentTimeMillis());
+            // Get a good seed for the crypt
+            SecureRandom random = new SecureRandom();
+            random.setSeed(System.currentTimeMillis());
 
-                // Now have a new SSL context
-                // Quick fix - if keystore not set let's skip that part
-                if (StringUtils.isNotBlank(keystore)) {
-                    sc.init(kmf.getKeyManagers(), tmFactory.getTrustManagers(), random);
-                } else
-                    sc.init(null, tmFactory.getTrustManagers(), random);
-
-            } else
-                // no-ops when SSL verification is not used
-                sc.init(null, INSECURE_MANAGER, null);
-
+            // Initialize the ssl context now we know our key/cert managers
+            sc.init(keyManagers, trustManagers, random);
 
             // Get a custom httpclient - scope to Egeria rest API calls & do not impact other usages
-
             HttpClientBuilder httpBuilder = HttpClientBuilder.create();
             httpBuilder.useSystemProperties();
             httpBuilder.setSSLContext(sc);
 
+            // Host verification is set within the http builder - not relevant if SSL verification is being skipped
             if (sslVerify)
                 httpBuilder.setSSLHostnameVerifier(new DefaultHostnameVerifier());
             else
@@ -308,6 +316,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
             HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
             requestFactory.setHttpClient(httpClient);
 
+            // TODO: Now use restTemplate - consider what caching can be done in case performance above is comprimized
             restTemplate = new RestTemplate(requestFactory);
 
             /*
