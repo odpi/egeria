@@ -92,14 +92,14 @@ public class SubjectAreaDefinitionCategoryFVT
             gotSubjectAreaDefinition = getSubjectAreaDefinitionByGUID(guid);
             FVTUtils.validateNode( gotSubjectAreaDefinition);
             System.out.println("Delete the subjectArea1 ");
-            gotSubjectAreaDefinition = deleteSubjectAreaDefinition(guid);
-            FVTUtils.validateNode( gotSubjectAreaDefinition);
+            deleteSubjectAreaDefinition(guid);
+            //FVTUtils.validateNode( gotSubjectAreaDefinition);
             System.out.println("restore the subjectArea1 ");
             gotSubjectAreaDefinition = restoreSubjectAreaDefinition(guid);
             FVTUtils.validateNode( gotSubjectAreaDefinition);
             System.out.println("Delete the subjectArea1 ");
-            gotSubjectAreaDefinition = deleteSubjectAreaDefinition(guid);
-            FVTUtils.validateNode( gotSubjectAreaDefinition);
+            deleteSubjectAreaDefinition(guid);
+            //FVTUtils.validateNode( gotSubjectAreaDefinition);
             System.out.println("Purge a subjectArea1 ");
 
             // create subjectArea DEFAULT_TEST_CATEGORY_NAME3 with parent

@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGraph;
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraphClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
@@ -15,6 +15,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.io.IOException;
 import java.util.*;
@@ -48,17 +51,17 @@ public class GraphFVT
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
-        } catch (SubjectAreaCheckedException e)
-        {
-            System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         } catch (SubjectAreaFVTCheckedException e) {
             System.out.println("ERROR: " + e.getMessage() );
+        } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
+            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+
         }
 
     }
-    public GraphFVT(String url, String serverName,String userId) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
-    {
-        subjectAreaGraph = new SubjectAreaImpl(serverName,url).getSubjectAreaGraph();
+    public GraphFVT(String url, String serverName,String userId) throws InvalidParameterException {
+        SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
+        subjectAreaGraph = new SubjectAreaGraphClient(client);
         System.out.println("Create a glossary");
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         termFVT = new TermFVT(url,serverName,userId);
@@ -68,20 +71,19 @@ public class GraphFVT
         this.serverName=serverName;
         this.userId=userId;
     }
-    public static void runWith2Servers(String url) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
-    {
+    public static void runWith2Servers(String url) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         GraphFVT fvt =new GraphFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
         GraphFVT fvt2 =new GraphFVT(url,FVTConstants.SERVER_NAME2,FVTConstants.USERID);
         fvt2.run();
     }
 
-    public static void runIt(String url, String serverName, String userId) {
-
+    public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, SubjectAreaFVTCheckedException, PropertyServerException, UserNotAuthorizedException {
+        GraphFVT fvt = new GraphFVT(url, serverName, userId);
+        fvt.run();
     }
 
-    public void run() throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
-    {
+    public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Glossary glossary= glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
 
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
@@ -91,7 +93,7 @@ public class GraphFVT
                 null,
                 null,
                 null,
-                null);
+                3);
         checkGraphContent(graph,1,0);
         Term term1 =termFVT.createTerm(DEFAULT_TEST_TERM_NAME1,glossaryGuid);
         graph = getGraph(glossaryGuid,
@@ -99,7 +101,7 @@ public class GraphFVT
                 null,
                 null,
                 null,
-                null);
+                3);
         checkGraphContent(graph,2,1);
         Term term2 =termFVT.createTerm(DEFAULT_TEST_TERM_NAME2,glossaryGuid);
         graph = getGraph(glossaryGuid,
@@ -107,7 +109,7 @@ public class GraphFVT
             null,
             null,
             null,
-                null);
+                3);
         checkGraphContent(graph,3,2);
         graph = getGraph(term1.getSystemAttributes().getGUID(),
                 null,
@@ -128,7 +130,7 @@ public class GraphFVT
                 null,
                 null,
                 null,
-                null);
+                3);
         checkGraphContent(graph,3,2);
         relationshipFVT.createSynonym(term1,term2);
 
@@ -137,7 +139,7 @@ public class GraphFVT
                 null,
                 null,
                 null,
-                null);
+                3);
         checkGraphContent(graph,3,3);
 
         graph = getGraph(term1.getSystemAttributes().getGUID(),
@@ -145,7 +147,7 @@ public class GraphFVT
                 null,
                 new HashSet<>(Arrays.asList(LineType.Synonym)),
                 null,
-                null);
+                3);
         checkGraphContent(graph,2,1);
 
         Term term3 =termFVT.createTerm(DEFAULT_TEST_TERM_NAME3,glossaryGuid);
@@ -155,7 +157,7 @@ public class GraphFVT
                 null,
                 new HashSet<>(Arrays.asList(LineType.Synonym)),
                 null,
-                null);
+                3);
         // expect 3 terms with the 2 Synonym Lines from term1.
         checkGraphContent(graph,3,2);
 
@@ -166,7 +168,7 @@ public class GraphFVT
                 null,
                 null,
                 null,
-                null);
+                3);
         checkGraphContent(graph,4,5);
 
         graph = getGraph(term3.getSystemAttributes().getGUID(),
@@ -208,13 +210,13 @@ public class GraphFVT
         Taxonomy taxonomy= glossaryFVT.getTaxonomyForInput(DEFAULT_TEST_GLOSSARY_NAME);
         Glossary createdTaxonomy= glossaryFVT.issueCreateGlossary(taxonomy);
         String taxonomyGuid = createdTaxonomy.getSystemAttributes().getGUID();
-        SubjectAreaDefinition subjectAreaDefinition =subjectAreaFVT.createSubjectAreaDefinitionWithGlossaryGuid("Subject area 1",taxonomyGuid);
+        SubjectAreaDefinition subjectAreaDefinition = subjectAreaFVT.createSubjectAreaDefinitionWithGlossaryGuid("Subject area 1",taxonomyGuid);
         graph = getGraph(taxonomyGuid,
                 null,
                null,
                 null,
                 null,
-                null);
+                3);
         checkGraphContent(graph,2,1);
         checkNodesContainNodeType(graph.getNodes(),NodeType.Taxonomy);
         checkNodesContainNodeType(graph.getNodes(),NodeType.SubjectAreaDefinition);
@@ -233,7 +235,7 @@ public class GraphFVT
     }
 
     private void checkGraphContent(Graph graph,int expectedNodesSize,int expectedLinesSize) throws SubjectAreaFVTCheckedException {
-        System.err.println("CheckGraphContent expected " +expectedNodesSize + " Nodes and "+expectedLinesSize + " Lines" );
+        System.out.println("CheckGraphContent expected " +expectedNodesSize + " Nodes and "+expectedLinesSize + " Lines" );
         if (graph.getNodes().size() !=expectedNodesSize ) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " + expectedNodesSize +  " nodes, got " +graph.getNodes().size());
         }
@@ -251,12 +253,9 @@ public class GraphFVT
                            Set<NodeType> nodeFilter,
                            Set<LineType> lineFilter,
                            StatusFilter statusFilter,   // may need to extend this for controlled terms
-                           Integer level) throws
-                                          UserNotAuthorizedException,
-                                          InvalidParameterException,
-                                          FunctionNotSupportedException,
-                                          MetadataServerUncontactableException,
-                                          UnexpectedResponseException, PropertyServerException {
+                           int level) throws InvalidParameterException,
+                                                 PropertyServerException,
+                                                 UserNotAuthorizedException {
         return subjectAreaGraph.getGraph(
                 userId,
                 guid,
