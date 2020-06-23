@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewO
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -16,7 +17,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -35,13 +35,13 @@ public class GlossaryViewOMAS extends OMRSClient {
      * false if now is outside the interval given by effectiveFromTime and effectiveToTime, true otherwise
      */
     private final Predicate<EntityDetail> effectiveTimePredicate = entityDetail -> {
-        if(entityDetail.getProperties() == null){
+        if (entityDetail.getProperties() == null) {
             return true;
         }
         Date effectiveFromTime = entityDetail.getProperties().getEffectiveFromTime();
         Date effectiveToTime = entityDetail.getProperties().getEffectiveToTime();
 
-        if(effectiveFromTime == null || effectiveToTime == null){
+        if (effectiveFromTime == null || effectiveToTime == null) {
             return true;
         }
 
@@ -70,9 +70,8 @@ public class GlossaryViewOMAS extends OMRSClient {
             Optional<EntityDetail> entityDetail = getEntityDetail(userId, serverName, entityGUID, entityTypeName, methodName);
             entityDetail.ifPresent(detail -> response.addEntityDetail(entityDetailConverter.apply(detail)));
 
-        }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | GlossaryViewOmasException e){
-            prepare(response, e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
-                    e.getReportedUserAction(), e.getErrorMessage(), e.getReportedSystemAction(), e.getRelatedProperties());
+        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | GlossaryViewOmasException e) {
+            prepare(response, e);
         }
         return response;
     }
@@ -100,7 +99,7 @@ public class GlossaryViewOMAS extends OMRSClient {
             String relationshipTypeGUID = getTypeDefGUID(relationshipTypeName, userId, serverName);
             List<EntityDetail> entities = getRelatedEntities(userId, serverName, entityGUID, entityTypeName,
                     relationshipTypeGUID, relationshipTypeName, from, size, methodName);
-            if(entities == null){
+            if (entities == null) {
                 return response;
             }
 
@@ -109,9 +108,8 @@ public class GlossaryViewOMAS extends OMRSClient {
                     .filter(effectiveTimePredicate)
                     .map(entityDetailConverter)
                     .collect(Collectors.toList()));
-        }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | GlossaryViewOmasException e){
-            prepare(response, e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
-                    e.getReportedUserAction(), e.getErrorMessage(), e.getReportedSystemAction(), e.getRelatedProperties());
+        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | GlossaryViewOmasException e) {
+            prepare(response, e);
         }
 
         return response;
@@ -144,7 +142,7 @@ public class GlossaryViewOMAS extends OMRSClient {
             String relationshipTypeGUID = getTypeDefGUID(relationshipTypeName, userId, serverName);
             List<EntityDetail> entities = getSubEntities(userId, serverName, entityGUID, entityTypeName,
                                                          anchorAtEnd1, relationshipTypeGUID, relationshipTypeName, from, size, methodName);
-            if(entities == null){
+            if (entities == null) {
                 return response;
             }
 
@@ -153,9 +151,8 @@ public class GlossaryViewOMAS extends OMRSClient {
                                               .filter(effectiveTimePredicate)
                                               .map(entityDetailConverter)
                                               .collect(Collectors.toList()));
-        }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | GlossaryViewOmasException e){
-            prepare(response, e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
-                    e.getReportedUserAction(), e.getErrorMessage(), e.getReportedSystemAction(), e.getRelatedProperties());
+        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | GlossaryViewOmasException e) {
+            prepare(response, e);
         }
 
         return response;
@@ -180,7 +177,7 @@ public class GlossaryViewOMAS extends OMRSClient {
         try {
             String entityTypeGUID = getTypeDefGUID(entityTypeName, userId, serverName);
             List<EntityDetail> entities = getAllEntityDetails(userId, serverName, entityTypeGUID, from, size, methodName);
-            if(entities == null){
+            if (entities == null) {
                 return response;
             }
 
@@ -188,9 +185,8 @@ public class GlossaryViewOMAS extends OMRSClient {
                     .filter(effectiveTimePredicate)
                     .map(entityDetailConverter)
                     .collect(Collectors.toList()));
-        }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | GlossaryViewOmasException e){
-            prepare(response, e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
-                    e.getReportedUserAction(), e.getErrorMessage(), e.getReportedSystemAction(), e.getRelatedProperties());
+        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | GlossaryViewOmasException e) {
+            prepare(response, e);
         }
 
         return response;
@@ -200,22 +196,16 @@ public class GlossaryViewOMAS extends OMRSClient {
      * Prepares the response with information from caught exception
      *
      * @param response response structure to add results into
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param userAction  instructions for correcting the error
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param properties  description of function it was performing when error detected
+     * @param e a checked exception for reporting errors found when using OCF connectors
      */
-    private void prepare(GlossaryViewEntityDetailResponse response, int httpCode, String className, String actionDescription,
-                         String userAction, String errorMessage, String systemAction, Map<String, Object> properties){
-        response.setRelatedHTTPCode(httpCode);
-        response.setExceptionClassName(className);
-        response.setActionDescription(actionDescription);
-        response.setExceptionUserAction(userAction);
-        response.setExceptionErrorMessage(errorMessage);
-        response.setExceptionSystemAction(systemAction);
-        response.setExceptionProperties(properties);
+    private void prepare(GlossaryViewEntityDetailResponse response, OCFCheckedExceptionBase e){
+        response.setRelatedHTTPCode(e.getReportedHTTPCode());
+        response.setExceptionClassName(e.getReportingClassName());
+        response.setActionDescription(e.getReportingActionDescription());
+        response.setExceptionUserAction(e.getReportedUserAction());
+        response.setExceptionErrorMessage(e.getReportedErrorMessage());
+        response.setExceptionSystemAction(e.getReportedSystemAction());
+        response.setExceptionProperties(e.getRelatedProperties());
     }
 
     /**
@@ -239,7 +229,7 @@ public class GlossaryViewOMAS extends OMRSClient {
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {
-            throw new GlossaryViewOmasException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(), e.getErrorMessage(),
+            throw new GlossaryViewOmasException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(), e.getReportedErrorMessage(),
                                                 e.getReportedSystemAction(), e.getReportedUserAction());
         }
 

@@ -4,6 +4,7 @@ import React from "react";
 
 import NodeSCUD from "./NodeSCUD";
 import NodeTypeChooser from "./NodeTypeChooser";
+import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 
 const GlossaryAuthorNodes = props => {
   console.log("GlossaryAuthorNodes");
@@ -13,8 +14,8 @@ const GlossaryAuthorNodes = props => {
         <div class="bx--row">
           <NodeTypeChooser />
         </div>
-        <div class="bx--row">
-          <NodeSCUD />
+        <div class="bx--row"> 
+          <NodeSCUD/>
         </div>
       </div>
     </div>

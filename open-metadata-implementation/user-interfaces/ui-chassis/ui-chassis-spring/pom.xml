@@ -34,6 +34,7 @@
         <node.downloadRoot>https://nodejs.org/dist/</node.downloadRoot>
         <npm.version>6.13.4</npm.version>
         <npm.downloadRoot>https://registry.npmjs.org/npm/-/</npm.downloadRoot>
+        <polymer.build>es6-unbundled</polymer.build>
     </properties>
 
     <dependencies>
@@ -323,9 +324,9 @@
 
     <profiles>
         <profile>
-            <id>prod</id>
+            <id>dev</id>
             <properties>
-                <polymer.build>es6-bundled</polymer.build>
+                <polymer.build>uncompiled-unbundled</polymer.build>
             </properties>
         </profile>
     </profiles>
@@ -389,6 +390,8 @@
                             <arguments>
                                 <argument>${basedir}/tools/node_modules/polymer-cli/bin/polymer.js</argument>
                                 <argument>build</argument>
+                                <argument>--preset</argument>
+                                <argument>${polymer.build}</argument>
                             </arguments>
                             <workingDirectory>${basedir}/src/main/static</workingDirectory>
                             <environmentVariables>
@@ -415,7 +418,7 @@
                             <outputDirectory>${project.build.outputDirectory}/public</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/src/main/static/build/dev</directory>
+                                    <directory>${basedir}/src/main/static/build/${polymer.build}</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
