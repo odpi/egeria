@@ -314,9 +314,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 // if this is a not a purge then attempt to get terms and categories, as we should not delete if there are any
                 List<String> relationshipTypeNames = Arrays.asList(TERM_ANCHOR_RELATIONSHIP_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME);
                 if (oMRSAPIHelper.isEmptyContent(relationshipTypeNames, userId, guid, PROJECT_TYPE_NAME, methodName)) {
-                    oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, GLOSSARY_TYPE_NAME, guid);
+                    oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, PROJECT_TYPE_NAME, guid);
                 } else {
-                    throw new EntityNotDeletedException(SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition(),
+                    throw new EntityNotDeletedException(SubjectAreaErrorCode.PROJECT_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid),
                             className,
                             methodName,
                             guid);
