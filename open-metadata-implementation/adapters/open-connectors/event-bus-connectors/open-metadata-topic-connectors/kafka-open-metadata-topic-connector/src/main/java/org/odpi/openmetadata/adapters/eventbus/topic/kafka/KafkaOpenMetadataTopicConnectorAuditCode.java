@@ -117,8 +117,12 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "An unexpected error was encountered while closing the kafka topic connector",
             "Check Egeria and Kafka Error Logs",
-            "Check Egeria and Kafka Error Logs")
-
+            "Ensure the server has shutdown cleanly"),
+    EXCEPTION_COMMITING_OFFSETS("OCF-KAFKA-TOPIC_CONNECTOR-00017",
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
+            "An unexpected error was encountered while commitimg consumed messages",
+            "Check Egeria and Kafka Error Logs",
+            "Ensure the server has shutdown cleanly")
     ;
 
     private AuditLogMessageDefinition messageDefinition;
