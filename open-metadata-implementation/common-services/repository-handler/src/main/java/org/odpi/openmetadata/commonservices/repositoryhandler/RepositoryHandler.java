@@ -843,39 +843,36 @@ public class RepositoryHandler
                                       String                  entityTypeName,
                                       String                  methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
-                                                                                 PropertyServerException
-    {
-        try
-        {
-            List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            obsoleteEntityGUID,
-                                                                                            null,
-                                                                                            0,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            5);
+                                                                                 PropertyServerException {
+        try {
+            try {
+                List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
+                        obsoleteEntityGUID,
+                        null,
+                        0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        5);
 
-            if ((relationships == null) || (relationships.isEmpty()))
-            {
-                this.removeIsolatedEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
+                if ((relationships == null) || (relationships.isEmpty())) {
+                    this.removeIsolatedEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
+                }
+            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error) {
+                this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
+                auditLog.logMessage(methodName,
+                        RepositoryHandlerAuditCode.ENTITY_PURGED.getMessageDefinition(obsoleteEntityGUID,
+                                entityTypeName,
+                                entityTypeGUID,
+                                methodName,
+                                metadataCollection.getMetadataCollectionId(userId)));
             }
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
-        {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error) {
             errorHandler.handleUnknownEntity(error, obsoleteEntityGUID, entityTypeName, methodName, guidParameterName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error) {
             errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
-        {
-            this.purgeEntity(userId, entityTypeGUID,entityTypeName, obsoleteEntityGUID, methodName);
-        }
-        catch (Throwable   error)
-        {
+        } catch (Throwable error) {
             errorHandler.handleRepositoryError(error, methodName);
         }
     }
@@ -901,19 +898,21 @@ public class RepositoryHandler
                                      String           entityTypeGUID,
                                      String           entityTypeName,
                                      String           methodName) throws UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
+                                                                         PropertyServerException {
         // Todo - validate that the entity is in fact isolated.
-        try
-        {
-            metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
-        {
-            this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
-        }
-        catch (Throwable   error)
-        {
+        try {
+            try {
+                metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
+            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error) {
+                this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
+                auditLog.logMessage(methodName,
+                        RepositoryHandlerAuditCode.ENTITY_PURGED.getMessageDefinition(obsoleteEntityGUID,
+                                entityTypeName,
+                                entityTypeGUID,
+                                methodName,
+                                metadataCollection.getMetadataCollectionId(userId)));
+            }
+        } catch (Throwable error) {
             errorHandler.handleRepositoryError(error, methodName);
         }
     }
@@ -942,12 +941,6 @@ public class RepositoryHandler
         try
         {
             metadataCollection.purgeEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
-            auditLog.logMessage(methodName,
-                                RepositoryHandlerAuditCode.ENTITY_PURGED.getMessageDefinition(obsoleteEntityGUID,
-                                                                                              entityTypeName,
-                                                                                              entityTypeGUID,
-                                                                                              methodName,
-                                                                                              metadataCollection.getMetadataCollectionId(userId)));
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -1045,10 +1038,20 @@ public class RepositoryHandler
 
             try
             {
-                metadataCollection.deleteEntity(userId,
-                                                attachedEntityTypeGUID,
-                                                attachedEntityTypeName,
-                                                attachedEntityGUID);
+                try {
+                    metadataCollection.deleteEntity(userId,
+                            attachedEntityTypeGUID,
+                            attachedEntityTypeName,
+                            attachedEntityGUID);
+                } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error) {
+                    this.purgeEntity(userId, attachedEntityTypeGUID, attachedEntityTypeName, attachedEntityGUID, methodName);
+                    auditLog.logMessage(methodName,
+                            RepositoryHandlerAuditCode.ENTITY_PURGED.getMessageDefinition(attachedEntityTypeGUID,
+                                    attachedEntityTypeName,
+                                    attachedEntityGUID,
+                                    methodName,
+                                    metadataCollection.getMetadataCollectionId(userId)));
+                }
             }
             catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
             {
@@ -1063,14 +1066,6 @@ public class RepositoryHandler
             catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
-            {
-                this.purgeEntity(userId,
-                                 attachedEntityTypeGUID,
-                                 attachedEntityTypeGUID,
-                                 attachedEntityGUID,
-                                 methodName);
             }
             catch (Throwable error)
             {
@@ -2822,23 +2817,24 @@ public class RepositoryHandler
                                    String                  methodName) throws UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        try
-        {
-            metadataCollection.deleteRelationship(userId,
-                                                  relationshipTypeGUID,
-                                                  relationshipTypeName,
-                                                  relationshipGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
-        {
+        try {
+            try {
+                metadataCollection.deleteRelationship(userId,
+                        relationshipTypeGUID,
+                        relationshipTypeName,
+                        relationshipGUID);
+            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error) {
+                this.purgeRelationship(userId, relationshipTypeGUID, relationshipTypeName, relationshipGUID, methodName);
+                auditLog.logMessage(methodName,
+                        RepositoryHandlerAuditCode.RELATIONSHIP_PURGED.getMessageDefinition(relationshipGUID,
+                                relationshipTypeName,
+                                relationshipTypeGUID,
+                                methodName,
+                                metadataCollection.getMetadataCollectionId(userId)));
+            }
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error) {
             errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException  error)
-        {
-            this.purgeRelationship(userId, relationshipTypeGUID, relationshipTypeName, relationshipGUID, methodName);
-        }
-        catch (Throwable   error)
-        {
+        } catch (Throwable error) {
             errorHandler.handleRepositoryError(error, methodName);
         }
     }
@@ -2869,13 +2865,6 @@ public class RepositoryHandler
                                                  relationshipTypeGUID,
                                                  relationshipTypeName,
                                                  relationshipGUID);
-
-            auditLog.logMessage(methodName,
-                                RepositoryHandlerAuditCode.RELATIONSHIP_PURGED.getMessageDefinition(relationshipGUID,
-                                                                                                    relationshipTypeName,
-                                                                                                    relationshipTypeGUID,
-                                                                                                    methodName,
-                                                                                                    metadataCollection.getMetadataCollectionId(userId)));
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
