@@ -112,8 +112,14 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
               OMRSAuditLogRecordSeverity.STARTUP,
              "The local server is attempting to connect to Kafka, attempt {0}",
              "Ensure Kafka is available",
-             "Ensure the Kafka Cluster has started")
-            ;
+             "Ensure the Kafka Cluster has started"),
+    UNEXPECTED_SHUTDOWN_EXCEPTION( "OCF-KAFKA-TOPIC_CONNECTOR-00016",
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
+            "An unexpected error was encountered while closing the kafka topic connector",
+            "Check Egeria and Kafka Error Logs",
+            "Check Egeria and Kafka Error Logs")
+
+    ;
 
     private AuditLogMessageDefinition messageDefinition;
 

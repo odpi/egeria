@@ -116,18 +116,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         }
        return Boolean.valueOf(value).booleanValue();
     }
-
-    /**
-     * The server is shutting down.
-     */
-    public void stop()
-    {
-        running = false;
-        if (consumer != null)
-        {
-            consumer.wakeup();
-        }
-    }
+    
 
     private void updateNextMaxPollTimestamp() {
     	maxNextPollTimestampToAvoidConsumerTimeout = System.currentTimeMillis() + maxMsBetweenPolls - consumerTimeoutPreventionSafetyWindowMs;	
