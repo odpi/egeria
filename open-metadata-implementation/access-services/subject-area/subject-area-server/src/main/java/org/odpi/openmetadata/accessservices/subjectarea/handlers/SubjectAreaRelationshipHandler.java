@@ -59,12 +59,12 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function is not supported.
      * </ul>
      */
-    public <L extends Line>SubjectAreaOMASAPIResponse2<L> createLine(String restAPIName,
+    public <L extends Line> SubjectAreaOMASAPIResponse<L> createLine(String restAPIName,
                                                                      String userId,
                                                                      Class<? extends ILineMapper<L>> clazz,
                                                                      L line)
     {
-        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             ILineMapper<L> mapper = mappersFactory.get(clazz);
             Relationship omrsRelationship = mapper.map(line);
@@ -95,12 +95,12 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public <L extends Line>SubjectAreaOMASAPIResponse2<L> getLine(String restAPIName,
+    public <L extends Line> SubjectAreaOMASAPIResponse<L> getLine(String restAPIName,
                                                                   String userId,
                                                                   Class<? extends ILineMapper<L>> clazz,
                                                                   String guid)
     {
-        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             ILineMapper<L> mapper = mappersFactory.get(clazz);
             Optional<Relationship> gotRelationship = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, guid);
@@ -136,14 +136,14 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public <L extends Line>SubjectAreaOMASAPIResponse2<L> updateLine(String restAPIName,
+    public <L extends Line> SubjectAreaOMASAPIResponse<L> updateLine(String restAPIName,
                                                                      String userId,
                                                                      String lineGuid,
                                                                      Class<? extends ILineMapper<L>> clazz,
                                                                      L line,
                                                                      Boolean isReplace)
     {
-        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             ILineMapper<L> mapper = mappersFactory.get(clazz);
@@ -216,12 +216,12 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public <L extends Line>SubjectAreaOMASAPIResponse2<L> deleteLine(String restAPIName,
+    public <L extends Line> SubjectAreaOMASAPIResponse<L> deleteLine(String restAPIName,
                                                                      String userId,
                                                                      Class<? extends ILineMapper<L>> clazz,
                                                                      String guid,
                                                                      Boolean isPurge) {
-        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             ILineMapper<L> mapper = mappersFactory.get(clazz);
@@ -258,12 +258,12 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> EntityNotPurgedException             a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public <L extends Line>SubjectAreaOMASAPIResponse2<L>  restoreLine(String restAPIName,
-                                                                       String userId,
-                                                                       Class<? extends ILineMapper<L>> clazz,
-                                                                       String guid)
+    public <L extends Line> SubjectAreaOMASAPIResponse<L> restoreLine(String restAPIName,
+                                                                      String userId,
+                                                                      Class<? extends ILineMapper<L>> clazz,
+                                                                      String guid)
     {
-        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             oMRSAPIHelper.callOMRSRestoreRelationship(restAPIName, userId, guid);
             response = getLine(restAPIName, userId, clazz, guid);

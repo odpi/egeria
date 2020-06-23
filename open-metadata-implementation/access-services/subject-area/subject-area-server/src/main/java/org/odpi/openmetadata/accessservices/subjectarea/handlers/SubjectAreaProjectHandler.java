@@ -74,9 +74,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li>StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Project> createProject(String userId, Project suppliedProject) {
+    public SubjectAreaOMASAPIResponse<Project> createProject(String userId, Project suppliedProject) {
         final String methodName = "createProject";
-        SubjectAreaOMASAPIResponse2<Project> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             InputValidator.validateNodeType(className, methodName, suppliedProject.getNodeType(), NodeType.Project, NodeType.GlossaryProject);
@@ -111,9 +111,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Project> getProjectByGuid(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Project> getProjectByGuid(String userId, String guid) {
         final String methodName = "getProjectByGuid";
-        SubjectAreaOMASAPIResponse2<Project> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, PROJECT_TYPE_NAME, methodName);
@@ -142,10 +142,10 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Project> findProject(String userId, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Project> findProject(String userId, FindRequest findRequest) {
 
         final String methodName = "findProject";
-        SubjectAreaOMASAPIResponse2<Project> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             List<Project> foundGlossaries = findEntities(userId, PROJECT_TYPE_NAME, findRequest, ProjectMapper.class, methodName);
@@ -176,7 +176,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse2<Line> getProjectRelationships(String userId, String guid, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getProjectRelationships";
         return getAllRelationshipsForEntity(methodName, userId, guid, findRequest);
     }
@@ -204,9 +204,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Project> updateProject(String userId, String guid, Project suppliedProject, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Project> updateProject(String userId, String guid, Project suppliedProject, boolean isReplace) {
         final String methodName = "updateProject";
-        SubjectAreaOMASAPIResponse2<Project> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             InputValidator.validateNodeType(className, methodName, suppliedProject.getNodeType(), NodeType.Project, NodeType.GlossaryProject);
@@ -304,9 +304,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li> EntityNotPurgedException               a hard delete was issued but the project was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Project> deleteProject(String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Project> deleteProject(String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteProject";
-        SubjectAreaOMASAPIResponse2<Project> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
             if (isPurge) {
                 oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, PROJECT_TYPE_NAME, guid);
@@ -346,9 +346,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Project> restoreProject(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Project> restoreProject(String userId, String guid) {
         final String methodName = "restoreProject";
-        SubjectAreaOMASAPIResponse2<Project> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
             this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
             response = getProjectByGuid(userId, guid);
@@ -372,9 +372,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Term> getProjectTerms(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String userId, String guid) {
         final String methodName = "getProjectTerms";
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             List<EntityDetail> entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
                     methodName, userId, guid, PROJECT_TYPE_NAME, PROJECT_SCOPE_RELATIONSHIP_NAME);

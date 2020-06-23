@@ -13,7 +13,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.Mapper;
@@ -126,12 +126,12 @@ public abstract class SubjectAreaHandler {
      * @param findRequest        {@link FindRequest}
      * @return the relationships associated with the requested guid
      * */
-    public SubjectAreaOMASAPIResponse2<Line> getAllRelationshipsForEntity(String methodName,
-                                                                          String userId,
-                                                                          String guid,
-                                                                          FindRequest findRequest)
+    public SubjectAreaOMASAPIResponse<Line> getAllRelationshipsForEntity(String methodName,
+                                                                         String userId,
+                                                                         String guid,
+                                                                         FindRequest findRequest)
     {
-        SubjectAreaOMASAPIResponse2<Line> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
             response.addAllResults(getAllLineForEntity(methodName, userId, guid, findRequest));
         } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {

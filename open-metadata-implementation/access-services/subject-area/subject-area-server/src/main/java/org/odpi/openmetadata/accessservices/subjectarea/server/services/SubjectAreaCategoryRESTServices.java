@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTerm
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
@@ -65,12 +65,12 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse2<Category> createCategory(String serverName, String userId, Category suppliedCategory) {
+    public SubjectAreaOMASAPIResponse<Category> createCategory(String serverName, String userId, Category suppliedCategory) {
         final String methodName = "createCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        SubjectAreaOMASAPIResponse2<Category> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler categoryHandler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = categoryHandler.createCategory(userId, suppliedCategory);
@@ -97,12 +97,12 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Category> getCategory( String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Category> getCategory(String serverName, String userId, String guid) {
         final String methodName = "getCategoryByGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Category> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.getCategoryByGuid(userId, guid);
@@ -138,20 +138,20 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
 
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse2<Category> findCategory(String serverName,
-                                                    String userId,
-                                                    String searchCriteria,
-                                                    Date asOfTime,
-                                                    Integer offset,
-                                                    Integer pageSize,
-                                                    SequencingOrder sequencingOrder,
-                                                    String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Category> findCategory(String serverName,
+                                                             String userId,
+                                                             String searchCriteria,
+                                                             Date asOfTime,
+                                                             Integer offset,
+                                                             Integer pageSize,
+                                                             SequencingOrder sequencingOrder,
+                                                             String sequencingProperty) {
 
         final String methodName = "findCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        SubjectAreaOMASAPIResponse2<Category> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
@@ -194,14 +194,14 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException   Function not supported.</li>
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse2<Line> getCategoryRelationships(String serverName,
-                                                                       String userId,
-                                                                       String guid,
-                                                                       Date asOfTime,
-                                                                       Integer offset,
-                                                                       Integer pageSize,
-                                                                       SequencingOrder sequencingOrder,
-                                                                       String sequencingProperty
+    public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(String serverName,
+                                                                     String userId,
+                                                                     String guid,
+                                                                     Date asOfTime,
+                                                                     Integer offset,
+                                                                     Integer pageSize,
+                                                                     SequencingOrder sequencingOrder,
+                                                                     String sequencingProperty
     ) {
 
         final String methodName = "getCategoryRelationships";
@@ -209,7 +209,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Line> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
@@ -249,12 +249,12 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Category> updateCategory(String serverName, String userId, String guid, Category suppliedCategory, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Category> updateCategory(String serverName, String userId, String guid, Category suppliedCategory, boolean isReplace) {
         final String methodName = "updateCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Category> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.updateCategory(userId, guid, suppliedCategory, isReplace);
@@ -294,12 +294,12 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Category> deleteCategory(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Category> deleteCategory(String serverName, String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Category> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.deleteCategory(userId, guid, isPurge);
@@ -329,12 +329,12 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Category> restoreCategory(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Category> restoreCategory(String serverName, String userId, String guid) {
         final String methodName = "restoreCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Category> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.restoreCategory(userId, guid);

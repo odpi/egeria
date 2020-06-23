@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlos
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
@@ -61,9 +61,9 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li>StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Glossary> createGlossary(String serverName, String userId, Glossary suppliedGlossary) {
+    public SubjectAreaOMASAPIResponse<Glossary> createGlossary(String serverName, String userId, Glossary suppliedGlossary) {
         final String methodName = "createGlossary";
-        SubjectAreaOMASAPIResponse2<Glossary> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.createGlossary(userId, suppliedGlossary);
@@ -88,9 +88,9 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Glossary> getGlossaryByGuid(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Glossary> getGlossaryByGuid(String serverName, String userId, String guid) {
         final String methodName = "getGlossaryByGuid";
-        SubjectAreaOMASAPIResponse2<Glossary> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.getGlossaryByGuid(userId, guid);
@@ -122,17 +122,17 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Glossary> findGlossary(String serverName,
-                                                              String userId,
-                                                              String searchCriteria,
-                                                              Date asOfTime,
-                                                              Integer offset,
-                                                              Integer pageSize,
-                                                              SequencingOrder sequencingOrder,
-                                                              String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Glossary> findGlossary(String serverName,
+                                                             String userId,
+                                                             String searchCriteria,
+                                                             Date asOfTime,
+                                                             Integer offset,
+                                                             Integer pageSize,
+                                                             SequencingOrder sequencingOrder,
+                                                             String sequencingProperty) {
 
         final String methodName = "findGlossary";
-        SubjectAreaOMASAPIResponse2<Glossary> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
@@ -173,19 +173,19 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse2<Line> getGlossaryRelationships(String serverName,
-                                                                      String userId,
-                                                                      String guid,
-                                                                      Date asOfTime,
-                                                                      Integer offset,
-                                                                      Integer pageSize,
-                                                                      SequencingOrder sequencingOrder,
-                                                                      String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(String serverName,
+                                                                     String userId,
+                                                                     String guid,
+                                                                     Date asOfTime,
+                                                                     Integer offset,
+                                                                     Integer pageSize,
+                                                                     SequencingOrder sequencingOrder,
+                                                                     String sequencingProperty) {
         String methodName = "getGlossaryRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Line> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
@@ -229,12 +229,12 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Glossary> updateGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Glossary> updateGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary, boolean isReplace) {
         final String methodName = "updateGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Glossary> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.updateGlossary(userId, guid, suppliedGlossary, isReplace);
@@ -277,12 +277,12 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> EntityNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Glossary> deleteGlossary(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(String serverName, String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Glossary> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.deleteGlossary(userId, guid, isPurge);
@@ -314,12 +314,12 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Glossary> restoreGlossary(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Glossary> restoreGlossary(String serverName, String userId, String guid) {
         final String methodName = "restoreGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Glossary> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.restoreGlossary(userId, guid);

@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTerm
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
@@ -55,12 +55,12 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Term> createTerm(String serverName, String userId, Term suppliedTerm) {
+    public SubjectAreaOMASAPIResponse<Term> createTerm(String serverName, String userId, Term suppliedTerm) {
         final String methodName = "createTerm";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.createTerm(userId, suppliedTerm);
@@ -88,12 +88,12 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Term> getTermByGuid(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Term> getTermByGuid(String serverName, String userId, String guid) {
         final String methodName = "getTermByGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.getTermByGuid(userId, guid);
@@ -130,20 +130,20 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse2<Line> getTermRelationships(String serverName,
-                                                                   String userId,
-                                                                   String guid,
-                                                                   Date asOfTime,
-                                                                   Integer offset,
-                                                                   Integer pageSize,
-                                                                   SequencingOrder sequencingOrder,
-                                                                   String sequencingProperty
+    public SubjectAreaOMASAPIResponse<Line> getTermRelationships(String serverName,
+                                                                 String userId,
+                                                                 String guid,
+                                                                 Date asOfTime,
+                                                                 Integer offset,
+                                                                 Integer pageSize,
+                                                                 SequencingOrder sequencingOrder,
+                                                                 String sequencingProperty
     ) {
         String methodName = "getTermRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Line> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
@@ -184,19 +184,19 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse2<Term> findTerm( String serverName, String userId,
-                                                String searchCriteria,
-                                                Date asOfTime,
-                                                Integer offset,
-                                                Integer pageSize,
-                                                SequencingOrder sequencingOrder,
-                                                String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Term> findTerm(String serverName, String userId,
+                                                     String searchCriteria,
+                                                     Date asOfTime,
+                                                     Integer offset,
+                                                     Integer pageSize,
+                                                     SequencingOrder sequencingOrder,
+                                                     String sequencingProperty) {
 
         final String methodName = "findTerm";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
@@ -235,13 +235,13 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Term> updateTerm(String serverName, String userId, String guid, Term suppliedTerm, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<Term> updateTerm(String serverName, String userId, String guid, Term suppliedTerm, boolean isReplace)
     {
         final String methodName = "updateTerm";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.updateTerm(userId, guid, suppliedTerm, isReplace);
@@ -281,13 +281,13 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> EntityNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Term> deleteTerm(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<Term> deleteTerm(String serverName, String userId, String guid, Boolean isPurge)
     {
         final String methodName = "deleteTerm";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.deleteTerm(userId, guid, isPurge);
@@ -316,12 +316,12 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Term> restoreTerm(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Term> restoreTerm(String serverName, String userId, String guid) {
         final String methodName = "restoreTerm";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.restoreTerm(userId, guid);

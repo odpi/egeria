@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermAnchorMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
@@ -78,9 +78,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li>StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Term> createTerm(String userId, Term suppliedTerm) {
+    public SubjectAreaOMASAPIResponse<Term> createTerm(String userId, Term suppliedTerm) {
         final String methodName = "createTerm";
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
 
         String createdTermGuid = null;
         try {
@@ -133,9 +133,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Term> getTermByGuid(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Term> getTermByGuid(String userId, String guid) {
         final String methodName = "getTermByGuid";
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, TERM_TYPE_NAME, methodName);
@@ -166,10 +166,10 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Term> findTerm(String userId, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Term> findTerm(String userId, FindRequest findRequest) {
 
         final String methodName = "findTerm";
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
 
         // If no search criteria is supplied then we return all terms, this should not be too many
         try {
@@ -226,7 +226,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse2<Line> getTermRelationships(String userId, String guid, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Line> getTermRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getTermRelationships";
         return getAllRelationshipsForEntity(methodName, userId, guid, findRequest);
     }
@@ -255,9 +255,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Term> updateTerm(String userId, String guid, Term suppliedTerm, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Term> updateTerm(String userId, String guid, Term suppliedTerm, boolean isReplace) {
         final String methodName = "updateTerm";
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             InputValidator.validateNodeType(className, methodName, suppliedTerm.getNodeType(), NodeType.Term, NodeType.Activity);
@@ -396,9 +396,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> EntityNotPurgedException             a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Term> deleteTerm(String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Term> deleteTerm(String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteTerm";
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             if (isPurge) {
                 oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, TERM_TYPE_NAME, guid);
@@ -428,9 +428,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Term> restoreTerm(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Term> restoreTerm(String userId, String guid) {
         final String methodName = "restoreTerm";
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
             response = getTermByGuid(userId, guid);

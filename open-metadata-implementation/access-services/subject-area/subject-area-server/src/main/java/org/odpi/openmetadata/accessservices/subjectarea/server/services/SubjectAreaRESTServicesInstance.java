@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaRelationshipHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.slf4j.Logger;
@@ -54,17 +54,17 @@ public class SubjectAreaRESTServicesInstance {
      * <li> FunctionNotSupportedException        Function is not supported.
      * </ul>
      */
-    protected <L extends Line> SubjectAreaOMASAPIResponse2<L> createLine(String serverName,
-                                                                         String restAPIName,
-                                                                         String userId,
-                                                                         Class<? extends ILineMapper<L>> clazz,
-                                                                         L line)
+    protected <L extends Line> SubjectAreaOMASAPIResponse<L> createLine(String serverName,
+                                                                        String restAPIName,
+                                                                        String userId,
+                                                                        Class<? extends ILineMapper<L>> clazz,
+                                                                        L line)
     {
 
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
-        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
             response = handler.createLine(restAPIName, userId, clazz, line);
@@ -95,7 +95,7 @@ public class SubjectAreaRESTServicesInstance {
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    protected <L extends Line>SubjectAreaOMASAPIResponse2<L> getLine(String serverName,
+    protected <L extends Line> SubjectAreaOMASAPIResponse<L> getLine(String serverName,
                                                                      String restAPIName,
                                                                      String userId,
                                                                      Class<? extends ILineMapper<L>> clazz,
@@ -105,7 +105,7 @@ public class SubjectAreaRESTServicesInstance {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
-        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
             response = handler.getLine(restAPIName, userId, clazz, guid);
@@ -142,7 +142,7 @@ public class SubjectAreaRESTServicesInstance {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    protected <L extends Line>SubjectAreaOMASAPIResponse2<L> updateLine(String serverName,
+    protected <L extends Line> SubjectAreaOMASAPIResponse<L> updateLine(String serverName,
                                                                         String restAPIName,
                                                                         String userId,
                                                                         String guid,
@@ -153,7 +153,7 @@ public class SubjectAreaRESTServicesInstance {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
-        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
             response = handler.updateLine(restAPIName, userId, guid, clazz, line, isReplace);
@@ -188,7 +188,7 @@ public class SubjectAreaRESTServicesInstance {
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public <L extends Line>SubjectAreaOMASAPIResponse2<L> deleteLine(String serverName,
+    public <L extends Line> SubjectAreaOMASAPIResponse<L> deleteLine(String serverName,
                                                                      String restAPIName,
                                                                      String userId,
                                                                      Class<? extends ILineMapper<L>> clazz,
@@ -199,7 +199,7 @@ public class SubjectAreaRESTServicesInstance {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
-        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
             response = handler.deleteLine(restAPIName, userId, clazz, guid, isPurge);
@@ -235,7 +235,7 @@ public class SubjectAreaRESTServicesInstance {
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    protected <L extends Line>SubjectAreaOMASAPIResponse2<L> restoreLine(String serverName,
+    protected <L extends Line> SubjectAreaOMASAPIResponse<L> restoreLine(String serverName,
                                                                          String restAPIName,
                                                                          String userId,
                                                                          Class<? extends ILineMapper<L>> clazz,
@@ -244,7 +244,7 @@ public class SubjectAreaRESTServicesInstance {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
-        SubjectAreaOMASAPIResponse2<L> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
             response = handler.restoreLine(restAPIName, userId, clazz, guid);

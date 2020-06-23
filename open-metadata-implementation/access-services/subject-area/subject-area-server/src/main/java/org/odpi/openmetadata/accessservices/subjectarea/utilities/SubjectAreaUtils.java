@@ -17,7 +17,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodes
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.NodeSummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -348,11 +348,11 @@ public class SubjectAreaUtils {
      * @param guid to get associated icons from
      * @return response with Set of IconSummary objects or an Exception response.
      */
-    public SubjectAreaOMASAPIResponse2<IconSummary> getIconSummarySet(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<IconSummary> getIconSummarySet(String userId, String guid) {
         // if there are no icons then return an empty set
 
         //TODO implement icon logic
-        SubjectAreaOMASAPIResponse2<IconSummary> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<IconSummary> response = new SubjectAreaOMASAPIResponse<>();
         Set<IconSummary> icons = new HashSet<>();
         response.addAllResults(icons);
         return response;

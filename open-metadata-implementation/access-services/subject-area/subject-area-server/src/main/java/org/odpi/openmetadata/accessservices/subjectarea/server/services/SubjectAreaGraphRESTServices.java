@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGraphHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.StatusFilter;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,20 +56,20 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Graph> getGraph(String serverName,
-                                                       String userId,
-                                                       String guid,
-                                                       Date asOfTime,
-                                                       String nodeFilterStr,
-                                                       String lineFilterStr,
-                                                       StatusFilter statusFilter,   // may need to extend this for controlled terms
-                                                       Integer level ) {
+    public SubjectAreaOMASAPIResponse<Graph> getGraph(String serverName,
+                                                      String userId,
+                                                      String guid,
+                                                      Date asOfTime,
+                                                      String nodeFilterStr,
+                                                      String lineFilterStr,
+                                                      StatusFilter statusFilter,   // may need to extend this for controlled terms
+                                                      Integer level ) {
 
         final String methodName = "getGraph";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Graph> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Graph> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGraphHandler handler = instanceHandler.getSubjectAreaGraphHandler(userId, serverName, methodName);
             response = handler.getGraph(

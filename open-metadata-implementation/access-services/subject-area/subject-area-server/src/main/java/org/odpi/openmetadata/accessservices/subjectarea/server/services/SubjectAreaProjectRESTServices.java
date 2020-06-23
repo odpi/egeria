@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
@@ -54,12 +54,12 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li>StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Project> createProject(String serverName, String userId, Project suppliedProject) {
+    public SubjectAreaOMASAPIResponse<Project> createProject(String serverName, String userId, Project suppliedProject) {
         final String methodName = "createProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
-        SubjectAreaOMASAPIResponse2<Project> response= new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             response = handler.createProject(userId,suppliedProject);
@@ -87,12 +87,12 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Project> getProjectByGuid(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Project> getProjectByGuid(String serverName, String userId, String guid) {
         final String methodName = "getProjectByGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Project> response= new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             response = handler.getProjectByGuid(userId, guid);
@@ -127,20 +127,20 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse2<Project> findProject(String serverName,
-                                                   String userId,
-                                                   String searchCriteria,
-                                                   Date asOfTime,
-                                                   Integer offset,
-                                                   Integer pageSize,
-                                                   SequencingOrder sequencingOrder,
-                                                   String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Project> findProject(String serverName,
+                                                           String userId,
+                                                           String searchCriteria,
+                                                           Date asOfTime,
+                                                           Integer offset,
+                                                           Integer pageSize,
+                                                           SequencingOrder sequencingOrder,
+                                                           String sequencingProperty) {
 
         final String methodName = "findProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
-        SubjectAreaOMASAPIResponse2<Project> response= new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
@@ -184,19 +184,19 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * </ul>
      */
 
-    public  SubjectAreaOMASAPIResponse2<Line> getProjectRelationships(String serverName,
-                                                                      String userId,
-                                                                      String guid,
-                                                                      Date asOfTime,
-                                                                      Integer offset,
-                                                                      Integer pageSize,
-                                                                      SequencingOrder sequencingOrder,
-                                                                      String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(String serverName,
+                                                                    String userId,
+                                                                    String guid,
+                                                                    Date asOfTime,
+                                                                    Integer offset,
+                                                                    Integer pageSize,
+                                                                    SequencingOrder sequencingOrder,
+                                                                    String sequencingProperty) {
         String methodName = "getProjectRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Line> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
@@ -231,14 +231,14 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse2<Term> getProjectTerms(String serverName,
-                                                              String userId,
-                                                              String guid) {
+    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String serverName,
+                                                            String userId,
+                                                            String guid) {
         String methodName = "getProjectTerms";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
-        SubjectAreaOMASAPIResponse2<Term> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaProjectHandler projectHandler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             response = projectHandler.getProjectTerms(userId, guid);
@@ -276,12 +276,12 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Project> updateProject(String serverName, String userId, String guid, Project suppliedProject, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Project> updateProject(String serverName, String userId, String guid, Project suppliedProject, boolean isReplace) {
         final String methodName = "updateProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Project> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             response = handler.updateProject(userId, guid, suppliedProject,isReplace);
@@ -321,12 +321,12 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> EntityNotPurgedException               a hard delete was issued but the Project was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Project> deleteProject(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Project> deleteProject(String serverName, String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Project> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             response = handler.deleteProject(userId, guid,isPurge);
@@ -356,12 +356,12 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Project> restoreProject(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Project> restoreProject(String serverName, String userId, String guid) {
         final String methodName = "restoreProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse2<Project> response= new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             response = handler.restoreProject(userId, guid);

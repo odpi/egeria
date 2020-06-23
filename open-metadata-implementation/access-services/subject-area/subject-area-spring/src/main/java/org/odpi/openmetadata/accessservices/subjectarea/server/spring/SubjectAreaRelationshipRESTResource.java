@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRelationshipRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,19 +40,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created TermHASARelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/has-as")
-    public SubjectAreaOMASAPIResponse2<Hasa> createTermHASARelationship(@PathVariable String serverName,
-                                                                        @PathVariable String userId,
+    public SubjectAreaOMASAPIResponse<Hasa> createTermHASARelationship(@PathVariable String serverName,
+                                                                       @PathVariable String userId,
 
-                                                                        @RequestBody Hasa termHASARelationship) {
+                                                                       @RequestBody Hasa termHASARelationship) {
         return restAPI.createTermHASARelationship(serverName, userId, termHASARelationship);
     }
 
@@ -66,15 +63,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse2<Hasa> getTermHASARelationship(@PathVariable String serverName,
-                                                                     @PathVariable String userId,
-                                                                     @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Hasa> getTermHASARelationship(@PathVariable String serverName,
+                                                                    @PathVariable String userId,
+                                                                    @PathVariable String guid) {
         return restAPI.getTermHASARelationship(serverName, userId, guid);
     }
 
@@ -90,20 +86,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created TermHASARelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse2<Hasa> updateTermHASARelationship(@PathVariable String serverName,
-                                                                        @PathVariable String userId,
-                                                                        @PathVariable String guid,
-                                                                        @RequestBody Hasa termHASARelationship,
-                                                                        @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<Hasa> updateTermHASARelationship(@PathVariable String serverName,
+                                                                       @PathVariable String userId,
+                                                                       @PathVariable String guid,
+                                                                       @RequestBody Hasa termHASARelationship,
+                                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateTermHASARelationship(serverName, userId, guid, termHASARelationship, isReplace);
     }
@@ -118,20 +111,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse2<Hasa> deleteTermHASARelationship(@PathVariable String serverName,
-                                                                        @PathVariable String userId,
-                                                                        @PathVariable String guid,
-                                                                        @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<Hasa> deleteTermHASARelationship(@PathVariable String serverName,
+                                                                       @PathVariable String userId,
+                                                                       @PathVariable String guid,
+                                                                       @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteTermHASARelationship(serverName, userId, guid, isPurge);
     }
@@ -147,19 +136,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse2<Hasa> restoreTermHASARelationship(@PathVariable String serverName,
-                                                                         @PathVariable String userId,
-                                                                         @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Hasa> restoreTermHASARelationship(@PathVariable String serverName,
+                                                                        @PathVariable String userId,
+                                                                        @PathVariable String guid) {
         return restAPI.restoreTermHASARelationship(serverName, userId, guid);
     }
 
@@ -172,18 +157,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created Related Term relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/related-terms")
-    public SubjectAreaOMASAPIResponse2<RelatedTerm> createRelatedTerm(@PathVariable String serverName,
-                                                                      @PathVariable String userId,
-                                                                      @RequestBody RelatedTerm relatedTermRelationshipRelationship) {
+    public SubjectAreaOMASAPIResponse<RelatedTerm> createRelatedTerm(@PathVariable String serverName,
+                                                                     @PathVariable String userId,
+                                                                     @RequestBody RelatedTerm relatedTermRelationshipRelationship) {
         return restAPI.createRelatedTerm(serverName, userId, relatedTermRelationshipRelationship);
     }
 
@@ -197,15 +179,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/related-terms/{guid}")
-    public SubjectAreaOMASAPIResponse2<RelatedTerm> getRelatedTerm(@PathVariable String serverName,
-                                                                   @PathVariable String userId,
-                                                                   @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<RelatedTerm> getRelatedTerm(@PathVariable String serverName,
+                                                                  @PathVariable String userId,
+                                                                  @PathVariable String guid) {
         return restAPI.getRelatedTerm(serverName, userId, guid);
     }
 
@@ -221,20 +202,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created RelatedTerm
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/related-terms/{guid}")
-    public SubjectAreaOMASAPIResponse2<RelatedTerm> updateRelatedTerm(@PathVariable String serverName,
-                                                                      @PathVariable String userId,
-                                                                      @PathVariable String guid,
-                                                                      @RequestBody RelatedTerm relatedTermRelationship,
-                                                                      @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<RelatedTerm> updateRelatedTerm(@PathVariable String serverName,
+                                                                     @PathVariable String userId,
+                                                                     @PathVariable String guid,
+                                                                     @RequestBody RelatedTerm relatedTermRelationship,
+                                                                     @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateRelatedTerm(serverName, userId, guid, relatedTermRelationship, isReplace);
     }
@@ -249,20 +227,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/related-terms/{guid}")
-    public SubjectAreaOMASAPIResponse2<RelatedTerm> deleteRelatedTerm(@PathVariable String serverName,
-                                                                      @PathVariable String userId,
-                                                                      @PathVariable String guid,
-                                                                      @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<RelatedTerm> deleteRelatedTerm(@PathVariable String serverName,
+                                                                     @PathVariable String userId,
+                                                                     @PathVariable String guid,
+                                                                     @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteRelatedTerm(serverName, userId, guid, isPurge);
     }
@@ -278,19 +252,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/related-terms/{guid}")
-    public SubjectAreaOMASAPIResponse2<RelatedTerm> restoreRelatedTerm(@PathVariable String serverName,
-                                                                       @PathVariable String userId,
-                                                                       @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<RelatedTerm> restoreRelatedTerm(@PathVariable String serverName,
+                                                                      @PathVariable String userId,
+                                                                      @PathVariable String guid) {
         return restAPI.restoreRelatedTerm(serverName, userId, guid);
     }
 
@@ -305,18 +275,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created synonym relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/synonyms")
-    public SubjectAreaOMASAPIResponse2<Synonym> createSynonym(@PathVariable String serverName,
-                                                              @PathVariable String userId,
-                                                              @RequestBody Synonym synonym) {
+    public SubjectAreaOMASAPIResponse<Synonym> createSynonym(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @RequestBody Synonym synonym) {
         return restAPI.createSynonym(serverName, userId, synonym);
     }
 
@@ -330,15 +297,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/synonyms/{guid}")
-    public SubjectAreaOMASAPIResponse2<Synonym> getSynonymRelationship(@PathVariable String serverName,
-                                                                       @PathVariable String userId,
-                                                                       @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Synonym> getSynonymRelationship(@PathVariable String serverName,
+                                                                      @PathVariable String userId,
+                                                                      @PathVariable String guid) {
         return restAPI.getSynonymRelationship(serverName, userId, guid);
     }
 
@@ -354,20 +320,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created SynonymRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/synonyms/{guid}")
-    public SubjectAreaOMASAPIResponse2<Synonym> updateSynonymRelationship(@PathVariable String serverName,
-                                                                          @PathVariable String userId,
-                                                                          @PathVariable String guid,
-                                                                          @RequestBody Synonym synonym,
-                                                                          @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<Synonym> updateSynonymRelationship(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @PathVariable String guid,
+                                                                         @RequestBody Synonym synonym,
+                                                                         @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateSynonymRelationship(serverName, userId, guid, synonym, isReplace);
     }
@@ -382,20 +345,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/synonyms/{guid}")
-    public SubjectAreaOMASAPIResponse2<Synonym> deleteSynonymRelationship(@PathVariable String serverName,
-                                                                          @PathVariable String userId,
-                                                                          @PathVariable String guid,
-                                                                          @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<Synonym> deleteSynonymRelationship(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @PathVariable String guid,
+                                                                         @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteSynonymRelationship(serverName, userId, guid, isPurge);
     }
@@ -411,17 +370,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored Synonym
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/synonyms/{guid}")
-    public SubjectAreaOMASAPIResponse2<Synonym> restoreSynonym(@PathVariable String serverName,
-                                                               @PathVariable String userId,
-                                                               @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Synonym> restoreSynonym(@PathVariable String serverName,
+                                                              @PathVariable String userId,
+                                                              @PathVariable String guid) {
         return restAPI.restoreSynonym(serverName, userId, guid);
     }
 
@@ -436,18 +393,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created antonym relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/antonyms")
-    public SubjectAreaOMASAPIResponse2<Antonym> createAntonym(@PathVariable String serverName,
-                                                              @PathVariable String userId,
-                                                              @RequestBody Antonym antonym) {
+    public SubjectAreaOMASAPIResponse<Antonym> createAntonym(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @RequestBody Antonym antonym) {
         return restAPI.createAntonym(serverName, userId, antonym);
     }
 
@@ -461,15 +415,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/antonyms/{guid}")
-    public SubjectAreaOMASAPIResponse2<Antonym> getAntonymRelationship(@PathVariable String serverName,
-                                                                       @PathVariable String userId,
-                                                                       @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Antonym> getAntonymRelationship(@PathVariable String serverName,
+                                                                      @PathVariable String userId,
+                                                                      @PathVariable String guid) {
         return restAPI.getAntonymRelationship(serverName, userId, guid);
     }
 
@@ -485,20 +438,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created AntonymRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/antonyms/{guid}")
-    public SubjectAreaOMASAPIResponse2<Antonym> updateAntonymRelationship(@PathVariable String serverName,
-                                                                          @PathVariable String userId,
-                                                                          @PathVariable String guid,
-                                                                          @RequestBody Antonym antonym,
-                                                                          @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<Antonym> updateAntonymRelationship(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @PathVariable String guid,
+                                                                         @RequestBody Antonym antonym,
+                                                                         @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateAntonymRelationship(serverName, userId, guid, antonym, isReplace);
     }
@@ -513,20 +463,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/antonyms/{guid}")
-    public SubjectAreaOMASAPIResponse2<Antonym> deleteAntonymRelationship(@PathVariable String serverName,
-                                                                          @PathVariable String userId,
-                                                                          @PathVariable String guid,
-                                                                          @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<Antonym> deleteAntonymRelationship(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @PathVariable String guid,
+                                                                         @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteAntonymRelationship(serverName, userId, guid, isPurge);
     }
@@ -542,17 +488,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored Antonym
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/antonyms/{guid}")
-    public SubjectAreaOMASAPIResponse2<Antonym> restoreAntonym(@PathVariable String serverName,
-                                                               @PathVariable String userId,
-                                                               @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Antonym> restoreAntonym(@PathVariable String serverName,
+                                                              @PathVariable String userId,
+                                                              @PathVariable String guid) {
         return restAPI.restoreAntonym(serverName, userId, guid);
     }
 
@@ -567,18 +511,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created translation relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/translations")
-    public SubjectAreaOMASAPIResponse2<Translation> createTranslation(@PathVariable String serverName,
-                                                                      @PathVariable String userId,
-                                                                      @RequestBody Translation translation) {
+    public SubjectAreaOMASAPIResponse<Translation> createTranslation(@PathVariable String serverName,
+                                                                     @PathVariable String userId,
+                                                                     @RequestBody Translation translation) {
         return restAPI.createTranslation(serverName, userId, translation);
     }
 
@@ -592,15 +533,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/translations/{guid}")
-    public SubjectAreaOMASAPIResponse2<Translation> getTranslationRelationship(@PathVariable String serverName,
-                                                                               @PathVariable String userId,
-                                                                               @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Translation> getTranslationRelationship(@PathVariable String serverName,
+                                                                              @PathVariable String userId,
+                                                                              @PathVariable String guid) {
         return restAPI.getTranslationRelationship(serverName, userId, guid);
     }
 
@@ -616,20 +556,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created TranslationRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/translations/{guid}")
-    public SubjectAreaOMASAPIResponse2<Translation> updateTranslationRelationship(@PathVariable String serverName,
-                                                                                  @PathVariable String userId,
-                                                                                  @PathVariable String guid,
-                                                                                  @RequestBody Translation translation,
-                                                                                  @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<Translation> updateTranslationRelationship(@PathVariable String serverName,
+                                                                                 @PathVariable String userId,
+                                                                                 @PathVariable String guid,
+                                                                                 @RequestBody Translation translation,
+                                                                                 @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateTranslationRelationship(serverName, userId, guid, translation, isReplace);
     }
@@ -644,20 +581,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/translations/{guid}")
-    public SubjectAreaOMASAPIResponse2<Translation> deleteTranslationRelationship(@PathVariable String serverName,
-                                                                                  @PathVariable String userId,
-                                                                                  @PathVariable String guid,
-                                                                                  @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<Translation> deleteTranslationRelationship(@PathVariable String serverName,
+                                                                                 @PathVariable String userId,
+                                                                                 @PathVariable String guid,
+                                                                                 @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteTranslationRelationship(serverName, userId, guid, isPurge);
     }
@@ -673,17 +606,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored Translation
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/translations/{guid}")
-    public SubjectAreaOMASAPIResponse2<Translation> restoreTranslation(@PathVariable String serverName,
-                                                                       @PathVariable String userId,
-                                                                       @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Translation> restoreTranslation(@PathVariable String serverName,
+                                                                      @PathVariable String userId,
+                                                                      @PathVariable String guid) {
         return restAPI.restoreTranslation(serverName, userId, guid);
     }
 
@@ -698,18 +629,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created usedInContext relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/used-in-contexts")
-    public SubjectAreaOMASAPIResponse2<UsedInContext> createusedInContext(@PathVariable String serverName,
-                                                                          @PathVariable String userId,
-                                                                          @RequestBody UsedInContext usedInContext) {
+    public SubjectAreaOMASAPIResponse<UsedInContext> createusedInContext(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @RequestBody UsedInContext usedInContext) {
         return restAPI.createUsedInContext(serverName, userId, usedInContext);
     }
 
@@ -723,15 +651,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/used-in-contexts/{guid}")
-    public SubjectAreaOMASAPIResponse2<UsedInContext> getUsedInContextRelationship(@PathVariable String serverName,
-                                                                                   @PathVariable String userId,
-                                                                                   @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<UsedInContext> getUsedInContextRelationship(@PathVariable String serverName,
+                                                                                  @PathVariable String userId,
+                                                                                  @PathVariable String guid) {
         return restAPI.getUsedInContextRelationship(serverName, userId, guid);
     }
 
@@ -747,20 +674,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created UsedInContextRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/used-in-contexts/{guid}")
-    public SubjectAreaOMASAPIResponse2<UsedInContext> updateUsedInContextRelationship(@PathVariable String serverName,
-                                                                                      @PathVariable String userId,
-                                                                                      @PathVariable String guid,
-                                                                                      @RequestBody UsedInContext usedInContext,
-                                                                                      @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<UsedInContext> updateUsedInContextRelationship(@PathVariable String serverName,
+                                                                                     @PathVariable String userId,
+                                                                                     @PathVariable String guid,
+                                                                                     @RequestBody UsedInContext usedInContext,
+                                                                                     @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateUsedInContextRelationship(serverName, userId, guid, usedInContext, isReplace);
     }
@@ -775,20 +699,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/used-in-contexts/{guid}")
-    public SubjectAreaOMASAPIResponse2<UsedInContext> deleteUsedInContextRelationship(@PathVariable String serverName,
-                                                                                      @PathVariable String userId,
-                                                                                      @PathVariable String guid,
-                                                                                      @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<UsedInContext> deleteUsedInContextRelationship(@PathVariable String serverName,
+                                                                                     @PathVariable String userId,
+                                                                                     @PathVariable String guid,
+                                                                                     @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteUsedInContextRelationship(serverName, userId, guid, isPurge);
     }
@@ -804,17 +724,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored UsedInContext
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/used-in-contexts/{guid}")
-    public SubjectAreaOMASAPIResponse2<UsedInContext> restoreUsedInContext(@PathVariable String serverName,
-                                                                           @PathVariable String userId,
-                                                                           @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<UsedInContext> restoreUsedInContext(@PathVariable String serverName,
+                                                                          @PathVariable String userId,
+                                                                          @PathVariable String guid) {
         return restAPI.restoreUsedInContext(serverName, userId, guid);
     }
 
@@ -829,18 +747,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created preferredTerm relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/preferred-terms")
-    public SubjectAreaOMASAPIResponse2<PreferredTerm> createPreferredTerm(@PathVariable String serverName,
-                                                                          @PathVariable String userId,
-                                                                          @RequestBody PreferredTerm preferredTerm) {
+    public SubjectAreaOMASAPIResponse<PreferredTerm> createPreferredTerm(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @RequestBody PreferredTerm preferredTerm) {
         return restAPI.createPreferredTerm(serverName, userId, preferredTerm);
     }
 
@@ -854,15 +769,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/preferred-terms/{guid}")
-    public SubjectAreaOMASAPIResponse2<PreferredTerm> getPreferredTermRelationship(@PathVariable String serverName,
-                                                                                   @PathVariable String userId,
-                                                                                   @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<PreferredTerm> getPreferredTermRelationship(@PathVariable String serverName,
+                                                                                  @PathVariable String userId,
+                                                                                  @PathVariable String guid) {
         return restAPI.getPreferredTermRelationship(serverName, userId, guid);
     }
 
@@ -878,21 +792,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created PreferredTermRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> FunctionNotSupportedException        Function not supported
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/preferred-terms/{guid}")
-    public SubjectAreaOMASAPIResponse2<PreferredTerm> updatePreferredTermRelationship(@PathVariable String serverName,
-                                                                                      @PathVariable String userId,
-                                                                                      @PathVariable String guid,
-                                                                                      @RequestBody PreferredTerm preferredTerm,
-                                                                                      @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<PreferredTerm> updatePreferredTermRelationship(@PathVariable String serverName,
+                                                                                     @PathVariable String userId,
+                                                                                     @PathVariable String guid,
+                                                                                     @RequestBody PreferredTerm preferredTerm,
+                                                                                     @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updatePreferredTermRelationship(serverName, userId, guid, preferredTerm, isReplace);
     }
@@ -907,20 +817,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/preferred-terms/{guid}")
-    public SubjectAreaOMASAPIResponse2<PreferredTerm> deletePreferredTermRelationship(@PathVariable String serverName,
-                                                                                      @PathVariable String userId,
-                                                                                      @PathVariable String guid,
-                                                                                      @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<PreferredTerm> deletePreferredTermRelationship(@PathVariable String serverName,
+                                                                                     @PathVariable String userId,
+                                                                                     @PathVariable String guid,
+                                                                                     @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deletePreferredTermRelationship(serverName, userId, guid, isPurge);
     }
@@ -936,17 +842,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored PreferredTerm
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/preferred-terms/{guid}")
-    public SubjectAreaOMASAPIResponse2<PreferredTerm> restorePreferredTerm(@PathVariable String serverName,
-                                                                           @PathVariable String userId,
-                                                                           @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<PreferredTerm> restorePreferredTerm(@PathVariable String serverName,
+                                                                          @PathVariable String userId,
+                                                                          @PathVariable String guid) {
         return restAPI.restorePreferredTerm(serverName, userId, guid);
     }
 
@@ -962,18 +866,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created validValue relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/valid-values")
-    public SubjectAreaOMASAPIResponse2<ValidValue> createValidValue(@PathVariable String serverName,
-                                                                    @PathVariable String userId,
-                                                                    @RequestBody ValidValue validValue) {
+    public SubjectAreaOMASAPIResponse<ValidValue> createValidValue(@PathVariable String serverName,
+                                                                   @PathVariable String userId,
+                                                                   @RequestBody ValidValue validValue) {
         return restAPI.createValidValue(serverName, userId, validValue);
     }
 
@@ -987,15 +888,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/valid-values/{guid}")
-    public SubjectAreaOMASAPIResponse2<ValidValue> getValidValueRelationship(@PathVariable String serverName,
-                                                                             @PathVariable String userId,
-                                                                             @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<ValidValue> getValidValueRelationship(@PathVariable String serverName,
+                                                                            @PathVariable String userId,
+                                                                            @PathVariable String guid) {
         return restAPI.getValidValueRelationship(serverName, userId, guid);
     }
 
@@ -1011,20 +911,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created ValidValueRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/valid-values/{guid}")
-    public SubjectAreaOMASAPIResponse2<ValidValue> updateValidValueRelationship(@PathVariable String serverName,
-                                                                                @PathVariable String userId,
-                                                                                @PathVariable String guid,
-                                                                                @RequestBody ValidValue validValue,
-                                                                                @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<ValidValue> updateValidValueRelationship(@PathVariable String serverName,
+                                                                               @PathVariable String userId,
+                                                                               @PathVariable String guid,
+                                                                               @RequestBody ValidValue validValue,
+                                                                               @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateValidValueRelationship(serverName, userId, guid, validValue, isReplace);
     }
@@ -1040,20 +937,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/valid-values/{guid}")
-    public SubjectAreaOMASAPIResponse2<ValidValue> deleteValidValueRelationship(@PathVariable String serverName,
-                                                                                @PathVariable String userId,
-                                                                                @PathVariable String guid,
-                                                                                @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<ValidValue> deleteValidValueRelationship(@PathVariable String serverName,
+                                                                               @PathVariable String userId,
+                                                                               @PathVariable String guid,
+                                                                               @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteValidValueRelationship(serverName, userId, guid, isPurge);
     }
@@ -1069,17 +962,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored ValidValue
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/valid-values/{guid}")
-    public SubjectAreaOMASAPIResponse2<ValidValue> restoreValidValue(@PathVariable String serverName,
-                                                                     @PathVariable String userId,
-                                                                     @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<ValidValue> restoreValidValue(@PathVariable String serverName,
+                                                                    @PathVariable String userId,
+                                                                    @PathVariable String guid) {
         return restAPI.restoreValidValue(serverName, userId, guid);
     }
 
@@ -1094,18 +985,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created replacementTerm relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/replacement-terms")
-    public SubjectAreaOMASAPIResponse2<ReplacementTerm> createReplacementTerm(@PathVariable String serverName,
-                                                                              @PathVariable String userId,
-                                                                              @RequestBody ReplacementTerm replacementTerm) {
+    public SubjectAreaOMASAPIResponse<ReplacementTerm> createReplacementTerm(@PathVariable String serverName,
+                                                                             @PathVariable String userId,
+                                                                             @RequestBody ReplacementTerm replacementTerm) {
         return restAPI.createReplacementTerm(serverName, userId, replacementTerm);
     }
 
@@ -1119,15 +1007,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/replacement-terms/{guid}")
-    public SubjectAreaOMASAPIResponse2<ReplacementTerm> getReplacementTermRelationship(@PathVariable String serverName,
-                                                                                       @PathVariable String userId,
-                                                                                       @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<ReplacementTerm> getReplacementTermRelationship(@PathVariable String serverName,
+                                                                                      @PathVariable String userId,
+                                                                                      @PathVariable String guid) {
         return restAPI.getReplacementTerm(serverName, userId, guid);
     }
 
@@ -1143,20 +1030,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created ReplacementTermRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/replacement-terms/{guid}")
-    public SubjectAreaOMASAPIResponse2<ReplacementTerm> updateReplacementTermRelationship(@PathVariable String serverName,
-                                                                                          @PathVariable String userId,
-                                                                                          @PathVariable String guid,
-                                                                                          @RequestBody ReplacementTerm replacementTerm,
-                                                                                          @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<ReplacementTerm> updateReplacementTermRelationship(@PathVariable String serverName,
+                                                                                         @PathVariable String userId,
+                                                                                         @PathVariable String guid,
+                                                                                         @RequestBody ReplacementTerm replacementTerm,
+                                                                                         @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateReplacementTerm(serverName, userId, guid, replacementTerm, isReplace);
     }
@@ -1171,20 +1055,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/replacement-terms/{guid}")
-    public SubjectAreaOMASAPIResponse2<ReplacementTerm> deleteReplacementTermRelationship(@PathVariable String serverName,
-                                                                                          @PathVariable String userId,
-                                                                                          @PathVariable String guid,
-                                                                                          @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<ReplacementTerm> deleteReplacementTermRelationship(@PathVariable String serverName,
+                                                                                         @PathVariable String userId,
+                                                                                         @PathVariable String guid,
+                                                                                         @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteReplacementTerm(serverName, userId, guid, isPurge);
     }
@@ -1200,17 +1080,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored ReplacementTerm
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/replacement-terms/{guid}")
-    public SubjectAreaOMASAPIResponse2<ReplacementTerm> restoreReplacementTerm(@PathVariable String serverName,
-                                                                               @PathVariable String userId,
-                                                                               @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<ReplacementTerm> restoreReplacementTerm(@PathVariable String serverName,
+                                                                              @PathVariable String userId,
+                                                                              @PathVariable String guid) {
         return restAPI.restoreReplacementTerm(serverName, userId, guid);
     }
 
@@ -1225,18 +1103,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created termTYPEDBYRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/typed-bys")
-    public SubjectAreaOMASAPIResponse2<TypedBy> createtermTYPEDBYRelationship(@PathVariable String serverName,
-                                                                              @PathVariable String userId,
-                                                                              @RequestBody TypedBy termTYPEDBYRelationship) {
+    public SubjectAreaOMASAPIResponse<TypedBy> createtermTYPEDBYRelationship(@PathVariable String serverName,
+                                                                             @PathVariable String userId,
+                                                                             @RequestBody TypedBy termTYPEDBYRelationship) {
         return restAPI.createTermTYPEDBYRelationship(serverName, userId, termTYPEDBYRelationship);
     }
 
@@ -1250,15 +1125,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/typed-bys/{guid}")
-    public SubjectAreaOMASAPIResponse2<TypedBy> getTYPEDBYRelationshipRelationship(@PathVariable String serverName,
-                                                                                   @PathVariable String userId,
-                                                                                   @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<TypedBy> getTYPEDBYRelationshipRelationship(@PathVariable String serverName,
+                                                                                  @PathVariable String userId,
+                                                                                  @PathVariable String guid) {
         return restAPI.getTermTYPEDBYRelationship(serverName, userId, guid);
     }
 
@@ -1274,20 +1148,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created TermTYPEDBYRelationshipRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/typed-bys/{guid}")
-    public SubjectAreaOMASAPIResponse2<TypedBy> updateTermTYPEDBYRelationship(@PathVariable String serverName,
-                                                                              @PathVariable String userId,
-                                                                              @PathVariable String guid,
-                                                                              @RequestBody TypedBy termTYPEDBYRelationship,
-                                                                              @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<TypedBy> updateTermTYPEDBYRelationship(@PathVariable String serverName,
+                                                                             @PathVariable String userId,
+                                                                             @PathVariable String guid,
+                                                                             @RequestBody TypedBy termTYPEDBYRelationship,
+                                                                             @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateTermTYPEDBYRelationship(serverName, userId, guid, termTYPEDBYRelationship, isReplace);
     }
@@ -1302,20 +1173,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/typed-bys/{guid}")
-    public SubjectAreaOMASAPIResponse2<TypedBy> deleteTypedByRelationship(@PathVariable String serverName,
-                                                                          @PathVariable String userId,
-                                                                          @PathVariable String guid,
-                                                                          @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<TypedBy> deleteTypedByRelationship(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @PathVariable String guid,
+                                                                         @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteTermTYPEDBYRelationship(serverName, userId, guid, isPurge);
     }
@@ -1331,17 +1198,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored TermTYPEDBY
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/typed-bys/{guid}")
-    public SubjectAreaOMASAPIResponse2<TypedBy> restoreTermTYPEDBYRelationship(@PathVariable String serverName,
-                                                                               @PathVariable String userId,
-                                                                               @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<TypedBy> restoreTermTYPEDBYRelationship(@PathVariable String serverName,
+                                                                              @PathVariable String userId,
+                                                                              @PathVariable String guid) {
         return restAPI.restoreTermTYPEDBYRelationship(serverName, userId, guid);
     }
 
@@ -1356,18 +1221,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created iSARelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/is-as")
-    public SubjectAreaOMASAPIResponse2<Isa> createiSARelationship(@PathVariable String serverName,
-                                                                  @PathVariable String userId,
-                                                                  @RequestBody Isa iSARelationship) {
+    public SubjectAreaOMASAPIResponse<Isa> createiSARelationship(@PathVariable String serverName,
+                                                                 @PathVariable String userId,
+                                                                 @RequestBody Isa iSARelationship) {
         return restAPI.createISARelationship(serverName, userId, iSARelationship);
     }
 
@@ -1381,15 +1243,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse2<Isa> getISARelationship(@PathVariable String serverName,
-                                                               @PathVariable String userId,
-                                                               @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Isa> getISARelationship(@PathVariable String serverName,
+                                                              @PathVariable String userId,
+                                                              @PathVariable String guid) {
         return restAPI.getISARelationship(serverName, userId, guid);
     }
 
@@ -1405,20 +1266,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created ISARelationshipRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse2<Isa> updateISARelationship(@PathVariable String serverName,
-                                                                  @PathVariable String userId,
-                                                                  @PathVariable String guid,
-                                                                  @RequestBody Isa isa,
-                                                                  @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Isa> updateISARelationship(@PathVariable String serverName,
+                                                                 @PathVariable String userId,
+                                                                 @PathVariable String guid,
+                                                                 @RequestBody Isa isa,
+                                                                 @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
         return restAPI.updateISARelationship(serverName, userId, guid, isa, isReplace);
     }
 
@@ -1432,20 +1290,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse2<Isa> deleteTermISARelationship(@PathVariable String serverName,
-                                                                      @PathVariable String userId,
-                                                                      @PathVariable String guid,
-                                                                      @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Isa> deleteTermISARelationship(@PathVariable String serverName,
+                                                                     @PathVariable String userId,
+                                                                     @PathVariable String guid,
+                                                                     @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteISARelationship(serverName, userId, guid, isPurge);
     }
 
@@ -1460,17 +1314,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored IsaRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse2<Isa> restoreIsaRelationship(@PathVariable String serverName,
-                                                                   @PathVariable String userId,
-                                                                   @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Isa> restoreIsaRelationship(@PathVariable String serverName,
+                                                                  @PathVariable String userId,
+                                                                  @PathVariable String guid) {
         return restAPI.restoreISARelationship(serverName, userId, guid);
     }
 
@@ -1486,18 +1338,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created termISATypeOFRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/is-a-type-ofs")
-    public SubjectAreaOMASAPIResponse2<IsaTypeOf> createtermISATypeOFRelationship(@PathVariable String serverName,
-                                                                                  @PathVariable String userId,
-                                                                                  @RequestBody IsaTypeOf termISATypeOFRelationship) {
+    public SubjectAreaOMASAPIResponse<IsaTypeOf> createtermISATypeOFRelationship(@PathVariable String serverName,
+                                                                                 @PathVariable String userId,
+                                                                                 @RequestBody IsaTypeOf termISATypeOFRelationship) {
         return restAPI.createTermISATypeOFRelationship(serverName, userId, termISATypeOFRelationship);
     }
 
@@ -1511,15 +1360,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse2<IsaTypeOf> getTermISATypeOFRelationship(@PathVariable String serverName,
-                                                                               @PathVariable String userId,
-                                                                               @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<IsaTypeOf> getTermISATypeOFRelationship(@PathVariable String serverName,
+                                                                              @PathVariable String userId,
+                                                                              @PathVariable String guid) {
         return restAPI.getTermISATypeOFRelationship(serverName, userId, guid);
     }
 
@@ -1535,20 +1383,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created ISARelationshipRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse2<IsaTypeOf> updateISARelationship(@PathVariable String serverName,
-                                                                        @PathVariable String userId,
-                                                                        @PathVariable String guid,
-                                                                        @RequestBody IsaTypeOf isatypeof,
-                                                                        @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<IsaTypeOf> updateISARelationship(@PathVariable String serverName,
+                                                                       @PathVariable String userId,
+                                                                       @PathVariable String guid,
+                                                                       @RequestBody IsaTypeOf isatypeof,
+                                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
         return restAPI.updateTermISATypeOFRelationship(serverName, userId, guid, isatypeof, isReplace);
     }
 
@@ -1563,20 +1408,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse2<IsaTypeOf> deleteTermIsaTypeOfRelationship(@PathVariable String serverName,
-                                                                                  @PathVariable String userId,
-                                                                                  @PathVariable String guid,
-                                                                                  @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<IsaTypeOf> deleteTermIsaTypeOfRelationship(@PathVariable String serverName,
+                                                                                 @PathVariable String userId,
+                                                                                 @PathVariable String guid,
+                                                                                 @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteIsATypeOfRelationship(serverName, userId, guid, isPurge);
     }
 
@@ -1591,19 +1432,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored TermIsaTypeOfRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
 
     @PostMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse2<IsaTypeOf> restoreTermIsaTypeOfRelationship(@PathVariable String serverName,
-                                                                                   @PathVariable String userId,
-                                                                                   @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<IsaTypeOf> restoreTermIsaTypeOfRelationship(@PathVariable String serverName,
+                                                                                  @PathVariable String userId,
+                                                                                  @PathVariable String guid) {
         return restAPI.restoreTermISATypeOFRelationship(serverName, userId, guid);
     }
 
@@ -1619,18 +1458,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created termCategorizationRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/term-categorizations")
-    public SubjectAreaOMASAPIResponse2<Categorization> createTermCategorization(@PathVariable String serverName,
-                                                                                @PathVariable String userId,
-                                                                                @RequestBody Categorization termCategorizationRelationship) {
+    public SubjectAreaOMASAPIResponse<Categorization> createTermCategorization(@PathVariable String serverName,
+                                                                               @PathVariable String userId,
+                                                                               @RequestBody Categorization termCategorizationRelationship) {
         return restAPI.createTermCategorizationRelationship(serverName, userId, termCategorizationRelationship);
     }
 
@@ -1644,15 +1480,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/term-categorizations/{guid}")
-    public SubjectAreaOMASAPIResponse2<Categorization> getTermCategorizationRelationship(@PathVariable String serverName,
-                                                                                         @PathVariable String userId,
-                                                                                         @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Categorization> getTermCategorizationRelationship(@PathVariable String serverName,
+                                                                                        @PathVariable String userId,
+                                                                                        @PathVariable String guid) {
         return restAPI.getTermCategorizationRelationship(serverName, userId, guid);
     }
 
@@ -1668,20 +1503,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created termCategorization Relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/term-categorizations/{guid}")
-    public SubjectAreaOMASAPIResponse2<Categorization> updateTermCategorizationRelationship(@PathVariable String serverName,
-                                                                                            @PathVariable String userId,
-                                                                                            @PathVariable String guid,
-                                                                                            @RequestBody Categorization isatypeof,
-                                                                                            @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Categorization> updateTermCategorizationRelationship(@PathVariable String serverName,
+                                                                                           @PathVariable String userId,
+                                                                                           @PathVariable String guid,
+                                                                                           @RequestBody Categorization isatypeof,
+                                                                                           @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
         return restAPI.updateTermCategorizationRelationship(serverName, userId, guid, isatypeof, isReplace);
     }
 
@@ -1696,20 +1528,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/term-categorizations/{guid}")
-    public SubjectAreaOMASAPIResponse2<Categorization> deleteTermCategorizationRelationship(@PathVariable String serverName,
-                                                                                            @PathVariable String userId,
-                                                                                            @PathVariable String guid,
-                                                                                            @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Categorization> deleteTermCategorizationRelationship(@PathVariable String serverName,
+                                                                                           @PathVariable String userId,
+                                                                                           @PathVariable String guid,
+                                                                                           @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteTermCategorizationRelationship(serverName, userId, guid, isPurge);
     }
 
@@ -1724,17 +1552,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored TermCategorization
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/term-categorizations/{guid}")
-    public SubjectAreaOMASAPIResponse2<Categorization> restoreTermCategorizationRelationship(@PathVariable String serverName,
-                                                                                             @PathVariable String userId,
-                                                                                             @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Categorization> restoreTermCategorizationRelationship(@PathVariable String serverName,
+                                                                                            @PathVariable String userId,
+                                                                                            @PathVariable String guid) {
         return restAPI.restoreTermCategorizationRelationship(serverName, userId, guid);
     }
 
@@ -1752,18 +1578,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/term-anchor")
-    public SubjectAreaOMASAPIResponse2<TermAnchor> createTermAnchor(@PathVariable String serverName,
-                                                                    @PathVariable String userId,
-                                                                    @RequestBody TermAnchor termAnchorRelationship) {
+    public SubjectAreaOMASAPIResponse<TermAnchor> createTermAnchor(@PathVariable String serverName,
+                                                                   @PathVariable String userId,
+                                                                   @RequestBody TermAnchor termAnchorRelationship) {
         return restAPI.createTermAnchorRelationship(serverName, userId, termAnchorRelationship);
     }
 
@@ -1777,19 +1599,43 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/term-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse2<TermAnchor> getTermAnchorRelationship(@PathVariable String serverName,
-                                                                             @PathVariable String userId,
-                                                                             @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<TermAnchor> getTermAnchorRelationship(@PathVariable String serverName,
+                                                                            @PathVariable String userId,
+                                                                            @PathVariable String guid) {
         return restAPI.getTermAnchorRelationship(serverName, userId, guid);
 
     }
 
+    /**
+     * Update a termAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
+     *
+     * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param guid       guid of the TermAnchor relationship
+     * @param termAnchor the termAnchor relationship
+     * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the updated termAnchor
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @PutMapping(path = "/users/{userId}/relationships/term-anchor/{guid}")
+    public SubjectAreaOMASAPIResponse<TermAnchor> updateTermAnchorRelationship(@PathVariable String serverName,
+                                                                                       @PathVariable String userId,
+                                                                                       @PathVariable String guid,
+                                                                                       @RequestBody TermAnchor termAnchor,
+                                                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    ) {
+        return restAPI.updateTermAnchorRelationship(serverName, userId, guid, termAnchor, isReplace);
+    }
 
     /**
      * Delete a TermAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
@@ -1801,20 +1647,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/term-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse2<TermAnchor> deleteTermAnchorRelationship(@PathVariable String serverName,
-                                                                                @PathVariable String userId,
-                                                                                @PathVariable String guid,
-                                                                                @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<TermAnchor> deleteTermAnchorRelationship(@PathVariable String serverName,
+                                                                               @PathVariable String userId,
+                                                                               @PathVariable String guid,
+                                                                               @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteTermAnchorRelationship(serverName, userId, guid, isPurge);
     }
 
@@ -1829,17 +1671,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored TermAnchor
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/term-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse2<TermAnchor> restoreTermAnchorRelationship(@PathVariable String serverName,
-                                                                                 @PathVariable String userId,
-                                                                                 @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<TermAnchor> restoreTermAnchorRelationship(@PathVariable String serverName,
+                                                                                @PathVariable String userId,
+                                                                                @PathVariable String guid) {
         return restAPI.restoreTermAnchorRelationship(serverName, userId, guid);
     }
 
@@ -1857,18 +1697,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/category-anchor")
-    public SubjectAreaOMASAPIResponse2<CategoryAnchor> createCategoryAnchor(@PathVariable String serverName,
-                                                                            @PathVariable String userId,
-                                                                            @RequestBody CategoryAnchor categoryAnchorRelationship) {
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> createCategoryAnchor(@PathVariable String serverName,
+                                                                           @PathVariable String userId,
+                                                                           @RequestBody CategoryAnchor categoryAnchorRelationship) {
         return restAPI.createCategoryAnchorRelationship(serverName, userId, categoryAnchorRelationship);
     }
 
@@ -1882,16 +1718,42 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/category-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse2<CategoryAnchor> getCategoryAnchorRelationship(@PathVariable String serverName,
-                                                                                     @PathVariable String userId,
-                                                                                     @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> getCategoryAnchorRelationship(@PathVariable String serverName,
+                                                                                    @PathVariable String userId,
+                                                                                    @PathVariable String guid) {
         return restAPI.getCategoryAnchorRelationship(serverName, userId, guid);
+    }
+
+    /**
+     * Update a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows Categories to be owned by a Glossary.
+     * <p>
+     *
+     * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param guid       guid of the CategoryAnchor relationship
+     * @param categoryAnchor the categoryAnchor relationship
+     * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the updated categoryAnchor
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @PutMapping(path = "/users/{userId}/relationships/category-anchor/{guid}")
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> updateCategoryAnchorRelationship(@PathVariable String serverName,
+                                                                       @PathVariable String userId,
+                                                                       @PathVariable String guid,
+                                                                       @RequestBody CategoryAnchor categoryAnchor,
+                                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    ) {
+        return restAPI.updateCategoryAnchorRelationship(serverName, userId, guid, categoryAnchor, isReplace);
     }
 
     /**
@@ -1904,20 +1766,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/category-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse2<CategoryAnchor> deleteCategoryAnchorRelationship(@PathVariable String serverName,
-                                                                                        @PathVariable String userId,
-                                                                                        @PathVariable String guid,
-                                                                                        @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> deleteCategoryAnchorRelationship(@PathVariable String serverName,
+                                                                                       @PathVariable String userId,
+                                                                                       @PathVariable String guid,
+                                                                                       @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteCategoryAnchorRelationship(serverName, userId, guid, isPurge);
     }
@@ -1933,17 +1791,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored CategoryAnchor
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/category-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse2<CategoryAnchor> restoreCategoryAnchorRelationship(@PathVariable String serverName,
-                                                                                         @PathVariable String userId,
-                                                                                         @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> restoreCategoryAnchorRelationship(@PathVariable String serverName,
+                                                                                        @PathVariable String userId,
+                                                                                        @PathVariable String guid) {
         return restAPI.restoreCategoryAnchorRelationship(serverName, userId, guid);
     }
 
@@ -1958,18 +1814,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created project scope relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/project-scopes")
-    public SubjectAreaOMASAPIResponse2<ProjectScope> createProjectScopeRelationship(@PathVariable String serverName,
-                                                                                    @PathVariable String userId,
-                                                                                    @RequestBody ProjectScope projectScope) {
+    public SubjectAreaOMASAPIResponse<ProjectScope> createProjectScopeRelationship(@PathVariable String serverName,
+                                                                                   @PathVariable String userId,
+                                                                                   @RequestBody ProjectScope projectScope) {
         return restAPI.createProjectScopeRelationship(serverName, userId, projectScope);
     }
 
@@ -1983,15 +1836,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/project-scopes/{guid}")
-    public SubjectAreaOMASAPIResponse2<ProjectScope> getProjectScopeRelationship(@PathVariable String serverName,
-                                                                                 @PathVariable String userId,
-                                                                                 @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<ProjectScope> getProjectScopeRelationship(@PathVariable String serverName,
+                                                                                @PathVariable String userId,
+                                                                                @PathVariable String guid) {
         return restAPI.getProjectScopeRelationship(serverName, userId, guid);
     }
 
@@ -2007,20 +1859,17 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response, when successful contains the created ProjectScopeRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/project-scopes/{guid}")
-    public SubjectAreaOMASAPIResponse2<ProjectScope> updateProjectScopeRelationship(@PathVariable String serverName,
-                                                                                    @PathVariable String userId,
-                                                                                    @PathVariable String guid,
-                                                                                    @RequestBody ProjectScope projectScope,
-                                                                                    @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<ProjectScope> updateProjectScopeRelationship(@PathVariable String serverName,
+                                                                                   @PathVariable String userId,
+                                                                                   @PathVariable String guid,
+                                                                                   @RequestBody ProjectScope projectScope,
+                                                                                   @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
         return restAPI.updateProjectScopeRelationship(serverName, userId, guid, projectScope, isReplace);
     }
 
@@ -2034,20 +1883,16 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/project-scopes/{guid}")
-    public SubjectAreaOMASAPIResponse2<ProjectScope> deleteProjectScopeRelationship(@PathVariable String serverName,
-                                                                                    @PathVariable String userId,
-                                                                                    @PathVariable String guid,
-                                                                                    @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<ProjectScope> deleteProjectScopeRelationship(@PathVariable String serverName,
+                                                                                   @PathVariable String userId,
+                                                                                   @PathVariable String guid,
+                                                                                   @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteProjectScopeRelationship(serverName, userId, guid, isPurge);
     }
 
@@ -2062,17 +1907,15 @@ public class SubjectAreaRelationshipRESTResource {
      * @return response which when successful contains the restored ProjectScopeRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/project-scopes/{guid}")
-    public SubjectAreaOMASAPIResponse2<ProjectScope> restoreProjectScoperRelationship(@PathVariable String serverName,
-                                                                                      @PathVariable String userId,
-                                                                                      @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<ProjectScope> restoreProjectScoperRelationship(@PathVariable String serverName,
+                                                                                     @PathVariable String userId,
+                                                                                     @PathVariable String guid) {
         return restAPI.restoreProjectScopeRelationship(serverName, userId, guid);
     }
 
@@ -2086,15 +1929,14 @@ public class SubjectAreaRelationshipRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/semantic-assignments/{guid}")
-    public SubjectAreaOMASAPIResponse2<SemanticAssignment> getSemanticAssignmentRelationship(@PathVariable String serverName,
-                                                                                             @PathVariable String userId,
-                                                                                             @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<SemanticAssignment> getSemanticAssignmentRelationship(@PathVariable String serverName,
+                                                                                            @PathVariable String userId,
+                                                                                            @PathVariable String guid) {
         return restAPI.getSemanticAssignmentRelationship(serverName, userId, guid);
     }
 }

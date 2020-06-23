@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse2;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryAnchorMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryHierarchyLinkMapper;
@@ -80,9 +80,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Category> createCategory(String userId, Category suppliedCategory) {
+    public SubjectAreaOMASAPIResponse<Category> createCategory(String userId, Category suppliedCategory) {
         final String methodName = "createCategory";
-        SubjectAreaOMASAPIResponse2<Category> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         String createdCategoryGuid = null;
 
         try {
@@ -147,9 +147,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse2<Category> getCategoryByGuid(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Category> getCategoryByGuid(String userId, String guid) {
         final String methodName = "getCategory";
-        SubjectAreaOMASAPIResponse2<Category> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, CATEGORY_TYPE_NAME, methodName);
@@ -180,9 +180,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Category> findCategory(String userId, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Category> findCategory(String userId, FindRequest findRequest) {
         final String methodName = "findCategory";
-        SubjectAreaOMASAPIResponse2<Category> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             List<Category> foundCategories = findEntities(userId, CATEGORY_TYPE_NAME, findRequest, CategoryMapper.class, methodName);
@@ -266,7 +266,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse2<Line> getCategoryRelationships(String userId, String guid, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(String userId, String guid, FindRequest findRequest) {
         String restAPIName = "getCategoryRelationships";
         return getAllRelationshipsForEntity(restAPIName, userId, guid, findRequest);
     }
@@ -290,9 +290,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Category> updateCategory(String userId, String guid, Category suppliedCategory, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Category> updateCategory(String userId, String guid, Category suppliedCategory, boolean isReplace) {
         final String methodName = "updateCategory";
-        SubjectAreaOMASAPIResponse2<Category> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
 
@@ -374,9 +374,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Category> deleteCategory(String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Category> deleteCategory(String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteCategory";
-        SubjectAreaOMASAPIResponse2<Category> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             if (isPurge) {
@@ -409,9 +409,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse2<Category> restoreCategory(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Category> restoreCategory(String userId, String guid) {
         final String methodName = "restoreCategory";
-        SubjectAreaOMASAPIResponse2<Category> response = new SubjectAreaOMASAPIResponse2<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
