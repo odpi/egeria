@@ -43,6 +43,7 @@ public class FindRequest
             this.searchCriteria = template.getSearchCriteria();
             this.sequencingProperty = template.getSequencingProperty();
             this.sequencingOrder = template.getSequencingOrder();
+            this.asOfTime = template.getAsOfTime();
             this.offset = template.getOffset();
             this.pageSize = getPageSize();
         }

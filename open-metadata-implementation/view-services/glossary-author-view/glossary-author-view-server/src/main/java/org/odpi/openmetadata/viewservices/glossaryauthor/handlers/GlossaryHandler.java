@@ -2,15 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.handlers;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.glossaries.SubjectAreaGlossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,8 +17,6 @@ import java.util.List;
  * The handler exposes methods for glossary functionality for the glossary author view
  */
 public class GlossaryHandler {
-    private static final Logger log = LoggerFactory.getLogger(GlossaryHandler.class);
-
     private SubjectAreaGlossary subjectAreaGlossary;
 
     /**
@@ -46,16 +43,10 @@ public class GlossaryHandler {
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws ClassificationException              Error processing a classification
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              Property Server Exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Glossary createGlossary(String userId, Glossary suppliedGlossary) throws MetadataServerUncontactableException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaGlossary.createGlossary(userId, suppliedGlossary);
+    public Glossary createGlossary(String userId, Glossary suppliedGlossary) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return subjectAreaGlossary.glossary().create(userId, suppliedGlossary);
     }
 
     /**
@@ -68,15 +59,10 @@ public class GlossaryHandler {
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              Property Server Exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Glossary getGlossaryByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaGlossary.getGlossaryByGuid(userId, guid);
+    public Glossary getGlossaryByGuid(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaGlossary.glossary().getByGUID(userId, guid);
     }
 
     /**
@@ -84,53 +70,32 @@ public class GlossaryHandler {
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param guid               guid of the glossary to get
-     * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param findRequest        {@link FindRequest}
      * @return the relationships associated with the requested Glossary guid
      * <p>
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              Property Server Exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public List<Line> getGlossaryRelationships(String userId, String guid, Date asOfTime, int offset, int pageSize, SequencingOrder sequencingOrder, String sequencingProperty) throws FunctionNotSupportedException, UnexpectedResponseException, MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaGlossary.getGlossaryRelationships(userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    public List<Line> getGlossaryRelationships(String userId, String guid, FindRequest findRequest) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaGlossary.glossary().getRelationships(userId, guid, findRequest);
     }
 
     /**
      * Find Glossary
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria     String expression matching glossary properties. If not specified then all glossaries are returned.
-     * @param asOfTime           Glossaries returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param findRequest        {@link FindRequest}
      * @return A list of Glossaries meeting the search Criteria
      * <p>
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              Property Server Exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public List<Glossary> findGlossary(String userId, String searchCriteria, Date asOfTime, int offset, int pageSize, SequencingOrder sequencingOrder, String sequencingProperty) throws MetadataServerUncontactableException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaGlossary.findGlossary(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    public List<Glossary> findGlossary(String userId, FindRequest findRequest) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaGlossary.glossary().find(userId, findRequest);
     }
 
     /**
@@ -148,14 +113,10 @@ public class GlossaryHandler {
      * @return replaced glossary
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              Property Server Exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Glossary replaceGlossary(String userId, String guid, Glossary suppliedGlossary) throws UnexpectedResponseException, FunctionNotSupportedException, MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaGlossary.replaceGlossary(userId, guid, suppliedGlossary);
+    public Glossary replaceGlossary(String userId, String guid, Glossary suppliedGlossary) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaGlossary.glossary().replace(userId, guid, suppliedGlossary);
     }
 
     /**
@@ -174,14 +135,10 @@ public class GlossaryHandler {
      * when not successful the following Exceptions can occur
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              Property Server Exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Glossary updateGlossary(String userId, String guid, Glossary suppliedGlossary) throws UnexpectedResponseException, FunctionNotSupportedException, MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaGlossary.updateGlossary(userId, guid, suppliedGlossary);
+    public Glossary updateGlossary(String userId, String guid, Glossary suppliedGlossary) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaGlossary.glossary().update(userId, guid, suppliedGlossary);
     }
 
     /**
@@ -194,19 +151,12 @@ public class GlossaryHandler {
      *
      * @param userId userId under which the request is performed
      * @param guid   guid of the glossary to be deleted.
-     * @return the deleted glossary
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws EntityNotDeletedException            a delete was issued but the glossary was not deleted.
      * @throws PropertyServerException              Property Server Exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Glossary deleteGlossary(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, FunctionNotSupportedException, UnexpectedResponseException, EntityNotDeletedException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaGlossary.deleteGlossary(userId, guid);
+    public void deleteGlossary(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        subjectAreaGlossary.glossary().delete(userId, guid);
     }
 
     /**
@@ -218,18 +168,12 @@ public class GlossaryHandler {
      *
      * @param userId userId under which the request is performed
      * @param guid   guid of the glossary to be deleted.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws EntityNotPurgedException             a hard delete was issued but the glossary was not purged
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              Property Server Exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public void purgeGlossary(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, EntityNotPurgedException, UnexpectedResponseException, FunctionNotSupportedException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaGlossary.purgeGlossary(userId, guid);
+    public void purgeGlossary(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        subjectAreaGlossary.glossary().purge(userId, guid);
     }
 
     /**
@@ -240,17 +184,11 @@ public class GlossaryHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the glossary to restore
      * @return the restored glossary
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws PropertyServerException              Property Server Exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Glossary restoreGlossary(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaGlossary.restoreGlossary(userId, guid);
+    public Glossary restoreGlossary(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaGlossary.glossary().restore(userId, guid);
     }
-
 }

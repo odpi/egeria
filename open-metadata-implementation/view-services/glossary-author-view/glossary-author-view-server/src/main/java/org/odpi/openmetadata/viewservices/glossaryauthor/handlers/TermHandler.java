@@ -2,15 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.handlers;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.terms.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,8 +17,6 @@ import java.util.List;
  * The handler exposes methods for term functionality for the glossary author view
  */
 public class TermHandler {
-    private static final Logger log = LoggerFactory.getLogger(TermHandler.class);
-
     private SubjectAreaTerm subjectAreaTerm;
 
     /**
@@ -42,22 +39,10 @@ public class TermHandler {
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws ClassificationException              Error processing a classification
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Term createTerm(String userId, Term suppliedTerm) throws MetadataServerUncontactableException,
-                                                                    ClassificationException,
-                                                                    FunctionNotSupportedException,
-                                                                    UnexpectedResponseException,
-                                                                    InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException {
-        return subjectAreaTerm.createTerm(userId, suppliedTerm);
+    public Term createTerm(String userId, Term suppliedTerm) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return subjectAreaTerm.term().create(userId, suppliedTerm);
     }
 
     /**
@@ -70,52 +55,28 @@ public class TermHandler {
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              property server exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Term getTermByGuid(String userId, String guid) throws MetadataServerUncontactableException,
-                                                                 FunctionNotSupportedException,
-                                                                 UnexpectedResponseException,
-                                                                 InvalidParameterException,
+    public Term getTermByGuid(String userId, String guid) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException {
-        return subjectAreaTerm.getTermByGuid(userId, guid);
+        return subjectAreaTerm.term().getByGUID(userId, guid);
     }
 
     /**
      * Find Term
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria     String expression matching Term property values (this does not include the TermSummary content).
-     * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param findRequest        {@link FindRequest}
      * @return A list of Terms meeting the search Criteria
      * <p>
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public List<Term> findTerm(String userId, String searchCriteria, Date asOfTime, int offset, int pageSize, SequencingOrder sequencingOrder, String sequencingProperty) throws MetadataServerUncontactableException,
-                                                                                                                                                                                 FunctionNotSupportedException,
-                                                                                                                                                                                 UnexpectedResponseException,
-                                                                                                                                                                                 InvalidParameterException,
-                                                                                                                                                                                 UserNotAuthorizedException,
-                                                                                                                                                                                 PropertyServerException {
-        return subjectAreaTerm.findTerm(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    public List<Term> findTerm(String userId, FindRequest findRequest) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaTerm.term().find(userId, findRequest);
     }
 
     /**
@@ -129,21 +90,13 @@ public class TermHandler {
      * @param suppliedTerm term to be updated
      * @return replaced term
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Term replaceTerm(String userId, String guid, Term suppliedTerm) throws UnexpectedResponseException,
-                                                                                  FunctionNotSupportedException,
-                                                                                  MetadataServerUncontactableException,
-                                                                                  InvalidParameterException,
+    public Term replaceTerm(String userId, String guid, Term suppliedTerm) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException {
-        return subjectAreaTerm.replaceTerm(userId, guid, suppliedTerm);
+        return subjectAreaTerm.term().replace(userId, guid, suppliedTerm);
     }
 
     /**
@@ -158,21 +111,13 @@ public class TermHandler {
      * @return a response which when successful contains the updated term
      * when not successful the following Exceptions can occur
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Term updateTerm(String userId, String guid, Term suppliedTerm) throws UnexpectedResponseException,
-                                                                                 FunctionNotSupportedException,
-                                                                                 MetadataServerUncontactableException,
-                                                                                 InvalidParameterException,
+    public Term updateTerm(String userId, String guid, Term suppliedTerm) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException {
-        return subjectAreaTerm.updateTerm(userId, guid, suppliedTerm);
+        return subjectAreaTerm.term().update(userId, guid, suppliedTerm);
     }
 
     /**
@@ -183,28 +128,15 @@ public class TermHandler {
      *
      * @param userId userId under which the request is performed
      * @param guid   guid of the term to be deleted.
-     * @return the deleted term
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws PropertyServerException              property server exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Term deleteTerm(String userId, String guid) throws MetadataServerUncontactableException,
-                                                              UnrecognizedGUIDException,
-                                                              FunctionNotSupportedException,
-                                                              UnexpectedResponseException,
-                                                              EntityNotDeletedException,
-                                                              InvalidParameterException,
+    public void deleteTerm(String userId, String guid) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException {
-        return subjectAreaTerm.deleteTerm(userId, guid);
+        subjectAreaTerm.term().delete(userId, guid);
     }
 
     /**
@@ -216,23 +148,12 @@ public class TermHandler {
      * @param guid   guid of the term to be deleted.
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws EntityNotPurgedException             a hard delete was issued but the term was not purged
-     * @throws UnrecognizedGUIDException            the supplied userId was not recognised
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              property server exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public void purgeTerm(String userId, String guid) throws MetadataServerUncontactableException,
-                                                             UnrecognizedGUIDException,
-                                                             EntityNotPurgedException,
-                                                             UnexpectedResponseException,
-                                                             FunctionNotSupportedException,
-                                                             InvalidParameterException,
+    public void purgeTerm(String userId, String guid) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException {
-        subjectAreaTerm.purgeTerm(userId, guid);
+        subjectAreaTerm.term().purge(userId, guid);
     }
 
     /**
@@ -243,23 +164,14 @@ public class TermHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the term to restore
      * @return the restored term
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws PropertyServerException              property server exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Term restoreTerm(String userId, String guid) throws MetadataServerUncontactableException,
-                                                               UnrecognizedGUIDException,
-                                                               FunctionNotSupportedException,
-                                                               UnexpectedResponseException,
-                                                               InvalidParameterException,
+    public Term restoreTerm(String userId, String guid) throws InvalidParameterException,
                                                                UserNotAuthorizedException,
                                                                PropertyServerException {
-        return subjectAreaTerm.restoreTerm(userId, guid);
+        return subjectAreaTerm.term().restore(userId, guid);
     }
 
     /**
@@ -267,40 +179,16 @@ public class TermHandler {
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param guid               guid of the term to get
-     * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param findRequest        {@link FindRequest}
      * @return the relationships associated with the requested Term guid
      * <p>
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws PropertyServerException              Property Server exception
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public List<Line> getTermRelationships(String userId,
-                                           String guid,
-                                           Date asOfTime,
-                                           int offset,
-                                           int pageSize,
-                                           SequencingOrder sequencingOrder,
-                                           String sequencingProperty) throws
-                                                                      MetadataServerUncontactableException,
-                                                                      UserNotAuthorizedException,
-                                                                      InvalidParameterException,
-                                                                      FunctionNotSupportedException,
-                                                                      UnexpectedResponseException,
-                                                                      PropertyServerException {
-        return subjectAreaTerm.getTermRelationships(userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    public List<Line> getTermRelationships(String userId, String guid, FindRequest findRequest) throws UserNotAuthorizedException, InvalidParameterException, PropertyServerException {
+        return subjectAreaTerm.term().getRelationships(userId, guid, findRequest);
 
     }
-
 }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.server;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -12,6 +13,9 @@ import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthor
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+
+import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_OFFSET_DEFAULT_VALUE;
+import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_SIZE_DEFAULT_VALUE;
 
 /**
  * The GlossaryAuthorRESTServicesInstance provides the org.odpi.openmetadata.viewservices.glossaryauthor.server  implementation of the Glossary Author Open Metadata
@@ -50,17 +54,14 @@ public class GlossaryAuthorViewProjectRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PostMapping()
-    public SubjectAreaOMASAPIResponse createProject(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @RequestBody Project suppliedProject) {
+    @PostMapping
+    public SubjectAreaOMASAPIResponse<Project> createProject(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @RequestBody Project suppliedProject) {
         return restAPI.createProject(serverName, userId, suppliedProject);
 
     }
@@ -74,18 +75,15 @@ public class GlossaryAuthorViewProjectRESTResource {
      * @return response which when successful contains the project with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> FunctionNotSupportedException   Function not supported</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse getProject(@PathVariable String serverName,
-                                                 @PathVariable String userId,
-                                                 @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Project> getProject(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String guid) {
         return restAPI.getProject(serverName, userId, guid);
 
     }
@@ -107,22 +105,19 @@ public class GlossaryAuthorViewProjectRESTResource {
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @GetMapping()
-    public SubjectAreaOMASAPIResponse findProject(
-            @PathVariable String serverName,
-            @PathVariable String userId,
-            @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
-            @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-            @RequestParam(value = "offset", required = false) Integer offset,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-                                                 ) {
+    @GetMapping
+    public SubjectAreaOMASAPIResponse<Project> findProject(@PathVariable String serverName, @PathVariable String userId,
+                                                           @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                           @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                           @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                           @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                           @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                           @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    ) {
         return restAPI.findProject(serverName, userId, asOfTime, searchCriteria, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
@@ -142,33 +137,21 @@ public class GlossaryAuthorViewProjectRESTResource {
      * @return a response which when successful contains the project relationships
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse getProjectRelationships(
-            @PathVariable String serverName,
-            @PathVariable String userId,
-            @PathVariable String guid,
-            @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-            @RequestParam(value = "offset", required = false) Integer offset,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-
-                                                             ) {
-        return restAPI.getProjectRelationships(serverName,
-                                               userId,
-                                               guid,
-                                               asOfTime,
-                                               offset,
-                                               pageSize,
-                                               sequencingOrder,
-                                               sequencingProperty);
-
+    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                    @PathVariable String guid,
+                                                                    @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                    @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                                    @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                                    @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                    @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    ) {
+        return restAPI.getProjectRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -184,20 +167,18 @@ public class GlossaryAuthorViewProjectRESTResource {
      * @return a response which when successful contains the updated project
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse updateProject(
+    public SubjectAreaOMASAPIResponse<Project> updateProject(
             @PathVariable String serverName,
             @PathVariable String userId,
             @PathVariable String guid,
             @RequestBody Project suppliedProject,
-            @RequestParam(value = "isReplace", required = false) Boolean isReplace) {
+            @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
 
         return restAPI.updateProject(serverName, userId, guid, suppliedProject, isReplace);
 
@@ -224,20 +205,16 @@ public class GlossaryAuthorViewProjectRESTResource {
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the project was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the project was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse deleteProject(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String guid,
-                                                    @RequestParam(value = "isPurge", required = false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Project> deleteProject(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @PathVariable String guid,
+                                                             @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteProject(serverName, userId, guid, isPurge);
     }
 
@@ -252,17 +229,15 @@ public class GlossaryAuthorViewProjectRESTResource {
      * @return response which when successful contains the restored project
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String serverName,
-                                                     @PathVariable String userId,
-                                                     @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Project> restoreProject(@PathVariable String serverName,
+                                                              @PathVariable String userId,
+                                                              @PathVariable String guid) {
         return restAPI.restoreProject(serverName, userId, guid);
 
     }

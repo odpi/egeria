@@ -1,19 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.subjectarea;
+package org.odpi.openmetadata.accessservices.subjectarea.client.relationships;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.StatusFilter;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.NeighborhoodHistoricalFindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.Date;
 import java.util.Set;
 
-/**
- * The SubjectAreaDefinition Open Metadata Access Service (OMAS) API for graph
- */
 public interface SubjectAreaGraph {
     /**
      * Get the graph of nodes and Lines radiating out from a node.
@@ -34,28 +34,27 @@ public interface SubjectAreaGraph {
      * @return A graph of nodes.
      * <p>
      * Exceptions returned by the server
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
-     * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    Graph getGraph(
-            String userId,
-            String guid,
-            Date asOfTime,
-            Set<NodeType> nodeFilter,
-            Set<LineType> lineFilter,
-            StatusFilter statusFilter,
-            Integer level) throws
-                           UserNotAuthorizedException,
-                           InvalidParameterException,
-                           FunctionNotSupportedException,
-                           MetadataServerUncontactableException,
-                           UnexpectedResponseException,
-                           PropertyServerException;
+   default Graph getGraph(String userId,
+                          String guid,
+                          Date asOfTime,
+                          Set<NodeType> nodeFilter,
+                          Set<LineType> lineFilter,
+                          StatusFilter statusFilter,
+                          int level) throws InvalidParameterException,
+                                            PropertyServerException,
+                                            UserNotAuthorizedException
+   {
+       NeighborhoodHistoricalFindRequest request = new NeighborhoodHistoricalFindRequest();
+       request.setAsOfTime(asOfTime);
+       request.setNodeFilter(nodeFilter);
+       request.setLineFilter(lineFilter);
+       request.setLevel(level);
+       request.setStatusFilter(statusFilter);
+       return getGraph(userId, guid, request);
+   }
 
+    Graph getGraph(String userId, String guid, NeighborhoodHistoricalFindRequest request) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException;
 }

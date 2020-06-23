@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
@@ -9,8 +10,6 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.ProjectHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
@@ -21,9 +20,7 @@ import java.util.List;
  */
 
 public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorView {
-
     private static String className = GlossaryAuthorViewProjectRESTServices.class.getName();
-    private static final Logger LOG = LoggerFactory.getLogger(className);
 
     /**
      * Default constructor
@@ -45,24 +42,18 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param suppliedProject Project to create
      * @return the created Project.
-     *
-     * Exceptions returned by the server
-     *  UserNotAuthorizedException  the requesting user is not authorized to issue this request.
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  UnrecognizedGUIDException  the supplied guid was not recognised
-     *  ClassificationException Error processing a classification
-     *  FunctionNotSupportedException   Function not supported
-     *
-     * Client library Exceptions
-     *  MetadataServerUncontactableException Unable to contact the server
-     *  UnexpectedResponseException an unexpected response was returned from the server
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse createProject(String serverName, String userId, Project suppliedProject) {
+    public SubjectAreaOMASAPIResponse<Project> createProject(String serverName, String userId, Project suppliedProject) {
         final String methodName = "createProject";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied project - the calling layer should not allow this.
@@ -70,7 +61,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
             Project createdProject = handler.createProject(userId, suppliedProject);
-            response = new ProjectResponse(createdProject);
+            response.addResult(createdProject);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
         }
@@ -89,27 +80,23 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * @return response which when successful contains the project with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> FunctionNotSupportedException   Function not supported</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getProject(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Project> getProject(String serverName, String userId, String guid) {
         final String methodName = "getProject";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
-            Project obtainedProject = handler.getProjectByGuid(userId,
-                    guid);
-            response = new ProjectResponse(obtainedProject);
+            Project obtainedProject = handler.getProjectByGuid(userId, guid);
+            response.addResult(obtainedProject);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
         }
@@ -134,46 +121,38 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse findProject(
+    public SubjectAreaOMASAPIResponse<Project> findProject(
             String serverName,
             String userId,
             Date asOfTime,
             String searchCriteria,
-            Integer offset,
-            Integer pageSize,
+            int offset,
+            int pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
     ) {
         final String methodName = "findProject";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
-            if (offset == null) {
-                offset = new Integer(0);
-            }
-            if (pageSize == null) {
-                pageSize = new Integer(0);
-            }
-            List<Project> projects = handler.findProject(
-                    userId,
-                    searchCriteria,
-                    asOfTime,
-                    offset,
-                    pageSize,
-                    sequencingOrder,
-                    sequencingProperty);
-            ProjectsResponse projectsResponse = new ProjectsResponse();
-            projectsResponse.setProjects(projects);
-            response = projectsResponse;
+            FindRequest findRequest = new FindRequest();
+            findRequest.setSearchCriteria(searchCriteria);
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+
+            List<Project> projects = handler.findProject(userId, findRequest);
+            response.addAllResults(projects);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
         }
@@ -197,13 +176,12 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * @return a response which when successful contains the project relationships
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse getProjectRelationships(
+    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(
             String serverName,
             String userId,
             String guid,
@@ -218,15 +196,20 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
         final String methodName = "getProjectRelationships";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
-            List<Line> lines =  handler.getProjectRelationships(userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
-            LinesResponse linesResponse = new LinesResponse();
-            linesResponse.setLines(lines);
-            response = linesResponse;
+            FindRequest findRequest = new FindRequest();
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+
+            List<Line> lines =  handler.getProjectRelationships(userId, guid, findRequest);
+            response.addAllResults(lines);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
         }
@@ -247,25 +230,23 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * @return a response which when successful contains the updated project
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse updateProject(
+    public SubjectAreaOMASAPIResponse<Project> updateProject(
             String serverName,
             String userId,
             String guid,
             Project project,
-            Boolean isReplace
+            boolean isReplace
     ) {
         final String methodName = "updateProject";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied project - the calling layer should not allow this.
@@ -273,17 +254,13 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
             Project updatedProject;
-            if (isReplace == null) {
-                isReplace = false;
-            }
+
             if (isReplace) {
                 updatedProject = handler.replaceProject(userId, guid, project);
             } else {
                 updatedProject = handler.updateProject(userId, guid, project);
             }
-            ProjectResponse projectResponse = new ProjectResponse();
-            projectResponse.setProject(updatedProject);
-            response = projectResponse;
+            response.addResult(updatedProject);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
         }
@@ -311,45 +288,32 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the project was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the project was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteProject(
+    public SubjectAreaOMASAPIResponse<Project> deleteProject(
             String serverName,
             String userId,
             String guid,
-            Boolean isPurge
+            boolean isPurge
     ) {
 
         final String methodName = "deleteProject";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
-            if (isPurge == null) {
-                // default to soft delete if isPurge is not specified.
-                isPurge = false;
-            }
-
             if (isPurge) {
                 handler.purgeProject(userId, guid);
-                response = new VoidResponse();
             } else {
-                Project project = handler.deleteProject(userId, guid);
-                ProjectResponse projectResponse = new ProjectResponse();
-                projectResponse.setProject(project);
-                response = projectResponse;
+                handler.deleteProject(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
@@ -369,21 +333,19 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * @return response which when successful contains the restored project
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreProject(
+    public SubjectAreaOMASAPIResponse<Project> restoreProject(
             String serverName,
             String userId,
             String guid) {
         final String methodName = "restoreProject";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied project - the calling layer should not allow this.
@@ -391,9 +353,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
             Project project = handler.restoreProject(userId, guid);
-            ProjectResponse projectResponse = new ProjectResponse();
-            projectResponse.setProject(project);
-            response = projectResponse;
+            response.addResult(project);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
         }
