@@ -151,6 +151,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
             if (gotRelationship.isPresent()) {
                 Relationship originalRelationship = gotRelationship.get();
                 Relationship relationshipToUpdate = mapper.map(line);
+                relationshipToUpdate.setGUID(lineGuid);
 
                 if (relationshipToUpdate.getProperties() == null || relationshipToUpdate.getProperties().getPropertyCount() == 0) {
                     // nothing to update.
